@@ -1,0 +1,222 @@
+{
+  "metadata": {
+    "generated_at_utc": "2026-02-11T10:25:59.997001+00:00",
+    "range_bs": "2000-2030",
+    "source": "parva_ephemeris_regression_baseline"
+  },
+  "years": [
+    {
+      "bs_year": 2000,
+      "gregorian_year": 1943,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2001,
+      "gregorian_year": 1944,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Chaitra"
+      ]
+    },
+    {
+      "bs_year": 2002,
+      "gregorian_year": 1945,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Chaitra"
+      ]
+    },
+    {
+      "bs_year": 2003,
+      "gregorian_year": 1946,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2004,
+      "gregorian_year": 1947,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Shrawan"
+      ]
+    },
+    {
+      "bs_year": 2005,
+      "gregorian_year": 1948,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2006,
+      "gregorian_year": 1949,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2007,
+      "gregorian_year": 1950,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Ashadh"
+      ]
+    },
+    {
+      "bs_year": 2008,
+      "gregorian_year": 1951,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2009,
+      "gregorian_year": 1952,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2010,
+      "gregorian_year": 1953,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Baishakh"
+      ]
+    },
+    {
+      "bs_year": 2011,
+      "gregorian_year": 1954,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2012,
+      "gregorian_year": 1955,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Bhadra"
+      ]
+    },
+    {
+      "bs_year": 2013,
+      "gregorian_year": 1956,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2014,
+      "gregorian_year": 1957,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2015,
+      "gregorian_year": 1958,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Shrawan"
+      ]
+    },
+    {
+      "bs_year": 2016,
+      "gregorian_year": 1959,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2017,
+      "gregorian_year": 1960,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2018,
+      "gregorian_year": 1961,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Jestha"
+      ]
+    },
+    {
+      "bs_year": 2019,
+      "gregorian_year": 1962,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2020,
+      "gregorian_year": 1963,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Chaitra",
+        "Adhik Kartik"
+      ]
+    },
+    {
+      "bs_year": 2021,
+      "gregorian_year": 1964,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Chaitra"
+      ]
+    },
+    {
+      "bs_year": 2022,
+      "gregorian_year": 1965,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2023,
+      "gregorian_year": 1966,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Shrawan"
+      ]
+    },
+    {
+      "bs_year": 2024,
+      "gregorian_year": 1967,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2025,
+      "gregorian_year": 1968,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2026,
+      "gregorian_year": 1969,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Ashadh"
+      ]
+    },
+    {
+      "bs_year": 2027,
+      "gregorian_year": 1970,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2028,
+      "gregorian_year": 1971,
+      "has_adhik": false,
+      "adhik_months": []
+    },
+    {
+      "bs_year": 2029,
+      "gregorian_year": 1972,
+      "has_adhik": true,
+      "adhik_months": [
+        "Adhik Baishakh"
+      ]
+    },
+    {
+      "bs_year": 2030,
+      "gregorian_year": 1973,
+      "has_adhik": false,
+      "adhik_months": []
+    }
+  ]
+}

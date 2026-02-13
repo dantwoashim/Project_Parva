@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "description": "Seed profiles used by the rule-ingestion pipeline to scale provisional observance coverage.",
+  "lunar_months": [
+    { "name": "Baisakh", "slug": "baisakh" },
+    { "name": "Jestha", "slug": "jestha" },
+    { "name": "Ashadh", "slug": "ashadh" },
+    { "name": "Shrawan", "slug": "shrawan" },
+    { "name": "Bhadra", "slug": "bhadra" },
+    { "name": "Ashwin", "slug": "ashwin" },
+    { "name": "Kartik", "slug": "kartik" },
+    { "name": "Mangsir", "slug": "mangsir" },
+    { "name": "Poush", "slug": "poush" },
+    { "name": "Magh", "slug": "magh" },
+    { "name": "Falgun", "slug": "falgun" },
+    { "name": "Chaitra", "slug": "chaitra" }
+  ],
+  "bs_months": [
+    { "name": "Baisakh", "slug": "baisakh", "number": 1 },
+    { "name": "Jestha", "slug": "jestha", "number": 2 },
+    { "name": "Ashadh", "slug": "ashadh", "number": 3 },
+    { "name": "Shrawan", "slug": "shrawan", "number": 4 },
+    { "name": "Bhadra", "slug": "bhadra", "number": 5 },
+    { "name": "Ashwin", "slug": "ashwin", "number": 6 },
+    { "name": "Kartik", "slug": "kartik", "number": 7 },
+    { "name": "Mangsir", "slug": "mangsir", "number": 8 },
+    { "name": "Poush", "slug": "poush", "number": 9 },
+    { "name": "Magh", "slug": "magh", "number": 10 },
+    { "name": "Falgun", "slug": "falgun", "number": 11 },
+    { "name": "Chaitra", "slug": "chaitra", "number": 12 }
+  ],
+  "lunar_dual_paksha_families": [
+    {
+      "id_prefix": "ekadashi-vrata",
+      "name_template": "{month} {paksha_title} Ekadashi",
+      "tithi": 11,
+      "rule_family": "monthly_ekadashi",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "pradosh-vrata",
+      "name_template": "{month} {paksha_title} Pradosh",
+      "tithi": 13,
+      "rule_family": "monthly_pradosh",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "chaturthi-vrata",
+      "name_template": "{month} {paksha_title} Chaturthi",
+      "tithi": 4,
+      "rule_family": "monthly_chaturthi",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "ashtami-vrata",
+      "name_template": "{month} {paksha_title} Ashtami",
+      "tithi": 8,
+      "rule_family": "monthly_ashtami",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "navami-vrata",
+      "name_template": "{month} {paksha_title} Navami",
+      "tithi": 9,
+      "rule_family": "monthly_navami",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "dwadashi-vrata",
+      "name_template": "{month} {paksha_title} Dwadashi",
+      "tithi": 12,
+      "rule_family": "monthly_dwadashi",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "panchami-vrata",
+      "name_template": "{month} {paksha_title} Panchami",
+      "tithi": 5,
+      "rule_family": "monthly_panchami",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "chaturdashi-vrata",
+      "name_template": "{month} {paksha_title} Chaturdashi",
+      "tithi": 14,
+      "rule_family": "monthly_chaturdashi",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "saptami-vrata",
+      "name_template": "{month} {paksha_title} Saptami",
+      "tithi": 7,
+      "rule_family": "monthly_saptami",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "dashami-vrata",
+      "name_template": "{month} {paksha_title} Dashami",
+      "tithi": 10,
+      "rule_family": "monthly_dashami",
+      "category": "hindu",
+      "tradition": "hindu"
+    }
+  ],
+  "lunar_single_families": [
+    {
+      "id_prefix": "purnima-vrata",
+      "name_template": "{month} Purnima Vrata",
+      "paksha": "shukla",
+      "tithi": 15,
+      "rule_family": "monthly_purnima",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "amavasya-observance",
+      "name_template": "{month} Amavasya Observance",
+      "paksha": "krishna",
+      "tithi": 15,
+      "rule_family": "monthly_amavasya",
+      "category": "hindu",
+      "tradition": "hindu"
+    }
+  ],
+  "solar_monthly_families": [
+    {
+      "id_prefix": "monthly-sankranti",
+      "name_template": "{month} Sankranti",
+      "rule_family": "solar_sankranti_monthly",
+      "category": "hindu",
+      "tradition": "hindu"
+    }
+  ],
+  "weekly_monthly_families": [
+    {
+      "id_prefix": "sombar-vrata",
+      "name_template": "{month} Sombar Vrata",
+      "weekday": "monday",
+      "rule_family": "weekly_vrata",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "mangalbar-vrata",
+      "name_template": "{month} Mangalbar Vrata",
+      "weekday": "tuesday",
+      "rule_family": "weekly_vrata",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "budhbar-vrata",
+      "name_template": "{month} Budhbar Vrata",
+      "weekday": "wednesday",
+      "rule_family": "weekly_vrata",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "bihibar-vrata",
+      "name_template": "{month} Bihibar Vrata",
+      "weekday": "thursday",
+      "rule_family": "weekly_vrata",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "shukrabar-vrata",
+      "name_template": "{month} Shukrabar Vrata",
+      "weekday": "friday",
+      "rule_family": "weekly_vrata",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "shanibar-vrata",
+      "name_template": "{month} Shanibar Vrata",
+      "weekday": "saturday",
+      "rule_family": "weekly_vrata",
+      "category": "hindu",
+      "tradition": "hindu"
+    },
+    {
+      "id_prefix": "aitabar-vrata",
+      "name_template": "{month} Aaitabar Vrata",
+      "weekday": "sunday",
+      "rule_family": "weekly_vrata",
+      "category": "hindu",
+      "tradition": "hindu"
+    }
+  ]
+}

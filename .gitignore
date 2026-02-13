@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+dist/
+
+# Local env
+.env
+.env.*
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Build/output artifacts
+output/
+reports/
+benchmark/results/
+
+# Runtime data
+backend/data/webhooks/subscriptions.json
+data/transparency/*.jsonl

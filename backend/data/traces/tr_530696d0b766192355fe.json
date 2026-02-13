@@ -1,0 +1,71 @@
+{
+  "trace_id": "tr_530696d0b766192355fe",
+  "created_at": "2026-02-12T10:52:48.218960+00:00",
+  "trace_type": "resolve_context",
+  "subject": {
+    "date": "2026-10-21",
+    "profile": "np-mainstream"
+  },
+  "inputs": {
+    "latitude": 27.7172,
+    "longitude": 85.324,
+    "timezone": "Asia/Kathmandu"
+  },
+  "outputs": {
+    "bs": {
+      "year": 2083,
+      "month": 7,
+      "day": 4,
+      "month_name": "Kartik",
+      "confidence": "official",
+      "source_range": "2070-2095",
+      "estimated_error_days": null
+    },
+    "tithi": {
+      "display_number": 10,
+      "paksha": "shukla",
+      "name": "Dashami"
+    },
+    "observance_count": 2
+  },
+  "steps": [
+    {
+      "step_type": "bs_conversion",
+      "math_expression": "gregorian_to_bs(date)",
+      "output": {
+        "year": 2083,
+        "month": 7,
+        "day": 4,
+        "month_name": "Kartik",
+        "confidence": "official",
+        "source_range": "2070-2095",
+        "estimated_error_days": null
+      }
+    },
+    {
+      "step_type": "udaya_tithi",
+      "math_expression": "tithi_at_sunrise(date, lat, lon)",
+      "output": {
+        "display_number": 10,
+        "absolute_number": 10,
+        "name": "Dashami",
+        "paksha": "shukla",
+        "method": "ephemeris_udaya",
+        "sunrise_local": "2026-10-21T06:08:42+05:45",
+        "sunrise_utc": "2026-10-21T00:23:42+00:00",
+        "progress": 0.6691
+      }
+    },
+    {
+      "step_type": "festival_resolution",
+      "math_expression": "rules.on_date(date)",
+      "output": {
+        "count": 2
+      }
+    }
+  ],
+  "provenance": {
+    "generated_at": "2026-02-12T10:52:48.218913+00:00",
+    "source": "resolve_endpoint_v5_track"
+  }
+}

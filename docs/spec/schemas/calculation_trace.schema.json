@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://parva.spec/schemas/calculation_trace.schema.json",
+  "title": "CalculationTrace",
+  "type": "object",
+  "required": ["trace_id", "trace_type", "subject", "inputs", "outputs", "steps", "provenance"],
+  "properties": {
+    "trace_id": { "type": "string", "pattern": "^tr_[a-f0-9]{20}$" },
+    "trace_type": { "type": "string" },
+    "created_at": { "type": "string" },
+    "subject": { "type": "object", "additionalProperties": true },
+    "inputs": { "type": "object", "additionalProperties": true },
+    "outputs": { "type": "object", "additionalProperties": true },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step_type": { "type": "string" },
+          "math_expression": { "type": ["string", "null"] },
+          "input": { "type": ["object", "null"], "additionalProperties": true },
+          "output": { "type": ["object", "null"], "additionalProperties": true },
+          "source": { "type": ["string", "null"] }
+        },
+        "additionalProperties": true
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "snapshot_id": { "type": ["string", "null"] },
+        "dataset_hash": { "type": ["string", "null"] },
+        "rules_hash": { "type": ["string", "null"] },
+        "signature": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

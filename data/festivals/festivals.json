@@ -1,0 +1,1471 @@
+{
+    "version": "1.0.0",
+    "last_updated": "2026-02-03",
+    "festivals": [
+        {
+            "id": "dashain",
+            "name": "Dashain",
+            "name_nepali": "दशैं",
+            "name_local": "Bada Dashain",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 5,
+            "tagline": "Nepal's greatest festival celebrating the eternal victory of good over evil",
+            "description": "Dashain is the longest and most auspicious Hindu festival in Nepal, lasting for 15 days from Ashwin Shukla Pratipada to Purnima. It celebrates the victory of goddess Durga over the buffalo demon Mahishasura after a fierce nine-day battle, symbolizing the eternal triumph of dharma over adharma. The festival marks the sacred return home—scattered families reunite, homes are painted anew, and elders bestow blessings through the placing of tika and jamara upon the foreheads of the young. From the planting of barley seeds on Ghatasthapana to the final gathering of Dashami when the sky thunders with kite strings, Dashain weaves together mythology, harvest thanksgiving, and the unbreakable bonds of family.",
+            "typical_month_bs": 6,
+            "typical_month_gregorian": "September-October",
+            "duration_days": 15,
+            "is_national_holiday": true,
+            "who_celebrates": "All Nepalis, primarily Hindus",
+            "regional_focus": [
+                "Nationwide",
+                "Kathmandu Valley",
+                "Terai",
+                "Hill regions"
+            ],
+            "primary_color": "#9B1B30",
+            "connected_deities": [
+                "Durga",
+                "Kali",
+                "Navadurga",
+                "Bhagwati"
+            ],
+            "related_festivals": [
+                "tihar",
+                "indra-jatra",
+                "navaratri"
+            ],
+            "mythology": {
+                "summary": "Dashain celebrates the nine-night battle where Goddess Durga defeated the shape-shifting buffalo demon Mahishasura, who had terrorized the three worlds after receiving a boon that no god or man could kill him. The gods pooled their divine weapons and energies to create Durga, the one being capable of ending his reign of terror.",
+                "origin_story": "In an age before ages, the asura Mahishasura performed such extreme tapasya that Lord Brahma appeared before him. Cunning in his wish, Mahishasura asked for immortality, but Brahma refused. Instead, Mahishasura requested that no god, demon, or man could kill him—overlooking the power of woman. With this boon, he conquered the three worlds, driving even Indra from his throne.\n\nThe desperate gods gathered at Mount Kailash. From their collective fury emerged a blinding radiance. Each god contributed their essence: Shiva gave his trident, Vishnu his chakra, Indra his thunderbolt, Yama his staff of death. From this divine confluence arose Durga—beautiful as the dawn, terrible as the storm—mounted upon a lion.\n\nFor nine nights, goddess and demon clashed across heaven and earth. Mahishasura was a master of maya, shifting from buffalo to lion to elephant to warrior. But Durga was patient and relentless. On the tenth day, as Mahishasura charged in his true buffalo form, she pierced his heart with her trident and severed his head with her sword.\n\nVijaya Dashami—the Tenth Day of Victory—commemorates this momentous triumph. In Nepal, this eternal story takes on local flavor: the goddess is worshipped as Bhagwati in her many temple forms throughout the Kathmandu Valley, and the royal tradition of receiving tika from the Kumari echoes the divine feminine power that saved creation.",
+                "scriptural_references": [
+                    "Devi Mahatmya (Markandeya Purana, Chapters 81-93)",
+                    "Durga Saptashati",
+                    "Devi Bhagavata Purana"
+                ],
+                "legends": [
+                    "The nine forms of Durga (Navadurga) are worshipped across nine nights, each representing a different aspect of the goddess's power.",
+                    "In Nepal, the Taleju Bhawani temple opens only once a year during Dashain, when thousands queue to receive the goddess's blessing.",
+                    "The tradition of flying kites during Dashain is said to send messages to the departed ancestors and to invite Indra to stop the monsoon rains."
+                ],
+                "historical_context": "The Malla and Shah kings institutionalized Dashain as the kingdom's greatest festival. King Prithvi Narayan Shah used the Dashain period for military campaigns, believing the goddess's victory promised success. The tradition of soldiers and officers receiving tika from the king continued until 2008, symbolizing divine sanction for the state.",
+                "regional_variations": {
+                    "Kathmandu Valley": "Worship of the Taleju temple and Nava Durga traditions",
+                    "Gorkha": "Ancestral home of the Shah dynasty, with royal-style celebrations",
+                    "Terai": "Influenced by North Indian Durga Puja traditions with pandal decorations"
+                }
+            },
+            "daily_rituals": [
+                {
+                    "day": 1,
+                    "name": "Ghatasthapana",
+                    "name_nepali": "घटस्थापना",
+                    "description": "The festival begins with planting barley seeds in a sacred vessel (kalash) filled with holy water. A priest determines the auspicious moment based on astrological calculations. The barley will grow into yellow jamara sprouts that are placed on heads during tika on Dashami.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Ghata Sthapana",
+                            "description": "Setting up the sacred kalash with jamara seeds, cow dung, and holy water in the puja room. The vessel is covered with blessed sand and topped with banana leaves and coconut.",
+                            "time_of_day": "morning",
+                            "location": "Home puja room"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Navaratri Begins",
+                            "description": "Beginning of the nine nights of Durga worship. Many observe fasts and abstain from meat and alcohol.",
+                            "time_of_day": "all day"
+                        }
+                    ],
+                    "is_main_day": true
+                },
+                {
+                    "day": 7,
+                    "name": "Phulpati",
+                    "name_nepali": "फूलपाती",
+                    "description": "The sacred flowers and leaves (phulpati) are brought in a ceremonial procession. Historically, the royal phulpati was carried from Gorkha to Kathmandu with military honors—a 50-mile journey that symbolized the nation's unity under the goddess's blessing.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Phulpati Arrival",
+                            "description": "Procession of nine types of sacred leaves and flowers arrives at the Dashain Ghar. Includes leaves of the bilva, pomegranate, mango, ashoka, bel, banana, and other sacred plants.",
+                            "time_of_day": "afternoon",
+                            "location": "Tundikhel (Kathmandu)"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Temple Visits",
+                            "description": "Devotees visit Bhagwati temples across the valley to offer flowers and receive blessings.",
+                            "time_of_day": "evening"
+                        }
+                    ],
+                    "is_main_day": true
+                },
+                {
+                    "day": 8,
+                    "name": "Maha Ashtami",
+                    "name_nepali": "महा अष्टमी",
+                    "description": "The Eighth Night marks the peak of Durga's battle. Hundreds of temples conduct animal sacrifices and special pujas. The night is especially auspicious, with devotees staying awake for worship.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Astami Puja",
+                            "description": "Special offerings to Durga with red hibiscus flowers, vermillion, and dedication of weapons.",
+                            "time_of_day": "morning"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Kaal Ratri",
+                            "description": "The 'Dark Night' when Durga takes her most fierce form as Kali to deliver the final blow to evil. Temples remain open all night.",
+                            "time_of_day": "midnight",
+                            "location": "Major Durga/Kali temples"
+                        },
+                        {
+                            "order": 3,
+                            "name": "Animal Sacrifice",
+                            "description": "Blood offerings of buffaloes, goats, and chickens at temples and government offices. Each sacrifice symbolizes the killing of Mahishasura.",
+                            "time_of_day": "morning to midnight"
+                        }
+                    ],
+                    "is_main_day": true
+                },
+                {
+                    "day": 9,
+                    "name": "Maha Navami",
+                    "name_nepali": "महा नवमी",
+                    "description": "The Ninth Day commemorates Durga's final victory. Vehicles, tools, and weapons receive blessings. The Kot (armory) ceremonies honor the state's instruments of protection.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Navami Puja",
+                            "description": "Final day of the nine-night worship. The goddess is offered blood sacrifice as thanksgiving for victory.",
+                            "time_of_day": "morning"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Vehicle and Weapon Blessing",
+                            "description": "Cars, motorcycles, buses, tractors, and all vehicles are decorated with marigolds and blessed. Tools and weapons are worshipped.",
+                            "time_of_day": "all day"
+                        },
+                        {
+                            "order": 3,
+                            "name": "Vishwakarma Puja",
+                            "description": "Craftsmen and factory workers worship their tools and machinery.",
+                            "time_of_day": "morning"
+                        }
+                    ],
+                    "is_main_day": true
+                },
+                {
+                    "day": 10,
+                    "name": "Vijaya Dashami",
+                    "name_nepali": "विजया दशमी",
+                    "description": "The Day of Victory! Families gather as elders place tika (vermillion, rice, and yogurt) on foreheads and jamara (barley sprouts) on heads of younger family members, bestowing blessings for the coming year. It is the most important day of the Nepali calendar.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Tika and Jamara",
+                            "description": "Elders prepare the sacred tika mixture and place it on the foreheads of younger family members while reciting mantras of blessing. Yellow jamara sprouts are placed on the head. Gifts of money (dakshina) are given.",
+                            "time_of_day": "morning onwards",
+                            "location": "Family homes"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Visiting Elders",
+                            "description": "Younger family members travel to receive tika from all elder relatives—grandparents, uncles, aunts. The procession continues for up to five days.",
+                            "time_of_day": "all day"
+                        },
+                        {
+                            "order": 3,
+                            "name": "Kite Flying",
+                            "description": "The skies fill with kites of all colors. Tradition says the kites invite departed ancestors to receive offerings and signal Indra to stop the rains.",
+                            "time_of_day": "afternoon"
+                        }
+                    ],
+                    "is_main_day": true
+                },
+                {
+                    "day": 15,
+                    "name": "Kojagrat Purnima",
+                    "name_nepali": "कोजाग्रत पूर्णिमा",
+                    "description": "The full moon marks the final day of Dashain. Laxmi puja is performed, and those who stayed awake are said to receive the goddess's blessing of prosperity.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Laxmi Puja",
+                            "description": "Worship of the goddess of wealth on the full moon night.",
+                            "time_of_day": "evening"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Final Tika",
+                            "description": "Last day to receive tika from elders for those who couldn't visit earlier.",
+                            "time_of_day": "all day"
+                        }
+                    ],
+                    "is_main_day": false
+                }
+            ],
+            "content_status": "complete"
+        },
+        {
+            "id": "tihar",
+            "name": "Tihar",
+            "name_nepali": "तिहार",
+            "name_local": "Deepawali / Yamapanchak",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 5,
+            "tagline": "Festival of lights honoring the sacred bond between humans, animals, and the divine",
+            "description": "Tihar is Nepal's Festival of Lights, a five-day celebration that moves from honoring the animal kingdom—crows who are messengers of Yama, dogs who guard the gates of the afterlife, and cows who provide sustenance—to worshipping Laxmi the goddess of prosperity, and finally to Bhai Tika, the most tender Nepali tradition where sisters bless their brothers with elaborate tikkas and prayers for long life. Unlike any other festival, Tihar traverses the boundary between life and death, petitioning Yama the death-god for the lives of beloved brothers, filling the darkness with thousands of oil lamps, and celebrating the Newari New Year.",
+            "typical_month_bs": 7,
+            "typical_month_gregorian": "October-November",
+            "duration_days": 5,
+            "is_national_holiday": true,
+            "who_celebrates": "All Nepalis",
+            "regional_focus": [
+                "Nationwide",
+                "Kathmandu Valley (Mha Puja)",
+                "All regions"
+            ],
+            "primary_color": "#FFD700",
+            "connected_deities": [
+                "Laxmi",
+                "Yama",
+                "Chitragupta",
+                "Vishnu"
+            ],
+            "related_festivals": [
+                "dashain",
+                "chhath",
+                "mha-puja"
+            ],
+            "mythology": {
+                "summary": "Tihar honors the legend of Yamuna, who saved her brother Yama (the god of death) from dying, establishing the sacred bond of Bhai Tika. The festival also celebrates Laxmi, who wanders the earth on Kartik Amavasya seeking well-lit homes to bless with prosperity.",
+                "origin_story": "Long ago, the gods realized that even Yama—lord of death himself—was destined to die. His devoted sister Yamuna refused to accept this fate. When Yama came to claim his own life on a foretold day, Yamuna wept and applied a sacred tika on his forehead, circling him with a garland of amaranth flowers.\n\nMoved by her devotion, Yama granted her a boon: he would live as long as the tika remained on his forehead. And so she applied seven colors of tika, and he lived. In return, Yama blessed all sisters who perform this ritual—that brothers who receive tika from their sisters would be protected from untimely death for one full year.\n\nFrom that day, Bhai Tika became the most sacred bond in Nepali culture. Sisters pray for their brothers' long lives, and brothers pledge to protect their sisters. The walnuts placed in the puja represent longevity; the sel roti, the cycle of life; and the seven-colored tika, the rainbow of protection against all manner of misfortune.\n\nThe other days of Tihar honor the attendants of Yama: the crow who brings news of death, the dog who guards the gates of Yamalok, and the cow whose back provides the bridge across the river of death. By honoring these creatures, we petition for safe passage in the afterlife.",
+                "scriptural_references": [
+                    "Skanda Purana",
+                    "Padma Purana",
+                    "Kathasaritsagara"
+                ],
+                "legends": [
+                    "Laxmi favors homes that are clean and well-lit; a darkened house on her night means a year of poverty.",
+                    "The deusi-bhailo groups who sing door-to-door are said to bring blessings from Laxmi herself.",
+                    "Dogs are especially cherished on Kukur Tihar because they helped Bhairava guard Pashupatinath."
+                ],
+                "historical_context": "While Diwali is celebrated across South Asia, Nepal's Tihar has unique elements: the animal worship days are distinctly Nepali, and Mha Puja (self-worship) on Kartik Shukla Pratipada is exclusively Newari—marking Nepal Sambat New Year. The tradition of deusi-bhailo (caroling groups) is also unique to Nepal."
+            },
+            "daily_rituals": [
+                {
+                    "day": 1,
+                    "name": "Kaag Tihar",
+                    "name_nepali": "काग तिहार",
+                    "description": "Crows are worshipped as the messengers of Yama, the god of death. Families offer food to crows early in the morning, petitioning for no sad news in the coming year.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Crow Offering",
+                            "description": "Rice, sweets, and sel roti are placed on banana leaves or brass plates on rooftops and open areas for crows. Families call out 'Kaa-kaa' to attract the birds.",
+                            "time_of_day": "early morning"
+                        }
+                    ],
+                    "is_main_day": false
+                },
+                {
+                    "day": 2,
+                    "name": "Kukur Tihar",
+                    "name_nepali": "कुकुर तिहार",
+                    "description": "Dogs are honored as the guardians of Yama's realm and loyal companions. Dogs—pets and strays alike—are adorned with marigold garlands and red tika, and fed with special treats.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Dog Puja",
+                            "description": "Dogs receive tika on their foreheads, marigold garlands around their necks, and are fed meat, sel roti, and treats. Even stray dogs on streets are honored.",
+                            "time_of_day": "morning"
+                        }
+                    ],
+                    "is_main_day": false
+                },
+                {
+                    "day": 3,
+                    "name": "Gai Tihar & Laxmi Puja",
+                    "name_nepali": "गाई तिहार र लक्ष्मी पूजा",
+                    "description": "The third day honors the cow as sacred mother and, in the evening, welcomes Laxmi, goddess of wealth. Homes are cleaned spotless, and the night glitters with countless oil lamps.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Cow Worship",
+                            "description": "Cows are garlanded with marigolds and fed special food. Their horns may be painted, and they are worshipped as Laxmi herself in bovine form.",
+                            "time_of_day": "morning"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Deep Cleaning",
+                            "description": "Homes are thoroughly cleaned and decorated. Rangoli designs are created near doorways using colored powders and flower petals.",
+                            "time_of_day": "afternoon"
+                        },
+                        {
+                            "order": 3,
+                            "name": "Laxmi Puja",
+                            "description": "As darkness falls, thousands of diyo (oil lamps) are lit inside and outside homes. Goddess Laxmi is invoked with mantras. Account books may be placed before her image for blessing.",
+                            "time_of_day": "evening"
+                        },
+                        {
+                            "order": 4,
+                            "name": "Bhailo Groups",
+                            "description": "Groups of women and girls go door-to-door singing bhailo songs, receiving money and treats. The songs invoke Laxmi's blessings on the household.",
+                            "time_of_day": "evening to midnight"
+                        }
+                    ],
+                    "is_main_day": true
+                },
+                {
+                    "day": 4,
+                    "name": "Govardhan Puja & Mha Puja",
+                    "name_nepali": "गोवर्धन पूजा / म्ह पूजा",
+                    "description": "Oxen are worshipped for their labor. In the Newar community, this is the most important day: Mha Puja (self-worship) marks Nepal Sambat New Year, and the day celebrates one's own body and soul.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Ox Worship",
+                            "description": "Oxen and bulls are garlanded and fed special food in recognition of their work in the fields.",
+                            "time_of_day": "morning"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Mha Puja (Newari)",
+                            "description": "Family members sit in a circle on intricate mandalas. Each person's body is ritually purified and worshipped—a unique tradition of honoring one's own existence.",
+                            "time_of_day": "evening"
+                        },
+                        {
+                            "order": 3,
+                            "name": "Deusi Groups",
+                            "description": "Groups of men and boys go door-to-door singing deusi songs, playfully demanding donations and blessing the household.",
+                            "time_of_day": "evening to midnight"
+                        }
+                    ],
+                    "is_main_day": true
+                },
+                {
+                    "day": 5,
+                    "name": "Bhai Tika",
+                    "name_nepali": "भाइ टीका",
+                    "description": "The most emotionally significant day of Tihar. Sisters apply seven-colored tika on brothers' foreheads and garland them with marigolds, praying for their long life. Brothers give gifts and pledge protection.",
+                    "rituals": [
+                        {
+                            "order": 1,
+                            "name": "Bathing and Fasting",
+                            "description": "Sisters wake early, bathe, and may fast until the ritual is complete.",
+                            "time_of_day": "early morning"
+                        },
+                        {
+                            "order": 2,
+                            "name": "Oil Circle (Tel ko Gola)",
+                            "description": "Sisters pour mustard oil in a circle around their brother, warding off Yama from approaching him for the coming year.",
+                            "time_of_day": "morning"
+                        },
+                        {
+                            "order": 3,
+                            "name": "Tika and Garland",
+                            "description": "The seven-colored tika (saptarangi tika) is applied on the brother's forehead. A garland of globe amaranth (makhamali) is placed around his neck. Sisters wave a tray with diya, flowers, and food offerings.",
+                            "time_of_day": "morning"
+                        },
+                        {
+                            "order": 4,
+                            "name": "Special Foods",
+                            "description": "Brothers eat sel roti (ring-shaped fried bread), khuwa sweets, and walnuts. The walnut is cracked with the teeth—a test of strength and symbol of longevity.",
+                            "time_of_day": "morning"
+                        },
+                        {
+                            "order": 5,
+                            "name": "Gifts and Pledges",
+                            "description": "Brothers give gifts (money, clothes, or jewelry) to their sisters and pledge to protect and support them.",
+                            "time_of_day": "after tika"
+                        }
+                    ],
+                    "is_main_day": true
+                }
+            ],
+            "content_status": "complete"
+        },
+        {
+            "id": "holi",
+            "name": "Holi",
+            "name_nepali": "होली",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Festival of colors celebrating spring and love",
+            "description": "Holi is the festival of colors, celebrated on the full moon of Falgun. People throw colored powder (abir) and water at each other, dancing and celebrating the arrival of spring. The day before, Holika Dahan marks the burning of the demoness Holika, symbolizing victory over evil. In the Terai, Holi is celebrated with great enthusiasm, while in the hills it follows a day later.",
+            "typical_month_bs": 11,
+            "typical_month_gregorian": "February-March",
+            "duration_days": 2,
+            "is_national_holiday": true,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#FF6B6B",
+            "connected_deities": [
+                "Krishna",
+                "Vishnu"
+            ],
+            "related_festivals": [
+                "fagu-purnima"
+            ],
+            "content_status": "complete"
+        },
+        {
+            "id": "indra-jatra",
+            "name": "Indra Jatra",
+            "name_nepali": "इन्द्र जात्रा",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 5,
+            "tagline": "Kathmandu's grandest street festival with the Living Goddess",
+            "summary": "Indra Jatra is Kathmandu's most spectacular street festival, honoring the god Indra and featuring the Living Goddess Kumari in a chariot procession through the ancient streets. The eight-day celebration marks the end of monsoon and the beginning of autumn with masked dances, classical music, and ancient rituals dating back to the Malla era.",
+            "description": "Indra Jatra is Kathmandu's most spectacular street festival, lasting eight days in September. It honors the god Indra and features the appearance of Kumari, the Living Goddess, who is carried through the streets in a chariot. The Lakhey demon dance, masked dances of Pulukishi (elephant), and classical Newari music fill the old city. The festival marks the end of monsoon and the beginning of the autumn festival season. It culminates with the chariot procession through Kathmandu Durbar Square.",
+            "typical_month_bs": 5,
+            "typical_month_gregorian": "August-September",
+            "duration_days": 8,
+            "is_national_holiday": false,
+            "who_celebrates": "Kathmandu Valley residents, especially Newars",
+            "regional_focus": [
+                "Kathmandu Valley"
+            ],
+            "primary_color": "#C41E3A",
+            "connected_deities": [
+                "Indra",
+                "Kumari",
+                "Bhairav"
+            ],
+            "related_festivals": [
+                "dashain",
+                "gai-jatra"
+            ],
+            "mythology": {
+                "summary": "Indra Jatra celebrates the ancient story of Indra, King of Heaven, who descended to earth to gather parijat flowers for his mother Dagini. Captured by vigilant Kathmandu farmers who mistook him for a thief, he was bound and displayed publicly. When Dagini revealed her son's divine identity, the people were ashamed. As atonement, Dagini made a covenant: an eight-day festival honoring Indra, in exchange for morning dew for crops and safe passage for departed souls to heaven. This covenant established Indra Jatra, binding mortals and gods in eternal celebration.",
+                "origin_story": "In the ancient times when the boundary between heaven and earth was thinner than a spider's silk, there lived in the celestial realm of Swargaloka the great King of the Gods—Indra, Lord of Thunder, Bearer of the Vajra, and Master of the Monsoons. His palace, Amaravati, gleamed with a thousand jewels, and his elephant Airavata bore him across the clouds that brought life-giving rain to the mortal world below.\n\nIndra's mother, the goddess Dagini, was known throughout the heavens for her devotion to sacred rituals. Each year, she performed elaborate pujas that required the most precious offerings, and chief among these was the parijat flower—a celestial blossom of extraordinary beauty that grew only in specific groves scattered between the realms.\n\nOne autumn, as the monsoon season drew to a close over the Kathmandu Valley, Dagini summoned her son. The parijat flowers she needed for her upcoming ritual could only be found in a secret garden that had manifested in the mortal realm, hidden among the rice paddies and temples of Nepala. Indra, ever the dutiful son, disguised himself as a common traveler and descended to Earth under cover of night.\n\nThe Kathmandu Valley in those days was ruled by the Licchavi kings, and the people were known for their fierce independence and deep suspicion of strangers. Indra wandered through the sleeping city, past the great stupas and into the fields where the parijat trees bloomed silver in the moonlight. He began gathering the flowers, filling his celestial pouch with their intoxicating fragrance.\n\nBut the farmers of Kathmandu were vigilant. A group of villagers, returning late from a wedding celebration, spotted the mysterious figure among the flowers. They did not recognize the King of Heaven—for how could they? Indra appeared as nothing more than a common thief stealing their precious blooms. With ropes woven from rice straw, they bound the god's hands and dragged him to the center of the city.\n\nMorning came, and the captured 'thief' was displayed at the crossroads near what is now Maru Tole. The people gathered, laughing and jeering. Children threw old vegetables. Market women clucked their tongues. The great Indra, humiliated beyond measure, could not reveal his true identity—for to use his divine powers against mortals would violate the cosmic law that even gods must obey.\n\nDays passed. In the heavens, Dagini grew worried. Her son had not returned, and the ritual date approached. She descended to earth on a moonless night, her form cloaked in mist. Following the thread of divine energy that connected her to her child, she arrived at the crossroads to find Indra still bound, his godly radiance dimmed by mortal ropes.\n\nDagini's revelation shook the valley like an earthquake. She unveiled her true form—resplendent, terrifying, beautiful—and the mortals fell to their knees. 'You have bound the Lord of Rain,' she declared, her voice echoing from the mountains. 'The one who brings the monsoon, who fills your rivers and grows your rice. What offering can you make to atone for this insult?'\n\nThe people wept with fear and shame. The elders gathered and begged forgiveness. They promised festivals, sacrifices, eternal devotion. They offered to build temples in Indra's name.\n\nDagini considered their pleas. She looked at her son, still patient despite his ordeal. And in that moment, she made a covenant that would bind heaven and earth for all time: 'Each year, when the monsoon ends and the harvest begins, you shall honor my son with eight days of celebration. You shall erect a great pole in his name, and your goddess Kumari shall emerge to bless your people. In return, I shall send the morning dew to nurture your winter crops, and I shall personally guide the souls of your departed loved ones to the realm of the ancestors.'\n\nThe people agreed with joy and relief. Indra was released, and as he ascended back to heaven, he blessed the valley with abundant harvests for generations to come. The farmers who had captured him became the hereditary guardians of the Indra Dhwaja, the sacred pole that is raised each year to commemorate his visit.\n\nAnd so began Indra Jatra, the greatest street festival of Kathmandu. For over a thousand years, the people have remembered this divine encounter. The Lakhey demon dances through the streets as a reminder of the masked spirits that once roamed freely. The Pulukishi elephant symbolizes Airavata searching for his master. And when the Kumari emerges in her golden chariot, she carries forward the blessing that Dagini promised—prosperity for the living and peace for the dead.\n\nTo this day, on the fifth day of the festival called Upaku Wanegu, families light oil lamps along the routes their deceased relatives once walked, creating paths of fire to guide their souls to heaven. It is said that on this night, the veil between worlds grows thin once more, and Dagini herself descends to fulfill her ancient promise, gathering the spirits of the departed and leading them to eternal rest.\n\nThis is why Indra Jatra is not merely a festival—it is a covenant renewed, a bond between mortals and gods, between the living and the dead, between the earth that sustains us and the heavens that watch over us. Eight days each year, Kathmandu becomes the crossroads of all realms, and in the faces of the dancing Lakhey and the serene Kumari, we glimpse the eternal truth: that even gods walk among us, and even the mightiest can be humbled by the people they serve.",
+                "key_deities": [
+                    {
+                        "name": "Indra",
+                        "role": "Central deity, King of Heaven and god of rain, honored for bringing monsoon",
+                        "significance": "The festival celebrates Indra's capture and release, thanking him for rainfall"
+                    },
+                    {
+                        "name": "Dagini",
+                        "role": "Indra's mother who descends to free her son",
+                        "significance": "Represents maternal love and the promise of dew for crops"
+                    },
+                    {
+                        "name": "Kumari",
+                        "role": "Living Goddess, manifestation of Taleju/Durga",
+                        "significance": "Gives tika blessing to ensure prosperity; her emergence marks festival climax"
+                    },
+                    {
+                        "name": "Bhairav",
+                        "role": "Fierce form of Shiva, protector deity of Kathmandu",
+                        "significance": "The Akash Bhairav and Kal Bhairav images are revealed during the festival"
+                    }
+                ],
+                "cultural_significance": "Indra Jatra represents the unique synthesis of Hindu, Buddhist, and indigenous Newari traditions. It demonstrates how the Kathmandu Valley transformed an imported Hindu deity into a local celebration intertwined with ancestor worship and royal authority. The Kumari procession legitimized Malla and later Shah rule, as the king would receive tika from the Living Goddess.",
+                "symbolic_meaning": "The festival symbolizes the cycle of monsoon and harvest, the relationship between gods and humans, the reverence for ancestors, and the continuity of divine feminine power through the Kumari tradition."
+            },
+            "ritual_sequence": {
+                "days": [
+                    {
+                        "day": 1,
+                        "name": "Yosin Thane",
+                        "name_nepali": "योसिं थानो",
+                        "description": "The Indra Dhwaja (pole) is erected at Basantapur in Kathmandu Durbar Square. This 50-foot wooden pole wrapped in cloth symbolizes the lingam of Indra and marks the beginning of the festival. Families begin preparing for ancestor worship.",
+                        "location": "Kathmandu Durbar Square",
+                        "key_rituals": [
+                            "Pole erection ceremony",
+                            "Initial offerings to Indra"
+                        ]
+                    },
+                    {
+                        "day": 2,
+                        "name": "Bhairav Pratishtha",
+                        "name_nepali": "भैरव प्रतिष्ठा",
+                        "description": "The giant mask of Akash Bhairav is unveiled at Indra Chowk. The fearsome deity's face is displayed for public worship. Throughout the day, devotees offer flowers and sacrifices.",
+                        "location": "Indra Chowk",
+                        "key_rituals": [
+                            "Unveiling of Bhairav mask",
+                            "Animal sacrifices",
+                            "Night vigils"
+                        ]
+                    },
+                    {
+                        "day": 3,
+                        "name": "Lakhey Day",
+                        "name_nepali": "लाखे नाच",
+                        "description": "The Lakhey (demon dancer) emerges from Lakhey Tole and dances through the streets. This fierce masked figure with bulging eyes and red furry costume is believed to protect children from evil spirits. Multiple Lakhey performers dance in different neighborhoods.",
+                        "location": "Throughout old Kathmandu",
+                        "key_rituals": [
+                            "Lakhey demon dance",
+                            "Distribution of prasad to children",
+                            "Evening torch processions"
+                        ]
+                    },
+                    {
+                        "day": 4,
+                        "name": "Pulukishi",
+                        "name_nepali": "पुलुकिसी",
+                        "description": "The Pulukishi (elephant) dance is performed. Two men inside a white elephant costume dance through the streets, representing Indra's elephant mount Airavata who came searching for his master.",
+                        "location": "Basantapur to Asan",
+                        "key_rituals": [
+                            "Elephant dance procession",
+                            "Comic street performances",
+                            "Masked classical dances"
+                        ]
+                    },
+                    {
+                        "day": 5,
+                        "name": "Upaku Wanegu",
+                        "name_nepali": "उपाकु वनेगु",
+                        "description": "Families light oil lamps along streets passed by deceased relatives, creating a path for their souls. This day honors the dead and connects to Dagini's promise to take souls to heaven. The city glows with thousands of lights after dark.",
+                        "location": "Throughout Kathmandu",
+                        "key_rituals": [
+                            "Lighting of ancestor lamps",
+                            "Prayers for departed souls",
+                            "Family gatherings"
+                        ]
+                    },
+                    {
+                        "day": 6,
+                        "name": "Yenya Punhi (Main Day)",
+                        "name_nepali": "यन्या पुन्हि",
+                        "description": "The climax of Indra Jatra. The Kumari emerges from Kumari Ghar in her elaborate chariot, accompanied by chariots bearing Ganesh and Bhairav. She is pulled through the streets by devotees while giving blessings. Rice beer (aila) flows from the mouth of the Kal Bhairav statue.",
+                        "location": "Kumari Ghar to Durbar Square",
+                        "key_rituals": [
+                            "Kumari chariot procession",
+                            "Receiving tika from Living Goddess",
+                            "Bhairav rice beer ritual",
+                            "Classical Newari music performances"
+                        ]
+                    },
+                    {
+                        "day": 7,
+                        "name": "Second Chariot Day",
+                        "name_nepali": "दोस्रो रथ यात्रा",
+                        "description": "The Kumari's chariot continues its circuit through old Kathmandu, visiting different neighborhoods. Masked dances continue throughout the day. The atmosphere is festive with music and celebration.",
+                        "location": "Old Kathmandu neighborhoods",
+                        "key_rituals": [
+                            "Continued chariot procession",
+                            "Neighborhood celebrations",
+                            "Masked dance performances"
+                        ]
+                    },
+                    {
+                        "day": 8,
+                        "name": "Yenya Kwachaley (Pole Lowering)",
+                        "name_nepali": "यन्या क्वाचालेगु",
+                        "description": "The Indra Dhwaja pole is ceremonially lowered at Basantapur, marking the end of the festival. The Kumari returns to Kumari Ghar. The masks of Bhairav are covered until next year. Indra Jatra ends, and preparations for Dashain begin.",
+                        "location": "Kathmandu Durbar Square",
+                        "key_rituals": [
+                            "Pole lowering ceremony",
+                            "Final prayers to Indra",
+                            "Storage of ritual objects",
+                            "Community feasting"
+                        ]
+                    }
+                ]
+            },
+            "content_status": "complete"
+        },
+        {
+            "id": "teej",
+            "name": "Teej",
+            "name_nepali": "तीज",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Women's festival of fasting, dancing, and devotion",
+            "description": "Teej is a three-day festival primarily celebrated by Hindu women. They dress in red saris, sing traditional songs, and fast for the well-being of their husbands and families. The festival honors goddess Parvati and her devotion to Lord Shiva. Women gather at temples, especially Pashupatinath, to perform rituals and offer prayers. The day before Teej, called Dar Khane Din, women feast before beginning their fast.",
+            "typical_month_bs": 5,
+            "typical_month_gregorian": "August-September",
+            "duration_days": 3,
+            "is_national_holiday": true,
+            "who_celebrates": "Hindu women",
+            "primary_color": "#DC143C",
+            "connected_deities": [
+                "Shiva"
+            ],
+            "related_festivals": [
+                "shivaratri"
+            ],
+            "content_status": "complete"
+        },
+        {
+            "id": "shivaratri",
+            "name": "Maha Shivaratri",
+            "name_nepali": "महाशिवरात्री",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 5,
+            "tagline": "Night of Lord Shiva with all-night vigils at Pashupatinath",
+            "description": "Maha Shivaratri is one of the most important Hindu festivals, celebrated on the 14th day of the dark fortnight in Falgun. Devotees fast and stay awake all night in honor of Lord Shiva. Pashupatinath Temple becomes the center of celebrations, attracting thousands of sadhus (holy men) from across South Asia who gather to smoke chillums, perform rituals, and meditate. The temple resonates with chants of 'Om Namah Shivaya' throughout the night.",
+            "typical_month_bs": 11,
+            "typical_month_gregorian": "February-March",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "Hindus, especially Shiva devotees",
+            "primary_color": "#1E3A5F",
+            "connected_deities": [
+                "Shiva"
+            ],
+            "related_festivals": [
+                "teej",
+                "janai-purnima"
+            ],
+            "content_status": "complete"
+        },
+        {
+            "id": "buddha-jayanti",
+            "name": "Buddha Jayanti",
+            "name_nepali": "बुद्ध जयन्ती",
+            "calendar_type": "lunar",
+            "category": "buddhist",
+            "significance_level": 4,
+            "tagline": "Celebrating Buddha's birth, enlightenment, and passing",
+            "description": "Buddha Jayanti marks the birth, enlightenment, and death of Gautama Buddha, all believed to have occurred on the same day. In Nepal, it's celebrated on the full moon of Baisakh with processions, prayers, and visits to Buddhist sites. Lumbini, Buddha's birthplace, and Swayambhunath and Boudhanath in Kathmandu see the largest gatherings. Devotees circumambulate stupas, light butter lamps, and offer prayers.",
+            "typical_month_bs": 2,
+            "typical_month_gregorian": "April-May",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "Buddhists and many Hindus",
+            "primary_color": "#F4A460",
+            "connected_deities": [
+                "Buddha"
+            ],
+            "related_festivals": [
+                "lhosar"
+            ],
+            "content_status": "complete"
+        },
+        {
+            "id": "janai-purnima",
+            "name": "Janai Purnima",
+            "name_nepali": "जनैपूर्णिमा",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Sacred thread ceremony and Raksha Bandhan",
+            "description": "Janai Purnima is the full moon day when Hindu men change their sacred thread (janai) in a ceremony of purification and renewal. Everyone receives a sacred thread (raksha) tied on their wrist for protection throughout the coming year. It's also celebrated as Raksha Bandhan in some communities, where sisters tie threads on their brothers' wrists. Gosaikunda Lake sees thousands of pilgrims who trek there for a sacred dip.",
+            "typical_month_bs": 4,
+            "typical_month_gregorian": "July-August",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "Hindus, especially Bahun and Chhetri communities",
+            "primary_color": "#FFD700",
+            "content_status": "basic"
+        },
+        {
+            "id": "gai-jatra",
+            "name": "Gai Jatra",
+            "name_nepali": "गाईजात्रा",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 4,
+            "tagline": "Festival of cows honoring the deceased with humor and satire",
+            "description": "Gai Jatra is a unique Newari festival where families who lost members in the past year lead cows (or boys dressed as cows) through the streets, believing cows help guide souls to heaven. Started by King Pratap Malla to comfort his queen after their son's death, it evolved into a carnival of satire and comedy, with people mocking politicians, social issues, and celebrities. Newspapers publish satirical editions, and the streets fill with colorful processions.",
+            "typical_month_bs": 4,
+            "typical_month_gregorian": "August",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Newari community",
+            "regional_focus": [
+                "Kathmandu Valley"
+            ],
+            "primary_color": "#2E8B57",
+            "connected_deities": [
+                "Bhairav"
+            ],
+            "related_festivals": [
+                "indra-jatra"
+            ],
+            "content_status": "complete"
+        },
+        {
+            "id": "mha-puja",
+            "name": "Mha Puja",
+            "name_nepali": "म्ह पूजा",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 4,
+            "tagline": "Worship of self and Nepal Sambat New Year",
+            "description": "Mha Puja falls on the fourth day of Tihar and is unique to the Newari community. It marks Nepal Sambat New Year and involves worshipping oneself, acknowledging one's life force and divine essence. Elaborate mandalas are created on the floor, and each family member sits in their designated spot for the ritual. The ceremony celebrates the divine within each person, promoting self-respect and spiritual awareness.",
+            "typical_month_bs": 7,
+            "typical_month_gregorian": "October-November",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Newari community",
+            "regional_focus": [
+                "Kathmandu Valley"
+            ],
+            "primary_color": "#FF6347",
+            "content_status": "complete"
+        },
+        {
+            "id": "yomari-punhi",
+            "name": "Yomari Punhi",
+            "name_nepali": "योमरी पुन्ही",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 3,
+            "tagline": "Newari harvest festival with sweet rice dumplings",
+            "description": "Yomari Punhi is a Newari festival celebrating the rice harvest. Families make yomari, crescent-shaped rice flour dumplings filled with chaku (sweet molasses) or khuwa (dried milk). The distinctive fish or fig-shaped dumplings are steamed and offered to Annapurna, the goddess of grains. Children go door-to-door singing for yomari. It's celebrated on the full moon of Poush (December) and is associated with joy and plenty.",
+            "typical_month_bs": 9,
+            "typical_month_gregorian": "December",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Newari community",
+            "regional_focus": [
+                "Kathmandu Valley"
+            ],
+            "primary_color": "#8B4513",
+            "content_status": "complete"
+        },
+        {
+            "id": "maghe-sankranti",
+            "name": "Maghe Sankranti",
+            "name_nepali": "माघे संक्रान्ति",
+            "calendar_type": "solar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Winter solstice celebration with special foods and holy baths",
+            "description": "Maghe Sankranti marks the transition of the sun into Capricorn and the first day of the month of Magh. It's celebrated with special foods including til ko laddu (sesame sweets), yam, ghee, and chaku. People take holy dips in rivers, especially at Devghat where the Trisuli and Kali Gandaki rivers meet. The Tharu community celebrates it as Maghi, their New Year, with great cultural festivities.",
+            "typical_month_bs": 10,
+            "typical_month_gregorian": "January",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#4169E1",
+            "content_status": "complete"
+        },
+        {
+            "id": "bs-new-year",
+            "name": "Nepali New Year",
+            "name_nepali": "नयाँ वर्ष",
+            "calendar_type": "solar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Beginning of the Bikram Sambat calendar year",
+            "description": "Nepali New Year (Naya Barsha) falls on Baishakh 1 and marks the beginning of the Bikram Sambat calendar. It's celebrated with family gatherings, special foods, and cultural programs. The day is a national holiday, and people visit temples and exchange greetings. In Bhaktapur, the Bisket Jatra chariot festival coincides with New Year celebrations, making it an especially vibrant time in the ancient city.",
+            "typical_month_bs": 1,
+            "typical_month_gregorian": "April",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#228B22",
+            "content_status": "complete"
+        },
+        {
+            "id": "bisket-jatra",
+            "name": "Bisket Jatra",
+            "name_nepali": "बिस्केट जात्रा",
+            "calendar_type": "solar",
+            "category": "newari",
+            "significance_level": 4,
+            "tagline": "Bhaktapur's dramatic New Year chariot festival",
+            "description": "Bisket Jatra is Bhaktapur's spectacular New Year celebration and one of Nepal's most dramatic festivals. Massive chariots carrying images of Bhairab and Bhadrakali are pulled through the narrow streets by competing neighborhoods. A giant lingam pole (Yoshin) is erected in Khalna Tole, and on New Year's Day, the pole is toppled, marking the new year with cheers and celebration. The nine-day festival features traditional music, dances, and feasts.",
+            "typical_month_bs": 12,
+            "typical_month_gregorian": "April",
+            "duration_days": 9,
+            "is_national_holiday": false,
+            "who_celebrates": "Bhaktapur residents",
+            "regional_focus": [
+                "Bhaktapur"
+            ],
+            "primary_color": "#8B0000",
+            "content_status": "complete"
+        },
+        {
+            "id": "ghode-jatra",
+            "name": "Ghode Jatra",
+            "name_nepali": "घोडे जात्रा",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 3,
+            "tagline": "Horse parade festival at Tundikhel",
+            "description": "Ghode Jatra is a unique horse parade festival held at Tundikhel in the heart of Kathmandu. According to legend, the thundering hooves keep the evil demon Tundi underground. The Nepal Army performs spectacular horse acrobatics, races, and gymnastics displays. The President attends the ceremony, and it's one of Kathmandu's most popular festivals, drawing large crowds to witness the equestrian displays.",
+            "typical_month_bs": 12,
+            "typical_month_gregorian": "March-April",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Kathmandu residents",
+            "regional_focus": [
+                "Kathmandu"
+            ],
+            "primary_color": "#8B4513",
+            "content_status": "basic"
+        },
+        {
+            "id": "rato-machhindranath",
+            "name": "Rato Machhindranath Jatra",
+            "name_nepali": "रातो मच्छिन्द्रनाथ जात्रा",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 5,
+            "tagline": "Nepal's longest chariot festival in Patan",
+            "description": "Rato Machhindranath Jatra in Patan is Nepal's longest festival, with the massive chariot procession lasting about a month. The deity Rato Machhindranath is revered by both Hindus (as a form of Avalokiteshvara/Shiva) and Buddhists (as Karunamaya Lokeshwor). The highlight is the Bhoto Jatra, the display of the sacred jeweled vest, traditionally witnessed by the head of state. The 60-foot chariot slowly moves through Patan's ancient streets.",
+            "typical_month_bs": 1,
+            "typical_month_gregorian": "April-May",
+            "duration_days": 30,
+            "is_national_holiday": false,
+            "who_celebrates": "Patan and Bungamati residents",
+            "regional_focus": [
+                "Patan",
+                "Bungamati"
+            ],
+            "primary_color": "#DC143C",
+            "content_status": "complete"
+        },
+        {
+            "id": "chhath",
+            "name": "Chhath Parva",
+            "name_nepali": "छठ पर्व",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Ancient sun worship festival at riverbanks",
+            "description": "Chhath is an ancient Hindu festival dedicated to the Sun God (Surya) and Chhathi Maiya. Primarily celebrated in the Terai and Madhesh region, devotees fast for 36 hours without water and offer prayers at riverbanks and ponds at sunrise and sunset. Women stand waist-deep in water offering arghya to the rising and setting sun. The four-day festival requires rigorous discipline and purity, believed to bring prosperity and cure ailments.",
+            "typical_month_bs": 7,
+            "typical_month_gregorian": "October-November",
+            "duration_days": 4,
+            "is_national_holiday": true,
+            "who_celebrates": "Madheshi and Terai communities",
+            "regional_focus": [
+                "Terai",
+                "Madhesh"
+            ],
+            "primary_color": "#FF8C00",
+            "content_status": "complete"
+        },
+        {
+            "id": "lhosar",
+            "name": "Lhosar",
+            "name_nepali": "ल्होसार",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Tibetan New Year celebrations of mountain communities",
+            "description": "Lhosar is the New Year celebration of Nepal's Tibetan-speaking communities including Sherpa, Tamang, and Gurung peoples. Each group celebrates on different dates: Sonam Lhosar (Tamang), Gyalpo Lhosar (Sherpa/Tibetan), and Tamu Lhosar (Gurung). Celebrations include traditional dances, feasts, monastary visits, and cultural programs. Boudhanath Stupa becomes a center of celebration for the Tibetan community.",
+            "typical_month_bs": 10,
+            "typical_month_gregorian": "January-February",
+            "duration_days": 3,
+            "is_national_holiday": true,
+            "who_celebrates": "Tamang, Sherpa, Gurung, Tibetan communities",
+            "regional_focus": [
+                "Mountain regions",
+                "Kathmandu"
+            ],
+            "primary_color": "#9932CC",
+            "content_status": "basic"
+        },
+        {
+            "id": "krishna-janmashtami",
+            "name": "Krishna Janmashtami",
+            "name_nepali": "कृष्ण जन्माष्टमी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Birthday celebration of Lord Krishna",
+            "description": "Krishna Janmashtami celebrates the birth of Lord Krishna, the eighth avatar of Vishnu. Devotees fast until midnight when Krishna is believed to have been born, then break their fast with special prasad. The Krishna Mandir in Patan Durbar Square becomes the center of celebration, with thousands queuing to offer prayers. Temples are decorated, and devotees sing bhajans throughout the night.",
+            "typical_month_bs": 4,
+            "typical_month_gregorian": "August-September",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "Hindus, especially Vaishnavites",
+            "primary_color": "#000080",
+            "connected_deities": [
+                "Krishna",
+                "Vishnu"
+            ],
+            "related_festivals": [
+                "ram-navami",
+                "holi"
+            ],
+            "content_status": "basic"
+        },
+        {
+            "id": "ram-navami",
+            "name": "Ram Navami",
+            "name_nepali": "रामनवमी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Birthday of Lord Rama",
+            "description": "Ram Navami celebrates the birth of Lord Rama, the seventh avatar of Vishnu and hero of the Ramayana epic. Devotees visit temples, especially in Janakpur (the birthplace of Sita, Rama's consort). The day is marked by readings of the Ramayana, bhajan singing, and special pujas. Janakpur's Ram Janaki Temple sees elaborate celebrations with thousands of pilgrims.",
+            "typical_month_bs": 12,
+            "typical_month_gregorian": "March-April",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "Hindus",
+            "primary_color": "#FF7F50",
+            "content_status": "basic"
+        },
+        {
+            "id": "saraswati-puja",
+            "name": "Saraswati Puja",
+            "name_nepali": "सरस्वती पूजा",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Worship of the goddess of knowledge and arts",
+            "description": "Saraswati Puja (also called Basant Panchami) honors Saraswati, the goddess of knowledge, music, and the arts. Students worship their books and musical instruments, and many children are taught to write their first letters on this auspicious day. Wearing yellow clothes symbolizes the arrival of spring. Saraswati temples see long queues of students seeking blessings for academic success.",
+            "typical_month_bs": 10,
+            "typical_month_gregorian": "January-February",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "Students, artists, scholars",
+            "primary_color": "#FFFF00",
+            "content_status": "basic"
+        },
+        {
+            "id": "udhauli",
+            "name": "Udhauli Parva",
+            "name_nepali": "उधौली पर्व",
+            "calendar_type": "lunar",
+            "category": "regional",
+            "significance_level": 3,
+            "tagline": "Kirat migration festival of the Rai and Limbu communities",
+            "description": "Udhauli is celebrated by the Kirat (Rai and Limbu) communities marking the migration of birds and people from higher altitudes to lower warmer regions as winter approaches. It's part of the Sakela festival cycle and features the famous Sakela dance (also called Chandi Nach). Dancers mimic movements of birds, animals, and farming activities in a communal celebration of nature and agricultural life.",
+            "typical_month_bs": 7,
+            "typical_month_gregorian": "November",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Rai and Limbu communities",
+            "regional_focus": [
+                "Eastern Nepal",
+                "Kathmandu"
+            ],
+            "primary_color": "#006400",
+            "content_status": "basic"
+        },
+        {
+            "id": "ubhauli",
+            "name": "Ubhauli Parva",
+            "name_nepali": "उभौली पर्व",
+            "calendar_type": "lunar",
+            "category": "regional",
+            "significance_level": 3,
+            "tagline": "Kirat spring migration festival with Sakela dance",
+            "description": "Ubhauli is the spring counterpart to Udhauli, celebrated by Kirat communities marking migration from lower to higher altitudes as summer approaches. The festival features the energetic Sakela dance performed around a ceremonial altar. Dancers in traditional dress perform movements depicting nature, farming, and hunting. Tundikhel in Kathmandu hosts massive Ubhauli celebrations drawing thousands of Kirat people.",
+            "typical_month_bs": 1,
+            "typical_month_gregorian": "April-May",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Rai and Limbu communities",
+            "regional_focus": [
+                "Eastern Nepal",
+                "Kathmandu"
+            ],
+            "primary_color": "#32CD32",
+            "content_status": "basic"
+        },
+        {
+            "id": "nag-panchami",
+            "name": "Nag Panchami",
+            "name_nepali": "नाग पञ्चमी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Worship of the serpent gods for protection",
+            "description": "Nag Panchami is dedicated to the worship of Nag (serpent) deities. Pictures of serpents are posted above doorways, and offerings of milk, honey, and rice are made to snake images and live snakes. The Nag Pokhari in Kathmandu and various temples see devotees offering prayers for protection from snakebites and diseases. The festival honors the mythological role of serpents as guardians of water and treasure.",
+            "typical_month_bs": 4,
+            "typical_month_gregorian": "July-August",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Hindus",
+            "primary_color": "#2F4F4F",
+            "content_status": "basic"
+        },
+        {
+            "id": "fagu-purnima",
+            "name": "Fagu Purnima",
+            "name_nepali": "फागु पूर्णिमा",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "The full moon day of Holi celebrations",
+            "description": "Fagu Purnima is the full moon day in Falgun that marks the main Holi celebration in the hills. While Terai celebrates Holi a day earlier, the hill communities observe it on this day with color-throwing and water-splashing festivities. Young people roam the streets with colored powder and pichkaris (water guns). The ancient celebration marks the end of winter and the fertility of spring.",
+            "typical_month_bs": 11,
+            "typical_month_gregorian": "March",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Hill communities",
+            "regional_focus": [
+                "Hill regions"
+            ],
+            "primary_color": "#FF1493",
+            "content_status": "minimal"
+        },
+        {
+            "id": "mata-tirtha-aunsi",
+            "name": "Mata Tirtha Aunsi",
+            "name_nepali": "मातातीर्थ आउँसी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Mother's Day - honoring mothers living and deceased",
+            "description": "Mata Tirtha Aunsi (Mother's Day) is celebrated on the new moon of Baisakh. Those with living mothers give gifts and treat them to meals. Those whose mothers have passed visit Mata Tirtha Kunda in Kathmandu to offer prayers and take ritual baths in the sacred pond.",
+            "typical_month_bs": 1,
+            "typical_month_gregorian": "April-May",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#FF69B4",
+            "content_status": "minimal"
+        },
+        {
+            "id": "gokarne-aunsi",
+            "name": "Gokarne Aunsi",
+            "name_nepali": "गोकर्णे आउँसी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Father's Day - honoring fathers with Shiva worship",
+            "description": "Gokarne Aunsi (Father's Day) is celebrated on the new moon of Bhadra. Those with living fathers give gifts and special meals. Those whose fathers have passed visit Gokarna Mahadev Temple to perform shraddha rituals for the deceased.",
+            "typical_month_bs": 5,
+            "typical_month_gregorian": "August-September",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#4682B4",
+            "content_status": "minimal"
+        },
+        {
+            "id": "bhoto-jatra",
+            "name": "Bhoto Jatra",
+            "name_nepali": "भोटो जात्रा",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 4,
+            "tagline": "Display of the sacred vest at the climax of Rato Machhindranath",
+            "description": "Bhoto Jatra marks the climax of the month-long Rato Machhindranath Jatra. A sacred jeweled vest (bhoto) is displayed publicly from the chariot, traditionally in the presence of the head of state. The vest is connected to a legend of a farmer and a nag (serpent) king.",
+            "typical_month_bs": 2,
+            "typical_month_gregorian": "May-June",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Patan and Lalitpur residents",
+            "regional_focus": [
+                "Lalitpur"
+            ],
+            "primary_color": "#B22222",
+            "content_status": "minimal"
+        },
+        {
+            "id": "biswakarma-puja",
+            "name": "Biswakarma Puja",
+            "name_nepali": "बिश्वकर्मा पूजा",
+            "calendar_type": "solar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Worship of tools and machinery honoring the divine architect",
+            "description": "Biswakarma Puja honors Lord Biswakarma, the divine architect and craftsman. Workers worship their tools, machinery, and vehicles. Factories and workshops are decorated, and pujas are performed for workplace safety and prosperity.",
+            "typical_month_bs": 5,
+            "typical_month_gregorian": "September",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Workers, artisans, factory workers",
+            "primary_color": "#FF6600",
+            "content_status": "minimal"
+        },
+        {
+            "id": "dipawali",
+            "name": "Deepawali",
+            "name_nepali": "दिपावली",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Festival of lights on Laxmi Puja day",
+            "description": "Deepawali, also known as Laxmi Puja, is the main day of Tihar when homes are decorated with oil lamps (diyo) and rangoli designs to welcome goddess Laxmi, the deity of wealth. Houses are thoroughly cleaned and lit brilliantly to attract the goddess.",
+            "typical_month_bs": 7,
+            "typical_month_gregorian": "October-November",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#FFD700",
+            "content_status": "minimal"
+        },
+        {
+            "id": "bhai-tika",
+            "name": "Bhai Tika",
+            "name_nepali": "भाइ टीका",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Sisters bless brothers with tika and flower garlands",
+            "description": "Bhai Tika is the fifth and final day of Tihar when sisters apply elaborate tika to their brothers' foreheads and give them makhamali (marigold) garlands. Brothers give gifts in return. The ritual celebrates the bond between siblings.",
+            "typical_month_bs": 7,
+            "typical_month_gregorian": "October-November",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#FF4500",
+            "content_status": "minimal"
+        },
+        {
+            "id": "siti-nakha",
+            "name": "Sithi Nakha",
+            "name_nepali": "सिथी नखः",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 3,
+            "tagline": "Newari festival of cleaning wells and water sources",
+            "description": "Sithi Nakha marks the beginning of the monsoon season. On this day, communities clean hitis (stone water spouts), wells, and water sources. It's an environmental festival emphasizing the importance of water conservation. Associated with Kumar (Kartikeya).",
+            "typical_month_bs": 2,
+            "typical_month_gregorian": "May-June",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Newari community",
+            "regional_focus": [
+                "Kathmandu Valley"
+            ],
+            "primary_color": "#00CED1",
+            "content_status": "minimal"
+        },
+        {
+            "id": "harishayani-ekadashi",
+            "name": "Harishayani Ekadashi",
+            "name_nepali": "हरिशयनी एकादशी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 2,
+            "tagline": "Day Lord Vishnu goes to cosmic sleep",
+            "description": "Harishayani Ekadashi marks the beginning of Chaturmas, the four-month period when Lord Vishnu is believed to sleep. No auspicious activities like weddings are performed until Prabodhini Ekadashi when Vishnu awakens.",
+            "typical_month_bs": 3,
+            "typical_month_gregorian": "June-July",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Vaishnavites",
+            "primary_color": "#483D8B",
+            "content_status": "minimal"
+        },
+        {
+            "id": "ropain-jatra",
+            "name": "Ropain Jatra",
+            "name_nepali": "रोपाईं जात्रा",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Rice planting festival with songs and mud celebration",
+            "description": "Ropain (Asar 15) celebrates the beginning of rice planting season. Farmers plant rice seedlings while singing traditional songs. It's also celebrated with dahi chiura (yogurt and beaten rice). City dwellers sometimes join in the mud-splashing festivities.",
+            "typical_month_bs": 3,
+            "typical_month_gregorian": "June",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "Farmers and agricultural communities",
+            "primary_color": "#228B22",
+            "content_status": "minimal"
+        },
+        {
+            "id": "nag-purnima",
+            "name": "Nag Purnima",
+            "name_nepali": "नाग पूर्णिमा",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 2,
+            "tagline": "Full moon serpent worship during Shravan",
+            "description": "Nag Purnima is the full moon of Shravan, when devotees offer milk and prayers to serpent deities. Pictures of nagas are placed above doorways as protection. Related to but distinct from Nag Panchami.",
+            "typical_month_bs": 4,
+            "typical_month_gregorian": "July-August",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Hindus",
+            "primary_color": "#556B2F",
+            "content_status": "minimal"
+        },
+        {
+            "id": "gaura-parva",
+            "name": "Gaura Parva",
+            "name_nepali": "गौरा पर्व",
+            "calendar_type": "lunar",
+            "category": "regional",
+            "significance_level": 3,
+            "tagline": "Far-western Nepal's major women's festival",
+            "description": "Gaura Parva is the biggest festival of far-western Nepal, primarily for women of the Thakuri, Chhetri, and Brahman communities. Women fast and perform rituals for their husbands' well-being, similar to Teej but with regional traditions.",
+            "typical_month_bs": 5,
+            "typical_month_gregorian": "August-September",
+            "duration_days": 5,
+            "is_national_holiday": false,
+            "who_celebrates": "Women of far-western Nepal",
+            "regional_focus": [
+                "Sudurpashchim"
+            ],
+            "primary_color": "#DC143C",
+            "content_status": "minimal"
+        },
+        {
+            "id": "deusi-bhailo",
+            "name": "Deusi Bhailo",
+            "name_nepali": "देउसी भैलो",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Traditional door-to-door singing during Tihar",
+            "description": "Deusi Bhailo is a tradition during Tihar where groups go door-to-door singing traditional songs. Boys perform Deusi and girls perform Bhailo, receiving money and sweets. The songs praise Laxmi and wish prosperity on households.",
+            "typical_month_bs": 7,
+            "typical_month_gregorian": "October-November",
+            "duration_days": 3,
+            "is_national_holiday": false,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#FFA500",
+            "content_status": "minimal"
+        },
+        {
+            "id": "tamu-lhosar",
+            "name": "Tamu Lhosar",
+            "name_nepali": "तमु ल्होसार",
+            "calendar_type": "lunar",
+            "category": "regional",
+            "significance_level": 3,
+            "tagline": "Gurung New Year celebration",
+            "description": "Tamu Lhosar is the New Year celebration of the Gurung (Tamu) community, typically falling in late December. Marked by traditional dances, feasts, and cultural programs celebrating Gurung heritage and identity.",
+            "typical_month_bs": 9,
+            "typical_month_gregorian": "December",
+            "duration_days": 3,
+            "is_national_holiday": true,
+            "who_celebrates": "Gurung community",
+            "regional_focus": [
+                "Gandaki",
+                "Western Nepal"
+            ],
+            "primary_color": "#9932CC",
+            "content_status": "minimal"
+        },
+        {
+            "id": "sonam-lhosar",
+            "name": "Sonam Lhosar",
+            "name_nepali": "सोनाम ल्होसार",
+            "calendar_type": "lunar",
+            "category": "regional",
+            "significance_level": 3,
+            "tagline": "Tamang New Year celebration",
+            "description": "Sonam Lhosar is the New Year of the Tamang community, usually in late January/early February. Celebrations include traditional Tamang selo dance, feasting, and monastery visits. Boudhanath is a major celebration site.",
+            "typical_month_bs": 10,
+            "typical_month_gregorian": "January-February",
+            "duration_days": 3,
+            "is_national_holiday": true,
+            "who_celebrates": "Tamang community",
+            "regional_focus": [
+                "Central hills",
+                "Kathmandu Valley"
+            ],
+            "primary_color": "#8A2BE2",
+            "content_status": "minimal"
+        },
+        {
+            "id": "gyalpo-lhosar",
+            "name": "Gyalpo Lhosar",
+            "name_nepali": "ग्याल्पो ल्होसार",
+            "calendar_type": "lunar",
+            "category": "regional",
+            "significance_level": 3,
+            "tagline": "Sherpa and Tibetan New Year celebration",
+            "description": "Gyalpo Lhosar is celebrated by Sherpa and Tibetan communities, following the Tibetan calendar. Celebrations include monastery visits, traditional dances, and feasts. Major celebrations at Boudhanath stupa.",
+            "typical_month_bs": 10,
+            "typical_month_gregorian": "February",
+            "duration_days": 15,
+            "is_national_holiday": true,
+            "who_celebrates": "Sherpa and Tibetan communities",
+            "regional_focus": [
+                "Himalayan region",
+                "Kathmandu"
+            ],
+            "primary_color": "#4B0082",
+            "content_status": "minimal"
+        },
+        {
+            "id": "maghi",
+            "name": "Maghi",
+            "name_nepali": "माघी",
+            "calendar_type": "solar",
+            "category": "regional",
+            "significance_level": 4,
+            "tagline": "Tharu New Year and harvest festival",
+            "description": "Maghi is the New Year and most important festival of the Tharu community, coinciding with Maghe Sankranti. Marked by traditional Tharu stick dances, feasting, and remembrance of ancestors. Historically also marks freedom from bonded labor.",
+            "typical_month_bs": 10,
+            "typical_month_gregorian": "January",
+            "duration_days": 3,
+            "is_national_holiday": true,
+            "who_celebrates": "Tharu community",
+            "regional_focus": [
+                "Terai"
+            ],
+            "primary_color": "#2E8B57",
+            "content_status": "minimal"
+        },
+        {
+            "id": "prabodhini-ekadashi",
+            "name": "Prabodhini Ekadashi",
+            "name_nepali": "प्रबोधिनी एकादशी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 3,
+            "tagline": "Awakening of Lord Vishnu from cosmic sleep",
+            "description": "Prabodhini Ekadashi, also called Haribodhini Ekadashi, marks the end of Chaturmas when Vishnu awakens. Wedding season begins after this day. Devotees visit Vishnu temples, especially Budhanilkantha.",
+            "typical_month_bs": 7,
+            "typical_month_gregorian": "November",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Vaishnavites",
+            "primary_color": "#4169E1",
+            "content_status": "minimal"
+        },
+        {
+            "id": "rato-marhi",
+            "name": "Rato Matsyendranath Snan",
+            "name_nepali": "रातो मच्छिन्द्रनाथ स्नान",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 3,
+            "tagline": "Ritual bathing ceremony of the Red Machhindranath deity",
+            "description": "Before the great Rato Machhindranath Jatra begins, the deity undergoes a ritual bathing ceremony. The idol is repainted and prepared for its month-long chariot journey through Patan.",
+            "typical_month_bs": 1,
+            "typical_month_gregorian": "April",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "Patan residents",
+            "regional_focus": [
+                "Lalitpur"
+            ],
+            "primary_color": "#CD5C5C",
+            "content_status": "minimal"
+        },
+        {
+            "id": "seto-marhi-jatra",
+            "name": "Seto Machhindranath Jatra",
+            "name_nepali": "सेतो मच्छिन्द्रनाथ जात्रा",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 3,
+            "tagline": "White Machhindranath chariot procession in Kathmandu",
+            "description": "The chariot festival of Seto (White) Machhindranath in Kathmandu, shorter than its Patan counterpart. The chariot is pulled through the streets of old Kathmandu during Indra Jatra.",
+            "typical_month_bs": 5,
+            "typical_month_gregorian": "August-September",
+            "duration_days": 4,
+            "is_national_holiday": false,
+            "who_celebrates": "Kathmandu residents",
+            "regional_focus": [
+                "Kathmandu"
+            ],
+            "primary_color": "#FFFFFF",
+            "content_status": "minimal"
+        },
+        {
+            "id": "yanya-punhi",
+            "name": "Yanya Punhi",
+            "name_nepali": "यन्या पुन्हि",
+            "calendar_type": "lunar",
+            "category": "newari",
+            "significance_level": 4,
+            "tagline": "Indra Jatra's Newari name - Kathmandu's grandest celebration",
+            "description": "Yanya Punhi is the Newari name for the Indra Jatra festival. It means 'festival of the capital' and represents Kathmandu's biggest annual celebration featuring masked dances, the Living Goddess procession, and Kal Bhairav worship.",
+            "typical_month_bs": 5,
+            "typical_month_gregorian": "August-September",
+            "duration_days": 8,
+            "is_national_holiday": false,
+            "who_celebrates": "Kathmandu Valley residents",
+            "regional_focus": [
+                "Kathmandu Valley"
+            ],
+            "primary_color": "#FF0000",
+            "content_status": "minimal"
+        },
+        {
+            "id": "ghatasthapana",
+            "name": "Ghatasthapana",
+            "name_nepali": "घटस्थापना",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "First day of Dashain - sowing jamara seeds",
+            "description": "Ghatasthapana marks the first day of Dashain when a kalash (sacred vessel) is established and barley seeds are sown in sand. These grow into yellow jamara grass used for tika on Vijaya Dashami. The nine nights of Navaratri begin.",
+            "typical_month_bs": 6,
+            "typical_month_gregorian": "September-October",
+            "duration_days": 1,
+            "is_national_holiday": false,
+            "who_celebrates": "All Hindus",
+            "primary_color": "#008000",
+            "content_status": "minimal"
+        },
+        {
+            "id": "maha-ashtami",
+            "name": "Maha Ashtami",
+            "name_nepali": "महा अष्टमी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Eighth day of Dashain - Kali worship and animal sacrifice",
+            "description": "Maha Ashtami is the eighth day of Dashain, the most important day for Kali worship and animal sacrifices. The fierce goddess is worshipped at midnight in a ritual called Kal Ratri. Temples like Dakshinkali see heavy crowds.",
+            "typical_month_bs": 6,
+            "typical_month_gregorian": "October",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "All Hindus",
+            "primary_color": "#8B0000",
+            "content_status": "minimal"
+        },
+        {
+            "id": "maha-navami",
+            "name": "Maha Navami",
+            "name_nepali": "महा नवमी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 4,
+            "tagline": "Ninth day of Dashain - worship of tools and vehicles",
+            "description": "Maha Navami is the ninth day of Dashain. All vehicles, tools, and instruments are worshipped. The army performs special pujas at Kot. Taleju Temple opens to the public for the only day of the year.",
+            "typical_month_bs": 6,
+            "typical_month_gregorian": "October",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "All Hindus",
+            "primary_color": "#C41E3A",
+            "content_status": "minimal"
+        },
+        {
+            "id": "vijaya-dashami",
+            "name": "Vijaya Dashami",
+            "name_nepali": "विजया दशमी",
+            "calendar_type": "lunar",
+            "category": "national",
+            "significance_level": 5,
+            "tagline": "Main day of Dashain - tika and jamara blessings from elders",
+            "description": "Vijaya Dashami is the main day of Dashain when families gather for tika. Elders place rice, yogurt, and vermillion on foreheads and give jamara (barley sprouts) as blessings. The victory of Durga over Mahishasura is celebrated.",
+            "typical_month_bs": 6,
+            "typical_month_gregorian": "October",
+            "duration_days": 1,
+            "is_national_holiday": true,
+            "who_celebrates": "All Nepalis",
+            "primary_color": "#9B1B30",
+            "content_status": "complete"
+        },
+        {
+            "id": "gyalpo-lhosar",
+            "name": "Gyalpo Lhosar",
+            "name_nepali": "ग्याल्पो ल्होसार",
+            "calendar_type": "tibetan",
+            "category": "ethnic",
+            "significance_level": 4,
+            "tagline": "Sherpa New Year celebrating high mountain culture and traditions",
+            "description": "Gyalpo Lhosar is the Sherpa New Year, celebrated in the high Himalayan regions of Nepal, particularly in Solukhumbu, Dolakha, and Sindhupalchok. The festival marks the beginning of the Tibetan lunar calendar and includes monastery prayers, traditional dances, feasting on Sherpa delicacies like khapse (fried bread) and butter tea, and visiting family and friends. Homes are decorated, and the atmosphere is festive with traditional music and ceremonial offerings at Buddhist monasteries.",
+            "typical_month_bs": 11,
+            "typical_month_gregorian": "February",
+            "duration_days": 3,
+            "is_national_holiday": false,
+            "who_celebrates": "Sherpa, Tamang, and Himalayan communities",
+            "regional_focus": [
+                "Solukhumbu",
+                "Himalayan Region"
+            ],
+            "primary_color": "#FF6347",
+            "connected_deities": [
+                "Buddha"
+            ],
+            "related_festivals": [
+                "sonam-lhosar",
+                "tamu-lhosar"
+            ],
+            "content_status": "complete"
+        }
+    ]
+}

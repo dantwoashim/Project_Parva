@@ -1,0 +1,40 @@
+{
+  "pack_id": "festival_dates_v1",
+  "version": "1.0",
+  "description": "Core festival date checks (Year-3 baseline pack).",
+  "calendar_family": "nepali_festivals",
+  "cases": [
+    {
+      "id": "festival-dashain-2026",
+      "endpoint": "/v2/api/festivals/dashain",
+      "params": {"year": 2026},
+      "assertions": {
+        "dates.start_date": "2026-10-10",
+        "dates.end_date": "2026-10-24"
+      },
+      "tolerance": 0,
+      "source": "Parva V2 rule engine baseline"
+    },
+    {
+      "id": "festival-tihar-2026",
+      "endpoint": "/v2/api/festivals/tihar",
+      "params": {"year": 2026},
+      "assertions": {
+        "dates.start_date": "2026-11-07",
+        "dates.end_date": "2026-11-11"
+      },
+      "tolerance": 0,
+      "source": "Parva V2 rule engine baseline"
+    },
+    {
+      "id": "festival-shivaratri-2026",
+      "endpoint": "/v2/api/festivals/shivaratri",
+      "params": {"year": 2026},
+      "assertions": {
+        "dates.start_date": "2026-02-14"
+      },
+      "tolerance": 0,
+      "source": "Parva V2 rule engine baseline"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-02-12T10:58:55.584342+00:00",
+  "release_track": "authority-v5",
+  "pipeline_health": {
+    "conformance_total": 7,
+    "conformance_passed": 7,
+    "conformance_pass_rate": 100.0,
+    "rule_catalog_total": 453,
+    "rule_catalog_generated": 387,
+    "rule_catalog_coverage_pct": 151.0,
+    "smoke_reference_present": true
+  },
+  "discrepancy_classes": {},
+  "confidence_breakdown": {
+    "rule_catalog": {
+      "low": 406,
+      "medium": 26,
+      "high": 21
+    },
+    "response_samples": {
+      "sample_size": 7,
+      "confidence_levels": {
+        "computed": 2,
+        "official": 2,
+        "unknown": 3
+      },
+      "boundary_risk": {
+        "unknown": 7
+      },
+      "failed_samples": []
+    }
+  },
+  "artifacts": {
+    "conformance_report": "/Users/rohanbasnet14/Documents/Project Parva/reports/conformance_report.json",
+    "evaluation_v4": "/Users/rohanbasnet14/Documents/Project Parva/reports/evaluation_v4/evaluation_v4.json",
+    "discrepancies": "/Users/rohanbasnet14/Documents/Project Parva/data/ground_truth/discrepancies.json",
+    "rule_catalog": "/Users/rohanbasnet14/Documents/Project Parva/data/festivals/festival_rules_v4.json",
+    "rule_ingestion_summary": "/Users/rohanbasnet14/Documents/Project Parva/reports/rule_ingestion_summary.json"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "description": "Future sample conversions for extended estimated mode",
+    "note": "Use confidence field to distinguish official vs estimated outputs."
+  },
+  "samples": [
+    {
+      "gregorian": "2040-01-01",
+      "bs": {
+        "year": 2096,
+        "month": 9,
+        "day": 16
+      },
+      "roundtrip_gregorian": "2040-01-01",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    },
+    {
+      "gregorian": "2050-02-15",
+      "bs": {
+        "year": 2106,
+        "month": 11,
+        "day": 2
+      },
+      "roundtrip_gregorian": "2050-02-15",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    },
+    {
+      "gregorian": "2080-08-01",
+      "bs": {
+        "year": 2137,
+        "month": 4,
+        "day": 17
+      },
+      "roundtrip_gregorian": "2080-08-01",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    },
+    {
+      "gregorian": "2100-01-01",
+      "bs": {
+        "year": 2156,
+        "month": 9,
+        "day": 16
+      },
+      "roundtrip_gregorian": "2100-01-01",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    },
+    {
+      "gregorian": "2200-12-31",
+      "bs": {
+        "year": 2257,
+        "month": 9,
+        "day": 13
+      },
+      "roundtrip_gregorian": "2200-12-31",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    }
+  ]
+}

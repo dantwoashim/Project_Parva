@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parva API Example</title>
+    <style>
+      body { font-family: sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+      pre { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 8px; overflow: auto; }
+      button { padding: 0.6rem 1rem; border: 0; border-radius: 8px; cursor: pointer; }
+      input { padding: 0.5rem; border-radius: 6px; border: 1px solid #cbd5e1; }
+    </style>
+  </head>
+  <body>
+    <h1>Project Parva API Example</h1>
+    <p>Fetch panchanga for a date from <code>/v2/api/calendar/panchanga</code>.</p>
+
+    <label>Date: <input id="date" type="date" value="2026-02-15" /></label>
+    <button id="fetch">Fetch Panchanga</button>
+
+    <pre id="output">Click "Fetch Panchanga"...</pre>
+
+    <script>
+      const base = 'http://localhost:8000/v2/api';
+      const btn = document.getElementById('fetch');
+      const out = document.getElementById('output');
+
+      btn.addEventListener('click', async () => {
+        const date = document.getElementById('date').value;
+        out.textContent = 'Loading...';
+        try {
+          const res = await fetch(`${base}/calendar/panchanga?date=${date}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          out.textContent = JSON.stringify(data, null, 2);
+        } catch (e) {
+          out.textContent = `Error: ${e.message}`;
+        }
+      });
+    </script>
+  </body>
+</html>

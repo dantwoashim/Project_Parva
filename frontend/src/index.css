@@ -1,0 +1,415 @@
+/**
+ * Project Parva Design System
+ * ===========================
+ * 
+ * Premium festival discovery interface.
+ * Based on PROJECT_BIBLE.md specifications.
+ */
+
+:root {
+  /* ========================================
+   * Temple at Dawn Color Palette
+   * ========================================
+   * Inspired by Nepal's temple architecture,
+   * festival colors, and Himalayan warmth.
+   */
+
+  /* Primary - Temple Terracotta */
+  --color-primary: #C85A3E;
+  --color-primary-dark: #A64832;
+  --color-primary-light: #D97B62;
+  --color-primary-subtle: rgba(200, 90, 62, 0.1);
+
+  /* Secondary - Sacred Gold */
+  --color-secondary: #D4A052;
+  --color-secondary-dark: #B88840;
+  --color-secondary-light: #E4B872;
+  --color-secondary-subtle: rgba(212, 160, 82, 0.15);
+
+  /* Accent Colors */
+  --color-vermillion: #E63946;
+  /* Tika powder */
+  --color-marigold: #F4A261;
+  /* Festival flowers */
+  --color-turmeric: #E9C46A;
+  /* Turmeric yellow */
+  --color-sage: #6B8E6B;
+  /* Nature green */
+
+  /* Backgrounds - Light Warm Theme */
+  --color-bg-deep: #FAF7F2;
+  /* Warm cream - main bg */
+  --color-bg-surface: #F5F0E8;
+  /* Soft stone */
+  --color-bg-elevated: #FFFFFF;
+  /* Clean white */
+  --color-bg-card: #FFFFFF;
+  --color-bg-sidebar: #FFFFFF;
+  --color-bg-hover: #FBF8F3;
+
+  /* Text */
+  --color-text-primary: #2D2A26;
+  /* Charcoal */
+  --color-text-secondary: #6B6560;
+  /* Warm gray */
+  --color-text-muted: #9A9590;
+  /* Light gray */
+  --color-text-inverse: #FFFFFF;
+
+  /* Borders & Dividers */
+  --color-border: #E8E2D9;
+  /* Sand */
+  --color-border-light: #F0EBE3;
+  --color-border-focus: #C85A3E;
+  --color-divider: #E8E2D9;
+
+  /* Shadows - Warm tones */
+  --shadow-sm: 0 1px 2px rgba(45, 42, 38, 0.05);
+  --shadow-md: 0 4px 12px rgba(45, 42, 38, 0.08);
+  --shadow-lg: 0 8px 24px rgba(45, 42, 38, 0.12);
+  --shadow-card: 0 2px 8px rgba(45, 42, 38, 0.06);
+  --shadow-hover: 0 8px 20px rgba(45, 42, 38, 0.1);
+
+  /* Gradients - Subtle & Warm */
+  --gradient-primary: linear-gradient(135deg, #C85A3E 0%, #D4A052 100%);
+  --gradient-warm: linear-gradient(135deg, #D4A052 0%, #F4A261 100%);
+  --gradient-header: linear-gradient(135deg, #2D2A26 0%, #4A4540 100%);
+  --gradient-card-hover: linear-gradient(180deg, #FFFFFF 0%, #FBF8F3 100%);
+
+  /* Category Colors */
+  --category-national: #C85A3E;
+  --category-newari: #D4A052;
+  --category-buddhist: #E9C46A;
+  --category-hindu: #E63946;
+  --category-regional: #6B8E6B;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Outfit', var(--font-sans);
+  --font-nepali: 'Noto Sans Devanagari', sans-serif;
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease-out;
+  --transition-base: 250ms ease-out;
+  --transition-slow: 400ms ease-out;
+
+  /* Z-Index Scale */
+  --z-base: 0;
+  --z-elevated: 10;
+  --z-sticky: 100;
+  --z-modal: 1000;
+  --z-toast: 1100;
+}
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg-deep);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Typography Utilities */
+.text-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.text-nepali {
+  font-family: var(--font-nepali);
+}
+
+/* Clean Card Component (replaces glass-card) */
+.glass-card,
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-base);
+}
+
+.glass-card:hover,
+.card:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: var(--color-border);
+}
+
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary-light);
+}
+
+/* Button Base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  background: var(--color-bg-hover);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  padding: var(--space-2) var(--space-3);
+}
+
+.btn-ghost:hover {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+}
+
+/* Badge Component */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+}
+
+.badge-primary {
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+}
+
+.badge-gold {
+  background: var(--color-secondary-subtle);
+  color: var(--color-secondary-dark);
+}
+
+.badge-national {
+  background: rgba(200, 90, 62, 0.12);
+  color: var(--category-national);
+}
+
+.badge-newari {
+  background: rgba(212, 160, 82, 0.12);
+  color: var(--category-newari);
+}
+
+.badge-buddhist {
+  background: rgba(233, 196, 106, 0.15);
+  color: #B8860B;
+}
+
+.badge-hindu {
+  background: rgba(230, 57, 70, 0.1);
+  color: var(--category-hindu);
+}
+
+/* Countdown Badge */
+.countdown-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  background: var(--color-secondary-subtle);
+  color: var(--color-secondary-dark);
+  border-radius: var(--radius-sm);
+}
+
+/* Loading States */
+.skeleton {
+  background: linear-gradient(90deg,
+      var(--color-bg-elevated) 25%,
+      var(--color-bg-card) 50%,
+      var(--color-bg-elevated) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease-out forwards;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.3s ease-out forwards;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-elevated);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Focus States */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 var(--space-8);
+  }
+}

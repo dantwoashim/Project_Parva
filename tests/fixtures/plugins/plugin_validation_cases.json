@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "plugin": "bs",
+      "gregorian": "2026-02-15",
+      "expected": {"year": 2082, "month": 11, "day": 3}
+    },
+    {
+      "plugin": "ns",
+      "gregorian": "2026-02-15",
+      "expected": {"year": 1146}
+    },
+    {
+      "plugin": "tibetan",
+      "gregorian": "2026-02-15",
+      "expected": {"year": 2153, "month": 2, "day": 15}
+    },
+    {
+      "plugin": "islamic",
+      "gregorian": "2026-02-15",
+      "expected": {"year": 1447, "month": 8, "day": 27}
+    },
+    {
+      "plugin": "hebrew",
+      "gregorian": "2026-02-15",
+      "expected": {"year": 5786, "month": 11, "day": 28}
+    },
+    {
+      "plugin": "chinese",
+      "gregorian": "2026-02-20",
+      "expected": {"year": 2026, "month": 1, "day": 4}
+    }
+  ]
+}

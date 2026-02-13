@@ -1,0 +1,56 @@
+{
+  "pack_id": "multi_calendar_v1",
+  "version": "1.0",
+  "description": "Plugin conversion checks across non-BS calendars.",
+  "calendar_family": "multi_calendar",
+  "cases": [
+    {
+      "id": "islamic-convert-2026-02-15",
+      "endpoint": "/v2/api/engine/convert",
+      "params": {"date": "2026-02-15", "calendar": "islamic"},
+      "assertions": {
+        "result.year": 1447,
+        "result.month": 8,
+        "result.day": 27
+      },
+      "tolerance": 0,
+      "source": "Plugin validation baseline"
+    },
+    {
+      "id": "hebrew-convert-2026-02-15",
+      "endpoint": "/v2/api/engine/convert",
+      "params": {"date": "2026-02-15", "calendar": "hebrew"},
+      "assertions": {
+        "result.year": 5786,
+        "result.month": 11,
+        "result.day": 28
+      },
+      "tolerance": 0,
+      "source": "Plugin validation baseline"
+    },
+    {
+      "id": "chinese-convert-2026-02-20",
+      "endpoint": "/v2/api/engine/convert",
+      "params": {"date": "2026-02-20", "calendar": "chinese"},
+      "assertions": {
+        "result.year": 2026,
+        "result.month": 1,
+        "result.day": 4
+      },
+      "tolerance": 0,
+      "source": "Plugin validation baseline"
+    },
+    {
+      "id": "tibetan-convert-2026-02-15",
+      "endpoint": "/v2/api/engine/convert",
+      "params": {"date": "2026-02-15", "calendar": "tibetan"},
+      "assertions": {
+        "result.year": 2153,
+        "result.month": 2,
+        "result.day": 15
+      },
+      "tolerance": 0,
+      "source": "Plugin validation baseline"
+    }
+  ]
+}

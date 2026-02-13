@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "description": "Historical sample conversions for extended estimated mode",
+    "note": "These are diagnostic samples, not official lookup truth outside 2070-2095 BS."
+  },
+  "samples": [
+    {
+      "gregorian": "1900-01-01",
+      "bs": {
+        "year": 1956,
+        "month": 9,
+        "day": 18
+      },
+      "roundtrip_gregorian": "1900-01-01",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    },
+    {
+      "gregorian": "1943-04-14",
+      "bs": {
+        "year": 2000,
+        "month": 1,
+        "day": 1
+      },
+      "roundtrip_gregorian": "1943-04-14",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    },
+    {
+      "gregorian": "1950-01-01",
+      "bs": {
+        "year": 2006,
+        "month": 9,
+        "day": 17
+      },
+      "roundtrip_gregorian": "1950-01-01",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    },
+    {
+      "gregorian": "1975-06-15",
+      "bs": {
+        "year": 2032,
+        "month": 3,
+        "day": 1
+      },
+      "roundtrip_gregorian": "1975-06-15",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    },
+    {
+      "gregorian": "2000-01-01",
+      "bs": {
+        "year": 2056,
+        "month": 9,
+        "day": 16
+      },
+      "roundtrip_gregorian": "2000-01-01",
+      "roundtrip_delta_days": 0,
+      "confidence": "estimated",
+      "estimated_error_days": "0-1"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "notes": "Formulaic Hebrew checks (roundtrip + observance presence).",
+  "cases": [
+    {"gregorian": "2026-09-12", "calendar": "hebrew"},
+    {"gregorian": "2026-04-02", "calendar": "hebrew"},
+    {"rule_id": "rosh-hashanah", "year": 2026},
+    {"rule_id": "passover", "year": 2026}
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "pack_id": "panchanga_v1",
+  "version": "1.0",
+  "description": "Panchanga endpoint consistency checks.",
+  "calendar_family": "hindu_panchanga",
+  "cases": [
+    {
+      "id": "panchanga-2026-02-15",
+      "endpoint": "/v2/api/calendar/panchanga",
+      "params": {"date": "2026-02-15"},
+      "assertions": {
+        "date": "2026-02-15",
+        "panchanga.tithi.paksha": "krishna",
+        "panchanga.tithi.method": "ephemeris_udaya"
+      },
+      "tolerance": 0,
+      "source": "Parva ephemeris output"
+    },
+    {
+      "id": "panchanga-2026-10-21",
+      "endpoint": "/v2/api/calendar/panchanga",
+      "params": {"date": "2026-10-21"},
+      "assertions": {
+        "date": "2026-10-21",
+        "panchanga.tithi.paksha": "shukla",
+        "panchanga.tithi.method": "ephemeris_udaya"
+      },
+      "tolerance": 0,
+      "source": "Parva ephemeris output"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[project]
+name = "project-parva"
+version = "3.0.0"
+description = "Nepal Festival Discovery System"
+requires-python = ">=3.9"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "pydantic>=2.0.0",
+    "pytest>=7.0.0",
+    "httpx>=0.27.0",
+    "pyswisseph>=2.10.0",
+    "aiohttp>=3.9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "httpx",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["backend"]
+testpaths = ["tests", "backend/tests"]

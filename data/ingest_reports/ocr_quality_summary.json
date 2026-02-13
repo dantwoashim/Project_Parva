@@ -1,0 +1,23 @@
+{
+  "total_parsed_rows": 85,
+  "total_mapped_rows": 46,
+  "mapped_ratio_percent": 54.12,
+  "precision_proxy_percent": 100.0,
+  "confidence_distribution": {
+    "high": 45,
+    "medium": 38,
+    "low": 2
+  },
+  "files": {
+    "parsed": [
+      "holidays_2080_parsed.csv",
+      "holidays_2081_parsed.csv",
+      "holidays_2082_parsed.csv"
+    ],
+    "matched": [
+      "holidays_2080_matched.csv",
+      "holidays_2081_matched.csv",
+      "holidays_2082_matched.csv"
+    ]
+  }
+}

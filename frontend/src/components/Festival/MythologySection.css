@@ -1,0 +1,177 @@
+/**
+ * MythologySection Styles
+ * =======================
+ */
+
+.mythology-section {
+    max-width: 720px;
+}
+
+.mythology-section--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: var(--space-8);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--space-4);
+}
+
+.empty-state h3 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+}
+
+.empty-state p {
+    color: var(--color-text-muted);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Section Titles */
+.section-title {
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+}
+
+.section-subtitle {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: var(--space-2);
+}
+
+/* Origin Story */
+.mythology-story {
+    margin-bottom: var(--space-8);
+}
+
+.story-content {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: var(--text-lg);
+    line-height: 1.9;
+    color: var(--color-text-secondary);
+}
+
+.story-content p {
+    margin-bottom: var(--space-4);
+    text-indent: 1.5em;
+}
+
+.story-content p:first-child {
+    text-indent: 0;
+}
+
+.story-content p:first-child::first-letter {
+    font-size: 3em;
+    float: left;
+    line-height: 0.8;
+    padding-right: var(--space-2);
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+/* Sacred Texts */
+.mythology-texts {
+    margin-bottom: var(--space-6);
+}
+
+.text-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.text-badge {
+    font-size: var(--text-sm);
+}
+
+/* Legends */
+.mythology-legends {
+    margin-bottom: var(--space-6);
+}
+
+.legends-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.legend-card {
+    padding: var(--space-4);
+}
+
+.legend-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    color: var(--color-primary);
+}
+
+.legend-summary {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-3);
+}
+
+.legend-moral {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+}
+
+.moral-label {
+    font-weight: 600;
+    color: var(--color-accent-gold);
+}
+
+/* Significance */
+.mythology-significance {
+    margin-bottom: var(--space-6);
+}
+
+.significance-quote {
+    font-size: var(--text-lg);
+    font-style: italic;
+    color: var(--color-text-secondary);
+    border-left: 4px solid var(--color-primary);
+    padding: var(--space-4) var(--space-5);
+    margin: 0;
+    background: var(--color-bg-elevated);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+/* Historical Context */
+.mythology-history {
+    margin-bottom: var(--space-6);
+}
+
+.history-text {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .story-content {
+        font-size: var(--text-base);
+    }
+
+    .story-content p:first-child::first-letter {
+        font-size: 2.5em;
+    }
+}

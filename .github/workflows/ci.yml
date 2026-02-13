@@ -1,0 +1,86 @@
+name: parva-ci
+
+on:
+  push:
+    branches: ["main", "codex/**"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Run backend test suite
+        run: PYTHONPATH=backend python -m pytest -q
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: frontend
+
+  contract-and-conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Contract freeze check
+        run: PYTHONPATH=backend python scripts/release/check_contract_freeze.py
+
+      - name: Rule ingestion coverage check
+        run: PYTHONPATH=backend python scripts/rules/ingest_rule_sources.py --check --target 300
+
+      - name: Conformance suite
+        run: PYTHONPATH=backend python scripts/spec/run_conformance_tests.py
+
+      - name: Generate authority dashboard
+        run: PYTHONPATH=backend python scripts/generate_authority_dashboard.py
+
+      - name: Upload authority dashboard artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: authority-dashboard
+          path: |
+            reports/authority_dashboard.json
+            reports/rule_ingestion_summary.json
+            docs/public_beta/authority_dashboard.json
+            docs/public_beta/authority_dashboard.md

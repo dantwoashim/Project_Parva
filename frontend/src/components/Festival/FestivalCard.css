@@ -1,0 +1,209 @@
+/**
+ * FestivalCard Styles
+ * ===================
+ * 
+ * Clean, premium card design with warm colors and subtle interactions.
+ */
+
+.festival-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 360px;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition-base);
+}
+
+.festival-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-primary-light);
+}
+
+.festival-card--active {
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 16px rgba(200, 90, 62, 0.15);
+}
+
+/* Category Dot */
+.festival-card__category-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--category-national);
+}
+
+.festival-card__category-dot--national {
+    background: var(--category-national);
+}
+
+.festival-card__category-dot--newari {
+    background: var(--category-newari);
+}
+
+.festival-card__category-dot--buddhist {
+    background: var(--category-buddhist);
+}
+
+.festival-card__category-dot--hindu {
+    background: var(--category-hindu);
+}
+
+.festival-card__category-dot--regional {
+    background: var(--category-regional);
+}
+
+/* Content */
+.festival-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+}
+
+/* Header with dot and category */
+.festival-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.festival-card__category-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Names */
+.festival-card__names {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.festival-card__title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+}
+
+.festival-card__title-nepali {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-family: var(--font-nepali);
+}
+
+/* Date Section */
+.festival-card__date-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--color-border-light);
+    margin-top: var(--space-2);
+}
+
+.festival-card__date {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.festival-card__date-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.festival-card__date-value {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.festival-card__countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.festival-card__countdown-value {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-secondary-dark);
+}
+
+.festival-card__countdown-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+/* Tagline */
+.festival-card__tagline {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Compact Mode for Sidebar */
+.festival-card--compact {
+    max-width: 100%;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
+    border-radius: var(--radius-md);
+}
+
+.festival-card--compact .festival-card__content {
+    padding: 0;
+    flex: 1;
+    gap: var(--space-1);
+}
+
+.festival-card--compact .festival-card__title {
+    font-size: var(--text-base);
+}
+
+.festival-card--compact .festival-card__date-section {
+    display: none;
+}
+
+.festival-card--compact .festival-card__tagline {
+    display: none;
+}
+
+.festival-card--compact .festival-card__countdown-compact {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-secondary-dark);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .festival-card {
+        max-width: 100%;
+    }
+
+    .festival-card__title {
+        font-size: var(--text-base);
+    }
+}

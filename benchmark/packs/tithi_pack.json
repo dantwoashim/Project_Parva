@@ -1,0 +1,32 @@
+{
+  "pack_id": "tithi_v1",
+  "version": "1.0",
+  "description": "Baseline tithi checks for Year-3 harness prep.",
+  "calendar_family": "hindu_panchanga",
+  "cases": [
+    {
+      "id": "tithi-2026-02-15",
+      "endpoint": "/v2/api/calendar/tithi",
+      "params": {"date": "2026-02-15", "method": "udaya"},
+      "assertions": {
+        "date": "2026-02-15",
+        "tithi.paksha": "krishna",
+        "tithi.method": "ephemeris_udaya"
+      },
+      "tolerance": 0,
+      "source": "Parva ephemeris udaya output"
+    },
+    {
+      "id": "tithi-2026-02-07",
+      "endpoint": "/v2/api/calendar/tithi",
+      "params": {"date": "2026-02-07", "method": "udaya"},
+      "assertions": {
+        "date": "2026-02-07",
+        "tithi.paksha": "krishna",
+        "tithi.method": "ephemeris_udaya"
+      },
+      "tolerance": 0,
+      "source": "Parva ephemeris udaya output"
+    }
+  ]
+}

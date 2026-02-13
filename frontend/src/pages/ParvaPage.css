@@ -1,0 +1,311 @@
+/**
+ * ParvaPage Styles
+ * ================
+ * Premium festival discovery interface with warm, organized layout.
+ */
+
+.parva-page {
+    display: flex;
+    min-height: 100vh;
+    background: var(--color-bg-deep);
+}
+
+/* Sidebar */
+.parva-page__sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 340px;
+    height: 100vh;
+    background: var(--color-bg-sidebar);
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    z-index: var(--z-sticky);
+}
+
+/* Main Content */
+.parva-page__main {
+    flex: 1;
+    margin-left: 340px;
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+/* Header */
+.parva-page__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.header-content h1 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.header-icon {
+    font-size: 1.2em;
+}
+
+.header-tagline {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+}
+
+.header-date-info {
+    text-align: right;
+}
+
+.date-gregorian {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+.date-bs {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+/* Welcome Card */
+.parva-page__welcome {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: var(--space-8);
+}
+
+.welcome-card {
+    max-width: 700px;
+    width: 100%;
+    padding: var(--space-10);
+    text-align: center;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.welcome-card h2 {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    color: var(--color-primary);
+}
+
+.welcome-card>p {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+    line-height: 1.7;
+    font-size: var(--text-lg);
+}
+
+/* Welcome Stats */
+.welcome-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-12);
+    margin-bottom: var(--space-8);
+    padding: var(--space-6);
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-lg);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.stat-value {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.stat-label {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Featured Section */
+.welcome-featured {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+}
+
+.welcome-featured h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-5);
+    color: var(--color-text-secondary);
+    font-weight: 600;
+}
+
+.featured-cards {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.featured-cards .festival-card {
+    max-width: 280px;
+}
+
+/* Detail View */
+.parva-page__detail {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+}
+
+.detail-wrapper {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+}
+
+/* Loading State */
+.parva-page__loading {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-6);
+}
+
+.detail-skeleton {
+    width: 100%;
+    max-width: 800px;
+    padding: var(--space-6);
+}
+
+/* Error State */
+.parva-page__error {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-card {
+    text-align: center;
+    padding: var(--space-10);
+    max-width: 400px;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+}
+
+.error-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--space-4);
+}
+
+.error-card h3 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+    color: var(--color-text-primary);
+}
+
+.error-card p {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .parva-page {
+        flex-direction: column;
+    }
+
+    .parva-page__sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .parva-page__main {
+        margin-left: 0;
+        max-height: none;
+        padding: var(--space-5);
+    }
+
+    .welcome-stats {
+        flex-wrap: wrap;
+        gap: var(--space-6);
+    }
+}
+
+@media (max-width: 768px) {
+    .parva-page__main {
+        padding: var(--space-4);
+    }
+
+    .parva-page__header {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-4);
+        padding: var(--space-4);
+    }
+
+    .header-date-info {
+        text-align: center;
+    }
+
+    .welcome-card {
+        padding: var(--space-6);
+    }
+
+    .welcome-card h2 {
+        font-size: var(--text-2xl);
+    }
+
+    .welcome-stats {
+        flex-direction: column;
+        gap: var(--space-4);
+        padding: var(--space-4);
+    }
+
+    .featured-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .featured-cards .festival-card {
+        max-width: 100%;
+    }
+}

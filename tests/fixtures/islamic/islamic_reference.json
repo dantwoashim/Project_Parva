@@ -1,0 +1,9 @@
+{
+  "notes": "Seed reference set for plugin integration checks; includes announced-mode examples.",
+  "cases": [
+    {"rule_id": "eid-al-fitr", "year": 2026, "mode": "announced", "expected_date": "2026-03-20"},
+    {"rule_id": "eid-al-adha", "year": 2026, "mode": "announced", "expected_date": "2026-05-27"},
+    {"rule_id": "islamic-new-year", "year": 2026, "mode": "tabular"},
+    {"rule_id": "shab-e-barat", "year": 2026, "mode": "tabular"}
+  ]
+}

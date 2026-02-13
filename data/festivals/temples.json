@@ -1,0 +1,293 @@
+{
+    "version": "1.0.0",
+    "last_updated": "2026-02-02",
+    "temples": [
+        {
+            "id": "pashupatinath",
+            "name": "Pashupatinath Temple",
+            "name_ne": "पशुपतिनाथ मन्दिर",
+            "type": "temple",
+            "deity": "Shiva",
+            "coordinates": {
+                "lat": 27.7107,
+                "lng": 85.3485
+            },
+            "significance": "Most sacred Hindu temple in Nepal, UNESCO World Heritage Site. Main center for Shivaratri celebrations.",
+            "festivals": [
+                "shivaratri",
+                "teej",
+                "janai-purnima"
+            ],
+            "description": "The holiest Shiva temple in Nepal, located on the banks of the Bagmati River. Sadhus gather here from across South Asia for Maha Shivaratri.",
+            "visiting_hours": "4:00 AM - 9:00 PM",
+            "entry_fee": "1000 NPR (foreigners)"
+        },
+        {
+            "id": "swayambhunath",
+            "name": "Swayambhunath Stupa",
+            "name_ne": "स्वयम्भूनाथ स्तूप",
+            "type": "stupa",
+            "deity": "Adi Buddha",
+            "coordinates": {
+                "lat": 27.7149,
+                "lng": 85.2903
+            },
+            "significance": "Ancient Buddhist stupa with iconic Buddha eyes. Known as Monkey Temple.",
+            "festivals": [
+                "buddha-jayanti",
+                "lhosar"
+            ],
+            "description": "One of the oldest Buddhist monuments in Nepal, overlooking Kathmandu Valley. Pilgrimage site for Buddha Jayanti.",
+            "visiting_hours": "5:00 AM - 9:00 PM",
+            "entry_fee": "200 NPR"
+        },
+        {
+            "id": "boudhanath",
+            "name": "Boudhanath Stupa",
+            "name_ne": "बौद्धनाथ स्तूप",
+            "type": "stupa",
+            "deity": "Avalokiteshvara",
+            "coordinates": {
+                "lat": 27.7215,
+                "lng": 85.3621
+            },
+            "significance": "Largest stupa in Nepal and center of Tibetan Buddhism. UNESCO World Heritage Site.",
+            "festivals": [
+                "buddha-jayanti",
+                "lhosar"
+            ],
+            "description": "The largest spherical stupa in Nepal, surrounded by Tibetan monasteries. Major celebration site for Losar.",
+            "visiting_hours": "5:00 AM - 10:00 PM",
+            "entry_fee": "400 NPR"
+        },
+        {
+            "id": "kathmandu-durbar",
+            "name": "Kathmandu Durbar Square",
+            "name_ne": "काठमाडौं दरबार स्क्वायर",
+            "type": "heritage",
+            "deity": "Multiple",
+            "coordinates": {
+                "lat": 27.7046,
+                "lng": 85.3066
+            },
+            "significance": "Ancient royal palace complex. Main venue for Indra Jatra and Kumari chariot procession.",
+            "festivals": [
+                "indra-jatra",
+                "dashain",
+                "tihar"
+            ],
+            "description": "Historic royal palace square with temples, shrines and the Kumari house. Center of Indra Jatra celebrations.",
+            "visiting_hours": "7:00 AM - 7:00 PM",
+            "entry_fee": "1000 NPR"
+        },
+        {
+            "id": "patan-durbar",
+            "name": "Patan Durbar Square",
+            "name_ne": "पाटन दरबार स्क्वायर",
+            "type": "heritage",
+            "deity": "Multiple",
+            "coordinates": {
+                "lat": 27.6737,
+                "lng": 85.3253
+            },
+            "significance": "Ancient Newar city center. Home of Rato Machhindranath Jatra and Krishna Janmashtami.",
+            "festivals": [
+                "rato-machhindranath",
+                "krishna-janmashtami",
+                "dashain"
+            ],
+            "description": "Medieval palace complex with Krishna Mandir. Starting point for the Rato Machhindranath chariot festival.",
+            "visiting_hours": "7:00 AM - 7:00 PM",
+            "entry_fee": "1000 NPR"
+        },
+        {
+            "id": "bhaktapur-durbar",
+            "name": "Bhaktapur Durbar Square",
+            "name_ne": "भक्तपुर दरबार स्क्वायर",
+            "type": "heritage",
+            "deity": "Multiple",
+            "coordinates": {
+                "lat": 27.6717,
+                "lng": 85.4276
+            },
+            "significance": "Best preserved medieval city. Main venue for Bisket Jatra chariot festival.",
+            "festivals": [
+                "bisket-jatra",
+                "bs-new-year",
+                "dashain",
+                "gai-jatra"
+            ],
+            "description": "Ancient Newar city with 55 Window Palace. Famous for dramatic Bisket Jatra with giant lingam pole.",
+            "visiting_hours": "7:00 AM - 7:00 PM",
+            "entry_fee": "1500 NPR"
+        },
+        {
+            "id": "tundikhel",
+            "name": "Tundikhel",
+            "name_ne": "टुँडिखेल",
+            "type": "ground",
+            "deity": null,
+            "coordinates": {
+                "lat": 27.7030,
+                "lng": 85.3155
+            },
+            "significance": "Historic parade ground in central Kathmandu. Venue for Ghode Jatra horse festival.",
+            "festivals": [
+                "ghode-jatra",
+                "ubhauli"
+            ],
+            "description": "Large open parade ground where the Nepal Army performs horse acrobatics during Ghode Jatra.",
+            "visiting_hours": "24 hours",
+            "entry_fee": "Free"
+        },
+        {
+            "id": "kumari-ghar",
+            "name": "Kumari Ghar",
+            "name_ne": "कुमारी घर",
+            "type": "shrine",
+            "deity": "Kumari",
+            "coordinates": {
+                "lat": 27.7042,
+                "lng": 85.3067
+            },
+            "significance": "Residence of the Living Goddess (Royal Kumari of Kathmandu).",
+            "festivals": [
+                "indra-jatra",
+                "dashain"
+            ],
+            "description": "Three-story structure in Kathmandu Durbar Square where the living goddess Kumari resides. She appears on the balcony during festivals.",
+            "visiting_hours": "9:00 AM - 5:00 PM (viewing)",
+            "entry_fee": "Free"
+        },
+        {
+            "id": "janaki-mandir",
+            "name": "Janaki Mandir",
+            "name_ne": "जानकी मन्दिर",
+            "type": "temple",
+            "deity": "Sita",
+            "coordinates": {
+                "lat": 26.7287,
+                "lng": 85.9261
+            },
+            "significance": "Birthplace of goddess Sita in Janakpur. Major pilgrimage for Ram Navami.",
+            "festivals": [
+                "ram-navami",
+                "teej"
+            ],
+            "description": "Magnificent Mughal-Rajput architecture temple dedicated to Goddess Sita in Janakpur.",
+            "visiting_hours": "5:00 AM - 12:00 PM, 4:00 PM - 9:00 PM",
+            "entry_fee": "Free"
+        },
+        {
+            "id": "krishna-mandir",
+            "name": "Krishna Mandir",
+            "name_ne": "कृष्ण मन्दिर",
+            "type": "temple",
+            "deity": "Krishna",
+            "coordinates": {
+                "lat": 27.6738,
+                "lng": 85.3251
+            },
+            "significance": "Stone temple in Patan Durbar Square. Center of Krishna Janmashtami celebrations.",
+            "festivals": [
+                "krishna-janmashtami"
+            ],
+            "description": "17th century stone temple with 21 spires. Thousands queue overnight on Krishna Janmashtami.",
+            "visiting_hours": "6:00 AM - 8:00 PM",
+            "entry_fee": "Included in Patan entry"
+        },
+        {
+            "id": "budhanilkantha",
+            "name": "Budhanilkantha Temple",
+            "name_ne": "बुढानिलकण्ठ मन्दिर",
+            "type": "temple",
+            "deity": "Vishnu",
+            "coordinates": {
+                "lat": 27.7799,
+                "lng": 85.3635
+            },
+            "significance": "Giant reclining Vishnu statue in a water tank. Major Vishnu pilgrimage site.",
+            "festivals": [
+                "haribodhini-ekadashi",
+                "dashain"
+            ],
+            "description": "5th century reclining Vishnu (Jalasayana Narayan) in a pond at the base of Shivapuri hill.",
+            "visiting_hours": "5:00 AM - 9:00 PM",
+            "entry_fee": "Free"
+        },
+        {
+            "id": "changu-narayan",
+            "name": "Changu Narayan Temple",
+            "name_ne": "चाँगुनारायण मन्दिर",
+            "type": "temple",
+            "deity": "Vishnu",
+            "coordinates": {
+                "lat": 27.7172,
+                "lng": 85.4283
+            },
+            "significance": "Oldest Hindu temple in Nepal (4th century). UNESCO World Heritage Site.",
+            "festivals": [
+                "dashain",
+                "haribodhini-ekadashi"
+            ],
+            "description": "Ancient two-tiered pagoda with intricate stone and wood carvings. Hilltop location with valley views.",
+            "visiting_hours": "6:00 AM - 6:00 PM",
+            "entry_fee": "300 NPR"
+        },
+        {
+            "id": "rato-machhindranath",
+            "name": "Rato Machhindranath Temple (Bungamati)",
+            "name_ne": "रातो मच्छिन्द्रनाथ मन्दिर",
+            "type": "temple",
+            "deity": "Machhindranath",
+            "coordinates": {
+                "lat": 27.6235,
+                "lng": 85.3045
+            },
+            "significance": "Winter home of the red Machhindranath deity. Bhoto Jatra culmination point.",
+            "festivals": [
+                "rato-machhindranath"
+            ],
+            "description": "Shikhara-style temple in Bungamati village. The deity spends 6 months here, 6 months in Patan.",
+            "visiting_hours": "6:00 AM - 6:00 PM",
+            "entry_fee": "Free"
+        },
+        {
+            "id": "dakshinkali",
+            "name": "Dakshinkali Temple",
+            "name_ne": "दक्षिणकाली मन्दिर",
+            "type": "temple",
+            "deity": "Kali",
+            "coordinates": {
+                "lat": 27.6058,
+                "lng": 85.2653
+            },
+            "significance": "Most important Kali temple in Nepal. Major animal sacrifice site during Dashain.",
+            "festivals": [
+                "dashain",
+                "navaratri"
+            ],
+            "description": "Open-air temple at the confluence of two streams. Devotees offer animal sacrifices on Tuesdays and Saturdays.",
+            "visiting_hours": "7:00 AM - 6:00 PM",
+            "entry_fee": "Free"
+        },
+        {
+            "id": "taleju-bhawani",
+            "name": "Taleju Bhawani Temple",
+            "name_ne": "तलेजु भवानी मन्दिर",
+            "type": "temple",
+            "deity": "Taleju",
+            "coordinates": {
+                "lat": 27.7050,
+                "lng": 85.3070
+            },
+            "significance": "Royal goddess temple. Opens only on Dashain Navami for one day annually.",
+            "festivals": [
+                "dashain"
+            ],
+            "description": "Triple-roofed pagoda in Kathmandu Durbar Square. The tallest temple in the square, open to Hindus only on Maha Navami.",
+            "visiting_hours": "Dashain Navami only",
+            "entry_fee": "Free"
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "generated_for": "year2_week73",
+  "scenarios": [
+    {
+      "id": "dashain-eid-overlap-2027",
+      "date": "2027-10-10",
+      "location": "kathmandu",
+      "conflict_type": "scheduling_overlap",
+      "observances": [
+        {
+          "name": "Dashain (Vijaya Dashami window)",
+          "calendar_family": "nepali_hindu"
+        },
+        {
+          "name": "Eid observance window",
+          "calendar_family": "islamic"
+        }
+      ],
+      "resolver_expectation": {
+        "top_reason_code": "PRIMARY_TRADITION",
+        "notes": "Kathmandu defaults to Nepali Hindu ranking unless user preference overrides."
+      }
+    },
+    {
+      "id": "purnima-buddhist-hindu-overlap",
+      "date": "2026-05-01",
+      "location": "kathmandu",
+      "conflict_type": "complementary_observances",
+      "observances": [
+        {
+          "name": "Buddha Jayanti",
+          "calendar_family": "tibetan_buddhist"
+        },
+        {
+          "name": "Baishakh Purnima",
+          "calendar_family": "nepali_hindu"
+        }
+      ],
+      "resolver_expectation": {
+        "top_reason_code": "ASTRONOMICAL_MATCH",
+        "notes": "Both can coexist for the same full-moon date."
+      }
+    },
+    {
+      "id": "diaspora-preference-override",
+      "date": "2026-03-20",
+      "location": "usa",
+      "conflict_type": "user_preference_override",
+      "observances": [
+        {
+          "name": "National Nepali observances",
+          "calendar_family": "nepali_hindu"
+        },
+        {
+          "name": "Eid al-Fitr (announced)",
+          "calendar_family": "islamic"
+        }
+      ],
+      "resolver_expectation": {
+        "top_reason_code": "USER_PREFERRED",
+        "notes": "If islamic is set in preferences, ranking should place islamic first."
+      }
+    }
+  ]
+}
