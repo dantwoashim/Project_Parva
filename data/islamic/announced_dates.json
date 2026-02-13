@@ -1,0 +1,17 @@
+{
+  "notes": "Seed announced-date overrides for integration. Replace with official yearly notices when available.",
+  "overrides": {
+    "2025": {
+      "eid-al-fitr": "2025-03-31",
+      "eid-al-adha": "2025-06-07"
+    },
+    "2026": {
+      "eid-al-fitr": "2026-03-20",
+      "eid-al-adha": "2026-05-27"
+    },
+    "2027": {
+      "eid-al-fitr": "2027-03-10",
+      "eid-al-adha": "2027-05-16"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "generated_for": "Parva Temporal Spec v1",
+  "cases": [
+    {
+      "id": "calendar-convert-v3",
+      "endpoint": "/v3/api/calendar/convert",
+      "params": {"date": "2026-02-15"},
+      "required_keys": ["bikram_sambat", "tithi", "provenance", "policy"]
+    },
+    {
+      "id": "calendar-panchanga-v3",
+      "endpoint": "/v3/api/calendar/panchanga",
+      "params": {"date": "2026-02-15"},
+      "required_keys": ["panchanga", "ephemeris", "policy"]
+    },
+    {
+      "id": "festival-explain-v3",
+      "endpoint": "/v3/api/festivals/dashain/explain",
+      "params": {"year": 2026},
+      "required_keys": ["explanation", "steps", "calculation_trace_id"]
+    },
+    {
+      "id": "provenance-root-v3",
+      "endpoint": "/v3/api/provenance/root",
+      "params": {},
+      "required_keys": ["merkle_root"]
+    },
+    {
+      "id": "reliability-status-v3",
+      "endpoint": "/v3/api/reliability/status",
+      "params": {},
+      "required_keys": ["runtime", "policy"]
+    },
+    {
+      "id": "resolve-v5",
+      "endpoint": "/v5/api/resolve",
+      "params": {"date": "2026-10-15"},
+      "required_keys": ["data", "meta"]
+    },
+    {
+      "id": "spec-conformance-v5",
+      "endpoint": "/v5/api/spec/conformance",
+      "params": {},
+      "required_keys": ["data", "meta"]
+    }
+  ]
+}

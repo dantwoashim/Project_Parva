@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://parva.dev/schemas/unified-date-response.schema.json",
+  "title": "Project Parva Unified Date Contract (Week 1 Draft)",
+  "description": "Common contract for any endpoint returning computed dates.",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/SingleDateResponse"
+    },
+    {
+      "$ref": "#/$defs/DateRangeResponse"
+    },
+    {
+      "$ref": "#/$defs/ConversionResponse"
+    },
+    {
+      "$ref": "#/$defs/PanchangaResponse"
+    }
+  ],
+  "$defs": {
+    "ISODate": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "Method": {
+      "type": "string",
+      "enum": [
+        "ephemeris_udaya",
+        "ephemeris_instantaneous",
+        "lunar_month",
+        "solar",
+        "override",
+        "fallback_v1",
+        "lookup",
+        "estimated"
+      ]
+    },
+    "Confidence": {
+      "type": "string",
+      "enum": [
+        "official",
+        "estimated",
+        "exact",
+        "computed",
+        "astronomical",
+        "degraded"
+      ]
+    },
+    "DateMeta": {
+      "type": "object",
+      "required": [
+        "confidence",
+        "method",
+        "engine_version"
+      ],
+      "properties": {
+        "confidence": {
+          "$ref": "#/$defs/Confidence"
+        },
+        "method": {
+          "$ref": "#/$defs/Method"
+        },
+        "engine_version": {
+          "type": "string",
+          "pattern": "^v\\d+(?:\\.\\d+)?(?:\\.\\d+)?$"
+        },
+        "calculation_trace_id": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SingleDateResponse": {
+      "type": "object",
+      "required": [
+        "date",
+        "meta"
+      ],
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/ISODate"
+        },
+        "meta": {
+          "$ref": "#/$defs/DateMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DateRangeResponse": {
+      "type": "object",
+      "required": [
+        "start_date",
+        "end_date",
+        "meta"
+      ],
+      "properties": {
+        "start_date": {
+          "$ref": "#/$defs/ISODate"
+        },
+        "end_date": {
+          "$ref": "#/$defs/ISODate"
+        },
+        "meta": {
+          "$ref": "#/$defs/DateMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ConversionResponse": {
+      "type": "object",
+      "required": [
+        "gregorian",
+        "bikram_sambat",
+        "tithi"
+      ],
+      "properties": {
+        "gregorian": {
+          "$ref": "#/$defs/ISODate"
+        },
+        "bikram_sambat": {
+          "type": "object",
+          "required": [
+            "year",
+            "month",
+            "day",
+            "confidence"
+          ],
+          "properties": {
+            "year": {
+              "type": "integer"
+            },
+            "month": {
+              "type": "integer"
+            },
+            "day": {
+              "type": "integer"
+            },
+            "month_name": {
+              "type": "string"
+            },
+            "confidence": {
+              "$ref": "#/$defs/Confidence"
+            }
+          },
+          "additionalProperties": true
+        },
+        "tithi": {
+          "type": "object",
+          "required": [
+            "tithi",
+            "paksha",
+            "method"
+          ],
+          "properties": {
+            "tithi": {
+              "type": "integer"
+            },
+            "paksha": {
+              "type": "string"
+            },
+            "tithi_name": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "meta": {
+          "$ref": "#/$defs/DateMeta"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PanchangaResponse": {
+      "type": "object",
+      "required": [
+        "date",
+        "panchanga"
+      ],
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/ISODate"
+        },
+        "panchanga": {
+          "type": "object",
+          "required": [
+            "confidence"
+          ],
+          "properties": {
+            "confidence": {
+              "type": "string",
+              "enum": [
+                "astronomical"
+              ]
+            }
+          },
+          "additionalProperties": true
+        },
+        "meta": {
+          "$ref": "#/$defs/DateMeta"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

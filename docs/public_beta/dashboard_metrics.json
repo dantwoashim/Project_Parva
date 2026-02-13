@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-02-12T02:20:00+00:00",
+  "release_channel": "year3-spec1",
+  "uptime_percent": 99.5,
+  "accuracy_percent": 100.0,
+  "benchmark_pass_percent": 100.0,
+  "conformance_pass_percent": 100.0,
+  "differential_drift_percent": 0.0,
+  "cache_hit_ratio_panchanga": 1.0,
+  "sources": {
+    "benchmark": "/Users/rohanbasnet14/Documents/Project Parva/benchmark/results/baseline_2028Q1.json",
+    "differential": "/Users/rohanbasnet14/Documents/Project Parva/reports/differential_report.json",
+    "conformance": "/Users/rohanbasnet14/Documents/Project Parva/reports/conformance_report.json",
+    "loadtest": "/Users/rohanbasnet14/Documents/Project Parva/reports/loadtest_m29.json",
+    "offline_parity": "/Users/rohanbasnet14/Documents/Project Parva/reports/offline_parity.json"
+  }
+}

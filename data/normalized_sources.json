@@ -1,0 +1,1071 @@
+{
+  "rows": [
+    {
+      "festival_id": "bs-new-year",
+      "gregorian": "2023-04-14",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(क) नव वर्ष"
+    },
+    {
+      "festival_id": "janai-purnima",
+      "gregorian": "2023-08-30",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(ग) रक्षाबन्धन"
+    },
+    {
+      "festival_id": "dashain",
+      "gregorian": "2023-10-14",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(ङ) घटस्थापना"
+    },
+    {
+      "festival_id": "chhath",
+      "gregorian": "2023-11-19",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(ज) छठ पर्व"
+    },
+    {
+      "festival_id": "tamu-lhosar",
+      "gregorian": "2023-12-30",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(ट) तमू ल्होसार"
+    },
+    {
+      "festival_id": "sonam-lhosar",
+      "gregorian": "2024-02-10",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(ड) सोनम ल्होसार"
+    },
+    {
+      "festival_id": "shivaratri",
+      "gregorian": "2024-03-08",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(ढ) महाशिवरात्री"
+    },
+    {
+      "festival_id": "teej",
+      "gregorian": "2023-09-17",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(क) हरितालिका (तीज) व्रत"
+    },
+    {
+      "festival_id": "saraswati-puja",
+      "gregorian": "2024-02-14",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "वसन्त पञ्चमी"
+    },
+    {
+      "festival_id": "gai-jatra",
+      "gregorian": "2023-08-30",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(क) गाईजात्रा"
+    },
+    {
+      "festival_id": "indra-jatra",
+      "gregorian": "2023-09-27",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(ख) इन्द्रजात्रा"
+    },
+    {
+      "festival_id": "ghode-jatra",
+      "gregorian": "2024-04-08",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(घ) घोडेजात्रा"
+    },
+    {
+      "festival_id": "buddha-jayanti",
+      "gregorian": "2023-05-05",
+      "source": "moha_pdf_2080",
+      "confidence": "high",
+      "notes": "(क) बुद्ध जयंती"
+    },
+    {
+      "festival_id": "bs-new-year",
+      "gregorian": "2024-04-13",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(क) नव वर्ष"
+    },
+    {
+      "festival_id": "ram-navami",
+      "gregorian": "2024-04-17",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(ख) रामनवमी"
+    },
+    {
+      "festival_id": "ubhauli",
+      "gregorian": "2024-05-23",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "उभौली पर्व"
+    },
+    {
+      "festival_id": "janai-purnima",
+      "gregorian": "2024-08-20",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(घ) रक्षाबन्धन"
+    },
+    {
+      "festival_id": "krishna-janmashtami",
+      "gregorian": "2024-08-27",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(ङ) श्रीकृष्ण जन्माष्टमी"
+    },
+    {
+      "festival_id": "dashain",
+      "gregorian": "2024-10-04",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(च) घटस्थापना"
+    },
+    {
+      "festival_id": "chhath",
+      "gregorian": "2024-11-08",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(झ) छठ पर्व"
+    },
+    {
+      "festival_id": "tamu-lhosar",
+      "gregorian": "2024-12-30",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(ठ) तमु ल्होसार"
+    },
+    {
+      "festival_id": "sonam-lhosar",
+      "gregorian": "2025-01-31",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(ढ) सोनम ल्होसार"
+    },
+    {
+      "festival_id": "shivaratri",
+      "gregorian": "2025-02-26",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(ण) महाशिवरात्री"
+    },
+    {
+      "festival_id": "gai-jatra",
+      "gregorian": "2024-08-21",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(क) गाईजात्रा"
+    },
+    {
+      "festival_id": "saraswati-puja",
+      "gregorian": "2025-02-04",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "वसन्त पञ्चमी"
+    },
+    {
+      "festival_id": "indra-jatra",
+      "gregorian": "2024-09-18",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(ख) इन्द्रजात्रा"
+    },
+    {
+      "festival_id": "ghode-jatra",
+      "gregorian": "2025-03-30",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(घ) घोडेजात्रा"
+    },
+    {
+      "festival_id": "buddha-jayanti",
+      "gregorian": "2024-05-23",
+      "source": "moha_pdf_2081",
+      "confidence": "high",
+      "notes": "(क) बुद्ध जयंती"
+    },
+    {
+      "festival_id": "bs-new-year",
+      "gregorian": "2025-04-14",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(क) नव वर्ष"
+    },
+    {
+      "festival_id": "janai-purnima",
+      "gregorian": "2025-08-09",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ग) रक्षाबन्धन"
+    },
+    {
+      "festival_id": "krishna-janmashtami",
+      "gregorian": "2025-08-16",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(घ) श्रीकृष्ण जन्माष्टमी"
+    },
+    {
+      "festival_id": "dashain",
+      "gregorian": "2025-09-23",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ङ) घटस्थापना"
+    },
+    {
+      "festival_id": "tihar",
+      "gregorian": "2025-10-20",
+      "source": "moha_pdf_2082",
+      "confidence": "medium",
+      "notes": "(छ) तिहार बिदा"
+    },
+    {
+      "festival_id": "chhath",
+      "gregorian": "2025-10-27",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ज) छठ पर्व"
+    },
+    {
+      "festival_id": "tamu-lhosar",
+      "gregorian": "2025-12-30",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ट) तमू ल्होछार"
+    },
+    {
+      "festival_id": "sonam-lhosar",
+      "gregorian": "2026-01-19",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ड) सोनम ल्होछार"
+    },
+    {
+      "festival_id": "shivaratri",
+      "gregorian": "2026-02-15",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ढ): महाशिवरात्री"
+    },
+    {
+      "festival_id": "gyalpo-lhosar",
+      "gregorian": "2026-02-18",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ण) ग्याल्पो ल्होसार"
+    },
+    {
+      "festival_id": "ram-navami",
+      "gregorian": "2026-03-27",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ध) रामनवमी"
+    },
+    {
+      "festival_id": "gai-jatra",
+      "gregorian": "2025-07-18",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(क) गाईजात्रा"
+    },
+    {
+      "festival_id": "teej",
+      "gregorian": "2025-08-27",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(क) हरितालिका (तीज) व्रत"
+    },
+    {
+      "festival_id": "saraswati-puja",
+      "gregorian": "2026-01-23",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "वसन्त पञ्चमी"
+    },
+    {
+      "festival_id": "gai-jatra",
+      "gregorian": "2025-08-10",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(क) गाईजात्रा"
+    },
+    {
+      "festival_id": "indra-jatra",
+      "gregorian": "2025-09-07",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(ख) इन्द्रजात्रा"
+    },
+    {
+      "festival_id": "ghode-jatra",
+      "gregorian": "2026-03-18",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(घ) घोडेजात्रा"
+    },
+    {
+      "festival_id": "buddha-jayanti",
+      "gregorian": "2025-05-12",
+      "source": "moha_pdf_2082",
+      "confidence": "high",
+      "notes": "(क) बुद्ध जयंती"
+    },
+    {
+      "festival_id": "dashain",
+      "gregorian": "2025-09-23",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-06-06 (असोज ६) (ङ) घटस्थापना"
+    },
+    {
+      "festival_id": "tihar",
+      "gregorian": "2025-10-20",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-07-03 (कात्तिक ३) (छ) तिहार बिदा"
+    },
+    {
+      "festival_id": "bs-new-year",
+      "gregorian": "2025-04-14",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-01-01 (वैशाख १) (क) नव वर्ष"
+    },
+    {
+      "festival_id": "buddha-jayanti",
+      "gregorian": "2025-05-12",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-01-29 (वैशाख २९) (क) बुद्ध जयन्ती"
+    },
+    {
+      "festival_id": "janai-purnima",
+      "gregorian": "2025-08-09",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-04-24 (साउन २४) (ग) रक्षाबन्धन"
+    },
+    {
+      "festival_id": "gai-jatra",
+      "gregorian": "2025-07-18",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-04-02 (साउन २) (क) गाईजात्रा"
+    },
+    {
+      "festival_id": "krishna-janmashtami",
+      "gregorian": "2025-08-16",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-04-31 (साउन ३१) (घ) श्रीकृष्ण जन्माष्टमी"
+    },
+    {
+      "festival_id": "teej",
+      "gregorian": "2025-08-27",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-05-10 (भदौ १०) (क) हरितालिका (तीज) व्रत"
+    },
+    {
+      "festival_id": "indra-jatra",
+      "gregorian": "2025-09-07",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-05-21 (भदौ २१) (ख) इन्द्रजात्रा"
+    },
+    {
+      "festival_id": "chhath",
+      "gregorian": "2025-10-27",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-07-10 (कात्तिक १०) (ज) छठ पर्व"
+    },
+    {
+      "festival_id": "yomari-punhi",
+      "gregorian": "2025-12-04",
+      "source": "pradhanlaw_public_holidays_2082",
+      "confidence": "secondary",
+      "notes": ""
+    },
+    {
+      "festival_id": "sonam-lhosar",
+      "gregorian": "2025-01-31",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-10-17 (माघ १७) (ढ) सोनम ल्होसार"
+    },
+    {
+      "festival_id": "shivaratri",
+      "gregorian": "2025-02-26",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-11-14 (फागुन १४) (ण) महाशिवरात्री"
+    },
+    {
+      "festival_id": "saraswati-puja",
+      "gregorian": "2025-02-04",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-10-21 (माघ २१) वसन्त पञ्चमी"
+    },
+    {
+      "festival_id": "ghode-jatra",
+      "gregorian": "2025-03-30",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-12-16 (चैत १६) (घ) घोडेजात्रा"
+    },
+    {
+      "festival_id": "tamu-lhosar",
+      "gregorian": "2025-12-30",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-09-15 (पुस १५) (ट) तमू ल्होछार"
+    },
+    {
+      "festival_id": "maghe-sankranti",
+      "gregorian": "2026-01-14",
+      "source": "pradhanlaw_public_holidays_2082",
+      "confidence": "secondary",
+      "notes": ""
+    },
+    {
+      "festival_id": "bs-new-year",
+      "gregorian": "2026-04-14",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "shivaratri",
+      "gregorian": "2026-02-14",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-11-03 (फागुन ३) (ढ): महाशिवरात्री"
+    },
+    {
+      "festival_id": "holi",
+      "gregorian": "2026-03-03",
+      "source": "pradhanlaw_public_holidays_2082",
+      "confidence": "secondary",
+      "notes": ""
+    },
+    {
+      "festival_id": "buddha-jayanti",
+      "gregorian": "2026-05-12",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "janai-purnima",
+      "gregorian": "2026-08-11",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "teej",
+      "gregorian": "2026-08-30",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "indra-jatra",
+      "gregorian": "2026-09-08",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "dashain",
+      "gregorian": "2026-10-10",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "tihar",
+      "gregorian": "2026-11-07",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "gai-jatra",
+      "gregorian": "2026-08-12",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "yomari-punhi",
+      "gregorian": "2026-12-25",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "mha-puja",
+      "gregorian": "2026-11-11",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "chhath",
+      "gregorian": "2026-11-12",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "ghode-jatra",
+      "gregorian": "2026-03-17",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-12-04 (चैत ४) (घ) घोडेजात्रा"
+    },
+    {
+      "festival_id": "krishna-janmashtami",
+      "gregorian": "2026-08-19",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "nag-panchami",
+      "gregorian": "2026-07-27",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "bhai-tika",
+      "gregorian": "2026-11-12",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "vijaya-dashami",
+      "gregorian": "2026-10-19",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "saraswati-puja",
+      "gregorian": "2026-01-22",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-10-09 (माघ ९) वसन्त पञ्चमी"
+    },
+    {
+      "festival_id": "sonam-lhosar",
+      "gregorian": "2026-01-18",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-10-05 (माघ ५) (ड) सोनम ल्होछार"
+    },
+    {
+      "festival_id": "gyalpo-lhosar",
+      "gregorian": "2026-02-17",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-11-06 (फागुन ६) (ण) ग्याल्पो ल्होसार"
+    },
+    {
+      "festival_id": "ram-navami",
+      "gregorian": "2026-03-26",
+      "source": "moha_pdf_2082",
+      "confidence": "official",
+      "notes": "BS 2082-12-13 (चैत १३) (ध) रामनवमी"
+    },
+    {
+      "festival_id": "maghe-sankranti",
+      "gregorian": "2027-01-14",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "shivaratri",
+      "gregorian": "2027-03-05",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "holi",
+      "gregorian": "2027-03-22",
+      "source": "override",
+      "confidence": "official",
+      "notes": ""
+    },
+    {
+      "festival_id": "bs-new-year",
+      "gregorian": "2023-04-14",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-01-01 (वैशाख १) (क) नव वर्ष"
+    },
+    {
+      "festival_id": "janai-purnima",
+      "gregorian": "2023-08-30",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-05-14 (भदौ १४) (ग) रक्षाबन्धन"
+    },
+    {
+      "festival_id": "dashain",
+      "gregorian": "2023-10-14",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-06-28 (असोज २८) (ङ) घटस्थापना"
+    },
+    {
+      "festival_id": "chhath",
+      "gregorian": "2023-11-19",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-08-03 (मङ्सिर ३) (ज) छठ पर्व"
+    },
+    {
+      "festival_id": "tamu-lhosar",
+      "gregorian": "2023-12-30",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-09-15 (पुस १५) (ट) तमू ल्होसार"
+    },
+    {
+      "festival_id": "teej",
+      "gregorian": "2023-09-17",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-06-01 (असोज १) (क) हरितालिका (तीज) व्रत"
+    },
+    {
+      "festival_id": "gai-jatra",
+      "gregorian": "2023-08-30",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-05-14 (भदौ १४) (क) गाईजात्रा"
+    },
+    {
+      "festival_id": "indra-jatra",
+      "gregorian": "2023-09-27",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-06-11 (असोज ११) (ख) इन्द्रजात्रा"
+    },
+    {
+      "festival_id": "buddha-jayanti",
+      "gregorian": "2023-05-05",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-01-22 (वैशाख २२) (क) बुद्ध जयन्ती"
+    },
+    {
+      "festival_id": "sonam-lhosar",
+      "gregorian": "2024-02-10",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-10-27 (माघ २७) (ड) सोनम ल्होसार"
+    },
+    {
+      "festival_id": "shivaratri",
+      "gregorian": "2024-03-08",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-11-25 (फागुन २५) (ढ) महाशिवरात्री"
+    },
+    {
+      "festival_id": "saraswati-puja",
+      "gregorian": "2024-02-14",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-11-02 (फागुन २) वसन्त पञ्चमी"
+    },
+    {
+      "festival_id": "ghode-jatra",
+      "gregorian": "2024-04-08",
+      "source": "moha_pdf_2080",
+      "confidence": "official",
+      "notes": "BS 2080-12-26 (चैत २६) (घ) घोडेजात्रा"
+    },
+    {
+      "festival_id": "bs-new-year",
+      "gregorian": "2024-04-13",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-01-01 (वैशाख १) (क) नव वर्ष"
+    },
+    {
+      "festival_id": "ram-navami",
+      "gregorian": "2024-04-17",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-01-05 (वैशाख ५) (ख) रामनवमी"
+    },
+    {
+      "festival_id": "udhauli",
+      "gregorian": "2024-05-23",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-02-10 (जेठ १०) उभौली पर्व"
+    },
+    {
+      "festival_id": "janai-purnima",
+      "gregorian": "2024-08-20",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-05-03 (भदौ ३) (घ) रक्षाबन्धन"
+    },
+    {
+      "festival_id": "krishna-janmashtami",
+      "gregorian": "2024-08-27",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-05-10 (भदौ १०) (ङ) श्रीकृष्ण जन्माष्टमी"
+    },
+    {
+      "festival_id": "dashain",
+      "gregorian": "2024-10-04",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-06-17 (असोज १७) (च) घटस्थापना"
+    },
+    {
+      "festival_id": "chhath",
+      "gregorian": "2024-11-08",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-07-22 (कात्तिक २२) (झ) छठ पर्व"
+    },
+    {
+      "festival_id": "tamu-lhosar",
+      "gregorian": "2024-12-30",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-09-15 (पुस १५) (ठ) तमु ल्होसार"
+    },
+    {
+      "festival_id": "gai-jatra",
+      "gregorian": "2024-08-21",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-05-04 (भदौ ४) (क) गाईजात्रा"
+    },
+    {
+      "festival_id": "indra-jatra",
+      "gregorian": "2024-09-18",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-06-01 (असोज १) (ख) इन्द्रजात्रा"
+    },
+    {
+      "festival_id": "ubhauli",
+      "gregorian": "2024-05-23",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-02-10 (जेठ १०) उभौली पर्व"
+    },
+    {
+      "festival_id": "buddha-jayanti",
+      "gregorian": "2024-05-23",
+      "source": "moha_pdf_2081",
+      "confidence": "official",
+      "notes": "BS 2081-02-10 (जेठ १०) (क) बुद्ध जयन्ती"
+    }
+  ],
+  "summary": {
+    "total_rows": 113,
+    "unique_festivals": 26,
+    "disagreement_count": 20
+  },
+  "disagreements": [
+    {
+      "festival_id": "bs-new-year",
+      "dates": [
+        "2023-04-14",
+        "2024-04-13",
+        "2025-04-14",
+        "2026-04-14"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "janai-purnima",
+      "dates": [
+        "2023-08-30",
+        "2024-08-20",
+        "2025-08-09",
+        "2026-08-11"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "dashain",
+      "dates": [
+        "2023-10-14",
+        "2024-10-04",
+        "2025-09-23",
+        "2026-10-10"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "chhath",
+      "dates": [
+        "2023-11-19",
+        "2024-11-08",
+        "2025-10-27",
+        "2026-11-12"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "tamu-lhosar",
+      "dates": [
+        "2023-12-30",
+        "2024-12-30",
+        "2025-12-30"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082"
+      ]
+    },
+    {
+      "festival_id": "sonam-lhosar",
+      "dates": [
+        "2024-02-10",
+        "2025-01-31",
+        "2026-01-18",
+        "2026-01-19"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082"
+      ]
+    },
+    {
+      "festival_id": "shivaratri",
+      "dates": [
+        "2024-03-08",
+        "2025-02-26",
+        "2026-02-14",
+        "2026-02-15",
+        "2027-03-05"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "teej",
+      "dates": [
+        "2023-09-17",
+        "2025-08-27",
+        "2026-08-30"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "saraswati-puja",
+      "dates": [
+        "2024-02-14",
+        "2025-02-04",
+        "2026-01-22",
+        "2026-01-23"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082"
+      ]
+    },
+    {
+      "festival_id": "gai-jatra",
+      "dates": [
+        "2023-08-30",
+        "2024-08-21",
+        "2025-07-18",
+        "2025-08-10",
+        "2026-08-12"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "indra-jatra",
+      "dates": [
+        "2023-09-27",
+        "2024-09-18",
+        "2025-09-07",
+        "2026-09-08"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "ghode-jatra",
+      "dates": [
+        "2024-04-08",
+        "2025-03-30",
+        "2026-03-17",
+        "2026-03-18"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082"
+      ]
+    },
+    {
+      "festival_id": "buddha-jayanti",
+      "dates": [
+        "2023-05-05",
+        "2024-05-23",
+        "2025-05-12",
+        "2026-05-12"
+      ],
+      "sources": [
+        "moha_pdf_2080",
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "ram-navami",
+      "dates": [
+        "2024-04-17",
+        "2026-03-26",
+        "2026-03-27"
+      ],
+      "sources": [
+        "moha_pdf_2081",
+        "moha_pdf_2082"
+      ]
+    },
+    {
+      "festival_id": "krishna-janmashtami",
+      "dates": [
+        "2024-08-27",
+        "2025-08-16",
+        "2026-08-19"
+      ],
+      "sources": [
+        "moha_pdf_2081",
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "tihar",
+      "dates": [
+        "2025-10-20",
+        "2026-11-07"
+      ],
+      "sources": [
+        "moha_pdf_2082",
+        "override"
+      ]
+    },
+    {
+      "festival_id": "gyalpo-lhosar",
+      "dates": [
+        "2026-02-17",
+        "2026-02-18"
+      ],
+      "sources": [
+        "moha_pdf_2082"
+      ]
+    },
+    {
+      "festival_id": "yomari-punhi",
+      "dates": [
+        "2025-12-04",
+        "2026-12-25"
+      ],
+      "sources": [
+        "override",
+        "pradhanlaw_public_holidays_2082"
+      ]
+    },
+    {
+      "festival_id": "maghe-sankranti",
+      "dates": [
+        "2026-01-14",
+        "2027-01-14"
+      ],
+      "sources": [
+        "override",
+        "pradhanlaw_public_holidays_2082"
+      ]
+    },
+    {
+      "festival_id": "holi",
+      "dates": [
+        "2026-03-03",
+        "2027-03-22"
+      ],
+      "sources": [
+        "override",
+        "pradhanlaw_public_holidays_2082"
+      ]
+    }
+  ]
+}

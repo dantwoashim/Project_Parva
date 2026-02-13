@@ -1,0 +1,40 @@
+name: Rule Change RFC
+description: Propose a festival rule/calculation change with evidence.
+title: "[Rule RFC] "
+labels: ["rule-change", "rfc"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What rule is changing and why?
+    validations:
+      required: true
+  - type: textarea
+    id: before_after
+    attributes:
+      label: Before/After Behavior
+      description: Provide concrete date examples.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Link primary references.
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Test Plan
+      description: Which tests validate this change?
+    validations:
+      required: true
+  - type: input
+    id: reviewed_by
+    attributes:
+      label: Reviewed-by
+      placeholder: Reviewed-by: Name
+    validations:
+      required: true

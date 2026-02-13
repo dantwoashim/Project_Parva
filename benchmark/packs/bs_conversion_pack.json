@@ -1,0 +1,44 @@
+{
+  "pack_id": "bs_conversion_v1",
+  "version": "1.0",
+  "description": "Baseline Bikram Sambat conversion checks for Year-3 benchmark harness.",
+  "calendar_family": "bikram_sambat",
+  "cases": [
+    {
+      "id": "bs-2026-02-15",
+      "endpoint": "/v2/api/calendar/convert",
+      "params": {"date": "2026-02-15"},
+      "assertions": {
+        "bikram_sambat.year": 2082,
+        "bikram_sambat.month": 11,
+        "bikram_sambat.day": 3
+      },
+      "tolerance": 0,
+      "source": "Rashtriya Panchang overlap set"
+    },
+    {
+      "id": "bs-2026-02-07",
+      "endpoint": "/v2/api/calendar/convert",
+      "params": {"date": "2026-02-07"},
+      "assertions": {
+        "bikram_sambat.year": 2082,
+        "bikram_sambat.month": 10,
+        "bikram_sambat.day": 24
+      },
+      "tolerance": 0,
+      "source": "System conversion table"
+    },
+    {
+      "id": "bs-2025-02-15",
+      "endpoint": "/v2/api/calendar/convert",
+      "params": {"date": "2025-02-15"},
+      "assertions": {
+        "bikram_sambat.year": 2081,
+        "bikram_sambat.month": 11,
+        "bikram_sambat.day": 3
+      },
+      "tolerance": 0,
+      "source": "System conversion table"
+    }
+  ]
+}

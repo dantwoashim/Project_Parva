@@ -1,0 +1,55 @@
+.festival-detail-page {
+    min-height: calc(100vh - 160px);
+}
+
+.festival-detail-page__content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.festival-detail-page__state {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 1.5rem;
+}
+
+.festival-detail-page__state h2 {
+    margin: 0;
+    color: var(--color-text-primary);
+}
+
+.festival-detail-page__state p {
+    color: var(--color-text-secondary);
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.festival-detail-page__trace-panel {
+    padding: 1rem 1.25rem;
+}
+
+.festival-detail-page__trace-panel header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.festival-detail-page__trace-panel h3 {
+    margin: 0;
+}
+
+.festival-detail-page__trace-panel pre {
+    margin: 0;
+    max-height: 340px;
+    overflow: auto;
+    padding: 0.85rem;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    font-size: 0.82rem;
+}

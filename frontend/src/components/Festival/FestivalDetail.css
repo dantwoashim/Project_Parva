@@ -1,0 +1,289 @@
+/**
+ * FestivalDetail Styles
+ * =====================
+ * 
+ * Clean, readable detail view with warm typography and organized sections.
+ */
+
+.festival-detail {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-bg-card);
+}
+
+/* Header */
+.festival-detail__header {
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-surface);
+}
+
+.festival-detail__close {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+}
+
+.close-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.close-btn:hover {
+    background: var(--color-bg-hover);
+    color: var(--color-primary);
+}
+
+/* Titles */
+.festival-detail__titles {
+    padding: var(--space-5) var(--space-6);
+    background: var(--color-bg-elevated);
+}
+
+.festival-detail__titles h1 {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+}
+
+.title-nepali {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    font-family: var(--font-nepali);
+    display: block;
+    margin-bottom: var(--space-3);
+}
+
+.title-date-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+}
+
+.title-date {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.title-countdown {
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-secondary-subtle);
+    color: var(--color-secondary-dark);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+}
+
+.title-tagline {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+/* Tabs */
+.festival-detail__tabs {
+    display: flex;
+    gap: 0;
+    padding: 0 var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-elevated);
+}
+
+.tab-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    color: var(--color-text-primary);
+}
+
+.tab-btn.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.tab-icon {
+    font-size: 1.1em;
+}
+
+/* Content */
+.festival-detail__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-6);
+}
+
+.tab-panel {
+    min-height: 100%;
+}
+
+/* Content Sections */
+.content-section {
+    margin-bottom: var(--space-8);
+}
+
+.content-section h2 {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--color-border-light);
+}
+
+.content-section h3 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+}
+
+.summary-text {
+    font-size: var(--text-base);
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+}
+
+/* Quick Facts Grid */
+.quick-facts {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-3);
+}
+
+.quick-facts li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+}
+
+.fact-icon {
+    font-size: 1.25em;
+    flex-shrink: 0;
+}
+
+.fact-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fact-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.fact-value {
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+/* Clickable Tags */
+.related-tags,
+.deity-tags,
+.festival-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.tag-link:hover {
+    background: var(--color-primary-subtle);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* Connection Groups */
+.connection-group {
+    margin-top: var(--space-6);
+}
+
+/* Placeholder Text */
+.placeholder-text {
+    color: var(--color-text-muted);
+    font-style: italic;
+    padding: var(--space-4);
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .festival-detail__titles {
+        padding: var(--space-4);
+    }
+
+    .festival-detail__titles h1 {
+        font-size: var(--text-xl);
+    }
+
+    .festival-detail__content {
+        padding: var(--space-4);
+    }
+
+    .tab-label {
+        display: none;
+    }
+
+    .tab-btn {
+        padding: var(--space-3);
+    }
+
+    .quick-facts {
+        grid-template-columns: 1fr;
+    }
+}

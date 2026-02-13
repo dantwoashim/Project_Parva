@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://parva.spec/schemas/conformance_case.schema.json",
+  "title": "ConformanceCasePack",
+  "type": "object",
+  "required": ["version", "cases"],
+  "properties": {
+    "version": { "type": "string" },
+    "generated_for": { "type": "string" },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "endpoint", "required_keys"],
+        "properties": {
+          "id": { "type": "string" },
+          "endpoint": { "type": "string" },
+          "params": { "type": "object", "additionalProperties": true },
+          "required_keys": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

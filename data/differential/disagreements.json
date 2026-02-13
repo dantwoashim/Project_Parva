@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-02-12T01:46:41.289027+00:00",
+  "current": "/Users/rohanbasnet14/Documents/Project Parva/benchmark/results/bs_conversion_v1_report.json",
+  "baseline": "/Users/rohanbasnet14/Documents/Project Parva/benchmark/results/baseline_2028Q1_bs_conversion.json",
+  "result": {
+    "total_compared": 3,
+    "taxonomy": {
+      "agreement": 3,
+      "minor_difference": 0,
+      "major_difference": 0,
+      "source_missing": 0,
+      "incomparable": 0
+    },
+    "drift_percent": 0.0,
+    "details": [
+      {
+        "id": "bs-2026-02-15",
+        "classification": "agreement",
+        "baseline_observed": {
+          "bikram_sambat.year": 2082,
+          "bikram_sambat.month": 11,
+          "bikram_sambat.day": 3
+        },
+        "current_observed": {
+          "bikram_sambat.year": 2082,
+          "bikram_sambat.month": 11,
+          "bikram_sambat.day": 3
+        }
+      },
+      {
+        "id": "bs-2026-02-07",
+        "classification": "agreement",
+        "baseline_observed": {
+          "bikram_sambat.year": 2082,
+          "bikram_sambat.month": 10,
+          "bikram_sambat.day": 24
+        },
+        "current_observed": {
+          "bikram_sambat.year": 2082,
+          "bikram_sambat.month": 10,
+          "bikram_sambat.day": 24
+        }
+      },
+      {
+        "id": "bs-2025-02-15",
+        "classification": "agreement",
+        "baseline_observed": {
+          "bikram_sambat.year": 2081,
+          "bikram_sambat.month": 11,
+          "bikram_sambat.day": 3
+        },
+        "current_observed": {
+          "bikram_sambat.year": 2081,
+          "bikram_sambat.month": 11,
+          "bikram_sambat.day": 3
+        }
+      }
+    ]
+  },
+  "gate": {
+    "max_drift": 2.0,
+    "strict": false,
+    "passed": true,
+    "major_count": 0,
+    "drift_percent": 0.0
+  }
+}

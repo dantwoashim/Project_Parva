@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://parva.spec/schemas/festival_rules_v4.schema.json",
+  "title": "FestivalRulesV4Catalog",
+  "type": "object",
+  "required": ["version", "generated_at", "total_rules", "source_files", "festivals"],
+  "properties": {
+    "version": { "type": "integer", "const": 4 },
+    "generated_at": { "type": "string" },
+    "total_rules": { "type": "integer", "minimum": 0 },
+    "source_files": { "type": "array", "items": { "type": "string" } },
+    "festivals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "festival_id",
+          "name_en",
+          "rule_type",
+          "status",
+          "confidence",
+          "category",
+          "rule_family",
+          "source",
+          "engine",
+          "rule"
+        ],
+        "properties": {
+          "festival_id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "name_en": { "type": "string" },
+          "name_ne": { "type": ["string", "null"] },
+          "rule_type": { "type": "string", "enum": ["solar", "lunar", "relative", "transit", "override"] },
+          "status": { "type": "string", "enum": ["computed", "override", "provisional"] },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "category": { "type": "string" },
+          "importance": { "type": "string" },
+          "tradition": { "type": ["string", "null"] },
+          "regions": { "type": "array", "items": { "type": "string" } },
+          "rule_family": { "type": "string" },
+          "profile_ids": { "type": "array", "items": { "type": "string" } },
+          "has_variant_profiles": { "type": "boolean" },
+          "source": { "type": "string" },
+          "engine": { "type": "string" },
+          "notes": { "type": ["string", "null"] },
+          "tags": { "type": "array", "items": { "type": "string" } },
+          "rule": { "type": "object", "additionalProperties": true }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

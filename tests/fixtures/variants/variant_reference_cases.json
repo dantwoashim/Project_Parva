@@ -1,0 +1,22 @@
+{
+  "cases": [
+    {
+      "festival_id": "shivaratri",
+      "year": 2026,
+      "profile_id": "diaspora-north-indian",
+      "expected_offset_days": 1
+    },
+    {
+      "festival_id": "indra-jatra",
+      "year": 2026,
+      "profile_id": "newar-kathmandu",
+      "expected_offset_days": 0
+    },
+    {
+      "festival_id": "chhath",
+      "year": 2026,
+      "profile_id": "np-mainstream",
+      "expected_offset_days": 0
+    }
+  ]
+}

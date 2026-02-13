@@ -1,0 +1,72 @@
+{
+  "profiles": [
+    {
+      "profile_id": "np-mainstream",
+      "tradition": "Nepali Mainstream",
+      "region": "Nepal",
+      "notes": "Primary interpretation used by default Parva output."
+    },
+    {
+      "profile_id": "newar-kathmandu",
+      "tradition": "Newar",
+      "region": "Kathmandu Valley",
+      "notes": "Regional observance profile for Newar traditions."
+    },
+    {
+      "profile_id": "diaspora-north-indian",
+      "tradition": "North Indian",
+      "region": "Diaspora",
+      "notes": "Optional variant profile for diaspora planning."
+    }
+  ],
+  "festival_variants": {
+    "shivaratri": [
+      {
+        "profile_id": "np-mainstream",
+        "offset_days": 0,
+        "confidence": "official",
+        "rule_used": "falgun krishna chaturdashi",
+        "notes": "Government and mainstream panchang alignment."
+      },
+      {
+        "profile_id": "diaspora-north-indian",
+        "offset_days": 1,
+        "confidence": "computed",
+        "rule_used": "regional lunar-day boundary variant",
+        "notes": "Possible +1 day shift near boundary conditions."
+      }
+    ],
+    "indra-jatra": [
+      {
+        "profile_id": "newar-kathmandu",
+        "offset_days": 0,
+        "confidence": "official",
+        "rule_used": "newar profile",
+        "notes": "Primary valley observance."
+      },
+      {
+        "profile_id": "np-mainstream",
+        "offset_days": 0,
+        "confidence": "computed",
+        "rule_used": "national listing",
+        "notes": "National date reference."
+      }
+    ],
+    "chhath": [
+      {
+        "profile_id": "np-mainstream",
+        "offset_days": 0,
+        "confidence": "official",
+        "rule_used": "kartik shukla shashthi",
+        "notes": "Terai mainstream observance."
+      },
+      {
+        "profile_id": "diaspora-north-indian",
+        "offset_days": 0,
+        "confidence": "computed",
+        "rule_used": "community calendar alignment",
+        "notes": "Diaspora matching profile."
+      }
+    ]
+  }
+}
