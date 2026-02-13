@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-12T08:13:51.773214+00:00",
+  "generated_at": "2026-02-13T01:28:21.422453+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -4296,6 +4296,90 @@
                   "schema": {
                     "$ref": "#/components/schemas/HTTPValidationError"
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/public/artifacts/manifest": {
+        "get": {
+          "tags": [
+            "public-artifacts"
+          ],
+          "summary": "Get Artifacts Manifest",
+          "description": "List publicly consumable generated artifacts.",
+          "operationId": "get_artifacts_manifest_v3_api_public_artifacts_manifest_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "additionalProperties": true,
+                    "type": "object",
+                    "title": "Response Get Artifacts Manifest V3 Api Public Artifacts Manifest Get"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/public/artifacts/precomputed/{filename}": {
+        "get": {
+          "tags": [
+            "public-artifacts"
+          ],
+          "summary": "Get Precomputed Artifact",
+          "description": "Download precomputed JSON artifacts (panchanga/festival year files).",
+          "operationId": "get_precomputed_artifact_v3_api_public_artifacts_precomputed__filename__get",
+          "parameters": [
+            {
+              "name": "filename",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Filename"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/public/artifacts/dashboard": {
+        "get": {
+          "tags": [
+            "public-artifacts"
+          ],
+          "summary": "Get Authority Dashboard Artifact",
+          "operationId": "get_authority_dashboard_artifact_v3_api_public_artifacts_dashboard_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
                 }
               }
             }

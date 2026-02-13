@@ -32,6 +32,7 @@ from app.api import (
     resolve_router,
     spec_router,
     integration_feed_router,
+    public_artifacts_router,
 )
 from app.engine.ephemeris_config import get_ephemeris_config
 from app.provenance import get_provenance_payload
@@ -364,6 +365,7 @@ app.include_router(forecast_router)
 app.include_router(resolve_router)
 app.include_router(spec_router)
 app.include_router(integration_feed_router)
+app.include_router(public_artifacts_router)
 
 # Versioned v2 aliases
 app.include_router(festival_router, prefix="/v2")
@@ -382,6 +384,7 @@ app.include_router(forecast_router, prefix="/v2")
 app.include_router(resolve_router, prefix="/v2")
 app.include_router(spec_router, prefix="/v2")
 app.include_router(integration_feed_router, prefix="/v2")
+app.include_router(public_artifacts_router, prefix="/v2")
 
 # Versioned v3 aliases (LTS track)
 app.include_router(festival_router, prefix="/v3")
@@ -400,6 +403,7 @@ app.include_router(forecast_router, prefix="/v3")
 app.include_router(resolve_router, prefix="/v3")
 app.include_router(spec_router, prefix="/v3")
 app.include_router(integration_feed_router, prefix="/v3")
+app.include_router(public_artifacts_router, prefix="/v3")
 
 # Versioned v4 aliases (normalized contract track)
 app.include_router(festival_router, prefix="/v4")
@@ -418,6 +422,7 @@ app.include_router(forecast_router, prefix="/v4")
 app.include_router(resolve_router, prefix="/v4")
 app.include_router(spec_router, prefix="/v4")
 app.include_router(integration_feed_router, prefix="/v4")
+app.include_router(public_artifacts_router, prefix="/v4")
 
 # Versioned v5 aliases (authority track)
 app.include_router(festival_router, prefix="/v5")
@@ -436,6 +441,7 @@ app.include_router(forecast_router, prefix="/v5")
 app.include_router(resolve_router, prefix="/v5")
 app.include_router(spec_router, prefix="/v5")
 app.include_router(integration_feed_router, prefix="/v5")
+app.include_router(public_artifacts_router, prefix="/v5")
 
 
 @app.get("/v2/openapi.json")
