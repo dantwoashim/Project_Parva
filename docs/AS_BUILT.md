@@ -55,6 +55,8 @@ This document lists what is implemented and verifiable in the repository right n
   - `/Users/rohanbasnet14/Documents/Project Parva/scripts/release/check_contract_freeze.py`
   - `/Users/rohanbasnet14/Documents/Project Parva/scripts/spec/run_conformance_tests.py`
   - `/Users/rohanbasnet14/Documents/Project Parva/benchmark/harness.py`
+  - `/Users/rohanbasnet14/Documents/Project Parva/scripts/deploy/build_static_artifacts_site.py`
+  - `/Users/rohanbasnet14/Documents/Project Parva/.github/workflows/deploy-pages.yml`
 
 ## Authority Track Baseline (v5)
 - Unified temporal resolve endpoint:
@@ -65,6 +67,10 @@ This document lists what is implemented and verifiable in the repository right n
   - `/v5/api/integrations/feeds/*`
 - Trace integrity verification:
   - `/v5/api/provenance/verify/trace/{trace_id}`
+- Public artifact endpoint exposure:
+  - `/v5/api/public/artifacts/manifest`
+  - `/v5/api/public/artifacts/dashboard`
+  - `/v5/api/public/artifacts/precomputed/{filename}`
 - Core types and schemas:
   - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/api/v5_types.py`
   - `/Users/rohanbasnet14/Documents/Project Parva/docs/spec/schemas/`

@@ -182,11 +182,20 @@ Data includes: coordinates, significance, associated festivals
 - `GET /v5/api/provenance/verify/trace/{trace_id}` — Deterministic trace integrity verification
 - `GET /v5/api/integrations/feeds/all.ics` — Integration-facing ICS feed alias
 - `GET /v5/api/festivals/coverage` — Rule-catalog coverage progress toward 300+ target
+- `GET /v5/api/public/artifacts/manifest` — Public artifact index (precomputed + reports)
+- `GET /v5/api/public/artifacts/dashboard` — Authority dashboard artifact
+- `GET /v5/api/public/artifacts/precomputed/{filename}` — Precomputed JSON file download
 
 ### Authority Pipelines
 - `python3 scripts/rules/ingest_rule_sources.py` — Rule-ingestion pipeline (builds canonical v4 catalog; currently 453 entries)
 - `python3 scripts/rules/ingest_rule_sources.py --check --target 300` — CI drift/coverage gate
 - `python3 scripts/generate_authority_dashboard.py` — Auto-publishes discrepancy classes + confidence breakdown from CI artifacts
+- `python3 scripts/deploy/build_static_artifacts_site.py` — Builds static deployment bundle for GitHub Pages
+
+### Free Deployment
+- GitHub Pages workflow: `.github/workflows/deploy-pages.yml`
+- Render free-tier API config: `render.yaml`
+- Full guide: [`/docs/deployment/DEPLOY_FREE.md`](./docs/deployment/DEPLOY_FREE.md)
 
 ### Festivals
 - `GET /v3/api/festivals` — List all festivals
@@ -280,6 +289,7 @@ Data includes: coordinates, significance, associated festivals
 | [DATE_ACCURACY_EVALUATION.md](./docs/DATE_ACCURACY_EVALUATION.md) | Validation results |
 | [DATA_SOURCES.md](./docs/DATA_SOURCES.md) | Source citations |
 | [SDK_USAGE.md](./docs/SDK_USAGE.md) | SDK usage notes (Python/TS/Go) |
+| [DEPLOY_FREE.md](./docs/deployment/DEPLOY_FREE.md) | Zero-budget deployment guide (GitHub Pages + Render) |
 | [GOVERNANCE.md](./docs/GOVERNANCE.md) | Rule-change governance workflow |
 | [YEAR_2_COMPLETION_REPORT.md](./docs/YEAR_2_COMPLETION_REPORT.md) | Year-2 closure summary |
 | [YEAR_3_KICKOFF.md](./docs/YEAR_3_KICKOFF.md) | Year-3 startup plan and priorities |
