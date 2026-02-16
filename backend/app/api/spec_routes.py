@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 
 router = APIRouter(prefix="/api/spec", tags=["spec"])
@@ -19,13 +19,10 @@ CONFORMANCE_CASES = PROJECT_ROOT / "tests" / "conformance" / "conformance_cases.
 @router.get("/conformance")
 async def get_conformance_status():
     """Expose conformance status with report + case pack metadata."""
-    if not CONFORMANCE_REPORT.exists():
-        raise HTTPException(
-            status_code=404,
-            detail="Conformance report missing. Run scripts/spec/run_conformance_tests.py",
-        )
-
-    report = json.loads(CONFORMANCE_REPORT.read_text(encoding="utf-8"))
+    report = None
+    report_exists = CONFORMANCE_REPORT.exists()
+    if report_exists:
+        report = json.loads(CONFORMANCE_REPORT.read_text(encoding="utf-8"))
 
     case_count = 0
     if CONFORMANCE_CASES.exists():
@@ -42,6 +39,7 @@ async def get_conformance_status():
             "exists": SPEC_DOC.exists(),
         },
         "conformance": report,
+        "report_exists": report_exists,
         "case_pack": {
             "path": str(CONFORMANCE_CASES),
             "exists": CONFORMANCE_CASES.exists(),
