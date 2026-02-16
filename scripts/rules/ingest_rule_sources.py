@@ -33,9 +33,23 @@ def _summarize(catalog_payload: dict) -> dict:
     }
 
 
+
+
+def _canonicalize_source_path(raw: str) -> str:
+    value = str(raw).replace('\\', '/')
+    parts = Path(value).parts
+    for marker in ("backend", "data", "docs", "tests", "scripts"):
+        if marker in parts:
+            return Path(*parts[parts.index(marker):]).as_posix()
+    return value
+
+
 def _normalize_for_check(payload: dict) -> dict:
     normalized = dict(payload)
     normalized.pop("generated_at", None)
+    source_files = normalized.get("source_files")
+    if isinstance(source_files, list):
+        normalized["source_files"] = sorted({_canonicalize_source_path(item) for item in source_files})
     return normalized
 
 

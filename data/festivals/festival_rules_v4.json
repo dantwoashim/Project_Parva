@@ -1,14 +1,14 @@
 {
   "version": 4,
-  "generated_at": "2026-02-12T10:50:52.771534+00:00",
+  "generated_at": "2026-02-16T07:52:27.011576+00:00",
   "total_rules": 453,
   "source_files": [
-    "/Users/rohanbasnet14/Documents/Project Parva/backend/app/calendar/festival_rules_v3.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/backend/app/calendar/festival_rules.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/data/festivals/festivals.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/data/festivals/rule_ingestion_seed.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/data/variants/regional_map.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/data/ingest_reports"
+    "backend/app/calendar/festival_rules.json",
+    "backend/app/calendar/festival_rules_v3.json",
+    "data/festivals/festivals.json",
+    "data/festivals/rule_ingestion_seed.json",
+    "data/ingest_reports",
+    "data/variants/regional_map.json"
   ],
   "festivals": [
     {
