@@ -29,6 +29,15 @@ def _artifact_row(path: Path, category: str) -> dict:
     }
 
 
+def _iter_precomputed_candidates() -> List[Path]:
+    candidates = sorted(PRECOMPUTED_DIR.glob("*.json"))
+    if candidates:
+        return candidates
+    # In clean CI clones, output/ is gitignored. Fall back to checked-in
+    # public-beta JSON artifacts so manifest remains useful and deterministic.
+    return sorted(DOCS_PUBLIC_BETA.glob("*.json"))
+
+
 @router.get("/artifacts/manifest")
 async def get_artifacts_manifest() -> Dict[str, object]:
     """
@@ -37,7 +46,7 @@ async def get_artifacts_manifest() -> Dict[str, object]:
     PRECOMPUTED_DIR.mkdir(parents=True, exist_ok=True)
     files: List[dict] = []
 
-    for path in sorted(PRECOMPUTED_DIR.glob("*.json")):
+    for path in _iter_precomputed_candidates():
         files.append(_artifact_row(path, "precomputed"))
 
     authority_json = REPORTS_DIR / "authority_dashboard.json"
@@ -78,6 +87,8 @@ async def get_precomputed_artifact(filename: str):
 @router.get("/artifacts/dashboard")
 async def get_authority_dashboard_artifact():
     path = REPORTS_DIR / "authority_dashboard.json"
+    if not path.exists():
+        path = DOCS_PUBLIC_BETA / "authority_dashboard.json"
     if not path.exists():
         raise HTTPException(status_code=404, detail="Dashboard artifact not generated yet")
     return FileResponse(path, media_type="application/json", filename=path.name)
