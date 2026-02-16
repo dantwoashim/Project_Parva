@@ -18,6 +18,7 @@ from app.calendar.merkle import (
 )
 from app.provenance.snapshot import (
     LEGACY_FESTIVAL_SNAPSHOT,
+    SNAPSHOT_DIR,
     SnapshotRecord,
     create_snapshot,
     get_latest_snapshot,
@@ -89,7 +90,18 @@ def _resolve_festival_snapshot_path(snapshot_id: Optional[str]) -> Optional[str]
         record = get_latest_snapshot(create_if_missing=False)
 
     if record and record.festival_snapshot_path:
-        return record.festival_snapshot_path
+        configured_path = Path(record.festival_snapshot_path)
+        # Snapshot records may contain absolute paths from a different machine.
+        # Rehydrate them by checking canonical local locations first.
+        candidates = [
+            configured_path,
+            SNAPSHOT_DIR / configured_path.name,
+        ]
+        if record.snapshot_id:
+            candidates.append(SNAPSHOT_DIR / f"{record.snapshot_id}.festival_snapshot.json")
+        for candidate in candidates:
+            if candidate.exists():
+                return str(candidate)
     if LEGACY_FESTIVAL_SNAPSHOT.exists():
         return str(LEGACY_FESTIVAL_SNAPSHOT)
     return None
@@ -106,7 +118,7 @@ async def get_provenance_root() -> RootResponse:
     snapshot_path = _resolve_festival_snapshot_path(snapshot.snapshot_id if snapshot else None)
     merkle_root = get_merkle_root(Path(snapshot_path)) if snapshot_path else ""
     total_entries = 0
-    if snapshot_path:
+    if snapshot_path and Path(snapshot_path).exists():
         import json
         with open(snapshot_path, encoding="utf-8") as f:
             data = json.load(f)
