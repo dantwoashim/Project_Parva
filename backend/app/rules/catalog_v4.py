@@ -52,6 +52,14 @@ BS_MONTH_NUMBER_MAP = {
 }
 
 
+
+
+def _to_repo_relative(path: Path) -> str:
+    try:
+        return path.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
 def _load_json(path: Path) -> dict:
     if not path.exists():
         return {}
@@ -518,16 +526,18 @@ def build_canonical_catalog() -> FestivalRuleCatalogV4:
         if rule.tradition is None and rule.category and rule.category != "national":
             rule.tradition = rule.category
 
-    source_files = [
-        str(RULES_V3_PATH),
-        str(RULES_LEGACY_PATH),
-        str(DATA_FESTIVALS_PATH),
-        str(INGESTION_SEED_PATH),
+    source_paths = [
+        RULES_V3_PATH,
+        RULES_LEGACY_PATH,
+        DATA_FESTIVALS_PATH,
+        INGESTION_SEED_PATH,
     ]
     if profile_map:
-        source_files.append(str(REGIONAL_VARIANT_PATH))
+        source_paths.append(REGIONAL_VARIANT_PATH)
     if moha_candidates:
-        source_files.append(str(INGEST_REPORT_DIR))
+        source_paths.append(INGEST_REPORT_DIR)
+
+    source_files = sorted({_to_repo_relative(path) for path in source_paths})
 
     festivals = sorted(merged.values(), key=lambda item: item.festival_id)
 
