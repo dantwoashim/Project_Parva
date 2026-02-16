@@ -25,12 +25,34 @@ DEFAULT_SNAPSHOTS = {
 
 
 def _normalize(schema: dict) -> dict:
-    # Ignore volatile metadata.
+    # Ignore volatile metadata and toolchain-variant OpenAPI fields.
     schema = dict(schema)
     info = dict(schema.get("info", {}))
     if "version" in info:
         info["version"] = "<frozen>"
     schema["info"] = info
+
+    components = dict(schema.get("components", {}))
+    schemas = dict(components.get("schemas", {}))
+    validation_error = dict(schemas.get("ValidationError", {}))
+    properties = dict(validation_error.get("properties", {}))
+
+    # FastAPI/Pydantic toolchain versions may add these optional fields.
+    for volatile_key in ("input", "ctx"):
+        properties.pop(volatile_key, None)
+
+    if properties:
+        validation_error["properties"] = properties
+    required = validation_error.get("required")
+    if isinstance(required, list):
+        validation_error["required"] = [k for k in required if k not in {"input", "ctx"}]
+    if validation_error:
+        schemas["ValidationError"] = validation_error
+    if schemas:
+        components["schemas"] = schemas
+    if components:
+        schema["components"] = components
+
     return schema
 
 
