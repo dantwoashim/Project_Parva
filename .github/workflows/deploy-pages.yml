@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .
+          pip install fastapi uvicorn pydantic pytest httpx pyswisseph aiohttp
 
       - name: Generate precomputed artifacts
         run: |

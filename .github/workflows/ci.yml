@@ -21,7 +21,7 @@ jobs:
       - name: Install backend dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .
+          pip install fastapi uvicorn pydantic pytest httpx pyswisseph aiohttp
 
       - name: Run backend test suite
         run: PYTHONPATH=backend python -m pytest -q
@@ -61,7 +61,7 @@ jobs:
       - name: Install backend dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .
+          pip install fastapi uvicorn pydantic pytest httpx pyswisseph aiohttp
 
       - name: Contract freeze check
         run: PYTHONPATH=backend python scripts/release/check_contract_freeze.py

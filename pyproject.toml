@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "project-parva"
 version = "3.0.0"
@@ -22,3 +26,10 @@ dev = [
 [tool.pytest.ini_options]
 pythonpath = ["backend"]
 testpaths = ["tests", "backend/tests"]
+
+[tool.setuptools]
+package-dir = { "" = "backend" }
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+include = ["app*"]
