@@ -1,0 +1,113 @@
+name: publish-sdks
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (skip actual publish)"
+        required: false
+        default: "true"
+
+env:
+  PYTHON_SDK_DIR: sdk/python
+  TS_SDK_DIR: sdk/typescript
+  GO_SDK_DIR: sdk/go
+
+jobs:
+  # ─── Python SDK → PyPI ──────────────────────────────────────
+  publish-python:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # for trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build tools
+        run: python -m pip install --upgrade pip build twine
+
+      - name: Build package
+        working-directory: ${{ env.PYTHON_SDK_DIR }}
+        run: python -m build
+
+      - name: Check package
+        working-directory: ${{ env.PYTHON_SDK_DIR }}
+        run: twine check dist/*
+
+      - name: Publish to PyPI
+        if: ${{ github.event_name == 'release' || inputs.dry_run != 'true' }}
+        working-directory: ${{ env.PYTHON_SDK_DIR }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: ${{ env.PYTHON_SDK_DIR }}/dist/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-sdk-dist
+          path: ${{ env.PYTHON_SDK_DIR }}/dist/
+
+  # ─── TypeScript SDK → npm ───────────────────────────────────
+  publish-typescript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        working-directory: ${{ env.TS_SDK_DIR }}
+        run: npm ci
+
+      - name: Build
+        working-directory: ${{ env.TS_SDK_DIR }}
+        run: npm run build
+
+      - name: Dry run publish
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run == 'true' }}
+        working-directory: ${{ env.TS_SDK_DIR }}
+        run: npm publish --dry-run
+
+      - name: Publish to npm
+        if: ${{ github.event_name == 'release' || inputs.dry_run != 'true' }}
+        working-directory: ${{ env.TS_SDK_DIR }}
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # ─── Go SDK → Go Module Tag ────────────────────────────────
+  publish-go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Verify module
+        working-directory: ${{ env.GO_SDK_DIR }}
+        run: |
+          go mod tidy
+          go vet ./...
+
+      - name: Run tests
+        working-directory: ${{ env.GO_SDK_DIR }}
+        run: go test ./...
+
+      - name: Tag verification
+        run: |
+          VERSION="${{ github.event.release.tag_name || 'v0.0.0-dev' }}"
+          echo "Go module will be available at: github.com/${{ github.repository }}/sdk/go@${VERSION}"
+          echo "Go modules are published automatically via git tags."

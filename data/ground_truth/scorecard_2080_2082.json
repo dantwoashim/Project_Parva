@@ -1,0 +1,282 @@
+{
+  "_meta": {
+    "name": "Project Parva Week3 Accuracy Scorecard",
+    "scope": "Usable MoHA matched entries (BS 2080-2082)",
+    "mode": "V2 without overrides",
+    "reference_mode": "V2 with overrides",
+    "total_usable_entries": 45,
+    "total_discrepancies": 34,
+    "exact_match_rate": 24.44,
+    "exact_match_rate_with_overrides": 86.67
+  },
+  "by_festival": {
+    "bs-new-year": {
+      "total": 3,
+      "exact": 2,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 3,
+      "exact_rate": 66.67,
+      "off_by_1_rate": 33.33,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "buddha-jayanti": {
+      "total": 3,
+      "exact": 0,
+      "off_by_1": 2,
+      "failed": 0,
+      "exact_with_overrides": 3,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 66.67,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "chhath": {
+      "total": 3,
+      "exact": 0,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 3,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 33.33,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "dashain": {
+      "total": 3,
+      "exact": 0,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 3,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 33.33,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "gai-jatra": {
+      "total": 3,
+      "exact": 0,
+      "off_by_1": 0,
+      "failed": 1,
+      "exact_with_overrides": 3,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 0.0,
+      "failed_rate": 33.33,
+      "exact_with_overrides_rate": 100.0
+    },
+    "ghode-jatra": {
+      "total": 3,
+      "exact": 1,
+      "off_by_1": 0,
+      "failed": 0,
+      "exact_with_overrides": 2,
+      "exact_rate": 33.33,
+      "off_by_1_rate": 0.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 66.67
+    },
+    "gyalpo-lhosar": {
+      "total": 1,
+      "exact": 0,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 0,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 100.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 0.0
+    },
+    "indra-jatra": {
+      "total": 3,
+      "exact": 0,
+      "off_by_1": 0,
+      "failed": 0,
+      "exact_with_overrides": 3,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 0.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "janai-purnima": {
+      "total": 3,
+      "exact": 0,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 3,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 33.33,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "krishna-janmashtami": {
+      "total": 2,
+      "exact": 0,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 2,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 50.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "ram-navami": {
+      "total": 2,
+      "exact": 1,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 1,
+      "exact_rate": 50.0,
+      "off_by_1_rate": 50.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 50.0
+    },
+    "saraswati-puja": {
+      "total": 3,
+      "exact": 1,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 2,
+      "exact_rate": 33.33,
+      "off_by_1_rate": 33.33,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 66.67
+    },
+    "shivaratri": {
+      "total": 3,
+      "exact": 0,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 2,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 33.33,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 66.67
+    },
+    "sonam-lhosar": {
+      "total": 3,
+      "exact": 2,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 2,
+      "exact_rate": 66.67,
+      "off_by_1_rate": 33.33,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 66.67
+    },
+    "tamu-lhosar": {
+      "total": 3,
+      "exact": 3,
+      "off_by_1": 0,
+      "failed": 0,
+      "exact_with_overrides": 3,
+      "exact_rate": 100.0,
+      "off_by_1_rate": 0.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "teej": {
+      "total": 2,
+      "exact": 0,
+      "off_by_1": 0,
+      "failed": 0,
+      "exact_with_overrides": 2,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 0.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "tihar": {
+      "total": 1,
+      "exact": 0,
+      "off_by_1": 0,
+      "failed": 0,
+      "exact_with_overrides": 1,
+      "exact_rate": 0.0,
+      "off_by_1_rate": 0.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "ubhauli": {
+      "total": 1,
+      "exact": 1,
+      "off_by_1": 0,
+      "failed": 0,
+      "exact_with_overrides": 1,
+      "exact_rate": 100.0,
+      "off_by_1_rate": 0.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    }
+  },
+  "by_rule_group": {
+    "legacy_fallback": {
+      "total": 10,
+      "exact": 7,
+      "off_by_1": 3,
+      "failed": 0,
+      "exact_with_overrides": 7,
+      "exact_rate": 70.0,
+      "off_by_1_rate": 30.0,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 70.0
+    },
+    "lunar": {
+      "total": 32,
+      "exact": 2,
+      "off_by_1": 8,
+      "failed": 1,
+      "exact_with_overrides": 29,
+      "exact_rate": 6.25,
+      "off_by_1_rate": 25.0,
+      "failed_rate": 3.12,
+      "exact_with_overrides_rate": 90.62
+    },
+    "solar": {
+      "total": 3,
+      "exact": 2,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 3,
+      "exact_rate": 66.67,
+      "off_by_1_rate": 33.33,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    }
+  },
+  "by_bs_year": {
+    "2080": {
+      "total": 13,
+      "exact": 4,
+      "off_by_1": 2,
+      "failed": 1,
+      "exact_with_overrides": 13,
+      "exact_rate": 30.77,
+      "off_by_1_rate": 15.38,
+      "failed_rate": 7.69,
+      "exact_with_overrides_rate": 100.0
+    },
+    "2081": {
+      "total": 16,
+      "exact": 5,
+      "off_by_1": 1,
+      "failed": 0,
+      "exact_with_overrides": 16,
+      "exact_rate": 31.25,
+      "off_by_1_rate": 6.25,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 100.0
+    },
+    "2082": {
+      "total": 16,
+      "exact": 2,
+      "off_by_1": 9,
+      "failed": 0,
+      "exact_with_overrides": 10,
+      "exact_rate": 12.5,
+      "off_by_1_rate": 56.25,
+      "failed_rate": 0.0,
+      "exact_with_overrides_rate": 62.5
+    }
+  }
+}
