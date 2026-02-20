@@ -1,0 +1,28 @@
+{
+  "festival_id": "pahan-charhe",
+  "generated_at": "2026-02-17T10:12:06.124889+00:00",
+  "validation_framework": "parva_rule_validation_v1",
+  "cases": [
+    {
+      "year": 2025,
+      "expected_start_date": "2025-09-05",
+      "expected_end_date": "2025-09-05",
+      "method": "rule_dsl_lunar_bs_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2026,
+      "expected_start_date": "2026-08-26",
+      "expected_end_date": "2026-08-26",
+      "method": "rule_dsl_lunar_bs_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2027,
+      "expected_start_date": "2027-08-15",
+      "expected_end_date": "2027-08-15",
+      "method": "rule_dsl_v2_fallback:fallback_v1",
+      "status": "passed"
+    }
+  ]
+}

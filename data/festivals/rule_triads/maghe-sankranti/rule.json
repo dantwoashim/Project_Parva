@@ -1,0 +1,15 @@
+{
+  "festival_id": "maghe-sankranti",
+  "rule_type": "solar",
+  "rule_family": "solar_sankranti",
+  "source": "festival_rules_v3",
+  "status": "computed",
+  "confidence": "high",
+  "executable": true,
+  "execution_template": "solar_sankranti_v1",
+  "payload": {
+    "bs_month": 10,
+    "solar_day": 1,
+    "event": "makara_sankranti"
+  }
+}

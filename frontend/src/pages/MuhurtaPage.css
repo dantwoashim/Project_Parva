@@ -1,0 +1,112 @@
+.muhurta-page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.muhurta-page__header {
+  padding: var(--space-5);
+  display: grid;
+  gap: var(--space-4);
+}
+
+.muhurta-page__controls {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(120px, 1fr));
+  gap: var(--space-3);
+  align-items: end;
+}
+
+.muhurta-page__controls label {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.muhurta-page__controls span {
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  font-weight: 700;
+}
+
+.muhurta-page__controls input,
+.muhurta-page__controls select {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-elevated);
+}
+
+.muhurta-page__state {
+  padding: var(--space-5);
+}
+
+.muhurta-page__hero-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.muhurta-highlight {
+  padding: var(--space-4);
+}
+
+.muhurta-highlight .value {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  margin: var(--space-2) 0;
+}
+
+.muhurta-highlight .meta {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.muhurta-table-card {
+  padding: var(--space-5);
+  overflow: auto;
+}
+
+.muhurta-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.muhurta-table th,
+.muhurta-table td {
+  border-bottom: 1px solid var(--color-border-light);
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+}
+
+.muhurta-table th {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
+.muhurta-page__warnings {
+  padding: var(--space-5);
+}
+
+.muhurta-page__warnings ul {
+  margin-top: var(--space-2);
+  padding-left: 1.2rem;
+  color: var(--color-vermillion);
+}
+
+@media (max-width: 1100px) {
+  .muhurta-page__controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .muhurta-page__controls {
+    grid-template-columns: 1fr;
+  }
+}

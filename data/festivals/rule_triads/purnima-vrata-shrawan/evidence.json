@@ -1,0 +1,18 @@
+{
+  "festival_id": "purnima-vrata-shrawan",
+  "generated_at": "2026-02-17T10:12:06.794410+00:00",
+  "source_evidence_ids": [
+    "rule_ingestion_seed_v1"
+  ],
+  "confidence": "medium",
+  "status": "computed",
+  "rule_family": "monthly_purnima",
+  "tags": [
+    "computed-month2",
+    "generated",
+    "monthly",
+    "quality-validated",
+    "seed-ingestion"
+  ],
+  "notes": "Generated recurring lunar observance from ingestion seed profile."
+}

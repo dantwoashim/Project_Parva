@@ -9,7 +9,7 @@ def test_e2e_calendar_today_pipeline_has_metadata_and_npt_sunrise():
     client = TestClient(app)
     response = client.get('/api/calendar/today')
     assert response.status_code == 200
-    assert response.headers['X-Parva-Engine'] == 'v2'
+    assert response.headers['X-Parva-Engine'] == 'v3'
 
     data = response.json()
     tithi = data['tithi']
@@ -26,7 +26,7 @@ def test_e2e_calendar_tithi_endpoint_pipeline():
     assert response.status_code == 200
 
     data = response.json()
-    assert data['engine_version'] == 'v2'
+    assert data['engine_version'] == 'v3'
     assert 'location' in data
     assert 'tithi' in data
 

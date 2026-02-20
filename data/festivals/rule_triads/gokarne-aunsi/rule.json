@@ -1,0 +1,14 @@
+{
+  "festival_id": "gokarne-aunsi",
+  "rule_type": "override",
+  "rule_family": "content_inventory",
+  "source": "festival_content_inventory",
+  "status": "provisional",
+  "confidence": "low",
+  "executable": false,
+  "execution_template": null,
+  "payload": {
+    "mode": "official_override",
+    "dates": {}
+  }
+}

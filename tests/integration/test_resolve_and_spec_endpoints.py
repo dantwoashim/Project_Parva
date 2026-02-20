@@ -9,9 +9,9 @@ client = TestClient(app)
 
 
 def test_resolve_endpoint_returns_expected_sections():
-    resp = client.get("/v5/api/resolve", params={"date": "2026-10-15"})
+    resp = client.get("/v3/api/resolve", params={"date": "2026-10-15"})
     assert resp.status_code == 200
-    body = resp.json()["data"]
+    body = resp.json()
 
     assert body["date"] == "2026-10-15"
     assert "bikram_sambat" in body
@@ -23,9 +23,9 @@ def test_resolve_endpoint_returns_expected_sections():
 
 
 def test_spec_conformance_endpoint_returns_report():
-    resp = client.get("/v5/api/spec/conformance")
+    resp = client.get("/v3/api/spec/conformance")
     assert resp.status_code == 200
-    body = resp.json()["data"]
+    body = resp.json()
 
     assert body["spec"]["version"] == "1.0"
     assert "conformance" in body
@@ -33,12 +33,12 @@ def test_spec_conformance_endpoint_returns_report():
 
 
 def test_trace_verify_endpoint_validates_generated_trace():
-    resolve_resp = client.get("/v5/api/resolve", params={"date": "2026-10-16", "include_trace": True})
+    resolve_resp = client.get("/v3/api/resolve", params={"date": "2026-10-16", "include_trace": True})
     assert resolve_resp.status_code == 200
-    trace_id = resolve_resp.json()["data"]["trace"]["trace_id"]
+    trace_id = resolve_resp.json()["trace"]["trace_id"]
 
-    verify_resp = client.get(f"/v5/api/provenance/verify/trace/{trace_id}")
+    verify_resp = client.get(f"/v3/api/provenance/verify/trace/{trace_id}")
     assert verify_resp.status_code == 200
-    data = verify_resp.json()["data"]
+    data = verify_resp.json()
     assert data["trace_id"] == trace_id
     assert data["checks"]["deterministic_id_match"] is True

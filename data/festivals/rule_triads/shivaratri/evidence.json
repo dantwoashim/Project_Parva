@@ -1,0 +1,16 @@
+{
+  "festival_id": "shivaratri",
+  "generated_at": "2026-02-17T10:12:06.848585+00:00",
+  "source_evidence_ids": [
+    "festival_rules_v3"
+  ],
+  "confidence": "high",
+  "status": "computed",
+  "rule_family": "lunar_month_tithi",
+  "tags": [
+    "canonical",
+    "has-variants",
+    "v3"
+  ],
+  "notes": "Pashupatinath vigil"
+}

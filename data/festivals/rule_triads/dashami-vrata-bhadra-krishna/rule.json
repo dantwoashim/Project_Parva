@@ -1,0 +1,16 @@
+{
+  "festival_id": "dashami-vrata-bhadra-krishna",
+  "rule_type": "lunar",
+  "rule_family": "monthly_dashami",
+  "source": "rule_ingestion_seed_v1",
+  "status": "provisional",
+  "confidence": "low",
+  "executable": true,
+  "execution_template": "lunar_tithi_window_v1",
+  "payload": {
+    "lunar_month": "Bhadra",
+    "paksha": "krishna",
+    "tithi": 10,
+    "adhik_policy": "skip"
+  }
+}

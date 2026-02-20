@@ -1,0 +1,15 @@
+{
+  "festival_id": "shukrabar-vrata-mangsir",
+  "rule_type": "override",
+  "rule_family": "weekly_vrata",
+  "source": "rule_ingestion_seed_v1",
+  "status": "provisional",
+  "confidence": "low",
+  "executable": false,
+  "execution_template": null,
+  "payload": {
+    "mode": "official_override",
+    "dates": {},
+    "bs_month": 8
+  }
+}

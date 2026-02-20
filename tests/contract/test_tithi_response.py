@@ -11,7 +11,7 @@ def test_calendar_tithi_endpoint_contract():
     assert response.status_code == 200
 
     body = response.json()
-    assert body["engine_version"] == "v2"
+    assert body["engine_version"] == "v3"
     assert "tithi" in body
     t = body["tithi"]
 

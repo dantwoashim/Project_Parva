@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "generated_for": "Parva Temporal Spec v1",
+  "version": "1.1",
+  "generated_for": "Parva Temporal Spec v1 (v3 public profile)",
   "cases": [
     {
       "id": "calendar-convert-v3",
@@ -21,28 +21,22 @@
       "required_keys": ["explanation", "steps", "calculation_trace_id"]
     },
     {
-      "id": "provenance-root-v3",
-      "endpoint": "/v3/api/provenance/root",
-      "params": {},
-      "required_keys": ["merkle_root"]
+      "id": "personal-panchanga-v3",
+      "endpoint": "/v3/api/personal/panchanga",
+      "params": {"date": "2026-02-15"},
+      "required_keys": ["tithi", "nakshatra", "yoga", "karana", "vaara", "calculation_trace_id"]
     },
     {
-      "id": "reliability-status-v3",
-      "endpoint": "/v3/api/reliability/status",
-      "params": {},
-      "required_keys": ["runtime", "policy"]
+      "id": "muhurta-v3",
+      "endpoint": "/v3/api/muhurta",
+      "params": {"date": "2026-02-15"},
+      "required_keys": ["muhurtas", "calculation_trace_id", "confidence"]
     },
     {
-      "id": "resolve-v5",
-      "endpoint": "/v5/api/resolve",
-      "params": {"date": "2026-10-15"},
-      "required_keys": ["data", "meta"]
-    },
-    {
-      "id": "spec-conformance-v5",
-      "endpoint": "/v5/api/spec/conformance",
-      "params": {},
-      "required_keys": ["data", "meta"]
+      "id": "kundali-v3",
+      "endpoint": "/v3/api/kundali",
+      "params": {"datetime": "2026-02-15T06:30:00+05:45"},
+      "required_keys": ["lagna", "grahas", "houses", "d9", "dasha", "calculation_trace_id"]
     }
   ]
 }

@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
-"""Check current OpenAPI against frozen versioned snapshots."""
+"""Check current OpenAPI against frozen snapshots.
+
+Default behavior validates only v3 public profile.
+Pass --track v4 or --track v5 for experimental checks.
+"""
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -17,7 +22,7 @@ if str(BACKEND_ROOT) not in sys.path:
 from app.main import app  # noqa: E402
 
 
-DEFAULT_SNAPSHOTS = {
+SNAPSHOTS = {
     "v3": PROJECT_ROOT / "docs" / "contracts" / "v3_openapi_snapshot.json",
     "v4": PROJECT_ROOT / "docs" / "contracts" / "v4_openapi_snapshot.json",
     "v5": PROJECT_ROOT / "docs" / "contracts" / "v5_openapi_snapshot.json",
@@ -25,7 +30,6 @@ DEFAULT_SNAPSHOTS = {
 
 
 def _normalize(schema: dict) -> dict:
-    # Ignore volatile metadata and toolchain-variant OpenAPI fields.
     schema = dict(schema)
     info = dict(schema.get("info", {}))
     if "version" in info:
@@ -37,7 +41,6 @@ def _normalize(schema: dict) -> dict:
     validation_error = dict(schemas.get("ValidationError", {}))
     properties = dict(validation_error.get("properties", {}))
 
-    # FastAPI/Pydantic toolchain versions may add these optional fields.
     for volatile_key in ("input", "ctx"):
         properties.pop(volatile_key, None)
 
@@ -82,6 +85,13 @@ def _check_track(track: str, snapshot_path: Path) -> int:
     return 1
 
 
+def _default_tracks() -> list[str]:
+    # Public-profile CI only enforces v3 unless explicitly requested.
+    if os.getenv("PARVA_ENABLE_EXPERIMENTAL_API", "").strip().lower() in {"1", "true", "yes", "on"}:
+        return ["v3", "v4", "v5"]
+    return ["v3"]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="OpenAPI freeze checker")
     parser.add_argument("--track", choices=["v3", "v4", "v5", "all"], default="all")
@@ -94,8 +104,8 @@ def main() -> int:
             return 2
         return _check_track(args.track, Path(args.snapshot))
 
-    tracks = ["v3", "v4", "v5"] if args.track == "all" else [args.track]
-    codes = [_check_track(track, DEFAULT_SNAPSHOTS[track]) for track in tracks]
+    tracks = _default_tracks() if args.track == "all" else [args.track]
+    codes = [_check_track(track, SNAPSHOTS[track]) for track in tracks]
     if 2 in codes:
         return 2
     if 1 in codes:

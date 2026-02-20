@@ -28,3 +28,8 @@ benchmark/results/
 # Runtime data
 backend/data/webhooks/subscriptions.json
 data/transparency/*.jsonl
+
+# Generated provenance artifacts
+backend/data/traces/tr_*.json
+backend/data/snapshots/snap_*.json
+backend/data/snapshots/snap_*.festival_snapshot.json

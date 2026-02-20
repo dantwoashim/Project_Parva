@@ -1,0 +1,16 @@
+{
+  "festival_id": "dashami-vrata-jestha-shukla",
+  "generated_at": "2026-02-17T10:07:34.449783+00:00",
+  "source_evidence_ids": [
+    "rule_ingestion_seed_v1"
+  ],
+  "confidence": "low",
+  "status": "provisional",
+  "rule_family": "monthly_dashami",
+  "tags": [
+    "generated",
+    "seed-ingestion",
+    "recurring"
+  ],
+  "notes": "Generated recurring observance rule from ingestion seed profile."
+}

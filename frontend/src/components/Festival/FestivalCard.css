@@ -1,209 +1,180 @@
-/**
- * FestivalCard Styles
- * ===================
- * 
- * Clean, premium card design with warm colors and subtle interactions.
- */
-
 .festival-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 360px;
-    overflow: hidden;
-    cursor: pointer;
-    background: var(--color-bg-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-card);
-    transition: all var(--transition-base);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .festival-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
-    border-color: var(--color-primary-light);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(200, 90, 62, 0.35);
+}
+
+.festival-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.28);
 }
 
 .festival-card--active {
-    border-color: var(--color-primary);
-    box-shadow: 0 4px 16px rgba(200, 90, 62, 0.15);
+  border-color: var(--color-primary);
+  box-shadow: 0 6px 18px rgba(200, 90, 62, 0.2);
 }
 
-/* Category Dot */
-.festival-card__category-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--category-national);
+.festival-card__hero {
+  position: relative;
+  height: 122px;
 }
 
-.festival-card__category-dot--national {
-    background: var(--category-national);
+.festival-card__image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-.festival-card__category-dot--newari {
-    background: var(--category-newari);
+.festival-card__gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(20, 20, 20, 0.08), rgba(20, 20, 20, 0.42));
 }
 
-.festival-card__category-dot--buddhist {
-    background: var(--category-buddhist);
+.festival-card__category,
+.festival-card__countdown {
+  position: absolute;
+  z-index: 1;
 }
 
-.festival-card__category-dot--hindu {
-    background: var(--category-hindu);
-}
-
-.festival-card__category-dot--regional {
-    background: var(--category-regional);
-}
-
-/* Content */
-.festival-card__content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-5);
-}
-
-/* Header with dot and category */
-.festival-card__header {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-}
-
-.festival-card__category-label {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* Names */
-.festival-card__names {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-}
-
-.festival-card__title {
-    font-size: var(--text-lg);
-    font-weight: 600;
-    color: var(--color-text-primary);
-    line-height: 1.3;
-}
-
-.festival-card__title-nepali {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    font-family: var(--font-nepali);
-}
-
-/* Date Section */
-.festival-card__date-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-3) 0;
-    border-top: 1px solid var(--color-border-light);
-    margin-top: var(--space-2);
-}
-
-.festival-card__date {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.festival-card__date-label {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-}
-
-.festival-card__date-value {
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--color-text-primary);
+.festival-card__category {
+  top: var(--space-3);
+  left: var(--space-3);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .festival-card__countdown {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
+  bottom: var(--space-3);
+  right: var(--space-3);
+  background: rgba(255, 255, 255, 0.92);
 }
 
-.festival-card__countdown-value {
-    font-size: var(--text-lg);
-    font-weight: 700;
-    color: var(--color-secondary-dark);
+.festival-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
 }
 
-.festival-card__countdown-label {
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
+.festival-card__names {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-/* Tagline */
+.festival-card__title {
+  margin: 0;
+  font-size: var(--text-xl);
+  line-height: 1.3;
+}
+
+.festival-card__title-nepali {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.festival-card__date {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.festival-card__duration {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+}
+
 .festival-card__tagline {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* Compact Mode for Sidebar */
-.festival-card--compact {
-    max-width: 100%;
-    flex-direction: row;
-    align-items: center;
-    padding: var(--space-3) var(--space-4);
-    gap: var(--space-3);
-    border-radius: var(--radius-md);
+.festival-card__meta-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }
 
-.festival-card--compact .festival-card__content {
-    padding: 0;
-    flex: 1;
-    gap: var(--space-1);
+.badge-rule {
+  text-transform: capitalize;
+  letter-spacing: 0.04em;
 }
 
-.festival-card--compact .festival-card__title {
-    font-size: var(--text-base);
+.badge-rule--gold {
+  background: rgba(212, 160, 82, 0.18);
+  color: #88611f;
 }
 
-.festival-card--compact .festival-card__date-section {
-    display: none;
+.badge-rule--validated {
+  background: rgba(107, 142, 107, 0.16);
+  color: #2f5c2f;
 }
 
-.festival-card--compact .festival-card__tagline {
-    display: none;
+.badge-rule--beta {
+  background: rgba(200, 90, 62, 0.12);
+  color: #8a3c2a;
 }
 
-.festival-card--compact .festival-card__countdown-compact {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: var(--text-sm);
-    color: var(--color-secondary-dark);
-    font-weight: 600;
-    white-space: nowrap;
+.badge-rule--inventory,
+.badge-rule--unknown {
+  background: rgba(45, 42, 38, 0.08);
+  color: var(--color-text-secondary);
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-    .festival-card {
-        max-width: 100%;
-    }
+.badge-rule-status {
+  text-transform: capitalize;
+}
 
-    .festival-card__title {
-        font-size: var(--text-base);
-    }
+.festival-card__cta {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.cta-arrow {
+  transition: transform var(--transition-fast);
+}
+
+.festival-card__cta:hover .cta-arrow {
+  transform: translateX(2px);
+}
+
+.festival-card__glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  pointer-events: none;
+  border: 1px solid rgba(212, 160, 82, 0.35);
+}
+
+@media (max-width: 760px) {
+  .festival-card__title {
+    font-size: 1.1rem;
+  }
+
+  .festival-card__hero {
+    height: 108px;
+  }
 }

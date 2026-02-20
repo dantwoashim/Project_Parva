@@ -20,12 +20,12 @@ class ParvaClient:
     Project Parva client with:
     - typed envelope responses
     - retry/backoff for transient failures
-    - v5 authority track defaults
+    - v3 public-profile defaults
     """
 
     def __init__(
         self,
-        base_url: str = "http://localhost:8000/v5/api",
+        base_url: str = "http://localhost:8000/v3/api",
         timeout: int = 15,
         retries: int = 2,
         backoff_seconds: float = 0.3,

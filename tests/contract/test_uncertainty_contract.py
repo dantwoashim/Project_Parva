@@ -9,7 +9,7 @@ client = TestClient(app)
 
 
 def test_convert_includes_uncertainty_fields():
-    resp = client.get("/v2/api/calendar/convert", params={"date": "2026-02-15"})
+    resp = client.get("/v3/api/calendar/convert", params={"date": "2026-02-15"})
     assert resp.status_code == 200
     body = resp.json()
 
@@ -20,7 +20,7 @@ def test_convert_includes_uncertainty_fields():
 
 
 def test_tithi_endpoint_includes_uncertainty_object():
-    resp = client.get("/v2/api/calendar/tithi", params={"date": "2026-02-15"})
+    resp = client.get("/v3/api/calendar/tithi", params={"date": "2026-02-15"})
     assert resp.status_code == 200
     body = resp.json()
     assert "uncertainty" in body["tithi"]
@@ -28,7 +28,7 @@ def test_tithi_endpoint_includes_uncertainty_object():
 
 
 def test_panchanga_includes_astronomical_uncertainty():
-    resp = client.get("/v2/api/calendar/panchanga", params={"date": "2026-02-15"})
+    resp = client.get("/v3/api/calendar/panchanga", params={"date": "2026-02-15"})
     assert resp.status_code == 200
     body = resp.json()
     assert "uncertainty" in body["panchanga"]

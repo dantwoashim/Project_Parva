@@ -1,0 +1,15 @@
+{
+  "festival_id": "maghe-sankranti",
+  "generated_at": "2026-02-17T10:12:06.059893+00:00",
+  "source_evidence_ids": [
+    "festival_rules_v3"
+  ],
+  "confidence": "high",
+  "status": "computed",
+  "rule_family": "solar_sankranti",
+  "tags": [
+    "v3",
+    "canonical"
+  ],
+  "notes": "Sun enters Makara"
+}

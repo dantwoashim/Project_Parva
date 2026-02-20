@@ -9,6 +9,7 @@ from .bikram_sambat.plugin import BikramSambatPlugin
 from .chinese.plugin import ChineseCalendarPlugin
 from .hebrew.plugin import HebrewCalendarPlugin
 from .islamic.plugin import IslamicCalendarPlugin
+from .julian_calendar.plugin import JulianCalendarPlugin
 from .nepal_sambat.plugin import NepalSambatPlugin
 from .tibetan.plugin import TibetanCalendarPlugin
 
@@ -51,4 +52,5 @@ def get_plugin_registry() -> PluginRegistry:
         _registry.register(IslamicCalendarPlugin())
         _registry.register(HebrewCalendarPlugin())
         _registry.register(ChineseCalendarPlugin())
+        _registry.register(JulianCalendarPlugin())
     return _registry

@@ -19,12 +19,13 @@ def test_v3_openapi_and_docs_endpoints_exist():
 
 
 def test_v3_api_alias_works_for_core_endpoints():
-    v2_today = client.get("/v2/api/calendar/today")
+    alias_today = client.get("/api/calendar/today")
     v3_today = client.get("/v3/api/calendar/today")
-    assert v2_today.status_code == 200
+
+    assert alias_today.status_code == 200
     assert v3_today.status_code == 200
     assert v3_today.headers.get("X-Parva-Engine") == "v3"
-    assert v2_today.json()["gregorian"] == v3_today.json()["gregorian"]
+    assert alias_today.json()["gregorian"] == v3_today.json()["gregorian"]
 
     v3_explain = client.get("/v3/api/festivals/dashain/explain", params={"year": 2026})
     assert v3_explain.status_code == 200

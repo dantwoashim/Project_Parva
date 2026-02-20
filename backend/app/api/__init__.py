@@ -17,6 +17,9 @@ from .resolve_routes import router as resolve_router
 from .spec_routes import router as spec_router
 from .integration_feed_routes import router as integration_feed_router
 from .public_artifacts_routes import router as public_artifacts_router
+from .personal_routes import router as personal_router
+from .muhurta_routes import router as muhurta_router
+from .kundali_routes import router as kundali_router
 
 __all__ = [
     "calendar_router",
@@ -36,4 +39,7 @@ __all__ = [
     "spec_router",
     "integration_feed_router",
     "public_artifacts_router",
+    "personal_router",
+    "muhurta_router",
+    "kundali_router",
 ]

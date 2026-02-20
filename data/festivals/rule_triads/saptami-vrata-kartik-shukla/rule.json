@@ -1,0 +1,16 @@
+{
+  "festival_id": "saptami-vrata-kartik-shukla",
+  "rule_type": "lunar",
+  "rule_family": "monthly_saptami",
+  "source": "rule_ingestion_seed_v1",
+  "status": "provisional",
+  "confidence": "low",
+  "executable": true,
+  "execution_template": "lunar_tithi_window_v1",
+  "payload": {
+    "lunar_month": "Kartik",
+    "paksha": "shukla",
+    "tithi": 7,
+    "adhik_policy": "skip"
+  }
+}

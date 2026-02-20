@@ -1,38 +1,19 @@
 /**
  * API Service
- * ===========
+ * ==========
  *
- * Handles all API calls to the Parva backend.
- *
- * Notes:
- * - Defaults to v5 API (authority envelope).
- * - Falls back gracefully for v2/v3/v4 style payloads.
+ * Public profile defaults to v3.
+ * Envelope-aware parsing is still supported for compatibility.
  */
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000/v5/api';
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000/v3/api';
 
-/**
- * Fetch wrapper with envelope-aware parsing and error handling.
- *
- * @param {string} endpoint
- * @param {Object} options
- * @param {"json"|"text"} parseAs
- * @returns {Promise<any>}
- */
 export async function fetchAPI(endpoint, options = {}, parseAs = 'json') {
     const envelope = await fetchAPIEnvelope(endpoint, options, parseAs);
     if (parseAs === 'text') return envelope;
     return envelope.data;
 }
 
-/**
- * Fetch wrapper that preserves v4/v5 envelope metadata.
- *
- * @param {string} endpoint
- * @param {Object} options
- * @param {"json"|"text"} parseAs
- * @returns {Promise<any>}
- */
 export async function fetchAPIEnvelope(endpoint, options = {}, parseAs = 'json') {
     const url = `${API_BASE}${endpoint}`;
     const response = await fetch(url, {
@@ -44,8 +25,7 @@ export async function fetchAPIEnvelope(endpoint, options = {}, parseAs = 'json')
     });
 
     if (!response.ok) {
-        const message = `API Error: ${response.status} ${response.statusText}`;
-        throw new Error(message);
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
 
     if (parseAs === 'text') {
@@ -53,19 +33,19 @@ export async function fetchAPIEnvelope(endpoint, options = {}, parseAs = 'json')
     }
 
     const payload = await response.json();
-    // v4 contract uses { data, meta }. v2/v3 may return plain objects.
     if (payload && typeof payload === 'object' && 'data' in payload && 'meta' in payload) {
         return payload;
     }
+
     return {
         data: payload,
         meta: {
-            confidence: { level: 'unknown', score: 0.5 },
+            confidence: 'unknown',
             method: 'unknown',
             provenance: {},
             uncertainty: { boundary_risk: 'unknown', interval_hours: null },
-            trace_id: null,
-            policy: { profile: 'np-mainstream', jurisdiction: 'NP', advisory: true },
+            trace_id: payload?.calculation_trace_id || payload?.trace_id || null,
+            policy: payload?.policy || { profile: 'np-mainstream', jurisdiction: 'NP', advisory: true },
         },
     };
 }
@@ -74,15 +54,13 @@ export function getApiBase() {
     return API_BASE;
 }
 
-// Festival APIs
 export const festivalAPI = {
     getAll: (params = {}) => {
         const query = new URLSearchParams(params).toString();
         return fetchAPI(`/festivals${query ? `?${query}` : ''}`);
     },
-
-    getUpcoming: (days = 90) => fetchAPI(`/festivals/upcoming?days=${days}`),
-
+    getCoverageScoreboard: (target = 300) => fetchAPI(`/festivals/coverage/scoreboard?target_rules=${target}`),
+    getUpcoming: (days = 90, qualityBand = "computed") => fetchAPI(`/festivals/upcoming?days=${days}&quality_band=${qualityBand}`),
     getById: (id, year) => {
         const query = year ? `?year=${year}` : '';
         return fetchAPI(`/festivals/${id}${query}`);
@@ -91,20 +69,15 @@ export const festivalAPI = {
         const query = year ? `?year=${year}` : '';
         return fetchAPIEnvelope(`/festivals/${id}${query}`);
     },
-
     getExplain: (id, year) => {
         const query = year ? `?year=${year}` : '';
         return fetchAPI(`/festivals/${id}/explain${query}`);
     },
-
     getTrace: (traceId) => fetchAPI(`/explain/${traceId}`),
-
     getDates: (id, years = 3) => fetchAPI(`/festivals/${id}/dates?years=${years}`),
-
     getOnDate: (date) => fetchAPI(`/festivals/on-date/${date}`),
 };
 
-// Calendar APIs
 export const calendarAPI = {
     getMonth: (year, month) => fetchAPI(`/festivals/calendar/${year}/${month}`),
     getToday: () => fetchAPI('/calendar/today'),
@@ -126,14 +99,64 @@ export const calendarAPI = {
     },
 };
 
-// Feed/iCal APIs
+export const personalAPI = {
+    getPanchanga: ({ date, lat, lon, tz } = {}) => {
+        const params = new URLSearchParams({ date });
+        if (lat !== undefined) params.set('lat', lat);
+        if (lon !== undefined) params.set('lon', lon);
+        if (tz) params.set('tz', tz);
+        return fetchAPI(`/personal/panchanga?${params.toString()}`);
+    },
+};
+
+export const muhurtaAPI = {
+    getDay: ({ date, lat, lon, tz, birthNakshatra } = {}) => {
+        const params = new URLSearchParams({ date });
+        if (lat !== undefined) params.set('lat', lat);
+        if (lon !== undefined) params.set('lon', lon);
+        if (tz) params.set('tz', tz);
+        if (birthNakshatra) params.set('birth_nakshatra', birthNakshatra);
+        return fetchAPI(`/muhurta?${params.toString()}`);
+    },
+    getAuspicious: ({ date, type = 'general', lat, lon, tz, birthNakshatra, assumptionSet = 'np-mainstream-v2' } = {}) => {
+        const params = new URLSearchParams({ date, type, assumption_set: assumptionSet });
+        if (lat !== undefined) params.set('lat', lat);
+        if (lon !== undefined) params.set('lon', lon);
+        if (tz) params.set('tz', tz);
+        if (birthNakshatra) params.set('birth_nakshatra', birthNakshatra);
+        return fetchAPI(`/muhurta/auspicious?${params.toString()}`);
+    },
+    getRahuKalam: ({ date, lat, lon, tz } = {}) => {
+        const params = new URLSearchParams({ date });
+        if (lat !== undefined) params.set('lat', lat);
+        if (lon !== undefined) params.set('lon', lon);
+        if (tz) params.set('tz', tz);
+        return fetchAPI(`/muhurta/rahu-kalam?${params.toString()}`);
+    },
+};
+
+export const kundaliAPI = {
+    getKundali: ({ datetime, lat, lon, tz } = {}) => {
+        const params = new URLSearchParams({ datetime });
+        if (lat !== undefined) params.set('lat', lat);
+        if (lon !== undefined) params.set('lon', lon);
+        if (tz) params.set('tz', tz);
+        return fetchAPI(`/kundali?${params.toString()}`);
+    },
+    getLagna: ({ datetime, lat, lon, tz } = {}) => {
+        const params = new URLSearchParams({ datetime });
+        if (lat !== undefined) params.set('lat', lat);
+        if (lon !== undefined) params.set('lon', lon);
+        if (tz) params.set('tz', tz);
+        return fetchAPI(`/kundali/lagna?${params.toString()}`);
+    },
+};
+
+
 export const feedAPI = {
-    getAllLink: (years = 2, lang = 'en') =>
-        `${API_BASE}/feeds/all.ics?years=${years}&lang=${lang}`,
-    getNationalLink: (years = 2, lang = 'en') =>
-        `${API_BASE}/feeds/national.ics?years=${years}&lang=${lang}`,
-    getNewariLink: (years = 2, lang = 'en') =>
-        `${API_BASE}/feeds/newari.ics?years=${years}&lang=${lang}`,
+    getAllLink: (years = 2, lang = 'en') => `${API_BASE}/feeds/all.ics?years=${years}&lang=${lang}`,
+    getNationalLink: (years = 2, lang = 'en') => `${API_BASE}/feeds/national.ics?years=${years}&lang=${lang}`,
+    getNewariLink: (years = 2, lang = 'en') => `${API_BASE}/feeds/newari.ics?years=${years}&lang=${lang}`,
     getCustomLink: (festivalIds = [], years = 2, lang = 'en') => {
         const festivals = encodeURIComponent(festivalIds.join(','));
         return `${API_BASE}/feeds/custom.ics?festivals=${festivals}&years=${years}&lang=${lang}`;
@@ -144,5 +167,8 @@ export const feedAPI = {
 export default {
     festivals: festivalAPI,
     calendar: calendarAPI,
+    personal: personalAPI,
+    muhurta: muhurtaAPI,
+    kundali: kundaliAPI,
     feeds: feedAPI,
 };

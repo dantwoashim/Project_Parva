@@ -1,0 +1,17 @@
+{
+  "festival_id": "moha-observance-ef930138e2",
+  "generated_at": "2026-02-17T10:07:35.773981+00:00",
+  "source_evidence_ids": [
+    "moha_pdf_parsed_ingest",
+    "source-line:9f1e6a91846f"
+  ],
+  "confidence": "low",
+  "status": "provisional",
+  "rule_family": "moha_ingested_observance",
+  "tags": [
+    "generated",
+    "moha-ingest",
+    "needs-curation"
+  ],
+  "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation."
+}

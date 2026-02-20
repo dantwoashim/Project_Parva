@@ -1,7 +1,7 @@
 # Authority Dashboard
 
-- Generated: `2026-02-13T01:27:57.103805+00:00`
-- Release Track: `authority-v5`
+- Generated: `2026-02-20T05:01:27.424009+00:00`
+- Release Track: `public-v3`
 
 ## Pipeline Health
 
@@ -21,14 +21,15 @@
 
 | Confidence | Count |
 |---|---:|
-| low | 406 |
-| medium | 26 |
+| low | 130 |
+| medium | 302 |
 | high | 21 |
 
-### Runtime Response Confidence (sampled v5 endpoints)
+### Runtime Response Confidence (sampled v3 endpoints)
 
 | Confidence | Count |
 |---|---:|
-| computed | 2 |
-| official | 2 |
-| unknown | 3 |
+| exact | 2 |
+| astronomical | 1 |
+| unknown | 2 |
+| computed | 3 |

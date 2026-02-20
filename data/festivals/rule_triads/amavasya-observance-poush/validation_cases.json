@@ -1,0 +1,28 @@
+{
+  "festival_id": "amavasya-observance-poush",
+  "generated_at": "2026-02-17T10:12:05.257913+00:00",
+  "validation_framework": "parva_rule_validation_v1",
+  "cases": [
+    {
+      "year": 2025,
+      "expected_start_date": "2025-01-29",
+      "expected_end_date": "2025-01-29",
+      "method": "rule_dsl_lunar_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2026,
+      "expected_start_date": "2026-01-18",
+      "expected_end_date": "2026-01-18",
+      "method": "rule_dsl_lunar_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2027,
+      "expected_start_date": "2027-01-07",
+      "expected_end_date": "2027-01-07",
+      "method": "rule_dsl_lunar_month_v1",
+      "status": "passed"
+    }
+  ]
+}

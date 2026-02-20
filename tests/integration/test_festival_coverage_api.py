@@ -1,4 +1,4 @@
-"""Integration tests for festival coverage and new filters."""
+"""Integration tests for festival coverage and quality-band filters."""
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -26,6 +26,17 @@ def test_festival_coverage_endpoint_returns_summary():
     assert payload["by_source"].get("rule_ingestion_seed_v1", 0) > 0
 
 
+def test_festival_coverage_scoreboard_is_truth_first():
+    res = client.get("/api/festivals/coverage/scoreboard")
+    assert res.status_code == 200
+    payload = res.json()
+
+    assert payload["computed"]["count"] >= 20
+    assert payload["provisional"]["count"] >= 100
+    assert payload["inventory"]["count"] >= 1
+    assert payload["claim_guard"]["headline_metric"] == "computed"
+
+
 def test_festival_source_filter_works():
     res = client.get("/api/festivals?source=festival_rules_v3")
     assert res.status_code == 200
@@ -44,3 +55,19 @@ def test_tradition_filter_returns_newari_subset():
 
     for festival in payload["festivals"]:
         assert "newari" in festival["category"].lower()
+
+
+def test_quality_band_filter_defaults_to_algorithmic():
+    res = client.get("/api/festivals")
+    assert res.status_code == 200
+    payload = res.json()
+    assert payload["total"] > 0
+    assert all(festival.get("validation_band") for festival in payload["festivals"])
+
+
+def test_upcoming_defaults_to_computed_band():
+    res = client.get("/api/festivals/upcoming", params={"days": 90, "from_date": "2026-09-01"})
+    assert res.status_code == 200
+    payload = res.json()
+    assert payload["total"] > 0
+    assert all(festival["rule_status"] == "computed" for festival in payload["festivals"])

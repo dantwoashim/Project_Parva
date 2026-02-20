@@ -1,39 +1,38 @@
 {
-    "name": "Project Parva",
-    "short_name": "Parva",
-    "description": "The world's most accurate Nepali multi-calendar engine. Astronomical panchanga, 499+ festival rules, and cultural knowledge — free and open source.",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#0f0f23",
-    "theme_color": "#e8a838",
-    "orientation": "any",
-    "categories": [
-        "lifestyle",
-        "education",
-        "utilities"
-    ],
-    "lang": "en",
-    "icons": [
-        {
-            "src": "/vite.svg",
-            "sizes": "any",
-            "type": "image/svg+xml",
-            "purpose": "any maskable"
-        }
-    ],
-    "screenshots": [],
-    "shortcuts": [
-        {
-            "name": "Today's Panchanga",
-            "short_name": "Panchanga",
-            "description": "View today's complete panchanga",
-            "url": "/panchanga"
-        },
-        {
-            "name": "Festival Calendar",
-            "short_name": "Festivals",
-            "description": "Explore upcoming festivals",
-            "url": "/festivals"
-        }
-    ]
+  "name": "Project Parva",
+  "short_name": "Parva",
+  "description": "Nepal temporal authority interface with computed festival dates, personal panchanga, and verification metadata.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#2d2a26",
+  "orientation": "any",
+  "categories": [
+    "lifestyle",
+    "education",
+    "utilities"
+  ],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Festival Explorer",
+      "short_name": "Explorer",
+      "description": "Browse computed and provisional festival coverage",
+      "url": "/"
+    },
+    {
+      "name": "Today's Panchanga",
+      "short_name": "Panchanga",
+      "description": "View the daily panchanga",
+      "url": "/panchanga"
+    }
+  ]
 }

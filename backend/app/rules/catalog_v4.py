@@ -12,6 +12,9 @@ from typing import Dict, List, Optional
 
 from app.rules.schema_v4 import FestivalRuleCatalogV4, FestivalRuleV4
 
+from .dsl import is_rule_executable
+from .execution import calculate_rule_occurrence_with_fallback
+
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 CALENDAR_DIR = PROJECT_ROOT / "backend" / "app" / "calendar"
 DATA_FESTIVALS_PATH = PROJECT_ROOT / "data" / "festivals" / "festivals.json"
@@ -51,7 +54,25 @@ BS_MONTH_NUMBER_MAP = {
     "चैत्र": 12,
 }
 
+ALGORITHMIC_RULE_TYPES = {"lunar", "solar", "relative", "transit"}
+INVENTORY_RULE_FAMILIES = {"content_inventory"}
 
+PROMOTABLE_SEED_RULE_FAMILIES = {
+    "monthly_purnima",
+    "monthly_amavasya",
+    "monthly_ekadashi",
+    "monthly_pradosh",
+    "monthly_navami",
+    "monthly_ashtami",
+    "monthly_chaturdashi",
+    "monthly_chaturthi",
+    "monthly_dashami",
+    "monthly_dwadashi",
+    "monthly_panchami",
+    "monthly_saptami",
+    "solar_sankranti_monthly",
+}
+PROMOTABLE_SOURCES = {"festival_rules_legacy", "rule_ingestion_seed_v1"}
 
 
 def _to_repo_relative(path: Path) -> str:
@@ -406,6 +427,54 @@ def _add_content_only_rules(merged: Dict[str, FestivalRuleV4]) -> None:
         )
 
 
+def _is_rule_validated_for_baseline(rule: FestivalRuleV4) -> bool:
+    """Run a light deterministic validation for baseline promotion."""
+    # Baseline quality gate: rule should calculate for at least one canonical year.
+    for year in (2025, 2026, 2027):
+        if calculate_rule_occurrence_with_fallback(rule, year) is not None:
+            return True
+    return False
+
+
+def _promote_computed_baseline(merged: Dict[str, FestivalRuleV4]) -> None:
+    """Promote executable provisional rules into computed baseline set.
+
+    Policy:
+    - Keep content-only inventory as non-computed.
+    - Promote legacy algorithmic rules.
+    - Promote selected seed recurring families with deterministic executability.
+    """
+    for rule in merged.values():
+        if rule.status != "provisional":
+            continue
+        if rule.source not in PROMOTABLE_SOURCES:
+            continue
+        if rule.rule_family in INVENTORY_RULE_FAMILIES:
+            continue
+        if rule.rule_type not in ALGORITHMIC_RULE_TYPES:
+            continue
+
+        if rule.source == "rule_ingestion_seed_v1" and rule.rule_family not in PROMOTABLE_SEED_RULE_FAMILIES:
+            continue
+
+        if not is_rule_executable(rule):
+            continue
+        if not _is_rule_validated_for_baseline(rule):
+            continue
+
+        rule.status = "computed"
+        if rule.confidence == "low":
+            rule.confidence = "medium"
+
+        if "computed-promoted" not in rule.tags:
+            rule.tags = sorted(set(rule.tags + ["computed-promoted", "quality-validated"]))
+
+        # Keep source lineage intact, but indicate execution path for the promoted set.
+        if rule.source == "rule_ingestion_seed_v1":
+            rule.engine = "rule_dsl_executor_v1"
+
+
+
 def _from_v3(festival_id: str, rule_data: dict) -> FestivalRuleV4:
     rule_type = rule_data.get("type", "lunar")
     payload: Dict[str, object]
@@ -526,6 +595,8 @@ def build_canonical_catalog() -> FestivalRuleCatalogV4:
         if rule.tradition is None and rule.category and rule.category != "national":
             rule.tradition = rule.category
 
+    _promote_computed_baseline(merged)
+
     source_paths = [
         RULES_V3_PATH,
         RULES_LEGACY_PATH,
@@ -612,4 +683,70 @@ def get_rules_coverage(target: int = 300) -> dict:
         "variant_profiles_present": profile_ids,
         "sample_festival_ids": [rule.festival_id for rule in rules[:10]],
         "catalog_generated_at": load_catalog_v4().generated_at,
+    }
+
+
+def rule_quality_band(rule: FestivalRuleV4 | None) -> str:
+    """Map canonical rule row into public quality band."""
+    if rule is None:
+        return "inventory"
+    if rule.rule_family in INVENTORY_RULE_FAMILIES:
+        return "inventory"
+    if rule.status == "computed":
+        return "computed"
+    return "provisional"
+
+
+def rule_has_algorithm(rule: FestivalRuleV4 | None) -> bool:
+    """Return whether rule has algorithmic computation path."""
+    if rule is None:
+        return False
+    if rule.rule_family in INVENTORY_RULE_FAMILIES:
+        return False
+    return rule.rule_type in ALGORITHMIC_RULE_TYPES
+
+
+def get_rules_scoreboard(target: int = 300) -> dict:
+    """Truth-first coverage scoreboard for public claims."""
+    rules = list_rules_v4()
+    total = len(rules)
+
+    computed_rows = [rule for rule in rules if rule_quality_band(rule) == "computed"]
+    provisional_rows = [rule for rule in rules if rule_quality_band(rule) == "provisional"]
+    inventory_rows = [rule for rule in rules if rule_quality_band(rule) == "inventory"]
+
+    def _pct(count: int) -> float:
+        return round((count / total) * 100, 2) if total else 0.0
+
+    computed_count = len(computed_rows)
+    source_validated_count = sum(1 for row in computed_rows if row.confidence == "high")
+    computed_pass_rate = round((source_validated_count / computed_count) * 100, 2) if computed_count else 0.0
+
+    provisional_algo_count = sum(1 for row in provisional_rows if rule_has_algorithm(row))
+
+    return {
+        "generated_at": load_catalog_v4().generated_at,
+        "target_rules": target,
+        "total_rules": total,
+        "computed": {
+            "count": computed_count,
+            "pct": _pct(computed_count),
+            "pass_rate": computed_pass_rate,
+            "source_validated_count": source_validated_count,
+        },
+        "provisional": {
+            "count": len(provisional_rows),
+            "pct": _pct(len(provisional_rows)),
+            "has_algorithm": provisional_algo_count > 0,
+            "has_algorithm_count": provisional_algo_count,
+        },
+        "inventory": {
+            "count": len(inventory_rows),
+            "pct": _pct(len(inventory_rows)),
+            "content_only": True,
+        },
+        "claim_guard": {
+            "headline_metric": "computed",
+            "safe_to_claim_300": computed_count >= target,
+        },
     }

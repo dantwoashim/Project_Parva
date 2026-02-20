@@ -13,7 +13,7 @@ def test_validate_pack_data_passes_valid_shape():
         "cases": [
             {
                 "id": "c1",
-                "endpoint": "/v2/api/calendar/convert",
+                "endpoint": "/v3/api/calendar/convert",
                 "params": {"date": "2026-02-15"},
                 "assertions": {"bikram_sambat.year": 2082},
                 "source": "test",
