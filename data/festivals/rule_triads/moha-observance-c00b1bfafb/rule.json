@@ -1,0 +1,17 @@
+{
+  "festival_id": "moha-observance-c00b1bfafb",
+  "rule_type": "override",
+  "rule_family": "moha_ingested_observance",
+  "source": "moha_pdf_parsed_ingest",
+  "status": "provisional",
+  "confidence": "low",
+  "executable": true,
+  "execution_template": "official_bs_override_v1",
+  "payload": {
+    "mode": "official_override",
+    "dates": {},
+    "bs_year": 2082,
+    "bs_month": 10,
+    "bs_day": 16
+  }
+}

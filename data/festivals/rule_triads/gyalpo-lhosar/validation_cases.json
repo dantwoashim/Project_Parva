@@ -1,0 +1,28 @@
+{
+  "festival_id": "gyalpo-lhosar",
+  "generated_at": "2026-02-17T10:12:05.952706+00:00",
+  "validation_framework": "parva_rule_validation_v1",
+  "cases": [
+    {
+      "year": 2025,
+      "expected_start_date": "2025-12-20",
+      "expected_end_date": "2025-12-20",
+      "method": "rule_dsl_lunar_bs_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2026,
+      "expected_start_date": "2027-01-07",
+      "expected_end_date": "2027-01-07",
+      "method": "rule_dsl_lunar_bs_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2027,
+      "expected_start_date": "2027-12-27",
+      "expected_end_date": "2027-12-27",
+      "method": "rule_dsl_lunar_bs_month_v1",
+      "status": "passed"
+    }
+  ]
+}

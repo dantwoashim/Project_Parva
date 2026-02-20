@@ -1,0 +1,15 @@
+{
+  "festival_id": "mha-puja",
+  "generated_at": "2026-02-17T10:12:06.068358+00:00",
+  "source_evidence_ids": [
+    "festival_rules_v3"
+  ],
+  "confidence": "high",
+  "status": "computed",
+  "rule_family": "lunar_month_tithi",
+  "tags": [
+    "v3",
+    "canonical"
+  ],
+  "notes": "Nepal Sambat New Year (Amavasya)"
+}

@@ -41,7 +41,7 @@ def test_forecast_error_curve_contract_shape():
 
 def test_forecast_v2_alias_available():
     old_resp = client.get("/api/forecast/festivals", params={"year": 2040})
-    new_resp = client.get("/v2/api/forecast/festivals", params={"year": 2040})
+    new_resp = client.get("/v3/api/forecast/festivals", params={"year": 2040})
     assert old_resp.status_code == 200
     assert new_resp.status_code == 200
     assert old_resp.json()["year"] == new_resp.json()["year"] == 2040

@@ -15,6 +15,8 @@ class ValidationCase:
     plugin: str
     gregorian: str
     expected: dict
+    source_class: str | None = None
+    source_ref: str | None = None
 
 
 class PluginValidationSuite:
@@ -25,7 +27,19 @@ class PluginValidationSuite:
 
     def load_cases(self, path: Path) -> list[ValidationCase]:
         payload = json.loads(path.read_text(encoding="utf-8"))
-        return [ValidationCase(**row) for row in payload.get("cases", [])]
+        rows = payload.get("cases", [])
+        cases: list[ValidationCase] = []
+        for row in rows:
+            cases.append(
+                ValidationCase(
+                    plugin=row["plugin"],
+                    gregorian=row["gregorian"],
+                    expected=row["expected"],
+                    source_class=row.get("source_class"),
+                    source_ref=row.get("source_ref"),
+                )
+            )
+        return cases
 
     def run(self, cases: list[ValidationCase]) -> dict:
         results = []
@@ -46,6 +60,8 @@ class PluginValidationSuite:
                 "gregorian": case.gregorian,
                 "expected": case.expected,
                 "actual": actual,
+                "source_class": case.source_class,
+                "source_ref": case.source_ref,
                 "pass": ok,
             })
             if ok:

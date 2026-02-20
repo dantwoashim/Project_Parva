@@ -1,0 +1,3858 @@
+{
+  "version": 1,
+  "generated_at": "2026-02-17T11:04:23.475604Z",
+  "templates": {
+    "amavasya-observance-ashadh": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-ashwin": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-baisakh": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-bhadra": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-chaitra": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-falgun": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-jestha": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-kartik": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-magh": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-mangsir": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-poush": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "amavasya-observance-shrawan": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_amavasya",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "ashtami-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ashtami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "bajra-jogini-jatra": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 1,
+        "paksha": "shukla",
+        "tithi": 1,
+        "adhik_policy": "skip"
+      }
+    },
+    "bala-chaturdashi": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 8,
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "bhai-tika": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 2,
+        "adhik_policy": "skip"
+      }
+    },
+    "bisket-jatra": {
+      "execution_template": "solar_bs_fixed_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_fixed",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 12,
+        "solar_day": 25
+      }
+    },
+    "bs-new-year": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 1,
+        "solar_day": 1,
+        "event": "mesh_sankranti"
+      }
+    },
+    "buddha-jayanti": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baishakh",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "chandi-purnima": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 6,
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturdashi-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturdashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chaturthi-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_chaturthi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "chhath": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 6,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashain": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 1,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dashami-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dashami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "dwadashi-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_dwadashi",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-dev": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 7,
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-hari": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 3,
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "ekadashi-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_ekadashi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 11,
+        "adhik_policy": "skip"
+      }
+    },
+    "fagu-purnima": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 11,
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "gai-jatra": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 1,
+        "adhik_policy": "skip"
+      }
+    },
+    "gathamangal": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 4,
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "ghode-jatra": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "goru-tihar": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 7,
+        "paksha": "shukla",
+        "tithi": 1,
+        "adhik_policy": "skip"
+      }
+    },
+    "gyalpo-lhosar": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 9,
+        "paksha": "shukla",
+        "tithi": 1,
+        "adhik_policy": "skip"
+      }
+    },
+    "holi": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "indra-jatra": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 12,
+        "adhik_policy": "skip"
+      }
+    },
+    "janai-purnima": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "krishna-janmashtami": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "kuse-aunsi": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 5,
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "laxmi-puja": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "maghe-sankranti": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 10,
+        "solar_day": 1,
+        "event": "makara_sankranti"
+      }
+    },
+    "maghi": {
+      "execution_template": "solar_bs_fixed_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_fixed",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 10,
+        "solar_day": 1
+      }
+    },
+    "matatirtha-aunsi": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 1,
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "mha-puja": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "monthly-sankranti-ashadh": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 3,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-ashwin": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 6,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-baisakh": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 1,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-bhadra": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 5,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-chaitra": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 12,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-falgun": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 11,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-jestha": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 2,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-kartik": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 7,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-magh": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 10,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-mangsir": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 8,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-poush": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 9,
+        "event": "sankranti"
+      }
+    },
+    "monthly-sankranti-shrawan": {
+      "execution_template": "solar_sankranti_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_sankranti_monthly",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 4,
+        "event": "sankranti"
+      }
+    },
+    "nag-panchami": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navami-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_navami",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "navavarsha": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 7,
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "pahan-charhe": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 5,
+        "paksha": "shukla",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "panchami-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_panchami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "pradosh-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_pradosh",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 13,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-ashadh": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-ashwin": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-baisakh": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-bhadra": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-chaitra": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-falgun": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-jestha": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-kartik": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-magh": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-mangsir": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-poush": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "purnima-vrata-shrawan": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_purnima",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "ram-navami": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 12,
+        "paksha": "shukla",
+        "tithi": 9,
+        "adhik_policy": "skip"
+      }
+    },
+    "rato-machhindranath": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 1,
+        "paksha": "shukla",
+        "tithi": 4,
+        "adhik_policy": "skip"
+      }
+    },
+    "rishitarpani": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 5,
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-ashadh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-ashadh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashadh",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-ashwin-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-ashwin-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-baisakh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-baisakh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Baisakh",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-bhadra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-bhadra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-chaitra-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-chaitra-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Chaitra",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-falgun-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-falgun-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-jestha-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-jestha-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Jestha",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-kartik-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-kartik-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-magh-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-magh-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-mangsir-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-mangsir-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Mangsir",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-poush-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-poush-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-shrawan-krishna": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "krishna",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saptami-vrata-shrawan-shukla": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "monthly_saptami",
+      "quality_band": "provisional",
+      "payload": {
+        "lunar_month": "Shrawan",
+        "paksha": "shukla",
+        "tithi": 7,
+        "adhik_policy": "skip"
+      }
+    },
+    "saraswati-puja": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Magh",
+        "paksha": "shukla",
+        "tithi": 5,
+        "adhik_policy": "skip"
+      }
+    },
+    "seto-machhindranath": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 12,
+        "paksha": "shukla",
+        "tithi": 8,
+        "adhik_policy": "skip"
+      }
+    },
+    "shivaratri": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Falgun",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "sithi-nakha": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 2,
+        "paksha": "shukla",
+        "tithi": 6,
+        "adhik_policy": "skip"
+      }
+    },
+    "sonam-lhosar": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 10,
+        "paksha": "shukla",
+        "tithi": 1,
+        "adhik_policy": "skip"
+      }
+    },
+    "swasthani-brata": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 10,
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "tamu-lhosar": {
+      "execution_template": "solar_bs_fixed_v1",
+      "rule_type": "solar",
+      "rule_family": "solar_fixed",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 9,
+        "solar_day": 15
+      }
+    },
+    "teej": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Bhadra",
+        "paksha": "shukla",
+        "tithi": 3,
+        "adhik_policy": "skip"
+      }
+    },
+    "thalvah-swyah": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 7,
+        "paksha": "shukla",
+        "tithi": 3,
+        "adhik_policy": "skip"
+      }
+    },
+    "tihar": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Kartik",
+        "paksha": "krishna",
+        "tithi": 14,
+        "adhik_policy": "skip"
+      }
+    },
+    "ubhauli": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 2,
+        "paksha": "shukla",
+        "tithi": 1,
+        "adhik_policy": "skip"
+      }
+    },
+    "udhauli": {
+      "execution_template": "lunar_bs_month_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_bs_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "bs_month": 7,
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    },
+    "vijaya-dashami": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Ashwin",
+        "paksha": "shukla",
+        "tithi": 10,
+        "adhik_policy": "skip"
+      }
+    },
+    "yomari-punhi": {
+      "execution_template": "lunar_tithi_window_v1",
+      "rule_type": "lunar",
+      "rule_family": "lunar_month_tithi",
+      "quality_band": "computed",
+      "payload": {
+        "lunar_month": "Poush",
+        "paksha": "shukla",
+        "tithi": 15,
+        "adhik_policy": "skip"
+      }
+    }
+  },
+  "summary": {
+    "total_rules": 453,
+    "mapped": 323,
+    "computed": 155,
+    "provisional": 279,
+    "inventory": 19,
+    "template_coverage_pct": 71.3
+  }
+}

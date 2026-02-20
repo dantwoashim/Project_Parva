@@ -1,0 +1,16 @@
+{
+  "festival_id": "saraswati-puja",
+  "rule_type": "lunar",
+  "rule_family": "lunar_month_tithi",
+  "source": "festival_rules_v3",
+  "status": "computed",
+  "confidence": "high",
+  "executable": true,
+  "execution_template": "lunar_tithi_window_v1",
+  "payload": {
+    "lunar_month": "Magh",
+    "paksha": "shukla",
+    "tithi": 5,
+    "adhik_policy": "skip"
+  }
+}

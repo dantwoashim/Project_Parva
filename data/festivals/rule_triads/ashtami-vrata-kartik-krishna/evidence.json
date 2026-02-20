@@ -1,0 +1,16 @@
+{
+  "festival_id": "ashtami-vrata-kartik-krishna",
+  "generated_at": "2026-02-17T10:07:33.076733+00:00",
+  "source_evidence_ids": [
+    "rule_ingestion_seed_v1"
+  ],
+  "confidence": "low",
+  "status": "provisional",
+  "rule_family": "monthly_ashtami",
+  "tags": [
+    "generated",
+    "seed-ingestion",
+    "recurring"
+  ],
+  "notes": "Generated recurring observance rule from ingestion seed profile."
+}

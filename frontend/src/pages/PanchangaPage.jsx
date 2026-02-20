@@ -4,7 +4,7 @@ import { AuthorityInspector } from '../components/UI/AuthorityInspector';
 import './PanchangaPage.css';
 
 function todayIso() {
-    return new Date().toISOString().slice(0, 10);
+    return new Date(Date.now()).toISOString().slice(0, 10);
 }
 
 export function PanchangaPage() {

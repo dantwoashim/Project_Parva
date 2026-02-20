@@ -1,0 +1,28 @@
+{
+  "festival_id": "goru-tihar",
+  "generated_at": "2026-02-17T10:12:05.947304+00:00",
+  "validation_framework": "parva_rule_validation_v1",
+  "cases": [
+    {
+      "year": 2025,
+      "expected_start_date": "2025-10-21",
+      "expected_end_date": "2025-10-21",
+      "method": "rule_dsl_lunar_bs_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2026,
+      "expected_start_date": "2026-11-09",
+      "expected_end_date": "2026-11-09",
+      "method": "rule_dsl_lunar_bs_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2027,
+      "expected_start_date": "2027-10-29",
+      "expected_end_date": "2027-10-29",
+      "method": "rule_dsl_lunar_bs_month_v1",
+      "status": "passed"
+    }
+  ]
+}

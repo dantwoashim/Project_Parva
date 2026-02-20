@@ -1,0 +1,15 @@
+{
+  "festival_id": "seto-marhi-jatra",
+  "generated_at": "2026-02-17T10:07:37.698834+00:00",
+  "source_evidence_ids": [
+    "festival_content_inventory"
+  ],
+  "confidence": "low",
+  "status": "provisional",
+  "rule_family": "content_inventory",
+  "tags": [
+    "content-only",
+    "needs-rule-encoding"
+  ],
+  "notes": "Rule not yet encoded in calculator. Derived from festival content inventory."
+}

@@ -9,10 +9,9 @@ client = TestClient(app)
 
 
 def test_public_artifact_manifest_lists_files():
-    response = client.get("/v5/api/public/artifacts/manifest")
+    response = client.get("/v3/api/public/artifacts/manifest")
     assert response.status_code == 200
-    envelope = response.json()
-    payload = envelope["data"]
+    payload = response.json()
     assert "total_files" in payload
     assert "files" in payload
     assert isinstance(payload["files"], list)
@@ -21,6 +20,6 @@ def test_public_artifact_manifest_lists_files():
 
 
 def test_public_dashboard_artifact_is_accessible():
-    response = client.get("/v5/api/public/artifacts/dashboard")
+    response = client.get("/v3/api/public/artifacts/dashboard")
     assert response.status_code == 200
     assert "application/json" in response.headers.get("content-type", "")

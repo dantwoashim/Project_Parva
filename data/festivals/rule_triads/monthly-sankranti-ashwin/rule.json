@@ -1,0 +1,14 @@
+{
+  "festival_id": "monthly-sankranti-ashwin",
+  "rule_type": "solar",
+  "rule_family": "solar_sankranti_monthly",
+  "source": "rule_ingestion_seed_v1",
+  "status": "computed",
+  "confidence": "medium",
+  "executable": true,
+  "execution_template": "solar_sankranti_v1",
+  "payload": {
+    "bs_month": 6,
+    "event": "sankranti"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "festival_id": "dwadashi-vrata-shrawan-shukla",
+  "rule_type": "lunar",
+  "rule_family": "monthly_dwadashi",
+  "source": "rule_ingestion_seed_v1",
+  "status": "provisional",
+  "confidence": "low",
+  "executable": true,
+  "execution_template": "lunar_tithi_window_v1",
+  "payload": {
+    "lunar_month": "Shrawan",
+    "paksha": "shukla",
+    "tithi": 12,
+    "adhik_policy": "skip"
+  }
+}

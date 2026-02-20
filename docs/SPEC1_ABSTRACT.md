@@ -1,7 +1,0 @@
-# Parva Temporal Spec 1.0 — Abstract
-
-Parva Temporal Spec 1.0 defines an open, verifiable contract for multi-calendar computation with a Nepal-first focus. The specification standardizes core temporal functions: Bikram Sambat and Gregorian conversion, sunrise-based tithi determination, panchanga element computation, festival rule resolution, provenance hashing, and explainability traces. Unlike opaque calendar products, Parva requires confidence and uncertainty metadata on key date responses, enabling downstream systems to reason about estimated and boundary-sensitive outputs explicitly.  
-
-The reference implementation exposes versioned APIs, deterministic reason-trace retrieval, and cryptographic provenance primitives (snapshot hashes and Merkle proofs), providing auditable date computation suitable for institutional adoption. A conformance suite and benchmark packs accompany the spec, allowing independent teams to validate compatibility and replicate baseline results without privileged infrastructure.  
-
-By combining transparent algorithmic methods, trust metadata, and reproducibility tooling, Parva Temporal Spec 1.0 positions ritual-time computation as shared digital infrastructure rather than proprietary lookup data. This contributes both to software engineering practice in temporal systems and to digital preservation of calendrical knowledge with machine-verifiable behavior.

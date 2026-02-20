@@ -82,7 +82,7 @@ class ConversionResult(BaseModel):
     bikram_sambat: BSDate
     nepal_sambat: Optional[NSDate]
     tithi: TithiInfo
-    engine_version: str = "v2"
+    engine_version: str = "v3"
     provenance: Optional[dict] = None
     policy: Optional[dict] = None
 
@@ -107,10 +107,10 @@ class BSCompareResult(BaseModel):
 
 def _build_provenance(festival_id: Optional[str] = None, year: Optional[int] = None) -> dict:
     snapshot_id = get_latest_snapshot_id()
-    verify_url = "/v2/api/provenance/root"
+    verify_url = "/v3/api/provenance/root"
     if festival_id and year and snapshot_id:
         verify_url = (
-            f"/v2/api/provenance/proof?festival={festival_id}&year={year}&snapshot={snapshot_id}"
+            f"/v3/api/provenance/proof?festival={festival_id}&year={year}&snapshot={snapshot_id}"
         )
     return get_provenance_payload(verify_url=verify_url, create_if_missing=True)
 
@@ -225,7 +225,7 @@ async def convert_date(
             "sunrise_used": tithi_info.sunrise_used,
             "uncertainty": tithi_info.uncertainty,
         },
-        "engine_version": "v2",
+        "engine_version": "v3",
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
     }
@@ -299,7 +299,7 @@ async def compare_convert(
         "official": official,
         "estimated": estimated,
         "match": match,
-        "engine_version": "v2",
+        "engine_version": "v3",
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
     }
@@ -327,7 +327,7 @@ async def bs_to_gregorian_convert(request: BSConversionRequest):
                 ),
             },
             "gregorian": gregorian_date.isoformat(),
-            "engine_version": "v2",
+            "engine_version": "v3",
             "provenance": _build_provenance(),
             "policy": get_policy_metadata(),
         }
@@ -402,7 +402,7 @@ async def get_today():
             ),
         },
         "tithi": tithi_response,
-        "engine_version": "v2",
+        "engine_version": "v3",
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
     }
@@ -456,7 +456,7 @@ async def get_tithi_endpoint(
                     progress=udaya.get("progress"),
                 ),
             },
-            "engine_version": "v2",
+            "engine_version": "v3",
             "provenance": _build_provenance(),
             "policy": get_policy_metadata(),
         }
@@ -485,7 +485,7 @@ async def get_tithi_endpoint(
                     progress=tithi_data.get("progress"),
                 ),
             },
-            "engine_version": "v2",
+            "engine_version": "v3",
             "provenance": _build_provenance(),
             "policy": get_policy_metadata(),
         }
@@ -609,7 +609,7 @@ async def get_panchanga_endpoint(
             "source": "computed",
         },
         "service_status": "healthy",
-        "engine_version": "v2",
+        "engine_version": "v3",
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
     }
@@ -670,7 +670,7 @@ async def get_panchanga_range_endpoint(
             "misses": cache_misses,
             "hit_ratio": round(cache_hits / days, 4) if days else 0.0,
         },
-        "engine_version": "v2",
+        "engine_version": "v3",
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
     }
@@ -716,7 +716,7 @@ async def calculate_festival_endpoint(
         "method": result.method,
         "lunar_month": result.lunar_month,
         "is_adhik_year": result.is_adhik_year,
-        "engine_version": "v2",
+        "engine_version": "v3",
         "provenance": _build_provenance(festival_id=festival_id, year=year),
         "policy": get_policy_metadata(),
     }
@@ -770,7 +770,7 @@ async def get_upcoming_festivals_endpoint(
                 "years_loaded": sorted(set(cache_years_loaded)),
                 "source": "precomputed",
             },
-            "engine_version": "v2",
+            "engine_version": "v3",
             "provenance": _build_provenance(),
             "policy": get_policy_metadata(),
         }
@@ -807,7 +807,7 @@ async def get_upcoming_festivals_endpoint(
             "years_loaded": [],
             "source": "computed",
         },
-        "engine_version": "v2",
+        "engine_version": "v3",
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
     }
@@ -832,7 +832,7 @@ async def get_sankrantis_endpoint(year: int):
             }
             for s in sankrantis
         ],
-        "engine_version": "v2",
+        "engine_version": "v3",
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
     }

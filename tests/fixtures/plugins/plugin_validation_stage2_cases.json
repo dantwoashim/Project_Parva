@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "description": "Stage-2 source-backed validation corpus for Hebrew/Chinese/Julian plugins",
+  "cases": [
+    {"plugin": "hebrew", "gregorian": "2025-01-14", "expected": {"year": 5785, "month": 10, "day": 14}, "source_class": "metonic_formula", "source_ref": "hebrew-plugin-v1"},
+    {"plugin": "hebrew", "gregorian": "2025-04-14", "expected": {"year": 5785, "month": 1, "day": 16}, "source_class": "metonic_formula", "source_ref": "hebrew-plugin-v1"},
+    {"plugin": "hebrew", "gregorian": "2025-10-01", "expected": {"year": 5786, "month": 7, "day": 9}, "source_class": "metonic_formula", "source_ref": "hebrew-plugin-v1"},
+    {"plugin": "hebrew", "gregorian": "2026-02-15", "expected": {"year": 5786, "month": 11, "day": 28}, "source_class": "metonic_formula", "source_ref": "hebrew-plugin-v1"},
+    {"plugin": "hebrew", "gregorian": "2026-10-21", "expected": {"year": 5787, "month": 8, "day": 10}, "source_class": "metonic_formula", "source_ref": "hebrew-plugin-v1"},
+    {"plugin": "hebrew", "gregorian": "2027-03-22", "expected": {"year": 5787, "month": 13, "day": 13}, "source_class": "metonic_formula", "source_ref": "hebrew-plugin-v1"},
+
+    {"plugin": "chinese", "gregorian": "2025-01-14", "expected": {"year": 2024, "month": 12, "day": 15}, "source_class": "lunisolar_formula", "source_ref": "chinese-plugin-v1"},
+    {"plugin": "chinese", "gregorian": "2025-04-14", "expected": {"year": 2025, "month": 3, "day": 17}, "source_class": "lunisolar_formula", "source_ref": "chinese-plugin-v1"},
+    {"plugin": "chinese", "gregorian": "2025-10-01", "expected": {"year": 2025, "month": 9, "day": 10}, "source_class": "lunisolar_formula", "source_ref": "chinese-plugin-v1"},
+    {"plugin": "chinese", "gregorian": "2026-02-15", "expected": {"year": 2025, "month": 12, "day": 29}, "source_class": "lunisolar_formula", "source_ref": "chinese-plugin-v1"},
+    {"plugin": "chinese", "gregorian": "2026-10-21", "expected": {"year": 2026, "month": 9, "day": 11}, "source_class": "lunisolar_formula", "source_ref": "chinese-plugin-v1"},
+    {"plugin": "chinese", "gregorian": "2027-03-22", "expected": {"year": 2027, "month": 2, "day": 15}, "source_class": "lunisolar_formula", "source_ref": "chinese-plugin-v1"},
+
+    {"plugin": "julian", "gregorian": "2025-01-14", "expected": {"year": 2025, "month": 1, "day": 1}, "source_class": "julian_conversion", "source_ref": "julian-plugin-v1"},
+    {"plugin": "julian", "gregorian": "2025-04-14", "expected": {"year": 2025, "month": 4, "day": 1}, "source_class": "julian_conversion", "source_ref": "julian-plugin-v1"},
+    {"plugin": "julian", "gregorian": "2025-10-01", "expected": {"year": 2025, "month": 9, "day": 18}, "source_class": "julian_conversion", "source_ref": "julian-plugin-v1"},
+    {"plugin": "julian", "gregorian": "2026-02-15", "expected": {"year": 2026, "month": 2, "day": 2}, "source_class": "julian_conversion", "source_ref": "julian-plugin-v1"},
+    {"plugin": "julian", "gregorian": "2026-10-21", "expected": {"year": 2026, "month": 10, "day": 8}, "source_class": "julian_conversion", "source_ref": "julian-plugin-v1"},
+    {"plugin": "julian", "gregorian": "2027-03-22", "expected": {"year": 2027, "month": 3, "day": 9}, "source_class": "julian_conversion", "source_ref": "julian-plugin-v1"}
+  ]
+}

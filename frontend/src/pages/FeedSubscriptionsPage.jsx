@@ -9,7 +9,7 @@ export function FeedSubscriptionsPage() {
     const [selectedIds, setSelectedIds] = useState([]);
     const [copied, setCopied] = useState('');
 
-    const { festivals, loading, error } = useFestivals();
+    const { festivals, loading, error } = useFestivals({ qualityBand: "all", algorithmicOnly: false });
     const [query, setQuery] = useState('');
 
     const filtered = useMemo(() => {

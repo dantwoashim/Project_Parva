@@ -1,94 +1,240 @@
 .explorer-page {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
 }
 
 .explorer-page__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
+  display: grid;
+  grid-template-columns: minmax(320px, 1.4fr) 1fr;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background:
+    radial-gradient(circle at 10% 20%, rgba(212, 160, 82, 0.2), transparent 60%),
+    var(--color-bg-card);
 }
 
-.explorer-page__header h1 {
-    margin: 0;
+.explorer-page__headline h1 {
+  margin: var(--space-1) 0;
+  font-size: clamp(1.8rem, 2.7vw, 2.6rem);
 }
 
-.explorer-page__header p {
-    margin-top: 0.4rem;
-    margin-bottom: 0;
-    color: var(--color-text-secondary);
+.explorer-page__headline p {
+  margin: 0;
+  color: var(--color-text-secondary);
 }
 
-.explorer-page__stats {
-    display: flex;
-    align-items: center;
+.explorer-page__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  font-size: var(--text-xs);
+}
+
+.explorer-page__scoreboard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.score-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-elevated);
+  min-height: 104px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.score-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.score-card__label {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
+.score-card__value {
+  margin: var(--space-1) 0 0;
+  font-size: 1.65rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.score-card__value--small {
+  font-size: 1.15rem;
+}
+
+.score-card__meta {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
+.score-card--computed {
+  border-color: rgba(107, 142, 107, 0.35);
+}
+
+.score-card--provisional {
+  border-color: rgba(212, 160, 82, 0.4);
+}
+
+.score-card--inventory {
+  border-color: rgba(200, 90, 62, 0.35);
+}
+
+.score-card--claim {
+  border-color: rgba(45, 42, 38, 0.25);
 }
 
 .explorer-page__filters {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 0.75rem;
-    padding: 0.9rem 1.1rem;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  align-items: end;
 }
 
 .filter-field {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    font-size: 0.9rem;
-    font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.filter-field--search {
+  grid-column: span 2;
+}
+
+.filter-field span {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
 }
 
 .filter-field input,
 .filter-field select {
-    padding: 0.55rem 0.75rem;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-border);
-    background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-elevated);
+  padding: 0.7rem 0.8rem;
+  color: var(--color-text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.15);
+  outline: none;
+}
+
+.filter-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-bottom: 0.6rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.filter-switch input {
+  width: 16px;
+  height: 16px;
+}
+
+.explorer-page__result-total {
+  justify-self: end;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 700;
 }
 
 .explorer-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.9rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
 }
 
 .explorer-skeleton {
-    height: 280px;
+  height: 290px;
 }
 
-.explorer-error {
-    padding: 1.25rem;
+.explorer-error,
+.explorer-empty {
+  padding: var(--space-5);
 }
 
-.explorer-error h3 {
-    margin: 0;
+.explorer-error h3,
+.explorer-empty h3 {
+  margin: 0;
 }
 
-.explorer-error p {
-    margin: 0.5rem 0 0;
-    color: var(--color-text-secondary);
+.explorer-error p,
+.explorer-empty p {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-secondary);
 }
 
 @media (max-width: 1200px) {
-    .explorer-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .explorer-page__header {
+    grid-template-columns: 1fr;
+  }
+
+  .explorer-page__scoreboard {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .explorer-page__filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-field--search {
+    grid-column: span 2;
+  }
+
+  .explorer-page__result-total {
+    justify-self: start;
+  }
 }
 
-@media (max-width: 760px) {
-    .explorer-page__header {
-        flex-direction: column;
-    }
+@media (max-width: 900px) {
+  .explorer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-    .explorer-page__filters {
-        grid-template-columns: 1fr;
-    }
+  .explorer-page__scoreboard {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 
-    .explorer-grid {
-        grid-template-columns: 1fr;
-    }
+@media (max-width: 680px) {
+  .explorer-page__filters,
+  .explorer-page__scoreboard,
+  .explorer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-field--search {
+    grid-column: span 1;
+  }
+
+  .filter-switch {
+    padding-bottom: 0;
+  }
 }

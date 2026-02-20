@@ -1,0 +1,16 @@
+{
+  "festival_id": "tamu-lhosar",
+  "generated_at": "2026-02-17T10:12:06.894834+00:00",
+  "source_evidence_ids": [
+    "festival_rules_legacy"
+  ],
+  "confidence": "medium",
+  "status": "computed",
+  "rule_family": "solar_fixed",
+  "tags": [
+    "computed-month2",
+    "legacy",
+    "quality-validated"
+  ],
+  "notes": "Gurung New Year, Dec 30"
+}

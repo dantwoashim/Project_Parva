@@ -1,95 +1,26 @@
-# Project Parva As-Built (Evidence-Based)
+# As-Built (Current)
 
-Last updated: 2026-02-12
+This file describes only what is implemented and verifiable in the repository now.
 
-This document lists what is implemented and verifiable in the repository right now.
+## Implemented
+1. Ephemeris-backed calendar engine (BS conversion, tithi, panchanga, sankranti, adhik handling).
+2. Public v3 API profile (`/v3/api/*`) with `/api/*` convenience alias.
+3. Experimental tracks (`/v2`, `/v4`, `/v5`) behind `PARVA_ENABLE_EXPERIMENTAL_API`.
+4. Festival explorer, detail, panchanga viewer, iCal feed UI.
+5. Personal stack APIs and UI pages:
+   - Personal Panchanga
+   - Muhurta
+   - Kundali
+6. Deterministic trace generation + provenance metadata on key responses.
+7. CI pipeline for backend tests, frontend build, contract freeze check, conformance run.
 
-## Runtime + API
-- FastAPI backend with versioned routes:
-  - `/api/*` (compat), `/v2/api/*`, `/v3/api/*`, `/v4/api/*`, `/v5/api/*`
-  - Source: `/Users/rohanbasnet14/Documents/Project Parva/backend/app/main.py`
-- v3 LTS contract artifacts and docs:
-  - `/Users/rohanbasnet14/Documents/Project Parva/docs/LTS_POLICY.md`
-  - `/Users/rohanbasnet14/Documents/Project Parva/docs/MIGRATION_V2_V3.md`
+## Not implemented (or partial)
+1. 300+ fully computed festival rules with verified regional jurisprudence.
+2. Full institutional governance/operations model beyond repository artifacts.
+3. Persistent community layer and AR/WebXR production features.
 
-## Calendar + Festival Engine
-- Ephemeris-based tithi and panchanga, sankranti support, dual-mode BS conversion.
-- Festival computation engine with lunar-month-aware rules and overrides.
-- Evidence:
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/calendar/`
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/engine/`
-
-## Provenance + Trust
-- Snapshot hashes, Merkle/proof endpoints, transparency log routes.
-- Evidence:
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/provenance/`
-  - `/Users/rohanbasnet14/Documents/Project Parva/docs/TRUST_AND_PROVENANCE.md`
-
-## Reliability + Policy + Explainability
-- Reliability status/SLO/playbook endpoints.
-- Policy metadata endpoint and usage docs.
-- Deterministic explain trace endpoints and UI panel.
-- Evidence:
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/api/reliability_routes.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/api/policy_routes.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/api/explain_routes.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/frontend/src/components/Festival/ExplainPanel.jsx`
-
-## Integrations
-- iCal feed endpoints and webhook subscription/dispatch endpoints.
-- Evidence:
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/api/feed_routes.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/api/webhook_routes.py`
-
-## SDKs (Productionized Baseline)
-- Python SDK with typed envelope models and retry/backoff:
-  - `/Users/rohanbasnet14/Documents/Project Parva/sdk/python/parva_sdk/`
-- TypeScript SDK with typed envelope contract and packaging metadata:
-  - `/Users/rohanbasnet14/Documents/Project Parva/sdk/typescript/`
-- Go SDK with typed envelope structs, decoder helper, and `go.mod`:
-  - `/Users/rohanbasnet14/Documents/Project Parva/sdk/go/`
-
-## Validation Tooling
-- Contract freeze checks, conformance runner, benchmark harness.
-- Evidence:
-  - `/Users/rohanbasnet14/Documents/Project Parva/scripts/release/check_contract_freeze.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/scripts/spec/run_conformance_tests.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/benchmark/harness.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/scripts/deploy/build_static_artifacts_site.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/.github/workflows/deploy-pages.yml`
-
-## Authority Track Baseline (v5)
-- Unified temporal resolve endpoint:
-  - `/v5/api/resolve`
-- Spec + conformance status endpoint:
-  - `/v5/api/spec/conformance`
-- Integration feed aliases:
-  - `/v5/api/integrations/feeds/*`
-- Trace integrity verification:
-  - `/v5/api/provenance/verify/trace/{trace_id}`
-- Public artifact endpoint exposure:
-  - `/v5/api/public/artifacts/manifest`
-  - `/v5/api/public/artifacts/dashboard`
-  - `/v5/api/public/artifacts/precomputed/{filename}`
-- Core types and schemas:
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/api/v5_types.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/docs/spec/schemas/`
-- Authority dashboard generation from CI artifacts:
-  - `/Users/rohanbasnet14/Documents/Project Parva/scripts/generate_authority_dashboard.py`
-  - `/Users/rohanbasnet14/Documents/Project Parva/docs/public_beta/authority_dashboard.md`
-
-## Current Data Scope (As-Built)
-- Festival entries in data file: 50
-  - `/Users/rohanbasnet14/Documents/Project Parva/data/festivals/festivals.json`
-- Canonical v4 rule catalog entries: 453 (computed + ingested provisional coverage)
-  - `/Users/rohanbasnet14/Documents/Project Parva/data/festivals/festival_rules_v4.json`
-- Temples mapped: 15
-  - `/Users/rohanbasnet14/Documents/Project Parva/data/festivals/temples.json`
-- v3 lunar rule coverage (computed set): 21
-  - `/Users/rohanbasnet14/Documents/Project Parva/backend/app/calendar/festival_rules_v3.json`
-
-## Known Gaps (Not Marked Complete)
-- 300+ total rule catalog coverage achieved; most new entries are provisional and still require curation to reach "computed" quality.
-- Personal Panchanga / Muhurta / Kundali modules not yet implemented.
-- Community and AR/WebXR modules not yet implemented.
-- Frontend has multi-page routing and tests, but still lacks auth/personalization and advanced partner workflows.
+## Evidence pointers
+- API bootstrap: `/Users/rohanbasnet14/Documents/Project_Parva/backend/app/bootstrap/`
+- Personal endpoints: `/Users/rohanbasnet14/Documents/Project_Parva/backend/app/api/personal_routes.py`, `/Users/rohanbasnet14/Documents/Project_Parva/backend/app/api/muhurta_routes.py`, `/Users/rohanbasnet14/Documents/Project_Parva/backend/app/api/kundali_routes.py`
+- Frontend routes/pages: `/Users/rohanbasnet14/Documents/Project_Parva/frontend/src/App.jsx`
+- Conformance report output: `/Users/rohanbasnet14/Documents/Project_Parva/reports/conformance_report.json`

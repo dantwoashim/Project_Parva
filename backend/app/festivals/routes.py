@@ -32,7 +32,13 @@ from ..calendar import (
 )
 from ..rules import get_rule_service
 from ..rules.variants import calculate_with_variants, filter_variants_by_profile, list_profiles
-from ..rules.catalog_v4 import get_rule_v4, get_rules_coverage
+from ..rules.catalog_v4 import (
+    get_rule_v4,
+    get_rules_coverage,
+    get_rules_scoreboard,
+    rule_has_algorithm,
+    rule_quality_band,
+)
 from ..provenance import get_latest_snapshot_id, get_provenance_payload
 from ..explainability import create_reason_trace
 
@@ -41,15 +47,51 @@ router = APIRouter(prefix="/api/festivals", tags=["festivals"])
 rule_service = get_rule_service()
 
 
+QUALITY_BAND_CHOICES = {"computed", "provisional", "inventory", "all"}
+
+
+def _validation_band(rule) -> str:
+    if rule is None:
+        return "inventory"
+    band = rule_quality_band(rule)
+    if band == "computed":
+        return "gold" if getattr(rule, "confidence", "medium") == "high" else "validated"
+    if band == "provisional":
+        return "beta" if rule_has_algorithm(rule) else "research"
+    return "inventory"
+
+
+def _rule_meta(festival_id: str) -> dict:
+    rule = get_rule_v4(festival_id)
+    if rule is None:
+        return {
+            "quality_band": "inventory",
+            "rule_status": "inventory",
+            "rule_family": "content_inventory",
+            "validation_band": "inventory",
+            "source_evidence_ids": [],
+            "has_algorithm": False,
+        }
+
+    return {
+        "quality_band": rule_quality_band(rule),
+        "rule_status": rule.status,
+        "rule_family": rule.rule_family,
+        "validation_band": _validation_band(rule),
+        "source_evidence_ids": [rule.source],
+        "has_algorithm": rule_has_algorithm(rule),
+    }
+
+
 def _build_provenance(
     festival_id: Optional[str] = None,
     year: Optional[int] = None,
 ) -> ProvenanceMeta:
     snapshot_id = get_latest_snapshot_id()
-    verify_url = "/v2/api/provenance/root"
+    verify_url = "/v3/api/provenance/root"
     if festival_id and year and snapshot_id:
         verify_url = (
-            f"/v2/api/provenance/proof?festival={festival_id}&year={year}&snapshot={snapshot_id}"
+            f"/v3/api/provenance/proof?festival={festival_id}&year={year}&snapshot={snapshot_id}"
         )
     return ProvenanceMeta(**get_provenance_payload(verify_url=verify_url, create_if_missing=True))
 
@@ -61,6 +103,8 @@ async def list_festivals(
     region: Optional[str] = Query(None, description="Filter by region focus"),
     tradition: Optional[str] = Query(None, description="Filter by tradition/category"),
     source: Optional[str] = Query(None, description="Filter by rule source (e.g., festival_rules_v3)"),
+    quality_band: str = Query("all", description="computed|provisional|inventory|all"),
+    algorithmic_only: bool = Query(True, description="Only include algorithmic rules"),
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=100),
 ):
@@ -91,6 +135,26 @@ async def list_festivals(
             or tradition_l in (f.who_celebrates or "").lower()
         ]
 
+    quality_band = quality_band.lower().strip()
+    if quality_band not in QUALITY_BAND_CHOICES:
+        raise HTTPException(status_code=400, detail=f"Invalid quality_band '{quality_band}'")
+
+    rule_meta = {festival.id: _rule_meta(festival.id) for festival in festivals}
+
+    if quality_band != "all":
+        festivals = [
+            festival
+            for festival in festivals
+            if rule_meta.get(festival.id, {}).get("quality_band") == quality_band
+        ]
+
+    if algorithmic_only:
+        festivals = [
+            festival
+            for festival in festivals
+            if rule_meta.get(festival.id, {}).get("has_algorithm")
+        ]
+
     if source:
         source_l = source.lower()
         filtered = []
@@ -108,8 +172,16 @@ async def list_festivals(
     end = start + page_size
     paginated = festivals[start:end]
     
-    # Convert to summaries
-    summaries = [repo.to_summary(f) for f in paginated]
+    # Convert to summaries with rule quality metadata
+    summaries = []
+    for festival in paginated:
+        summary = repo.to_summary(festival)
+        meta = rule_meta.get(festival.id) or _rule_meta(festival.id)
+        summary.rule_status = meta["rule_status"]
+        summary.rule_family = meta["rule_family"]
+        summary.validation_band = meta["validation_band"]
+        summary.source_evidence_ids = meta["source_evidence_ids"]
+        summaries.append(summary)
     
     return FestivalListResponse(
         festivals=summaries,
@@ -138,10 +210,21 @@ async def get_festival_coverage(
     return coverage
 
 
+@router.get("/coverage/scoreboard")
+async def get_festival_coverage_scoreboard(
+    target_rules: int = Query(300, ge=1, le=5000, description="Target computed-rule count"),
+):
+    """Return truth-first computed/provisional/inventory coverage scoreboard."""
+    scoreboard = get_rules_scoreboard(target=target_rules)
+    scoreboard["provenance"] = _build_provenance().model_dump()
+    return scoreboard
+
+
 @router.get("/upcoming", response_model=UpcomingFestivalsResponse)
 async def get_upcoming(
     days: int = Query(30, ge=1, le=365, description="Number of days to look ahead"),
     from_date: Optional[date] = Query(None, description="Start date (defaults to today)"),
+    quality_band: str = Query("computed", description="computed|provisional|inventory|all"),
 ):
     """
     Get festivals occurring in the next N days.
@@ -151,11 +234,19 @@ async def get_upcoming(
     repo = get_repository()
     start = from_date or date.today()
     
+    quality_band = quality_band.lower().strip()
+    if quality_band not in QUALITY_BAND_CHOICES:
+        raise HTTPException(status_code=400, detail=f"Invalid quality_band '{quality_band}'")
+
     # Get upcoming from calendar engine
     upcoming = rule_service.upcoming(start, days=days)
-    
+
     results = []
     for festival_id, dates in upcoming:
+        meta = _rule_meta(festival_id)
+        if quality_band != "all" and meta["quality_band"] != quality_band:
+            continue
+
         festival = repo.get_by_id(festival_id)
         if festival:
             results.append(UpcomingFestival(
@@ -169,6 +260,10 @@ async def get_upcoming(
                 days_until=(dates.start_date - start).days,
                 duration_days=dates.duration_days,
                 primary_color=festival.primary_color,
+                rule_status=meta["rule_status"],
+                rule_family=meta["rule_family"],
+                validation_band=meta["validation_band"],
+                source_evidence_ids=meta["source_evidence_ids"],
             ))
     
     from datetime import timedelta

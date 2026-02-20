@@ -1,0 +1,16 @@
+{
+  "festival_id": "pradosh-vrata-shrawan-krishna",
+  "rule_type": "lunar",
+  "rule_family": "monthly_pradosh",
+  "source": "rule_ingestion_seed_v1",
+  "status": "computed",
+  "confidence": "medium",
+  "executable": true,
+  "execution_template": "lunar_tithi_window_v1",
+  "payload": {
+    "lunar_month": "Shrawan",
+    "paksha": "krishna",
+    "tithi": 13,
+    "adhik_policy": "skip"
+  }
+}

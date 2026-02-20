@@ -8,7 +8,7 @@
 
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { formatDistanceToNow, differenceInDays, format } from 'date-fns';
+import { differenceInDays, format } from 'date-fns';
 import './FestivalCard.css';
 
 /**
@@ -50,7 +50,7 @@ export function FestivalCard({ festival, onClick, isActive = false }) {
 
     return (
         <article
-            className={`festival-card glass-card ${isActive ? 'festival-card--active' : ''}`}
+            className={`festival-card glass-card interactive-surface interactive-press motion-stagger ${isActive ? 'festival-card--active' : ''}`}
             onClick={() => onClick?.(festival)}
             role="button"
             tabIndex={0}
@@ -114,8 +114,15 @@ export function FestivalCard({ festival, onClick, isActive = false }) {
                     </p>
                 )}
 
+                <div className="festival-card__meta-badges">
+                    <span className={`badge badge-rule badge-rule--${festival.validation_band || 'unknown'}`}>
+                        {festival.validation_band || 'unknown'}
+                    </span>
+                    <span className="badge badge-rule-status">{festival.rule_status || 'unclassified'}</span>
+                </div>
+
                 {/* Learn more button */}
-                <button className="festival-card__cta btn btn-secondary">
+                <button className="festival-card__cta btn btn-secondary interactive-surface interactive-press">
                     Learn More
                     <span className="cta-arrow">→</span>
                 </button>
@@ -138,6 +145,8 @@ FestivalCard.propTypes = {
         next_end: PropTypes.string,
         duration_days: PropTypes.number,
         primary_color: PropTypes.string,
+        validation_band: PropTypes.string,
+        rule_status: PropTypes.string,
     }).isRequired,
     onClick: PropTypes.func,
     isActive: PropTypes.bool,

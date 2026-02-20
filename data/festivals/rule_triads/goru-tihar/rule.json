@@ -1,0 +1,16 @@
+{
+  "festival_id": "goru-tihar",
+  "rule_type": "lunar",
+  "rule_family": "lunar_bs_tithi",
+  "source": "festival_rules_legacy",
+  "status": "computed",
+  "confidence": "medium",
+  "executable": true,
+  "execution_template": "lunar_bs_month_v1",
+  "payload": {
+    "bs_month": 7,
+    "paksha": "shukla",
+    "tithi": 1,
+    "adhik_policy": "skip"
+  }
+}

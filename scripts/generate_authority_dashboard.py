@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate authority dashboard from CI artifacts and runtime metadata."""
+"""Generate authority dashboard from CI artifacts and runtime metadata (v3 public profile)."""
 
 from __future__ import annotations
 
@@ -69,16 +69,47 @@ def _collect_rule_confidence_breakdown() -> Dict[str, int]:
     return dict(Counter(str(row.get("confidence", "unknown")) for row in rows))
 
 
+def _extract_runtime_confidence(payload: dict[str, Any]) -> str:
+    # v3 may return plain confidence string; v4/v5 envelope can still appear in compatibility mode.
+    if isinstance(payload.get("meta"), dict):
+        confidence = payload["meta"].get("confidence")
+        if isinstance(confidence, dict):
+            return str(confidence.get("level", "unknown"))
+        if isinstance(confidence, str):
+            return confidence
+    if isinstance(payload.get("confidence"), str):
+        return payload["confidence"]
+    panchanga = payload.get("panchanga")
+    if isinstance(panchanga, dict) and isinstance(panchanga.get("confidence"), str):
+        return panchanga["confidence"]
+    tithi = payload.get("tithi")
+    if isinstance(tithi, dict) and isinstance(tithi.get("confidence"), str):
+        return tithi["confidence"]
+    return "unknown"
+
+
+def _extract_boundary_risk(payload: dict[str, Any]) -> str:
+    if isinstance(payload.get("meta"), dict):
+        uncertainty = payload["meta"].get("uncertainty") or {}
+        if isinstance(uncertainty, dict):
+            return str(uncertainty.get("boundary_risk", "unknown"))
+    uncertainty = payload.get("uncertainty")
+    if isinstance(uncertainty, dict):
+        return str(uncertainty.get("boundary_risk", "unknown"))
+    return "unknown"
+
+
 def _collect_response_confidence_breakdown() -> Dict[str, Any]:
     client = TestClient(app)
     endpoints = [
-        "/v5/api/calendar/today",
-        "/v5/api/calendar/convert?date=2026-02-15",
-        "/v5/api/calendar/panchanga?date=2026-02-15",
-        "/v5/api/festivals/upcoming?days=30",
-        "/v5/api/festivals/coverage",
-        "/v5/api/resolve?date=2026-10-21",
-        "/v5/api/spec/conformance",
+        "/v3/api/calendar/today",
+        "/v3/api/calendar/convert?date=2026-02-15",
+        "/v3/api/calendar/panchanga?date=2026-02-15",
+        "/v3/api/festivals/upcoming?days=30",
+        "/v3/api/festivals/coverage",
+        "/v3/api/personal/panchanga?date=2026-02-15",
+        "/v3/api/muhurta?date=2026-02-15",
+        "/v3/api/kundali?datetime=2026-02-15T06:30:00%2B05:45",
     ]
     confidence = Counter()
     boundary = Counter()
@@ -91,11 +122,8 @@ def _collect_response_confidence_breakdown() -> Dict[str, Any]:
             continue
         try:
             payload = response.json()
-            meta = payload.get("meta", {})
-            confidence_level = str(meta.get("confidence", {}).get("level", "unknown"))
-            confidence[confidence_level] += 1
-            boundary_risk = str(meta.get("uncertainty", {}).get("boundary_risk", "unknown"))
-            boundary[boundary_risk] += 1
+            confidence[_extract_runtime_confidence(payload)] += 1
+            boundary[_extract_boundary_risk(payload)] += 1
         except Exception:
             failures.append({"endpoint": endpoint, "status_code": response.status_code, "error": "invalid_json"})
 
@@ -110,7 +138,6 @@ def _collect_response_confidence_breakdown() -> Dict[str, Any]:
 def _collect_pipeline_health() -> Dict[str, Any]:
     conformance = _read_json(REPORTS_DIR / "conformance_report.json")
     ingestion = _read_json(REPORTS_DIR / "rule_ingestion_summary.json")
-    e2e_path = PROJECT_ROOT / "docs" / "weekly_execution" / "year1_week36" / "e2e_smoke.md"
 
     return {
         "conformance_total": conformance.get("total"),
@@ -119,7 +146,6 @@ def _collect_pipeline_health() -> Dict[str, Any]:
         "rule_catalog_total": ingestion.get("total_rules"),
         "rule_catalog_generated": ingestion.get("generated_rules"),
         "rule_catalog_coverage_pct": ingestion.get("coverage_pct"),
-        "smoke_reference_present": e2e_path.exists(),
     }
 
 
@@ -147,40 +173,34 @@ def _build_markdown(payload: Dict[str, Any]) -> str:
     ]
 
     if discrepancy_rows:
-        lines.extend(
-            [
-                "| Class | Count |",
-                "|---|---:|",
-            ]
-        )
+        lines.extend([
+            "| Class | Count |",
+            "|---|---:|",
+        ])
         for key, value in discrepancy_rows.items():
             lines.append(f"| {key} | {value} |")
     else:
         lines.append("- No discrepancies recorded in current artifacts.")
 
-    lines.extend(
-        [
-            "",
-            "## Confidence Breakdown",
-            "",
-            "### Rule Catalog Confidence",
-            "",
-            "| Confidence | Count |",
-            "|---|---:|",
-        ]
-    )
+    lines.extend([
+        "",
+        "## Confidence Breakdown",
+        "",
+        "### Rule Catalog Confidence",
+        "",
+        "| Confidence | Count |",
+        "|---|---:|",
+    ])
     for key, value in confidence_rules.items():
         lines.append(f"| {key} | {value} |")
 
-    lines.extend(
-        [
-            "",
-            "### Runtime Response Confidence (sampled v5 endpoints)",
-            "",
-            "| Confidence | Count |",
-            "|---|---:|",
-        ]
-    )
+    lines.extend([
+        "",
+        "### Runtime Response Confidence (sampled v3 endpoints)",
+        "",
+        "| Confidence | Count |",
+        "|---|---:|",
+    ])
     for key, value in confidence_responses.items():
         lines.append(f"| {key} | {value} |")
 
@@ -188,19 +208,15 @@ def _build_markdown(payload: Dict[str, Any]) -> str:
 
 
 def main() -> int:
-    discrepancy_classes = _collect_discrepancy_classes()
-    confidence_breakdown = {
-        "rule_catalog": _collect_rule_confidence_breakdown(),
-        "response_samples": _collect_response_confidence_breakdown(),
-    }
-    pipeline_health = _collect_pipeline_health()
-
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "release_track": "authority-v5",
-        "pipeline_health": pipeline_health,
-        "discrepancy_classes": discrepancy_classes,
-        "confidence_breakdown": confidence_breakdown,
+        "release_track": "public-v3",
+        "pipeline_health": _collect_pipeline_health(),
+        "discrepancy_classes": _collect_discrepancy_classes(),
+        "confidence_breakdown": {
+            "rule_catalog": _collect_rule_confidence_breakdown(),
+            "response_samples": _collect_response_confidence_breakdown(),
+        },
         "artifacts": {
             "conformance_report": str(REPORTS_DIR / "conformance_report.json"),
             "evaluation_v4": str(REPORTS_DIR / "evaluation_v4" / "evaluation_v4.json"),

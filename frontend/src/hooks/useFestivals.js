@@ -16,9 +16,10 @@ import { festivalAPI } from '../services/api';
  * @param {string} options.search - Search query
  * @returns {Object} Festival state and actions
  */
-export function useFestivals({ category, search } = {}) {
+export function useFestivals({ category, search, qualityBand = "computed", algorithmicOnly = true } = {}) {
     const [festivals, setFestivals] = useState([]);
     const [total, setTotal] = useState(0);
+    const [scoreboard, setScoreboard] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -27,20 +28,28 @@ export function useFestivals({ category, search } = {}) {
         setError(null);
 
         try {
-            const params = {};
+            const params = {
+                quality_band: qualityBand,
+                algorithmic_only: String(algorithmicOnly),
+            };
             if (category) params.category = category;
             if (search) params.search = search;
 
-            const data = await festivalAPI.getAll(params);
+            const [data, scoreboardPayload] = await Promise.all([
+                festivalAPI.getAll(params),
+                festivalAPI.getCoverageScoreboard(),
+            ]);
             setFestivals(data.festivals || []);
             setTotal(data.total || 0);
+            setScoreboard(scoreboardPayload || null);
         } catch (err) {
             setError(err.message || 'Failed to load festivals');
             setFestivals([]);
+            setScoreboard(null);
         } finally {
             setLoading(false);
         }
-    }, [category, search]);
+    }, [category, search, qualityBand, algorithmicOnly]);
 
     useEffect(() => {
         fetchFestivals();
@@ -49,6 +58,7 @@ export function useFestivals({ category, search } = {}) {
     return {
         festivals,
         total,
+        scoreboard,
         loading,
         error,
         refetch: fetchFestivals,
@@ -61,7 +71,7 @@ export function useFestivals({ category, search } = {}) {
  * @param {number} days - Days to look ahead
  * @returns {Object} Upcoming festivals state
  */
-export function useUpcomingFestivals(days = 90) {
+export function useUpcomingFestivals(days = 90, qualityBand = "computed") {
     const [festivals, setFestivals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -72,7 +82,7 @@ export function useUpcomingFestivals(days = 90) {
             setError(null);
 
             try {
-                const data = await festivalAPI.getUpcoming(days);
+                const data = await festivalAPI.getUpcoming(days, qualityBand);
                 setFestivals(data.festivals || []);
             } catch (err) {
                 setError(err.message || 'Failed to load upcoming festivals');
@@ -83,7 +93,7 @@ export function useUpcomingFestivals(days = 90) {
         };
 
         fetchUpcoming();
-    }, [days]);
+    }, [days, qualityBand]);
 
     return { festivals, loading, error };
 }

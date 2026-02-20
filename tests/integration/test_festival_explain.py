@@ -21,7 +21,7 @@ def test_festival_explain_endpoint_returns_human_readable_payload():
 
 
 def test_festival_explain_endpoint_available_on_v2_alias():
-    resp = client.get("/v2/api/festivals/dashain/explain", params={"year": 2026})
+    resp = client.get("/v3/api/festivals/dashain/explain", params={"year": 2026})
     assert resp.status_code == 200
     assert resp.json()["festival_id"] == "dashain"
 

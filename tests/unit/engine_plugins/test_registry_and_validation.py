@@ -16,6 +16,7 @@ def test_registry_lists_expected_plugins():
     assert "islamic" in ids
     assert "hebrew" in ids
     assert "chinese" in ids
+    assert "julian" in ids
 
 
 def test_bs_plugin_conversion_basic():
@@ -31,3 +32,19 @@ def test_validation_suite_with_fixture_passes():
     cases = suite.load_cases(Path("tests/fixtures/plugins/plugin_validation_cases.json"))
     report = suite.run(cases)
     assert report["failed"] == 0
+
+
+def test_stage1_validation_fixture_covers_first_four_plugins():
+    suite = PluginValidationSuite()
+    cases = suite.load_cases(Path("tests/fixtures/plugins/plugin_validation_stage1_cases.json"))
+    report = suite.run(cases)
+
+    assert report["failed"] == 0
+
+    plugins = {row["plugin"] for row in report["results"]}
+    assert {"bs", "ns", "tibetan", "islamic"}.issubset(plugins)
+
+    for plugin_id in ("bs", "ns", "tibetan", "islamic"):
+        plugin_rows = [row for row in report["results"] if row["plugin"] == plugin_id]
+        assert len(plugin_rows) >= 6
+        assert all(row["source_class"] is not None for row in plugin_rows)

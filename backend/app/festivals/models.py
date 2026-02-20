@@ -162,7 +162,13 @@ class FestivalSummary(BaseModel):
     significance_level: int
     is_national_holiday: bool
     primary_color: Optional[str] = None
-    
+
+    # Rule quality metadata
+    rule_status: Optional[str] = None
+    rule_family: Optional[str] = None
+    validation_band: Optional[str] = None
+    source_evidence_ids: List[str] = Field(default_factory=list)
+
     # Next occurrence (computed)
     next_start: Optional[date] = None
     next_end: Optional[date] = None
@@ -214,6 +220,10 @@ class UpcomingFestival(BaseModel):
     days_until: int
     duration_days: int
     primary_color: Optional[str] = None
+    rule_status: Optional[str] = None
+    rule_family: Optional[str] = None
+    validation_band: Optional[str] = None
+    source_evidence_ids: List[str] = Field(default_factory=list)
 
 
 class UpcomingFestivalsResponse(BaseModel):

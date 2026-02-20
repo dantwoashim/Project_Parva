@@ -1,0 +1,31 @@
+{
+  "festival_id": "mangalbar-vrata-chaitra",
+  "generated_at": "2026-02-17T10:07:35.718336+00:00",
+  "validation_framework": "parva_rule_validation_v1",
+  "cases": [
+    {
+      "year": 2025,
+      "expected_start_date": null,
+      "expected_end_date": null,
+      "method": null,
+      "status": "pending",
+      "note": "No executable path for this year/rule combination."
+    },
+    {
+      "year": 2026,
+      "expected_start_date": null,
+      "expected_end_date": null,
+      "method": null,
+      "status": "pending",
+      "note": "No executable path for this year/rule combination."
+    },
+    {
+      "year": 2027,
+      "expected_start_date": null,
+      "expected_end_date": null,
+      "method": null,
+      "status": "pending",
+      "note": "No executable path for this year/rule combination."
+    }
+  ]
+}

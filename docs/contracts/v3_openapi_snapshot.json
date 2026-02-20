@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-16T07:33:42.762308+00:00",
+  "generated_at": "2026-02-20T04:36:22.231801+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -109,6 +109,30 @@
               "description": "Filter by rule source (e.g., festival_rules_v3)"
             },
             {
+              "name": "quality_band",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "computed|provisional|inventory|all",
+                "default": "all",
+                "title": "Quality Band"
+              },
+              "description": "computed|provisional|inventory|all"
+            },
+            {
+              "name": "algorithmic_only",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "description": "Only include algorithmic rules",
+                "default": true,
+                "title": "Algorithmic Only"
+              },
+              "description": "Only include algorithmic rules"
+            },
+            {
               "name": "page",
               "in": "query",
               "required": false,
@@ -202,6 +226,52 @@
           }
         }
       },
+      "/v3/api/festivals/coverage/scoreboard": {
+        "get": {
+          "tags": [
+            "festivals"
+          ],
+          "summary": "Get Festival Coverage Scoreboard",
+          "description": "Return truth-first computed/provisional/inventory coverage scoreboard.",
+          "operationId": "get_festival_coverage_scoreboard_v3_api_festivals_coverage_scoreboard_get",
+          "parameters": [
+            {
+              "name": "target_rules",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 5000,
+                "minimum": 1,
+                "description": "Target computed-rule count",
+                "default": 300,
+                "title": "Target Rules"
+              },
+              "description": "Target computed-rule count"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/festivals/upcoming": {
         "get": {
           "tags": [
@@ -243,6 +313,18 @@
                 "title": "From Date"
               },
               "description": "Start date (defaults to today)"
+            },
+            {
+              "name": "quality_band",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "computed|provisional|inventory|all",
+                "default": "computed",
+                "title": "Quality Band"
+              },
+              "description": "computed|provisional|inventory|all"
             }
           ],
           "responses": {
@@ -2681,6 +2763,1511 @@
           }
         }
       },
+      "/v3/api/engine/config": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "Get Engine Config",
+          "description": "Return current runtime engine configuration.",
+          "operationId": "get_engine_config_v3_api_engine_config_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/engine/health": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "Get Engine Health",
+          "description": "Return ephemeris health/metadata.",
+          "operationId": "get_engine_health_v3_api_engine_health_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/engine/calendars": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "List Calendars",
+          "description": "List registered calendar plugins.",
+          "operationId": "list_calendars_v3_api_engine_calendars_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/engine/plugins/quality": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "Plugin Quality",
+          "description": "Return quality parity metrics across all calendar plugins.",
+          "operationId": "plugin_quality_v3_api_engine_plugins_quality_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/engine/convert": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "Convert With Plugin",
+          "description": "Convert Gregorian date via selected calendar plugin.",
+          "operationId": "convert_with_plugin_v3_api_engine_convert_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date YYYY-MM-DD",
+                "title": "Date"
+              },
+              "description": "Gregorian date YYYY-MM-DD"
+            },
+            {
+              "name": "calendar",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "Plugin id: bs|ns|tibetan|islamic|hebrew|chinese|julian",
+                "default": "bs",
+                "title": "Calendar"
+              },
+              "description": "Plugin id: bs|ns|tibetan|islamic|hebrew|chinese|julian"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/engine/observance-plugins": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "List Observance Plugins",
+          "description": "List available observance plugins.",
+          "operationId": "list_observance_plugins_v3_api_engine_observance_plugins_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/engine/observance-calculate": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "Calculate Observance V2",
+          "description": "Calculate one observance through selected observance plugin.",
+          "operationId": "calculate_observance_v2_v3_api_engine_observance_calculate_get",
+          "parameters": [
+            {
+              "name": "plugin",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "nepali_hindu",
+                "title": "Plugin"
+              }
+            },
+            {
+              "name": "rule_id",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Rule/festival identifier",
+                "title": "Rule Id"
+              },
+              "description": "Rule/festival identifier"
+            },
+            {
+              "name": "year",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "maximum": 2200,
+                "minimum": 2000,
+                "title": "Year"
+              }
+            },
+            {
+              "name": "mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "calculation mode: computed|tabular|astronomical|announced",
+                "default": "computed",
+                "title": "Mode"
+              },
+              "description": "calculation mode: computed|tabular|astronomical|announced"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/engine/observances": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "Calculate Observance",
+          "description": "Backward-compatible alias for observance plugin calculation.",
+          "operationId": "calculate_observance_v3_api_engine_observances_get",
+          "parameters": [
+            {
+              "name": "plugin",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "nepali_hindu",
+                "title": "Plugin"
+              }
+            },
+            {
+              "name": "rule_id",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Rule/festival identifier",
+                "title": "Rule Id"
+              },
+              "description": "Rule/festival identifier"
+            },
+            {
+              "name": "year",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "maximum": 2200,
+                "minimum": 2000,
+                "title": "Year"
+              }
+            },
+            {
+              "name": "mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "calculation mode: computed|tabular|astronomical|announced",
+                "default": "computed",
+                "title": "Mode"
+              },
+              "description": "calculation mode: computed|tabular|astronomical|announced"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/forecast/festivals": {
+        "get": {
+          "tags": [
+            "forecast"
+          ],
+          "summary": "Forecast Festival Dates",
+          "operationId": "forecast_festival_dates_v3_api_forecast_festivals_get",
+          "parameters": [
+            {
+              "name": "year",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "maximum": 2200,
+                "minimum": 2000,
+                "description": "Target Gregorian year",
+                "title": "Year"
+              },
+              "description": "Target Gregorian year"
+            },
+            {
+              "name": "festivals",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Comma-separated festival ids. Defaults to priority set.",
+                "title": "Festivals"
+              },
+              "description": "Comma-separated festival ids. Defaults to priority set."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/forecast/error-curve": {
+        "get": {
+          "tags": [
+            "forecast"
+          ],
+          "summary": "Forecast Error Curve",
+          "operationId": "forecast_error_curve_v3_api_forecast_error_curve_get",
+          "parameters": [
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 2300,
+                "minimum": 1900,
+                "default": 2026,
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "end_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 2300,
+                "minimum": 1900,
+                "default": 2051,
+                "title": "End Year"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/resolve": {
+        "get": {
+          "tags": [
+            "resolve"
+          ],
+          "summary": "Resolve Temporal Context",
+          "description": "Resolve date context into BS + panchanga + observances in one request.\n\nThis endpoint is intended as the authority-style one-shot resolution API for\nconsumers that need deterministic, replayable context with minimal round trips.",
+          "operationId": "resolve_temporal_context_v3_api_resolve_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date YYYY-MM-DD",
+                "title": "Date"
+              },
+              "description": "Gregorian date YYYY-MM-DD"
+            },
+            {
+              "name": "profile",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "Observance profile",
+                "default": "np-mainstream",
+                "title": "Profile"
+              },
+              "description": "Observance profile"
+            },
+            {
+              "name": "latitude",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "number",
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "default": 27.7172,
+                "title": "Latitude"
+              }
+            },
+            {
+              "name": "longitude",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "number",
+                "maximum": 180.0,
+                "minimum": -180.0,
+                "default": 85.324,
+                "title": "Longitude"
+              }
+            },
+            {
+              "name": "include_trace",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": true,
+                "title": "Include Trace"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResolveResult"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/integrations/feeds/all.ics": {
+        "get": {
+          "tags": [
+            "integrations"
+          ],
+          "summary": "All Feed",
+          "operationId": "all_feed_v3_api_integrations_feeds_all_ics_get",
+          "parameters": [
+            {
+              "name": "years",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 10,
+                "minimum": 1,
+                "default": 2,
+                "title": "Years"
+              }
+            },
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "maximum": 2300,
+                    "minimum": 1900
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/integrations/feeds/national.ics": {
+        "get": {
+          "tags": [
+            "integrations"
+          ],
+          "summary": "National Feed",
+          "operationId": "national_feed_v3_api_integrations_feeds_national_ics_get",
+          "parameters": [
+            {
+              "name": "years",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 10,
+                "minimum": 1,
+                "default": 2,
+                "title": "Years"
+              }
+            },
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "maximum": 2300,
+                    "minimum": 1900
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/integrations/feeds/newari.ics": {
+        "get": {
+          "tags": [
+            "integrations"
+          ],
+          "summary": "Newari Feed",
+          "operationId": "newari_feed_v3_api_integrations_feeds_newari_ics_get",
+          "parameters": [
+            {
+              "name": "years",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 10,
+                "minimum": 1,
+                "default": 2,
+                "title": "Years"
+              }
+            },
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "maximum": 2300,
+                    "minimum": 1900
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/integrations/feeds/custom.ics": {
+        "get": {
+          "tags": [
+            "integrations"
+          ],
+          "summary": "Custom Feed",
+          "operationId": "custom_feed_v3_api_integrations_feeds_custom_ics_get",
+          "parameters": [
+            {
+              "name": "festivals",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Comma-separated festival ids",
+                "title": "Festivals"
+              },
+              "description": "Comma-separated festival ids"
+            },
+            {
+              "name": "years",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 10,
+                "minimum": 1,
+                "default": 2,
+                "title": "Years"
+              }
+            },
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "maximum": 2300,
+                    "minimum": 1900
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/integrations/feeds/next": {
+        "get": {
+          "tags": [
+            "integrations"
+          ],
+          "summary": "Integration Feed Preview",
+          "operationId": "integration_feed_preview_v3_api_integrations_feeds_next_get",
+          "parameters": [
+            {
+              "name": "days",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 365,
+                "minimum": 1,
+                "default": 30,
+                "title": "Days"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/personal/panchanga": {
+        "get": {
+          "tags": [
+            "personal"
+          ],
+          "summary": "Personal Panchanga",
+          "operationId": "personal_panchanga_v3_api_personal_panchanga_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone, e.g. Asia/Kathmandu",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone, e.g. Asia/Kathmandu"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/muhurta": {
+        "get": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Muhurta For Day",
+          "operationId": "muhurta_for_day_v3_api_muhurta_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            },
+            {
+              "name": "birth_nakshatra",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Birth nakshatra name or number 1-27 (optional tara-bala)",
+                "title": "Birth Nakshatra"
+              },
+              "description": "Birth nakshatra name or number 1-27 (optional tara-bala)"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/muhurta/rahu-kalam": {
+        "get": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Rahu Kalam",
+          "operationId": "rahu_kalam_v3_api_muhurta_rahu_kalam_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/muhurta/auspicious": {
+        "get": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Auspicious Muhurta",
+          "operationId": "auspicious_muhurta_v3_api_muhurta_auspicious_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "type",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "vivah|griha_pravesh|travel|upanayana|general",
+                "default": "general",
+                "title": "Type"
+              },
+              "description": "vivah|griha_pravesh|travel|upanayana|general"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            },
+            {
+              "name": "birth_nakshatra",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Birth nakshatra name or number 1-27",
+                "title": "Birth Nakshatra"
+              },
+              "description": "Birth nakshatra name or number 1-27"
+            },
+            {
+              "name": "assumption_set",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "np-mainstream-v2|diaspora-practical-v2",
+                "default": "np-mainstream-v2",
+                "title": "Assumption Set"
+              },
+              "description": "np-mainstream-v2|diaspora-practical-v2"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/kundali": {
+        "get": {
+          "tags": [
+            "kundali"
+          ],
+          "summary": "Kundali Endpoint",
+          "operationId": "kundali_endpoint_v3_api_kundali_get",
+          "parameters": [
+            {
+              "name": "datetime",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "ISO8601 datetime",
+                "title": "Datetime"
+              },
+              "description": "ISO8601 datetime"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/kundali/lagna": {
+        "get": {
+          "tags": [
+            "kundali"
+          ],
+          "summary": "Lagna Endpoint",
+          "operationId": "lagna_endpoint_v3_api_kundali_lagna_get",
+          "parameters": [
+            {
+              "name": "datetime",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "ISO8601 datetime",
+                "title": "Datetime"
+              },
+              "description": "ISO8601 datetime"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/provenance/root": {
         "get": {
           "tags": [
@@ -3439,501 +5026,6 @@
           }
         }
       },
-      "/v3/api/engine/config": {
-        "get": {
-          "tags": [
-            "engine"
-          ],
-          "summary": "Get Engine Config",
-          "description": "Return current runtime engine configuration.",
-          "operationId": "get_engine_config_v3_api_engine_config_get",
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/engine/health": {
-        "get": {
-          "tags": [
-            "engine"
-          ],
-          "summary": "Get Engine Health",
-          "description": "Return ephemeris health/metadata.",
-          "operationId": "get_engine_health_v3_api_engine_health_get",
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/engine/calendars": {
-        "get": {
-          "tags": [
-            "engine"
-          ],
-          "summary": "List Calendars",
-          "description": "List registered calendar plugins.",
-          "operationId": "list_calendars_v3_api_engine_calendars_get",
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/engine/convert": {
-        "get": {
-          "tags": [
-            "engine"
-          ],
-          "summary": "Convert With Plugin",
-          "description": "Convert Gregorian date via selected calendar plugin.",
-          "operationId": "convert_with_plugin_v3_api_engine_convert_get",
-          "parameters": [
-            {
-              "name": "date",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "description": "Gregorian date YYYY-MM-DD",
-                "title": "Date"
-              },
-              "description": "Gregorian date YYYY-MM-DD"
-            },
-            {
-              "name": "calendar",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "description": "Plugin id: bs|ns|tibetan|islamic|hebrew|chinese",
-                "default": "bs",
-                "title": "Calendar"
-              },
-              "description": "Plugin id: bs|ns|tibetan|islamic|hebrew|chinese"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/engine/observance-plugins": {
-        "get": {
-          "tags": [
-            "engine"
-          ],
-          "summary": "List Observance Plugins",
-          "description": "List available observance plugins.",
-          "operationId": "list_observance_plugins_v3_api_engine_observance_plugins_get",
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/engine/observance-calculate": {
-        "get": {
-          "tags": [
-            "engine"
-          ],
-          "summary": "Calculate Observance V2",
-          "description": "Calculate one observance through selected observance plugin.",
-          "operationId": "calculate_observance_v2_v3_api_engine_observance_calculate_get",
-          "parameters": [
-            {
-              "name": "plugin",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "default": "nepali_hindu",
-                "title": "Plugin"
-              }
-            },
-            {
-              "name": "rule_id",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "description": "Rule/festival identifier",
-                "title": "Rule Id"
-              },
-              "description": "Rule/festival identifier"
-            },
-            {
-              "name": "year",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "maximum": 2200,
-                "minimum": 2000,
-                "title": "Year"
-              }
-            },
-            {
-              "name": "mode",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "description": "calculation mode: computed|tabular|astronomical|announced",
-                "default": "computed",
-                "title": "Mode"
-              },
-              "description": "calculation mode: computed|tabular|astronomical|announced"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/engine/observances": {
-        "get": {
-          "tags": [
-            "engine"
-          ],
-          "summary": "Calculate Observance",
-          "description": "Backward-compatible alias for observance plugin calculation.",
-          "operationId": "calculate_observance_v3_api_engine_observances_get",
-          "parameters": [
-            {
-              "name": "plugin",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "default": "nepali_hindu",
-                "title": "Plugin"
-              }
-            },
-            {
-              "name": "rule_id",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "description": "Rule/festival identifier",
-                "title": "Rule Id"
-              },
-              "description": "Rule/festival identifier"
-            },
-            {
-              "name": "year",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "maximum": 2200,
-                "minimum": 2000,
-                "title": "Year"
-              }
-            },
-            {
-              "name": "mode",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "description": "calculation mode: computed|tabular|astronomical|announced",
-                "default": "computed",
-                "title": "Mode"
-              },
-              "description": "calculation mode: computed|tabular|astronomical|announced"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/forecast/festivals": {
-        "get": {
-          "tags": [
-            "forecast"
-          ],
-          "summary": "Forecast Festival Dates",
-          "operationId": "forecast_festival_dates_v3_api_forecast_festivals_get",
-          "parameters": [
-            {
-              "name": "year",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "integer",
-                "maximum": 2200,
-                "minimum": 2000,
-                "description": "Target Gregorian year",
-                "title": "Year"
-              },
-              "description": "Target Gregorian year"
-            },
-            {
-              "name": "festivals",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Comma-separated festival ids. Defaults to priority set.",
-                "title": "Festivals"
-              },
-              "description": "Comma-separated festival ids. Defaults to priority set."
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/forecast/error-curve": {
-        "get": {
-          "tags": [
-            "forecast"
-          ],
-          "summary": "Forecast Error Curve",
-          "operationId": "forecast_error_curve_v3_api_forecast_error_curve_get",
-          "parameters": [
-            {
-              "name": "start_year",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "maximum": 2300,
-                "minimum": 1900,
-                "default": 2026,
-                "title": "Start Year"
-              }
-            },
-            {
-              "name": "end_year",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "maximum": 2300,
-                "minimum": 1900,
-                "default": 2051,
-                "title": "End Year"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/resolve": {
-        "get": {
-          "tags": [
-            "resolve"
-          ],
-          "summary": "Resolve Temporal Context",
-          "description": "Resolve date context into BS + panchanga + observances in one request.\n\nThis endpoint is intended as the authority-style one-shot resolution API for\nconsumers that need deterministic, replayable context with minimal round trips.",
-          "operationId": "resolve_temporal_context_v3_api_resolve_get",
-          "parameters": [
-            {
-              "name": "date",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "description": "Gregorian date YYYY-MM-DD",
-                "title": "Date"
-              },
-              "description": "Gregorian date YYYY-MM-DD"
-            },
-            {
-              "name": "profile",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "description": "Observance profile",
-                "default": "np-mainstream",
-                "title": "Profile"
-              },
-              "description": "Observance profile"
-            },
-            {
-              "name": "latitude",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "number",
-                "maximum": 90.0,
-                "minimum": -90.0,
-                "default": 27.7172,
-                "title": "Latitude"
-              }
-            },
-            {
-              "name": "longitude",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "number",
-                "maximum": 180.0,
-                "minimum": -180.0,
-                "default": 85.324,
-                "title": "Longitude"
-              }
-            },
-            {
-              "name": "include_trace",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "boolean",
-                "default": true,
-                "title": "Include Trace"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/ResolveResult"
-                  }
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "/v3/api/spec/conformance": {
         "get": {
           "tags": [
@@ -3948,354 +5040,6 @@
               "content": {
                 "application/json": {
                   "schema": {}
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/integrations/feeds/all.ics": {
-        "get": {
-          "tags": [
-            "integrations"
-          ],
-          "summary": "All Feed",
-          "operationId": "all_feed_v3_api_integrations_feeds_all_ics_get",
-          "parameters": [
-            {
-              "name": "years",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "maximum": 10,
-                "minimum": 1,
-                "default": 2,
-                "title": "Years"
-              }
-            },
-            {
-              "name": "start_year",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "integer",
-                    "maximum": 2300,
-                    "minimum": 1900
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Start Year"
-              }
-            },
-            {
-              "name": "lang",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "default": "en",
-                "title": "Lang"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/integrations/feeds/national.ics": {
-        "get": {
-          "tags": [
-            "integrations"
-          ],
-          "summary": "National Feed",
-          "operationId": "national_feed_v3_api_integrations_feeds_national_ics_get",
-          "parameters": [
-            {
-              "name": "years",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "maximum": 10,
-                "minimum": 1,
-                "default": 2,
-                "title": "Years"
-              }
-            },
-            {
-              "name": "start_year",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "integer",
-                    "maximum": 2300,
-                    "minimum": 1900
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Start Year"
-              }
-            },
-            {
-              "name": "lang",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "default": "en",
-                "title": "Lang"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/integrations/feeds/newari.ics": {
-        "get": {
-          "tags": [
-            "integrations"
-          ],
-          "summary": "Newari Feed",
-          "operationId": "newari_feed_v3_api_integrations_feeds_newari_ics_get",
-          "parameters": [
-            {
-              "name": "years",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "maximum": 10,
-                "minimum": 1,
-                "default": 2,
-                "title": "Years"
-              }
-            },
-            {
-              "name": "start_year",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "integer",
-                    "maximum": 2300,
-                    "minimum": 1900
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Start Year"
-              }
-            },
-            {
-              "name": "lang",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "default": "en",
-                "title": "Lang"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/integrations/feeds/custom.ics": {
-        "get": {
-          "tags": [
-            "integrations"
-          ],
-          "summary": "Custom Feed",
-          "operationId": "custom_feed_v3_api_integrations_feeds_custom_ics_get",
-          "parameters": [
-            {
-              "name": "festivals",
-              "in": "query",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "description": "Comma-separated festival ids",
-                "title": "Festivals"
-              },
-              "description": "Comma-separated festival ids"
-            },
-            {
-              "name": "years",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "maximum": 10,
-                "minimum": 1,
-                "default": 2,
-                "title": "Years"
-              }
-            },
-            {
-              "name": "start_year",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "integer",
-                    "maximum": 2300,
-                    "minimum": 1900
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "title": "Start Year"
-              }
-            },
-            {
-              "name": "lang",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "default": "en",
-                "title": "Lang"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/integrations/feeds/next": {
-        "get": {
-          "tags": [
-            "integrations"
-          ],
-          "summary": "Integration Feed Preview",
-          "operationId": "integration_feed_preview_v3_api_integrations_feeds_next_get",
-          "parameters": [
-            {
-              "name": "days",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "integer",
-                "maximum": 365,
-                "minimum": 1,
-                "default": 30,
-                "title": "Days"
-              }
-            },
-            {
-              "name": "lang",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "string",
-                "default": "en",
-                "title": "Lang"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
                 }
               }
             }
@@ -4389,7 +5133,6 @@
       "/v3/openapi.json": {
         "get": {
           "summary": "V3 Openapi",
-          "description": "Versioned OpenAPI schema endpoint for v3.",
           "operationId": "v3_openapi_v3_openapi_json_get",
           "responses": {
             "200": {
@@ -4406,7 +5149,6 @@
       "/v3/docs": {
         "get": {
           "summary": "V3 Docs",
-          "description": "Versioned docs entrypoint for v3.",
           "operationId": "v3_docs_v3_docs_get",
           "responses": {
             "200": {
@@ -4653,7 +5395,7 @@
             "engine_version": {
               "type": "string",
               "title": "Engine Version",
-              "default": "v2"
+              "default": "v3"
             },
             "provenance": {
               "anyOf": [
@@ -5415,6 +6157,46 @@
                 }
               ],
               "title": "Primary Color"
+            },
+            "rule_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Status"
+            },
+            "rule_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Family"
+            },
+            "validation_band": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Validation Band"
+            },
+            "source_evidence_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Source Evidence Ids"
             },
             "next_start": {
               "anyOf": [
@@ -6337,6 +7119,46 @@
                 }
               ],
               "title": "Primary Color"
+            },
+            "rule_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Status"
+            },
+            "rule_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Family"
+            },
+            "validation_band": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Validation Band"
+            },
+            "source_evidence_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Source Evidence Ids"
             }
           },
           "type": "object",

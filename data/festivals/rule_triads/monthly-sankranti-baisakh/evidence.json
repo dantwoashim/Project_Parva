@@ -1,0 +1,18 @@
+{
+  "festival_id": "monthly-sankranti-baisakh",
+  "generated_at": "2026-02-17T10:12:06.090562+00:00",
+  "source_evidence_ids": [
+    "rule_ingestion_seed_v1"
+  ],
+  "confidence": "medium",
+  "status": "computed",
+  "rule_family": "solar_sankranti_monthly",
+  "tags": [
+    "computed-month2",
+    "generated",
+    "quality-validated",
+    "seed-ingestion",
+    "solar"
+  ],
+  "notes": "Generated monthly solar observance rule from ingestion seed profile."
+}

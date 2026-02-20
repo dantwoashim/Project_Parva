@@ -28,6 +28,27 @@ const TABS = [
  * RitualTimeline expects { days: [...], preparation: string }
  */
 function normalizeRitualData(festival) {
+    const toOfferingsArray = (value) => {
+        if (!value) return null;
+        if (Array.isArray(value)) return value;
+        if (typeof value === 'string') {
+            const parts = value
+                .split(',')
+                .map((item) => item.trim())
+                .filter(Boolean);
+            return parts.length ? parts : [value];
+        }
+        return null;
+    };
+
+    const mapStepToEvent = (step) => ({
+        time: step.time_of_day || null,
+        title: step.name || 'Ritual',
+        description: step.description || null,
+        location: step.location || null,
+        offerings: toOfferingsArray(step.items_needed),
+    });
+
     // If already normalized shape
     if (festival.daily_rituals?.days && Array.isArray(festival.daily_rituals.days)) {
         return festival.daily_rituals;
@@ -39,13 +60,7 @@ function normalizeRitualData(festival) {
             days: festival.daily_rituals.map((day, index) => ({
                 name: day.name || `Day ${day.day || index + 1}`,
                 significance: day.description || null,
-                events: (day.rituals || []).map(step => ({
-                    time: step.time_of_day || null,
-                    title: step.name || 'Ritual',
-                    description: step.description || null,
-                    location: step.location || null,
-                    offerings: step.items_needed || null,
-                })),
+                events: (day.rituals || []).map(mapStepToEvent),
             })),
         };
     }
@@ -55,14 +70,8 @@ function normalizeRitualData(festival) {
         return {
             days: [{
                 name: festival.name,
-                events: festival.simple_rituals.map(step => ({
-                    time: step.time_of_day || null,
-                    title: step.name || 'Ritual',
-                    description: step.description || null,
-                    location: step.location || null,
-                    offerings: step.items_needed || null,
-                }))
-            }]
+                events: festival.simple_rituals.map(mapStepToEvent),
+            }],
         };
     }
 

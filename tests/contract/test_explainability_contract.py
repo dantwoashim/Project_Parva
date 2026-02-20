@@ -21,7 +21,7 @@ def test_explain_trace_available_v2_alias():
     assert explain.status_code == 200
     trace_id = explain.json()["calculation_trace_id"]
 
-    trace_resp = client.get(f"/v2/api/explain/{trace_id}")
+    trace_resp = client.get(f"/v3/api/explain/{trace_id}")
     assert trace_resp.status_code == 200
     trace_body = trace_resp.json()
     assert trace_body["trace_id"] == trace_id
