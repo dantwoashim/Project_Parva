@@ -8,5 +8,9 @@ services:
     envVars:
       - key: PYTHONPATH
         value: backend
-      - key: PARVA_DISABLE_V2
+      - key: PARVA_ENABLE_EXPERIMENTAL_API
         value: "false"
+      - key: PARVA_ENV
+        value: production
+      - key: CORS_ALLOW_ORIGINS
+        value: https://dantwoashim.github.io

@@ -28,11 +28,16 @@ def main() -> int:
 
     base = args.base.rstrip("/")
     checks = [
-        ("/v2/api/calendar/today", {}),
-        ("/v2/api/calendar/convert", {"date": "2026-02-15"}),
-        ("/v2/api/festivals/dashain", {"year": "2026"}),
-        ("/v2/api/festivals/dashain/explain", {"year": "2026"}),
-        ("/v2/api/provenance/root", {}),
+        ("/health", {}),
+        ("/v3/api/calendar/today", {}),
+        ("/v3/api/calendar/convert", {"date": "2026-02-15"}),
+        ("/v3/api/calendar/panchanga", {"date": "2026-02-15"}),
+        ("/v3/api/festivals/dashain", {"year": "2026"}),
+        ("/v3/api/festivals/dashain/explain", {"year": "2026"}),
+        ("/v3/api/reliability/status", {}),
+        ("/v3/api/personal/panchanga", {"date": "2026-02-15"}),
+        ("/v3/api/muhurta", {"date": "2026-02-15"}),
+        ("/v3/api/kundali", {"datetime": "2026-02-15T06:30:00+05:45"}),
     ]
 
     report = []
