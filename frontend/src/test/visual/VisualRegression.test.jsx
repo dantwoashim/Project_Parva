@@ -285,7 +285,7 @@ describe('visual regression harness', () => {
 
   it('compass page visual baseline', async () => {
     const { container } = await renderRoute('/');
-    await screen.findByText(/Temporal Compass/i);
+    await screen.findByRole('heading', { name: /Today's Festivals/i });
     expect(container.querySelector('.compass-page')).toMatchSnapshot();
   });
 
@@ -303,7 +303,7 @@ describe('visual regression harness', () => {
 
   it('feeds page visual baseline', async () => {
     const { container } = await renderRoute('/feeds');
-    await screen.findByRole('heading', { name: /Calendar Feeds/i });
+    await screen.findByRole('checkbox', { name: /Dashain/i });
     expect(container.querySelector('.feeds-page')).toMatchSnapshot();
   });
 
