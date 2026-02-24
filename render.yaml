@@ -1,16 +1,15 @@
 services:
   - type: web
-    name: project-parva-api
-    env: python
+    name: project-parva
+    env: docker
     plan: free
-    buildCommand: pip install -e .
-    startCommand: uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: PYTHONPATH
-        value: backend
       - key: PARVA_ENABLE_EXPERIMENTAL_API
         value: "false"
       - key: PARVA_ENV
         value: production
+      - key: PARVA_SERVE_FRONTEND
+        value: "true"
       - key: CORS_ALLOW_ORIGINS
-        value: https://dantwoashim.github.io
+        value: https://project-parva.onrender.com

@@ -18,31 +18,48 @@ npm run dev
 - `PARVA_ENV` (`development|production`)
 - `PARVA_MAX_REQUEST_BYTES` (default `1048576`)
 - `PARVA_MAX_QUERY_LENGTH` (default `4096`)
+- `PARVA_SERVE_FRONTEND` (`true|false`, default `false`)
+- `PARVA_FRONTEND_DIST` (optional absolute path for built frontend)
 
-## Production (Zero Budget) Checklist
-1. Push latest code and tag to GitHub.
-2. Deploy backend on Render free tier using `/Users/rohanbasnet14/Documents/Project_Parva/render.yaml`.
-3. Set Render env vars:
-   - `PYTHONPATH=backend`
+## Recommended Zero-Dollar Deploy (Single Place)
+This is the best practical zero-budget setup for the current stack:
+
+- One Render free web service
+- Frontend + backend served from the same container/domain
+- API under `/v3/api/*`
+- UI served at `/`
+
+### Steps
+1. Push latest code to GitHub.
+2. In Render, create **Blueprint** from repo (`/Users/rohanbasnet14/Documents/Project_Parva/render.yaml`).
+3. Confirm environment:
    - `PARVA_ENABLE_EXPERIMENTAL_API=false`
    - `PARVA_ENV=production`
-   - `CORS_ALLOW_ORIGINS=https://dantwoashim.github.io`
-4. Deploy static artifacts site via GitHub Pages workflow.
-5. Build frontend with production API base:
+   - `PARVA_SERVE_FRONTEND=true`
+4. Deploy.
+5. Smoke-check:
+```bash
+python3 scripts/live_smoke.py --base https://<your-render-service>.onrender.com
+```
+
+## Cloudflare note (important)
+- Cloudflare Pages is excellent for static frontend hosting.
+- The current backend uses Python + `pyswisseph`, which is not a straightforward fit for Cloudflare Pages Functions/Workers runtime.
+- If you want Cloudflare now, use it for frontend/static artifacts; keep dynamic API on Render.
+
+## Legacy split deploy (if needed)
+1. Deploy backend on Render.
+2. Build frontend with production API base:
 ```bash
 cd /Users/rohanbasnet14/Documents/Project_Parva/frontend
 VITE_API_BASE=https://<your-render-service>.onrender.com/v3/api npm run build
 ```
-6. Publish frontend build (GitHub Pages / Netlify / Vercel free tier).
-7. Run live smoke checks:
-```bash
-cd /Users/rohanbasnet14/Documents/Project_Parva
-python3 scripts/live_smoke.py --base https://<your-render-service>.onrender.com
-```
+3. Publish frontend on GitHub Pages / Netlify / Vercel.
 
 ## Health checks
 - `GET /health`
-- `GET /v3/api/reliability/status` (optional; available when trust routers are enabled)
+- `GET /v3/api/calendar/today`
+- `GET /v3/api/festivals/upcoming?days=30`
 
 ## CI gates
 ```bash
