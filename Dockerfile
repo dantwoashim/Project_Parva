@@ -21,11 +21,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PARVA_ENV=production
 
 COPY pyproject.toml /app/pyproject.toml
-RUN pip install --no-cache-dir fastapi uvicorn pydantic pyswisseph aiohttp
-
 COPY backend /app/backend
+RUN pip install --no-cache-dir -e .
+
 COPY data /app/data
-COPY output/precomputed /app/output/precomputed
+RUN mkdir -p /app/output/precomputed
 COPY --from=frontend-builder /frontend/dist /app/frontend/dist
 
 EXPOSE 8000
