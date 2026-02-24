@@ -1,21 +1,22 @@
-/* Purposeful interaction primitives */
+/* Interaction primitives — dark theme */
+
 .interactive-surface {
   transition:
-    transform var(--transition-base),
-    box-shadow var(--transition-base),
-    border-color var(--transition-fast),
-    background-color var(--transition-fast);
+    transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
   will-change: transform;
 }
 
 .interactive-surface:hover {
   transform: translateY(-2px);
-  box-shadow: var(--interactive-halo);
+  box-shadow: var(--shadow-glow-gold);
 }
 
 .interactive-surface:focus-visible {
   outline: none;
-  box-shadow: var(--focus-ring), var(--interactive-halo);
+  box-shadow: var(--focus-ring), var(--shadow-glow-gold);
 }
 
 .interactive-press:active {
@@ -28,41 +29,21 @@
 }
 
 .motion-stagger {
-  animation: panelRise var(--motion-duration-page) var(--motion-ease-emphasized) both;
+  animation: fadeInUp 0.5s var(--ease-out) both;
 }
 
 .motion-stagger:nth-child(2) {
-  animation-delay: 40ms;
+  animation-delay: 60ms;
 }
 
 .motion-stagger:nth-child(3) {
-  animation-delay: 80ms;
-}
-
-.motion-stagger:nth-child(4) {
   animation-delay: 120ms;
 }
 
-@keyframes panelRise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.motion-stagger:nth-child(4) {
+  animation-delay: 180ms;
 }
 
-/* Reusable gradient action style */
-.btn-premium {
-  background: var(--gradient-brand);
-  color: var(--color-text-inverse);
-  border: 1px solid transparent;
-}
-
-.btn-premium:hover {
-  filter: saturate(1.1);
-  box-shadow: 0 8px 22px rgba(200, 90, 62, 0.28);
+.motion-stagger:nth-child(5) {
+  animation-delay: 240ms;
 }

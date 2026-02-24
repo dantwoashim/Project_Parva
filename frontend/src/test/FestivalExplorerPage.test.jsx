@@ -2,65 +2,99 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { FestivalExplorerPage } from '../pages/FestivalExplorerPage';
+import { TemporalProvider } from '../context/TemporalContext';
 
 function response(payload) {
-    return {
-        ok: true,
-        status: 200,
-        statusText: 'OK',
-        json: async () => payload,
-        text: async () => JSON.stringify(payload),
-    };
+  return {
+    ok: true,
+    status: 200,
+    statusText: 'OK',
+    json: async () => payload,
+    text: async () => JSON.stringify(payload),
+  };
 }
 
 describe('FestivalExplorerPage', () => {
-    beforeEach(() => {
-        vi.stubGlobal(
-            'fetch',
-            vi.fn(async (input) => {
-                const url = String(input);
-                const hasSearch = url.includes('search=Shiva');
-                const festivals = hasSearch
-                    ? [{ id: 'shivaratri', name: 'Maha Shivaratri', category: 'hindu', duration_days: 1, next_occurrence: '2026-02-15' }]
-                    : [
-                        { id: 'dashain', name: 'Dashain', category: 'national', duration_days: 10, next_occurrence: '2026-10-20' },
-                        { id: 'shivaratri', name: 'Maha Shivaratri', category: 'hindu', duration_days: 1, next_occurrence: '2026-02-15' },
-                    ];
+  beforeEach(() => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input) => {
+        const url = String(input);
+        const hasHinduFilter = url.includes('category=hindu');
 
-                return response({
-                    data: {
-                        festivals,
-                        total: festivals.length,
-                    },
-                    meta: {},
-                });
-            }),
-        );
-    });
-
-    afterEach(() => {
-        vi.unstubAllGlobals();
-    });
-
-    it('supports search filtering through API params', async () => {
-        render(
-            <MemoryRouter>
-                <FestivalExplorerPage />
-            </MemoryRouter>,
-        );
-
-        expect(await screen.findByRole('heading', { name: /Festival Explorer/i })).toBeInTheDocument();
-        expect(screen.getByText('Dashain')).toBeInTheDocument();
-
-        await userEvent.type(screen.getByPlaceholderText(/Dashain, Tihar/i), 'Shiva');
-
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith(
-                expect.stringContaining('search=Shiva'),
-                expect.any(Object),
-            );
+        return response({
+          data: {
+            groups: [
+              {
+                month_key: '2026-02',
+                month_label: 'Falgun 2082',
+                items: hasHinduFilter
+                  ? [
+                      {
+                        id: 'shivaratri',
+                        name: 'Maha Shivaratri',
+                        display_name: 'Maha Shivaratri',
+                        category: 'hindu',
+                        start_date: '2026-02-15',
+                        end_date: '2026-02-15',
+                        quality_band: 'computed',
+                      },
+                    ]
+                  : [
+                      {
+                        id: 'dashain',
+                        name: 'Dashain',
+                        display_name: 'Dashain',
+                        category: 'national',
+                        start_date: '2026-10-20',
+                        end_date: '2026-10-30',
+                        quality_band: 'computed',
+                      },
+                      {
+                        id: 'shivaratri',
+                        name: 'Maha Shivaratri',
+                        display_name: 'Maha Shivaratri',
+                        category: 'hindu',
+                        start_date: '2026-02-15',
+                        end_date: '2026-02-15',
+                        quality_band: 'computed',
+                      },
+                    ],
+              },
+            ],
+            calculation_trace_id: 'tr_timeline_test',
+          },
+          meta: {},
         });
+      }),
+    );
+  });
 
-        expect(await screen.findByText('Maha Shivaratri')).toBeInTheDocument();
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('supports category filtering through API params', async () => {
+    render(
+      <MemoryRouter>
+        <TemporalProvider>
+          <FestivalExplorerPage />
+        </TemporalProvider>
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /Festival Explorer Ribbon/i })).toBeInTheDocument();
+    expect(screen.getByText('Dashain')).toBeInTheDocument();
+
+    await userEvent.selectOptions(screen.getByLabelText('Category'), 'hindu');
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith(
+        expect.stringContaining('category=hindu'),
+        expect.any(Object),
+      );
     });
+
+    expect(await screen.findByText('Maha Shivaratri')).toBeInTheDocument();
+  });
 });

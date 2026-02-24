@@ -11,6 +11,7 @@ from app.api import (
     explain_router,
     feed_router,
     festival_router,
+    festival_timeline_router,
     forecast_router,
     integration_feed_router,
     locations_router,
@@ -25,9 +26,15 @@ from app.api import (
     spec_router,
     webhook_router,
     kundali_router,
+    temporal_compass_router,
+    muhurta_heatmap_router,
+    kundali_graph_router,
+    glossary_router,
 )
 
 PUBLIC_ROUTERS = [
+    # Keep timeline router before dynamic /festivals/{festival_id} routes.
+    festival_timeline_router,
     festival_router,
     calendar_router,
     cache_router,
@@ -44,6 +51,10 @@ PUBLIC_ROUTERS = [
     personal_router,
     muhurta_router,
     kundali_router,
+    temporal_compass_router,
+    muhurta_heatmap_router,
+    kundali_graph_router,
+    glossary_router,
 ]
 
 TRUST_ROUTERS = [

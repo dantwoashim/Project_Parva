@@ -5,10 +5,13 @@ import App from './App.jsx';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch((err) => {
-      // Keep failures non-blocking in development.
-      console.warn('Service worker registration failed:', err);
-    });
+    // Register for production builds; keep dev deterministic.
+    const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    if (!isLocalhost) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {
+        // Ignore SW registration failures.
+      });
+    }
   });
 }
 

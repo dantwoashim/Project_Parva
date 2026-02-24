@@ -18,6 +18,54 @@ from ._personal_utils import (
 router = APIRouter(prefix="/api/kundali", tags=["kundali"])
 
 
+def _build_insight_blocks(kundali: dict) -> list[dict]:
+    moon = (kundali.get("grahas") or {}).get("moon", {})
+    lagna = kundali.get("lagna") or {}
+    aspects = kundali.get("aspects") or []
+    yogas = kundali.get("yogas") or []
+    doshas = kundali.get("doshas") or []
+
+    blocks = [
+        {
+            "id": "identity_axis",
+            "title": "Identity Axis",
+            "summary": (
+                f"Lagna in {lagna.get('rashi_english', 'unknown')} and Moon in "
+                f"{moon.get('rashi_english', 'unknown')} shape core temperament signals."
+            ),
+            "severity": "info",
+        },
+        {
+            "id": "aspect_network",
+            "title": "Aspect Network",
+            "summary": f"Detected {len(aspects)} major aspects across graha placements.",
+            "severity": "info",
+        },
+    ]
+
+    if yogas:
+        blocks.append(
+            {
+                "id": "yoga_highlights",
+                "title": "Yoga Highlights",
+                "summary": ", ".join(str(row.get("id", "Yoga")) for row in yogas[:4]),
+                "severity": "positive",
+            }
+        )
+
+    if doshas:
+        blocks.append(
+            {
+                "id": "dosha_flags",
+                "title": "Dosha Flags",
+                "summary": ", ".join(str(row.get("id", "Dosha")) for row in doshas[:4]),
+                "severity": "caution",
+            }
+        )
+
+    return blocks
+
+
 @router.get("")
 async def kundali_endpoint(
     datetime_str: str = Query(..., alias="datetime", description="ISO8601 datetime"),
@@ -80,6 +128,7 @@ async def kundali_endpoint(
         "doshas": kundali["doshas"],
         "dasha": kundali["dasha"],
         "consistency_checks": kundali["consistency_checks"],
+        "insight_blocks": _build_insight_blocks(kundali),
         "advisory_notes": advisory_notes,
         "warnings": coord_warnings + tz_warnings,
         **base_meta_payload(

@@ -1,9 +1,5 @@
 /**
- * FestivalCard Component
- * ======================
- * 
- * A visually stunning card displaying festival summary info.
- * Features glass effect, hover animations, and countdown badge.
+ * FestivalCard — Nepal × Ink Wash Edition
  */
 
 import { useState } from 'react';
@@ -11,18 +7,15 @@ import PropTypes from 'prop-types';
 import { differenceInDays, format } from 'date-fns';
 import './FestivalCard.css';
 
-/**
- * FestivalCard displays a festival summary with image, dates, and countdown.
- * 
- * @param {Object} props
- * @param {Object} props.festival - Festival summary object
- * @param {Function} props.onClick - Handler when card is clicked
- * @param {boolean} props.isActive - Whether this card is currently selected
- */
-export function FestivalCard({ festival, onClick, isActive = false }) {
-    const [imageLoaded, setImageLoaded] = useState(false);
+const CATEGORY_COLORS = {
+    national: 'var(--vermillion)',
+    newari: 'var(--gold-soft)',
+    hindu: 'var(--saffron)',
+    buddhist: 'var(--jade)',
+    regional: 'var(--indigo)',
+};
 
-    // Calculate countdown
+export function FestivalCard({ festival, onClick, isActive = false }) {
     const startDate = festival.next_start ? new Date(festival.next_start) : null;
     const daysUntil = startDate ? differenceInDays(startDate, new Date()) : null;
 
@@ -39,97 +32,56 @@ export function FestivalCard({ festival, onClick, isActive = false }) {
     const formatDateRange = () => {
         if (!startDate) return 'Date TBD';
         const endDate = festival.next_end ? new Date(festival.next_end) : null;
-
         const start = format(startDate, 'MMM d');
-        if (!endDate || startDate.getTime() === endDate.getTime()) {
-            return start;
-        }
-        const end = format(endDate, 'd');
-        return `${start}-${end}`;
+        if (!endDate || startDate.getTime() === endDate.getTime()) return start;
+        return `${start}–${format(endDate, 'd')}`;
     };
+
+    const accentColor = CATEGORY_COLORS[festival.category] || 'var(--gold)';
+    const countdownText = getCountdownText();
 
     return (
         <article
-            className={`festival-card glass-card interactive-surface interactive-press motion-stagger ${isActive ? 'festival-card--active' : ''}`}
+            className={`festival-card ink-card ${isActive ? 'festival-card--active' : ''}`}
             onClick={() => onClick?.(festival)}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && onClick?.(festival)}
+            style={{ '--card-accent': accentColor }}
         >
-            {/* Hero Image Area */}
-            <div className="festival-card__hero">
-                <div
-                    className={`festival-card__image ${imageLoaded ? 'loaded' : ''}`}
-                    style={{
-                        backgroundColor: festival.primary_color || 'var(--color-primary)',
-                    }}
-                >
-                    {/* Gradient overlay */}
-                    <div className="festival-card__gradient" />
+            {/* Accent stripe */}
+            <div className="festival-card__accent" />
 
-                    {/* Category badge */}
-                    <span className="festival-card__category badge">
+            <div className="festival-card__content">
+                {/* Category + Countdown */}
+                <div className="festival-card__top">
+                    <span className={`badge badge-${festival.category || 'national'}`}>
                         {festival.category}
                     </span>
-
-                    {/* Countdown badge */}
-                    {daysUntil !== null && daysUntil >= 0 && (
-                        <span className="festival-card__countdown countdown-badge">
-                            <span className="countdown-icon">⏱</span>
-                            {getCountdownText()}
-                        </span>
-                    )}
-                </div>
-            </div>
-
-            {/* Content */}
-            <div className="festival-card__content">
-                {/* Festival names */}
-                <div className="festival-card__names">
-                    <h3 className="festival-card__title text-display">
-                        {festival.name}
-                    </h3>
-                    {festival.name_nepali && (
-                        <span className="festival-card__title-nepali text-nepali">
-                            {festival.name_nepali}
-                        </span>
+                    {countdownText && (
+                        <span className="countdown-badge">{countdownText}</span>
                     )}
                 </div>
 
-                {/* Date range */}
+                {/* Name */}
+                <h3 className="festival-card__title">{festival.name}</h3>
+                {festival.name_nepali && (
+                    <span className="festival-card__nepali text-nepali">{festival.name_nepali}</span>
+                )}
+
+                {/* Date */}
                 <div className="festival-card__date">
-                    <span className="date-icon">📅</span>
                     <span>{formatDateRange()}</span>
                     {festival.duration_days > 1 && (
-                        <span className="festival-card__duration">
-                            ({festival.duration_days} days)
-                        </span>
+                        <span className="festival-card__duration"> · {festival.duration_days} days</span>
                     )}
                 </div>
 
                 {/* Tagline */}
                 {festival.tagline && (
-                    <p className="festival-card__tagline">
-                        {festival.tagline}
-                    </p>
+                    <p className="festival-card__tagline">{festival.tagline}</p>
                 )}
-
-                <div className="festival-card__meta-badges">
-                    <span className={`badge badge-rule badge-rule--${festival.validation_band || 'unknown'}`}>
-                        {festival.validation_band || 'unknown'}
-                    </span>
-                    <span className="badge badge-rule-status">{festival.rule_status || 'unclassified'}</span>
-                </div>
-
-                {/* Learn more button */}
-                <button className="festival-card__cta btn btn-secondary interactive-surface interactive-press">
-                    Learn More
-                    <span className="cta-arrow">→</span>
-                </button>
             </div>
-
-            {/* Active glow effect */}
-            {isActive && <div className="festival-card__glow" />}
         </article>
     );
 }
@@ -145,8 +97,6 @@ FestivalCard.propTypes = {
         next_end: PropTypes.string,
         duration_days: PropTypes.number,
         primary_color: PropTypes.string,
-        validation_band: PropTypes.string,
-        rule_status: PropTypes.string,
     }).isRequired,
     onClick: PropTypes.func,
     isActive: PropTypes.bool,

@@ -1,0 +1,2153 @@
+{
+  "generated_at": "2026-02-24T01:50:10.946887+00:00",
+  "track": "v4",
+  "schema": {
+    "openapi": "3.1.0",
+    "info": {
+      "title": "Project Parva API",
+      "description": "Nepal Festival Discovery System",
+      "version": "3.0.0"
+    },
+    "paths": {},
+    "components": {
+      "schemas": {
+        "BSConversionRequest": {
+          "properties": {
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "month": {
+              "type": "integer",
+              "title": "Month"
+            },
+            "day": {
+              "type": "integer",
+              "title": "Day"
+            }
+          },
+          "type": "object",
+          "required": [
+            "year",
+            "month",
+            "day"
+          ],
+          "title": "BSConversionRequest",
+          "description": "Request for BS to Gregorian conversion."
+        },
+        "BSDate": {
+          "properties": {
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "month": {
+              "type": "integer",
+              "title": "Month"
+            },
+            "day": {
+              "type": "integer",
+              "title": "Day"
+            },
+            "month_name": {
+              "type": "string",
+              "title": "Month Name"
+            },
+            "confidence": {
+              "type": "string",
+              "title": "Confidence"
+            },
+            "source_range": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source Range"
+            },
+            "estimated_error_days": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Estimated Error Days"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Uncertainty"
+            }
+          },
+          "type": "object",
+          "required": [
+            "year",
+            "month",
+            "day",
+            "month_name",
+            "confidence"
+          ],
+          "title": "BSDate",
+          "description": "Bikram Sambat date."
+        },
+        "CalculationTraceV2": {
+          "properties": {
+            "trace_id": {
+              "type": "string",
+              "title": "Trace Id"
+            },
+            "trace_type": {
+              "type": "string",
+              "title": "Trace Type"
+            },
+            "subject": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Subject"
+            },
+            "inputs": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Inputs"
+            },
+            "outputs": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Outputs"
+            },
+            "steps": {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array",
+              "title": "Steps"
+            },
+            "provenance": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Provenance"
+            }
+          },
+          "type": "object",
+          "required": [
+            "trace_id",
+            "trace_type"
+          ],
+          "title": "CalculationTraceV2"
+        },
+        "CalendarDayFestivals": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date",
+              "title": "Date"
+            },
+            "bs_date": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Bs Date"
+            },
+            "festivals": {
+              "items": {
+                "$ref": "#/components/schemas/FestivalSummary"
+              },
+              "type": "array",
+              "title": "Festivals"
+            },
+            "moon_phase": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Moon Phase"
+            },
+            "tithi": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tithi"
+            },
+            "paksha": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Paksha"
+            }
+          },
+          "type": "object",
+          "required": [
+            "date",
+            "festivals"
+          ],
+          "title": "CalendarDayFestivals",
+          "description": "Festivals on a specific calendar day."
+        },
+        "ConversionResult": {
+          "properties": {
+            "gregorian": {
+              "type": "string",
+              "title": "Gregorian"
+            },
+            "bikram_sambat": {
+              "$ref": "#/components/schemas/BSDate"
+            },
+            "nepal_sambat": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/NSDate"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "tithi": {
+              "$ref": "#/components/schemas/TithiInfo"
+            },
+            "engine_version": {
+              "type": "string",
+              "title": "Engine Version",
+              "default": "v3"
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Provenance"
+            },
+            "policy": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Policy"
+            }
+          },
+          "type": "object",
+          "required": [
+            "gregorian",
+            "bikram_sambat",
+            "nepal_sambat",
+            "tithi"
+          ],
+          "title": "ConversionResult",
+          "description": "Full calendar conversion result."
+        },
+        "Coordinates": {
+          "properties": {
+            "lat": {
+              "type": "number",
+              "title": "Lat"
+            },
+            "lng": {
+              "type": "number",
+              "title": "Lng"
+            }
+          },
+          "type": "object",
+          "required": [
+            "lat",
+            "lng"
+          ],
+          "title": "Coordinates",
+          "description": "Geographic coordinates."
+        },
+        "DayRituals": {
+          "properties": {
+            "day": {
+              "type": "integer",
+              "minimum": 1.0,
+              "title": "Day"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "name_nepali": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Nepali"
+            },
+            "description": {
+              "type": "string",
+              "title": "Description"
+            },
+            "rituals": {
+              "items": {
+                "$ref": "#/components/schemas/RitualStep"
+              },
+              "type": "array",
+              "title": "Rituals"
+            },
+            "is_main_day": {
+              "type": "boolean",
+              "title": "Is Main Day",
+              "default": false
+            }
+          },
+          "type": "object",
+          "required": [
+            "day",
+            "name",
+            "description"
+          ],
+          "title": "DayRituals",
+          "description": "Rituals for a specific day of a multi-day festival."
+        },
+        "DeityLink": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "name_nepali": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Nepali"
+            },
+            "role": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Role"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "title": "DeityLink",
+          "description": "Reference to a deity associated with a festival."
+        },
+        "Festival": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^[a-z0-9-]+$",
+              "title": "Id"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "name_nepali": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Nepali"
+            },
+            "name_local": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Local"
+            },
+            "calendar_type": {
+              "type": "string",
+              "title": "Calendar Type",
+              "default": "lunar"
+            },
+            "category": {
+              "type": "string",
+              "title": "Category"
+            },
+            "significance_level": {
+              "type": "integer",
+              "maximum": 5.0,
+              "minimum": 1.0,
+              "title": "Significance Level",
+              "default": 2
+            },
+            "tagline": {
+              "type": "string",
+              "maxLength": 200,
+              "title": "Tagline"
+            },
+            "description": {
+              "type": "string",
+              "title": "Description"
+            },
+            "typical_month_bs": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Typical Month Bs"
+            },
+            "typical_month_gregorian": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Typical Month Gregorian"
+            },
+            "duration_days": {
+              "type": "integer",
+              "minimum": 1.0,
+              "title": "Duration Days",
+              "default": 1
+            },
+            "mythology": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/MythologyContent"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "daily_rituals": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/DayRituals"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Daily Rituals"
+            },
+            "simple_rituals": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/RitualStep"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Simple Rituals"
+            },
+            "ritual_sequence": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ritual Sequence"
+            },
+            "deities": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/DeityLink"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Deities"
+            },
+            "connected_deities": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Connected Deities"
+            },
+            "locations": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/LocationLink"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locations"
+            },
+            "related_festivals": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Related Festivals"
+            },
+            "who_celebrates": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Who Celebrates"
+            },
+            "is_national_holiday": {
+              "type": "boolean",
+              "title": "Is National Holiday",
+              "default": false
+            },
+            "regional_focus": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Regional Focus"
+            },
+            "primary_color": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Primary Color"
+            },
+            "icon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Icon"
+            },
+            "images": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Images"
+            },
+            "content_status": {
+              "type": "string",
+              "title": "Content Status",
+              "default": "minimal"
+            },
+            "sources": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Sources"
+            },
+            "last_updated": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Last Updated"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "category",
+            "tagline",
+            "description"
+          ],
+          "title": "Festival",
+          "description": "Complete festival data model.",
+          "example": {
+            "calendar_type": "lunar",
+            "category": "national",
+            "content_status": "complete",
+            "description": "Dashain is the longest and most significant festival in Nepal...",
+            "duration_days": 15,
+            "id": "dashain",
+            "is_national_holiday": true,
+            "name": "Dashain",
+            "name_nepali": "\u0926\u0936\u0948\u0902",
+            "significance_level": 5,
+            "tagline": "Nepal's greatest festival celebrating victory of good over evil",
+            "typical_month_bs": 6,
+            "typical_month_gregorian": "September-October"
+          }
+        },
+        "FestivalCalendarResponse": {
+          "properties": {
+            "days": {
+              "items": {
+                "$ref": "#/components/schemas/CalendarDayFestivals"
+              },
+              "type": "array",
+              "title": "Days"
+            },
+            "month": {
+              "type": "integer",
+              "title": "Month"
+            },
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProvenanceMeta"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "required": [
+            "days",
+            "month",
+            "year"
+          ],
+          "title": "FestivalCalendarResponse",
+          "description": "API response for calendar view."
+        },
+        "FestivalDates": {
+          "properties": {
+            "gregorian_year": {
+              "type": "integer",
+              "title": "Gregorian Year"
+            },
+            "bs_year": {
+              "type": "integer",
+              "title": "Bs Year"
+            },
+            "start_date": {
+              "type": "string",
+              "format": "date",
+              "title": "Start Date"
+            },
+            "end_date": {
+              "type": "string",
+              "format": "date",
+              "title": "End Date"
+            },
+            "duration_days": {
+              "type": "integer",
+              "title": "Duration Days"
+            },
+            "days_until": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Days Until"
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProvenanceMeta"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "required": [
+            "gregorian_year",
+            "bs_year",
+            "start_date",
+            "end_date",
+            "duration_days"
+          ],
+          "title": "FestivalDates",
+          "description": "Calculated dates for a festival in a specific year."
+        },
+        "FestivalDetailResponse": {
+          "properties": {
+            "festival": {
+              "$ref": "#/components/schemas/Festival"
+            },
+            "dates": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/FestivalDates"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "nearby_festivals": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/components/schemas/FestivalSummary"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Nearby Festivals"
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProvenanceMeta"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "required": [
+            "festival"
+          ],
+          "title": "FestivalDetailResponse",
+          "description": "API response for single festival detail."
+        },
+        "FestivalExplainResponse": {
+          "properties": {
+            "festival_id": {
+              "type": "string",
+              "title": "Festival Id"
+            },
+            "festival_name": {
+              "type": "string",
+              "title": "Festival Name"
+            },
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "start_date": {
+              "type": "string",
+              "format": "date",
+              "title": "Start Date"
+            },
+            "end_date": {
+              "type": "string",
+              "format": "date",
+              "title": "End Date"
+            },
+            "method": {
+              "type": "string",
+              "title": "Method"
+            },
+            "confidence": {
+              "type": "string",
+              "title": "Confidence"
+            },
+            "rule_summary": {
+              "type": "string",
+              "title": "Rule Summary"
+            },
+            "explanation": {
+              "type": "string",
+              "title": "Explanation"
+            },
+            "steps": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Steps"
+            },
+            "calculation_trace_id": {
+              "type": "string",
+              "title": "Calculation Trace Id"
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProvenanceMeta"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "required": [
+            "festival_id",
+            "festival_name",
+            "year",
+            "start_date",
+            "end_date",
+            "method",
+            "confidence",
+            "rule_summary",
+            "explanation",
+            "steps",
+            "calculation_trace_id"
+          ],
+          "title": "FestivalExplainResponse",
+          "description": "Human-readable explanation of computed festival date."
+        },
+        "FestivalListResponse": {
+          "properties": {
+            "festivals": {
+              "items": {
+                "$ref": "#/components/schemas/FestivalSummary"
+              },
+              "type": "array",
+              "title": "Festivals"
+            },
+            "total": {
+              "type": "integer",
+              "title": "Total"
+            },
+            "page": {
+              "type": "integer",
+              "title": "Page",
+              "default": 1
+            },
+            "page_size": {
+              "type": "integer",
+              "title": "Page Size",
+              "default": 50
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProvenanceMeta"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "required": [
+            "festivals",
+            "total"
+          ],
+          "title": "FestivalListResponse",
+          "description": "API response for festival list."
+        },
+        "FestivalSummary": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "name_nepali": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Nepali"
+            },
+            "tagline": {
+              "type": "string",
+              "title": "Tagline"
+            },
+            "category": {
+              "type": "string",
+              "title": "Category"
+            },
+            "duration_days": {
+              "type": "integer",
+              "title": "Duration Days"
+            },
+            "significance_level": {
+              "type": "integer",
+              "title": "Significance Level"
+            },
+            "is_national_holiday": {
+              "type": "boolean",
+              "title": "Is National Holiday"
+            },
+            "primary_color": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Primary Color"
+            },
+            "rule_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Status"
+            },
+            "rule_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Family"
+            },
+            "validation_band": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Validation Band"
+            },
+            "source_evidence_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Source Evidence Ids"
+            },
+            "next_start": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Next Start"
+            },
+            "next_end": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Next End"
+            },
+            "days_until": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Days Until"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "tagline",
+            "category",
+            "duration_days",
+            "significance_level",
+            "is_national_holiday"
+          ],
+          "title": "FestivalSummary",
+          "description": "Condensed festival info for list views."
+        },
+        "HTTPValidationError": {
+          "properties": {
+            "detail": {
+              "items": {
+                "$ref": "#/components/schemas/ValidationError"
+              },
+              "type": "array",
+              "title": "Detail"
+            }
+          },
+          "type": "object",
+          "title": "HTTPValidationError"
+        },
+        "LocationLink": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "role": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Role"
+            },
+            "coordinates": {
+              "anyOf": [
+                {
+                  "prefixItems": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ],
+                  "type": "array",
+                  "maxItems": 2,
+                  "minItems": 2
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Coordinates"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "name"
+          ],
+          "title": "LocationLink",
+          "description": "Reference to a temple or location."
+        },
+        "MythologyContent": {
+          "properties": {
+            "summary": {
+              "type": "string",
+              "minLength": 50,
+              "title": "Summary"
+            },
+            "origin_story": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Origin Story"
+            },
+            "legends": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Legends"
+            },
+            "scriptural_references": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Scriptural References"
+            },
+            "historical_context": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Historical Context"
+            },
+            "regional_variations": {
+              "anyOf": [
+                {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Regional Variations"
+            }
+          },
+          "type": "object",
+          "required": [
+            "summary"
+          ],
+          "title": "MythologyContent",
+          "description": "Mythological/origin story content for a festival."
+        },
+        "NSDate": {
+          "properties": {
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "formatted": {
+              "type": "string",
+              "title": "Formatted"
+            }
+          },
+          "type": "object",
+          "required": [
+            "year",
+            "formatted"
+          ],
+          "title": "NSDate",
+          "description": "Nepal Sambat date."
+        },
+        "ProofResponse": {
+          "properties": {
+            "festival_id": {
+              "type": "string",
+              "title": "Festival Id"
+            },
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "leaf_hash": {
+              "type": "string",
+              "title": "Leaf Hash"
+            },
+            "proof": {
+              "items": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "type": "array",
+              "title": "Proof"
+            },
+            "merkle_root": {
+              "type": "string",
+              "title": "Merkle Root"
+            },
+            "verified": {
+              "type": "boolean",
+              "title": "Verified"
+            }
+          },
+          "type": "object",
+          "required": [
+            "festival_id",
+            "year",
+            "leaf_hash",
+            "proof",
+            "merkle_root",
+            "verified"
+          ],
+          "title": "ProofResponse",
+          "description": "Merkle proof response."
+        },
+        "ProvenanceMeta": {
+          "properties": {
+            "dataset_hash": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Dataset Hash"
+            },
+            "rules_hash": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rules Hash"
+            },
+            "snapshot_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Snapshot Id"
+            },
+            "verify_url": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Verify Url"
+            }
+          },
+          "type": "object",
+          "title": "ProvenanceMeta",
+          "description": "Provenance metadata for response verification."
+        },
+        "ResolveResult": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "title": "Date"
+            },
+            "profile": {
+              "type": "string",
+              "title": "Profile"
+            },
+            "location": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Location"
+            },
+            "bikram_sambat": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Bikram Sambat"
+            },
+            "tithi": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Tithi"
+            },
+            "panchanga": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Panchanga"
+            },
+            "observances": {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "type": "array",
+              "title": "Observances"
+            },
+            "trace": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/CalculationTraceV2"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "required": [
+            "date",
+            "profile"
+          ],
+          "title": "ResolveResult"
+        },
+        "RitualStep": {
+          "properties": {
+            "order": {
+              "type": "integer",
+              "minimum": 1.0,
+              "title": "Order"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "name_nepali": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Nepali"
+            },
+            "description": {
+              "type": "string",
+              "title": "Description"
+            },
+            "time_of_day": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Time Of Day"
+            },
+            "duration": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Duration"
+            },
+            "location": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Location"
+            },
+            "items_needed": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Items Needed"
+            },
+            "significance": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Significance"
+            }
+          },
+          "type": "object",
+          "required": [
+            "order",
+            "name",
+            "description"
+          ],
+          "title": "RitualStep",
+          "description": "A step in a ritual sequence."
+        },
+        "RootResponse": {
+          "properties": {
+            "merkle_root": {
+              "type": "string",
+              "title": "Merkle Root"
+            },
+            "snapshot_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Snapshot Id"
+            },
+            "dataset_hash": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Dataset Hash"
+            },
+            "rules_hash": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rules Hash"
+            },
+            "total_entries": {
+              "type": "integer",
+              "title": "Total Entries"
+            }
+          },
+          "type": "object",
+          "required": [
+            "merkle_root",
+            "total_entries"
+          ],
+          "title": "RootResponse",
+          "description": "Merkle root response."
+        },
+        "SnapshotVerifyResponse": {
+          "properties": {
+            "snapshot_id": {
+              "type": "string",
+              "title": "Snapshot Id"
+            },
+            "valid": {
+              "type": "boolean",
+              "title": "Valid"
+            },
+            "checks": {
+              "additionalProperties": {
+                "type": "boolean"
+              },
+              "type": "object",
+              "title": "Checks"
+            },
+            "expected": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object",
+              "title": "Expected"
+            },
+            "actual": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object",
+              "title": "Actual"
+            }
+          },
+          "type": "object",
+          "required": [
+            "snapshot_id",
+            "valid",
+            "checks",
+            "expected",
+            "actual"
+          ],
+          "title": "SnapshotVerifyResponse",
+          "description": "Snapshot verification output."
+        },
+        "Temple": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "name_ne": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Ne"
+            },
+            "type": {
+              "type": "string",
+              "title": "Type"
+            },
+            "deity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Deity"
+            },
+            "coordinates": {
+              "$ref": "#/components/schemas/Coordinates"
+            },
+            "significance": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Significance"
+            },
+            "festivals": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Festivals"
+            },
+            "description": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Description"
+            },
+            "visiting_hours": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Visiting Hours"
+            },
+            "entry_fee": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Entry Fee"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "type",
+            "coordinates"
+          ],
+          "title": "Temple",
+          "description": "Temple or sacred location."
+        },
+        "TempleFestivalsResponse": {
+          "properties": {
+            "temple_id": {
+              "type": "string",
+              "title": "Temple Id"
+            },
+            "temple_name": {
+              "type": "string",
+              "title": "Temple Name"
+            },
+            "festival_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Festival Ids"
+            }
+          },
+          "type": "object",
+          "required": [
+            "temple_id",
+            "temple_name",
+            "festival_ids"
+          ],
+          "title": "TempleFestivalsResponse",
+          "description": "Response for festivals at a temple."
+        },
+        "TempleListResponse": {
+          "properties": {
+            "temples": {
+              "items": {
+                "$ref": "#/components/schemas/TempleSummary"
+              },
+              "type": "array",
+              "title": "Temples"
+            },
+            "total": {
+              "type": "integer",
+              "title": "Total"
+            }
+          },
+          "type": "object",
+          "required": [
+            "temples",
+            "total"
+          ],
+          "title": "TempleListResponse",
+          "description": "Response for temple list."
+        },
+        "TempleSummary": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "name_ne": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Ne"
+            },
+            "type": {
+              "type": "string",
+              "title": "Type"
+            },
+            "deity": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Deity"
+            },
+            "coordinates": {
+              "$ref": "#/components/schemas/Coordinates"
+            },
+            "festival_count": {
+              "type": "integer",
+              "title": "Festival Count",
+              "default": 0
+            },
+            "festivals": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Festivals"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "type",
+            "coordinates"
+          ],
+          "title": "TempleSummary",
+          "description": "Summary view of temple for list displays."
+        },
+        "TithiInfo": {
+          "properties": {
+            "tithi": {
+              "type": "integer",
+              "title": "Tithi"
+            },
+            "paksha": {
+              "type": "string",
+              "title": "Paksha"
+            },
+            "tithi_name": {
+              "type": "string",
+              "title": "Tithi Name"
+            },
+            "moon_phase": {
+              "type": "string",
+              "title": "Moon Phase"
+            },
+            "method": {
+              "type": "string",
+              "title": "Method",
+              "default": "udaya"
+            },
+            "confidence": {
+              "type": "string",
+              "title": "Confidence",
+              "default": "exact"
+            },
+            "reference_time": {
+              "type": "string",
+              "title": "Reference Time",
+              "default": "sunrise"
+            },
+            "sunrise_used": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Sunrise Used"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Uncertainty"
+            }
+          },
+          "type": "object",
+          "required": [
+            "tithi",
+            "paksha",
+            "tithi_name",
+            "moon_phase"
+          ],
+          "title": "TithiInfo",
+          "description": "Tithi information."
+        },
+        "TraceVerifyResponse": {
+          "properties": {
+            "trace_id": {
+              "type": "string",
+              "title": "Trace Id"
+            },
+            "valid": {
+              "type": "boolean",
+              "title": "Valid"
+            },
+            "checks": {
+              "additionalProperties": {
+                "type": "boolean"
+              },
+              "type": "object",
+              "title": "Checks"
+            },
+            "detail": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Detail"
+            }
+          },
+          "type": "object",
+          "required": [
+            "trace_id",
+            "valid",
+            "checks",
+            "detail"
+          ],
+          "title": "TraceVerifyResponse",
+          "description": "Trace verification output."
+        },
+        "UpcomingFestival": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id"
+            },
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "name_nepali": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name Nepali"
+            },
+            "tagline": {
+              "type": "string",
+              "title": "Tagline"
+            },
+            "category": {
+              "type": "string",
+              "title": "Category"
+            },
+            "start_date": {
+              "type": "string",
+              "format": "date",
+              "title": "Start Date"
+            },
+            "end_date": {
+              "type": "string",
+              "format": "date",
+              "title": "End Date"
+            },
+            "days_until": {
+              "type": "integer",
+              "title": "Days Until"
+            },
+            "duration_days": {
+              "type": "integer",
+              "title": "Duration Days"
+            },
+            "primary_color": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Primary Color"
+            },
+            "rule_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Status"
+            },
+            "rule_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Rule Family"
+            },
+            "validation_band": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Validation Band"
+            },
+            "source_evidence_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Source Evidence Ids"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "name",
+            "tagline",
+            "category",
+            "start_date",
+            "end_date",
+            "days_until",
+            "duration_days"
+          ],
+          "title": "UpcomingFestival",
+          "description": "Festival in upcoming festivals list."
+        },
+        "UpcomingFestivalsResponse": {
+          "properties": {
+            "festivals": {
+              "items": {
+                "$ref": "#/components/schemas/UpcomingFestival"
+              },
+              "type": "array",
+              "title": "Festivals"
+            },
+            "from_date": {
+              "type": "string",
+              "format": "date",
+              "title": "From Date"
+            },
+            "to_date": {
+              "type": "string",
+              "format": "date",
+              "title": "To Date"
+            },
+            "total": {
+              "type": "integer",
+              "title": "Total"
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProvenanceMeta"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "required": [
+            "festivals",
+            "from_date",
+            "to_date",
+            "total"
+          ],
+          "title": "UpcomingFestivalsResponse",
+          "description": "API response for upcoming festivals."
+        },
+        "ValidationError": {
+          "properties": {
+            "loc": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              },
+              "type": "array",
+              "title": "Location"
+            },
+            "msg": {
+              "type": "string",
+              "title": "Message"
+            },
+            "type": {
+              "type": "string",
+              "title": "Error Type"
+            }
+          },
+          "type": "object",
+          "required": [
+            "loc",
+            "msg",
+            "type"
+          ],
+          "title": "ValidationError"
+        },
+        "WebhookSubscriptionCreate": {
+          "properties": {
+            "subscriber_url": {
+              "type": "string",
+              "title": "Subscriber Url"
+            },
+            "festivals": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Festivals"
+            },
+            "remind_days_before": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array",
+              "title": "Remind Days Before"
+            },
+            "format": {
+              "type": "string",
+              "title": "Format",
+              "default": "json"
+            },
+            "active": {
+              "type": "boolean",
+              "title": "Active",
+              "default": true
+            }
+          },
+          "type": "object",
+          "required": [
+            "subscriber_url"
+          ],
+          "title": "WebhookSubscriptionCreate"
+        }
+      }
+    }
+  }
+}

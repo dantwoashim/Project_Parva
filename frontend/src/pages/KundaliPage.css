@@ -1,197 +1,178 @@
 .kundali-page {
   display: grid;
-  gap: var(--space-5);
+  gap: 1rem;
 }
 
-.kundali-page__header {
-  padding: var(--space-5);
+.kundali-controls {
   display: grid;
-  gap: var(--space-4);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+  padding: 1rem;
 }
 
-.kundali-page__controls {
+.kundali-error {
+  padding: 1rem;
+}
+
+.kundali-hero-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.4fr auto;
-  gap: var(--space-3);
-  align-items: end;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
-.kundali-page__controls label {
-  display: grid;
-  gap: var(--space-1);
+.kundali-rashi-card {
+  padding: 0.8rem;
 }
 
-.kundali-page__controls span {
-  font-size: var(--text-xs);
+.kundali-rashi-card h3 {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  text-transform: uppercase;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
+}
+
+.kundali-rashi-card p {
+  margin: 0.3rem 0 0;
+  font-size: 1.2rem;
+  color: var(--gold-bright);
+}
+
+.kundali-rashi-card small {
+  color: var(--text-secondary);
+}
+
+.kundali-graph-layout {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr;
+  gap: 0.8rem;
+}
+
+.kundali-graph-shell {
+  padding: 0.5rem;
+}
+
+.kundali-graph {
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.kundali-graph svg {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: radial-gradient(circle at center, rgba(232, 197, 115, 0.06), transparent 65%);
+}
+
+.kundali-graph__edge {
+  stroke-width: 1.8;
+}
+
+.kundali-graph__edge.active {
+  stroke: rgba(232, 197, 115, 0.48);
+}
+
+.kundali-graph__edge.muted {
+  stroke: rgba(255, 255, 255, 0.12);
+}
+
+.kundali-graph__house {
+  fill: rgba(255, 255, 255, 0.06);
+  stroke: rgba(255, 255, 255, 0.25);
+  stroke-width: 1.2;
+  cursor: pointer;
+}
+
+.kundali-graph__house.is-selected {
+  fill: rgba(232, 197, 115, 0.3);
+  stroke: rgba(232, 197, 115, 0.9);
+}
+
+.kundali-graph__house-label {
+  fill: var(--text-primary);
+  font-size: 10px;
   font-weight: 700;
 }
 
-.kundali-page__controls input {
-  width: 100%;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-2) var(--space-3);
-  background: var(--color-bg-elevated);
+.kundali-graph__graha {
+  fill: rgba(201, 169, 110, 0.9);
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 1;
+  cursor: pointer;
 }
 
-.kundali-page__state {
-  padding: var(--space-5);
+.kundali-graph__graha.is-selected {
+  fill: rgba(232, 197, 115, 1);
+  stroke: rgba(232, 197, 115, 0.9);
+  stroke-width: 2;
 }
 
-.kundali-page__top-grid {
+.kundali-graph__graha-label {
+  fill: var(--text-primary);
+  font-size: 9px;
+}
+
+.kundali-graph figcaption {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+}
+
+.kundali-insight-pane {
+  padding: 0.9rem;
+}
+
+.kundali-insight-pane h3 {
+  margin: 0 0 0.6rem;
+}
+
+.kundali-insight-list {
   display: grid;
-  gap: var(--space-4);
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.55rem;
 }
 
-.kundali-card {
-  padding: var(--space-4);
+.kundali-insight-item {
+  border: 1px solid var(--border-card);
+  border-radius: 10px;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.03);
 }
 
-.kundali-card .value {
-  font-size: var(--text-2xl);
-  font-weight: 700;
-  margin: var(--space-1) 0;
+.kundali-insight-item h4 {
+  margin: 0;
+  font-size: 0.92rem;
 }
 
-.kundali-card .meta {
-  color: var(--color-text-secondary);
+.kundali-insight-item p {
+  margin: 0.3rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
-.kundali-table-card {
-  padding: var(--space-5);
-  overflow: auto;
+.kundali-table-wrap {
+  padding: 0.9rem;
 }
 
-.kundali-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: var(--space-3);
-  font-size: var(--text-sm);
-}
-
-.kundali-table th,
-.kundali-table td {
-  border-bottom: 1px solid var(--color-border-light);
-  text-align: left;
-  padding: var(--space-2) var(--space-3);
-}
-
-.kundali-table th {
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-secondary);
-  font-size: var(--text-xs);
-}
-
-.kundali-page__analysis-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-4);
-}
-
-.kundali-aspects,
-.kundali-signals,
-.kundali-consistency,
-.kundali-houses,
-.kundali-dasha,
-.kundali-page__warnings {
-  padding: var(--space-5);
-}
-
-.kundali-aspects ul,
-.kundali-signals ul,
-.kundali-consistency ul,
-.kundali-dasha ul,
-.kundali-page__warnings ul {
-  margin-top: var(--space-2);
-  padding-left: 1.2rem;
-}
-
-.kundali-aspects li,
-.kundali-signals li,
-.kundali-consistency li,
-.kundali-dasha li {
-  margin-bottom: var(--space-2);
-}
-
-.kundali-aspects li span {
-  display: block;
-  color: var(--color-text-secondary);
-  font-size: var(--text-xs);
-}
-
-.signal-block + .signal-block {
-  margin-top: var(--space-4);
-}
-
-.signal-block h4 {
-  margin: 0 0 var(--space-2);
-  font-size: var(--text-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-secondary);
-}
-
-.kundali-page__bottom-grid {
-  display: grid;
-  gap: var(--space-4);
-  grid-template-columns: 2fr 1fr;
-}
-
-.houses-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: var(--space-3);
-  margin-top: var(--space-3);
-}
-
-.house-cell {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  background: var(--color-bg-elevated);
-}
-
-.house-num {
-  font-size: var(--text-xs);
-  color: var(--color-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.house-occupants {
-  margin-top: var(--space-1);
-  font-size: var(--text-sm);
-  color: var(--color-primary-dark);
-}
-
-.kundali-dasha .meta {
-  color: var(--color-text-secondary);
-  font-size: var(--text-sm);
-  margin-top: var(--space-1);
-}
-
-.kundali-page__warnings ul {
-  color: var(--color-vermillion);
+.kundali-table-wrap h3 {
+  margin: 0 0 0.6rem;
 }
 
 @media (max-width: 1100px) {
-  .kundali-page__controls {
+  .kundali-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .kundali-page__analysis-grid,
-  .kundali-page__bottom-grid {
+  .kundali-graph-layout {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 640px) {
-  .kundali-page__controls {
+@media (max-width: 700px) {
+  .kundali-hero-row {
+    grid-template-columns: 1fr;
+  }
+
+  .kundali-controls {
     grid-template-columns: 1fr;
   }
 }

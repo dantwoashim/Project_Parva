@@ -20,6 +20,11 @@ from .public_artifacts_routes import router as public_artifacts_router
 from .personal_routes import router as personal_router
 from .muhurta_routes import router as muhurta_router
 from .kundali_routes import router as kundali_router
+from .temporal_compass_routes import router as temporal_compass_router
+from .festival_timeline_routes import router as festival_timeline_router
+from .muhurta_heatmap_routes import router as muhurta_heatmap_router
+from .kundali_graph_routes import router as kundali_graph_router
+from .glossary_routes import router as glossary_router
 
 __all__ = [
     "calendar_router",
@@ -42,4 +47,9 @@ __all__ = [
     "personal_router",
     "muhurta_router",
     "kundali_router",
+    "temporal_compass_router",
+    "festival_timeline_router",
+    "muhurta_heatmap_router",
+    "kundali_graph_router",
+    "glossary_router",
 ]

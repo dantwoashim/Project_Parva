@@ -1,180 +1,83 @@
+/* FestivalCard — Nepal × Ink Wash */
+
 .festival-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-bg-card);
-  box-shadow: var(--shadow-card);
-  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+  padding: 0;
+  transition: all var(--duration-base) var(--ease-out);
 }
 
 .festival-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
-  border-color: rgba(200, 90, 62, 0.35);
+  transform: translateY(-4px);
+  border-color: var(--card-accent, var(--gold));
+  box-shadow: 0 0 24px color-mix(in srgb, var(--card-accent, var(--gold)) 20%, transparent);
 }
 
-.festival-card:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.28);
-}
-
-.festival-card--active {
-  border-color: var(--color-primary);
-  box-shadow: 0 6px 18px rgba(200, 90, 62, 0.2);
-}
-
-.festival-card__hero {
-  position: relative;
-  height: 122px;
-}
-
-.festival-card__image {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.festival-card__gradient {
+/* Accent stripe */
+.festival-card__accent {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(160deg, rgba(20, 20, 20, 0.08), rgba(20, 20, 20, 0.42));
-}
-
-.festival-card__category,
-.festival-card__countdown {
-  position: absolute;
-  z-index: 1;
-}
-
-.festival-card__category {
-  top: var(--space-3);
-  left: var(--space-3);
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.festival-card__countdown {
-  bottom: var(--space-3);
-  right: var(--space-3);
-  background: rgba(255, 255, 255, 0.92);
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--card-accent, var(--gold));
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
 }
 
 .festival-card__content {
+  padding: var(--sp-6) var(--sp-6) var(--sp-6) var(--sp-8);
+}
+
+/* Top row: badge + countdown */
+.festival-card__top {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-4);
-}
-
-.festival-card__names {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.festival-card__title {
-  margin: 0;
-  font-size: var(--text-xl);
-  line-height: 1.3;
-}
-
-.festival-card__title-nepali {
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
-}
-
-.festival-card__date {
-  display: inline-flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  color: var(--color-text-secondary);
+  justify-content: space-between;
+  margin-bottom: var(--sp-3);
+}
+
+/* Title */
+.festival-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--sp-1);
+  line-height: 1.25;
+}
+
+.festival-card__nepali {
+  display: block;
   font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--sp-3);
+}
+
+/* Date */
+.festival-card__date {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--sp-3);
 }
 
 .festival-card__duration {
-  color: var(--color-text-muted);
-  font-size: var(--text-xs);
+  color: var(--text-muted);
 }
 
+/* Tagline */
 .festival-card__tagline {
-  margin: 0;
-  color: var(--color-text-secondary);
-  line-height: 1.55;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.festival-card__meta-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.badge-rule {
-  text-transform: capitalize;
-  letter-spacing: 0.04em;
-}
-
-.badge-rule--gold {
-  background: rgba(212, 160, 82, 0.18);
-  color: #88611f;
-}
-
-.badge-rule--validated {
-  background: rgba(107, 142, 107, 0.16);
-  color: #2f5c2f;
-}
-
-.badge-rule--beta {
-  background: rgba(200, 90, 62, 0.12);
-  color: #8a3c2a;
-}
-
-.badge-rule--inventory,
-.badge-rule--unknown {
-  background: rgba(45, 42, 38, 0.08);
-  color: var(--color-text-secondary);
-}
-
-.badge-rule-status {
-  text-transform: capitalize;
-}
-
-.festival-card__cta {
-  align-self: flex-start;
-  margin-top: auto;
-}
-
-.cta-arrow {
-  transition: transform var(--transition-fast);
-}
-
-.festival-card__cta:hover .cta-arrow {
-  transform: translateX(2px);
-}
-
-.festival-card__glow {
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  pointer-events: none;
-  border: 1px solid rgba(212, 160, 82, 0.35);
-}
-
-@media (max-width: 760px) {
-  .festival-card__title {
-    font-size: 1.1rem;
-  }
-
-  .festival-card__hero {
-    height: 108px;
-  }
+/* Active state */
+.festival-card--active {
+  border-color: var(--card-accent, var(--gold));
+  box-shadow: 0 0 30px color-mix(in srgb, var(--card-accent, var(--gold)) 25%, transparent);
 }

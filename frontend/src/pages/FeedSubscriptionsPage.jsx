@@ -35,9 +35,7 @@ export function FeedSubscriptionsPage() {
             await navigator.clipboard.writeText(link);
             setCopied(label);
             setTimeout(() => setCopied(''), 1500);
-        } catch {
-            setCopied('');
-        }
+        } catch { setCopied(''); }
     }
 
     function toggleFestival(id) {
@@ -47,25 +45,30 @@ export function FeedSubscriptionsPage() {
         });
     }
 
+    const FEED_CARDS = [
+        { key: 'all', title: 'All Festivals', desc: 'Every festival computed by the engine', link: quickLinks.all, accent: 'gold' },
+        { key: 'national', title: 'National Holidays', desc: 'Official government-declared holidays', link: quickLinks.national, accent: 'vermillion' },
+        { key: 'newari', title: 'Newari Festivals', desc: 'Traditional Newar community observances', link: quickLinks.newari, accent: 'amber' },
+    ];
+
     return (
-        <section className="feeds-page">
-            <header className="glass-card feeds-header">
-                <div>
-                    <h2 className="text-display">iCal Subscriptions</h2>
-                    <p>Subscribe from Google Calendar, Apple Calendar, or Outlook with continuously updated festival dates.</p>
-                </div>
-                <div className="feeds-controls">
-                    <label>
-                        Years
+        <section className="feeds-page animate-fade-in-up">
+            <header className="feeds-hero">
+                <h1 className="text-hero">Calendar Feeds</h1>
+                <p className="feeds-hero__sub">
+                    Subscribe from Google Calendar, Apple Calendar, or Outlook
+                </p>
+                <div className="feeds-hero__controls">
+                    <label className="ink-input">
+                        <span>Years</span>
                         <select value={years} onChange={(e) => setYears(Number(e.target.value))}>
                             {[1, 2, 3, 4, 5].map((v) => (
                                 <option key={v} value={v}>{v}</option>
                             ))}
                         </select>
                     </label>
-
-                    <label>
-                        Language
+                    <label className="ink-input">
+                        <span>Language</span>
                         <select value={lang} onChange={(e) => setLang(e.target.value)}>
                             <option value="en">English</option>
                             <option value="ne">Nepali</option>
@@ -74,48 +77,50 @@ export function FeedSubscriptionsPage() {
                 </div>
             </header>
 
-            <section className="feeds-links-grid">
-                {[
-                    { key: 'all', title: 'All Festivals', link: quickLinks.all },
-                    { key: 'national', title: 'National Holidays', link: quickLinks.national },
-                    { key: 'newari', title: 'Newari Festivals', link: quickLinks.newari },
-                ].map((item) => (
-                    <article key={item.key} className="glass-card feed-card">
+            {/* Quick Feed Cards */}
+            <section className="feeds-grid stagger-children">
+                {FEED_CARDS.map((item) => (
+                    <article key={item.key} className={`ink-card ink-card--${item.accent} feed-card`}>
                         <h3>{item.title}</h3>
-                        <p className="feed-link" title={item.link}>{item.link}</p>
+                        <p className="feed-card__desc">{item.desc}</p>
+                        <div className="feed-card__url">
+                            <code>{item.link}</code>
+                        </div>
                         <div className="feed-card__actions">
-                            <a className="btn btn-primary" href={item.link} target="_blank" rel="noreferrer">Open Feed</a>
-                            <button className="btn btn-secondary" onClick={() => copyLink(item.title, item.link)}>
-                                {copied === item.title ? 'Copied' : 'Copy'}
+                            <a className="btn btn-primary btn-sm" href={item.link} target="_blank" rel="noreferrer">
+                                Open Feed
+                            </a>
+                            <button className="btn btn-secondary btn-sm" onClick={() => copyLink(item.title, item.link)}>
+                                {copied === item.title ? '✓ Copied' : 'Copy Link'}
                             </button>
                         </div>
                     </article>
                 ))}
             </section>
 
-            <section className="glass-card custom-feed">
-                <div className="custom-feed__header">
+            {/* Custom Feed Builder */}
+            <section className="ink-card feeds-custom">
+                <div className="feeds-custom__header">
                     <h3>Custom Festival Feed</h3>
-                    <p>Select specific festivals to generate a focused iCal URL.</p>
+                    <p>Select specific festivals to create a focused calendar feed.</p>
                 </div>
 
-                <label className="custom-feed__search" htmlFor="festival-search">
-                    <span>Search festivals</span>
+                <div className="feeds-custom__search ink-input">
+                    <span>Search</span>
                     <input
-                        id="festival-search"
                         type="search"
-                        placeholder="Dashain, Teej, Shivaratri"
+                        placeholder="Dashain, Teej, Shivaratri..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                     />
-                </label>
+                </div>
 
-                {loading && <p>Loading festivals...</p>}
-                {!loading && error && <p role="alert">{error}</p>}
+                {loading && <p className="feeds-custom__status">Loading festivals...</p>}
+                {!loading && error && <p className="feeds-custom__status" role="alert">{error}</p>}
                 {!loading && !error && (
-                    <div className="festival-picker" role="group" aria-label="Select festivals for custom feed">
+                    <div className="feeds-picker">
                         {filtered.slice(0, 60).map((festival) => (
-                            <label key={festival.id} className="picker-item">
+                            <label key={festival.id} className="feeds-picker__item">
                                 <input
                                     type="checkbox"
                                     checked={selectedIds.includes(festival.id)}
@@ -127,16 +132,20 @@ export function FeedSubscriptionsPage() {
                     </div>
                 )}
 
-                <div className="custom-feed__output">
-                    <p><strong>Selected:</strong> {selectedIds.length}</p>
-                    <p className="feed-link">{customLink || 'Select at least one festival to generate a custom link.'}</p>
-                    {customLink && (
-                        <div className="feed-card__actions">
-                            <a className="btn btn-primary" href={customLink} target="_blank" rel="noreferrer">Open Custom Feed</a>
-                            <button className="btn btn-secondary" onClick={() => copyLink('Custom', customLink)}>
-                                {copied === 'Custom' ? 'Copied' : 'Copy'}
-                            </button>
-                        </div>
+                <div className="feeds-custom__output">
+                    <p><strong>Selected:</strong> {selectedIds.length} festivals</p>
+                    {customLink ? (
+                        <>
+                            <div className="feed-card__url"><code>{customLink}</code></div>
+                            <div className="feed-card__actions">
+                                <a className="btn btn-primary btn-sm" href={customLink} target="_blank" rel="noreferrer">Open Feed</a>
+                                <button className="btn btn-secondary btn-sm" onClick={() => copyLink('Custom', customLink)}>
+                                    {copied === 'Custom' ? '✓ Copied' : 'Copy Link'}
+                                </button>
+                            </div>
+                        </>
+                    ) : (
+                        <p className="feeds-custom__hint">Select at least one festival above</p>
                     )}
                 </div>
             </section>

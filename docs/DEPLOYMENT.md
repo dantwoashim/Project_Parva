@@ -42,7 +42,7 @@ python3 scripts/live_smoke.py --base https://<your-render-service>.onrender.com
 
 ## Health checks
 - `GET /health`
-- `GET /v3/api/reliability/status`
+- `GET /v3/api/reliability/status` (optional; available when trust routers are enabled)
 
 ## CI gates
 ```bash

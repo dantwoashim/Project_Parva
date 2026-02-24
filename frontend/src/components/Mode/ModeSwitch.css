@@ -1,0 +1,62 @@
+.mode-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.mode-switch__toggle {
+  display: inline-flex;
+  border: 1px solid var(--border-card);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.2rem;
+}
+
+.mode-switch__btn {
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 999px;
+  padding: 0.36rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.mode-switch__btn.active {
+  color: #111;
+  background: var(--gold-bright);
+  box-shadow: 0 6px 18px rgba(232, 197, 115, 0.28);
+}
+
+.mode-switch__field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.mode-switch__field select {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-card);
+  color: var(--text-primary);
+  border-radius: 0.6rem;
+  padding: 0.3rem 0.45rem;
+  min-height: 2rem;
+}
+
+.mode-switch--compact .mode-switch__field span {
+  display: none;
+}
+
+@media (max-width: 980px) {
+  .mode-switch {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
