@@ -1,22 +1,24 @@
+import { Suspense, lazy } from 'react';
 import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import { ErrorBoundary } from './components/UI/ErrorBoundary';
 import { ModeSwitch } from './components/Mode/ModeSwitch';
 import { TemporalProvider } from './context/TemporalContext';
-import { TemporalCompassPage } from './pages/TemporalCompassPage';
-import { ParvaPage } from './pages/ParvaPage';
-import { FestivalExplorerPage } from './pages/FestivalExplorerPage';
-import { FestivalDetailPage } from './pages/FestivalDetailPage';
-import { PanchangaPage } from './pages/PanchangaPage';
-import { FeedSubscriptionsPage } from './pages/FeedSubscriptionsPage';
-import { PersonalPanchangaPage } from './pages/PersonalPanchangaPage';
-import { MuhurtaPage } from './pages/MuhurtaPage';
-import { KundaliPage } from './pages/KundaliPage';
 import './index.css';
 import './styles/tokens.css';
 import './styles/interactions.css';
 import './components/Mode/ModeSwitch.css';
 import './pages/TemporalCompassPage.css';
 import './App.css';
+
+const TemporalCompassPage = lazy(() => import('./pages/TemporalCompassPage').then((m) => ({ default: m.TemporalCompassPage })));
+const ParvaPage = lazy(() => import('./pages/ParvaPage').then((m) => ({ default: m.ParvaPage })));
+const FestivalExplorerPage = lazy(() => import('./pages/FestivalExplorerPage').then((m) => ({ default: m.FestivalExplorerPage })));
+const FestivalDetailPage = lazy(() => import('./pages/FestivalDetailPage').then((m) => ({ default: m.FestivalDetailPage })));
+const PanchangaPage = lazy(() => import('./pages/PanchangaPage').then((m) => ({ default: m.PanchangaPage })));
+const FeedSubscriptionsPage = lazy(() => import('./pages/FeedSubscriptionsPage').then((m) => ({ default: m.FeedSubscriptionsPage })));
+const PersonalPanchangaPage = lazy(() => import('./pages/PersonalPanchangaPage').then((m) => ({ default: m.PersonalPanchangaPage })));
+const MuhurtaPage = lazy(() => import('./pages/MuhurtaPage').then((m) => ({ default: m.MuhurtaPage })));
+const KundaliPage = lazy(() => import('./pages/KundaliPage').then((m) => ({ default: m.KundaliPage })));
 
 function FloatingParticles() {
   return (
@@ -55,18 +57,26 @@ function TopNav() {
 
 function AppRoutes() {
   return (
-    <Routes>
-      <Route path="/" element={<TemporalCompassPage />} />
-      <Route path="/festivals" element={<FestivalExplorerPage />} />
-      <Route path="/festivals/:festivalId" element={<FestivalDetailPage />} />
-      <Route path="/panchanga" element={<PanchangaPage />} />
-      <Route path="/personal" element={<PersonalPanchangaPage />} />
-      <Route path="/muhurta" element={<MuhurtaPage />} />
-      <Route path="/kundali" element={<KundaliPage />} />
-      <Route path="/feeds" element={<FeedSubscriptionsPage />} />
-      <Route path="/dashboard" element={<ParvaPage />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <Suspense
+      fallback={(
+        <div className="glass-panel" style={{ minHeight: 240, display: 'grid', placeItems: 'center' }}>
+          Loading temporal view...
+        </div>
+      )}
+    >
+      <Routes>
+        <Route path="/" element={<TemporalCompassPage />} />
+        <Route path="/festivals" element={<FestivalExplorerPage />} />
+        <Route path="/festivals/:festivalId" element={<FestivalDetailPage />} />
+        <Route path="/panchanga" element={<PanchangaPage />} />
+        <Route path="/personal" element={<PersonalPanchangaPage />} />
+        <Route path="/muhurta" element={<MuhurtaPage />} />
+        <Route path="/kundali" element={<KundaliPage />} />
+        <Route path="/feeds" element={<FeedSubscriptionsPage />} />
+        <Route path="/dashboard" element={<ParvaPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
   );
 }
 
