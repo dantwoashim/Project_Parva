@@ -291,7 +291,7 @@ describe('visual regression harness', () => {
 
   it('explorer page visual baseline', async () => {
     const { container } = await renderRoute('/festivals');
-    await screen.findByRole('heading', { name: /Festival Explorer Ribbon/i });
+    await screen.findByText(/Dashain/i);
     expect(container.querySelector('.explorer-page')).toMatchSnapshot();
   });
 
