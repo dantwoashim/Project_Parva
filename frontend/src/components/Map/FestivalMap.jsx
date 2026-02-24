@@ -90,6 +90,7 @@ export function FestivalMap({
     selectedFestival,
     onFestivalSelect,
     onLocationClick,
+    focusQuery = null,
     className = '',
     isLoading = false,
 }) {
@@ -119,6 +120,29 @@ export function FestivalMap({
             setSelectedLocation(null);
         }
     }, [selectedFestival?.id, temples]);
+
+    // External focus: used by ritual timeline location clicks to move map context.
+    useEffect(() => {
+        if (!focusQuery || temples.length === 0) return;
+
+        if (typeof focusQuery === 'object' && focusQuery.coordinates) {
+            setSelectedLocation(focusQuery);
+            return;
+        }
+
+        const query = String(focusQuery).trim().toLowerCase();
+        if (!query) return;
+
+        const match = temples.find((temple) =>
+            [temple.name, temple.name_ne, temple.id, temple.significance]
+                .filter(Boolean)
+                .some((value) => value.toLowerCase().includes(query))
+        );
+
+        if (match) {
+            setSelectedLocation(match);
+        }
+    }, [focusQuery, temples]);
 
     const handleMarkerClick = (temple) => {
         setSelectedLocation(temple);
@@ -252,6 +276,7 @@ FestivalMap.propTypes = {
     selectedFestival: PropTypes.object,
     onFestivalSelect: PropTypes.func,
     onLocationClick: PropTypes.func,
+    focusQuery: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     className: PropTypes.string,
     isLoading: PropTypes.bool,
 };

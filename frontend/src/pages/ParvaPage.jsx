@@ -20,6 +20,7 @@ import './ParvaPage.css';
  */
 export function ParvaPage() {
     const [selectedFestivalId, setSelectedFestivalId] = useState(null);
+    const [mapFocusQuery, setMapFocusQuery] = useState(null);
     const { festivals, loading, error } = useUpcomingFestivals(90);
     const {
         festival: selectedFestival,
@@ -38,8 +39,13 @@ export function ParvaPage() {
     };
 
     const handleLocationClick = (location) => {
-        console.log('Location clicked:', location);
-        // TODO: Integrate with map in Day 3
+        const focus = typeof location === 'string'
+            ? location
+            : location?.name || location?.id || null;
+
+        setMapFocusQuery(focus);
+        // Reveal map surface so ritual location actions are immediately visible.
+        setSelectedFestivalId(null);
     };
 
     return (
@@ -143,6 +149,7 @@ export function ParvaPage() {
                                 selectedFestival={selectedFestival}
                                 onFestivalSelect={handleFestivalSelect}
                                 onLocationClick={handleLocationClick}
+                                focusQuery={mapFocusQuery}
                                 isLoading={templesLoading}
                             />
                         </div>
