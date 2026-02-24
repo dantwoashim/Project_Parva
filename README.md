@@ -57,6 +57,8 @@ cd /Users/rohanbasnet14/Documents/Project_Parva
 
 ## Documentation
 - `/Users/rohanbasnet14/Documents/Project_Parva/docs/API_REFERENCE_V3.md`
+- `/Users/rohanbasnet14/Documents/Project_Parva/docs/PROJECT_BIBLE.md`
+- `/Users/rohanbasnet14/Documents/Project_Parva/docs/UI_TEMPORAL_CARTOGRAPHY_SPEC.md`
 - `/Users/rohanbasnet14/Documents/Project_Parva/docs/EVALUATOR_GUIDE.md`
 - `/Users/rohanbasnet14/Documents/Project_Parva/docs/ENGINE_ARCHITECTURE.md`
 - `/Users/rohanbasnet14/Documents/Project_Parva/docs/ACCURACY_METHOD.md`

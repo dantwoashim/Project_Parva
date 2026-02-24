@@ -49,7 +49,12 @@ function normalizeRitualData(festival) {
         offerings: toOfferingsArray(step.items_needed),
     });
 
-    // If already normalized shape
+    // Canonical backend shape for Temporal Cartography: ritual_sequence.days[]
+    if (festival.ritual_sequence?.days && Array.isArray(festival.ritual_sequence.days)) {
+        return festival.ritual_sequence;
+    }
+
+    // Legacy normalized shape
     if (festival.daily_rituals?.days && Array.isArray(festival.daily_rituals.days)) {
         return festival.daily_rituals;
     }
@@ -306,6 +311,7 @@ FestivalDetail.propTypes = {
         primary_color: PropTypes.string,
         significance_level: PropTypes.number,
         mythology: PropTypes.object,
+        ritual_sequence: PropTypes.object,
         daily_rituals: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
         simple_rituals: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
         related_festivals: PropTypes.arrayOf(PropTypes.string),

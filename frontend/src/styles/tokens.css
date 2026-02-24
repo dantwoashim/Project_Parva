@@ -1,86 +1,53 @@
+/* tokens.css — Compatibility bridge
+   Main design tokens are now in index.css.
+   This file maps old variable names → new. */
+
 :root {
-  /* Typography */
-  --font-display: 'Space Grotesk', 'Manrope', 'Avenir Next', 'Segoe UI', sans-serif;
-  --font-sans: 'Manrope', 'Sora', 'Avenir Next', 'Segoe UI', sans-serif;
-  --font-nepali: 'Noto Sans Devanagari', 'Mukta', sans-serif;
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-nepali: 'Noto Sans Devanagari', sans-serif;
 
-  /* Semantic palette */
-  --ink-900: #1f252f;
-  --ink-700: #3f4653;
-  --ink-500: #697080;
-  --ink-300: #9ca4b5;
+  --color-primary: var(--gold);
+  --color-primary-dark: #a8862e;
+  --color-primary-light: var(--gold-bright);
+  --color-primary-subtle: rgba(201, 169, 110, 0.1);
 
-  --surface-0: #f8f6f1;
-  --surface-1: #ffffff;
-  --surface-2: #f1ece3;
-  --surface-3: #e8e1d5;
+  --color-secondary: var(--saffron);
+  --color-secondary-dark: #c08520;
+  --color-secondary-light: #f0b44a;
+  --color-secondary-subtle: rgba(232, 164, 56, 0.1);
 
-  --accent-copper: #c85a3e;
-  --accent-gold: #d4a052;
-  --accent-saffron: #e0a243;
-  --accent-jade: #2e8766;
+  --color-bg-deep: var(--bg-deep);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-card: var(--bg-card);
+  --color-bg-hover: var(--bg-card-hover);
 
-  --gradient-brand: linear-gradient(132deg, #c85a3e 0%, #d4a052 48%, #e0a243 100%);
-  --gradient-surface: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 243, 236, 0.9));
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--text-inverse);
 
-  /* Map old variables to semantic layer */
-  --color-primary: var(--accent-copper);
-  --color-primary-dark: #a64832;
-  --color-primary-light: #dd836e;
-  --color-primary-subtle: color-mix(in srgb, var(--accent-copper) 12%, transparent);
+  --color-border: var(--border-card);
+  --color-border-light: var(--border-subtle);
+  --color-border-focus: var(--gold);
 
-  --color-secondary: var(--accent-gold);
-  --color-secondary-dark: #a8792b;
-  --color-secondary-light: #e9c07e;
-  --color-secondary-subtle: color-mix(in srgb, var(--accent-gold) 18%, transparent);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-hover: var(--shadow-glow-gold);
 
-  --color-bg-deep: var(--surface-0);
-  --color-bg-surface: var(--surface-2);
-  --color-bg-elevated: var(--surface-1);
-  --color-bg-card: var(--surface-1);
-  --color-bg-sidebar: var(--surface-1);
-  --color-bg-hover: #f9f4ec;
+  --transition-fast: var(--duration-fast) var(--ease-out);
+  --transition-base: var(--duration-base) var(--ease-out);
+  --transition-slow: var(--duration-slow) var(--ease-out);
 
-  --color-text-primary: var(--ink-900);
-  --color-text-secondary: var(--ink-700);
-  --color-text-muted: var(--ink-500);
-  --color-text-inverse: #ffffff;
-
-  --color-border: #ded5c7;
-  --color-border-light: #ece5d8;
-  --color-border-focus: var(--accent-copper);
-
-  --shadow-sm: 0 2px 8px rgba(20, 26, 37, 0.05);
-  --shadow-md: 0 10px 24px rgba(20, 26, 37, 0.08);
-  --shadow-lg: 0 18px 42px rgba(20, 26, 37, 0.12);
-  --shadow-card: 0 6px 16px rgba(20, 26, 37, 0.06);
-  --shadow-hover: 0 16px 34px rgba(20, 26, 37, 0.12);
-
-  /* Motion tokens */
-  --motion-duration-fast: 140ms;
-  --motion-duration-base: 220ms;
-  --motion-duration-slow: 360ms;
-  --motion-duration-page: 480ms;
-
-  --motion-ease-standard: cubic-bezier(0.2, 0.0, 0.0, 1);
-  --motion-ease-emphasized: cubic-bezier(0.2, 0.7, 0.1, 1);
-  --motion-ease-exit: cubic-bezier(0.4, 0.0, 1, 1);
-
-  --transition-fast: var(--motion-duration-fast) var(--motion-ease-standard);
-  --transition-base: var(--motion-duration-base) var(--motion-ease-emphasized);
-  --transition-slow: var(--motion-duration-slow) var(--motion-ease-emphasized);
-
-  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--accent-copper) 28%, transparent);
-  --interactive-halo: 0 10px 24px color-mix(in srgb, var(--accent-gold) 28%, transparent);
+  --focus-ring: 0 0 0 3px rgba(201, 169, 110, 0.25);
   --interactive-press-scale: 0.985;
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --motion-duration-fast: 1ms;
-    --motion-duration-base: 1ms;
-    --motion-duration-slow: 1ms;
-    --motion-duration-page: 1ms;
     --interactive-press-scale: 1;
   }
 }

@@ -108,6 +108,7 @@ class Festival(BaseModel):
     mythology: Optional[MythologyContent] = None
     daily_rituals: Optional[List[DayRituals]] = None
     simple_rituals: Optional[List[RitualStep]] = None  # For single-day festivals
+    ritual_sequence: Optional[Dict[str, Any]] = None  # Canonical UI shape: {days: [...]}
     
     # Connections
     deities: Optional[List[DeityLink]] = None  # Detailed deity info (future use)

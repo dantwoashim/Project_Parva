@@ -1,196 +1,139 @@
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FestivalCard } from '../components/Festival';
-import { useFestivals } from '../hooks/useFestivals';
+import { useEffect, useMemo, useState } from 'react';
+import { festivalAPI } from '../services/api';
+import { useTemporalContext } from '../context/TemporalContext';
+import { TimelineRibbon } from '../components/TimelineRibbon/TimelineRibbon';
+import { AuthorityInspector } from '../components/UI/AuthorityInspector';
 import './FestivalExplorerPage.css';
 
-const CATEGORY_OPTIONS = [
-    { value: '', label: 'All Categories' },
-    { value: 'national', label: 'National' },
-    { value: 'newari', label: 'Newari' },
-    { value: 'buddhist', label: 'Buddhist' },
-    { value: 'hindu', label: 'Hindu' },
-    { value: 'regional', label: 'Regional' },
-];
-
-const QUALITY_OPTIONS = [
-    { value: 'computed', label: 'Computed' },
-    { value: 'provisional', label: 'Provisional' },
-    { value: 'inventory', label: 'Inventory' },
-    { value: 'all', label: 'All Bands' },
-];
-
-function formatPct(value) {
-    if (value === null || value === undefined) return '0.00%';
-    const numeric = Number(value);
-    if (Number.isNaN(numeric)) return '0.00%';
-    return `${numeric.toFixed(2)}%`;
+function addDays(base, days) {
+  const d = new Date(`${base}T00:00:00`);
+  d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
 }
 
 export function FestivalExplorerPage() {
-    const navigate = useNavigate();
-    const [search, setSearch] = useState('');
-    const [category, setCategory] = useState('');
-    const [sortBy, setSortBy] = useState('significance');
-    const [qualityBand, setQualityBand] = useState('computed');
-    const [algorithmicOnly, setAlgorithmicOnly] = useState(true);
+  const { state } = useTemporalContext();
+  const [fromDate, setFromDate] = useState(state.date);
+  const [windowDays, setWindowDays] = useState(180);
+  const [category, setCategory] = useState('');
+  const [region, setRegion] = useState('');
 
-    const { festivals, total, scoreboard, loading, error } = useFestivals({
-        category,
-        search,
-        qualityBand,
-        algorithmicOnly,
-    });
+  const [payload, setPayload] = useState(null);
+  const [meta, setMeta] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const sortedFestivals = useMemo(() => {
-        const rows = [...festivals];
-        if (sortBy === 'name') {
-            rows.sort((a, b) => a.name.localeCompare(b.name));
-        } else if (sortBy === 'duration') {
-            rows.sort((a, b) => (b.duration_days || 0) - (a.duration_days || 0));
-        } else {
-            rows.sort((a, b) => (b.significance_level || 0) - (a.significance_level || 0));
+  const toDate = useMemo(() => addDays(fromDate, windowDays), [fromDate, windowDays]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        const envelope = await festivalAPI.getTimelineEnvelope({
+          from: fromDate,
+          to: toDate,
+          qualityBand: state.qualityBand,
+          category: category || undefined,
+          region: region || undefined,
+          lang: state.language,
+        });
+
+        if (!cancelled) {
+          setPayload(envelope.data);
+          setMeta(envelope.meta);
         }
-        return rows;
-    }, [festivals, sortBy]);
+      } catch (err) {
+        if (!cancelled) {
+          setPayload(null);
+          setMeta(null);
+          setError(err.message || 'Failed to load festival timeline');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
 
-    const computedCount = scoreboard?.computed?.count ?? 0;
-    const provisionalCount = scoreboard?.provisional?.count ?? 0;
-    const inventoryCount = scoreboard?.inventory?.count ?? 0;
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [fromDate, toDate, category, region, state.qualityBand, state.language]);
 
-    return (
-        <section className="explorer-page">
-            <header className="explorer-page__header glass-card motion-stagger">
-                <div className="explorer-page__headline">
-                    <p className="explorer-page__eyebrow">Authority Coverage • Headline = Computed</p>
-                    <h1 className="text-display">Festival Explorer</h1>
-                    <p>
-                        Discover festivals with truth-first quality bands and computed-first headline metrics.
-                    </p>
-                </div>
+  return (
+    <section className="explorer-page animate-fade-in-up">
+      <header className="explorer-hero">
+        <h1 className="text-hero">Festival Explorer Ribbon</h1>
+        <p className="explorer-hero__sub">Browse observances continuously across months with quality-aware filters.</p>
+      </header>
 
-                <div className="explorer-page__scoreboard" aria-label="Coverage scoreboard">
-                    <article className="score-card score-card--computed interactive-surface">
-                        <p className="score-card__label">Computed</p>
-                        <p className="score-card__value">{computedCount}</p>
-                        <p className="score-card__meta">{formatPct(scoreboard?.computed?.pct)}</p>
-                    </article>
-                    <article className="score-card score-card--provisional interactive-surface">
-                        <p className="score-card__label">Provisional</p>
-                        <p className="score-card__value">{provisionalCount}</p>
-                        <p className="score-card__meta">{formatPct(scoreboard?.provisional?.pct)}</p>
-                    </article>
-                    <article className="score-card score-card--inventory interactive-surface">
-                        <p className="score-card__label">Inventory</p>
-                        <p className="score-card__value">{inventoryCount}</p>
-                        <p className="score-card__meta">{formatPct(scoreboard?.inventory?.pct)}</p>
-                    </article>
-                    <article className="score-card score-card--claim interactive-surface">
-                        <p className="score-card__label">Claim Guard</p>
-                        <p className="score-card__value score-card__value--small">
-                            {scoreboard?.claim_guard?.safe_to_claim_300 ? 'Ready' : 'In Progress'}
-                        </p>
-                        <p className="score-card__meta">Headline: computed</p>
-                    </article>
-                </div>
-            </header>
+      <div className="explorer-filters">
+        <label className="ink-input explorer-control">
+          <span>From</span>
+          <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
+        </label>
 
-            <section className="explorer-page__filters glass-card motion-stagger">
-                <label className="filter-field filter-field--search">
-                    <span>Search</span>
-                    <input
-                        type="search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Dashain, Tihar, Shivaratri..."
-                    />
-                </label>
+        <label className="ink-input explorer-control">
+          <span>Window</span>
+          <select value={windowDays} onChange={(e) => setWindowDays(Number(e.target.value))}>
+            <option value={90}>90 days</option>
+            <option value={180}>180 days</option>
+            <option value={365}>365 days</option>
+          </select>
+        </label>
 
-                <label className="filter-field">
-                    <span>Category</span>
-                    <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                        {CATEGORY_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+        <label className="ink-input explorer-control">
+          <span>Category</span>
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="">All</option>
+            <option value="national">National</option>
+            <option value="newari">Newari</option>
+            <option value="hindu">Hindu</option>
+            <option value="buddhist">Buddhist</option>
+            <option value="regional">Regional</option>
+          </select>
+        </label>
 
-                <label className="filter-field">
-                    <span>Quality Band</span>
-                    <select value={qualityBand} onChange={(e) => setQualityBand(e.target.value)}>
-                        {QUALITY_OPTIONS.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+        <label className="ink-input explorer-control explorer-control--wide">
+          <span>Region</span>
+          <input
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+            placeholder="kathmandu_valley"
+          />
+        </label>
+      </div>
 
-                <label className="filter-field">
-                    <span>Sort</span>
-                    <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                        <option value="significance">Significance</option>
-                        <option value="name">Name</option>
-                        <option value="duration">Duration</option>
-                    </select>
-                </label>
+      {loading && (
+        <div className="explorer-grid">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="skeleton explorer-skeleton" />
+          ))}
+        </div>
+      )}
 
-                <label className="filter-switch" htmlFor="algorithmic-only">
-                    <input
-                        id="algorithmic-only"
-                        type="checkbox"
-                        checked={algorithmicOnly}
-                        onChange={(e) => setAlgorithmicOnly(e.target.checked)}
-                    />
-                    <span>Algorithmic only</span>
-                </label>
+      {!loading && error && (
+        <div className="ink-card explorer-error" role="alert">
+          <h3>Could not load timeline</h3>
+          <p>{error}</p>
+        </div>
+      )}
 
-                <div className="explorer-page__result-total" role="status" aria-live="polite">
-                    {loading ? 'Loading…' : `${total} results`}
-                </div>
-            </section>
+      {!loading && !error && (
+        <TimelineRibbon groups={payload?.groups || []} />
+      )}
 
-            {loading && (
-                <div className="explorer-grid">
-                    {Array.from({ length: 6 }).map((_, i) => (
-                        <div key={i} className="explorer-skeleton skeleton" />
-                    ))}
-                </div>
-            )}
-
-            {!loading && error && (
-                <div className="glass-card explorer-error motion-stagger" role="alert">
-                    <h3>Could not load festivals</h3>
-                    <p>{error}</p>
-                </div>
-            )}
-
-            {!loading && !error && sortedFestivals.length === 0 && (
-                <div className="glass-card explorer-empty motion-stagger">
-                    <h3>No festivals match the current filters</h3>
-                    <p>Try switching quality band to “All Bands” or disabling algorithmic-only.</p>
-                </div>
-            )}
-
-            {!loading && !error && sortedFestivals.length > 0 && (
-                <div className="explorer-grid">
-                    {sortedFestivals.map((festival) => (
-                        <FestivalCard
-                            key={festival.id}
-                            festival={{
-                                ...festival,
-                                next_start: festival.next_start || festival.next_occurrence,
-                                next_end: festival.next_end || festival.next_occurrence,
-                            }}
-                            onClick={() => navigate(`/festivals/${festival.id}`)}
-                        />
-                    ))}
-                </div>
-            )}
-        </section>
-    );
+      {state.mode === 'authority' && !loading && !error && (
+        <AuthorityInspector
+          title="Explorer Authority"
+          meta={meta}
+          traceFallbackId={payload?.calculation_trace_id}
+        />
+      )}
+    </section>
+  );
 }
 
 export default FestivalExplorerPage;

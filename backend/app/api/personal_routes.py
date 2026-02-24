@@ -31,6 +31,7 @@ async def personal_panchanga(
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
     timezone_name, tz_warnings = normalize_timezone(tz)
+    timezone_source = "user_input" if tz and tz.strip() and timezone_name == tz.strip() else "fallback_default"
 
     panchanga = get_panchanga(target_date, latitude=latitude, longitude=longitude)
     bs_year, bs_month, bs_day = gregorian_to_bs(target_date)
@@ -68,6 +69,9 @@ async def personal_panchanga(
         "karana": panchanga["karana"],
         "vaara": panchanga["vaara"],
         "sunrise": panchanga["sunrise"],
+        "local_sunrise": panchanga.get("sunrise"),
+        "local_sunset": panchanga.get("sunset"),
+        "timezone_source": timezone_source,
         "ephemeris": {
             "mode": panchanga.get("mode", "swiss_moshier"),
             "accuracy": panchanga.get("accuracy", "arcsecond"),

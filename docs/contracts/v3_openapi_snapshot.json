@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-20T04:36:22.231801+00:00",
+  "generated_at": "2026-02-24T01:50:10.946887+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -9,6 +9,117 @@
       "version": "3.0.0"
     },
     "paths": {
+      "/v3/api/festivals/timeline": {
+        "get": {
+          "tags": [
+            "festivals"
+          ],
+          "summary": "Festivals Timeline",
+          "operationId": "festivals_timeline_v3_api_festivals_timeline_get",
+          "parameters": [
+            {
+              "name": "from",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "description": "Start date YYYY-MM-DD",
+                "title": "From"
+              },
+              "description": "Start date YYYY-MM-DD"
+            },
+            {
+              "name": "to",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "description": "End date YYYY-MM-DD",
+                "title": "To"
+              },
+              "description": "End date YYYY-MM-DD"
+            },
+            {
+              "name": "quality_band",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "computed|provisional|inventory|all",
+                "default": "computed",
+                "title": "Quality Band"
+              },
+              "description": "computed|provisional|inventory|all"
+            },
+            {
+              "name": "category",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Category"
+              }
+            },
+            {
+              "name": "region",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Region"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "en|ne",
+                "default": "en",
+                "title": "Lang"
+              },
+              "description": "en|ne"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/festivals": {
         "get": {
           "tags": [
@@ -4268,6 +4379,385 @@
           }
         }
       },
+      "/v3/api/temporal/compass": {
+        "get": {
+          "tags": [
+            "temporal"
+          ],
+          "summary": "Temporal Compass",
+          "operationId": "temporal_compass_v3_api_temporal_compass_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            },
+            {
+              "name": "quality_band",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "computed|provisional|inventory|all",
+                "default": "computed",
+                "title": "Quality Band"
+              },
+              "description": "computed|provisional|inventory|all"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/muhurta/heatmap": {
+        "get": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Muhurta Heatmap",
+          "operationId": "muhurta_heatmap_v3_api_muhurta_heatmap_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            },
+            {
+              "name": "type",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "vivah|griha_pravesh|travel|upanayana|general",
+                "default": "general",
+                "title": "Type"
+              },
+              "description": "vivah|griha_pravesh|travel|upanayana|general"
+            },
+            {
+              "name": "assumption_set",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "np-mainstream-v2",
+                "title": "Assumption Set"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/kundali/graph": {
+        "get": {
+          "tags": [
+            "kundali"
+          ],
+          "summary": "Kundali Graph Endpoint",
+          "operationId": "kundali_graph_endpoint_v3_api_kundali_graph_get",
+          "parameters": [
+            {
+              "name": "datetime",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "ISO8601 datetime",
+                "title": "Datetime"
+              },
+              "description": "ISO8601 datetime"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/glossary": {
+        "get": {
+          "tags": [
+            "glossary"
+          ],
+          "summary": "Glossary Endpoint",
+          "operationId": "glossary_endpoint_v3_api_glossary_get",
+          "parameters": [
+            {
+              "name": "domain",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "panchanga|muhurta|kundali",
+                "title": "Domain"
+              },
+              "description": "panchanga|muhurta|kundali"
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "en|ne",
+                "default": "en",
+                "title": "Lang"
+              },
+              "description": "en|ne"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/provenance/root": {
         "get": {
           "tags": [
@@ -5663,6 +6153,18 @@
                 }
               ],
               "title": "Simple Rituals"
+            },
+            "ritual_sequence": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Ritual Sequence"
             },
             "deities": {
               "anyOf": [

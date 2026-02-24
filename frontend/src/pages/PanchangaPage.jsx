@@ -1,192 +1,178 @@
 import { useEffect, useMemo, useState } from 'react';
-import { calendarAPI } from '../services/api';
+import { useNavigate } from 'react-router-dom';
+import { KnowledgePanel } from '../components/UI/KnowledgePanel';
 import { AuthorityInspector } from '../components/UI/AuthorityInspector';
+import { PANCHANGA_GLOSSARY } from '../data/temporalGlossary';
+import { calendarAPI, festivalAPI, glossaryAPI } from '../services/api';
+import { useTemporalContext } from '../context/TemporalContext';
 import './PanchangaPage.css';
 
-function todayIso() {
-    return new Date(Date.now()).toISOString().slice(0, 10);
+function toKnowledge(content, fallback) {
+  if (!content?.sections) return fallback;
+  return {
+    title: content.title || fallback.title,
+    intro: content.intro || fallback.intro,
+    sections: (content.sections || []).map((section) => ({
+      id: section.id,
+      title: section.title,
+      description: section.description,
+      terms: (section.terms || []).map((term) => ({
+        name: term.name,
+        meaning: term.meaning,
+        whyItMatters: term.why_it_matters || term.whyItMatters,
+      })),
+    })),
+  };
+}
+
+function MoonPhase({ tithi }) {
+  const number = tithi?.number || 1;
+  const phase = number <= 15 ? number / 15 : (30 - number) / 15;
+  const isWaxing = number <= 15;
+
+  return (
+    <div className="moon-phase" aria-label="Lunar phase view">
+      <div className="moon-phase__orb">
+        <div
+          className="moon-phase__shadow"
+          style={{
+            clipPath: phase < 0.5
+              ? `inset(0 0 0 ${(1 - phase * 2) * 100}%)`
+              : `inset(0 ${(phase * 2 - 1) * 100}% 0 0)`,
+            opacity: isWaxing ? 1 : 0.85,
+          }}
+        />
+      </div>
+      <span className="moon-phase__label">{isWaxing ? 'Shukla' : 'Krishna'} Paksha</span>
+    </div>
+  );
 }
 
 export function PanchangaPage() {
-    const [dateValue, setDateValue] = useState(todayIso());
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [payload, setPayload] = useState(null);
-    const [meta, setMeta] = useState(null);
-    const [resolveTrace, setResolveTrace] = useState(null);
-    const [traceData, setTraceData] = useState(null);
-    const [traceLoading, setTraceLoading] = useState(false);
-    const [traceError, setTraceError] = useState(null);
+  const navigate = useNavigate();
+  const { state, setDate } = useTemporalContext();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [payload, setPayload] = useState(null);
+  const [meta, setMeta] = useState(null);
+  const [festivals, setFestivals] = useState([]);
+  const [knowledge, setKnowledge] = useState(PANCHANGA_GLOSSARY);
 
-    useEffect(() => {
-        let cancelled = false;
+  useEffect(() => {
+    let cancelled = false;
 
-        async function load() {
-            setLoading(true);
-            setError(null);
-            try {
-                const [panchangaEnvelope, resolveEnvelope] = await Promise.all([
-                    calendarAPI.getPanchangaEnvelope(dateValue),
-                    calendarAPI.getResolveEnvelope(dateValue, { include_trace: 'true' }),
-                ]);
-                if (!cancelled) {
-                    setPayload(panchangaEnvelope.data);
-                    setMeta(panchangaEnvelope.meta || null);
-                    setResolveTrace(resolveEnvelope?.meta?.trace_id || resolveEnvelope?.data?.trace?.trace_id || null);
-                }
-            } catch (err) {
-                if (!cancelled) {
-                    setPayload(null);
-                    setMeta(null);
-                    setResolveTrace(null);
-                    setError(err.message || 'Failed to load panchanga');
-                }
-            } finally {
-                if (!cancelled) {
-                    setLoading(false);
-                }
-            }
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        const [panchangaEnvelope, resolveEnvelope, festivalsData, glossary] = await Promise.all([
+          calendarAPI.getPanchangaEnvelope(state.date),
+          calendarAPI.getResolveEnvelope(state.date, { include_trace: 'true' }),
+          festivalAPI.getOnDate(state.date).catch(() => []),
+          glossaryAPI.get({ domain: 'panchanga', lang: state.language }).catch(() => null),
+        ]);
+        if (!cancelled) {
+          setPayload(panchangaEnvelope.data);
+          setMeta(panchangaEnvelope.meta || resolveEnvelope?.meta || null);
+          setFestivals(Array.isArray(festivalsData) ? festivalsData : []);
+          setKnowledge(toKnowledge(glossary?.content, PANCHANGA_GLOSSARY));
         }
-
-        load();
-        return () => {
-            cancelled = true;
-        };
-    }, [dateValue]);
-
-    const tithi = payload?.panchanga?.tithi;
-    const nakshatra = payload?.panchanga?.nakshatra;
-    const yoga = payload?.panchanga?.yoga;
-    const karana = payload?.panchanga?.karana;
-    const vaara = payload?.panchanga?.vaara;
-
-    const confidence = useMemo(() => {
-        return payload?.panchanga?.confidence || meta?.confidence?.level || 'unknown';
-    }, [payload, meta]);
-
-    const handleOpenTrace = async (traceId) => {
-        if (!traceId) return;
-        setTraceLoading(true);
-        setTraceError(null);
-        try {
-            const trace = await calendarAPI.getResolveEnvelope(dateValue, { include_trace: 'true' });
-            setTraceData(trace?.data?.trace || null);
-        } catch (err) {
-            setTraceError(err.message || 'Failed to load trace');
-            setTraceData(null);
-        } finally {
-            setTraceLoading(false);
+      } catch (err) {
+        if (!cancelled) {
+          setPayload(null);
+          setMeta(null);
+          setFestivals([]);
+          setError(err.message || 'Failed to load panchanga');
         }
-    };
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
 
-    return (
-        <section className="panchanga-page">
-            <header className="glass-card panchanga-header">
-                <div>
-                    <h2 className="text-display">Panchanga Viewer</h2>
-                    <p>Daily tithi, nakshatra, yoga, karana, and vaara from the astronomical engine.</p>
-                </div>
-                <label className="panchanga-date-input" htmlFor="panchanga-date">
-                    <span>Date</span>
-                    <input
-                        id="panchanga-date"
-                        type="date"
-                        value={dateValue}
-                        onChange={(e) => setDateValue(e.target.value)}
-                    />
-                </label>
-            </header>
+    load();
+    return () => { cancelled = true; };
+  }, [state.date, state.language]);
 
-            {loading && (
-                <div className="glass-card panchanga-state" data-testid="panchanga-loading">
-                    <h3>Calculating...</h3>
-                    <div className="skeleton" style={{ height: '180px', marginTop: '1rem' }} />
-                </div>
-            )}
+  const tithi = payload?.panchanga?.tithi;
+  const nakshatra = payload?.panchanga?.nakshatra;
+  const yoga = payload?.panchanga?.yoga;
+  const karana = payload?.panchanga?.karana;
+  const vaara = payload?.panchanga?.vaara;
+  const bs = payload?.bikram_sambat;
 
-            {!loading && error && (
-                <div className="glass-card panchanga-state" role="alert">
-                    <h3>Unable to load panchanga</h3>
-                    <p>{error}</p>
-                </div>
-            )}
+  const confidence = useMemo(() => payload?.panchanga?.confidence || meta?.confidence?.level || 'computed', [payload, meta]);
 
-            {!loading && !error && payload && (
-                <>
-                    <section className="panchanga-grid">
-                        <article className="glass-card panchanga-card">
-                            <h3>Tithi</h3>
-                            <p className="value">{tithi?.name || '—'}</p>
-                            <p className="meta">#{tithi?.number} · {tithi?.paksha}</p>
-                        </article>
+  return (
+    <section className="panchanga-page animate-fade-in-up">
+      <header className="panchanga-hero">
+        <div className="panchanga-hero__left">
+          {bs && <h1 className="text-hero">{bs.year} {bs.month_name} {bs.day}</h1>}
+          <p className="panchanga-hero__date">
+            {new Date(`${state.date}T00:00:00`).toLocaleDateString('en-US', {
+              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+            })}
+          </p>
+          <label className="panchanga-hero__picker ink-input">
+            <span>Date</span>
+            <input id="panchanga-date" type="date" value={state.date} onChange={(e) => setDate(e.target.value)} />
+          </label>
+        </div>
+        <div className="panchanga-hero__right">{tithi && <MoonPhase tithi={tithi} />}</div>
+      </header>
 
-                        <article className="glass-card panchanga-card">
-                            <h3>Nakshatra</h3>
-                            <p className="value">{nakshatra?.name || '—'}</p>
-                            <p className="meta">Pada {nakshatra?.pada || '—'}</p>
-                        </article>
+      {loading && (
+        <div className="panchanga-loading">
+          <div className="skeleton" style={{ height: '120px', borderRadius: '16px' }} />
+          <div className="panchanga-cards stagger-children">
+            {Array.from({ length: 5 }).map((_, i) => <div key={i} className="skeleton" style={{ height: '140px', borderRadius: '16px' }} />)}
+          </div>
+        </div>
+      )}
 
-                        <article className="glass-card panchanga-card">
-                            <h3>Yoga</h3>
-                            <p className="value">{yoga?.name || '—'}</p>
-                            <p className="meta">#{yoga?.number || '—'}</p>
-                        </article>
+      {!loading && error && (
+        <div className="ink-card panchanga-error" role="alert">
+          <h3>Unable to load panchanga</h3>
+          <p>{error}</p>
+        </div>
+      )}
 
-                        <article className="glass-card panchanga-card">
-                            <h3>Karana</h3>
-                            <p className="value">{karana?.name || '—'}</p>
-                            <p className="meta">#{karana?.number || '—'}</p>
-                        </article>
+      {!loading && !error && payload && (
+        <>
+          {festivals?.length > 0 && (
+            <section className="panchanga-festivals animate-fade-in-up">
+              <h2 className="panchanga-festivals__title">Festivals on this day</h2>
+              <div className="panchanga-festivals__chips">
+                {festivals.map((f) => (
+                  <button key={f.id} className="festival-chip" onClick={() => navigate(`/festivals/${f.id}`)}>
+                    <span className="festival-chip__name">{f.name}</span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
 
-                        <article className="glass-card panchanga-card">
-                            <h3>Vaara</h3>
-                            <p className="value">{vaara?.name_english || '—'}</p>
-                            <p className="meta">{vaara?.name_sanskrit || '—'}</p>
-                        </article>
-                    </section>
+          <section className="panchanga-cards stagger-children">
+            <article className="ink-card ink-card--vermillion panchanga-card"><h3>Tithi</h3><p className="panchanga-card__value">{tithi?.name || '—'}</p><p className="panchanga-card__meta">#{tithi?.number} · {tithi?.paksha}</p></article>
+            <article className="ink-card ink-card--saffron panchanga-card"><h3>Nakshatra</h3><p className="panchanga-card__value">{nakshatra?.name || '—'}</p><p className="panchanga-card__meta">Pada {nakshatra?.pada || '—'}</p></article>
+            <article className="ink-card ink-card--gold panchanga-card"><h3>Yoga</h3><p className="panchanga-card__value">{yoga?.name || '—'}</p><p className="panchanga-card__meta">#{yoga?.number || '—'}</p></article>
+            <article className="ink-card ink-card--jade panchanga-card"><h3>Karana</h3><p className="panchanga-card__value">{karana?.name || '—'}</p><p className="panchanga-card__meta">#{karana?.number || '—'}</p></article>
+            <article className="ink-card ink-card--amber panchanga-card"><h3>Vaara</h3><p className="panchanga-card__value">{vaara?.name_english || '—'}</p><p className="panchanga-card__meta">{vaara?.name_sanskrit || '—'}</p></article>
+          </section>
 
-                    <section className="glass-card panchanga-metadata">
-                        <h3>Engine Metadata</h3>
-                        <div className="metadata-grid">
-                            <p><strong>Gregorian</strong> {payload.date}</p>
-                            <p><strong>BS</strong> {payload.bikram_sambat?.year} {payload.bikram_sambat?.month_name} {payload.bikram_sambat?.day}</p>
-                            <p><strong>Panchanga Confidence</strong> {confidence}</p>
-                            <p><strong>Tithi Method</strong> {tithi?.method || 'ephemeris'}</p>
-                            <p><strong>Sunrise Used</strong> {tithi?.sunrise_used || 'N/A'}</p>
-                            <p><strong>Ephemeris Mode</strong> {payload.ephemeris?.mode || 'swiss_moshier'}</p>
-                        </div>
-                    </section>
+          <KnowledgePanel title={knowledge.title} intro={knowledge.intro} sections={knowledge.sections} className="panchanga-knowledge" />
 
-                    <AuthorityInspector
-                        title="Panchanga Response Authority"
-                        meta={meta}
-                        traceFallbackId={resolveTrace}
-                        onOpenTrace={handleOpenTrace}
-                    />
+          {state.mode === 'authority' && (
+            <AuthorityInspector title="Panchanga Authority" meta={meta} traceFallbackId={payload?.calculation_trace_id} />
+          )}
 
-                    {(traceLoading || traceData || traceError) && (
-                        <section className="glass-card panchanga-trace">
-                            <header>
-                                <h3>Trace Explorer</h3>
-                                <button
-                                    className="btn btn-secondary"
-                                    onClick={() => {
-                                        setTraceData(null);
-                                        setTraceError(null);
-                                    }}
-                                >
-                                    Close
-                                </button>
-                            </header>
-                            {traceLoading && <p>Loading trace...</p>}
-                            {!traceLoading && traceError && <p role="alert">{traceError}</p>}
-                            {!traceLoading && traceData && <pre>{JSON.stringify(traceData, null, 2)}</pre>}
-                        </section>
-                    )}
-                </>
-            )}
-        </section>
-    );
+          <section className="ink-card panchanga-details-card">
+            <p><strong>Confidence:</strong> {confidence}</p>
+            <p><strong>Tithi Method:</strong> {tithi?.method || 'ephemeris_udaya'}</p>
+          </section>
+        </>
+      )}
+    </section>
+  );
 }
 
 export default PanchangaPage;

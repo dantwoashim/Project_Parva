@@ -1,211 +1,208 @@
-import { useEffect, useState } from 'react';
-import { muhurtaAPI } from '../services/api';
+import { useEffect, useMemo, useState } from 'react';
+import { KnowledgePanel } from '../components/UI/KnowledgePanel';
+import { AuthorityInspector } from '../components/UI/AuthorityInspector';
+import { MuhurtaHeatmap } from '../components/MuhurtaHeatmap/MuhurtaHeatmap';
+import { MUHURTA_GLOSSARY } from '../data/temporalGlossary';
+import { glossaryAPI, muhurtaAPI } from '../services/api';
+import { useTemporalContext } from '../context/TemporalContext';
 import './MuhurtaPage.css';
 
-function todayIso() {
-  return new Date(Date.now()).toISOString().slice(0, 10);
+function toKnowledge(content, fallback) {
+  if (!content?.sections) return fallback;
+  return {
+    title: content.title || fallback.title,
+    intro: content.intro || fallback.intro,
+    sections: (content.sections || []).map((section) => ({
+      id: section.id,
+      title: section.title,
+      description: section.description,
+      terms: (section.terms || []).map((term) => ({
+        name: term.name,
+        meaning: term.meaning,
+        whyItMatters: term.why_it_matters || term.whyItMatters,
+      })),
+    })),
+  };
 }
 
 export function MuhurtaPage() {
-  const [date, setDate] = useState(todayIso());
+  const {
+    state,
+    setDate,
+    setLocation,
+    setTimezone,
+  } = useTemporalContext();
+
   const [type, setType] = useState('general');
-  const [lat, setLat] = useState('27.7172');
-  const [lon, setLon] = useState('85.3240');
-  const [tz, setTz] = useState('Asia/Kathmandu');
-  const [birthNakshatra, setBirthNakshatra] = useState('');
   const [assumptionSet, setAssumptionSet] = useState('np-mainstream-v2');
+  const [selectedBlock, setSelectedBlock] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [dayData, setDayData] = useState(null);
-  const [auspiciousData, setAuspiciousData] = useState(null);
-  const [rahuData, setRahuData] = useState(null);
-
-  const load = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const [day, auspicious, rahu] = await Promise.all([
-        muhurtaAPI.getDay({ date, lat, lon, tz, birthNakshatra }),
-        muhurtaAPI.getAuspicious({ date, type, lat, lon, tz, birthNakshatra, assumptionSet }),
-        muhurtaAPI.getRahuKalam({ date, lat, lon, tz }),
-      ]);
-      setDayData(day);
-      setAuspiciousData(auspicious);
-      setRahuData(rahu);
-    } catch (err) {
-      setDayData(null);
-      setAuspiciousData(null);
-      setRahuData(null);
-      setError(err.message || 'Failed to load muhurta data');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [payload, setPayload] = useState(null);
+  const [meta, setMeta] = useState(null);
+  const [knowledge, setKnowledge] = useState(MUHURTA_GLOSSARY);
 
   useEffect(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          latitude: Number(position.coords.latitude.toFixed(4)),
+          longitude: Number(position.coords.longitude.toFixed(4)),
+        });
+        try {
+          const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          if (tz) setTimezone(tz);
+        } catch {
+          // Ignore timezone detection errors.
+        }
+      },
+      () => {
+        // Consent denied or unavailable; keep existing context defaults.
+      },
+      { maximumAge: 600000, timeout: 3500 },
+    );
+  }, [setLocation, setTimezone]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        const [envelope, glossary] = await Promise.all([
+          muhurtaAPI.getHeatmapEnvelope({
+            date: state.date,
+            lat: state.location?.latitude,
+            lon: state.location?.longitude,
+            tz: state.timezone,
+            type,
+            assumptionSet,
+          }),
+          glossaryAPI.get({ domain: 'muhurta', lang: state.language }).catch(() => null),
+        ]);
+
+        if (!cancelled) {
+          setPayload(envelope.data);
+          setMeta(envelope.meta);
+          setSelectedBlock(envelope.data?.best_window || null);
+          setKnowledge(toKnowledge(glossary?.content, MUHURTA_GLOSSARY));
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setPayload(null);
+          setMeta(null);
+          setSelectedBlock(null);
+          setError(err.message || 'Failed to load muhurta heatmap');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [state.date, state.location?.latitude, state.location?.longitude, state.timezone, state.language, type, assumptionSet]);
+
+  const selectedReasons = useMemo(() => {
+    if (!selectedBlock?.reason_codes) return '—';
+    return selectedBlock.reason_codes.join(' · ');
+  }, [selectedBlock]);
 
   return (
-    <section className="muhurta-page">
-      <header className="glass-card muhurta-page__header">
-        <div>
-          <h2 className="text-display">Muhurta Finder</h2>
-          <p>Day-night muhurtas with hora, chaughadia, and optional tara-bala scoring.</p>
-        </div>
-        <form
-          className="muhurta-page__controls"
-          onSubmit={(e) => {
-            e.preventDefault();
-            load();
-          }}
-        >
-          <label>
-            <span>Date</span>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-          </label>
-          <label>
-            <span>Ceremony</span>
-            <select value={type} onChange={(e) => setType(e.target.value)}>
-              <option value="general">General</option>
-              <option value="vivah">Vivah</option>
-              <option value="griha_pravesh">Griha Pravesh</option>
-              <option value="travel">Travel</option>
-              <option value="upanayana">Upanayana</option>
-            </select>
-          </label>
-          <label>
-            <span>Assumption Set</span>
-            <select value={assumptionSet} onChange={(e) => setAssumptionSet(e.target.value)}>
-              <option value="np-mainstream-v2">NP Mainstream</option>
-              <option value="diaspora-practical-v2">Diaspora Practical</option>
-            </select>
-          </label>
-          <label>
-            <span>Birth Nakshatra (optional)</span>
-            <input
-              value={birthNakshatra}
-              onChange={(e) => setBirthNakshatra(e.target.value)}
-              placeholder="1-27 or name"
-            />
-          </label>
-          <label>
-            <span>Lat</span>
-            <input value={lat} onChange={(e) => setLat(e.target.value)} />
-          </label>
-          <label>
-            <span>Lon</span>
-            <input value={lon} onChange={(e) => setLon(e.target.value)} />
-          </label>
-          <label>
-            <span>Timezone</span>
-            <input value={tz} onChange={(e) => setTz(e.target.value)} />
-          </label>
-          <button type="submit" className="btn btn-primary">Find Windows</button>
-        </form>
-      </header>
+    <section className="muhurta-page animate-fade-in-up">
+      <form className="muhurta-controls ink-card" onSubmit={(e) => e.preventDefault()}>
+        <label className="ink-input">
+          <span>Date</span>
+          <input type="date" value={state.date} onChange={(e) => setDate(e.target.value)} required />
+        </label>
 
-      {loading && (
-        <div className="glass-card muhurta-page__state">
-          <h3>Computing muhurta windows...</h3>
-          <div className="skeleton" style={{ height: '180px', marginTop: '1rem' }} />
-        </div>
-      )}
+        <label className="ink-input">
+          <span>Ceremony</span>
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            <option value="general">General</option>
+            <option value="vivah">Wedding</option>
+            <option value="griha_pravesh">Griha Pravesh</option>
+            <option value="travel">Travel</option>
+            <option value="upanayana">Upanayana</option>
+          </select>
+        </label>
+
+        <label className="ink-input">
+          <span>Assumption Set</span>
+          <select value={assumptionSet} onChange={(e) => setAssumptionSet(e.target.value)}>
+            <option value="np-mainstream-v2">NP Mainstream</option>
+            <option value="diaspora-practical-v2">Diaspora Practical</option>
+          </select>
+        </label>
+
+        <label className="ink-input">
+          <span>Timezone</span>
+          <input value={state.timezone} onChange={(e) => setTimezone(e.target.value)} />
+        </label>
+      </form>
+
+      {loading && <div className="skeleton" style={{ height: '180px', borderRadius: '16px' }} />}
 
       {!loading && error && (
-        <div className="glass-card muhurta-page__state" role="alert">
-          <h3>Unable to load muhurta windows</h3>
+        <div className="ink-card muhurta-error" role="alert">
+          <h3>Unable to load muhurta heatmap</h3>
           <p>{error}</p>
         </div>
       )}
 
-      {!loading && !error && dayData && auspiciousData && rahuData && (
+      {!loading && !error && payload && (
         <>
-          <section className="muhurta-page__hero-grid">
-            <article className="glass-card muhurta-highlight">
+          <section className="ink-card muhurta-hero-grid">
+            <article>
               <h3>Best Window</h3>
-              <p className="value">{auspiciousData.best_window?.name || '—'}</p>
-              <p>{auspiciousData.best_window?.start || '—'} to {auspiciousData.best_window?.end || '—'}</p>
-              <p className="meta">Score: {auspiciousData.best_window?.score ?? 'N/A'}</p>
-              <p className="meta">Profile: {auspiciousData.method_profile || auspiciousData.method || 'muhurta'}</p>
+              <p>{payload?.best_window?.name || '—'}</p>
+              <small>Score: {payload?.best_window?.score ?? '—'}</small>
             </article>
-
-            <article className="glass-card muhurta-highlight">
+            <article>
               <h3>Rahu Kalam</h3>
-              <p className="value">{rahuData.rahu_kalam?.start || '—'}</p>
-              <p>{rahuData.rahu_kalam?.end || '—'}</p>
-              <p className="meta">Segment {rahuData.rahu_kalam?.segment} ({rahuData.weekday})</p>
+              <p>{payload?.rahu_kalam?.start ? `${new Date(payload.rahu_kalam.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(payload.rahu_kalam.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : '—'}</p>
+              <small>Segment {payload?.rahu_kalam?.segment || '—'}</small>
             </article>
-
-            <article className="glass-card muhurta-highlight">
-              <h3>Tara-Bala</h3>
-              <p className="value">{auspiciousData.tara_bala?.quality || 'unknown'}</p>
-              {auspiciousData.tara_bala?.tara?.name && (
-                <p>
-                  {auspiciousData.tara_bala.tara.name} (distance {auspiciousData.tara_bala.tara.distance})
-                </p>
-              )}
-              <p className="meta">Assumption: {auspiciousData.assumption_set_id || 'np-mainstream-v2'}</p>
+            <article>
+              <h3>Tara Bala</h3>
+              <p>{payload?.tara_bala?.quality || 'unknown'}</p>
+              <small>{payload?.tara_bala?.tara?.name || ''}</small>
             </article>
           </section>
 
-          <section className="glass-card muhurta-table-card">
-            <h3>Auspicious Muhurtas</h3>
-            {auspiciousData.muhurtas?.length > 0 ? (
-              <table className="muhurta-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Score</th>
-                    <th>Hora</th>
-                    <th>Chaughadia</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {auspiciousData.muhurtas.slice(0, 12).map((row) => (
-                    <tr key={`${row.index}-${row.start}`}>
-                      <td>{row.number}</td>
-                      <td>{row.name}</td>
-                      <td>{row.start}</td>
-                      <td>{row.end}</td>
-                      <td>{row.score}</td>
-                      <td>{row.hora?.lord_display || '—'}</td>
-                      <td>{row.chaughadia?.name_display || '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <p>No ceremony-specific windows found; use Abhijit Muhurta as fallback.</p>
-            )}
+          <section className="ink-card muhurta-heatmap-shell">
+            <h3>24h Muhurta Heatmap</h3>
+            <MuhurtaHeatmap
+              blocks={payload.blocks || []}
+              selectedIndex={selectedBlock?.index}
+              onSelect={setSelectedBlock}
+            />
+            <div className="muhurta-selected-details">
+              <h4>{selectedBlock?.name || 'Select a window'}</h4>
+              <p>{selectedBlock?.rank_explanation || payload?.rank_explanation || 'Tap a block to inspect ranking details.'}</p>
+              <p><strong>Reason codes:</strong> {selectedReasons}</p>
+              <p><strong>Confidence score:</strong> {selectedBlock?.confidence_score ?? payload?.confidence_score ?? '—'}</p>
+            </div>
           </section>
 
-          <section className="glass-card muhurta-table-card">
-            <h3>Day/Night Snapshot</h3>
-            <p>
-              Daylight: {dayData.daylight_minutes} min · Night: {dayData.night_minutes} min ·
-              Day Muhurtas: {dayData.day_muhurtas?.length || 0} · Night Muhurtas: {dayData.night_muhurtas?.length || 0}
-            </p>
-            <p>
-              Day Hora: {dayData.hora?.day?.[0]?.lord_display || '—'} starts ·
-              First Chaughadia: {dayData.chaughadia?.day?.[0]?.name_display || '—'}
-            </p>
-          </section>
+          <KnowledgePanel
+            title={knowledge.title}
+            intro={knowledge.intro}
+            sections={knowledge.sections}
+            className="muhurta-knowledge"
+          />
 
-          {Array.isArray(auspiciousData.warnings) && auspiciousData.warnings.length > 0 && (
-            <section className="glass-card muhurta-page__warnings">
-              <h3>Warnings</h3>
-              <ul>
-                {auspiciousData.warnings.map((warning) => (
-                  <li key={warning}>{warning}</li>
-                ))}
-              </ul>
-            </section>
+          {state.mode === 'authority' && (
+            <AuthorityInspector
+              title="Muhurta Authority"
+              meta={meta}
+              traceFallbackId={payload?.calculation_trace_id}
+            />
           )}
         </>
       )}

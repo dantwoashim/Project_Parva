@@ -17,48 +17,90 @@ function buildFetchMock() {
   return vi.fn(async (input) => {
     const url = String(input);
 
-    if (url.includes('/festivals') && !url.includes('/festivals/')) {
+    if (url.includes('/temporal/compass?')) {
       return jsonResponse({
         data: {
-          festivals: [
+          bikram_sambat: { year: 2082, month_name: 'Falgun', day: 3 },
+          primary_readout: { tithi_name: 'Chaturdashi', paksha: 'krishna' },
+          orbital: { phase_ratio: 0.74, tithi: 14 },
+          horizon: {
+            sunrise: '2026-02-15T06:42:00+05:45',
+            sunset: '2026-02-15T17:53:00+05:45',
+            current_muhurta: { name: 'Abhijit', class: 'auspicious' },
+          },
+          signals: {
+            nakshatra: { name: 'Shravana' },
+            yoga: { name: 'Shubha' },
+            karana: { name: 'Vishti' },
+            vaara: { name_english: 'Sunday' },
+          },
+          today: {
+            festivals: [{ id: 'dashain', name: 'Dashain', start_date: '2026-10-20' }],
+          },
+          calculation_trace_id: 'tr_compass_routes',
+        },
+        meta: {},
+      });
+    }
+
+    if (url.includes('/festivals/timeline?')) {
+      return jsonResponse({
+        data: {
+          groups: [
             {
-              id: 'dashain',
-              name: 'Dashain',
-              category: 'national',
-              duration_days: 10,
-              next_occurrence: '2026-10-20',
+              month_key: '2026-10',
+              month_label: 'Kartik 2083',
+              items: [
+                {
+                  id: 'dashain',
+                  name: 'Dashain',
+                  display_name: 'Dashain',
+                  category: 'national',
+                  start_date: '2026-10-20',
+                  end_date: '2026-10-30',
+                  quality_band: 'computed',
+                },
+              ],
             },
           ],
-          total: 1,
+          calculation_trace_id: 'tr_timeline_routes',
         },
         meta: {},
       });
     }
 
-    if (url.includes('/festivals/coverage/scoreboard')) {
+    if (url.includes('/festivals/') && !url.includes('/festivals/timeline')) {
       return jsonResponse({
         data: {
-          computed: { count: 323, pct: 71.3 },
-          provisional: { count: 111, pct: 24.5 },
-          inventory: { count: 19, pct: 4.2 },
-          claim_guard: { headline_metric: 'computed', safe_to_claim_300: true },
+          festival: {
+            id: 'dashain',
+            name: 'Dashain',
+            category: 'national',
+            duration_days: 10,
+            description: 'Major Nepali festival.',
+          },
+          dates: { start_date: '2026-10-20', end_date: '2026-10-30' },
         },
         meta: {},
       });
     }
 
-    if (url.includes('/calendar/panchanga')) {
+    if (url.includes('/festivals/on-date/')) {
+      return jsonResponse({ data: [{ id: 'dashain', name: 'Dashain' }], meta: {} });
+    }
+
+    if (url.includes('/calendar/panchanga?')) {
       return jsonResponse({
         data: {
-          date: '2026-02-12',
-          bikram_sambat: { year: 2082, month: 10, day: 30, month_name: 'Magh' },
+          date: '2026-02-15',
+          bikram_sambat: { year: 2082, month: 11, day: 3, month_name: 'Falgun' },
           panchanga: {
             confidence: 'astronomical',
-            tithi: { number: 10, name: 'Dashami', paksha: 'shukla', method: 'ephemeris_udaya', sunrise_used: '2026-02-12T06:45:00+05:45' },
-            nakshatra: { name: 'Rohini', pada: 2 },
-            yoga: { name: 'Siddha', number: 1 },
-            karana: { name: 'Bava', number: 1 },
-            vaara: { name_english: 'Thursday', name_sanskrit: 'Guruvara' },
+            tithi: { number: 14, name: 'Chaturdashi', paksha: 'krishna', method: 'ephemeris_udaya' },
+            nakshatra: { name: 'Shravana', pada: 1 },
+            yoga: { name: 'Shubha', number: 9 },
+            karana: { name: 'Vishti', number: 7 },
+            vaara: { name_english: 'Sunday', name_sanskrit: 'Ravivara' },
           },
           ephemeris: { mode: 'swiss_moshier' },
         },
@@ -67,10 +109,10 @@ function buildFetchMock() {
     }
 
     if (url.includes('/resolve?')) {
-      return jsonResponse({ data: { trace: { trace_id: 'tr_routes', explain: 'routes test fixture' } }, meta: {} });
+      return jsonResponse({ data: { trace: { trace_id: 'tr_routes' } }, meta: {} });
     }
 
-    if (url.includes('/personal/panchanga')) {
+    if (url.includes('/personal/panchanga?')) {
       return jsonResponse({
         data: {
           date: '2026-02-12',
@@ -81,6 +123,8 @@ function buildFetchMock() {
           karana: { number: 1, name: 'Bava' },
           vaara: { name_english: 'Thursday', name_sanskrit: 'Guruvara' },
           location: { latitude: 27.7172, longitude: 85.3240, timezone: 'Asia/Kathmandu' },
+          local_sunrise: '2026-02-12T06:44:00+05:45',
+          sunrise: '2026-02-12T06:42:00+05:45',
           method_profile: 'personal_panchanga_v2_udaya',
           quality_band: 'gold',
           advisory_scope: 'ritual_planning',
@@ -90,38 +134,46 @@ function buildFetchMock() {
       });
     }
 
-    if (url.includes('/muhurta/auspicious')) {
+    if (url.includes('/muhurta/heatmap?')) {
       return jsonResponse({
         data: {
-          method_profile: 'muhurta_v2_hora_chaughadia_tarabala',
-          best_window: { name: 'Abhijit Muhurta', start: '11:48', end: '12:36', score: 88 },
-          ranked_muhurtas: [{ score: 88 }, { score: 75 }],
-          muhurtas: [{ index: 1, number: 7, name: 'Abhijit Muhurta', start: '11:48', end: '12:36', score: 88 }],
-          tara_bala: { quality: 'good' },
+          blocks: [
+            {
+              index: 6,
+              name: 'Abhijit Muhurta',
+              class: 'auspicious',
+              score: 88,
+              confidence_score: 0.91,
+              reason_codes: ['hora_supportive', 'tara_good'],
+            },
+          ],
+          best_window: {
+            index: 6,
+            name: 'Abhijit Muhurta',
+            score: 88,
+            confidence_score: 0.91,
+            reason_codes: ['hora_supportive', 'tara_good'],
+          },
+          rahu_kalam: { segment: 7, start: '2026-02-15T13:36:00+05:45', end: '2026-02-15T15:00:00+05:45' },
+          tara_bala: { quality: 'good', tara: { name: 'Sampat' } },
+          rank_explanation: 'Filtered by hora/chaughadia/tara-bala.',
+          confidence_score: 0.9,
+          calculation_trace_id: 'tr_muhurta_routes',
         },
         meta: {},
       });
     }
 
-    if (url.includes('/muhurta/rahu-kalam')) {
-      return jsonResponse({ data: { weekday: 'Thursday', rahu_kalam: { segment: 7, start: '13:36', end: '15:00' } }, meta: {} });
-    }
-
-    if (url.includes('/muhurta?')) {
+    if (url.includes('/kundali/graph?')) {
       return jsonResponse({
         data: {
-          muhurtas: Array.from({ length: 30 }).map((_, index) => ({ number: index + 1, duration_minutes: 48, name: `Muhurta ${index + 1}` })),
-          day_muhurtas: Array.from({ length: 15 }).map((_, index) => ({ number: index + 1 })),
-          night_muhurtas: Array.from({ length: 15 }).map((_, index) => ({ number: index + 16 })),
-          hora: {
-            day: Array.from({ length: 12 }).map((_, index) => ({ number: index + 1, lord_display: 'Sun' })),
-            night: Array.from({ length: 12 }).map((_, index) => ({ number: index + 1, lord_display: 'Moon' })),
+          layout: {
+            houses: [{ id: 'house_1', label: '1', x: 60, y: 60 }],
+            grahas: [{ id: 'mars', label: 'Mars', x: 140, y: 60, house_id: 'house_1' }],
+            aspects: [{ id: 'asp_1', from: 'mars', to: 'house_1', type: 'trine' }],
           },
-          chaughadia: {
-            day: Array.from({ length: 8 }).map((_, index) => ({ number: index + 1, name_display: 'Labh' })),
-            night: Array.from({ length: 8 }).map((_, index) => ({ number: index + 1, name_display: 'Amrit' })),
-          },
-          method_profile: 'muhurta_v2_hora_chaughadia_tarabala',
+          insight_blocks: [{ id: 'ins_1', title: 'Mars in House 1', summary: 'Direct initiative signal.' }],
+          calculation_trace_id: 'tr_kundali_graph_routes',
         },
         meta: {},
       });
@@ -132,31 +184,15 @@ function buildFetchMock() {
         data: {
           lagna: { rashi_english: 'Pisces', rashi_sanskrit: 'Meena', longitude: 12.3 },
           grahas: {
-            sun: { name_sanskrit: 'Surya', name_english: 'Sun', rashi_english: 'Aquarius', longitude: 332, is_retrograde: false, dignity: { state: 'neutral', strength: 'moderate' } },
-            moon: { name_sanskrit: 'Chandra', name_english: 'Moon', rashi_english: 'Capricorn', longitude: 288, is_retrograde: false, dignity: { state: 'neutral', strength: 'moderate' } },
-            mars: { name_sanskrit: 'Mangala', name_english: 'Mars', rashi_english: 'Cancer', longitude: 102, is_retrograde: false, dignity: { state: 'neutral', strength: 'moderate' } },
-            mercury: { name_sanskrit: 'Budha', name_english: 'Mercury', rashi_english: 'Aquarius', longitude: 325, is_retrograde: false, dignity: { state: 'own', strength: 'strong' } },
-            jupiter: { name_sanskrit: 'Guru', name_english: 'Jupiter', rashi_english: 'Taurus', longitude: 45, is_retrograde: false, dignity: { state: 'neutral', strength: 'moderate' } },
-            venus: { name_sanskrit: 'Shukra', name_english: 'Venus', rashi_english: 'Pisces', longitude: 356, is_retrograde: false, dignity: { state: 'exalted', strength: 'strong' } },
-            saturn: { name_sanskrit: 'Shani', name_english: 'Saturn', rashi_english: 'Pisces', longitude: 1, is_retrograde: false, dignity: { state: 'neutral', strength: 'moderate' } },
-            rahu: { name_sanskrit: 'Rahu', name_english: 'Rahu', rashi_english: 'Pisces', longitude: 18, is_retrograde: true, dignity: { state: 'neutral', strength: 'moderate' } },
-            ketu: { name_sanskrit: 'Ketu', name_english: 'Ketu', rashi_english: 'Virgo', longitude: 198, is_retrograde: true, dignity: { state: 'neutral', strength: 'moderate' } },
+            sun: { name_english: 'Sun', rashi_english: 'Aquarius', longitude: 332, dignity: { state: 'neutral' } },
+            moon: { name_english: 'Moon', rashi_english: 'Capricorn', longitude: 288, dignity: { state: 'neutral' } },
           },
           houses: Array.from({ length: 12 }).map((_, index) => ({ house_number: index + 1, rashi_english: `House ${index + 1}`, occupants: [] })),
-          aspects: [{ from: 'ketu', to: 'rahu', aspect_degree: 180, orb: 0, strength: 1 }],
+          aspects: [{ from: 'sun', to: 'moon', aspect_degree: 180, orb: 1, strength: 0.9 }],
           yogas: [{ id: 'gaja_kesari', description: 'Moon and Jupiter relation' }],
-          doshas: [{ id: 'manglik', description: 'Mars in key houses' }],
-          consistency_checks: [{ id: 'graha_count', status: 'pass', message: 'All 9 grahas present.' }],
-          dasha: {
-            total_major_periods: 9,
-            timeline: [{
-              lord: 'venus',
-              start: '2026-02-12T06:30:00+05:45',
-              end: '2046-02-12T06:30:00+05:45',
-              duration_years: 20,
-              antar_dasha: Array.from({ length: 9 }).map((_, index) => ({ lord: `lord-${index}` })),
-            }],
-          },
+          doshas: [{ id: 'manglik', description: 'Mars influence marker' }],
+          insight_blocks: [{ id: 'i1', title: 'Lagna context', summary: 'Pisces lagna baseline.' }],
+          dasha: { total_major_periods: 9, timeline: [] },
           method_profile: 'kundali_v2_aspects_dasha',
           advisory_scope: 'astrology_assist',
         },
@@ -164,8 +200,31 @@ function buildFetchMock() {
       });
     }
 
+    if (url.includes('/glossary?')) {
+      return jsonResponse({
+        data: {
+          content: {
+            title: 'Glossary',
+            intro: 'Test glossary payload.',
+            sections: [
+              {
+                id: 'core',
+                title: 'Core',
+                terms: [{ name: 'Tithi', meaning: 'Lunar day', why_it_matters: 'Determines observance timing.' }],
+              },
+            ],
+          },
+        },
+        meta: {},
+      });
+    }
+
     if (url.includes('/feeds/next')) {
       return jsonResponse({ data: { events: [] }, meta: {} });
+    }
+
+    if (url.includes('/festivals?')) {
+      return jsonResponse({ data: { festivals: [], total: 0 }, meta: {} });
     }
 
     return jsonResponse({ data: {}, meta: {} });
@@ -181,19 +240,20 @@ describe('App routing', () => {
     vi.unstubAllGlobals();
   });
 
-  it('loads explorer by default and navigates to panchanga page', async () => {
+  it('loads temporal compass by default and navigates to explorer and panchanga', async () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Festival Explorer/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Temporal Compass/i)).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('link', { name: /Explorer/i }));
+    expect(await screen.findByRole('heading', { name: /Festival Explorer Ribbon/i })).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('link', { name: /Panchanga/i }));
-
-    expect(await screen.findByRole('heading', { name: /Panchanga Viewer/i })).toBeInTheDocument();
-    expect(await screen.findByRole('heading', { name: /Panchanga Response Authority/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Confidence:/i)).toBeInTheDocument();
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
         expect.stringContaining('/calendar/panchanga?date='),
@@ -209,16 +269,15 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Festival Explorer/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Temporal Compass/i)).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('link', { name: /Personal/i }));
-    expect(await screen.findByRole('heading', { name: /Personal Panchanga/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Local sunrise delta vs Kathmandu baseline/i)).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('link', { name: /Muhurta/i }));
-    expect(await screen.findByRole('heading', { name: /Muhurta Finder/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /24h Muhurta Heatmap/i })).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('link', { name: /Kundali/i }));
-    expect(await screen.findByRole('heading', { name: /Kundali Studio/i })).toBeInTheDocument();
-
+    expect(await screen.findByRole('heading', { name: /Interpretation Sidebar/i })).toBeInTheDocument();
   });
 });

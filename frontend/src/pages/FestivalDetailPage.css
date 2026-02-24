@@ -1,55 +1,442 @@
-.festival-detail-page {
-    min-height: calc(100vh - 160px);
+/* FestivalDetailPage — Nepal × Ink Wash */
+
+.fd-page {
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.festival-detail-page__content {
-    max-width: 1100px;
-    margin: 0 auto;
+/* ── Back Button ── */
+.fd-back {
+    margin-bottom: var(--sp-4);
+}
+
+/* ── Hero ── */
+.fd-hero {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sp-8);
+    padding: var(--sp-10) var(--sp-8);
+    margin-bottom: var(--sp-6);
+    overflow: hidden;
+    animation: pulseGlow 5s ease-in-out infinite;
+}
+
+.fd-hero__accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--accent, var(--gold));
+}
+
+.fd-hero__content {
+    flex: 1;
+}
+
+.fd-hero__badges {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    margin-bottom: var(--sp-4);
+}
+
+.fd-significance {
+    color: var(--gold-bright);
+    font-size: var(--text-lg);
+    letter-spacing: 2px;
+}
+
+.fd-hero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.15;
+    margin-bottom: var(--sp-2);
+}
+
+.fd-hero__nepali {
+    font-size: var(--text-xl);
+    color: var(--text-muted);
+    margin-bottom: var(--sp-3);
+}
+
+.fd-hero__tagline {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    font-style: italic;
+    max-width: 500px;
+    line-height: 1.5;
+}
+
+/* ── Dates ── */
+.fd-hero__dates {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.fd-countdown {
+    display: inline-block;
+    padding: var(--sp-2) var(--sp-4);
+    background: rgba(201, 169, 110, 0.1);
+    border: 1px solid rgba(201, 169, 110, 0.2);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    color: var(--gold-bright);
+    margin-bottom: var(--sp-3);
+}
+
+.fd-countdown--live {
+    background: rgba(192, 57, 43, 0.15);
+    border-color: rgba(192, 57, 43, 0.3);
+    color: #e8786a;
+}
+
+.fd-countdown--today {
+    background: rgba(232, 164, 56, 0.15);
+    border-color: rgba(232, 164, 56, 0.3);
+    color: var(--saffron);
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.fd-countdown strong {
+    font-size: var(--text-2xl);
+    font-family: var(--font-display);
+}
+
+.fd-date-display {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--sp-1);
 }
 
-.festival-detail-page__state {
-    max-width: 700px;
-    margin: 3rem auto;
-    padding: 1.5rem;
+.fd-date-main {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    color: var(--text-primary);
+    font-weight: 600;
 }
 
-.festival-detail-page__state h2 {
-    margin: 0;
-    color: var(--color-text-primary);
+.fd-duration {
+    font-size: var(--text-sm);
+    color: var(--text-muted);
 }
 
-.festival-detail-page__state p {
-    color: var(--color-text-secondary);
-    margin-top: 0.75rem;
-    margin-bottom: 1rem;
+/* ── Content Grid ── */
+.fd-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--sp-6);
 }
 
-.festival-detail-page__trace-panel {
-    padding: 1rem 1.25rem;
+.fd-main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
 }
 
-.festival-detail-page__trace-panel header {
+.fd-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
+}
+
+/* ── Description ── */
+.fd-description {
+    padding: var(--sp-8);
+}
+
+.fd-description h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    margin-bottom: var(--sp-4);
+}
+
+.fd-description p {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: var(--text-base);
+}
+
+/* ── Quick Facts ── */
+.fd-facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-3);
+}
+
+.fd-fact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--sp-5);
+    gap: var(--sp-2);
+}
+
+.fd-fact__icon {
+    font-size: 1.5rem;
+}
+
+.fd-fact__label {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.fd-fact__value {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ── Mythology ── */
+.fd-mythology {
+    padding: var(--sp-8);
+}
+
+.fd-mythology h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin-bottom: var(--sp-4);
+}
+
+.fd-mythology p {
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.fd-mythology__sig {
+    margin-top: var(--sp-4);
+    padding-top: var(--sp-4);
+    border-top: 1px solid var(--border-subtle);
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+/* ── Rituals ── */
+.fd-rituals {
+    padding: var(--sp-8);
+}
+
+.fd-rituals h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin-bottom: var(--sp-6);
+}
+
+.fd-rituals__list {
+    position: relative;
+    padding-left: var(--sp-6);
+}
+
+.fd-rituals__list::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent, var(--gold)), var(--bg-surface));
+    border-radius: 1px;
+}
+
+.fd-ritual-item {
+    position: relative;
+    display: flex;
+    gap: var(--sp-4);
+    padding: var(--sp-4) 0;
+    transition: background var(--duration-fast) var(--ease-out);
+    border-radius: var(--radius-md);
+    padding-left: var(--sp-4);
+    margin-left: -var(--sp-4);
+}
+
+.fd-ritual-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.fd-ritual-item::before {
+    content: '';
+    position: absolute;
+    left: -22px;
+    top: 22px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent, var(--gold));
+    border: 2px solid var(--bg-deep);
+}
+
+.fd-ritual-item__day {
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent, var(--gold));
+    min-width: 60px;
+    padding-top: 2px;
+}
+
+.fd-ritual-item__content strong {
+    display: block;
+    color: var(--text-primary);
+    margin-bottom: var(--sp-1);
+}
+
+.fd-ritual-item__content p {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+/* ── Related Festivals ── */
+.fd-related {
+    padding: var(--sp-6);
+}
+
+.fd-related h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    margin-bottom: var(--sp-4);
+}
+
+.fd-related__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+}
+
+.fd-related__item {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    width: 100%;
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-md);
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    text-align: left;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+
+.fd-related__item:hover {
+    background: rgba(201, 169, 110, 0.08);
+    color: var(--gold);
+    transform: translateX(4px);
+}
+
+.fd-related__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* ── Calculation ── */
+.fd-calculation {
+    padding: var(--sp-6);
+}
+
+.fd-calculation h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    margin-bottom: var(--sp-4);
+}
+
+.fd-calculation__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    margin-bottom: var(--sp-4);
+}
+
+.fd-calc-row {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.8rem;
+    padding: var(--sp-2) 0;
+    font-size: var(--text-sm);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    transition: background var(--duration-fast);
 }
 
-.festival-detail-page__trace-panel h3 {
-    margin: 0;
+.fd-calc-row:hover {
+    background: rgba(255, 255, 255, 0.02);
 }
 
-.festival-detail-page__trace-panel pre {
-    margin: 0;
-    max-height: 340px;
-    overflow: auto;
-    padding: 0.85rem;
+.fd-calc-row span:first-child {
+    color: var(--text-muted);
+}
+
+.fd-calc-row span:last-child {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.fd-trace-btn {
+    width: 100%;
+    margin-top: var(--sp-2);
+}
+
+.fd-trace-pre {
+    margin-top: var(--sp-4);
+    background: rgba(0, 0, 0, 0.3);
+    padding: var(--sp-4);
     border-radius: var(--radius-md);
-    background: var(--color-bg-surface);
-    border: 1px solid var(--color-border);
-    font-size: 0.82rem;
+    overflow-x: auto;
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    max-height: 300px;
+    line-height: 1.5;
+}
+
+/* ── Skeleton + Error ── */
+.fd-hero-skeleton {
+    height: 220px;
+    border-radius: var(--radius-lg);
+}
+
+.fd-error {
+    padding: var(--sp-10);
+    text-align: center;
+}
+
+.fd-error h2 {
+    color: var(--vermillion);
+    margin-bottom: var(--sp-3);
+}
+
+.fd-error p {
+    color: var(--text-muted);
+    margin-bottom: var(--sp-6);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .fd-hero {
+        flex-direction: column;
+        padding: var(--sp-8) var(--sp-6);
+    }
+
+    .fd-hero__dates {
+        text-align: left;
+    }
+
+    .fd-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fd-facts {
+        grid-template-columns: 1fr 1fr;
+    }
 }

@@ -13,6 +13,86 @@ from ._personal_utils import base_meta_payload, normalize_coordinates, normalize
 router = APIRouter(prefix="/api/muhurta", tags=["muhurta"])
 
 
+def _window_reason_codes(row: dict) -> list[str]:
+    codes: list[str] = []
+    if row.get("quality"):
+        codes.append(f"quality:{row['quality']}")
+
+    hora = row.get("hora") or {}
+    if hora.get("lord"):
+        codes.append(f"hora:{hora['lord']}")
+
+    chaughadia = row.get("chaughadia") or {}
+    if chaughadia.get("name"):
+        codes.append(f"chaughadia:{chaughadia['name']}")
+
+    if row.get("is_abhijit"):
+        codes.append("window:abhijit")
+    if row.get("overlaps_avoidance"):
+        codes.append("window:avoidance_overlap")
+
+    breakdown = row.get("score_breakdown") or {}
+    for key, value in breakdown.items():
+        if not isinstance(value, (int, float)) or value == 0:
+            continue
+        if value > 0:
+            codes.append(f"boost:{key}")
+        else:
+            codes.append(f"penalty:{key}")
+    return codes
+
+
+def _confidence_score(score: float | int | None) -> float:
+    if score is None:
+        return 0.0
+    try:
+        normalized = (float(score) + 100.0) / 200.0
+    except (TypeError, ValueError):
+        return 0.0
+    return round(max(0.0, min(1.0, normalized)), 3)
+
+
+def _rank_explanation(row: dict) -> str:
+    breakdown = row.get("score_breakdown") or {}
+    contributions: list[str] = []
+
+    positives = sorted(
+        [(k, v) for k, v in breakdown.items() if isinstance(v, (int, float)) and v > 0],
+        key=lambda item: abs(item[1]),
+        reverse=True,
+    )
+    negatives = sorted(
+        [(k, v) for k, v in breakdown.items() if isinstance(v, (int, float)) and v < 0],
+        key=lambda item: abs(item[1]),
+        reverse=True,
+    )
+
+    if positives:
+        top = ", ".join(f"{k} (+{int(v)})" for k, v in positives[:2])
+        contributions.append(f"Boosted by {top}")
+
+    if negatives:
+        top = ", ".join(f"{k} ({int(v)})" for k, v in negatives[:2])
+        contributions.append(f"Penalized by {top}")
+
+    if row.get("overlaps_avoidance"):
+        contributions.append("overlaps with avoidance window")
+
+    if not contributions:
+        contributions.append("base-quality ranking")
+
+    return "; ".join(contributions)
+
+
+def _enrich_ranked_window(row: dict) -> dict:
+    enriched = dict(row)
+    score = row.get("score")
+    enriched["reason_codes"] = _window_reason_codes(row)
+    enriched["rank_explanation"] = _rank_explanation(row)
+    enriched["confidence_score"] = _confidence_score(score)
+    return enriched
+
+
 @router.get("")
 async def muhurta_for_day(
     date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
@@ -182,14 +262,26 @@ async def auspicious_muhurta(
     )
 
     resolved_assumption_set = ranked.get("assumption_set_id", "np-mainstream-v2")
+    enriched_ranked = [_enrich_ranked_window(row) for row in ranked["ranked_muhurtas"]]
+    enriched_selected = [row for row in enriched_ranked if row["score"] >= ranked["ranking_profile"]["minimum_score"]]
+
+    if enriched_selected:
+        best_window = enriched_selected[0]
+    elif enriched_ranked:
+        best_window = enriched_ranked[0]
+    else:
+        best_window = {}
 
     return {
         "date": target_date.isoformat(),
         "location": {"latitude": latitude, "longitude": longitude, "timezone": timezone_name},
         "type": ranked["ceremony_type"],
-        "muhurtas": ranked["auspicious_muhurtas"],
-        "ranked_muhurtas": ranked["ranked_muhurtas"],
-        "best_window": ranked["best_window"],
+        "muhurtas": enriched_selected,
+        "ranked_muhurtas": enriched_ranked,
+        "best_window": best_window,
+        "reason_codes": best_window.get("reason_codes", []),
+        "rank_explanation": best_window.get("rank_explanation"),
+        "confidence_score": best_window.get("confidence_score", 0.0),
         "tara_bala": ranked["tara_bala"],
         "ranking_profile": ranked["ranking_profile"],
         "rahu_kalam": ranked["avoid"]["rahu_kalam"],

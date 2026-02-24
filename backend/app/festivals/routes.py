@@ -41,6 +41,7 @@ from ..rules.catalog_v4 import (
 )
 from ..provenance import get_latest_snapshot_id, get_provenance_payload
 from ..explainability import create_reason_trace
+from ..services.ritual_normalization import normalize_ritual_sequence
 
 
 router = APIRouter(prefix="/api/festivals", tags=["festivals"])
@@ -390,7 +391,12 @@ async def get_festival(
     if not dates:
         # No dates available - don't fake it, let frontend handle gracefully
         dates = None
-    
+
+    # Canonical ritual schema for UI contract: ritual_sequence.days[]
+    ritual_sequence = normalize_ritual_sequence(festival)
+    if ritual_sequence:
+        festival = festival.model_copy(update={"ritual_sequence": ritual_sequence})
+
     # Get nearby festivals (within 30 days of this festival)
     nearby = []
     if dates:
