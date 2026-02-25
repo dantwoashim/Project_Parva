@@ -1,0 +1,125 @@
+.calendar-atlas-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.calendar-atlas-hero {
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem;
+  border-top: 2px solid rgba(232, 197, 115, 0.42);
+}
+
+.calendar-atlas-eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.calendar-atlas-hero h1 {
+  margin: 0.25rem 0;
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  color: var(--gold-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar-atlas-hero p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.calendar-atlas-controls {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr auto;
+  gap: 0.6rem;
+  align-items: end;
+}
+
+.calendar-atlas-meta {
+  padding: 0.9rem 1rem;
+}
+
+.calendar-atlas-meta h2 {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.calendar-atlas-meta p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+}
+
+.calendar-atlas-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.calendar-atlas-day {
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.55rem;
+  min-height: 120px;
+}
+
+.calendar-atlas-day__ad,
+.calendar-atlas-day__bs {
+  display: grid;
+  gap: 0.16rem;
+}
+
+.calendar-atlas-day__ad strong,
+.calendar-atlas-day__bs strong {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.calendar-atlas-day__ad strong {
+  color: var(--text-primary);
+}
+
+.calendar-atlas-day__ad span,
+.calendar-atlas-day__ad small {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.calendar-atlas-day__bs strong {
+  color: var(--gold-soft);
+}
+
+.calendar-atlas-day__bs span {
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+}
+
+.calendar-atlas-error {
+  padding: 1rem;
+}
+
+.calendar-atlas-grid--loading {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.calendar-atlas-skeleton {
+  height: 90px;
+  border-radius: 12px;
+}
+
+@media (max-width: 1000px) {
+  .calendar-atlas-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .calendar-atlas-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .calendar-atlas-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

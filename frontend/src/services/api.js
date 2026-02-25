@@ -80,16 +80,18 @@ export const festivalAPI = {
   },
   getCoverageScoreboard: (target = 300) => fetchAPI(`/festivals/coverage/scoreboard?target_rules=${target}`),
   getUpcoming: (days = 90, qualityBand = 'computed') => fetchAPI(`/festivals/upcoming?days=${days}&quality_band=${qualityBand}`),
-  getTimeline: ({ from, to, qualityBand = 'computed', category, region, lang = 'en' } = {}) => {
+  getTimeline: ({ from, to, qualityBand = 'computed', category, region, search, lang = 'en' } = {}) => {
     const params = new URLSearchParams({ from, to, quality_band: qualityBand, lang });
     if (category) params.set('category', category);
     if (region) params.set('region', region);
+    if (search) params.set('search', search);
     return fetchAPI(`/festivals/timeline?${params.toString()}`);
   },
-  getTimelineEnvelope: ({ from, to, qualityBand = 'computed', category, region, lang = 'en' } = {}) => {
+  getTimelineEnvelope: ({ from, to, qualityBand = 'computed', category, region, search, lang = 'en' } = {}) => {
     const params = new URLSearchParams({ from, to, quality_band: qualityBand, lang });
     if (category) params.set('category', category);
     if (region) params.set('region', region);
+    if (search) params.set('search', search);
     return fetchAPIEnvelope(`/festivals/timeline?${params.toString()}`);
   },
   getById: (id, year) => {
@@ -111,6 +113,7 @@ export const festivalAPI = {
 
 export const calendarAPI = {
   getMonth: (year, month) => fetchAPI(`/festivals/calendar/${year}/${month}`),
+  getDualMonth: (year, month) => fetchAPI(`/calendar/dual-month?year=${year}&month=${month}`),
   getToday: () => fetchAPI('/calendar/today'),
   getPanchanga: (date) => fetchAPI(`/calendar/panchanga?date=${date}`),
   getPanchangaEnvelope: (date) => fetchAPIEnvelope(`/calendar/panchanga?date=${date}`),

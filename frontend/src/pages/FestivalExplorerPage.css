@@ -14,7 +14,7 @@
 
 .explorer-filters {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.7rem;
   align-items: end;
 }
@@ -84,6 +84,10 @@
   color: var(--text-muted);
   font-size: 0.84rem;
   font-variant-numeric: tabular-nums;
+}
+
+.timeline-card__meta--bs {
+  color: var(--gold-soft);
 }
 
 .timeline-card__ritual {

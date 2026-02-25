@@ -70,6 +70,18 @@ class ProvenanceMeta(BaseModel):
     verify_url: Optional[str] = None
 
 
+
+
+class BSDateLite(BaseModel):
+    """Bikram Sambat date shape for mixed-calendar UI surfaces."""
+
+    year: int
+    month: int
+    day: int
+    month_name: str
+    formatted: str
+
+
 class FestivalDates(BaseModel):
     """Calculated dates for a festival in a specific year."""
     gregorian_year: int
@@ -77,6 +89,8 @@ class FestivalDates(BaseModel):
     start_date: date
     end_date: date
     duration_days: int
+    bs_start: Optional[BSDateLite] = None
+    bs_end: Optional[BSDateLite] = None
     days_until: Optional[int] = None  # Days from today
     provenance: Optional[ProvenanceMeta] = None
 

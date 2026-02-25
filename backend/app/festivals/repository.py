@@ -31,6 +31,18 @@ from ..rules import get_rule_service
 DATA_DIR = Path(__file__).parent.parent.parent.parent / "data" / "festivals"
 
 
+def _to_bs_struct(g_date: date) -> dict:
+    bs_year, bs_month, bs_day = gregorian_to_bs(g_date)
+    month_name = get_bs_month_name(bs_month)
+    return {
+        "year": bs_year,
+        "month": bs_month,
+        "day": bs_day,
+        "month_name": month_name,
+        "formatted": f"{bs_year} {month_name} {bs_day}",
+    }
+
+
 class FestivalRepository:
     """
     Repository for festival data access.
@@ -455,15 +467,18 @@ class FestivalRepository:
             if result is None:
                 return None
             
-            bs_year, bs_month, bs_day = gregorian_to_bs(result.start_date)
+            bs_start = _to_bs_struct(result.start_date)
+            bs_end = _to_bs_struct(result.end_date)
             days_until = (result.start_date - date.today()).days
-            
+
             return FestivalDates(
                 gregorian_year=year,
-                bs_year=bs_year,
+                bs_year=bs_start["year"],
                 start_date=result.start_date,
                 end_date=result.end_date,
                 duration_days=result.duration_days,
+                bs_start=bs_start,
+                bs_end=bs_end,
                 days_until=days_until if days_until >= 0 else None
             )
         except Exception:

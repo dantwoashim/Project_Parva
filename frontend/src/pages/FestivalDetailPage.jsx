@@ -6,7 +6,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { differenceInDays, format } from 'date-fns';
-import { useFestivalDetail, useFestivals } from '../hooks/useFestivals';
+import { useFestivalDetail, useFestivalDates, useFestivals } from '../hooks/useFestivals';
 import { festivalAPI } from '../services/api';
 import './FestivalDetailPage.css';
 
@@ -20,6 +20,13 @@ function parseYear(value) {
     const n = Number(value);
     if (!Number.isInteger(n) || n < 1900 || n > 2300) return null;
     return n;
+}
+
+function formatBsDate(bs) {
+    if (!bs) return '—';
+    if (bs.formatted) return bs.formatted;
+    if (bs.year && bs.month_name && bs.day) return `${bs.year} ${bs.month_name} ${bs.day}`;
+    return '—';
 }
 
 function CountdownDisplay({ startDate }) {
@@ -43,6 +50,7 @@ export function FestivalDetailPage() {
     const year = useMemo(() => parseYear(searchParams.get('year')), [searchParams]);
 
     const { festival, dates, nearbyFestivals, meta, loading, error } = useFestivalDetail(festivalId, year);
+    const { dates: nextDates, loading: nextDatesLoading, error: nextDatesError } = useFestivalDates(festivalId, 3);
     const { festivals: allFestivals } = useFestivals({ qualityBand: 'all', algorithmicOnly: false });
 
     const [showTrace, setShowTrace] = useState(false);
@@ -155,12 +163,20 @@ export function FestivalDetailPage() {
                     <CountdownDisplay startDate={dates?.start_date} />
                     <div className="fd-date-display">
                         {dates?.start_date && (
-                            <span className="fd-date-main">
-                                {format(new Date(dates.start_date), 'MMMM d, yyyy')}
-                                {dates.end_date && dates.end_date !== dates.start_date && (
-                                    <> — {format(new Date(dates.end_date), 'MMMM d, yyyy')}</>
-                                )}
-                            </span>
+                            <>
+                                <span className="fd-date-main">
+                                    {format(new Date(dates.start_date), 'MMMM d, yyyy')}
+                                    {dates.end_date && dates.end_date !== dates.start_date && (
+                                        <> — {format(new Date(dates.end_date), 'MMMM d, yyyy')}</>
+                                    )}
+                                </span>
+                                <span className="fd-date-bs">
+                                    BS: {formatBsDate(dates.bs_start)}
+                                    {dates?.bs_end && formatBsDate(dates.bs_end) !== formatBsDate(dates.bs_start)
+                                        ? ` — ${formatBsDate(dates.bs_end)}`
+                                        : ''}
+                                </span>
+                            </>
                         )}
                         {festival.duration_days > 1 && (
                             <span className="fd-duration">{festival.duration_days} day festival</span>
@@ -266,6 +282,33 @@ export function FestivalDetailPage() {
                             </div>
                         </div>
                     )}
+
+                    {/* Next 3 Years */}
+                    <div className="ink-card fd-next-years">
+                        <h3>Next 3 Years</h3>
+                        {nextDatesLoading && <p className="muted">Loading upcoming festival dates...</p>}
+                        {!nextDatesLoading && nextDatesError && <p className="muted">{nextDatesError}</p>}
+                        {!nextDatesLoading && !nextDatesError && nextDates?.length > 0 && (
+                            <div className="fd-next-years__rows">
+                                {nextDates.map((row) => (
+                                    <div key={`${row.gregorian_year}-${row.start_date}`} className="fd-next-years__row">
+                                        <div>
+                                            <strong>{row.gregorian_year}</strong>
+                                            <p>{format(new Date(row.start_date), 'MMM d, yyyy')}
+                                                {row.end_date && row.end_date !== row.start_date ? ` — ${format(new Date(row.end_date), 'MMM d, yyyy')}` : ''}
+                                            </p>
+                                        </div>
+                                        <div className="fd-next-years__bs">
+                                            <span>{formatBsDate(row.bs_start)}</span>
+                                            {row.bs_end && formatBsDate(row.bs_end) !== formatBsDate(row.bs_start) && (
+                                                <span>{formatBsDate(row.bs_end)}</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     {/* Date Calculation Info */}
                     <div className="ink-card fd-calculation">

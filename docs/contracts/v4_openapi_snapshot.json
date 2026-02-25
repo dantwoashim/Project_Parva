@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-24T01:50:10.946887+00:00",
+  "generated_at": "2026-02-25T09:19:20.618317+00:00",
   "track": "v4",
   "schema": {
     "openapi": "3.1.0",
@@ -102,6 +102,40 @@
           ],
           "title": "BSDate",
           "description": "Bikram Sambat date."
+        },
+        "BSDateLite": {
+          "properties": {
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "month": {
+              "type": "integer",
+              "title": "Month"
+            },
+            "day": {
+              "type": "integer",
+              "title": "Day"
+            },
+            "month_name": {
+              "type": "string",
+              "title": "Month Name"
+            },
+            "formatted": {
+              "type": "string",
+              "title": "Formatted"
+            }
+          },
+          "type": "object",
+          "required": [
+            "year",
+            "month",
+            "day",
+            "month_name",
+            "formatted"
+          ],
+          "title": "BSDateLite",
+          "description": "Bikram Sambat date shape for mixed-calendar UI surfaces."
         },
         "CalculationTraceV2": {
           "properties": {
@@ -762,6 +796,26 @@
             "duration_days": {
               "type": "integer",
               "title": "Duration Days"
+            },
+            "bs_start": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/BSDateLite"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "bs_end": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/BSDateLite"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "days_until": {
               "anyOf": [

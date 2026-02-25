@@ -115,6 +115,28 @@ def _build_provenance(festival_id: Optional[str] = None, year: Optional[int] = N
     return get_provenance_payload(verify_url=verify_url, create_if_missing=True)
 
 
+def _parse_iso_date(date_str: str) -> date:
+    try:
+        parts = date_str.split("-")
+        return date(int(parts[0]), int(parts[1]), int(parts[2]))
+    except (ValueError, IndexError) as exc:
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD") from exc
+
+
+def _bs_struct(gregorian_date: date) -> dict:
+    bs_year, bs_month, bs_day = gregorian_to_bs(gregorian_date)
+    month_name = get_bs_month_name(bs_month)
+    return {
+        "year": bs_year,
+        "month": bs_month,
+        "day": bs_day,
+        "month_name": month_name,
+        "formatted": f"{bs_year} {month_name} {bs_day}",
+    }
+
+
 @router.get("/convert", response_model=ConversionResult)
 async def convert_date(
     date_str: str = Query(
@@ -129,13 +151,7 @@ async def convert_date(
     
     Returns complete calendar information for the given date.
     """
-    # Parse date
-    try:
-        parts = date_str.split("-")
-        gregorian_date = date(int(parts[0]), int(parts[1]), int(parts[2]))
-    except (ValueError, IndexError):
-        from fastapi import HTTPException
-        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    gregorian_date = _parse_iso_date(date_str)
     
     # Convert to BS
     bs_year, bs_month, bs_day = gregorian_to_bs(gregorian_date)
@@ -246,13 +262,7 @@ async def compare_convert(
     
     Returns both conversions when available.
     """
-    # Parse date
-    try:
-        parts = date_str.split("-")
-        gregorian_date = date(int(parts[0]), int(parts[1]), int(parts[2]))
-    except (ValueError, IndexError):
-        from fastapi import HTTPException
-        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    gregorian_date = _parse_iso_date(date_str)
     
     official = None
     try:
@@ -299,6 +309,65 @@ async def compare_convert(
         "official": official,
         "estimated": estimated,
         "match": match,
+        "engine_version": "v3",
+        "provenance": _build_provenance(),
+        "policy": get_policy_metadata(),
+    }
+
+
+@router.get("/dual-month")
+async def get_dual_month(
+    year: int = Query(..., ge=1600, le=2600, description="Gregorian year"),
+    month: int = Query(..., ge=1, le=12, description="Gregorian month 1-12"),
+):
+    """
+    Return a dual-calendar month map (Gregorian + Bikram Sambat) for UI calendar views.
+
+    Supports a dynamic ±200 year browsing window around the current Gregorian year.
+    """
+    current_year = date.today().year
+    min_year = current_year - 200
+    max_year = current_year + 200
+    if year < min_year or year > max_year:
+        from fastapi import HTTPException
+
+        raise HTTPException(
+            status_code=400,
+            detail=f"Year must be between {min_year} and {max_year} for the ±200 year calendar explorer",
+        )
+
+    month_start = date(year, month, 1)
+    if month == 12:
+        next_month = date(year + 1, 1, 1)
+    else:
+        next_month = date(year, month + 1, 1)
+
+    rows = []
+    cursor = month_start
+    while cursor < next_month:
+        rows.append(
+            {
+                "gregorian": {
+                    "iso": cursor.isoformat(),
+                    "year": cursor.year,
+                    "month": cursor.month,
+                    "day": cursor.day,
+                    "weekday": cursor.strftime("%A"),
+                },
+                "bikram_sambat": _bs_struct(cursor),
+            }
+        )
+        cursor += timedelta(days=1)
+
+    return {
+        "year": year,
+        "month": month,
+        "month_label": month_start.strftime("%B %Y"),
+        "supported_range": {
+            "gregorian_min_year": min_year,
+            "gregorian_max_year": max_year,
+        },
+        "days": rows,
         "engine_version": "v3",
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
@@ -512,13 +581,7 @@ async def get_panchanga_endpoint(
     """
     from app.calendar.panchanga import get_panchanga
     
-    # Parse date
-    try:
-        parts = date_str.split("-")
-        target_date = date(int(parts[0]), int(parts[1]), int(parts[2]))
-    except (ValueError, IndexError):
-        from fastapi import HTTPException
-        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    target_date = _parse_iso_date(date_str)
     
     cached_payload = load_precomputed_panchanga(target_date)
     if cached_payload:
@@ -625,12 +688,7 @@ async def get_panchanga_range_endpoint(
     """
     from app.calendar.panchanga import get_panchanga
     
-    try:
-        parts = start_date.split("-")
-        start = date(int(parts[0]), int(parts[1]), int(parts[2]))
-    except (ValueError, IndexError):
-        from fastapi import HTTPException
-        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+    start = _parse_iso_date(start_date)
     
     results = []
     cache_hits = 0

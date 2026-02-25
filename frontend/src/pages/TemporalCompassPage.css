@@ -4,11 +4,29 @@
 }
 
 .compass-hero {
+  position: relative;
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   gap: 1rem;
-  align-items: center;
+  align-items: stretch;
   padding: 1.25rem;
+  overflow: hidden;
+  border-top: 2px solid rgba(232, 197, 115, 0.45);
+}
+
+.compass-hero::before {
+  content: '';
+  position: absolute;
+  inset: auto -120px -160px auto;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(232, 197, 115, 0.16), transparent 62%);
+  pointer-events: none;
+}
+
+.compass-hero__copy {
+  display: grid;
+  gap: 0.7rem;
 }
 
 .compass-eyebrow {
@@ -19,20 +37,74 @@
 }
 
 .compass-hero h1 {
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
   margin-bottom: 0.25rem;
-  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
   color: var(--gold-bright);
   font-variant-numeric: tabular-nums;
+  font-family: var(--font-display);
 }
 
 .compass-subtitle {
   color: var(--text-secondary);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.2rem;
+}
+
+.compass-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: end;
 }
 
 .compass-date-input {
   max-width: 280px;
+}
+
+.compass-search {
+  padding: 0.7rem;
+  display: grid;
+  gap: 0.55rem;
+  background: rgba(7, 9, 18, 0.68);
+}
+
+.compass-search__status {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
+.compass-search__results {
+  display: grid;
+  gap: 0.36rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.compass-search__result {
+  border: 1px solid var(--border-card);
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+  display: grid;
+  gap: 0.15rem;
+}
+
+.compass-search__result small {
+  color: var(--text-muted);
+}
+
+.compass-search__result:hover {
+  border-color: rgba(232, 197, 115, 0.36);
+  background: rgba(232, 197, 115, 0.08);
+}
+
+.compass-hero__ring {
+  display: grid;
+  place-items: center;
 }
 
 .orbital-ring {
@@ -147,12 +219,28 @@
   padding: 0.7rem 0.75rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.compass-festival-card > div:first-child {
+  display: grid;
+  gap: 0.1rem;
 }
 
 .compass-festival-card small {
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
+}
+
+.compass-festival-card__dates {
+  display: grid;
+  text-align: right;
+  gap: 0.2rem;
+}
+
+.compass-festival-card__bs {
+  color: var(--gold-soft) !important;
 }
 
 .compass-loading,
@@ -175,5 +263,13 @@
   .horizon-strip,
   .compass-signals {
     grid-template-columns: 1fr;
+  }
+
+  .compass-festival-card {
+    flex-direction: column;
+  }
+
+  .compass-festival-card__dates {
+    text-align: left;
   }
 }
