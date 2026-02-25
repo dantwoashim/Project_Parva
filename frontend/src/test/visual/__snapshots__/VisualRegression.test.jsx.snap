@@ -7,7 +7,9 @@ exports[`visual regression harness > compass page visual baseline 1`] = `
   <header
     class="compass-hero ink-card"
   >
-    <div>
+    <div
+      class="compass-hero__copy"
+    >
       <p
         class="compass-eyebrow"
       >
@@ -23,54 +25,83 @@ exports[`visual regression harness > compass page visual baseline 1`] = `
          · 
         krishna
       </p>
-      <label
-        class="ink-input compass-date-input"
+      <div
+        class="compass-hero__actions"
       >
-        <span>
-          Date
-        </span>
-        <input
-          type="date"
-          value="2026-02-24"
-        />
-      </label>
+        <label
+          class="ink-input compass-date-input"
+        >
+          <span>
+            Date
+          </span>
+          <input
+            type="date"
+            value="2026-02-25"
+          />
+        </label>
+        <button
+          class="btn btn-secondary"
+          type="button"
+        >
+          Open ±200 Year Calendar
+        </button>
+      </div>
+      <div
+        class="compass-search ink-card"
+      >
+        <label
+          class="ink-input"
+        >
+          <span>
+            Search Festival
+          </span>
+          <input
+            placeholder="Search and open a festival detail page..."
+            value=""
+          />
+        </label>
+      </div>
     </div>
-    <figure
-      aria-label="Lunar progression"
-      class="orbital-ring"
+    <div
+      class="compass-hero__ring"
     >
-      <svg
-        role="img"
-        viewBox="0 0 220 220"
+      <figure
+        aria-label="Lunar progression"
+        class="orbital-ring"
       >
-        <title>
-          Lunar progression
-        </title>
-        <circle
-          class="orbital-ring__track"
-          cx="110"
-          cy="110"
-          r="88"
-        />
-        <circle
-          class="orbital-ring__value"
-          cx="110"
-          cy="110"
-          r="88"
-          stroke-dasharray="552.9203070318035"
-          stroke-dashoffset="143.75927982826892"
-        />
-      </svg>
-      <figcaption>
-        <strong>
-          14
-        </strong>
-        <span>
-          74
-          %
-        </span>
-      </figcaption>
-    </figure>
+        <svg
+          role="img"
+          viewBox="0 0 220 220"
+        >
+          <title>
+            Lunar progression
+          </title>
+          <circle
+            class="orbital-ring__track"
+            cx="110"
+            cy="110"
+            r="88"
+          />
+          <circle
+            class="orbital-ring__value"
+            cx="110"
+            cy="110"
+            r="88"
+            stroke-dasharray="552.9203070318035"
+            stroke-dashoffset="143.75927982826892"
+          />
+        </svg>
+        <figcaption>
+          <strong>
+            14
+          </strong>
+          <span>
+            74
+            %
+          </span>
+        </figcaption>
+      </figure>
+    </div>
   </header>
   <div
     aria-live="polite"
@@ -169,12 +200,24 @@ exports[`visual regression harness > compass page visual baseline 1`] = `
         class="compass-festival-card"
         type="button"
       >
-        <span>
-          Dashain
-        </span>
-        <small>
-          2026-10-20
-        </small>
+        <div>
+          <span>
+            Dashain
+          </span>
+        </div>
+        <div
+          class="compass-festival-card__dates"
+        >
+          <small>
+            2026-10-20
+          </small>
+          <small
+            class="compass-festival-card__bs"
+          >
+            BS: 
+            —
+          </small>
+        </div>
       </button>
     </div>
   </section>
@@ -210,7 +253,7 @@ exports[`visual regression harness > explorer page visual baseline 1`] = `
       </span>
       <input
         type="date"
-        value="2026-02-24"
+        value="2026-02-25"
       />
     </label>
     <label
@@ -287,6 +330,17 @@ exports[`visual regression harness > explorer page visual baseline 1`] = `
         value=""
       />
     </label>
+    <label
+      class="ink-input explorer-control explorer-control--wide"
+    >
+      <span>
+        Search Festival
+      </span>
+      <input
+        placeholder="Dashain, Indra Jatra, Shivaratri..."
+        value=""
+      />
+    </label>
   </div>
   <div
     aria-label="Festival timeline"
@@ -322,9 +376,7 @@ exports[`visual regression harness > explorer page visual baseline 1`] = `
             <p
               class="timeline-card__meta"
             >
-              2026-10-20
-               → 
-              2026-10-30
+              2026-10-20 → 2026-10-30
                · 
               national
             </p>
@@ -349,9 +401,7 @@ exports[`visual regression harness > explorer page visual baseline 1`] = `
             <p
               class="timeline-card__meta"
             >
-              2026-11-07
-               → 
-              2026-11-11
+              2026-11-07 → 2026-11-11
                · 
               national
             </p>
@@ -924,7 +974,7 @@ exports[`visual regression harness > muhurta page visual baseline 1`] = `
       <input
         required=""
         type="date"
-        value="2026-02-24"
+        value="2026-02-25"
       />
     </label>
     <label
@@ -1177,7 +1227,7 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
       <p
         class="panchanga-hero__date"
       >
-        Tuesday, February 24, 2026
+        Wednesday, February 25, 2026
       </p>
       <label
         class="panchanga-hero__picker ink-input"
@@ -1188,7 +1238,7 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
         <input
           id="panchanga-date"
           type="date"
-          value="2026-02-24"
+          value="2026-02-25"
         />
       </label>
     </div>
@@ -1431,7 +1481,7 @@ exports[`visual regression harness > personal page visual baseline 1`] = `
       <input
         required=""
         type="date"
-        value="2026-02-24"
+        value="2026-02-25"
       />
     </label>
     <label

@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import OrderedDict
 from datetime import date
 
+from app.calendar import get_bs_month_name, gregorian_to_bs
 from app.festivals.repository import get_repository
 from app.rules import get_rule_service
 from app.rules.catalog_v4 import get_rule_v4, rule_has_algorithm, rule_quality_band
@@ -28,6 +29,35 @@ def _display_name(festival, *, lang: str) -> str:
     return festival.name
 
 
+def _match_search(festival, search: str | None) -> bool:
+    if not search:
+        return True
+    q = search.strip().lower()
+    if not q:
+        return True
+    haystacks = [
+        festival.name,
+        festival.name_nepali,
+        festival.tagline,
+        festival.description,
+    ]
+    for value in haystacks:
+        if value and q in value.lower():
+            return True
+    return False
+
+
+def _to_bs_struct(d: date) -> dict:
+    bs_year, bs_month, bs_day = gregorian_to_bs(d)
+    return {
+        "year": bs_year,
+        "month": bs_month,
+        "day": bs_day,
+        "month_name": get_bs_month_name(bs_month),
+        "formatted": f"{bs_year} {get_bs_month_name(bs_month)} {bs_day}",
+    }
+
+
 def build_festival_timeline(
     *,
     from_date: date,
@@ -35,6 +65,7 @@ def build_festival_timeline(
     quality_band: str,
     category: str | None,
     region: str | None,
+    search: str | None,
     lang: str,
 ) -> dict:
     if from_date > to_date:
@@ -46,7 +77,7 @@ def build_festival_timeline(
 
     cache_key = (
         f"timeline:{from_date.isoformat()}:{to_date.isoformat()}:{normalized_band}:"
-        f"{(category or '').lower()}:{(region or '').lower()}:{lang}"
+        f"{(category or '').lower()}:{(region or '').lower()}:{(search or '').lower()}:{lang}"
     )
 
     def _compute() -> dict:
@@ -65,6 +96,8 @@ def build_festival_timeline(
                 continue
             if not _match_region(festival, region):
                 continue
+            if not _match_search(festival, search):
+                continue
 
             rule = get_rule_v4(festival_id)
             band = rule_quality_band(rule) if rule else "inventory"
@@ -73,6 +106,9 @@ def build_festival_timeline(
 
             if dates.end_date < from_date or dates.start_date > to_date:
                 continue
+
+            bs_start = _to_bs_struct(dates.start_date)
+            bs_end = _to_bs_struct(dates.end_date)
 
             items.append(
                 {
@@ -83,6 +119,8 @@ def build_festival_timeline(
                     "category": festival.category,
                     "start_date": dates.start_date.isoformat(),
                     "end_date": dates.end_date.isoformat(),
+                    "bs_start": bs_start,
+                    "bs_end": bs_end,
                     "duration_days": dates.duration_days,
                     "quality_band": band,
                     "rule_status": getattr(rule, "status", "inventory"),
@@ -111,6 +149,7 @@ def build_festival_timeline(
             "quality_band": normalized_band,
             "category": category,
             "region": region,
+            "search": search,
             "lang": lang,
             "total": len(items),
             "groups": list(groups.values()),

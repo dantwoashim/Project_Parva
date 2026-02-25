@@ -24,6 +24,18 @@ def _window_class(score: int | float | None) -> str:
     return "avoid"
 
 
+def _bs_struct(g_date: date) -> dict:
+    bs_year, bs_month, bs_day = gregorian_to_bs(g_date)
+    month_name = get_bs_month_name(bs_month)
+    return {
+        "year": bs_year,
+        "month": bs_month,
+        "day": bs_day,
+        "month_name": month_name,
+        "formatted": f"{bs_year} {month_name} {bs_day}",
+    }
+
+
 def build_temporal_compass(
     *,
     target_date: date,
@@ -77,6 +89,8 @@ def build_temporal_compass(
                     "category": festival.category,
                     "start_date": dates.start_date.isoformat(),
                     "end_date": dates.end_date.isoformat(),
+                    "bs_start": _bs_struct(dates.start_date),
+                    "bs_end": _bs_struct(dates.end_date),
                     "quality_band": resolved_quality,
                     "rule_status": getattr(rule, "status", "inventory"),
                 }

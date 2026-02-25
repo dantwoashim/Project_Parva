@@ -9,6 +9,14 @@ QualityMarker.propTypes = {
   band: PropTypes.string,
 };
 
+function formatDualDate(item) {
+  const ad = `${item.start_date} → ${item.end_date}`;
+  const bsStart = item.bs_start?.formatted;
+  const bsEnd = item.bs_end?.formatted;
+  const bs = bsStart ? (bsStart === bsEnd ? bsStart : `${bsStart} → ${bsEnd}`) : null;
+  return { ad, bs };
+}
+
 export function TimelineRibbon({ groups = [] }) {
   const navigate = useNavigate();
 
@@ -27,7 +35,9 @@ export function TimelineRibbon({ groups = [] }) {
         <section key={group.month_key} className="timeline-month">
           <header className="timeline-month__header sticky-month">{group.month_label}</header>
           <ul className="timeline-month__list">
-            {(group.items || []).map((item) => (
+            {(group.items || []).map((item) => {
+              const dual = formatDualDate(item);
+              return (
               <li key={`${item.id}-${item.start_date}`}>
                 <button
                   type="button"
@@ -39,8 +49,9 @@ export function TimelineRibbon({ groups = [] }) {
                     <QualityMarker band={item.quality_band} />
                   </div>
                   <p className="timeline-card__meta">
-                    {item.start_date} → {item.end_date} · {item.category}
+                    {dual.ad} · {item.category}
                   </p>
+                  {dual.bs && <p className="timeline-card__meta timeline-card__meta--bs">BS: {dual.bs}</p>}
                   {item.ritual_preview?.days?.[0] && (
                     <p className="timeline-card__ritual">
                       {item.ritual_preview.days[0].name}: {item.ritual_preview.days[0].events?.[0]?.title || 'Ritual sequence'}
@@ -48,7 +59,8 @@ export function TimelineRibbon({ groups = [] }) {
                   )}
                 </button>
               </li>
-            ))}
+              );
+            })}
           </ul>
         </section>
       ))}

@@ -21,6 +21,7 @@ async def festivals_timeline(
     quality_band: str = Query("computed", description="computed|provisional|inventory|all"),
     category: Optional[str] = Query(None),
     region: Optional[str] = Query(None),
+    search: Optional[str] = Query(None, description="Search by festival name/description"),
     lang: str = Query("en", description="en|ne"),
 ):
     try:
@@ -30,6 +31,7 @@ async def festivals_timeline(
             quality_band=quality_band,
             category=category,
             region=region,
+            search=search,
             lang=lang,
         )
     except ValueError as exc:
@@ -44,6 +46,7 @@ async def festivals_timeline(
             "quality_band": quality_band,
             "category": category,
             "region": region,
+            "search": search,
             "lang": lang,
         },
         outputs={"groups": len(timeline.get("groups", [])), "items": timeline.get("total", 0)},

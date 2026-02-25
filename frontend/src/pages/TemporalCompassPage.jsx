@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { temporalAPI } from '../services/api';
+import { festivalAPI, temporalAPI } from '../services/api';
 import { useTemporalContext } from '../context/TemporalContext';
 import { OrbitalRing } from '../components/Compass/OrbitalRing';
 import { HorizonStrip } from '../components/Compass/HorizonStrip';
@@ -12,13 +12,31 @@ function toNumber(value, fallback = 0) {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+function formatBS(bs) {
+  if (!bs) return '—';
+  if (bs.formatted) return bs.formatted;
+  if (bs.year && bs.month_name && bs.day) return `${bs.year} ${bs.month_name} ${bs.day}`;
+  return '—';
+}
+
+function formatADRange(start, end) {
+  if (!start) return 'Date TBD';
+  if (!end || start === end) return start;
+  return `${start} → ${end}`;
+}
+
 export function TemporalCompassPage() {
   const navigate = useNavigate();
   const { state, setDate } = useTemporalContext();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [meta, setMeta] = useState(null);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -55,6 +73,43 @@ export function TemporalCompassPage() {
     };
   }, [state.date, state.location?.latitude, state.location?.longitude, state.timezone, state.qualityBand]);
 
+  useEffect(() => {
+    let cancelled = false;
+    if (!searchTerm || searchTerm.trim().length < 2) {
+      setSearchResults([]);
+      setSearchLoading(false);
+      return () => {
+        cancelled = true;
+      };
+    }
+
+    async function loadSearch() {
+      setSearchLoading(true);
+      try {
+        const data = await festivalAPI.getAll({
+          search: searchTerm.trim(),
+          quality_band: 'all',
+          algorithmic_only: 'false',
+          page_size: '8',
+          page: '1',
+        });
+        if (!cancelled) {
+          setSearchResults(data?.festivals || []);
+        }
+      } catch {
+        if (!cancelled) setSearchResults([]);
+      } finally {
+        if (!cancelled) setSearchLoading(false);
+      }
+    }
+
+    const timer = window.setTimeout(loadSearch, 220);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [searchTerm]);
+
   const festivalsToday = data?.today?.festivals || [];
   const bsLabel = useMemo(() => {
     const bs = data?.bikram_sambat;
@@ -65,23 +120,62 @@ export function TemporalCompassPage() {
   return (
     <section className="compass-page animate-fade-in-up">
       <header className="compass-hero ink-card">
-        <div>
+        <div className="compass-hero__copy">
           <p className="compass-eyebrow">Temporal Compass</p>
           <h1>{bsLabel}</h1>
           <p className="compass-subtitle">
             {data?.primary_readout?.tithi_name || '—'} · {data?.primary_readout?.paksha || '—'}
           </p>
-          <label className="ink-input compass-date-input">
-            <span>Date</span>
-            <input type="date" value={state.date} onChange={(e) => setDate(e.target.value)} />
-          </label>
+
+          <div className="compass-hero__actions">
+            <label className="ink-input compass-date-input">
+              <span>Date</span>
+              <input type="date" value={state.date} onChange={(e) => setDate(e.target.value)} />
+            </label>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/calendar')}>
+              Open ±200 Year Calendar
+            </button>
+          </div>
+
+          <div className="compass-search ink-card">
+            <label className="ink-input">
+              <span>Search Festival</span>
+              <input
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search and open a festival detail page..."
+              />
+            </label>
+
+            {searchLoading && <p className="compass-search__status">Searching…</p>}
+            {!searchLoading && searchTerm.trim().length >= 2 && searchResults.length === 0 && (
+              <p className="compass-search__status">No matching festivals found.</p>
+            )}
+            {!searchLoading && searchResults.length > 0 && (
+              <div className="compass-search__results">
+                {searchResults.map((festival) => (
+                  <button
+                    key={festival.id}
+                    type="button"
+                    className="compass-search__result"
+                    onClick={() => navigate(`/festivals/${festival.id}`)}
+                  >
+                    <span>{festival.name}</span>
+                    {festival.name_nepali && <small className="text-nepali">{festival.name_nepali}</small>}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        <OrbitalRing
-          ratio={toNumber(data?.orbital?.phase_ratio, 0)}
-          number={data?.orbital?.tithi}
-          label="Lunar progression"
-        />
+        <div className="compass-hero__ring">
+          <OrbitalRing
+            ratio={toNumber(data?.orbital?.phase_ratio, 0)}
+            number={data?.orbital?.tithi}
+            label="Lunar progression"
+          />
+        </div>
       </header>
 
       {loading && (
@@ -139,8 +233,19 @@ export function TemporalCompassPage() {
                   className="compass-festival-card"
                   onClick={() => navigate(`/festivals/${festival.id}`)}
                 >
-                  <span>{festival.name}</span>
-                  <small>{festival.start_date}</small>
+                  <div>
+                    <span>{festival.name}</span>
+                    {festival.name_nepali && <small className="text-nepali">{festival.name_nepali}</small>}
+                  </div>
+                  <div className="compass-festival-card__dates">
+                    <small>{formatADRange(festival.start_date, festival.end_date)}</small>
+                    <small className="compass-festival-card__bs">
+                      BS: {formatBS(festival.bs_start)}
+                      {festival.bs_end && formatBS(festival.bs_end) !== formatBS(festival.bs_start)
+                        ? ` → ${formatBS(festival.bs_end)}`
+                        : ''}
+                    </small>
+                  </div>
                 </button>
               ))}
             </div>

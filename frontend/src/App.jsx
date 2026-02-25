@@ -19,6 +19,7 @@ const FeedSubscriptionsPage = lazy(() => import('./pages/FeedSubscriptionsPage')
 const PersonalPanchangaPage = lazy(() => import('./pages/PersonalPanchangaPage').then((m) => ({ default: m.PersonalPanchangaPage })));
 const MuhurtaPage = lazy(() => import('./pages/MuhurtaPage').then((m) => ({ default: m.MuhurtaPage })));
 const KundaliPage = lazy(() => import('./pages/KundaliPage').then((m) => ({ default: m.KundaliPage })));
+const CalendarAtlasPage = lazy(() => import('./pages/CalendarAtlasPage').then((m) => ({ default: m.CalendarAtlasPage })));
 
 function FloatingParticles() {
   return (
@@ -47,6 +48,7 @@ function TopNav() {
         <NavLink to="/personal" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Personal</NavLink>
         <NavLink to="/muhurta" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Muhurta</NavLink>
         <NavLink to="/kundali" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Kundali</NavLink>
+        <NavLink to="/calendar" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Calendar</NavLink>
         <NavLink to="/feeds" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Feeds</NavLink>
       </nav>
 
@@ -72,6 +74,7 @@ function AppRoutes() {
         <Route path="/personal" element={<PersonalPanchangaPage />} />
         <Route path="/muhurta" element={<MuhurtaPage />} />
         <Route path="/kundali" element={<KundaliPage />} />
+        <Route path="/calendar" element={<CalendarAtlasPage />} />
         <Route path="/feeds" element={<FeedSubscriptionsPage />} />
         <Route path="/dashboard" element={<ParvaPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />

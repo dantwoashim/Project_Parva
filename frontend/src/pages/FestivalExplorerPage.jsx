@@ -17,6 +17,7 @@ export function FestivalExplorerPage() {
   const [windowDays, setWindowDays] = useState(180);
   const [category, setCategory] = useState('');
   const [region, setRegion] = useState('');
+  const [search, setSearch] = useState('');
 
   const [payload, setPayload] = useState(null);
   const [meta, setMeta] = useState(null);
@@ -38,6 +39,7 @@ export function FestivalExplorerPage() {
           qualityBand: state.qualityBand,
           category: category || undefined,
           region: region || undefined,
+          search: search || undefined,
           lang: state.language,
         });
 
@@ -60,7 +62,7 @@ export function FestivalExplorerPage() {
     return () => {
       cancelled = true;
     };
-  }, [fromDate, toDate, category, region, state.qualityBand, state.language]);
+  }, [fromDate, toDate, category, region, search, state.qualityBand, state.language]);
 
   return (
     <section className="explorer-page animate-fade-in-up">
@@ -102,6 +104,15 @@ export function FestivalExplorerPage() {
             value={region}
             onChange={(e) => setRegion(e.target.value)}
             placeholder="kathmandu_valley"
+          />
+        </label>
+
+        <label className="ink-input explorer-control explorer-control--wide">
+          <span>Search Festival</span>
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Dashain, Indra Jatra, Shivaratri..."
           />
         </label>
       </div>
