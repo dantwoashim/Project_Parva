@@ -7,8 +7,11 @@ from datetime import date
 from pathlib import Path
 from typing import Any, Optional
 
+from app.reliability.metrics import get_metrics_registry
+
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 PRECOMPUTE_DIR = PROJECT_ROOT / "output" / "precomputed"
+METRICS = get_metrics_registry()
 
 
 def _read_json(path: Path) -> Optional[dict[str, Any]]:
@@ -24,13 +27,18 @@ def load_precomputed_panchanga(target_date: date) -> Optional[dict[str, Any]]:
     year_file = PRECOMPUTE_DIR / f"panchanga_{target_date.year}.json"
     payload = _read_json(year_file)
     if not payload:
+        METRICS.record_cache_lookup("panchanga", False)
         return None
-    return payload.get("dates", {}).get(target_date.isoformat())
+    row = payload.get("dates", {}).get(target_date.isoformat())
+    METRICS.record_cache_lookup("panchanga", row is not None)
+    return row
 
 
 def load_precomputed_festival_year(year: int) -> Optional[dict[str, Any]]:
     path = PRECOMPUTE_DIR / f"festivals_{year}.json"
-    return _read_json(path)
+    payload = _read_json(path)
+    METRICS.record_cache_lookup("festival_year", payload is not None)
+    return payload
 
 
 def get_cache_stats() -> dict[str, Any]:

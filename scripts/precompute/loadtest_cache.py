@@ -10,7 +10,7 @@ import statistics
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import date, timedelta, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -18,8 +18,8 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from fastapi.testclient import TestClient  # noqa: E402
 from app.main import app  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
 
 
 def _percentile(values: list[float], pct: float) -> float:
@@ -91,7 +91,9 @@ def main() -> int:
             "p95_ms": 500,
         },
         "target_status": {
-            "cache_hit_ratio_panchanga": (cache_hits / args.requests) >= 0.90 if args.requests else False,
+            "cache_hit_ratio_panchanga": (cache_hits / args.requests) >= 0.90
+            if args.requests
+            else False,
             "p95_ms": p95 <= 500,
         },
     }

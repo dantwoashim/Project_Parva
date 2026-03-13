@@ -1,7 +1,7 @@
 """Source precedence tests (Week 8)."""
 
-from app.sources.loader import get_source_loader, DEFAULT_PRIORITY
 from app.calendar.overrides import get_festival_override_info
+from app.sources.loader import DEFAULT_PRIORITY, get_source_loader
 
 
 def test_source_priority_order_matches_policy_doc():

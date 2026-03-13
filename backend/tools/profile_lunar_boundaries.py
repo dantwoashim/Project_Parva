@@ -3,10 +3,10 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from statistics import mean, median
 from time import perf_counter
-import os
 
 from app.calendar.lunar_calendar import lunar_month_boundaries
 
@@ -30,7 +30,12 @@ def main() -> None:
         durations_ms.append(elapsed_ms)
         rows.append((year, len(boundaries), elapsed_ms))
 
-    out_dir = Path(os.environ.get("OUTPUT_DIR", Path(__file__).resolve().parents[2] / "docs" / "weekly_execution" / "year1_week20"))
+    out_dir = Path(
+        os.environ.get(
+            "OUTPUT_DIR",
+            Path(__file__).resolve().parents[2] / "docs" / "weekly_execution" / "year1_week20",
+        )
+    )
     out_dir.mkdir(parents=True, exist_ok=True)
     out_file = out_dir / "lunar_boundary_performance.md"
 

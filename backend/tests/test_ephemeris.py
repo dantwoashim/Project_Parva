@@ -12,10 +12,9 @@ Comprehensive tests covering:
 Target: 50+ test cases
 """
 
-import pytest
-from datetime import datetime, date, timezone, timedelta
-from typing import Dict, Any
+from datetime import date, datetime, timedelta, timezone
 
+import pytest
 
 # =============================================================================
 # TEST FIXTURES
@@ -60,7 +59,7 @@ class TestSwissEphemeris:
     
     def test_julian_day_utc(self):
         """Test Julian Day calculation requires UTC timezone."""
-        from app.calendar.ephemeris.swiss_eph import get_julian_day, TimezoneError
+        from app.calendar.ephemeris.swiss_eph import get_julian_day
         
         # Should work with UTC
         dt = datetime(2026, 2, 6, 12, 0, 0, tzinfo=timezone.utc)
@@ -70,7 +69,7 @@ class TestSwissEphemeris:
     
     def test_julian_day_requires_timezone(self):
         """Test that naive datetime raises TimezoneError."""
-        from app.calendar.ephemeris.swiss_eph import get_julian_day, TimezoneError
+        from app.calendar.ephemeris.swiss_eph import TimezoneError, get_julian_day
         
         dt = datetime(2026, 2, 6, 12, 0, 0)  # Naive
         with pytest.raises(TimezoneError):
@@ -302,8 +301,8 @@ class TestSankranti:
     
     def test_find_makara_sankranti(self):
         """Test Makara Sankranti detection."""
-        from app.calendar.sankranti import find_makara_sankranti
         from app.calendar.ephemeris.time_utils import to_nepal_time
+        from app.calendar.sankranti import find_makara_sankranti
         
         makara = find_makara_sankranti(2026)
         nepal_date = to_nepal_time(makara).date()
@@ -314,8 +313,8 @@ class TestSankranti:
     
     def test_find_mesh_sankranti(self):
         """Test Mesh Sankranti (BS New Year) detection."""
-        from app.calendar.sankranti import find_mesh_sankranti
         from app.calendar.ephemeris.time_utils import to_nepal_time
+        from app.calendar.sankranti import find_mesh_sankranti
         
         mesh = find_mesh_sankranti(2026)
         nepal_date = to_nepal_time(mesh).date()
@@ -351,7 +350,7 @@ class TestSankranti:
         lengths = compute_bs_month_lengths(2082)
         
         assert len(lengths) == 12
-        assert all(28 <= l <= 33 for l in lengths)  # Reasonable range
+        assert all(28 <= length <= 33 for length in lengths)  # Reasonable range
         total = sum(lengths)
         assert 364 <= total <= 367  # Year should be ~365 days
 
@@ -497,7 +496,7 @@ class TestTimeUtils:
     
     def test_to_utc(self):
         """Test Nepal time to UTC conversion."""
-        from app.calendar.ephemeris.time_utils import to_utc, NEPAL_TZ
+        from app.calendar.ephemeris.time_utils import NEPAL_TZ, to_utc
         
         nepal = datetime(2026, 2, 6, 5, 45, 0, tzinfo=NEPAL_TZ)
         utc = to_utc(nepal)

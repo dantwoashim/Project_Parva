@@ -30,7 +30,9 @@ def _resolve_url(raw: str, base: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Verify Parva response provenance")
     parser.add_argument("response", type=Path, help="Path to JSON response file")
-    parser.add_argument("--base", default="http://localhost:8000", help="Base URL for relative verify_url")
+    parser.add_argument(
+        "--base", default="http://localhost:8000", help="Base URL for relative verify_url"
+    )
     args = parser.parse_args()
 
     payload = _read_json(args.response)

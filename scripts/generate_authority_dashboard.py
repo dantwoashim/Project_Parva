@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
+import json
+import sys
 from collections import Counter
 from datetime import datetime, timezone
-import json
 from pathlib import Path
-import sys
 from typing import Any, Dict
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -15,15 +15,18 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from fastapi.testclient import TestClient  # noqa: E402
-
 from app.main import app  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
 
 REPORTS_DIR = PROJECT_ROOT / "reports"
 DOCS_DIR = PROJECT_ROOT / "docs" / "public_beta"
 OUT_JSON = REPORTS_DIR / "authority_dashboard.json"
 OUT_DOC_JSON = DOCS_DIR / "authority_dashboard.json"
 OUT_MD = DOCS_DIR / "authority_dashboard.md"
+
+
+def _rel(path: Path) -> str:
+    return str(path.relative_to(PROJECT_ROOT))
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -125,7 +128,9 @@ def _collect_response_confidence_breakdown() -> Dict[str, Any]:
             confidence[_extract_runtime_confidence(payload)] += 1
             boundary[_extract_boundary_risk(payload)] += 1
         except Exception:
-            failures.append({"endpoint": endpoint, "status_code": response.status_code, "error": "invalid_json"})
+            failures.append(
+                {"endpoint": endpoint, "status_code": response.status_code, "error": "invalid_json"}
+            )
 
     return {
         "sample_size": len(endpoints),
@@ -173,34 +178,40 @@ def _build_markdown(payload: Dict[str, Any]) -> str:
     ]
 
     if discrepancy_rows:
-        lines.extend([
-            "| Class | Count |",
-            "|---|---:|",
-        ])
+        lines.extend(
+            [
+                "| Class | Count |",
+                "|---|---:|",
+            ]
+        )
         for key, value in discrepancy_rows.items():
             lines.append(f"| {key} | {value} |")
     else:
         lines.append("- No discrepancies recorded in current artifacts.")
 
-    lines.extend([
-        "",
-        "## Confidence Breakdown",
-        "",
-        "### Rule Catalog Confidence",
-        "",
-        "| Confidence | Count |",
-        "|---|---:|",
-    ])
+    lines.extend(
+        [
+            "",
+            "## Confidence Breakdown",
+            "",
+            "### Rule Catalog Confidence",
+            "",
+            "| Confidence | Count |",
+            "|---|---:|",
+        ]
+    )
     for key, value in confidence_rules.items():
         lines.append(f"| {key} | {value} |")
 
-    lines.extend([
-        "",
-        "### Runtime Response Confidence (sampled v3 endpoints)",
-        "",
-        "| Confidence | Count |",
-        "|---|---:|",
-    ])
+    lines.extend(
+        [
+            "",
+            "### Runtime Response Confidence (sampled v3 endpoints)",
+            "",
+            "| Confidence | Count |",
+            "|---|---:|",
+        ]
+    )
     for key, value in confidence_responses.items():
         lines.append(f"| {key} | {value} |")
 
@@ -218,11 +229,11 @@ def main() -> int:
             "response_samples": _collect_response_confidence_breakdown(),
         },
         "artifacts": {
-            "conformance_report": str(REPORTS_DIR / "conformance_report.json"),
-            "evaluation_v4": str(REPORTS_DIR / "evaluation_v4" / "evaluation_v4.json"),
-            "discrepancies": str(PROJECT_ROOT / "data" / "ground_truth" / "discrepancies.json"),
-            "rule_catalog": str(PROJECT_ROOT / "data" / "festivals" / "festival_rules_v4.json"),
-            "rule_ingestion_summary": str(REPORTS_DIR / "rule_ingestion_summary.json"),
+            "conformance_report": _rel(REPORTS_DIR / "conformance_report.json"),
+            "evaluation_v4": _rel(REPORTS_DIR / "evaluation_v4" / "evaluation_v4.json"),
+            "discrepancies": _rel(PROJECT_ROOT / "data" / "ground_truth" / "discrepancies.json"),
+            "rule_catalog": _rel(PROJECT_ROOT / "data" / "festivals" / "festival_rules_v4.json"),
+            "rule_ingestion_summary": _rel(REPORTS_DIR / "rule_ingestion_summary.json"),
         },
     }
 

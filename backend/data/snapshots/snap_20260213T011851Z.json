@@ -5,16 +5,16 @@
   "rules_hash": "a5504ddaf393f19652f45f63890ba3b9e244b70339817a3841857e58dbe1cd05",
   "engine_version": "v2",
   "dataset_files": [
-    "/Users/rohanbasnet14/Documents/Project Parva/backend/app/calendar/ground_truth_overrides.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/backend/app/calendar/sources.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/backend/data/snapshot.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/data/festivals/festivals.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/data/ground_truth/discrepancies.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/data/normalized_sources.json"
+    "backend/app/calendar/ground_truth_overrides.json",
+    "backend/app/calendar/sources.json",
+    "backend/data/snapshot.json",
+    "data/festivals/festivals.json",
+    "data/ground_truth/discrepancies.json",
+    "data/normalized_sources.json"
   ],
   "rule_files": [
-    "/Users/rohanbasnet14/Documents/Project Parva/backend/app/calendar/festival_rules.json",
-    "/Users/rohanbasnet14/Documents/Project Parva/backend/app/calendar/festival_rules_v3.json"
+    "backend/app/calendar/festival_rules.json",
+    "backend/app/calendar/festival_rules_v3.json"
   ],
-  "festival_snapshot_path": "/Users/rohanbasnet14/Documents/Project Parva/backend/data/snapshots/snap_20260213T011851Z.festival_snapshot.json"
+  "festival_snapshot_path": "backend/data/snapshots/snap_20260213T011851Z.festival_snapshot.json"
 }

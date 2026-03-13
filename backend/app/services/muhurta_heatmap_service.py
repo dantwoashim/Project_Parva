@@ -72,7 +72,9 @@ def build_muhurta_heatmap(
         )
         rahu = get_rahu_kalam(target_date, lat=latitude, lon=longitude, tz_name=timezone_name)
 
-        score_map = {int(row["index"]): int(row.get("score", 0)) for row in ranked.get("ranked_muhurtas", [])}
+        score_map = {
+            int(row["index"]): int(row.get("score", 0)) for row in ranked.get("ranked_muhurtas", [])
+        }
 
         blocks = []
         for row in muhurta.get("muhurtas", []):

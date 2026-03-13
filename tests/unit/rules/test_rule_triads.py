@@ -1,7 +1,6 @@
 """Rule triad integrity tests."""
 
 import pytest
-
 from app.rules import triad_pipeline
 from app.rules.catalog_v4 import get_rules_scoreboard
 

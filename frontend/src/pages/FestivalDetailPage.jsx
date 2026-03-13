@@ -3,7 +3,7 @@
  * Complete rewrite with immersive hero, clean layout, interactive sections.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { differenceInDays, format } from 'date-fns';
 import { useFestivalDetail, useFestivalDates, useFestivals } from '../hooks/useFestivals';
@@ -49,7 +49,7 @@ export function FestivalDetailPage() {
     const [searchParams] = useSearchParams();
     const year = useMemo(() => parseYear(searchParams.get('year')), [searchParams]);
 
-    const { festival, dates, nearbyFestivals, meta, loading, error } = useFestivalDetail(festivalId, year);
+    const { festival, dates, meta, loading, error } = useFestivalDetail(festivalId, year);
     const { dates: nextDates, loading: nextDatesLoading, error: nextDatesError } = useFestivalDates(festivalId, 3);
     const { festivals: allFestivals } = useFestivals({ qualityBand: 'all', algorithmicOnly: false });
 

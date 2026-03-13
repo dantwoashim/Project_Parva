@@ -1,20 +1,45 @@
 # Security Policy
 
-## Supported Version
-- Current maintained line: `v2` API contracts.
+## Supported versions
 
-## Reporting a Vulnerability
-- Open a private disclosure with reproduction steps, impacted endpoint, and expected risk.
-- Include affected commit hash/tag if known.
+| Track | Status | Notes |
+| --- | --- | --- |
+| `v3` | public stable | only launch-supported public contract |
+| `v2`, `v4`, `v5` | experimental | disabled by default |
+| webhook management | not shipped | startup rejects enablement in this build |
+| provenance and ops mutations | admin only | not part of public stable profile |
 
-## Baseline Controls Implemented
-- Request-size/query-length guard middleware
-- Security response headers (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`)
-- Dependency audit script:
-  - `python3 scripts/security/run_audit.py`
-- Route validation through Pydantic/FastAPI schemas
+## Reporting a vulnerability
 
-## Hardening Routine
-- Run `pytest` and smoke tests before release.
-- Run dependency audits and archive report in `reports/security_audit.json`.
-- Review deprecation/sunset headers for unversioned API usage.
+- Open a private disclosure with reproduction steps, impacted endpoint, and
+  expected risk.
+- Include the affected commit hash or tag if known.
+
+## Baseline controls
+
+- request-size and query-length guards
+- per-request IDs and structured request logs
+- security response headers
+- admin bearer token and scoped API key support for non-public surfaces
+- rate limiting for anonymous and authenticated traffic
+- startup validation for risky feature flags
+- dependency audit script: `python scripts/security/run_audit.py`
+
+## Access control policy
+
+- Public stable `v3` endpoints are intentionally anonymous and read-only.
+- Non-public routes must be called with either a scoped `X-API-Key` or an
+  admin bearer token.
+- Provenance mutation routes are admin-only.
+- Webhook routes are not part of the production launch build.
+
+The detailed route matrix is documented in `docs/ROUTE_ACCESS.md`.
+
+## Hardening routine
+
+- Run `python -m pytest -q`
+- Run `npm --prefix frontend run lint`
+- Run `npm --prefix frontend test -- --run`
+- Run `python scripts/security/run_audit.py`
+- Run `python scripts/check_path_leaks.py`
+- Archive generated security output in `reports/security_audit.json`

@@ -84,7 +84,11 @@ def _execution_template(rule: FestivalRuleV4) -> str | None:
         return None
 
     if rule.rule_type == "transit":
-        if payload.get("event") or payload.get("target_rashi") or payload.get("target_longitude") is not None:
+        if (
+            payload.get("event")
+            or payload.get("target_rashi")
+            or payload.get("target_longitude") is not None
+        ):
             return "solar_transit_v1"
         return None
 

@@ -1,10 +1,8 @@
 """Integration tests for festival coverage and quality-band filters."""
 
+from app.festivals import router
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
-
-from app.festivals import router
-
 
 app = FastAPI()
 app.include_router(router)

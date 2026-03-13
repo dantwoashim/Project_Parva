@@ -21,7 +21,6 @@ from datetime import date
 from typing import Dict, Optional
 from urllib import parse, request
 
-
 DEFAULT_API_BASE = "http://localhost:8000/v2/api"
 
 
@@ -64,7 +63,9 @@ def cmd_upcoming(api_base: str, days: int) -> str:
 
     lines = [f"Upcoming festivals (next {days} days):"]
     for row in festivals:
-        lines.append(f"- {row.get('name')} on {row.get('start_date')} ({row.get('days_until')} days)")
+        lines.append(
+            f"- {row.get('name')} on {row.get('start_date')} ({row.get('days_until')} days)"
+        )
     return "\n".join(lines)
 
 
@@ -97,10 +98,7 @@ def run_polling(bot_token: str, api_base: str, interval: float = 2.0) -> None:
     offset = 0
     print("Starting Telegram polling loop...")
     while True:
-        url = (
-            f"https://api.telegram.org/bot{bot_token}/getUpdates?"
-            f"timeout=20&offset={offset}"
-        )
+        url = f"https://api.telegram.org/bot{bot_token}/getUpdates?" f"timeout=20&offset={offset}"
         payload = _http_get_json(url)
         for update in payload.get("result", []):
             offset = max(offset, int(update["update_id"]) + 1)

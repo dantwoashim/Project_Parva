@@ -65,27 +65,31 @@ def run_benchmark():
             except Exception as e:
                 results["calculator_failed"] += 1
                 year_stats["failed"] += 1
-                results["mismatches"].append({
-                    "festival_id": festival_id,
-                    "year": year,
-                    "truth": truth_date_str,
-                    "computed": None,
-                    "error": str(e),
-                    "category": "calculator_error",
-                })
+                results["mismatches"].append(
+                    {
+                        "festival_id": festival_id,
+                        "year": year,
+                        "truth": truth_date_str,
+                        "computed": None,
+                        "error": str(e),
+                        "category": "calculator_error",
+                    }
+                )
                 continue
 
             if calc_result is None:
                 results["calculator_failed"] += 1
                 year_stats["failed"] += 1
-                results["mismatches"].append({
-                    "festival_id": festival_id,
-                    "year": year,
-                    "truth": truth_date_str,
-                    "computed": None,
-                    "error": "calculate_festival_v2 returned None",
-                    "category": "not_in_catalog",
-                })
+                results["mismatches"].append(
+                    {
+                        "festival_id": festival_id,
+                        "year": year,
+                        "truth": truth_date_str,
+                        "computed": None,
+                        "error": "calculate_festival_v2 returned None",
+                        "category": "not_in_catalog",
+                    }
+                )
                 continue
 
             computed_date = calc_result.start_date
@@ -98,27 +102,31 @@ def run_benchmark():
             elif delta_days == 1:
                 results["off_by_one"] += 1
                 year_stats["off_1"] += 1
-                results["mismatches"].append({
-                    "festival_id": festival_id,
-                    "year": year,
-                    "truth": truth_date_str,
-                    "computed": computed_date.isoformat(),
-                    "delta_days": delta_days,
-                    "method": calc_result.method,
-                    "category": "off_by_one",
-                })
+                results["mismatches"].append(
+                    {
+                        "festival_id": festival_id,
+                        "year": year,
+                        "truth": truth_date_str,
+                        "computed": computed_date.isoformat(),
+                        "delta_days": delta_days,
+                        "method": calc_result.method,
+                        "category": "off_by_one",
+                    }
+                )
             else:
                 results["off_by_more"] += 1
                 year_stats["off_more"] += 1
-                results["mismatches"].append({
-                    "festival_id": festival_id,
-                    "year": year,
-                    "truth": truth_date_str,
-                    "computed": computed_date.isoformat(),
-                    "delta_days": delta_days,
-                    "method": calc_result.method,
-                    "category": "significant_mismatch",
-                })
+                results["mismatches"].append(
+                    {
+                        "festival_id": festival_id,
+                        "year": year,
+                        "truth": truth_date_str,
+                        "computed": computed_date.isoformat(),
+                        "delta_days": delta_days,
+                        "method": calc_result.method,
+                        "category": "significant_mismatch",
+                    }
+                )
 
             # Per-festival tracking
             if festival_id not in results["per_festival"]:
@@ -127,17 +135,15 @@ def run_benchmark():
             if delta_days == 0:
                 results["per_festival"][festival_id]["exact"] += 1
             else:
-                results["per_festival"][festival_id]["errors"].append({
-                    "year": year, "delta": delta_days
-                })
+                results["per_festival"][festival_id]["errors"].append(
+                    {"year": year, "delta": delta_days}
+                )
 
         results["per_year"][year_str] = year_stats
 
     # Compute summary
     total = results["total_comparisons"]
-    results["accuracy_pct"] = round(
-        100 * results["exact_matches"] / max(total, 1), 1
-    )
+    results["accuracy_pct"] = round(100 * results["exact_matches"] / max(total, 1), 1)
     results["within_one_day_pct"] = round(
         100 * (results["exact_matches"] + results["off_by_one"]) / max(total, 1), 1
     )
@@ -155,7 +161,7 @@ def main():
     with open(report_path, "w") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
-    print(f"\n=== Accuracy Benchmark ===")
+    print("\n=== Accuracy Benchmark ===")
     print(f"  Total comparisons:    {results['total_comparisons']}")
     print(f"  Exact matches:        {results['exact_matches']}")
     print(f"  Off-by-1:             {results['off_by_one']}")
@@ -168,9 +174,11 @@ def main():
     if results["mismatches"]:
         print(f"\n  Mismatches ({len(results['mismatches'])}):")
         for m in results["mismatches"][:10]:
-            print(f"    {m['festival_id']} ({m['year']}): "
-                  f"truth={m['truth']}, computed={m.get('computed', 'N/A')}, "
-                  f"cat={m['category']}")
+            print(
+                f"    {m['festival_id']} ({m['year']}): "
+                f"truth={m['truth']}, computed={m.get('computed', 'N/A')}, "
+                f"cat={m['category']}"
+            )
 
     return 0
 

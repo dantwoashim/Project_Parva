@@ -1,15 +1,15 @@
 """Integration tests for public artifact exposure endpoints."""
 
+from app.main import app
 from fastapi.testclient import TestClient
 
-from app.main import app
-
+from tests.helpers import TRUST_HEADERS
 
 client = TestClient(app)
 
 
 def test_public_artifact_manifest_lists_files():
-    response = client.get("/v3/api/public/artifacts/manifest")
+    response = client.get("/v3/api/public/artifacts/manifest", headers=TRUST_HEADERS)
     assert response.status_code == 200
     payload = response.json()
     assert "total_files" in payload
@@ -20,6 +20,6 @@ def test_public_artifact_manifest_lists_files():
 
 
 def test_public_dashboard_artifact_is_accessible():
-    response = client.get("/v3/api/public/artifacts/dashboard")
+    response = client.get("/v3/api/public/artifacts/dashboard", headers=TRUST_HEADERS)
     assert response.status_code == 200
     assert "application/json" in response.headers.get("content-type", "")

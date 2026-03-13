@@ -4,7 +4,7 @@ import { AuthorityInspector } from '../components/UI/AuthorityInspector';
 import { MuhurtaHeatmap } from '../components/MuhurtaHeatmap/MuhurtaHeatmap';
 import { MUHURTA_GLOSSARY } from '../data/temporalGlossary';
 import { glossaryAPI, muhurtaAPI } from '../services/api';
-import { useTemporalContext } from '../context/TemporalContext';
+import { useTemporalContext } from '../context/useTemporalContext';
 import './MuhurtaPage.css';
 
 function toKnowledge(content, fallback) {

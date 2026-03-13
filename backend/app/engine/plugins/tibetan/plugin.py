@@ -6,7 +6,6 @@ from datetime import date
 
 from ..base import CalendarDate, CalendarMetadata
 
-
 TIBETAN_YEAR_OFFSET = 127
 TIBETAN_MONTH_NAMES = {
     1: "First Month",

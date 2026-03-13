@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-from fastapi.testclient import TestClient
-
 from app.main import app
-
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 
@@ -21,7 +19,7 @@ def test_rejects_oversized_payload():
     # Force large content length with raw payload header
     huge = ("x" * (2 * 1024 * 1024)).encode("utf-8")
     response = client.post(
-        "/api/webhooks/subscribe",
+        "/api/placeholder",
         content=huge,
         headers={"Content-Type": "application/json", "Content-Length": str(len(huge))},
     )

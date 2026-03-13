@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
+import json
 from datetime import date
 from functools import lru_cache
 from pathlib import Path
-import json
 
 from app.engine.plugins.islamic.plugin import IslamicCalendarPlugin
 from app.rules.plugins.base import ObservanceDate, ObservanceRule
-
 
 _RULES: dict[str, tuple[int, int]] = {
     "islamic-new-year": (1, 1),

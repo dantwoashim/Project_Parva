@@ -8,7 +8,6 @@ Shows how many festival-year pairs are covered by authoritative overrides.
 import argparse
 import json
 from pathlib import Path
-from datetime import date
 
 ROOT = Path(__file__).parent.parent / "app" / "calendar"
 OVERRIDES_PATH = ROOT / "ground_truth_overrides.json"

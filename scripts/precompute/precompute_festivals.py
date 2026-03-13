@@ -19,7 +19,6 @@ from app.calendar.calculator_v2 import (  # noqa: E402
     list_festivals_v2,
 )
 
-
 OUT_DIR = PROJECT_ROOT / "output" / "precomputed"
 
 
@@ -67,7 +66,9 @@ def main() -> int:
 
     start_year = min(args.start_year, args.end_year)
     end_year = max(args.start_year, args.end_year)
-    festival_ids = [f.strip() for f in args.festivals.split(",") if f.strip()] or list_festivals_v2()
+    festival_ids = [
+        f.strip() for f in args.festivals.split(",") if f.strip()
+    ] or list_festivals_v2()
 
     for year in range(start_year, end_year + 1):
         out = precompute_year(year, festival_ids)

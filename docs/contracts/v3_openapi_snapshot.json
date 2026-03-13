@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-25T09:19:20.618317+00:00",
+  "generated_at": "2026-03-13T05:25:56.907606+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -2754,202 +2754,6 @@
           }
         }
       },
-      "/v3/api/webhooks": {
-        "get": {
-          "tags": [
-            "webhooks"
-          ],
-          "summary": "List Subscriptions",
-          "operationId": "list_subscriptions_v3_api_webhooks_get",
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/webhooks/subscribe": {
-        "post": {
-          "tags": [
-            "webhooks"
-          ],
-          "summary": "Create Subscription",
-          "operationId": "create_subscription_v3_api_webhooks_subscribe_post",
-          "requestBody": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WebhookSubscriptionCreate"
-                }
-              }
-            },
-            "required": true
-          },
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/webhooks/{subscription_id}": {
-        "get": {
-          "tags": [
-            "webhooks"
-          ],
-          "summary": "Get Subscription",
-          "operationId": "get_subscription_v3_api_webhooks__subscription_id__get",
-          "parameters": [
-            {
-              "name": "subscription_id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "title": "Subscription Id"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "delete": {
-          "tags": [
-            "webhooks"
-          ],
-          "summary": "Delete Subscription",
-          "operationId": "delete_subscription_v3_api_webhooks__subscription_id__delete",
-          "parameters": [
-            {
-              "name": "subscription_id",
-              "in": "path",
-              "required": true,
-              "schema": {
-                "type": "string",
-                "title": "Subscription Id"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/v3/api/webhooks/dispatch": {
-        "post": {
-          "tags": [
-            "webhooks"
-          ],
-          "summary": "Dispatch Webhooks",
-          "operationId": "dispatch_webhooks_v3_api_webhooks_dispatch_post",
-          "parameters": [
-            {
-              "name": "date",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "format": "date"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Dispatch date YYYY-MM-DD",
-                "title": "Date"
-              },
-              "description": "Dispatch date YYYY-MM-DD"
-            },
-            {
-              "name": "dry_run",
-              "in": "query",
-              "required": false,
-              "schema": {
-                "type": "boolean",
-                "default": false,
-                "title": "Dry Run"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful Response",
-              "content": {
-                "application/json": {
-                  "schema": {}
-                }
-              }
-            },
-            "422": {
-              "description": "Validation Error",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/HTTPValidationError"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "/v3/api/engine/config": {
         "get": {
           "tags": [
@@ -4870,7 +4674,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Create Provenance Snapshot V3 Api Provenance Snapshot Create Post"
                   }
@@ -5173,7 +4976,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Batch Verify V3 Api Provenance Batch Verify Get"
                   }
                 }
@@ -5221,7 +5023,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Get Transparency Log V3 Api Provenance Transparency Log Get"
                   }
                 }
@@ -5254,7 +5055,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Audit Transparency Log V3 Api Provenance Transparency Audit Get"
                   }
@@ -5278,7 +5078,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Transparency Replay V3 Api Provenance Transparency Replay Get"
                   }
@@ -5334,7 +5133,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Append Transparency Event V3 Api Provenance Transparency Append Post"
                   }
                 }
@@ -5386,7 +5184,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Prepare Anchor V3 Api Provenance Transparency Anchor Prepare Get"
                   }
                 }
@@ -5444,7 +5241,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Save Anchor Record V3 Api Provenance Transparency Anchor Record Post"
                   }
                 }
@@ -5492,7 +5288,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Get Anchor Records V3 Api Provenance Transparency Anchors Get"
                   }
                 }
@@ -5525,7 +5320,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Get Public Beta Dashboard V3 Api Provenance Dashboard Get"
                   }
@@ -5592,6 +5386,25 @@
           }
         }
       },
+      "/v3/api/reliability/metrics": {
+        "get": {
+          "tags": [
+            "reliability"
+          ],
+          "summary": "Reliability Metrics",
+          "operationId": "reliability_metrics_v3_api_reliability_metrics_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/spec/conformance": {
         "get": {
           "tags": [
@@ -5626,7 +5439,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Get Artifacts Manifest V3 Api Public Artifacts Manifest Get"
                   }
@@ -5802,7 +5614,6 @@
             "uncertainty": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -5868,30 +5679,25 @@
               "title": "Trace Type"
             },
             "subject": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Subject"
             },
             "inputs": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Inputs"
             },
             "outputs": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Outputs"
             },
             "steps": {
               "items": {
-                "additionalProperties": true,
                 "type": "object"
               },
               "type": "array",
               "title": "Steps"
             },
             "provenance": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Provenance"
             }
@@ -6000,7 +5806,6 @@
             "provenance": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -6012,7 +5817,6 @@
             "policy": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -6267,7 +6071,6 @@
             "ritual_sequence": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -7148,28 +6951,23 @@
               "title": "Profile"
             },
             "location": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Location"
             },
             "bikram_sambat": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Bikram Sambat"
             },
             "tithi": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Tithi"
             },
             "panchanga": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Panchanga"
             },
             "observances": {
               "items": {
-                "additionalProperties": true,
                 "type": "object"
               },
               "type": "array",
@@ -7641,7 +7439,6 @@
             "uncertainty": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -7679,7 +7476,6 @@
               "title": "Checks"
             },
             "detail": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Detail"
             }
@@ -7874,6 +7670,13 @@
             "type": {
               "type": "string",
               "title": "Error Type"
+            },
+            "input": {
+              "title": "Input"
+            },
+            "ctx": {
+              "type": "object",
+              "title": "Context"
             }
           },
           "type": "object",
@@ -7883,43 +7686,6 @@
             "type"
           ],
           "title": "ValidationError"
-        },
-        "WebhookSubscriptionCreate": {
-          "properties": {
-            "subscriber_url": {
-              "type": "string",
-              "title": "Subscriber Url"
-            },
-            "festivals": {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "title": "Festivals"
-            },
-            "remind_days_before": {
-              "items": {
-                "type": "integer"
-              },
-              "type": "array",
-              "title": "Remind Days Before"
-            },
-            "format": {
-              "type": "string",
-              "title": "Format",
-              "default": "json"
-            },
-            "active": {
-              "type": "boolean",
-              "title": "Active",
-              "default": true
-            }
-          },
-          "type": "object",
-          "required": [
-            "subscriber_url"
-          ],
-          "title": "WebhookSubscriptionCreate"
         }
       }
     }

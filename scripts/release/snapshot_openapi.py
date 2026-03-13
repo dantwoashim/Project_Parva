@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_ROOT = PROJECT_ROOT / "backend"
@@ -15,7 +15,6 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.main import app  # noqa: E402
-
 
 OUT_PATHS = {
     "v3": PROJECT_ROOT / "docs" / "contracts" / "v3_openapi_snapshot.json",
@@ -34,8 +33,14 @@ def _schema_for_prefix(prefix: str) -> dict:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Snapshot current OpenAPI schemas")
+    parser.add_argument("--track", choices=["v3", "v4", "v5", "all"], default="all")
+    args = parser.parse_args()
+
+    tracks = list(OUT_PATHS) if args.track == "all" else [args.track]
     generated_at = datetime.now(timezone.utc).isoformat()
-    for track, path in OUT_PATHS.items():
+    for track in tracks:
+        path = OUT_PATHS[track]
         path.parent.mkdir(parents=True, exist_ok=True)
         schema = _schema_for_prefix(f"/{track}/")
         wrapper = {

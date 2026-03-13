@@ -30,13 +30,22 @@ def main() -> None:
             converted = conv.convert_from_gregorian(__import__("datetime").date(y, m, d))
             back = conv.convert_to_gregorian(converted.year, converted.month, converted.day)
             ok = back.year == y
-            rows.append({**case, "converted": converted.formatted, "roundtrip": back.isoformat(), "pass": ok})
+            rows.append(
+                {
+                    **case,
+                    "converted": converted.formatted,
+                    "roundtrip": back.isoformat(),
+                    "pass": ok,
+                }
+            )
             if ok:
                 passed += 1
         else:
             result = obs.calculate(case["rule_id"], int(case["year"]))
             ok = result is not None and result.start_date.year == int(case["year"])
-            rows.append({**case, "date": result.start_date.isoformat() if result else None, "pass": ok})
+            rows.append(
+                {**case, "date": result.start_date.isoformat() if result else None, "pass": ok}
+            )
             if ok:
                 passed += 1
 
@@ -52,7 +61,15 @@ def main() -> None:
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    print(json.dumps({"output": str(out), "summary": {k: report[k] for k in ('total', 'passed', 'failed', 'pass_rate')}}, indent=2))
+    print(
+        json.dumps(
+            {
+                "output": str(out),
+                "summary": {k: report[k] for k in ("total", "passed", "failed", "pass_rate")},
+            },
+            indent=2,
+        )
+    )
 
     if report["failed"]:
         raise SystemExit(1)

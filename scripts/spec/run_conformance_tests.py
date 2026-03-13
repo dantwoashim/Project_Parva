@@ -17,12 +17,17 @@ if str(BACKEND_ROOT) not in sys.path:
 
 from app.main import app  # noqa: E402
 
-
 OUT = PROJECT_ROOT / "reports" / "conformance_report.json"
 CASE_PACK = PROJECT_ROOT / "tests" / "conformance" / "conformance_cases.v1.json"
 
 
-def _check(client: TestClient, endpoint: str, params: dict | None = None, required_keys: list[str] | None = None, case_id: str | None = None):
+def _check(
+    client: TestClient,
+    endpoint: str,
+    params: dict | None = None,
+    required_keys: list[str] | None = None,
+    case_id: str | None = None,
+):
     resp = client.get(endpoint, params=params or {})
     ok = resp.status_code == 200
     body = resp.json() if ok else {}

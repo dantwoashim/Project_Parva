@@ -2,7 +2,6 @@
  * FestivalCard — Nepal × Ink Wash Edition
  */
 
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { differenceInDays, format } from 'date-fns';
 import './FestivalCard.css';

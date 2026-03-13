@@ -22,7 +22,6 @@ from datetime import date
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
 REPORTS_DIR = DATA_DIR / "ingest_reports"
@@ -158,7 +157,9 @@ def build_baseline() -> Dict[str, Any]:
 
     for (bs_year, festival_id), items in grouped.items():
         converted_dates: List[str] = []
-        parsed_items: List[Tuple[Dict[str, str], Optional[int], Optional[int], Optional[date], Optional[str]]] = []
+        parsed_items: List[
+            Tuple[Dict[str, str], Optional[int], Optional[int], Optional[date], Optional[str]]
+        ] = []
         for _, row in items:
             month_raw = (row.get("month_raw") or "").strip()
             month_num = MONTH_VARIANTS.get(month_raw)
@@ -195,7 +196,9 @@ def build_baseline() -> Dict[str, Any]:
                 gregorian = ""
             else:
                 status = status_for_group
-                notes = "Ambiguous official date mapping in OCR rows" if status == "ambiguous" else "OK"
+                notes = (
+                    "Ambiguous official date mapping in OCR rows" if status == "ambiguous" else "OK"
+                )
                 gregorian = g_date.isoformat()
 
             override_date = None
@@ -205,7 +208,7 @@ def build_baseline() -> Dict[str, Any]:
                 override_year = overrides.get(g_year_key, {})
                 if festival_id in override_year:
                     override_date = override_year[festival_id]
-                    override_match = (override_date == gregorian)
+                    override_match = override_date == gregorian
 
             source_file = f"holidays_{bs_year}_matched.csv"
             source_citation = f"MoHA Public Holidays {bs_year} BS (OCR matched)"
@@ -264,14 +267,13 @@ def _rule_group(festival_id: str) -> str:
     return str(rule.get("type", "unknown"))
 
 
-def build_discrepancy_and_scorecard(baseline: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+def build_discrepancy_and_scorecard(
+    baseline: Dict[str, Any],
+) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     from app.calendar.calculator_v2 import calculate_festival_v2
 
     records = baseline.get("records", [])
-    usable_records = [
-        r for r in records
-        if r.get("status") == "usable" and r.get("gregorian_date")
-    ]
+    usable_records = [r for r in records if r.get("status") == "usable" and r.get("gregorian_date")]
 
     discrepancies: List[Dict[str, Any]] = []
     by_festival: Dict[str, Dict[str, Any]] = defaultdict(
@@ -312,7 +314,9 @@ def build_discrepancy_and_scorecard(baseline: Dict[str, Any]) -> Tuple[Dict[str,
                     "bs_year": row["bs_year"],
                     "official_date": row["gregorian_date"],
                     "calculated_date_no_overrides": None,
-                    "calculated_date_with_overrides": calc_yes.start_date.isoformat() if calc_yes else None,
+                    "calculated_date_with_overrides": calc_yes.start_date.isoformat()
+                    if calc_yes
+                    else None,
                     "delta_days_no_overrides": None,
                     "probable_cause": "no_rule_or_calc_failure",
                     "source_citation": row["source_citation"],
@@ -349,7 +353,9 @@ def build_discrepancy_and_scorecard(baseline: Dict[str, Any]) -> Tuple[Dict[str,
                 "bs_year": row["bs_year"],
                 "official_date": row["gregorian_date"],
                 "calculated_date_no_overrides": calculated.isoformat(),
-                "calculated_date_with_overrides": calc_yes.start_date.isoformat() if calc_yes else None,
+                "calculated_date_with_overrides": calc_yes.start_date.isoformat()
+                if calc_yes
+                else None,
                 "delta_days_no_overrides": delta,
                 "method_no_overrides": calc_no.method,
                 "probable_cause": cause,
@@ -393,8 +399,12 @@ def build_discrepancy_and_scorecard(baseline: Dict[str, Any]) -> Tuple[Dict[str,
             "reference_mode": "V2 with overrides",
             "total_usable_entries": len(usable_records),
             "total_discrepancies": len(discrepancies),
-            "exact_match_rate": round((len(usable_records) - len(discrepancies)) / (len(usable_records) or 1) * 100, 2),
-            "exact_match_rate_with_overrides": round(exact_with_overrides / (len(usable_records) or 1) * 100, 2),
+            "exact_match_rate": round(
+                (len(usable_records) - len(discrepancies)) / (len(usable_records) or 1) * 100, 2
+            ),
+            "exact_match_rate_with_overrides": round(
+                exact_with_overrides / (len(usable_records) or 1) * 100, 2
+            ),
         },
         "by_festival": _with_rates(by_festival),
         "by_rule_group": _with_rates(by_rule),

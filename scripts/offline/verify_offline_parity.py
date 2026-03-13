@@ -8,9 +8,8 @@ import json
 from pathlib import Path
 from urllib import parse, request
 
-from fastapi.testclient import TestClient
-
 from app.main import app
+from fastapi.testclient import TestClient
 
 
 def _http_get(base_url: str, endpoint: str, params: dict) -> dict:
@@ -25,7 +24,9 @@ def _http_get(base_url: str, endpoint: str, params: dict) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Offline parity verifier")
     parser.add_argument("--base-url", default="http://localhost:8000")
-    parser.add_argument("--local-only", action="store_true", help="Compare local in-process API against itself")
+    parser.add_argument(
+        "--local-only", action="store_true", help="Compare local in-process API against itself"
+    )
     parser.add_argument("--out", default="reports/offline_parity.json")
     args = parser.parse_args()
 
@@ -42,7 +43,11 @@ def main() -> int:
     mismatches = 0
     for endpoint, params in cases:
         local_resp = client.get(endpoint, params=params)
-        local_data = local_resp.json() if local_resp.status_code == 200 else {"status": local_resp.status_code}
+        local_data = (
+            local_resp.json()
+            if local_resp.status_code == 200
+            else {"status": local_resp.status_code}
+        )
         if args.local_only:
             remote_data = local_data
             remote_status = local_resp.status_code
@@ -54,7 +59,9 @@ def main() -> int:
                 remote_data = {"error": str(exc)}
                 remote_status = 599
 
-        same = local_status_ok(local_resp.status_code, remote_status) and comparable(local_data, remote_data)
+        same = local_status_ok(local_resp.status_code, remote_status) and comparable(
+            local_data, remote_data
+        )
         if not same:
             mismatches += 1
         rows.append(

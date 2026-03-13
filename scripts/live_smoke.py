@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -28,7 +27,9 @@ def main() -> int:
 
     base = args.base.rstrip("/")
     checks = [
-        ("/health", {}),
+        ("/health/live", {}),
+        ("/health/ready", {}),
+        ("/health/startup", {}),
         ("/v3/api/calendar/today", {}),
         ("/v3/api/calendar/convert", {"date": "2026-02-15"}),
         ("/v3/api/calendar/panchanga", {"date": "2026-02-15"}),
@@ -49,7 +50,9 @@ def main() -> int:
             status, body = fetch(url)
             payload = json.loads(body)
             ok = status == 200
-            report.append({"path": path, "status": status, "ok": ok, "keys": list(payload.keys())[:8]})
+            report.append(
+                {"path": path, "status": status, "ok": ok, "keys": list(payload.keys())[:8]}
+            )
             all_ok = all_ok and ok
         except Exception as exc:
             report.append({"path": path, "status": "error", "ok": False, "error": str(exc)})

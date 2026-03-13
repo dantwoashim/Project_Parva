@@ -8,7 +8,6 @@ from math import ceil, floor
 from ..base import CalendarDate, CalendarMetadata
 from ..julian import gregorian_to_jd, jd_to_gregorian
 
-
 ISLAMIC_EPOCH = 1948439.5
 ISLAMIC_MONTH_NAMES = {
     1: "Muharram",

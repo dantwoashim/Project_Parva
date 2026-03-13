@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from app.main import app
 from fastapi.testclient import TestClient
 
-from app.main import app
 from sdk.python.parva_sdk import ParvaClient
 
 

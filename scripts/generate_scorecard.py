@@ -28,7 +28,9 @@ def load_history(path: Path) -> list[dict]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate evaluation scorecard")
-    parser.add_argument("--evaluation-json", default=str(DEFAULT_EVAL), help="Path to evaluation_v4.json")
+    parser.add_argument(
+        "--evaluation-json", default=str(DEFAULT_EVAL), help="Path to evaluation_v4.json"
+    )
     parser.add_argument("--history", default=str(HISTORY_PATH), help="Path to trend history jsonl")
     parser.add_argument("--output", default=str(OUT_MD), help="Scorecard markdown output")
     parser.add_argument("--label", default=datetime.utcnow().strftime("%Y-%m-%d"), help="Run label")

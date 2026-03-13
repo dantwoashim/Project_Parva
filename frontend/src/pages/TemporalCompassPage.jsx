@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { festivalAPI, temporalAPI } from '../services/api';
-import { useTemporalContext } from '../context/TemporalContext';
+import { useTemporalContext } from '../context/useTemporalContext';
 import { OrbitalRing } from '../components/Compass/OrbitalRing';
 import { HorizonStrip } from '../components/Compass/HorizonStrip';
 import { AuthorityInspector } from '../components/UI/AuthorityInspector';

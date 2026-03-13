@@ -7,7 +7,8 @@ name = "parva-sdk"
 version = "3.0.0"
 description = "Typed Python SDK for Project Parva authority-track APIs"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11,<3.12"
+license = { text = "MIT" }
 dependencies = [
   "httpx>=0.27.0"
 ]

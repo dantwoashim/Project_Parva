@@ -2,13 +2,19 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Query
 from typing import Optional
+
+from fastapi import APIRouter, Query
 
 from app.calendar.muhurta import get_auspicious_windows, get_muhurtas, get_rahu_kalam
 from app.explainability import create_reason_trace
 
-from ._personal_utils import base_meta_payload, normalize_coordinates, normalize_timezone, parse_date
+from ._personal_utils import (
+    base_meta_payload,
+    normalize_coordinates,
+    normalize_timezone,
+    parse_date,
+)
 
 router = APIRouter(prefix="/api/muhurta", tags=["muhurta"])
 
@@ -99,7 +105,9 @@ async def muhurta_for_day(
     lat: Optional[str] = Query(None, description="Latitude"),
     lon: Optional[str] = Query(None, description="Longitude"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
-    birth_nakshatra: Optional[str] = Query(None, description="Birth nakshatra name or number 1-27 (optional tara-bala)"),
+    birth_nakshatra: Optional[str] = Query(
+        None, description="Birth nakshatra name or number 1-27 (optional tara-bala)"
+    ),
 ):
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
@@ -130,10 +138,22 @@ async def muhurta_for_day(
             "night_minutes": muhurta["night_minutes"],
         },
         steps=[
-            {"step": "solar_windows", "detail": "Computed sunrise/sunset/next sunrise for location and timezone."},
-            {"step": "day_night_muhurta", "detail": "Split day and night into 15 muhurtas each (30 total)."},
-            {"step": "hora_chaughadia", "detail": "Attached hora lords and day/night chaughadia windows."},
-            {"step": "tara_bala", "detail": "Computed tara-bala profile when birth nakshatra is provided."},
+            {
+                "step": "solar_windows",
+                "detail": "Computed sunrise/sunset/next sunrise for location and timezone.",
+            },
+            {
+                "step": "day_night_muhurta",
+                "detail": "Split day and night into 15 muhurtas each (30 total).",
+            },
+            {
+                "step": "hora_chaughadia",
+                "detail": "Attached hora lords and day/night chaughadia windows.",
+            },
+            {
+                "step": "tara_bala",
+                "detail": "Computed tara-bala profile when birth nakshatra is provided.",
+            },
         ],
     )
 
@@ -180,14 +200,25 @@ async def rahu_kalam(
     trace = create_reason_trace(
         trace_type="rahu_kalam",
         subject={"date": target_date.isoformat()},
-        inputs={"date": target_date.isoformat(), "lat": latitude, "lon": longitude, "tz": timezone_name},
+        inputs={
+            "date": target_date.isoformat(),
+            "lat": latitude,
+            "lon": longitude,
+            "tz": timezone_name,
+        },
         outputs={
             "weekday": kalam["weekday"],
             "rahu_kalam": kalam["rahu_kalam"],
         },
         steps=[
-            {"step": "segment_day", "detail": "Segmented daylight into 8 windows by weekday mapping."},
-            {"step": "select_windows", "detail": "Picked Rahu Kalam, Yamaganda, and Gulika windows."},
+            {
+                "step": "segment_day",
+                "detail": "Segmented daylight into 8 windows by weekday mapping.",
+            },
+            {
+                "step": "select_windows",
+                "detail": "Picked Rahu Kalam, Yamaganda, and Gulika windows.",
+            },
         ],
     )
 
@@ -217,12 +248,16 @@ async def rahu_kalam(
 @router.get("/auspicious")
 async def auspicious_muhurta(
     date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
-    ceremony_type: str = Query("general", alias="type", description="vivah|griha_pravesh|travel|upanayana|general"),
+    ceremony_type: str = Query(
+        "general", alias="type", description="vivah|griha_pravesh|travel|upanayana|general"
+    ),
     lat: Optional[str] = Query(None, description="Latitude"),
     lon: Optional[str] = Query(None, description="Longitude"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
     birth_nakshatra: Optional[str] = Query(None, description="Birth nakshatra name or number 1-27"),
-    assumption_set: str = Query("np-mainstream-v2", description="np-mainstream-v2|diaspora-practical-v2"),
+    assumption_set: str = Query(
+        "np-mainstream-v2", description="np-mainstream-v2|diaspora-practical-v2"
+    ),
 ):
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
@@ -255,15 +290,26 @@ async def auspicious_muhurta(
         },
         steps=[
             {"step": "day_night_muhurta", "detail": "Computed 30 day/night muhurta windows."},
-            {"step": "hora_chaughadia", "detail": "Mapped each candidate to hora lord + chaughadia segment."},
-            {"step": "tara_bala", "detail": "Applied optional tara-bala signal from birth nakshatra."},
-            {"step": "score_rank", "detail": "Scored ceremony windows with assumption-set penalties/bonuses."},
+            {
+                "step": "hora_chaughadia",
+                "detail": "Mapped each candidate to hora lord + chaughadia segment.",
+            },
+            {
+                "step": "tara_bala",
+                "detail": "Applied optional tara-bala signal from birth nakshatra.",
+            },
+            {
+                "step": "score_rank",
+                "detail": "Scored ceremony windows with assumption-set penalties/bonuses.",
+            },
         ],
     )
 
     resolved_assumption_set = ranked.get("assumption_set_id", "np-mainstream-v2")
     enriched_ranked = [_enrich_ranked_window(row) for row in ranked["ranked_muhurtas"]]
-    enriched_selected = [row for row in enriched_ranked if row["score"] >= ranked["ranking_profile"]["minimum_score"]]
+    enriched_selected = [
+        row for row in enriched_ranked if row["score"] >= ranked["ranking_profile"]["minimum_score"]
+    ]
 
     if enriched_selected:
         best_window = enriched_selected[0]

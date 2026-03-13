@@ -9,7 +9,6 @@ from typing import Dict, List
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 PRECOMPUTED_DIR = PROJECT_ROOT / "output" / "precomputed"
 REPORTS_DIR = PROJECT_ROOT / "reports"
@@ -25,7 +24,7 @@ def _artifact_row(path: Path, category: str) -> dict:
         "category": category,
         "size_bytes": stat.st_size,
         "modified_utc": datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc).isoformat(),
-        "path": str(path),
+        "path": str(path.relative_to(PROJECT_ROOT)),
     }
 
 

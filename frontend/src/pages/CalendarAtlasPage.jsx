@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { calendarAPI } from '../services/api';
-import { useTemporalContext } from '../context/TemporalContext';
+import { useTemporalContext } from '../context/useTemporalContext';
 import './CalendarAtlasPage.css';
 
 const MONTHS = [

@@ -2,22 +2,25 @@
 
 from __future__ import annotations
 
-import os
 from datetime import datetime, timezone
-from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 
 from app.bootstrap.middleware import (
+    build_access_control_guard,
     build_engine_headers,
     build_envelope_adapter,
     build_experimental_version_gate,
+    build_rate_limit_guard,
+    build_request_context,
     build_request_size_guard,
-    parse_bool,
 )
 from app.bootstrap.router_registry import register_routers
+from app.bootstrap.settings import load_settings, validate_settings
+from app.cache.precomputed import get_cache_stats
 from app.engine.ephemeris_config import get_ephemeris_config
 
 PRODUCT_VERSION = "3.0.0"
@@ -26,7 +29,6 @@ DEFAULT_CORS_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:5173",
 ]
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
 RESERVED_FRONTEND_PREFIXES = (
     "api",
     "v2",
@@ -40,6 +42,8 @@ RESERVED_FRONTEND_PREFIXES = (
 
 
 def _cors_origins_from_env() -> list[str]:
+    import os
+
     raw = os.getenv("CORS_ALLOW_ORIGINS", "").strip()
     if not raw:
         return list(DEFAULT_CORS_ORIGINS)
@@ -51,25 +55,43 @@ def _ephemeris_header_value() -> str:
     return get_ephemeris_config().header_value
 
 
-def _frontend_dist_from_env() -> Path:
-    configured = os.getenv("PARVA_FRONTEND_DIST", "").strip()
-    if configured:
-        return Path(configured).expanduser().resolve()
-    return (PROJECT_ROOT / "frontend" / "dist").resolve()
-
-
 def _is_reserved_frontend_path(path: str) -> bool:
     normalized = path.lstrip("/")
-    return any(normalized == prefix or normalized.startswith(f"{prefix}/") for prefix in RESERVED_FRONTEND_PREFIXES)
+    return any(
+        normalized == prefix or normalized.startswith(f"{prefix}/")
+        for prefix in RESERVED_FRONTEND_PREFIXES
+    )
+
+
+def _build_startup_checks(settings) -> dict[str, object]:
+    cache_stats = get_cache_stats()
+    frontend_index = settings.frontend_dist / "index.html"
+    checks = {
+        "config": {"required": True, "ok": True, "detail": "validated"},
+        "precomputed": {
+            "required": settings.require_precomputed,
+            "ok": cache_stats.get("file_count", 0) > 0,
+            "detail": cache_stats,
+        },
+        "frontend_dist": {
+            "required": settings.serve_frontend and settings.environment.lower() == "production",
+            "ok": frontend_index.exists(),
+            "path": str(frontend_index),
+        },
+    }
+    ready = all((not item["required"]) or item["ok"] for item in checks.values())
+    return {
+        "completed": True,
+        "ready": ready,
+        "checks": checks,
+    }
 
 
 def create_app() -> FastAPI:
-    enable_experimental_api = parse_bool(
-        os.getenv("PARVA_ENABLE_EXPERIMENTAL_API"),
-        default=False,
-    )
-    environment = os.getenv("PARVA_ENV", "development")
-    serve_frontend = parse_bool(os.getenv("PARVA_SERVE_FRONTEND"), default=False)
+    settings = load_settings()
+    validation_errors = validate_settings(settings)
+    if validation_errors:
+        raise RuntimeError("Startup validation failed: " + " ".join(validation_errors))
 
     app = FastAPI(
         title="Project Parva API",
@@ -78,9 +100,11 @@ def create_app() -> FastAPI:
     )
 
     app.state.started_at = datetime.now(timezone.utc)
-    app.state.enable_experimental_api = enable_experimental_api
-    app.state.environment = environment
-    app.state.serve_frontend = serve_frontend
+    app.state.enable_experimental_api = settings.enable_experimental_api
+    app.state.environment = settings.environment
+    app.state.serve_frontend = settings.serve_frontend
+    app.state.settings = settings
+    app.state.startup_checks = _build_startup_checks(settings)
 
     app.add_middleware(
         CORSMiddleware,
@@ -90,35 +114,70 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    max_request_bytes = int(os.getenv("PARVA_MAX_REQUEST_BYTES", "1048576"))
-    max_query_length = int(os.getenv("PARVA_MAX_QUERY_LENGTH", "4096"))
-
-    app.middleware("http")(
-        build_request_size_guard(
-            max_query_length=max_query_length,
-            max_request_bytes=max_request_bytes,
-        )
-    )
-    app.middleware("http")(
-        build_experimental_version_gate(enable_experimental_api=enable_experimental_api)
-    )
-    app.middleware("http")(
-        build_envelope_adapter(enable_experimental_api=enable_experimental_api)
-    )
     app.middleware("http")(
         build_engine_headers(
             ephemeris_header_value=_ephemeris_header_value,
-            enable_experimental_api=enable_experimental_api,
+            enable_experimental_api=settings.enable_experimental_api,
         )
     )
+    app.middleware("http")(
+        build_envelope_adapter(enable_experimental_api=settings.enable_experimental_api)
+    )
+    app.middleware("http")(build_rate_limit_guard(settings=settings))
+    app.middleware("http")(build_access_control_guard(settings=settings))
+    app.middleware("http")(
+        build_experimental_version_gate(enable_experimental_api=settings.enable_experimental_api)
+    )
+    app.middleware("http")(
+        build_request_size_guard(
+            max_query_length=settings.max_query_length,
+            max_request_bytes=settings.max_request_bytes,
+        )
+    )
+    app.middleware("http")(build_request_context(product_version=PRODUCT_VERSION))
+
+    @app.exception_handler(HTTPException)
+    async def http_exception_handler(request, exc: HTTPException):
+        return JSONResponse(
+            status_code=exc.status_code,
+            headers=exc.headers,
+            content={
+                "detail": exc.detail,
+                "request_id": getattr(request.state, "request_id", None),
+                "version": PRODUCT_VERSION,
+            },
+        )
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_exception_handler(request, exc: RequestValidationError):
+        return JSONResponse(
+            status_code=422,
+            content={
+                "detail": "Request validation failed",
+                "errors": exc.errors(),
+                "request_id": getattr(request.state, "request_id", None),
+                "version": PRODUCT_VERSION,
+            },
+        )
+
+    @app.exception_handler(Exception)
+    async def unhandled_exception_handler(request, exc: Exception):
+        return JSONResponse(
+            status_code=500,
+            content={
+                "detail": "Internal Server Error",
+                "request_id": getattr(request.state, "request_id", None),
+                "version": PRODUCT_VERSION,
+            },
+        )
 
     register_routers(
         app,
-        enable_experimental_api=enable_experimental_api,
-        environment=environment,
+        enable_experimental_api=settings.enable_experimental_api,
+        environment=settings.environment,
     )
 
-    frontend_dist = _frontend_dist_from_env() if serve_frontend else None
+    frontend_dist = settings.frontend_dist if settings.serve_frontend else None
     frontend_index = (frontend_dist / "index.html") if frontend_dist else None
 
     @app.get("/v3/openapi.json")
@@ -129,7 +188,7 @@ def create_app() -> FastAPI:
     async def v3_docs():
         return RedirectResponse(url="/docs")
 
-    if enable_experimental_api:
+    if settings.enable_experimental_api:
 
         @app.get("/v2/openapi.json")
         async def v2_openapi():
@@ -157,7 +216,7 @@ def create_app() -> FastAPI:
 
     @app.get("/")
     async def root():
-        if serve_frontend and frontend_index and frontend_index.exists():
+        if settings.serve_frontend and frontend_index and frontend_index.exists():
             return FileResponse(frontend_index)
 
         return {
@@ -165,9 +224,11 @@ def create_app() -> FastAPI:
             "description": "Nepal Festival Discovery System",
             "version": PRODUCT_VERSION,
             "public_profile": "v3",
-            "experimental_api_enabled": enable_experimental_api,
-            "environment": environment,
-            "serve_frontend": serve_frontend,
+            "experimental_api_enabled": settings.enable_experimental_api,
+            "webhook_support": "not_shipped",
+            "environment": settings.environment,
+            "serve_frontend": settings.serve_frontend,
+            "non_public_auth": "api_key_or_admin_bearer",
             "endpoints": {
                 "festivals": "/v3/api/festivals",
                 "calendar_today": "/v3/api/calendar/today",
@@ -182,17 +243,42 @@ def create_app() -> FastAPI:
         now = datetime.now(timezone.utc)
         uptime_seconds = int((now - app.state.started_at).total_seconds())
         return {
-            "status": "healthy",
+            "status": "healthy" if app.state.startup_checks.get("ready") else "degraded",
             "version": PRODUCT_VERSION,
             "uptime_seconds": uptime_seconds,
             "public_profile": "v3",
-            "experimental_api_enabled": enable_experimental_api,
-            "environment": environment,
-            "serve_frontend": serve_frontend,
+            "experimental_api_enabled": settings.enable_experimental_api,
+            "webhook_support": "not_shipped",
+            "environment": settings.environment,
+            "serve_frontend": settings.serve_frontend,
+            "startup": app.state.startup_checks,
         }
 
-    if serve_frontend:
-        frontend_dist = _frontend_dist_from_env()
+    @app.get("/health/live")
+    async def health_live():
+        return {
+            "status": "alive",
+            "version": PRODUCT_VERSION,
+        }
+
+    @app.get("/health/startup")
+    async def health_startup():
+        status_code = 200 if app.state.startup_checks.get("completed") else 503
+        return JSONResponse(status_code=status_code, content=app.state.startup_checks)
+
+    @app.get("/health/ready")
+    async def health_ready():
+        payload = {
+            "status": "ready" if app.state.startup_checks.get("ready") else "not_ready",
+            "version": PRODUCT_VERSION,
+            "checks": app.state.startup_checks.get("checks", {}),
+        }
+        return JSONResponse(
+            status_code=200 if app.state.startup_checks.get("ready") else 503, content=payload
+        )
+
+    if settings.serve_frontend:
+        frontend_dist = settings.frontend_dist
         index_file = frontend_dist / "index.html"
 
         if index_file.exists():
@@ -203,7 +289,11 @@ def create_app() -> FastAPI:
                     raise HTTPException(status_code=404, detail="Not Found")
 
                 candidate = (frontend_dist / full_path).resolve()
-                if frontend_dist in candidate.parents and candidate.exists() and candidate.is_file():
+                if (
+                    frontend_dist in candidate.parents
+                    and candidate.exists()
+                    and candidate.is_file()
+                ):
                     return FileResponse(candidate)
 
                 return FileResponse(index_file)

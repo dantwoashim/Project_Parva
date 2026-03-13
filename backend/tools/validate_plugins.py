@@ -32,13 +32,18 @@ def main() -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
 
-    print(json.dumps({
-        "total": report["total"],
-        "passed": report["passed"],
-        "failed": report["failed"],
-        "pass_rate": report["pass_rate"],
-        "output": str(out_path),
-    }, indent=2))
+    print(
+        json.dumps(
+            {
+                "total": report["total"],
+                "passed": report["passed"],
+                "failed": report["failed"],
+                "pass_rate": report["pass_rate"],
+                "output": str(out_path),
+            },
+            indent=2,
+        )
+    )
 
     if report["failed"]:
         raise SystemExit(1)

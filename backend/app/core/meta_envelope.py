@@ -82,7 +82,9 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
         }
 
     tithi_block = payload.get("tithi") if isinstance(payload.get("tithi"), dict) else {}
-    bs_block = payload.get("bikram_sambat") if isinstance(payload.get("bikram_sambat"), dict) else {}
+    bs_block = (
+        payload.get("bikram_sambat") if isinstance(payload.get("bikram_sambat"), dict) else {}
+    )
     panchanga_block = payload.get("panchanga") if isinstance(payload.get("panchanga"), dict) else {}
 
     confidence_level_raw = (
@@ -93,11 +95,18 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
         or "unknown"
     )
     confidence_level = str(confidence_level_raw).lower()
-    method = payload.get("method") or tithi_block.get("method") or payload.get("engine_version") or "unknown"
+    method = (
+        payload.get("method")
+        or tithi_block.get("method")
+        or payload.get("engine_version")
+        or "unknown"
+    )
 
     verify_url = "/v5/api/provenance/root" if track == "v5" else "/v4/api/provenance/root"
     fallback_provenance = get_provenance_payload(verify_url=verify_url, create_if_missing=True)
-    raw_provenance = payload.get("provenance") if isinstance(payload.get("provenance"), dict) else {}
+    raw_provenance = (
+        payload.get("provenance") if isinstance(payload.get("provenance"), dict) else {}
+    )
     provenance = merge_meta_defaults(fallback_provenance, raw_provenance)
 
     signature = derive_signature(provenance)
@@ -111,7 +120,11 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
     trace_id = (
         payload.get("calculation_trace_id")
         or payload.get("trace_id")
-        or (payload.get("trace", {}).get("trace_id") if isinstance(payload.get("trace"), dict) else None)
+        or (
+            payload.get("trace", {}).get("trace_id")
+            if isinstance(payload.get("trace"), dict)
+            else None
+        )
     )
 
     if track == "v5":

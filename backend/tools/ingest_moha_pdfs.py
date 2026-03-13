@@ -21,7 +21,6 @@ import argparse
 import csv
 import json
 import re
-import shutil
 import subprocess
 import tempfile
 from dataclasses import dataclass
@@ -123,12 +122,8 @@ FESTIVAL_MAP = {
 
 
 MONTH_PATTERN = "|".join(sorted(MONTH_VARIANTS.keys(), key=len, reverse=True))
-LINE_RE = re.compile(
-    rf"^(.*?)\s*[-–—]\s*({MONTH_PATTERN})\s*([०-९0-9]+)\s*गते"
-)
-LINE_RE_FUZZY = re.compile(
-    rf"^(.*?)\s*[-–—]\s*({MONTH_PATTERN})\s*([०-९0-9]+)"
-)
+LINE_RE = re.compile(rf"^(.*?)\s*[-–—]\s*({MONTH_PATTERN})\s*([०-९0-9]+)\s*गते")
+LINE_RE_FUZZY = re.compile(rf"^(.*?)\s*[-–—]\s*({MONTH_PATTERN})\s*([०-९0-9]+)")
 
 CONFIDENCE_ORDER = {"high": 3, "medium": 2, "low": 1}
 
@@ -312,7 +307,10 @@ def deduplicate_entries(entries: List[HolidayEntry]) -> List[HolidayEntry]:
     for entry in entries:
         key = (entry.bs_year, entry.month_num, entry.day_num, canonical(entry.name_raw))
         prev = exact.get(key)
-        if prev is None or CONFIDENCE_ORDER[entry.parse_confidence] > CONFIDENCE_ORDER[prev.parse_confidence]:
+        if (
+            prev is None
+            or CONFIDENCE_ORDER[entry.parse_confidence] > CONFIDENCE_ORDER[prev.parse_confidence]
+        ):
             exact[key] = entry
 
     # Pass 2: collapse multiple rows mapping to same festival+date.
@@ -324,7 +322,10 @@ def deduplicate_entries(entries: List[HolidayEntry]) -> List[HolidayEntry]:
             continue
         key = (entry.bs_year, entry.matched_id, entry.month_num, entry.day_num)
         prev = by_festival.get(key)
-        if prev is None or CONFIDENCE_ORDER[entry.parse_confidence] > CONFIDENCE_ORDER[prev.parse_confidence]:
+        if (
+            prev is None
+            or CONFIDENCE_ORDER[entry.parse_confidence] > CONFIDENCE_ORDER[prev.parse_confidence]
+        ):
             by_festival[key] = entry
 
     return list(by_festival.values()) + leftovers
@@ -347,11 +348,25 @@ def write_csv(path: Path, entries: Iterable[HolidayEntry], matched: bool) -> Non
                 ]
             )
             for e in entries:
-                writer.writerow([e.bs_year, e.name_raw, e.month_raw, e.day_raw, e.matched_id or "", e.parse_confidence, e.line])
+                writer.writerow(
+                    [
+                        e.bs_year,
+                        e.name_raw,
+                        e.month_raw,
+                        e.day_raw,
+                        e.matched_id or "",
+                        e.parse_confidence,
+                        e.line,
+                    ]
+                )
         else:
-            writer.writerow(["bs_year", "name_raw", "month_raw", "day_raw", "parse_confidence", "line"])
+            writer.writerow(
+                ["bs_year", "name_raw", "month_raw", "day_raw", "parse_confidence", "line"]
+            )
             for e in entries:
-                writer.writerow([e.bs_year, e.name_raw, e.month_raw, e.day_raw, e.parse_confidence, e.line])
+                writer.writerow(
+                    [e.bs_year, e.name_raw, e.month_raw, e.day_raw, e.parse_confidence, e.line]
+                )
 
 
 def merge_overrides(
@@ -381,7 +396,10 @@ def merge_overrides(
             continue
         key = (str(g_date.year), e.matched_id)
         prev = selected.get(key)
-        if prev is None or CONFIDENCE_ORDER[e.parse_confidence] > CONFIDENCE_ORDER[prev.parse_confidence]:
+        if (
+            prev is None
+            or CONFIDENCE_ORDER[e.parse_confidence] > CONFIDENCE_ORDER[prev.parse_confidence]
+        ):
             selected[key] = e
 
     for e in selected.values():

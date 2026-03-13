@@ -1,15 +1,15 @@
 """Week 22-24 API integration checks for dual-mode BS confidence."""
 
-from fastapi.testclient import TestClient
-
 from app.main import app
-
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 
 
 def test_bs_to_gregorian_official_confidence():
-    response = client.post("/api/calendar/bs-to-gregorian", json={"year": 2080, "month": 1, "day": 1})
+    response = client.post(
+        "/api/calendar/bs-to-gregorian", json={"year": 2080, "month": 1, "day": 1}
+    )
     assert response.status_code == 200
     body = response.json()
     assert body["bs"]["confidence"] == "official"
@@ -18,7 +18,9 @@ def test_bs_to_gregorian_official_confidence():
 
 
 def test_bs_to_gregorian_estimated_confidence_for_far_year():
-    response = client.post("/api/calendar/bs-to-gregorian", json={"year": 2150, "month": 1, "day": 1})
+    response = client.post(
+        "/api/calendar/bs-to-gregorian", json={"year": 2150, "month": 1, "day": 1}
+    )
     assert response.status_code == 200
     body = response.json()
     assert body["bs"]["confidence"] == "estimated"

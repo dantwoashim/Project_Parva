@@ -30,7 +30,10 @@ def test_dashain_rule_prefers_v3_source():
 def test_coverage_math_is_consistent():
     coverage = get_rules_coverage(target=300)
     assert coverage["total_rules"] >= 300
-    assert coverage["computed_rules"] + coverage["provisional_rules"] + coverage["override_rules"] == coverage["total_rules"]
+    assert (
+        coverage["computed_rules"] + coverage["provisional_rules"] + coverage["override_rules"]
+        == coverage["total_rules"]
+    )
     assert coverage["remaining_to_target"] == max(300 - coverage["total_rules"], 0)
     assert coverage["by_source"].get("rule_ingestion_seed_v1", 0) > 0
 

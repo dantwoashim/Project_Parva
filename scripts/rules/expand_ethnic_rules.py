@@ -15,10 +15,11 @@ Categories targeted:
 
 import json
 import sys
-from pathlib import Path
 from datetime import datetime, timezone
+from pathlib import Path
 
-RULES_PATH = Path("/Users/rohanbasnet14/Documents/Project_Parva/data/festivals/festival_rules_v4.json")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+RULES_PATH = PROJECT_ROOT / "data" / "festivals" / "festival_rules_v4.json"
 
 # ─── New rules to add ──────────────────────────────────────
 
@@ -224,7 +225,12 @@ NEW_RULES = [
         "engine": "v2_lunar_month",
         "notes": "Most sacred day in Theravada - triple gem day.",
         "tags": ["v4", "buddhist", "theravada"],
-        "rule": {"lunar_month": "Baishakh", "tithi": 15, "paksha": "shukla", "adhik_policy": "skip"},
+        "rule": {
+            "lunar_month": "Baishakh",
+            "tithi": 15,
+            "paksha": "shukla",
+            "adhik_policy": "skip",
+        },
     },
     {
         "festival_id": "abhidhamma-day",
@@ -384,7 +390,12 @@ NEW_RULES = [
         "engine": "v2_lunar_month",
         "notes": "Full moon pilgrimage to Swayambhunath stupa.",
         "tags": ["v4", "buddhist", "newari"],
-        "rule": {"lunar_month": "Baishakh", "tithi": 15, "paksha": "shukla", "adhik_policy": "skip"},
+        "rule": {
+            "lunar_month": "Baishakh",
+            "tithi": 15,
+            "paksha": "shukla",
+            "adhik_policy": "skip",
+        },
     },
     {
         "festival_id": "prajnaparamita-day",
@@ -426,7 +437,6 @@ NEW_RULES = [
         "tags": ["v4", "buddhist"],
         "rule": {"lunar_month": "Magh", "tithi": 15, "paksha": "shukla", "adhik_policy": "skip"},
     },
-
     # ═══════════════════════════════════════════════════════
     # KIRAT / RAI / LIMBU FESTIVALS (12 new)
     # ═══════════════════════════════════════════════════════
@@ -448,7 +458,12 @@ NEW_RULES = [
         "engine": "v2_lunar_month",
         "notes": "Rai nature worship festival with Sili dance. Baishakh Purnima.",
         "tags": ["v4", "kirat", "rai"],
-        "rule": {"lunar_month": "Baishakh", "tithi": 15, "paksha": "shukla", "adhik_policy": "skip"},
+        "rule": {
+            "lunar_month": "Baishakh",
+            "tithi": 15,
+            "paksha": "shukla",
+            "adhik_policy": "skip",
+        },
     },
     {
         "festival_id": "udhauli",
@@ -548,7 +563,12 @@ NEW_RULES = [
         "engine": "v2_lunar_month",
         "notes": "Spring Sakela with uphill migration dances.",
         "tags": ["v4", "rai", "kirat"],
-        "rule": {"lunar_month": "Baishakh", "tithi": 15, "paksha": "shukla", "adhik_policy": "skip"},
+        "rule": {
+            "lunar_month": "Baishakh",
+            "tithi": 15,
+            "paksha": "shukla",
+            "adhik_policy": "skip",
+        },
     },
     {
         "festival_id": "bal-chaturdashi-kirat",
@@ -568,7 +588,12 @@ NEW_RULES = [
         "engine": "v2_lunar_month",
         "notes": "Kirat variant of Bala Chaturdashi at Halesi Mahadev.",
         "tags": ["v4", "kirat"],
-        "rule": {"lunar_month": "Mangsir", "tithi": 14, "paksha": "krishna", "adhik_policy": "skip"},
+        "rule": {
+            "lunar_month": "Mangsir",
+            "tithi": 14,
+            "paksha": "krishna",
+            "adhik_policy": "skip",
+        },
     },
     {
         "festival_id": "maghe-sakranti-limbu",
@@ -650,7 +675,6 @@ NEW_RULES = [
         "tags": ["v4", "kirat"],
         "rule": {"bs_month": 1, "tithi": 1, "paksha": "shukla"},
     },
-
     # ═══════════════════════════════════════════════════════
     # THARU / REGIONAL FESTIVALS (10 new)
     # ═══════════════════════════════════════════════════════
@@ -752,7 +776,12 @@ NEW_RULES = [
         "engine": "v2_lunar_month",
         "notes": "Eastern Tharu nature worship linked to Sal tree.",
         "tags": ["v4", "tharu"],
-        "rule": {"lunar_month": "Baishakh", "tithi": 15, "paksha": "shukla", "adhik_policy": "skip"},
+        "rule": {
+            "lunar_month": "Baishakh",
+            "tithi": 15,
+            "paksha": "shukla",
+            "adhik_policy": "skip",
+        },
     },
     {
         "festival_id": "madi-jatra",
@@ -852,9 +881,13 @@ NEW_RULES = [
         "engine": "v2_lunar_month",
         "notes": "Gurung trance dance festival. Baishakh Purnima.",
         "tags": ["v4", "gurung"],
-        "rule": {"lunar_month": "Baishakh", "tithi": 15, "paksha": "shukla", "adhik_policy": "skip"},
+        "rule": {
+            "lunar_month": "Baishakh",
+            "tithi": 15,
+            "paksha": "shukla",
+            "adhik_policy": "skip",
+        },
     },
-
     # ═══════════════════════════════════════════════════════
     # ISLAMIC OBSERVANCES (5 new, tabular approximation)
     # ═══════════════════════════════════════════════════════
@@ -958,7 +991,6 @@ NEW_RULES = [
         "tags": ["v4", "islamic"],
         "rule": {"islamic_month": "Shaban", "islamic_day": 15},
     },
-
     # ═══════════════════════════════════════════════════════
     # CROSS-TRADITION MULTI-FAITH (5 new)
     # ═══════════════════════════════════════════════════════
@@ -1097,13 +1129,13 @@ def main():
     with open(RULES_PATH, "w") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-    print(f"\n=== Results ===")
+    print("\n=== Results ===")
     print(f"Added: {added}")
     print(f"Skipped (duplicate): {skipped}")
     if duplicates:
         print(f"  Duplicates: {', '.join(duplicates)}")
     print(f"Total rules: {data['total_rules']}")
-    print(f"\n=== Category breakdown ===")
+    print("\n=== Category breakdown ===")
     for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
         print(f"  {cat}: {count}")
 

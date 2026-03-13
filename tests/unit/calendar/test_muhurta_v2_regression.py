@@ -8,7 +8,6 @@ from pathlib import Path
 
 from app.calendar.muhurta import get_auspicious_windows, get_muhurtas, get_rahu_kalam
 
-
 FIXTURE_PATH = Path("tests/fixtures/muhurta/muhurta_v2_regression.json")
 
 
@@ -82,7 +81,9 @@ def test_assumption_sets_affect_scores_for_same_window():
     }
 
     strict = get_auspicious_windows(target_date, assumption_set_id="np-mainstream-v2", **common)
-    practical = get_auspicious_windows(target_date, assumption_set_id="diaspora-practical-v2", **common)
+    practical = get_auspicious_windows(
+        target_date, assumption_set_id="diaspora-practical-v2", **common
+    )
 
     assert strict["assumption_set_id"] == "np-mainstream-v2"
     assert practical["assumption_set_id"] == "diaspora-practical-v2"

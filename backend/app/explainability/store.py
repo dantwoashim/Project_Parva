@@ -8,7 +8,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRACE_DIR = PROJECT_ROOT / "backend" / "data" / "traces"
 
@@ -52,7 +51,9 @@ def create_reason_trace(
         **base_payload,
     }
     TRACE_DIR.mkdir(parents=True, exist_ok=True)
-    (TRACE_DIR / f"{trace_id}.json").write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    (TRACE_DIR / f"{trace_id}.json").write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
     return payload
 
 
@@ -67,7 +68,9 @@ def get_reason_trace(trace_id: str) -> dict[str, Any] | None:
 
 
 def list_recent_traces(limit: int = 20) -> list[dict[str, Any]]:
-    files = sorted(TRACE_DIR.glob("tr_*.json"), key=lambda p: p.stat().st_mtime, reverse=True)[:limit]
+    files = sorted(TRACE_DIR.glob("tr_*.json"), key=lambda p: p.stat().st_mtime, reverse=True)[
+        :limit
+    ]
     rows: list[dict[str, Any]] = []
     for path in files:
         try:

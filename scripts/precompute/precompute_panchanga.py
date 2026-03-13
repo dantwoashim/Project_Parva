@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from datetime import date, timedelta, timezone, datetime
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -24,7 +24,6 @@ from app.calendar.bikram_sambat import (  # noqa: E402
 from app.calendar.panchanga import get_panchanga  # noqa: E402
 from app.provenance import get_provenance_payload  # noqa: E402
 from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty  # noqa: E402
-
 
 OUT_DIR = PROJECT_ROOT / "output" / "precomputed"
 
@@ -84,7 +83,9 @@ def _build_panchanga_response(target_date: date) -> dict:
             "library": panchanga.get("library", "pyswisseph"),
         },
         "engine_version": "v2",
-        "provenance": get_provenance_payload(verify_url="/v2/api/provenance/root", create_if_missing=True),
+        "provenance": get_provenance_payload(
+            verify_url="/v2/api/provenance/root", create_if_missing=True
+        ),
     }
 
 

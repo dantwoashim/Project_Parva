@@ -7,13 +7,14 @@ This replaces the hardcoded FESTIVAL_RULES in calculator.py.
 
 import json
 from pathlib import Path
-from typing import Dict, Any, Optional, Literal
+from typing import Any, Dict, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict
 
 
 class CalendarRule(BaseModel):
     """Rule for calculating festival dates (matches calculator.py)."""
+
     calendar_type: Literal["solar", "lunar"]
     bs_month: int
     tithi: Optional[int] = None
@@ -21,7 +22,7 @@ class CalendarRule(BaseModel):
     solar_day: Optional[int] = None
     duration: int = 1
     notes: Optional[str] = None
-    
+
     model_config = ConfigDict(frozen=True)
 
 
@@ -37,25 +38,25 @@ def _get_rules_path() -> Path:
 def load_festival_rules() -> Dict[str, CalendarRule]:
     """
     Load festival rules from JSON file.
-    
+
     Returns:
         Dictionary of festival_id -> CalendarRule
-    
+
     Uses caching to avoid repeated file reads.
     """
     global _cached_rules
-    
+
     if _cached_rules is not None:
         return _cached_rules
-    
+
     rules_path = _get_rules_path()
-    
+
     if not rules_path.exists():
         raise FileNotFoundError(f"Festival rules not found: {rules_path}")
-    
+
     with open(rules_path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    
+
     rules = {}
     for festival_id, rule_data in data.get("festivals", {}).items():
         # Convert JSON format to CalendarRule
@@ -68,7 +69,7 @@ def load_festival_rules() -> Dict[str, CalendarRule]:
             duration=rule_data.get("duration_days", 1),
             notes=rule_data.get("notes"),
         )
-    
+
     _cached_rules = rules
     return rules
 
@@ -76,28 +77,28 @@ def load_festival_rules() -> Dict[str, CalendarRule]:
 def get_festival_rule(festival_id: str) -> CalendarRule:
     """
     Get the calculation rule for a specific festival.
-    
+
     Args:
         festival_id: Festival identifier (e.g., "dashain", "tihar")
-    
+
     Returns:
         CalendarRule for the festival
-    
+
     Raises:
         KeyError: If festival not found
     """
     rules = load_festival_rules()
-    
+
     if festival_id not in rules:
         raise KeyError(f"Unknown festival: {festival_id}")
-    
+
     return rules[festival_id]
 
 
 def list_festivals() -> list:
     """
     List all available festival IDs.
-    
+
     Returns:
         List of festival ID strings
     """
@@ -115,17 +116,17 @@ def reload_rules():
 def get_festival_metadata(festival_id: str) -> Dict[str, Any]:
     """
     Get full metadata for a festival from JSON.
-    
+
     Returns more info than just the CalendarRule (names, category, etc.)
     """
     rules_path = _get_rules_path()
-    
+
     with open(rules_path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    
+
     festivals = data.get("festivals", {})
-    
+
     if festival_id not in festivals:
         raise KeyError(f"Unknown festival: {festival_id}")
-    
+
     return festivals[festival_id]

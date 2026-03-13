@@ -6,8 +6,8 @@ This is a helper to scale the gold-set over time without manual edits.
 """
 
 import json
-from pathlib import Path
 from datetime import date
+from pathlib import Path
 
 ROOT = Path(__file__).parent.parent / "app" / "calendar"
 SOURCES_PATH = ROOT / "sources.json"

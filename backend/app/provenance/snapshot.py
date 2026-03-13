@@ -16,7 +16,6 @@ from typing import Any, Optional
 
 from app.engine.ephemeris_config import get_ephemeris_config
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 BACKEND_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_DATA_DIR = BACKEND_ROOT / "data"

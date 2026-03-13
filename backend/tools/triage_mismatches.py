@@ -57,7 +57,10 @@ def main() -> None:
     }
 
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUT_JSON.write_text(json.dumps({"summary": summary, "discrepancies": triaged}, ensure_ascii=False, indent=2), encoding="utf-8")
+    OUT_JSON.write_text(
+        json.dumps({"summary": summary, "discrepancies": triaged}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
 
     lines = [
         "# Discrepancy Triage",

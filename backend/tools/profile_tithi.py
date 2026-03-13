@@ -48,7 +48,13 @@ Run size: 200 calls to `get_udaya_tithi(date)`
 Threshold check: target is `< 50 ms` per call.
 """
 
-    out = Path(__file__).resolve().parents[2] / "docs" / "weekly_execution" / "year1_week16" / "tithi_performance.md"
+    out = (
+        Path(__file__).resolve().parents[2]
+        / "docs"
+        / "weekly_execution"
+        / "year1_week16"
+        / "tithi_performance.md"
+    )
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(text, encoding="utf-8")
     print(out)

@@ -14,17 +14,16 @@ import sys
 import time
 from datetime import date, datetime
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from app.calendar.bikram_sambat import bs_to_gregorian, gregorian_to_bs
 from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
-from app.calendar.bikram_sambat import gregorian_to_bs, bs_to_gregorian
 from app.calendar.tithi.tithi_udaya import get_udaya_tithi
-from app.calendar.panchanga import get_panchanga
-
 
 # ── Benchmark Test Suites ─────────────────────────────────────────
+
 
 def bench_bs_round_trip(years: int = 100) -> Dict:
     """Benchmark: BS ↔ Gregorian round-trip accuracy."""
@@ -155,22 +154,22 @@ def run_full_benchmark(year: int = 2025) -> Dict:
 def format_markdown(results: Dict) -> str:
     """Format benchmark results as Markdown."""
     lines = [
-        f"# Parva Benchmark Report",
-        f"",
+        "# Parva Benchmark Report",
+        "",
         f"**Date**: {results['timestamp']}",
         f"**Year**: {results['year']}",
-        f"",
-        f"## Aggregate",
-        f"",
-        f"| Metric | Value |",
-        f"|--------|-------|",
+        "",
+        "## Aggregate",
+        "",
+        "| Metric | Value |",
+        "|--------|-------|",
         f"| Total Tests | {results['aggregate']['total_tests']} |",
         f"| Passed | {results['aggregate']['total_passed']} |",
         f"| Accuracy | {results['aggregate']['overall_accuracy']*100:.1f}% |",
         f"| Time | {results['aggregate']['total_time_seconds']}s |",
-        f"",
-        f"## Suites",
-        f"",
+        "",
+        "## Suites",
+        "",
     ]
 
     for s in results["suites"]:

@@ -8,7 +8,6 @@ from math import floor
 from ..base import CalendarDate, CalendarMetadata
 from ..julian import gregorian_to_jd, jd_to_gregorian
 
-
 HEBREW_EPOCH = 347995.5
 
 
@@ -55,7 +54,13 @@ class HebrewCalendarPlugin:
 
     @staticmethod
     def to_jd(year: int, month: int, day: int) -> float:
-        jd = HEBREW_EPOCH + HebrewCalendarPlugin.delay_1(year) + HebrewCalendarPlugin.delay_2(year) + day + 1
+        jd = (
+            HEBREW_EPOCH
+            + HebrewCalendarPlugin.delay_1(year)
+            + HebrewCalendarPlugin.delay_2(year)
+            + day
+            + 1
+        )
 
         if month < 7:
             for m in range(7, HebrewCalendarPlugin.months_in_year(year) + 1):
@@ -69,7 +74,9 @@ class HebrewCalendarPlugin:
 
     @staticmethod
     def year_days(year: int) -> int:
-        return int(HebrewCalendarPlugin.to_jd(year + 1, 7, 1) - HebrewCalendarPlugin.to_jd(year, 7, 1))
+        return int(
+            HebrewCalendarPlugin.to_jd(year + 1, 7, 1) - HebrewCalendarPlugin.to_jd(year, 7, 1)
+        )
 
     @staticmethod
     def long_heshvan(year: int) -> bool:
@@ -100,7 +107,9 @@ class HebrewCalendarPlugin:
 
         if jd < HebrewCalendarPlugin.to_jd(year, 1, 1):
             month = 7
-            while month <= HebrewCalendarPlugin.months_in_year(year) and jd > HebrewCalendarPlugin.to_jd(
+            while month <= HebrewCalendarPlugin.months_in_year(
+                year
+            ) and jd > HebrewCalendarPlugin.to_jd(
                 year, month, HebrewCalendarPlugin.month_days(year, month)
             ):
                 month += 1

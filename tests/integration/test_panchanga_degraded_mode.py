@@ -2,16 +2,17 @@
 
 from __future__ import annotations
 
-from fastapi.testclient import TestClient
-
 from app.main import app
+from fastapi.testclient import TestClient
 
 
 def test_panchanga_returns_503_when_engine_fails_and_no_cache(monkeypatch):
-    import app.calendar.panchanga as panchanga_module
     import app.cache.precomputed as precomputed_module
+    import app.calendar.panchanga as panchanga_module
 
-    monkeypatch.setattr(precomputed_module, "PRECOMPUTE_DIR", precomputed_module.PRECOMPUTE_DIR / "missing_test_dir")
+    monkeypatch.setattr(
+        precomputed_module, "PRECOMPUTE_DIR", precomputed_module.PRECOMPUTE_DIR / "missing_test_dir"
+    )
 
     def _boom(_):
         raise RuntimeError("ephemeris unavailable")

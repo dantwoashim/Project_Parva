@@ -49,7 +49,13 @@ Run size: 500 calls to `get_sun_moon_positions`
 Conclusion: ephemeris calls are comfortably below a 50ms per-call budget.
 """
 
-    out = Path(__file__).resolve().parents[2] / "docs" / "weekly_execution" / "year1_week12" / "ephemeris_profile.md"
+    out = (
+        Path(__file__).resolve().parents[2]
+        / "docs"
+        / "weekly_execution"
+        / "year1_week12"
+        / "ephemeris_profile.md"
+    )
     out.write_text(report, encoding="utf-8")
     print(out)
 

@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone
-from zoneinfo import ZoneInfo
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from app.calendar.ephemeris.swiss_eph import calculate_sunrise, calculate_sunset
 from app.calendar.panchanga import get_panchanga
@@ -13,9 +13,36 @@ NPT = timezone(timedelta(hours=5, minutes=45))
 
 # 30 classical muhurta labels retained for continuity with prior API contracts.
 MUHURTA_NAMES = [
-    "Rudra", "Ahi", "Mitra", "Pitru", "Vasu", "Vara", "Vishvedeva", "Vidhi", "Satamukhi", "Puruhuta",
-    "Vahini", "Naktankara", "Varuna", "Aryaman", "Bhaga", "Girisha", "Ajapada", "Ahirbudhnya", "Pushya", "Ashvini",
-    "Yama", "Agni", "Vidhatri", "Chanda", "Aditi", "Jiva", "Vishnu", "Dyumadgadyuti", "Brahma", "Samudra",
+    "Rudra",
+    "Ahi",
+    "Mitra",
+    "Pitru",
+    "Vasu",
+    "Vara",
+    "Vishvedeva",
+    "Vidhi",
+    "Satamukhi",
+    "Puruhuta",
+    "Vahini",
+    "Naktankara",
+    "Varuna",
+    "Aryaman",
+    "Bhaga",
+    "Girisha",
+    "Ajapada",
+    "Ahirbudhnya",
+    "Pushya",
+    "Ashvini",
+    "Yama",
+    "Agni",
+    "Vidhatri",
+    "Chanda",
+    "Aditi",
+    "Jiva",
+    "Vishnu",
+    "Dyumadgadyuti",
+    "Brahma",
+    "Samudra",
 ]
 
 ABHIJIT_INDEX = 7
@@ -26,13 +53,13 @@ GULIKA_SEGMENT_BY_WEEKDAY = {0: 5, 1: 4, 2: 3, 3: 2, 4: 1, 5: 0, 6: 6}
 
 PLANETARY_HORA_ORDER = ["sun", "venus", "mercury", "moon", "saturn", "jupiter", "mars"]
 WEEKDAY_HORA_LORD = {
-    0: "moon",     # Monday
-    1: "mars",     # Tuesday
+    0: "moon",  # Monday
+    1: "mars",  # Tuesday
     2: "mercury",  # Wednesday
     3: "jupiter",  # Thursday
-    4: "venus",    # Friday
-    5: "saturn",   # Saturday
-    6: "sun",      # Sunday
+    4: "venus",  # Friday
+    5: "saturn",  # Saturday
+    6: "sun",  # Sunday
 }
 
 HORA_LORD_DISPLAY = {
@@ -149,10 +176,33 @@ ASSUMPTION_SETS = {
 
 # 27 nakshatras for tara-bala distance mapping.
 NAKSHATRA_NAMES = [
-    "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu", "Pushya", "Ashlesha",
-    "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha",
-    "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada",
-    "Uttara Bhadrapada", "Revati",
+    "Ashwini",
+    "Bharani",
+    "Krittika",
+    "Rohini",
+    "Mrigashira",
+    "Ardra",
+    "Punarvasu",
+    "Pushya",
+    "Ashlesha",
+    "Magha",
+    "Purva Phalguni",
+    "Uttara Phalguni",
+    "Hasta",
+    "Chitra",
+    "Swati",
+    "Vishakha",
+    "Anuradha",
+    "Jyeshtha",
+    "Mula",
+    "Purva Ashadha",
+    "Uttara Ashadha",
+    "Shravana",
+    "Dhanishta",
+    "Shatabhisha",
+    "Purva Bhadrapada",
+    "Uttara Bhadrapada",
+    "Revati",
 ]
 
 TARA_SEQUENCE = [
@@ -200,7 +250,9 @@ def _default_sun_times(
     try:
         sunrise = calculate_sunrise(target_date, latitude=lat, longitude=lon).astimezone(tz)
         sunset = calculate_sunset(target_date, latitude=lat, longitude=lon).astimezone(tz)
-        next_sunrise = calculate_sunrise(target_date + timedelta(days=1), latitude=lat, longitude=lon).astimezone(tz)
+        next_sunrise = calculate_sunrise(
+            target_date + timedelta(days=1), latitude=lat, longitude=lon
+        ).astimezone(tz)
 
         # Ensure monotonic ordering even if timezone conversion crosses midnight boundaries.
         if sunset <= sunrise:
@@ -212,7 +264,8 @@ def _default_sun_times(
         return (
             datetime(target_date.year, target_date.month, target_date.day, 6, 15, tzinfo=tz),
             datetime(target_date.year, target_date.month, target_date.day, 18, 0, tzinfo=tz),
-            datetime(target_date.year, target_date.month, target_date.day, 6, 15, tzinfo=tz) + timedelta(days=1),
+            datetime(target_date.year, target_date.month, target_date.day, 6, 15, tzinfo=tz)
+            + timedelta(days=1),
         )
 
 
@@ -235,7 +288,9 @@ def _segment_window(start: datetime, segment_seconds: float, segment_index: int)
     }
 
 
-def _split_muhurtas(start: datetime, end: datetime, *, count: int, index_offset: int, period: str) -> list[dict[str, Any]]:
+def _split_muhurtas(
+    start: datetime, end: datetime, *, count: int, index_offset: int, period: str
+) -> list[dict[str, Any]]:
     segment_seconds = (end - start).total_seconds() / count
     rows: list[dict[str, Any]] = []
     for i in range(count):
@@ -258,7 +313,9 @@ def _split_muhurtas(start: datetime, end: datetime, *, count: int, index_offset:
     return rows
 
 
-def _build_horas(sunrise: datetime, sunset: datetime, next_sunrise: datetime, weekday: int) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def _build_horas(
+    sunrise: datetime, sunset: datetime, next_sunrise: datetime, weekday: int
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     day_seconds = (sunset - sunrise).total_seconds()
     night_seconds = (next_sunrise - sunset).total_seconds()
 
@@ -307,7 +364,9 @@ def _build_horas(sunrise: datetime, sunset: datetime, next_sunrise: datetime, we
     return day_horas, night_horas
 
 
-def _build_chaughadia(start: datetime, end: datetime, *, names: list[str], period: str) -> list[dict[str, Any]]:
+def _build_chaughadia(
+    start: datetime, end: datetime, *, names: list[str], period: str
+) -> list[dict[str, Any]]:
     segment_seconds = (end - start).total_seconds() / 8
     rows: list[dict[str, Any]] = []
     for i in range(8):
@@ -346,7 +405,9 @@ def _nakshatra_number(value: str | int | None) -> int | None:
     return lower_map.get(raw.lower())
 
 
-def _tara_bala_profile(*, target_date: date, lat: float, lon: float, birth_nakshatra: str | int | None) -> dict[str, Any]:
+def _tara_bala_profile(
+    *, target_date: date, lat: float, lon: float, birth_nakshatra: str | int | None
+) -> dict[str, Any]:
     panchanga = get_panchanga(target_date, latitude=lat, longitude=lon)
     current_num = int(panchanga["nakshatra"]["number"])
     current_name = panchanga["nakshatra"]["name"]
@@ -417,10 +478,14 @@ def get_muhurtas(
     tz_name: str = "Asia/Kathmandu",
     birth_nakshatra: str | int | None = None,
 ) -> dict[str, Any]:
-    sunrise, sunset, next_sunrise = _default_sun_times(target_date, lat=lat, lon=lon, tz_name=tz_name)
+    sunrise, sunset, next_sunrise = _default_sun_times(
+        target_date, lat=lat, lon=lon, tz_name=tz_name
+    )
 
     day_muhurtas = _split_muhurtas(sunrise, sunset, count=15, index_offset=0, period="day")
-    night_muhurtas = _split_muhurtas(sunset, next_sunrise, count=15, index_offset=15, period="night")
+    night_muhurtas = _split_muhurtas(
+        sunset, next_sunrise, count=15, index_offset=15, period="night"
+    )
     muhurta_rows = day_muhurtas + night_muhurtas
 
     day_horas, night_horas = _build_horas(sunrise, sunset, next_sunrise, target_date.weekday())
@@ -495,7 +560,9 @@ def get_rahu_kalam(
         "sunset": sunset.isoformat(),
         "segment_model": "weekday_ashta_kala_v2",
         "rahu_kalam": _segment_window(sunrise, segment_seconds, RAHU_SEGMENT_BY_WEEKDAY[weekday]),
-        "yamaganda": _segment_window(sunrise, segment_seconds, YAMAGANDA_SEGMENT_BY_WEEKDAY[weekday]),
+        "yamaganda": _segment_window(
+            sunrise, segment_seconds, YAMAGANDA_SEGMENT_BY_WEEKDAY[weekday]
+        ),
         "gulika": _segment_window(sunrise, segment_seconds, GULIKA_SEGMENT_BY_WEEKDAY[weekday]),
     }
 
@@ -600,8 +667,12 @@ def get_auspicious_windows(
                 "tara_bala": 0,
                 "avoidance": 0,
             },
-            "hora": _find_window_for_time(_window_midpoint(muhurta_data["abhijit_muhurta"]), muhurta_data["hora"]["day"]),
-            "chaughadia": _find_window_for_time(_window_midpoint(muhurta_data["abhijit_muhurta"]), muhurta_data["chaughadia"]["day"]),
+            "hora": _find_window_for_time(
+                _window_midpoint(muhurta_data["abhijit_muhurta"]), muhurta_data["hora"]["day"]
+            ),
+            "chaughadia": _find_window_for_time(
+                _window_midpoint(muhurta_data["abhijit_muhurta"]), muhurta_data["chaughadia"]["day"]
+            ),
             "overlaps_avoidance": any(
                 _overlaps(muhurta_data["abhijit_muhurta"], kalam_data[key])
                 for key in ("rahu_kalam", "yamaganda", "gulika")
@@ -612,7 +683,9 @@ def get_auspicious_windows(
     return {
         "date": target_date.isoformat(),
         "ceremony_type": ceremony_key,
-        "assumption_set_id": assumption_set_id if assumption_set_id in ASSUMPTION_SETS else "np-mainstream-v2",
+        "assumption_set_id": assumption_set_id
+        if assumption_set_id in ASSUMPTION_SETS
+        else "np-mainstream-v2",
         "ranking_profile": {
             "preferred_hora_lords": sorted(profile["preferred_hora_lords"]),
             "avoid_hora_lords": sorted(profile["avoid_hora_lords"]),

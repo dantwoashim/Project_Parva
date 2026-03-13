@@ -1,9 +1,7 @@
 """v3 routing and contract sanity checks."""
 
-from fastapi.testclient import TestClient
-
 from app.main import app
-
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 

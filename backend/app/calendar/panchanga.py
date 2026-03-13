@@ -12,58 +12,51 @@ This module provides complete panchanga calculation for any date using
 Swiss Ephemeris for precise astronomical computations.
 """
 
-from datetime import datetime, date, timedelta, timezone
-from typing import Dict, Any, Optional
+from datetime import date, timedelta
+from typing import Any, Dict
 
+from .ephemeris.positions import (
+    get_karana,
+    get_moon_rashi,
+    get_nakshatra,
+    get_sun_moon_positions,
+    get_sun_rashi,
+    get_vaara,
+    get_yoga,
+)
 from .ephemeris.swiss_eph import (
-    calculate_sunrise,
     LAT_KATHMANDU,
     LON_KATHMANDU,
+    calculate_sunrise,
     get_ephemeris_info,
-)
-from .ephemeris.positions import (
-    get_tithi_angle,
-    get_nakshatra,
-    get_yoga,
-    get_karana,
-    get_vaara,
-    get_sun_rashi,
-    get_moon_rashi,
-    get_sun_moon_positions,
 )
 from .ephemeris.time_utils import (
     to_nepal_time,
-    NEPAL_TZ,
-)
-from .tithi.tithi_core import (
-    calculate_tithi,
-    get_tithi_name,
-    TITHI_NAMES,
 )
 from .tithi.tithi_boundaries import find_tithi_end
-from .tithi.tithi_udaya import get_udaya_tithi
-
+from .tithi.tithi_core import (
+    calculate_tithi,
+)
 
 # =============================================================================
 # PANCHANGA CALCULATION
 # =============================================================================
 
+
 def get_panchanga(
-    date_val: date,
-    latitude: float = LAT_KATHMANDU,
-    longitude: float = LON_KATHMANDU
+    date_val: date, latitude: float = LAT_KATHMANDU, longitude: float = LON_KATHMANDU
 ) -> Dict[str, Any]:
     """
     Calculate complete panchanga (5 elements) for a date.
-    
+
     All calculations are done for sunrise at the specified location,
     following traditional udaya tithi principles.
-    
+
     Args:
         date_val: Date to calculate panchanga for
         latitude: Location latitude (default: Kathmandu)
         longitude: Location longitude (default: Kathmandu)
-    
+
     Returns:
         Dictionary with complete panchanga information:
         - date: The date
@@ -76,7 +69,7 @@ def get_panchanga(
         - sun_rashi: Sun's zodiac sign
         - moon_rashi: Moon's zodiac sign
         - astrological: Additional astrological data
-    
+
     Example:
         >>> panchanga = get_panchanga(date(2026, 2, 6))
         >>> print(panchanga['tithi']['name'])
@@ -85,30 +78,30 @@ def get_panchanga(
     # Calculate sunrise
     sunrise_utc = calculate_sunrise(date_val, latitude, longitude)
     sunrise_nepal = to_nepal_time(sunrise_utc)
-    
+
     # Get tithi at sunrise (udaya tithi)
     tithi_info = calculate_tithi(sunrise_utc)
     tithi_end = find_tithi_end(sunrise_utc)
-    
+
     # Get nakshatra
     nakshatra_num, nakshatra_name, nakshatra_progress = get_nakshatra(sunrise_utc)
-    
+
     # Get yoga
     yoga_num, yoga_name, yoga_progress = get_yoga(sunrise_utc)
-    
+
     # Get karana
     karana_num, karana_name = get_karana(sunrise_utc)
-    
+
     # Get vaara (weekday)
     vaara_num, vaara_sanskrit, vaara_english = get_vaara(sunrise_utc)
-    
+
     # Get rashis (zodiac signs)
     sun_rashi_num, sun_rashi_sanskrit, sun_rashi_english = get_sun_rashi(sunrise_utc)
     moon_rashi_num, moon_rashi_sanskrit, moon_rashi_english = get_moon_rashi(sunrise_utc)
-    
+
     # Get raw positions
     sun_long, moon_long = get_sun_moon_positions(sunrise_utc)
-    
+
     return {
         "date": date_val.isoformat(),
         "sunrise": {
@@ -162,15 +155,15 @@ def get_panchanga(
 def get_panchanga_summary(date_val: date) -> str:
     """
     Get a human-readable panchanga summary for a date.
-    
+
     Args:
         date_val: Date
-    
+
     Returns:
         Multi-line summary string
     """
     p = get_panchanga(date_val)
-    
+
     lines = [
         f"Date: {p['date']} ({p['vaara']['name_english']})",
         f"Sunrise: {p['sunrise']['local_time']} NPT",
@@ -183,7 +176,7 @@ def get_panchanga_summary(date_val: date) -> str:
         f"Sun: {p['sun']['rashi_english']} ({p['sun']['longitude']:.1f}°)",
         f"Moon: {p['moon']['rashi_english']} ({p['moon']['longitude']:.1f}°)",
     ]
-    
+
     return "\n".join(lines)
 
 
@@ -191,56 +184,59 @@ def get_panchanga_summary(date_val: date) -> str:
 # DAILY PANCHANGA RANGE
 # =============================================================================
 
-def get_panchanga_range(
-    start_date: date,
-    days: int = 7
-) -> list:
+
+def get_panchanga_range(start_date: date, days: int = 7) -> list:
     """
     Get panchanga for a range of dates.
-    
+
     Args:
         start_date: First date
         days: Number of days (default 7)
-    
+
     Returns:
         List of panchanga dictionaries
     """
-    return [
-        get_panchanga(start_date + timedelta(days=i))
-        for i in range(days)
-    ]
+    return [get_panchanga(start_date + timedelta(days=i)) for i in range(days)]
 
 
 # =============================================================================
 # AUSPICIOUS TIME HELPERS
 # =============================================================================
 
+
 def is_auspicious_day(panchanga: Dict[str, Any]) -> Dict[str, Any]:
     """
     Check various auspicious (shubh) conditions.
-    
+
     Args:
         panchanga: Result from get_panchanga()
-    
+
     Returns:
         Dictionary of auspicious conditions
     """
     tithi = panchanga["tithi"]["display_number"]
     paksha = panchanga["tithi"]["paksha"]
     nakshatra = panchanga["nakshatra"]["name"]
-    yoga = panchanga["yoga"]["name"]
-    vaara = panchanga["vaara"]["number"]
-    
+    panchanga["yoga"]["name"]
+    panchanga["vaara"]["number"]
+
     # Auspicious tithis for various activities
     auspicious_tithis = {2, 3, 5, 7, 10, 11, 13}  # Generally auspicious
     inauspicious_tithis = {4, 8, 14}  # Rikta tithis (generally avoided)
-    
+
     # Auspicious nakshatras for weddings, travel, etc.
     auspicious_nakshatras = {
-        "Rohini", "Mrigashira", "Pushya", "Hasta", 
-        "Chitra", "Swati", "Anuradha", "Shravana", "Revati"
+        "Rohini",
+        "Mrigashira",
+        "Pushya",
+        "Hasta",
+        "Chitra",
+        "Swati",
+        "Anuradha",
+        "Shravana",
+        "Revati",
     }
-    
+
     # Check conditions
     is_tithi_good = tithi in auspicious_tithis
     is_tithi_rikta = tithi in inauspicious_tithis
@@ -248,7 +244,7 @@ def is_auspicious_day(panchanga: Dict[str, Any]) -> Dict[str, Any]:
     is_purnima = paksha == "shukla" and tithi == 15
     is_amavasya = paksha == "krishna" and tithi == 15
     is_ekadashi = tithi == 11  # Fasting day
-    
+
     return {
         "generally_auspicious": is_tithi_good and is_nakshatra_good and not is_tithi_rikta,
         "tithi_auspicious": is_tithi_good,
@@ -264,22 +260,22 @@ def is_auspicious_day(panchanga: Dict[str, Any]) -> Dict[str, Any]:
 def _get_recommendations(panchanga: Dict[str, Any]) -> list:
     """Get activity recommendations based on panchanga."""
     recommendations = []
-    
+
     tithi = panchanga["tithi"]["display_number"]
     paksha = panchanga["tithi"]["paksha"]
-    
+
     # Ekadashi - fasting
     if tithi == 11:
         recommendations.append("Fasting (Ekadashi vrat)")
-    
+
     # Purnima/Amavasya - special puja
     if paksha == "shukla" and tithi == 15:
         recommendations.append("Full moon rituals, Satyanarayan puja")
     if paksha == "krishna" and tithi == 15:
         recommendations.append("Amavasya tarpan, ancestor worship")
-    
+
     # General good days
     if tithi in {2, 3, 5, 7, 10, 13}:
         recommendations.append("New ventures, ceremonies")
-    
+
     return recommendations

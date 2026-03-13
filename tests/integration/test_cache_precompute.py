@@ -5,9 +5,8 @@ from __future__ import annotations
 import json
 from datetime import date
 
-from fastapi.testclient import TestClient
-
 from app.main import app
+from fastapi.testclient import TestClient
 
 
 def _write_json(path, payload):
@@ -41,13 +40,22 @@ def test_panchanga_endpoint_uses_precomputed_cache(monkeypatch, tmp_path):
                 "panchanga": {
                     "confidence": "astronomical",
                     "uncertainty": {"level": "exact"},
-                    "tithi": {"number": 1, "name": "Pratipada", "paksha": "shukla", "progress": 0.1},
+                    "tithi": {
+                        "number": 1,
+                        "name": "Pratipada",
+                        "paksha": "shukla",
+                        "progress": 0.1,
+                    },
                     "nakshatra": {"number": 1, "name": "Ashwini", "pada": 1},
                     "yoga": {"number": 1, "name": "Vishkumbha"},
                     "karana": {"number": 1, "name": "Kimstughna"},
                     "vaara": {"name_sanskrit": "Ravivara", "name_english": "Sunday"},
                 },
-                "ephemeris": {"mode": "swiss_moshier", "accuracy": "arcsecond", "library": "pyswisseph"},
+                "ephemeris": {
+                    "mode": "swiss_moshier",
+                    "accuracy": "arcsecond",
+                    "library": "pyswisseph",
+                },
             }
         },
     }

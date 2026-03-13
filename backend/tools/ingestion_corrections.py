@@ -10,11 +10,18 @@ import re
 from pathlib import Path
 from typing import Optional
 
-
 # Nepali digit to ASCII mapping
 NEPALI_DIGITS = {
-    "०": "0", "१": "1", "२": "2", "३": "3", "४": "4",
-    "५": "5", "६": "6", "७": "7", "८": "8", "९": "9",
+    "०": "0",
+    "१": "1",
+    "२": "2",
+    "३": "3",
+    "४": "4",
+    "५": "5",
+    "६": "6",
+    "७": "7",
+    "८": "8",
+    "९": "9",
 }
 
 # Reverse mapping
@@ -71,11 +78,7 @@ class FestivalNameNormalizer:
 
     def __init__(self, map_path: Optional[str] = None):
         if map_path is None:
-            map_path = str(
-                Path(__file__).parent.parent.parent
-                / "data"
-                / "festival_name_map.json"
-            )
+            map_path = str(Path(__file__).parent.parent.parent / "data" / "festival_name_map.json")
         with open(map_path) as f:
             self._map = json.load(f)
 
@@ -103,10 +106,7 @@ class FestivalNameNormalizer:
     @property
     def canonical_ids(self) -> list:
         """All canonical festival IDs."""
-        return [
-            k for k, v in self._map.items()
-            if isinstance(v, dict) and "canonical" in v
-        ]
+        return [k for k, v in self._map.items() if isinstance(v, dict) and "canonical" in v]
 
 
 def apply_second_pass_corrections(entries: list[dict]) -> list[dict]:
@@ -129,9 +129,7 @@ def apply_second_pass_corrections(entries: list[dict]) -> list[dict]:
         # Fix festival name
         if "festival_name" in fixed:
             fixed["festival_name_original"] = fixed["festival_name"]
-            fixed["festival_name"] = normalizer.normalize_or_original(
-                fixed["festival_name"]
-            )
+            fixed["festival_name"] = normalizer.normalize_or_original(fixed["festival_name"])
 
         # Fix BS date text
         if "bs_date" in fixed and isinstance(fixed["bs_date"], str):
@@ -187,11 +185,13 @@ def generate_source_comparison(
             if date_a == date_b:
                 matches.append({"festival": key, "date": date_a})
             else:
-                mismatches.append({
-                    "festival": key,
-                    "source_a_date": date_a,
-                    "source_b_date": date_b,
-                })
+                mismatches.append(
+                    {
+                        "festival": key,
+                        "source_a_date": date_a,
+                        "source_b_date": date_b,
+                    }
+                )
         elif in_a:
             only_a.append({"festival": key, "date": in_a.get("ad_date", "")})
         else:

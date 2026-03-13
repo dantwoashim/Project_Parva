@@ -6,7 +6,7 @@ import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from app.calendar.ephemeris.swiss_eph import calculate_sunrise, LAT_KATHMANDU, LON_KATHMANDU
+from app.calendar.ephemeris.swiss_eph import LAT_KATHMANDU, LON_KATHMANDU, calculate_sunrise
 from app.calendar.ephemeris.time_utils import to_nepal_time
 
 

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 import math
+from datetime import datetime
 
 from app.calendar.kundali import compute_kundali
 
@@ -13,7 +13,9 @@ def _polar(cx: float, cy: float, radius: float, angle_deg: float) -> tuple[float
     return (round(cx + radius * math.cos(rad), 3), round(cy + radius * math.sin(rad), 3))
 
 
-def build_kundali_graph(*, birth_dt: datetime, latitude: float, longitude: float, timezone_name: str) -> dict:
+def build_kundali_graph(
+    *, birth_dt: datetime, latitude: float, longitude: float, timezone_name: str
+) -> dict:
     data = compute_kundali(birth_dt, lat=latitude, lon=longitude, tz_name=timezone_name)
 
     center_x, center_y = 200.0, 200.0

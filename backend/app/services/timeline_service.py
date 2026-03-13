@@ -129,7 +129,9 @@ def build_festival_timeline(
                 }
             )
 
-        items.sort(key=lambda row: (row["start_date"], -int(row.get("duration_days") or 1), row["name"]))
+        items.sort(
+            key=lambda row: (row["start_date"], -int(row.get("duration_days") or 1), row["name"])
+        )
 
         groups: OrderedDict[str, dict] = OrderedDict()
         for item in items:

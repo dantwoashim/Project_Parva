@@ -101,7 +101,12 @@ def main() -> None:
 
     OUT_MD.write_text("\n".join(md), encoding="utf-8")
 
-    print(json.dumps({"drift_percent": diff["drift_percent"], "total_compared": diff["total_compared"]}, indent=2))
+    print(
+        json.dumps(
+            {"drift_percent": diff["drift_percent"], "total_compared": diff["total_compared"]},
+            indent=2,
+        )
+    )
     print(f"Wrote {OUT_JSON}")
     print(f"Wrote {OUT_MD}")
     if gate_failed:

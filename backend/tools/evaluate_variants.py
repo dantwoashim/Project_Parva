@@ -41,11 +41,13 @@ def main() -> None:
         variant = next((v for v in variants if v.get("profile_id") == profile_id), None)
 
         if not primary or not variant:
-            results.append({
-                **case,
-                "pass": False,
-                "reason": "missing_primary_or_variant",
-            })
+            results.append(
+                {
+                    **case,
+                    "pass": False,
+                    "reason": "missing_primary_or_variant",
+                }
+            )
             continue
 
         vdate = date.fromisoformat(variant["date"])
@@ -54,13 +56,15 @@ def main() -> None:
         if ok:
             passed += 1
 
-        results.append({
-            **case,
-            "primary_date": primary.start_date.isoformat(),
-            "variant_date": vdate.isoformat(),
-            "actual_offset_days": actual_offset,
-            "pass": ok,
-        })
+        results.append(
+            {
+                **case,
+                "primary_date": primary.start_date.isoformat(),
+                "variant_date": vdate.isoformat(),
+                "actual_offset_days": actual_offset,
+                "pass": ok,
+            }
+        )
 
     total = len(results)
     report = {
@@ -93,7 +97,15 @@ def main() -> None:
         )
     md_path.write_text("\n".join(lines), encoding="utf-8")
 
-    print(json.dumps({"output": str(out), "summary": {k: report[k] for k in ('total', 'passed', 'failed', 'pass_rate')}}, indent=2))
+    print(
+        json.dumps(
+            {
+                "output": str(out),
+                "summary": {k: report[k] for k in ("total", "passed", "failed", "pass_rate")},
+            },
+            indent=2,
+        )
+    )
 
     if report["failed"]:
         raise SystemExit(1)

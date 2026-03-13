@@ -6,12 +6,11 @@ Data access layer for temples and locations.
 """
 
 import json
-from pathlib import Path
-from typing import Optional, List
 from functools import lru_cache
+from pathlib import Path
+from typing import Optional
 
-from .models import Temple, TempleSummary, Coordinates
-
+from .models import Coordinates, Temple, TempleSummary
 
 # Path to data files
 DATA_DIR = Path(__file__).parent.parent.parent.parent / "data" / "festivals"

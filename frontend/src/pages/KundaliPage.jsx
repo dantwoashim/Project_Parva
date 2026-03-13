@@ -4,7 +4,7 @@ import { KnowledgePanel } from '../components/UI/KnowledgePanel';
 import { KundaliGraph } from '../components/KundaliGraph/KundaliGraph';
 import { KUNDALI_GLOSSARY } from '../data/temporalGlossary';
 import { glossaryAPI, kundaliAPI } from '../services/api';
-import { useTemporalContext } from '../context/TemporalContext';
+import { useTemporalContext } from '../context/useTemporalContext';
 import './KundaliPage.css';
 
 function defaultDateTime() {

@@ -54,7 +54,9 @@ def normalize_timezone(tz_name: Optional[str]) -> Tuple[str, List[str]]:
         return DEFAULT_TZ, warnings
 
 
-def normalize_coordinates(lat_raw: Optional[str], lon_raw: Optional[str]) -> Tuple[float, float, List[str]]:
+def normalize_coordinates(
+    lat_raw: Optional[str], lon_raw: Optional[str]
+) -> Tuple[float, float, List[str]]:
     warnings: list[str] = []
 
     def _parse(raw: Optional[str], *, fallback: float, lo: float, hi: float, name: str) -> float:
@@ -95,6 +97,8 @@ def base_meta_payload(
         "quality_band": quality_band,
         "assumption_set_id": assumption_set_id,
         "advisory_scope": advisory_scope,
-        "provenance": get_provenance_payload(verify_url="/v3/api/provenance/root", create_if_missing=True),
+        "provenance": get_provenance_payload(
+            verify_url="/v3/api/provenance/root", create_if_missing=True
+        ),
         "policy": get_policy_metadata(),
     }

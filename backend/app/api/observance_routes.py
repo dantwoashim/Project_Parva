@@ -11,7 +11,6 @@ from fastapi import APIRouter, HTTPException, Query
 
 from app.observances import resolve_observances
 
-
 router = APIRouter(prefix="/api/observances", tags=["observances"])
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 CONFLICTS_PATH = PROJECT_ROOT / "data" / "cross_calendar" / "conflicts.json"
@@ -66,7 +65,9 @@ async def resolve_today(
 
 @router.get("/next")
 async def next_observance(
-    from_date: Optional[date] = Query(None, description="Start date YYYY-MM-DD (defaults to today)"),
+    from_date: Optional[date] = Query(
+        None, description="Start date YYYY-MM-DD (defaults to today)"
+    ),
     days: int = Query(30, ge=1, le=365, description="Search horizon in days"),
     location: str = Query("kathmandu"),
     preferences: Optional[str] = Query(None, description="Comma-separated calendar preferences"),

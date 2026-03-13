@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
-from zoneinfo import ZoneInfo
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import swisseph as swe
 
-from app.calendar.graha import RASHI_NAMES, get_all_graha_positions
 from app.calendar.ephemeris.swiss_eph import _ensure_initialized, get_ayanamsa, get_julian_day
+from app.calendar.graha import RASHI_NAMES, get_all_graha_positions
 
 DASHA_SEQUENCE = ["ketu", "venus", "sun", "moon", "mars", "rahu", "jupiter", "saturn", "mercury"]
 DASHA_YEARS = {
@@ -123,7 +123,9 @@ def _whole_sign_houses(lagna_rashi: int, grahas: dict[str, dict[str, Any]]) -> l
     for i in range(12):
         rashi_idx = (lagna_rashi - 1 + i) % 12
         occupants = [
-            name for name, pos in grahas.items() if isinstance(pos, dict) and pos.get("rashi_number") == rashi_idx + 1
+            name
+            for name, pos in grahas.items()
+            if isinstance(pos, dict) and pos.get("rashi_number") == rashi_idx + 1
         ]
         houses.append(
             {
@@ -178,7 +180,9 @@ def _target_angle(sign_distance: int) -> float:
     return ((sign_distance - 1) * 30) % 360
 
 
-def _compute_aspects(grahas: dict[str, dict[str, Any]], *, orb_degrees: float = 6.0) -> list[dict[str, Any]]:
+def _compute_aspects(
+    grahas: dict[str, dict[str, Any]], *, orb_degrees: float = 6.0
+) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for source in PRIMARY_GRAHAS:
         src = grahas[source]
@@ -203,7 +207,9 @@ def _compute_aspects(grahas: dict[str, dict[str, Any]], *, orb_degrees: float = 
                             "aspect_angle": aspect_angle,
                             "orb": round(delta, 4),
                             "strength": strength,
-                            "nature": "supportive" if source in {"jupiter", "venus", "moon", "mercury"} else "challenging",
+                            "nature": "supportive"
+                            if source in {"jupiter", "venus", "moon", "mercury"}
+                            else "challenging",
                         }
                     )
                     break
@@ -278,7 +284,10 @@ def _all_between_nodes(grahas: dict[str, dict[str, Any]]) -> bool:
             return start <= value <= end
         return value >= start or value <= end
 
-    planets = [float(grahas[p]["longitude"]) for p in ["sun", "moon", "mars", "mercury", "jupiter", "venus", "saturn"]]
+    planets = [
+        float(grahas[p]["longitude"])
+        for p in ["sun", "moon", "mars", "mercury", "jupiter", "venus", "saturn"]
+    ]
 
     forward = all(_between(rahu, ketu, p) for p in planets)
     backward = all(_between(ketu, rahu, p) for p in planets)
@@ -323,7 +332,9 @@ def _detect_doshas(grahas: dict[str, dict[str, Any]], lagna_rashi: int) -> list[
             }
         )
 
-    if _is_conj(grahas["sun"], grahas["rahu"], orb=9.0) or _is_conj(grahas["sun"], grahas["ketu"], orb=9.0):
+    if _is_conj(grahas["sun"], grahas["rahu"], orb=9.0) or _is_conj(
+        grahas["sun"], grahas["ketu"], orb=9.0
+    ):
         doshas.append(
             {
                 "id": "pitra",
@@ -337,7 +348,9 @@ def _detect_doshas(grahas: dict[str, dict[str, Any]], lagna_rashi: int) -> list[
     return doshas
 
 
-def _major_dasha(grahas: dict[str, dict[str, Any]], birth_datetime: datetime) -> list[dict[str, Any]]:
+def _major_dasha(
+    grahas: dict[str, dict[str, Any]], birth_datetime: datetime
+) -> list[dict[str, Any]]:
     moon_long = float(grahas["moon"]["longitude"])
     nakshatra_index = int(moon_long / (360 / 27))
     start_lord = DASHA_SEQUENCE[nakshatra_index % len(DASHA_SEQUENCE)]
@@ -362,7 +375,9 @@ def _major_dasha(grahas: dict[str, dict[str, Any]], birth_datetime: datetime) ->
     return timeline
 
 
-def _antar_dasha_for_major(major_lord: str, major_start: datetime, major_end: datetime) -> list[dict[str, Any]]:
+def _antar_dasha_for_major(
+    major_lord: str, major_start: datetime, major_end: datetime
+) -> list[dict[str, Any]]:
     total_days = (major_end - major_start).total_seconds() / 86400
     major_years = DASHA_YEARS[major_lord]
 
@@ -409,7 +424,9 @@ def _dasha_v2(grahas: dict[str, dict[str, Any]], birth_datetime: datetime) -> di
     }
 
 
-def _chart_consistency(grahas: dict[str, dict[str, Any]], d9: dict[str, dict[str, Any]], houses: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _chart_consistency(
+    grahas: dict[str, dict[str, Any]], d9: dict[str, dict[str, Any]], houses: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
     checks: list[dict[str, Any]] = []
 
     checks.append(

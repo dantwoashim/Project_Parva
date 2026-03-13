@@ -9,16 +9,16 @@ Outputs:
 
 from __future__ import annotations
 
+import os
 from datetime import timedelta
 from pathlib import Path
-import os
 from typing import List, Tuple
 
 from app.calendar.bikram_sambat import (
-    gregorian_to_bs_official,
     gregorian_to_bs_estimated,
+    gregorian_to_bs_official,
 )
-from app.calendar.constants import BS_CALENDAR_DATA, BS_MIN_YEAR, BS_MAX_YEAR
+from app.calendar.constants import BS_CALENDAR_DATA, BS_MAX_YEAR, BS_MIN_YEAR
 
 
 def _official_range() -> Tuple:
@@ -44,7 +44,11 @@ def main() -> None:
             matches += 1
         else:
             mismatches.append(
-                (current.isoformat(), f"{off[0]}-{off[1]:02d}-{off[2]:02d}", f"{est[0]}-{est[1]:02d}-{est[2]:02d}")
+                (
+                    current.isoformat(),
+                    f"{off[0]}-{off[1]:02d}-{off[2]:02d}",
+                    f"{est[0]}-{est[1]:02d}-{est[2]:02d}",
+                )
             )
             per_year.setdefault(off[0], 0)
             per_year[off[0]] += 1
@@ -66,7 +70,9 @@ def main() -> None:
             off = gregorian_to_bs_official(current)
             est = gregorian_to_bs_estimated(current)
             match = "YES" if off == est else "NO"
-            f.write(f"{current.isoformat()},{off[0]}-{off[1]:02d}-{off[2]:02d},{est[0]}-{est[1]:02d}-{est[2]:02d},{match}\n")
+            f.write(
+                f"{current.isoformat()},{off[0]}-{off[1]:02d}-{off[2]:02d},{est[0]}-{est[1]:02d}-{est[2]:02d},{match}\n"
+            )
             current += timedelta(days=1)
 
     # Write report

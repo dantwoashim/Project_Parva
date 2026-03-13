@@ -37,7 +37,7 @@ Generated at: `2026-02-24T02:13:49.422796+00:00`
 
 ## Evidence Artifacts
 
-- `/Users/rohanbasnet14/Documents/Project_Parva/reports/conformance_report.json`
-- `/Users/rohanbasnet14/Documents/Project_Parva/reports/authority_dashboard.json`
-- `/Users/rohanbasnet14/Documents/Project_Parva/reports/accuracy/annual_accuracy_2082.json`
-- `/Users/rohanbasnet14/Documents/Project_Parva/data/festivals/festival_rules_v4.json`
+- `reports/conformance_report.json` (generated artifact)
+- `reports/authority_dashboard.json` (generated artifact)
+- `reports/accuracy/annual_accuracy_2082.json` (generated artifact)
+- `data/festivals/festival_rules_v4.json`

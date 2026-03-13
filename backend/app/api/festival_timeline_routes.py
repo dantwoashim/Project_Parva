@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from datetime import date
-from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
+
+from fastapi import APIRouter, HTTPException, Query
 
 from app.explainability import create_reason_trace
 from app.services import build_festival_timeline
@@ -51,7 +52,10 @@ async def festivals_timeline(
         },
         outputs={"groups": len(timeline.get("groups", [])), "items": timeline.get("total", 0)},
         steps=[
-            {"step": "resolve_window", "detail": "Loaded computed upcoming festivals in the selected date window."},
+            {
+                "step": "resolve_window",
+                "detail": "Loaded computed upcoming festivals in the selected date window.",
+            },
             {"step": "filter", "detail": "Applied quality/category/region constraints."},
             {"step": "group", "detail": "Grouped items by month for ribbon rendering."},
         ],

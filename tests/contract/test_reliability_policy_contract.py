@@ -1,9 +1,9 @@
 """Contract checks for reliability and policy endpoints."""
 
+from app.main import app
 from fastapi.testclient import TestClient
 
-from app.main import app
-
+from tests.helpers import TRUST_HEADERS
 
 client = TestClient(app)
 
@@ -17,9 +17,9 @@ def test_policy_endpoint_exists():
 
 
 def test_reliability_endpoints_exist():
-    status = client.get("/api/reliability/status")
-    slos = client.get("/api/reliability/slos")
-    playbooks = client.get("/api/reliability/playbooks")
+    status = client.get("/api/reliability/status", headers=TRUST_HEADERS)
+    slos = client.get("/api/reliability/slos", headers=TRUST_HEADERS)
+    playbooks = client.get("/api/reliability/playbooks", headers=TRUST_HEADERS)
 
     assert status.status_code == 200
     assert slos.status_code == 200

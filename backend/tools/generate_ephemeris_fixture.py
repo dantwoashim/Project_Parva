@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import json
 import random
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from pathlib import Path
 
 from app.calendar.ephemeris.swiss_eph import get_sun_moon_positions

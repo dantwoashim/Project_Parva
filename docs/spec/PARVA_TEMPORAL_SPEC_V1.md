@@ -48,10 +48,10 @@ Required output fields:
 
 ## 7. Conformance clauses
 Conformance case pack:
-- `/Users/rohanbasnet14/Documents/Project_Parva/tests/conformance/conformance_cases.v1.json`
+- `tests/conformance/conformance_cases.v1.json`
 
 Conformance runner:
-- `/Users/rohanbasnet14/Documents/Project_Parva/scripts/spec/run_conformance_tests.py`
+- `scripts/spec/run_conformance_tests.py`
 
 Pass criteria:
 1. All mandatory cases return HTTP 200.
@@ -59,7 +59,7 @@ Pass criteria:
 3. Report shows 100% pass for mandatory set.
 
 Report artifact:
-- `/Users/rohanbasnet14/Documents/Project_Parva/reports/conformance_report.json`
+- `reports/conformance_report.json` (generated artifact)
 
 ## 8. Public API profile for this spec
 Public compatibility profile is v3:

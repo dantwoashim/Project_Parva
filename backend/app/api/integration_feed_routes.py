@@ -10,7 +10,6 @@ from fastapi.responses import PlainTextResponse
 
 from app.integrations import build_ical_feed, collect_feed_events
 
-
 router = APIRouter(prefix="/api/integrations/feeds", tags=["integrations"])
 
 

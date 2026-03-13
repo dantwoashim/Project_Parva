@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timezone
+
 from fastapi import APIRouter, HTTPException, Query
 
+from app.api.v5_types import ResolveResult
 from app.calendar.bikram_sambat import (
     get_bs_confidence,
     get_bs_estimated_error_days,
@@ -12,12 +14,10 @@ from app.calendar.bikram_sambat import (
     get_bs_source_range,
     gregorian_to_bs,
 )
-from app.calendar.tithi.tithi_udaya import get_udaya_tithi
 from app.calendar.panchanga import get_panchanga
+from app.calendar.tithi.tithi_udaya import get_udaya_tithi
 from app.explainability.store import create_reason_trace
 from app.rules import get_rule_service
-from app.api.v5_types import ResolveResult
-
 
 router = APIRouter(prefix="/api", tags=["resolve"])
 
@@ -63,7 +63,9 @@ async def resolve_temporal_context(
         "name": udaya.get("name"),
         "paksha": udaya.get("paksha"),
         "method": "ephemeris_udaya",
-        "sunrise_local": udaya.get("sunrise_local").isoformat() if udaya.get("sunrise_local") else None,
+        "sunrise_local": udaya.get("sunrise_local").isoformat()
+        if udaya.get("sunrise_local")
+        else None,
         "sunrise_utc": udaya.get("sunrise").isoformat() if udaya.get("sunrise") else None,
         "progress": udaya.get("progress"),
     }

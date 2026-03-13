@@ -5,32 +5,34 @@ Locations API Routes
 Endpoints for temples and festival locations.
 """
 
-from typing import Optional, List
+from typing import List, Optional
 
-from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from . import repository
 from .models import Temple, TempleSummary
-
 
 router = APIRouter(prefix="/api/temples", tags=["locations"])
 
 
 class TempleListResponse(BaseModel):
     """Response for temple list."""
+
     temples: List[TempleSummary]
     total: int
 
 
 class TempleWithRole(BaseModel):
     """Temple with its role for a festival."""
+
     temple: Temple
     role: Optional[str] = None
 
 
 class TempleFestivalsResponse(BaseModel):
     """Response for festivals at a temple."""
+
     temple_id: str
     temple_name: str
     festival_ids: List[str]
@@ -46,7 +48,7 @@ async def list_temples(
 ):
     """
     List all temples.
-    
+
     Can filter by:
     - festival: Get temples for a specific festival
     - bounds: Get temples within geographic bounds (all 4 params required)
@@ -83,7 +85,7 @@ async def list_temples(
         ]
     else:
         summaries = repository.get_temple_summaries()
-    
+
     return TempleListResponse(temples=summaries, total=len(summaries))
 
 
@@ -102,12 +104,10 @@ async def get_temple_festivals(temple_id: str):
     temple = repository.get_temple_by_id(temple_id)
     if not temple:
         raise HTTPException(status_code=404, detail=f"Temple '{temple_id}' not found")
-    
+
     festival_ids = repository.get_festivals_at_temple(temple_id)
     return TempleFestivalsResponse(
-        temple_id=temple_id,
-        temple_name=temple.name,
-        festival_ids=festival_ids
+        temple_id=temple_id, temple_name=temple.name, festival_ids=festival_ids
     )
 
 
@@ -117,23 +117,22 @@ async def get_temples_for_festival(festival_id: str):
     Get all temples with their roles for a specific festival.
     """
     temples = repository.get_temples_by_festival(festival_id)
-    
+
     result = []
     for t in temples:
         role = repository.get_location_role(festival_id, t.id)
-        result.append({
-            "temple": {
-                "id": t.id,
-                "name": t.name,
-                "name_ne": t.name_ne,
-                "type": t.type,
-                "deity": t.deity,
-                "coordinates": {
-                    "lat": t.coordinates.lat,
-                    "lng": t.coordinates.lng
+        result.append(
+            {
+                "temple": {
+                    "id": t.id,
+                    "name": t.name,
+                    "name_ne": t.name_ne,
+                    "type": t.type,
+                    "deity": t.deity,
+                    "coordinates": {"lat": t.coordinates.lat, "lng": t.coordinates.lng},
                 },
-            },
-            "role": role
-        })
-    
+                "role": role,
+            }
+        )
+
     return {"festival_id": festival_id, "temples": result, "total": len(result)}

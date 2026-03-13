@@ -4,8 +4,8 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_ROOT = PROJECT_ROOT / "backend"
@@ -55,12 +55,16 @@ def main() -> int:
         "templates": templates,
         "summary": {
             **counts,
-            "template_coverage_pct": round((counts["mapped"] / max(counts["total_rules"], 1)) * 100, 2),
+            "template_coverage_pct": round(
+                (counts["mapped"] / max(counts["total_rules"], 1)) * 100, 2
+            ),
         },
     }
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    OUTPUT_PATH.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
 
     print(json.dumps(payload["summary"], indent=2, ensure_ascii=False))
     print(f"Wrote {OUTPUT_PATH}")

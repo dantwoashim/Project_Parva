@@ -7,7 +7,6 @@ from fastapi import APIRouter, HTTPException, Query
 from app.explainability import get_reason_trace, list_recent_traces
 from app.policy import get_policy_metadata
 
-
 router = APIRouter(prefix="/api/explain", tags=["explainability"])
 
 

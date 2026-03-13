@@ -8,30 +8,18 @@ FastAPI routes for festival discovery endpoints.
 from __future__ import annotations
 
 from datetime import date
-from typing import Optional, List
+from typing import List, Optional
+
 from fastapi import APIRouter, HTTPException, Query
 
-from .repository import get_repository
-from .models import (
-    Festival,
-    FestivalSummary,
-    FestivalListResponse,
-    FestivalDetailResponse,
-    FestivalDates,
-    UpcomingFestival,
-    UpcomingFestivalsResponse,
-    CalendarDayFestivals,
-    FestivalCalendarResponse,
-    FestivalExplainResponse,
-    ProvenanceMeta,
-)
 from ..calendar import (
-    gregorian_to_bs,
     calculate_tithi,
     get_bs_month_name,
+    gregorian_to_bs,
 )
+from ..explainability import create_reason_trace
+from ..provenance import get_latest_snapshot_id, get_provenance_payload
 from ..rules import get_rule_service
-from ..rules.variants import calculate_with_variants, filter_variants_by_profile, list_profiles
 from ..rules.catalog_v4 import (
     get_rule_v4,
     get_rules_coverage,
@@ -39,10 +27,21 @@ from ..rules.catalog_v4 import (
     rule_has_algorithm,
     rule_quality_band,
 )
-from ..provenance import get_latest_snapshot_id, get_provenance_payload
-from ..explainability import create_reason_trace
+from ..rules.variants import calculate_with_variants, filter_variants_by_profile, list_profiles
 from ..services.ritual_normalization import normalize_ritual_sequence
-
+from .models import (
+    CalendarDayFestivals,
+    FestivalCalendarResponse,
+    FestivalDates,
+    FestivalDetailResponse,
+    FestivalExplainResponse,
+    FestivalListResponse,
+    FestivalSummary,
+    ProvenanceMeta,
+    UpcomingFestival,
+    UpcomingFestivalsResponse,
+)
+from .repository import get_repository
 
 router = APIRouter(prefix="/api/festivals", tags=["festivals"])
 rule_service = get_rule_service()
@@ -103,7 +102,9 @@ async def list_festivals(
     search: Optional[str] = Query(None, description="Search by name or description"),
     region: Optional[str] = Query(None, description="Filter by region focus"),
     tradition: Optional[str] = Query(None, description="Filter by tradition/category"),
-    source: Optional[str] = Query(None, description="Filter by rule source (e.g., festival_rules_v3)"),
+    source: Optional[str] = Query(
+        None, description="Filter by rule source (e.g., festival_rules_v3)"
+    ),
     quality_band: str = Query("all", description="computed|provisional|inventory|all"),
     algorithmic_only: bool = Query(True, description="Only include algorithmic rules"),
     page: int = Query(1, ge=1),
@@ -111,11 +112,11 @@ async def list_festivals(
 ):
     """
     List all festivals with optional filtering.
-    
+
     Categories: national, newari, buddhist, regional
     """
     repo = get_repository()
-    
+
     festivals = repo.search(search) if search else repo.get_all()
 
     if category:
@@ -124,16 +125,15 @@ async def list_festivals(
     if region:
         region_l = region.lower()
         festivals = [
-            f for f in festivals
-            if any(region_l in r.lower() for r in (f.regional_focus or []))
+            f for f in festivals if any(region_l in r.lower() for r in (f.regional_focus or []))
         ]
 
     if tradition:
         tradition_l = tradition.lower()
         festivals = [
-            f for f in festivals
-            if tradition_l in f.category.lower()
-            or tradition_l in (f.who_celebrates or "").lower()
+            f
+            for f in festivals
+            if tradition_l in f.category.lower() or tradition_l in (f.who_celebrates or "").lower()
         ]
 
     quality_band = quality_band.lower().strip()
@@ -164,15 +164,15 @@ async def list_festivals(
             if rule and source_l in rule.source.lower():
                 filtered.append(festival)
         festivals = filtered
-    
+
     # Sort by significance level (highest first)
     festivals.sort(key=lambda f: f.significance_level, reverse=True)
-    
+
     # Paginate
     start = (page - 1) * page_size
     end = start + page_size
     paginated = festivals[start:end]
-    
+
     # Convert to summaries with rule quality metadata
     summaries = []
     for festival in paginated:
@@ -183,7 +183,7 @@ async def list_festivals(
         summary.validation_band = meta["validation_band"]
         summary.source_evidence_ids = meta["source_evidence_ids"]
         summaries.append(summary)
-    
+
     return FestivalListResponse(
         festivals=summaries,
         total=len(festivals),
@@ -229,12 +229,12 @@ async def get_upcoming(
 ):
     """
     Get festivals occurring in the next N days.
-    
+
     Returns festivals sorted by start date.
     """
     repo = get_repository()
     start = from_date or date.today()
-    
+
     quality_band = quality_band.lower().strip()
     if quality_band not in QUALITY_BAND_CHOICES:
         raise HTTPException(status_code=400, detail=f"Invalid quality_band '{quality_band}'")
@@ -250,25 +250,27 @@ async def get_upcoming(
 
         festival = repo.get_by_id(festival_id)
         if festival:
-            results.append(UpcomingFestival(
-                id=festival.id,
-                name=festival.name,
-                name_nepali=festival.name_nepali,
-                tagline=festival.tagline,
-                category=festival.category,
-                start_date=dates.start_date,
-                end_date=dates.end_date,
-                days_until=(dates.start_date - start).days,
-                duration_days=dates.duration_days,
-                primary_color=festival.primary_color,
-                rule_status=meta["rule_status"],
-                rule_family=meta["rule_family"],
-                validation_band=meta["validation_band"],
-                source_evidence_ids=meta["source_evidence_ids"],
-            ))
-    
+            results.append(
+                UpcomingFestival(
+                    id=festival.id,
+                    name=festival.name,
+                    name_nepali=festival.name_nepali,
+                    tagline=festival.tagline,
+                    category=festival.category,
+                    start_date=dates.start_date,
+                    end_date=dates.end_date,
+                    days_until=(dates.start_date - start).days,
+                    duration_days=dates.duration_days,
+                    primary_color=festival.primary_color,
+                    rule_status=meta["rule_status"],
+                    rule_family=meta["rule_family"],
+                    validation_band=meta["validation_band"],
+                    source_evidence_ids=meta["source_evidence_ids"],
+                )
+            )
+
     from datetime import timedelta
-    
+
     return UpcomingFestivalsResponse(
         festivals=results,
         from_date=start,
@@ -282,13 +284,13 @@ async def get_upcoming(
 async def festivals_on_date(target_date: date):
     """
     Get all festivals occurring on a specific date.
-    
+
     Includes multi-day festivals that overlap with this date.
     """
     repo = get_repository()
-    
+
     festivals_data = rule_service.on_date(target_date)
-    
+
     results = []
     for festival_id, dates in festivals_data:
         festival = repo.get_by_id(festival_id)
@@ -297,7 +299,7 @@ async def festivals_on_date(target_date: date):
             summary.next_start = dates.start_date
             summary.next_end = dates.end_date
             results.append(summary)
-    
+
     return results
 
 
@@ -305,26 +307,26 @@ async def festivals_on_date(target_date: date):
 async def get_calendar_month(year: int, month: int):
     """
     Get festivals for a calendar month view.
-    
+
     Returns each day of the month with any festivals on that day.
     """
     if month < 1 or month > 12:
         raise HTTPException(status_code=400, detail="Month must be 1-12")
-    
+
     repo = get_repository()
-    
+
     # Calculate first and last day of month
     if month == 12:
         next_month = date(year + 1, 1, 1)
     else:
         next_month = date(year, month + 1, 1)
-    
+
     first_day = date(year, month, 1)
-    last_day = next_month - __import__('datetime').timedelta(days=1)
-    
+    last_day = next_month - __import__("datetime").timedelta(days=1)
+
     days = []
     current = first_day
-    
+
     while current <= last_day:
         # Get festivals on this day
         festivals_data = rule_service.on_date(current)
@@ -333,7 +335,7 @@ async def get_calendar_month(year: int, month: int):
             festival = repo.get_by_id(festival_id)
             if festival:
                 summaries.append(repo.to_summary(festival))
-        
+
         # Get tithi info
         try:
             tithi_info = calculate_tithi(current)
@@ -345,17 +347,19 @@ async def get_calendar_month(year: int, month: int):
             tithi = None
             paksha = None
             bs_str = None
-        
-        days.append(CalendarDayFestivals(
-            date=current,
-            bs_date=bs_str,
-            festivals=summaries,
-            tithi=tithi,
-            paksha=paksha,
-        ))
-        
-        current += __import__('datetime').timedelta(days=1)
-    
+
+        days.append(
+            CalendarDayFestivals(
+                date=current,
+                bs_date=bs_str,
+                festivals=summaries,
+                tithi=tithi,
+                paksha=paksha,
+            )
+        )
+
+        current += __import__("datetime").timedelta(days=1)
+
     return FestivalCalendarResponse(
         days=days,
         month=month,
@@ -371,23 +375,23 @@ async def get_festival(
 ):
     """
     Get detailed information about a specific festival.
-    
+
     Includes full content (mythology, rituals) and calculated dates.
     """
     repo = get_repository()
-    
+
     festival = repo.get_by_id(festival_id)
     if not festival:
         raise HTTPException(status_code=404, detail=f"Festival '{festival_id}' not found")
-    
+
     # Get dates for specified year or current/next occurrence
     target_year = year or date.today().year
     dates = repo.get_dates(festival_id, target_year)
-    
+
     if not dates and not year:
         # Try next year
         dates = repo.get_dates(festival_id, target_year + 1)
-    
+
     if not dates:
         # No dates available - don't fake it, let frontend handle gracefully
         dates = None
@@ -401,16 +405,16 @@ async def get_festival(
     nearby = []
     if dates:
         from datetime import timedelta
-        
+
         search_start = dates.start_date - timedelta(days=15)
         nearby_raw = rule_service.upcoming(search_start, days=45)
-        
+
         for fid, fdates in nearby_raw[:5]:
             if fid != festival_id:
                 f = repo.get_by_id(fid)
                 if f:
                     nearby.append(repo.to_summary(f))
-    
+
     return FestivalDetailResponse(
         festival=festival,
         dates=dates,
@@ -435,14 +439,14 @@ async def explain_festival_date(
     target_year = year or date.today().year
     date_result = rule_service.calculate(festival_id, target_year)
     if not date_result:
-        raise HTTPException(status_code=404, detail=f"Could not calculate '{festival_id}' for {target_year}")
+        raise HTTPException(
+            status_code=404, detail=f"Could not calculate '{festival_id}' for {target_year}"
+        )
 
     rule = rule_service.info(festival_id)
     structured_steps = []
     if rule and getattr(rule, "type", None) == "lunar":
-        rule_summary = (
-            f"{rule.lunar_month} {str(rule.paksha).capitalize()} {rule.tithi}"
-        )
+        rule_summary = f"{rule.lunar_month} {str(rule.paksha).capitalize()} {rule.tithi}"
         steps = [
             f"Load lunar rule for {festival.name}: {rule_summary}.",
             "Resolve lunar month boundaries (Amavasya to Amavasya).",
@@ -510,7 +514,10 @@ async def explain_festival_date(
             },
             {
                 "step_type": "solar_mapping",
-                "input": {"bs_month": getattr(rule, "bs_month", None), "solar_day": getattr(rule, "solar_day", None)},
+                "input": {
+                    "bs_month": getattr(rule, "bs_month", None),
+                    "solar_day": getattr(rule, "solar_day", None),
+                },
                 "output": {"start_date": date_result.start_date.isoformat()},
                 "rule_id": festival_id,
                 "source": "sankranti.py",
@@ -532,7 +539,10 @@ async def explain_festival_date(
             {
                 "step_type": "fallback",
                 "input": {"festival_id": festival_id, "year": target_year},
-                "output": {"start_date": date_result.start_date.isoformat(), "method": "fallback_v1"},
+                "output": {
+                    "start_date": date_result.start_date.isoformat(),
+                    "method": "fallback_v1",
+                },
                 "rule_id": festival_id,
                 "source": "calculator.py",
                 "math_expression": None,
@@ -578,30 +588,29 @@ async def get_festival_dates(
 ):
     """
     Get calculated dates for a festival across multiple years.
-    
+
     Useful for planning and historical reference.
     """
     repo = get_repository()
-    
+
     festival = repo.get_by_id(festival_id)
     if not festival:
         raise HTTPException(status_code=404, detail=f"Festival '{festival_id}' not found")
-    
+
     start = start_year or date.today().year
     results = []
-    
+
     for year in range(start, start + years):
         dates = repo.get_dates(festival_id, year)
         if dates:
             dates.provenance = _build_provenance(festival_id=festival_id, year=year)
             results.append(dates)
-    
+
     if not results:
         raise HTTPException(
-            status_code=404,
-            detail=f"Could not calculate dates for '{festival_id}'"
+            status_code=404, detail=f"Could not calculate dates for '{festival_id}'"
         )
-    
+
     return results
 
 

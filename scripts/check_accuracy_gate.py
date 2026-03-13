@@ -22,7 +22,12 @@ def load_history(path: Path) -> list[dict]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Accuracy regression gate")
     parser.add_argument("--history", default="reports/evaluation_history.jsonl")
-    parser.add_argument("--max-regression", type=float, default=0.0, help="Allowed pass-rate drop in percentage points")
+    parser.add_argument(
+        "--max-regression",
+        type=float,
+        default=0.0,
+        help="Allowed pass-rate drop in percentage points",
+    )
     args = parser.parse_args()
 
     history = load_history(Path(args.history))

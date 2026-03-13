@@ -8,12 +8,11 @@ Tests API performance under load to verify:
 """
 
 import asyncio
-import time
 import statistics
-from datetime import datetime
-from typing import List, Dict
-import aiohttp
+import time
+from typing import Dict
 
+import aiohttp
 
 API_BASE = "http://localhost:8000/api/calendar"
 
@@ -42,60 +41,57 @@ async def make_request(session: aiohttp.ClientSession, url: str) -> Dict:
         return {"url": url, "status": 0, "latency_ms": latency, "error": str(e)}
 
 
-async def run_load_test(
-    requests_per_second: int = 50,
-    duration_seconds: int = 10
-) -> Dict:
+async def run_load_test(requests_per_second: int = 50, duration_seconds: int = 10) -> Dict:
     """
     Run load test at specified request rate.
-    
+
     Args:
         requests_per_second: Target RPS
         duration_seconds: How long to run
-    
+
     Returns:
         Test results with latency stats
     """
     total_requests = requests_per_second * duration_seconds
     interval = 1.0 / requests_per_second
-    
+
     print(f"Starting load test: {requests_per_second} req/s for {duration_seconds}s")
     print(f"Total requests: {total_requests}")
     print("-" * 50)
-    
+
     results = []
-    
+
     async with aiohttp.ClientSession() as session:
         start_time = time.perf_counter()
-        
+
         for i in range(total_requests):
             # Pick endpoint round-robin
             endpoint = ENDPOINTS[i % len(ENDPOINTS)]
             url = f"{API_BASE}{endpoint}"
-            
+
             # Fire request without waiting
             task = asyncio.create_task(make_request(session, url))
             results.append(task)
-            
+
             # Rate limiting
             elapsed = time.perf_counter() - start_time
             expected = (i + 1) * interval
             if elapsed < expected:
                 await asyncio.sleep(expected - elapsed)
-        
+
         # Wait for all requests to complete
         completed = await asyncio.gather(*results)
-    
+
     # Analyze results
     latencies = [r["latency_ms"] for r in completed if r.get("status") == 200]
     errors = [r for r in completed if r.get("status") != 200]
-    
+
     if not latencies:
         return {"error": "No successful requests", "errors": errors}
-    
+
     latencies.sort()
     n = len(latencies)
-    
+
     stats = {
         "total_requests": total_requests,
         "successful": len(latencies),
@@ -115,7 +111,7 @@ async def run_load_test(
             "actual_rps": round(len(latencies) / duration_seconds, 2),
         },
     }
-    
+
     return stats
 
 
@@ -124,23 +120,27 @@ def print_results(stats: Dict):
     print("\n" + "=" * 50)
     print("LOAD TEST RESULTS")
     print("=" * 50)
-    
-    print(f"\nRequests: {stats['successful']}/{stats['total_requests']} ({stats['error_rate']:.1f}% errors)")
-    print(f"Throughput: {stats['throughput']['actual_rps']} req/s (target: {stats['throughput']['target_rps']})")
-    
-    print(f"\nLatency (ms):")
-    lat = stats['latency']
+
+    print(
+        f"\nRequests: {stats['successful']}/{stats['total_requests']} ({stats['error_rate']:.1f}% errors)"
+    )
+    print(
+        f"Throughput: {stats['throughput']['actual_rps']} req/s (target: {stats['throughput']['target_rps']})"
+    )
+
+    print("\nLatency (ms):")
+    lat = stats["latency"]
     print(f"  Min:  {lat['min']:>8.2f}")
     print(f"  P50:  {lat['p50']:>8.2f}")
     print(f"  P90:  {lat['p90']:>8.2f}")
     print(f"  P95:  {lat['p95']:>8.2f}  {'✅' if lat['p95'] < 500 else '❌'} (target < 500)")
     print(f"  P99:  {lat['p99']:>8.2f}")
     print(f"  Max:  {lat['max']:>8.2f}")
-    
+
     # Pass/Fail
-    p95_pass = lat['p95'] < 500
-    throughput_pass = stats['throughput']['actual_rps'] >= stats['throughput']['target_rps'] * 0.9
-    
+    p95_pass = lat["p95"] < 500
+    throughput_pass = stats["throughput"]["actual_rps"] >= stats["throughput"]["target_rps"] * 0.9
+
     print("\n" + "-" * 50)
     if p95_pass and throughput_pass:
         print("✅ PASSED: P95 < 500ms and throughput stable")
@@ -153,20 +153,20 @@ def print_results(stats: Dict):
 
 async def main():
     """Run load tests at different levels."""
-    
+
     # Warmup
     print("Warming up API...")
     async with aiohttp.ClientSession() as session:
         for ep in ENDPOINTS:
             try:
                 await make_request(session, f"{API_BASE}{ep}")
-            except:
+            except Exception:
                 pass
-    
+
     # Test at 50 req/s
     stats = await run_load_test(requests_per_second=50, duration_seconds=10)
     print_results(stats)
-    
+
     return stats
 
 
