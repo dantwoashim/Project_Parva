@@ -5,10 +5,10 @@ This lets the system align with official published calendars when available,
 while still using algorithmic calculation as the default.
 """
 
+import json
 from datetime import date
 from pathlib import Path
-from typing import Optional, Dict, Any
-import json
+from typing import Any, Dict, Optional
 
 _overrides_cache: Optional[Dict[str, Any]] = None
 
@@ -42,12 +42,12 @@ def _load_overrides() -> Dict[str, Any]:
     global _overrides_cache
     if _overrides_cache is not None:
         return _overrides_cache
-    
+
     path = Path(__file__).parent / "ground_truth_overrides.json"
     if not path.exists():
         _overrides_cache = {}
         return _overrides_cache
-    
+
     with open(path, "r", encoding="utf-8") as f:
         _overrides_cache = json.load(f)
     return _overrides_cache
@@ -66,15 +66,15 @@ def get_festival_override(festival_id: str, year: int) -> Optional[date]:
     year_key = str(year)
     if year_key not in data:
         return None
-    
+
     fid = _normalize_festival_id(festival_id)
     fest = data[year_key].get(fid)
     if not fest:
         return None
-    
+
     if isinstance(fest, str):
         return date.fromisoformat(fest)
-    
+
     start = fest.get("start") or fest.get("date")
     if not start:
         return None
@@ -84,7 +84,7 @@ def get_festival_override(festival_id: str, year: int) -> Optional[date]:
 def get_festival_override_info(festival_id: str, year: int) -> Optional[Dict[str, Any]]:
     """
     Return override metadata if present.
-    
+
     Returns:
         {"start": date, "source": str|None, "confidence": str|None}
     """

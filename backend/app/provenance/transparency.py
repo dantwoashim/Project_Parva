@@ -9,7 +9,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRANSPARENCY_DIR = PROJECT_ROOT / "data" / "transparency"
 TRANSPARENCY_LOG = TRANSPARENCY_DIR / "log.jsonl"
@@ -125,7 +124,9 @@ def append_entry(event_type: str, payload: Dict[str, Any]) -> TransparencyEntry:
     return entry
 
 
-def append_snapshot_event(snapshot_id: str, dataset_hash: str, rules_hash: str) -> TransparencyEntry:
+def append_snapshot_event(
+    snapshot_id: str, dataset_hash: str, rules_hash: str
+) -> TransparencyEntry:
     return append_entry(
         "snapshot_created",
         {
@@ -210,7 +211,9 @@ def prepare_anchor_payload(note: str = "") -> Dict[str, Any]:
     }
 
 
-def record_anchor(tx_ref: str, network: str, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def record_anchor(
+    tx_ref: str, network: str, payload: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
     _ensure_dir()
     anchor = {
         "timestamp": _now_utc().isoformat(),
@@ -227,5 +230,9 @@ def list_anchors(limit: int = 50) -> List[Dict[str, Any]]:
     _ensure_dir()
     if not ANCHOR_LOG.exists():
         return []
-    rows = [json.loads(line) for line in ANCHOR_LOG.read_text(encoding="utf-8").splitlines() if line.strip()]
+    rows = [
+        json.loads(line)
+        for line in ANCHOR_LOG.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
     return rows[-max(1, limit) :]

@@ -6,7 +6,7 @@
  * Uses Leaflet for map rendering.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -54,6 +54,25 @@ const createTempleIcon = (type = 'temple') => {
     });
 };
 
+const DEFAULT_CENTER = { lat: 27.7172, lng: 85.3240, zoom: 12 };
+
+function findTempleByQuery(temples, focusQuery) {
+    if (!focusQuery || temples.length === 0) return null;
+
+    if (typeof focusQuery === 'object' && focusQuery.coordinates) {
+        return focusQuery;
+    }
+
+    const query = String(focusQuery).trim().toLowerCase();
+    if (!query) return null;
+
+    return temples.find((temple) =>
+        [temple.name, temple.name_ne, temple.id, temple.significance]
+            .filter(Boolean)
+            .some((value) => value.toLowerCase().includes(query))
+    ) || null;
+}
+
 /**
  * MapController handles map movements and effects.
  */
@@ -94,58 +113,46 @@ export function FestivalMap({
     className = '',
     isLoading = false,
 }) {
-    const mapRef = useRef(null);
-    const [selectedLocation, setSelectedLocation] = useState(null);
+    const [clickedSelection, setClickedSelection] = useState({
+        locationId: null,
+        selectionKey: '',
+    });
 
-    // Nepal center coordinates
-    const defaultCenter = { lat: 27.7172, lng: 85.3240, zoom: 12 };
+    const focusLabel = typeof focusQuery === 'string'
+        ? focusQuery.trim().toLowerCase()
+        : focusQuery?.id || focusQuery?.name || '';
+    const selectionKey = `${selectedFestival?.id || ''}:${focusLabel}`;
 
-    // Find locations for selected festival
     const activeLocationIds = selectedFestival?.id
-        ? temples.filter(t => t.festivals?.includes(selectedFestival.id)).map(t => t.id)
+        ? temples
+            .filter((temple) => temple.festivals?.includes(selectedFestival.id))
+            .map((temple) => temple.id)
         : [];
 
-    // If festival selected, fly to first matching location
-    useEffect(() => {
-        if (selectedFestival && temples.length > 0) {
-            const matchingTemple = temples.find(t =>
-                t.festivals?.includes(selectedFestival.id)
-            );
-            if (matchingTemple) {
-                setSelectedLocation(matchingTemple);
-            } else {
-                setSelectedLocation(null);
-            }
-        } else {
-            setSelectedLocation(null);
-        }
-    }, [selectedFestival?.id, temples]);
+    const selectedLocation = (() => {
+        const focusedTemple = findTempleByQuery(temples, focusQuery);
+        if (focusedTemple) return focusedTemple;
 
-    // External focus: used by ritual timeline location clicks to move map context.
-    useEffect(() => {
-        if (!focusQuery || temples.length === 0) return;
-
-        if (typeof focusQuery === 'object' && focusQuery.coordinates) {
-            setSelectedLocation(focusQuery);
-            return;
+        if (
+            clickedSelection.selectionKey === selectionKey
+            && clickedSelection.locationId
+        ) {
+            return temples.find((temple) => temple.id === clickedSelection.locationId) || null;
         }
 
-        const query = String(focusQuery).trim().toLowerCase();
-        if (!query) return;
-
-        const match = temples.find((temple) =>
-            [temple.name, temple.name_ne, temple.id, temple.significance]
-                .filter(Boolean)
-                .some((value) => value.toLowerCase().includes(query))
-        );
-
-        if (match) {
-            setSelectedLocation(match);
-        }
-    }, [focusQuery, temples]);
+        if (!selectedFestival?.id) return null;
+        return temples.find((temple) => temple.festivals?.includes(selectedFestival.id)) || null;
+    })();
 
     const handleMarkerClick = (temple) => {
-        setSelectedLocation(temple);
+        setClickedSelection({
+            locationId: temple.id,
+            selectionKey,
+        });
+        const firstFestivalId = temple.festivals?.[0];
+        if (firstFestivalId) {
+            onFestivalSelect?.({ id: firstFestivalId });
+        }
         onLocationClick?.(temple);
     };
 
@@ -165,9 +172,8 @@ export function FestivalMap({
     return (
         <div className={`festival-map ${className} ${isLoading ? 'loading' : ''}`}>
             <MapContainer
-                ref={mapRef}
-                center={[defaultCenter.lat, defaultCenter.lng]}
-                zoom={defaultCenter.zoom}
+                center={[DEFAULT_CENTER.lat, DEFAULT_CENTER.lng]}
+                zoom={DEFAULT_CENTER.zoom}
                 className="festival-map__container"
                 scrollWheelZoom={true}
                 zoomControl={true}
@@ -179,7 +185,7 @@ export function FestivalMap({
 
                 <MapController
                     selectedLocation={selectedLocation}
-                    center={defaultCenter}
+                    center={DEFAULT_CENTER}
                 />
 
                 {/* Temple Markers from API */}

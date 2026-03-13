@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import argparse
 import subprocess
+import sys
 from pathlib import Path
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -24,7 +24,7 @@ def main() -> int:
 
     _run(
         [
-            "python3",
+            sys.executable,
             "scripts/precompute/precompute_panchanga.py",
             "--start-year",
             str(args.start_year),
@@ -34,7 +34,7 @@ def main() -> int:
     )
     _run(
         [
-            "python3",
+            sys.executable,
             "scripts/precompute/precompute_festivals.py",
             "--start-year",
             str(args.start_year),

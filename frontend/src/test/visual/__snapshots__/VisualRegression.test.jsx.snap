@@ -506,7 +506,7 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
         class="feed-card__url"
       >
         <code>
-          http://localhost:8000/v3/api/feeds/all.ics?years=2&lang=en
+          /v3/api/feeds/all.ics?years=2&lang=en
         </code>
       </div>
       <div
@@ -514,7 +514,7 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
       >
         <a
           class="btn btn-primary btn-sm"
-          href="http://localhost:8000/v3/api/feeds/all.ics?years=2&lang=en"
+          href="/v3/api/feeds/all.ics?years=2&lang=en"
           rel="noreferrer"
           target="_blank"
         >
@@ -542,7 +542,7 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
         class="feed-card__url"
       >
         <code>
-          http://localhost:8000/v3/api/feeds/national.ics?years=2&lang=en
+          /v3/api/feeds/national.ics?years=2&lang=en
         </code>
       </div>
       <div
@@ -550,7 +550,7 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
       >
         <a
           class="btn btn-primary btn-sm"
-          href="http://localhost:8000/v3/api/feeds/national.ics?years=2&lang=en"
+          href="/v3/api/feeds/national.ics?years=2&lang=en"
           rel="noreferrer"
           target="_blank"
         >
@@ -578,7 +578,7 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
         class="feed-card__url"
       >
         <code>
-          http://localhost:8000/v3/api/feeds/newari.ics?years=2&lang=en
+          /v3/api/feeds/newari.ics?years=2&lang=en
         </code>
       </div>
       <div
@@ -586,7 +586,7 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
       >
         <a
           class="btn btn-primary btn-sm"
-          href="http://localhost:8000/v3/api/feeds/newari.ics?years=2&lang=en"
+          href="/v3/api/feeds/newari.ics?years=2&lang=en"
           rel="noreferrer"
           target="_blank"
         >
@@ -686,7 +686,7 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
       <input
         required=""
         type="datetime-local"
-        value="2026-02-18T06:30"
+        value="2026-02-25T06:30"
       />
     </label>
     <label

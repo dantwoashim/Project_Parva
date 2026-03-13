@@ -11,9 +11,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import Counter
 from pathlib import Path
-import sys
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_ROOT = PROJECT_ROOT / "backend"
@@ -50,7 +50,7 @@ def _canonicalize_source_path(raw: str) -> str:
     parts = Path(value).parts
     for marker in ("backend", "data", "docs", "tests", "scripts"):
         if marker in parts:
-            return Path(*parts[parts.index(marker):]).as_posix()
+            return Path(*parts[parts.index(marker) :]).as_posix()
     return value
 
 
@@ -59,7 +59,9 @@ def _normalize_for_check(payload: dict) -> dict:
     normalized.pop("generated_at", None)
     source_files = normalized.get("source_files")
     if isinstance(source_files, list):
-        normalized["source_files"] = sorted({_canonicalize_source_path(item) for item in source_files})
+        normalized["source_files"] = sorted(
+            {_canonicalize_source_path(item) for item in source_files}
+        )
     return normalized
 
 
@@ -71,7 +73,9 @@ def _write_rule_dsl_snapshot(catalog, output_path: Path) -> dict:
         "rules": docs,
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    output_path.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
 
     executable_count = sum(1 for row in docs if row.get("executable"))
     return {
@@ -135,7 +139,9 @@ def main() -> int:
     summary = _summarize(payload)
     summary["target"] = args.target
     summary["computed_target"] = args.computed_target
-    summary["coverage_pct"] = round((summary["total_rules"] / args.target) * 100, 2) if args.target > 0 else 0.0
+    summary["coverage_pct"] = (
+        round((summary["total_rules"] / args.target) * 100, 2) if args.target > 0 else 0.0
+    )
     summary["scoreboard"] = get_rules_scoreboard(target=args.target)
 
     dsl_summary = _write_rule_dsl_snapshot(catalog, Path(args.dsl_out))

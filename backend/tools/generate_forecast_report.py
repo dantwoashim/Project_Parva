@@ -5,11 +5,10 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 from app.forecast import build_error_curve, forecast_festivals, list_default_forecast_festivals
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -31,10 +30,14 @@ def main() -> int:
         rows.extend(item.__dict__ for item in forecast_festivals(year, festivals))
 
     curve = build_error_curve(start_year, end_year)
-    avg_accuracy = round(sum(p["estimated_accuracy"] for p in curve) / len(curve), 4) if curve else 0.0
+    avg_accuracy = (
+        round(sum(p["estimated_accuracy"] for p in curve) / len(curve), 4) if curve else 0.0
+    )
     near_term = [p for p in curve if p["horizon_years"] <= 5]
     near_term_avg = (
-        round(sum(p["estimated_accuracy"] for p in near_term) / len(near_term), 4) if near_term else avg_accuracy
+        round(sum(p["estimated_accuracy"] for p in near_term) / len(near_term), 4)
+        if near_term
+        else avg_accuracy
     )
 
     payload = {

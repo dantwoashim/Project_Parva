@@ -115,8 +115,10 @@ def main():
     print(f"  Still provisional:   {stats['still_provisional']}")
     print(f"  Other status:        {stats['other']}")
     print(f"  Total computed now:  {result['total_computed']}")
-    print(f"  Computed ratio:      {result['total_computed']}/{stats['total']} "
-          f"({100 * result['total_computed'] / max(stats['total'], 1):.1f}%)")
+    print(
+        f"  Computed ratio:      {result['total_computed']}/{stats['total']} "
+        f"({100 * result['total_computed'] / max(stats['total'], 1):.1f}%)"
+    )
 
     # Write back
     with open(RULES_PATH, "w") as f:

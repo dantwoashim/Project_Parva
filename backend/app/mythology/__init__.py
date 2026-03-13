@@ -7,8 +7,8 @@ Provides access to Nepal's rich mythological content including
 deities, legends, and their connections to festivals.
 """
 
-from .models import Deity, Legend, DeitySummary
-from .repository import get_deity, get_all_deities, get_deity_festivals
+from .models import Deity, DeitySummary, Legend
+from .repository import get_all_deities, get_deity, get_deity_festivals
 
 __all__ = [
     "Deity",

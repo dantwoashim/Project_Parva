@@ -2,15 +2,19 @@
 
 from datetime import datetime, timezone
 
+from app.calendar.ephemeris.swiss_eph import get_moon_longitude, get_sun_longitude
 from app.engine.ephemeris_config import EphemerisConfig, get_ephemeris_config, set_ephemeris_config
-from app.calendar.ephemeris.swiss_eph import get_sun_longitude, get_moon_longitude
 
 
 def test_ayanamsa_changes_sidereal_longitude():
     dt = datetime(2026, 5, 10, 0, 0, tzinfo=timezone.utc)
 
-    lahiri = EphemerisConfig(ayanamsa="lahiri", coordinate_system="sidereal", ephemeris_mode="moshier")
-    raman = EphemerisConfig(ayanamsa="raman", coordinate_system="sidereal", ephemeris_mode="moshier")
+    lahiri = EphemerisConfig(
+        ayanamsa="lahiri", coordinate_system="sidereal", ephemeris_mode="moshier"
+    )
+    raman = EphemerisConfig(
+        ayanamsa="raman", coordinate_system="sidereal", ephemeris_mode="moshier"
+    )
 
     sun_lahiri = get_sun_longitude(dt, config=lahiri)
     sun_raman = get_sun_longitude(dt, config=raman)
@@ -22,8 +26,12 @@ def test_ayanamsa_changes_sidereal_longitude():
 def test_tropical_ignores_ayanamsa_choice():
     dt = datetime(2026, 5, 10, 0, 0, tzinfo=timezone.utc)
 
-    lahiri_tropical = EphemerisConfig(ayanamsa="lahiri", coordinate_system="tropical", ephemeris_mode="moshier")
-    raman_tropical = EphemerisConfig(ayanamsa="raman", coordinate_system="tropical", ephemeris_mode="moshier")
+    lahiri_tropical = EphemerisConfig(
+        ayanamsa="lahiri", coordinate_system="tropical", ephemeris_mode="moshier"
+    )
+    raman_tropical = EphemerisConfig(
+        ayanamsa="raman", coordinate_system="tropical", ephemeris_mode="moshier"
+    )
 
     moon1 = get_moon_longitude(dt, config=lahiri_tropical)
     moon2 = get_moon_longitude(dt, config=raman_tropical)

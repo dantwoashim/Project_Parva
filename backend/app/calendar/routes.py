@@ -11,36 +11,34 @@ from typing import Optional
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
 
+from app.cache import load_precomputed_festival_year, load_precomputed_panchanga
 from app.calendar.bikram_sambat import (
-    gregorian_to_bs,
-    gregorian_to_bs_official,
-    gregorian_to_bs_estimated,
     bs_to_gregorian,
-    get_bs_month_name,
     get_bs_confidence,
-    get_bs_year_confidence,
-    get_bs_source_range,
     get_bs_estimated_error_days,
+    get_bs_month_name,
+    get_bs_source_range,
+    get_bs_year_confidence,
+    gregorian_to_bs,
+    gregorian_to_bs_estimated,
+    gregorian_to_bs_official,
 )
-from app.calendar.constants import BS_MIN_YEAR, BS_MAX_YEAR
-from app.calendar.nepal_sambat import get_current_ns_year, format_ns_date
+from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR
+from app.calendar.ephemeris.swiss_eph import calculate_sunrise
+from app.calendar.ephemeris.time_utils import to_nepal_time
+from app.calendar.nepal_sambat import format_ns_date, get_current_ns_year
 from app.calendar.tithi import (
     calculate_tithi,
-    get_tithi_name,
     get_moon_phase_name,
     get_udaya_tithi,  # Official (sunrise-based) tithi
 )
-from app.calendar.ephemeris.swiss_eph import calculate_sunrise
-from app.calendar.ephemeris.time_utils import to_nepal_time
-from app.provenance import get_latest_snapshot_id, get_provenance_payload
-from app.cache import load_precomputed_festival_year, load_precomputed_panchanga
 from app.policy import get_policy_metadata
+from app.provenance import get_latest_snapshot_id, get_provenance_payload
 from app.uncertainty import (
     build_bs_uncertainty,
     build_panchanga_uncertainty,
     build_tithi_uncertainty,
 )
-
 
 router = APIRouter(prefix="/api/calendar", tags=["calendar"])
 
@@ -491,7 +489,7 @@ async def get_tithi_endpoint(
     """
     Get tithi details for a date/location with method metadata.
     """
-    from app.calendar.tithi.tithi_udaya import detect_vriddhi, detect_ksheepana
+    from app.calendar.tithi.tithi_udaya import detect_ksheepana, detect_vriddhi
 
     try:
         parts = date_str.split("-")
@@ -748,8 +746,9 @@ async def calculate_festival_endpoint(
     
     Uses V2 calculator with correct lunar month model and Adhik Maas handling.
     """
-    from app.calendar.calculator_v2 import calculate_festival_v2, get_festival_info_v2
     from fastapi import HTTPException
+
+    from app.calendar.calculator_v2 import calculate_festival_v2, get_festival_info_v2
     
     # Try V2 calculator first (lunar month model)
     result = calculate_festival_v2(festival_id, year)

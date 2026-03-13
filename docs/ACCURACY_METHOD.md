@@ -16,11 +16,19 @@
 4. Sankranti crossing tests must pass.
 
 ## Reporting artifacts
-- `reports/authority_dashboard.json`
-- `reports/conformance_report.json`
+- `reports/authority_dashboard.json` (generated artifact)
+- `reports/conformance_report.json` (generated artifact)
 - `data/ground_truth/*`
 
 ## Confidence policy
 - `official`: lookup-backed official range
 - `computed`: algorithmic ephemeris output
 - `estimated`: projected output outside official table confidence zone
+
+## Supported range contract
+
+- Exact-supported BS years: `2070-2095`
+- High-confidence computed range: the current ephemeris-supported product range
+  where outputs are deterministic but not backed by the official lookup table
+- Estimated range: sankranti-based projection outside the exact-supported table
+- Unsupported range: any request beyond the enforced estimated bounds

@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-
 FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "bs_overlap_comparison.json"
 
 

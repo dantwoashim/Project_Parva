@@ -109,7 +109,9 @@ def normalize_ritual_sequence(festival: Any) -> dict[str, Any] | None:
     }
 
 
-def ritual_preview(festival: Any, *, max_days: int = 1, max_events: int = 3) -> dict[str, Any] | None:
+def ritual_preview(
+    festival: Any, *, max_days: int = 1, max_events: int = 3
+) -> dict[str, Any] | None:
     """Return a compact ritual preview for timeline/list endpoints."""
 
     sequence = normalize_ritual_sequence(festival)

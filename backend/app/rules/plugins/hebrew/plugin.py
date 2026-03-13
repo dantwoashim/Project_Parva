@@ -7,7 +7,6 @@ from datetime import date
 from app.engine.plugins.hebrew.plugin import HebrewCalendarPlugin
 from app.rules.plugins.base import ObservanceDate, ObservanceRule
 
-
 # Hebrew month indices in this plugin:
 # 7=Tishrei, 1=Nisan, 9=Kislev
 _RULES: dict[str, tuple[int, int]] = {

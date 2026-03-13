@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Iterable
 
 from app.calendar.calculator_v2 import calculate_festival_v2, get_festival_rules_v3
+
 try:
     from evaluate import TEST_CASES_2026, load_moha_matched_tests
 except ModuleNotFoundError:  # pragma: no cover - import path fallback
@@ -74,7 +75,9 @@ def load_cases(include_moha: bool) -> list[tuple[str, str, str, str]]:
     return cases
 
 
-def evaluate_case(festival_id: str, expected: str, source: str, notes: str, tolerance: int, use_overrides: bool) -> EvalRow:
+def evaluate_case(
+    festival_id: str, expected: str, source: str, notes: str, tolerance: int, use_overrides: bool
+) -> EvalRow:
     year = int(expected[:4])
     rule_type = get_rule_type(festival_id)
     try:
@@ -130,7 +133,9 @@ def summarize(rows: Iterable[EvalRow]) -> dict:
     for bucket in (by_festival, by_rule):
         for stats in bucket.values():
             total_i = int(stats["total"])
-            stats["pass_rate"] = round((int(stats["passed"]) / total_i) * 100.0, 2) if total_i else 0.0
+            stats["pass_rate"] = (
+                round((int(stats["passed"]) / total_i) * 100.0, 2) if total_i else 0.0
+            )
 
     return {
         "total": total,
@@ -146,10 +151,23 @@ def summarize(rows: Iterable[EvalRow]) -> dict:
 def write_csv(rows: list[EvalRow], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=list(asdict(rows[0]).keys()) if rows else [
-            "festival_id", "year", "expected_date", "calculated_date", "passed",
-            "variance_days", "source", "notes", "rule_type", "probable_cause"
-        ])
+        writer = csv.DictWriter(
+            f,
+            fieldnames=list(asdict(rows[0]).keys())
+            if rows
+            else [
+                "festival_id",
+                "year",
+                "expected_date",
+                "calculated_date",
+                "passed",
+                "variance_days",
+                "source",
+                "notes",
+                "rule_type",
+                "probable_cause",
+            ],
+        )
         writer.writeheader()
         for row in rows:
             writer.writerow(asdict(row))
@@ -199,7 +217,9 @@ def write_markdown(rows: list[EvalRow], summary: dict, out_path: Path) -> None:
     ]
 
     for festival, stats in summary["by_festival"].items():
-        lines.append(f"| {festival} | {stats['passed']} | {stats['total']} | {stats['pass_rate']}% |")
+        lines.append(
+            f"| {festival} | {stats['passed']} | {stats['total']} | {stats['pass_rate']}% |"
+        )
 
     lines += [
         "",
@@ -231,13 +251,21 @@ def write_markdown(rows: list[EvalRow], summary: dict, out_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluation harness v4")
-    parser.add_argument("--year-from", type=int, default=None, help="Filter cases with year >= this")
+    parser.add_argument(
+        "--year-from", type=int, default=None, help="Filter cases with year >= this"
+    )
     parser.add_argument("--year-to", type=int, default=None, help="Filter cases with year <= this")
-    parser.add_argument("--festival", action="append", default=[], help="Festival id filter (repeatable)")
+    parser.add_argument(
+        "--festival", action="append", default=[], help="Festival id filter (repeatable)"
+    )
     parser.add_argument("--variance", type=int, default=1, help="Allowed variance in days")
     parser.add_argument("--no-overrides", action="store_true", help="Disable official overrides")
     parser.add_argument("--no-moha", action="store_true", help="Disable OCR-expanded MoHA cases")
-    parser.add_argument("--output-dir", default=str(PROJECT_ROOT / "reports" / "evaluation_v4"), help="Output directory")
+    parser.add_argument(
+        "--output-dir",
+        default=str(PROJECT_ROOT / "reports" / "evaluation_v4"),
+        help="Output directory",
+    )
     args = parser.parse_args()
 
     cases = load_cases(include_moha=not args.no_moha)
@@ -251,7 +279,9 @@ def main() -> None:
         cases = [c for c in cases if c[0] in wanted]
 
     rows = [
-        evaluate_case(fid, expected, source, notes, args.variance, use_overrides=not args.no_overrides)
+        evaluate_case(
+            fid, expected, source, notes, args.variance, use_overrides=not args.no_overrides
+        )
         for fid, expected, source, notes in cases
     ]
 

@@ -1,9 +1,9 @@
 """Integration tests for resolve/spec/provenance trace verification endpoints."""
 
+from app.main import app
 from fastapi.testclient import TestClient
 
-from app.main import app
-
+from tests.helpers import TRUST_HEADERS
 
 client = TestClient(app)
 
@@ -23,7 +23,7 @@ def test_resolve_endpoint_returns_expected_sections():
 
 
 def test_spec_conformance_endpoint_returns_report():
-    resp = client.get("/v3/api/spec/conformance")
+    resp = client.get("/v3/api/spec/conformance", headers=TRUST_HEADERS)
     assert resp.status_code == 200
     body = resp.json()
 
@@ -33,11 +33,13 @@ def test_spec_conformance_endpoint_returns_report():
 
 
 def test_trace_verify_endpoint_validates_generated_trace():
-    resolve_resp = client.get("/v3/api/resolve", params={"date": "2026-10-16", "include_trace": True})
+    resolve_resp = client.get(
+        "/v3/api/resolve", params={"date": "2026-10-16", "include_trace": True}
+    )
     assert resolve_resp.status_code == 200
     trace_id = resolve_resp.json()["trace"]["trace_id"]
 
-    verify_resp = client.get(f"/v3/api/provenance/verify/trace/{trace_id}")
+    verify_resp = client.get(f"/v3/api/provenance/verify/trace/{trace_id}", headers=TRUST_HEADERS)
     assert verify_resp.status_code == 200
     data = verify_resp.json()
     assert data["trace_id"] == trace_id

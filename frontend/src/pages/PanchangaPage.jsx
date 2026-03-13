@@ -4,7 +4,7 @@ import { KnowledgePanel } from '../components/UI/KnowledgePanel';
 import { AuthorityInspector } from '../components/UI/AuthorityInspector';
 import { PANCHANGA_GLOSSARY } from '../data/temporalGlossary';
 import { calendarAPI, festivalAPI, glossaryAPI } from '../services/api';
-import { useTemporalContext } from '../context/TemporalContext';
+import { useTemporalContext } from '../context/useTemporalContext';
 import './PanchangaPage.css';
 
 function toKnowledge(content, fallback) {

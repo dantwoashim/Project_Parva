@@ -23,7 +23,9 @@ def build_uncertainty(
 ) -> Dict[str, Any]:
     model = calibration or load_calibration_model()
     params = _level_params(level, model)
-    interval = float(interval_hours if interval_hours is not None else params.get("interval_hours", 48.0))
+    interval = float(
+        interval_hours if interval_hours is not None else params.get("interval_hours", 48.0)
+    )
     out: Dict[str, Any] = {
         "level": level,
         "probability": round(float(params.get("probability", 0.75)), 4),
@@ -38,7 +40,9 @@ def build_uncertainty(
     return out
 
 
-def build_bs_uncertainty(bs_confidence: str, estimated_error_days: str | None = None) -> Dict[str, Any]:
+def build_bs_uncertainty(
+    bs_confidence: str, estimated_error_days: str | None = None
+) -> Dict[str, Any]:
     if bs_confidence == "official":
         return build_uncertainty("exact", methodology="official_lookup_table")
     if bs_confidence == "estimated":

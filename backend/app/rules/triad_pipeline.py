@@ -8,10 +8,10 @@ Triad contract per rule:
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime, timezone
 import hashlib
 import json
+from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -84,9 +84,13 @@ def write_rule_triad(rule: FestivalRuleV4, *, overwrite: bool = True) -> dict[st
     dsl_document = rule_to_dsl_document(rule)
     paths = triad_paths(rule.festival_id)
 
-    wrote_rule = _json_write(paths["rule"], dsl_document.model_dump(mode="json"), overwrite=overwrite)
+    wrote_rule = _json_write(
+        paths["rule"], dsl_document.model_dump(mode="json"), overwrite=overwrite
+    )
     wrote_evidence = _json_write(paths["evidence"], _evidence_payload(rule), overwrite=overwrite)
-    wrote_validation = _json_write(paths["validation"], _validation_payload(rule), overwrite=overwrite)
+    wrote_validation = _json_write(
+        paths["validation"], _validation_payload(rule), overwrite=overwrite
+    )
 
     return {
         "rule": wrote_rule,
@@ -95,7 +99,9 @@ def write_rule_triad(rule: FestivalRuleV4, *, overwrite: bool = True) -> dict[st
     }
 
 
-def generate_rule_triads(*, overwrite: bool = True, computed_only: bool = False) -> TriadWriteSummary:
+def generate_rule_triads(
+    *, overwrite: bool = True, computed_only: bool = False
+) -> TriadWriteSummary:
     rules = list_rules_v4()
     if computed_only:
         rules = [rule for rule in rules if rule.status == "computed"]

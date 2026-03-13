@@ -10,7 +10,6 @@ from pathlib import Path
 from time import perf_counter
 
 import httpx
-
 from app.main import app
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -65,7 +64,7 @@ def write_report(stats: dict) -> None:
         "# In-Process Load Test (Week 36)",
         "",
         f"- Generated: `{datetime.now(timezone.utc).isoformat()}`",
-        f"- Endpoint: `/v2/api/calendar/panchanga?date=2026-02-15`",
+        "- Endpoint: `/v2/api/calendar/panchanga?date=2026-02-15`",
         f"- Concurrency: **{stats['concurrency']}**",
         f"- Success: **{stats['success']}/{stats['total']}**",
         f"- Error rate: **{stats['error_rate']}%**",

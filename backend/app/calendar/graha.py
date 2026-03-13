@@ -7,8 +7,8 @@ from typing import Any
 
 import swisseph as swe
 
-from app.engine.ephemeris_config import get_ephemeris_config
 from app.calendar.ephemeris.swiss_eph import _ensure_initialized, get_julian_day
+from app.engine.ephemeris_config import get_ephemeris_config
 
 RASHI_NAMES = [
     ("Mesha", "Aries"),
@@ -48,7 +48,6 @@ GRAHA_LABELS = {
 }
 
 
-
 def _format_position(longitude: float, speed: float, *, graha_id: str) -> dict[str, Any]:
     rashi_idx = int(longitude / 30)
     rashi_sanskrit, rashi_english = RASHI_NAMES[rashi_idx]
@@ -65,7 +64,6 @@ def _format_position(longitude: float, speed: float, *, graha_id: str) -> dict[s
         "speed": round(speed, 8),
         "is_retrograde": speed < 0,
     }
-
 
 
 def get_all_graha_positions(dt: datetime, *, sidereal: bool = True) -> dict[str, Any]:
@@ -98,7 +96,6 @@ def get_all_graha_positions(dt: datetime, *, sidereal: bool = True) -> dict[str,
     positions["ketu"]["is_retrograde"] = True
 
     return positions
-
 
 
 def get_graha_position(dt: datetime, graha_id: str, *, sidereal: bool = True) -> dict[str, Any]:

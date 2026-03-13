@@ -8,7 +8,6 @@ from pathlib import Path
 
 from app.calendar.sankranti import get_sankrantis_in_year
 
-
 FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "sankranti_24.json"
 
 

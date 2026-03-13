@@ -8,7 +8,6 @@ from typing import Any
 
 from .interface import SourceInterface
 
-
 DEFAULT_PRIORITY = [
     "ground_truth_overrides",
     "moha_official",

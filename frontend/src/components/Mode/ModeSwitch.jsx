@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useTemporalContext } from '../../context/TemporalContext';
+import { useTemporalContext } from '../../context/useTemporalContext';
 import './ModeSwitch.css';
 
 export function ModeSwitch({ compact = false }) {

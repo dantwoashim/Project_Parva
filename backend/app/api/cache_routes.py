@@ -10,7 +10,6 @@ from app.cache import (
     load_precomputed_panchanga,
 )
 
-
 router = APIRouter(prefix="/api/cache", tags=["cache"])
 
 

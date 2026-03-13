@@ -2,13 +2,19 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Query
 from typing import Optional
+
+from fastapi import APIRouter, Query
 
 from app.explainability import create_reason_trace
 from app.services import build_temporal_compass
 
-from ._personal_utils import base_meta_payload, normalize_coordinates, normalize_timezone, parse_date
+from ._personal_utils import (
+    base_meta_payload,
+    normalize_coordinates,
+    normalize_timezone,
+    parse_date,
+)
 
 router = APIRouter(prefix="/api/temporal", tags=["temporal"])
 
@@ -36,7 +42,12 @@ async def temporal_compass(
     trace = create_reason_trace(
         trace_type="temporal_compass",
         subject={"date": target_date.isoformat()},
-        inputs={"date": target_date.isoformat(), "lat": latitude, "lon": longitude, "tz": timezone_name},
+        inputs={
+            "date": target_date.isoformat(),
+            "lat": latitude,
+            "lon": longitude,
+            "tz": timezone_name,
+        },
         outputs={
             "tithi": payload["primary_readout"].get("tithi_name"),
             "festival_count": payload.get("today", {}).get("count", 0),

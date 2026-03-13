@@ -9,7 +9,9 @@ from app.rules.execution import calculate_rule_occurrence_with_fallback, validat
 def test_scoreboard_reaches_computed_baseline():
     scoreboard = get_rules_scoreboard(target=300)
     assert scoreboard["computed"]["count"] >= 200
-    assert scoreboard["claim_guard"]["safe_to_claim_300"] == (scoreboard["computed"]["count"] >= 300)
+    assert scoreboard["claim_guard"]["safe_to_claim_300"] == (
+        scoreboard["computed"]["count"] >= 300
+    )
 
 
 def test_seed_rule_is_promoted_with_executable_dsl():

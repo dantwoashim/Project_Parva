@@ -20,7 +20,9 @@ This file describes only what is implemented and verifiable in the repository no
 3. Persistent community layer and AR/WebXR production features.
 
 ## Evidence pointers
-- API bootstrap: `/Users/rohanbasnet14/Documents/Project_Parva/backend/app/bootstrap/`
-- Personal endpoints: `/Users/rohanbasnet14/Documents/Project_Parva/backend/app/api/personal_routes.py`, `/Users/rohanbasnet14/Documents/Project_Parva/backend/app/api/muhurta_routes.py`, `/Users/rohanbasnet14/Documents/Project_Parva/backend/app/api/kundali_routes.py`
-- Frontend routes/pages: `/Users/rohanbasnet14/Documents/Project_Parva/frontend/src/App.jsx`
-- Conformance report output: `/Users/rohanbasnet14/Documents/Project_Parva/reports/conformance_report.json`
+- API bootstrap: `backend/app/bootstrap/`
+- Personal endpoints: `backend/app/api/personal_routes.py`,
+  `backend/app/api/muhurta_routes.py`, `backend/app/api/kundali_routes.py`
+- Frontend routes/pages: `frontend/src/App.jsx`
+- Conformance report output: generated artifact `reports/conformance_report.json`
+  (see `docs/GENERATED_ARTIFACTS.md`)

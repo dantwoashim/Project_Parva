@@ -6,7 +6,6 @@ from fastapi import APIRouter
 
 from app.policy import get_policy_metadata
 
-
 router = APIRouter(prefix="/api/policy", tags=["policy"])
 
 

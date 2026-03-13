@@ -1,73 +1,101 @@
-# Project Parva (v3 Public Profile)
+# Project Parva
 
-Project Parva is an ephemeris-backed Nepali temporal engine and festival platform.
-It focuses on one core question: **"What is the correct date?"**
+Project Parva is an ephemeris-backed Nepali temporal engine and festival
+platform. The launch-safe public contract is the stable `v3` read-only
+profile under `/v3/api/*`, with `/api/*` kept as a compatibility alias.
+The supported runtime target for this build is Python 3.11.
 
-## What is implemented
-1. BS conversion + tithi + panchanga + sankranti + adhik handling.
-2. Festival APIs and explainability traces.
-3. Public API profile: `/v3/api/*` (with `/api/*` alias).
-4. Personal stack:
-   - Personal Panchanga
-   - Muhurta
-   - Kundali
-5. React frontend with Explorer, Detail, Panchanga, iCal, Personal, Muhurta, Kundali, and Dashboard routes.
+## Launch profile
 
-See `/Users/rohanbasnet14/Documents/Project_Parva/docs/AS_BUILT.md` for evidence-only status.
+Public stable profile:
+
+- BS and AD conversion
+- calendar and panchanga endpoints
+- festival explorer APIs
+- stateless personal compute endpoints
+- feeds
+- frontend app and docs
+
+Disabled by default:
+
+- webhook subscription management and dispatch (not shipped in this build)
+- experimental version tracks (`/v2`, `/v4`, `/v5`)
+- admin and provenance mutation routes
+
+See `docs/AS_BUILT.md`, `docs/ROUTE_ACCESS.md`, and `SECURITY.md` for the
+current shipped contract.
 
 ## Quick start
 
 ### Backend
+
 ```bash
-cd /Users/rohanbasnet14/Documents/Project_Parva
-PYTHONPATH=backend uvicorn app.main:app --app-dir backend --reload --port 8000
+py -3.11 -m pip install -e .[test,dev]
+set PYTHONPATH=backend
+uvicorn app.main:app --app-dir backend --reload --port 8000
+```
+
+Tested target:
+
+```bash
+py -3.11 --version
 ```
 
 ### Frontend
+
 ```bash
-cd /Users/rohanbasnet14/Documents/Project_Parva/frontend
-npm install
-npm run dev
+npm --prefix frontend install
+npm --prefix frontend run dev
 ```
 
-Frontend: `http://localhost:5173`  
+Frontend: `http://localhost:5173`
 API: `http://localhost:8000/v3/api`
 
-## Public API examples
+## Release packaging
+
+Use the release packager instead of zipping the working directory. It excludes
+virtualenvs, caches, `node_modules`, generated reports, and other local-only
+artifacts.
+
 ```bash
-# calendar conversion
-curl 'http://localhost:8000/v3/api/calendar/convert?date=2026-02-15'
-
-# personal panchanga
-curl 'http://localhost:8000/v3/api/personal/panchanga?date=2026-02-15&lat=27.7172&lon=85.3240&tz=Asia/Kathmandu'
-
-# muhurta windows
-curl 'http://localhost:8000/v3/api/muhurta/auspicious?date=2026-02-15&type=vivah'
-
-# kundali
-curl 'http://localhost:8000/v3/api/kundali?datetime=2026-02-15T06:30:00%2B05:45&lat=27.7172&lon=85.3240&tz=Asia/Kathmandu'
-
+py -3.11 scripts/release/package_source_archive.py
 ```
 
-## Validation commands
+## Validation
+
 ```bash
-cd /Users/rohanbasnet14/Documents/Project_Parva
-./scripts/release/run_month9_release_gates.sh
+py -3.11 -m pip install -e .[test,dev]
+set PYTHONPATH=backend
+py -3.11 scripts/check_path_leaks.py
+py -3.11 -m pytest -q
+npm --prefix frontend run lint
+npm --prefix frontend test -- --run
+py -3.11 scripts/release/check_contract_freeze.py
+py -3.11 scripts/spec/run_conformance_tests.py
+py -3.11 scripts/generate_accuracy_report.py
+py -3.11 scripts/generate_authority_dashboard.py
+py -3.11 scripts/release/generate_month9_dossier.py
 ```
+
+## Generated artifacts
+
+Files under `reports/` are generated artifacts, not required committed files.
+The policy is documented in `docs/GENERATED_ARTIFACTS.md`.
 
 ## Documentation
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/API_REFERENCE_V3.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/PROJECT_BIBLE.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/UI_TEMPORAL_CARTOGRAPHY_SPEC.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/EVALUATOR_GUIDE.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/ENGINE_ARCHITECTURE.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/ACCURACY_METHOD.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/KNOWN_LIMITS.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/spec/PARVA_TEMPORAL_SPEC_V1.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/public_beta/month9_release_dossier.md`
 
-## Experimental tracks
-`/v2`, `/v4`, `/v5` are disabled by default and only enabled with:
-```bash
-PARVA_ENABLE_EXPERIMENTAL_API=true
-```
+- `docs/API_REFERENCE_V3.md`
+- `docs/PROJECT_BIBLE.md`
+- `docs/ROUTE_ACCESS.md`
+- `docs/DEPLOYMENT.md`
+- `docs/GENERATED_ARTIFACTS.md`
+- `docs/EVALUATOR_GUIDE.md`
+- `docs/ENGINE_ARCHITECTURE.md`
+- `docs/ACCURACY_METHOD.md`
+- `docs/KNOWN_LIMITS.md`
+- `docs/spec/PARVA_TEMPORAL_SPEC_V1.md`
+- `docs/public_beta/month9_release_dossier.md`
+
+## License
+
+This repository is released under the MIT License. See `LICENSE`.

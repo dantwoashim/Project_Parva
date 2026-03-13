@@ -5,8 +5,8 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from fastapi import APIRouter
 
+from fastapi import APIRouter
 
 router = APIRouter(prefix="/api/spec", tags=["spec"])
 
@@ -35,13 +35,13 @@ async def get_conformance_status():
     return {
         "spec": {
             "version": "1.0",
-            "path": str(SPEC_DOC),
+            "path": str(SPEC_DOC.relative_to(PROJECT_ROOT)),
             "exists": SPEC_DOC.exists(),
         },
         "conformance": report,
         "report_exists": report_exists,
         "case_pack": {
-            "path": str(CONFORMANCE_CASES),
+            "path": str(CONFORMANCE_CASES.relative_to(PROJECT_ROOT)),
             "exists": CONFORMANCE_CASES.exists(),
             "cases": case_count,
         },

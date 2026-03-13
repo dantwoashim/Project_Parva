@@ -57,7 +57,11 @@ def main() -> None:
     }
 
     OUT_PATH.write_text(json.dumps(out, indent=2), encoding="utf-8")
-    print(json.dumps({"data_points": total_cases, "empirical_pass_rate": round(empirical, 4)}, indent=2))
+    print(
+        json.dumps(
+            {"data_points": total_cases, "empirical_pass_rate": round(empirical, 4)}, indent=2
+        )
+    )
     print(f"Wrote {OUT_PATH}")
 
 

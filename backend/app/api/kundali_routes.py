@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Query
 from typing import Optional
+
+from fastapi import APIRouter, Query
 
 from app.calendar.kundali import compute_kundali
 from app.explainability import create_reason_trace
@@ -102,10 +103,22 @@ async def kundali_endpoint(
             "dosha_count": len(kundali["doshas"]),
         },
         steps=[
-            {"step": "graha_positions", "detail": "Calculated navagraha sidereal positions from Swiss Ephemeris."},
-            {"step": "dignity_layer", "detail": "Assigned dignity state (exalted/own/neutral/debilitated) to each graha."},
-            {"step": "aspects", "detail": "Computed Vedic graha drishti with orb-constrained strength scoring."},
-            {"step": "yoga_dosha", "detail": "Evaluated yoga set v1 and dosha markers from D1 relations."},
+            {
+                "step": "graha_positions",
+                "detail": "Calculated navagraha sidereal positions from Swiss Ephemeris.",
+            },
+            {
+                "step": "dignity_layer",
+                "detail": "Assigned dignity state (exalted/own/neutral/debilitated) to each graha.",
+            },
+            {
+                "step": "aspects",
+                "detail": "Computed Vedic graha drishti with orb-constrained strength scoring.",
+            },
+            {
+                "step": "yoga_dosha",
+                "detail": "Evaluated yoga set v1 and dosha markers from D1 relations.",
+            },
             {"step": "dasha", "detail": "Built Vimshottari maha + antar dasha timeline."},
             {"step": "consistency", "detail": "Ran D1/D9/house consistency checks."},
         ],
@@ -173,7 +186,10 @@ async def lagna_endpoint(
         },
         outputs={"lagna": lagna},
         steps=[
-            {"step": "ascendant", "detail": "Computed sidereal ascendant (lagna) using Swiss Ephemeris houses."},
+            {
+                "step": "ascendant",
+                "detail": "Computed sidereal ascendant (lagna) using Swiss Ephemeris houses.",
+            },
         ],
     )
 

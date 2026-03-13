@@ -2,11 +2,11 @@
 
 from datetime import date
 from pathlib import Path
-from fastapi import APIRouter
-from fastapi import HTTPException, Query
 
-from app.engine.ephemeris_config import get_ephemeris_config
+from fastapi import APIRouter, HTTPException, Query
+
 from app.calendar.ephemeris.swiss_eph import get_ephemeris_info
+from app.engine.ephemeris_config import get_ephemeris_config
 from app.engine.plugins import get_plugin_registry
 from app.engine.plugins.validation import PluginValidationSuite
 from app.rules.plugins import (
@@ -111,20 +111,22 @@ def _plugin_quality_rows() -> list[dict]:
         error_budget = float(profile.get("error_budget", 0.2))
         observed_error_rate = round(max(0.0, 100.0 - pass_rate), 2)
         budget_rate = round(error_budget * 100.0, 2)
-        rows.append({
-            "plugin_id": plugin_id,
-            "validation_cases_total": total,
-            "pass_rate": pass_rate,
-            "source_classes": sorted(source_classes),
-            "error_budget": error_budget,
-            "quality_band": _quality_band_for_pass_rate(pass_rate, total),
-            "confidence_calibration": {
-                "confidence_score": round(pass_rate / 100.0, 3),
-                "observed_error_rate": observed_error_rate,
-                "budget_error_rate": budget_rate,
-                "within_error_budget": observed_error_rate <= budget_rate,
-            },
-        })
+        rows.append(
+            {
+                "plugin_id": plugin_id,
+                "validation_cases_total": total,
+                "pass_rate": pass_rate,
+                "source_classes": sorted(source_classes),
+                "error_budget": error_budget,
+                "quality_band": _quality_band_for_pass_rate(pass_rate, total),
+                "confidence_calibration": {
+                    "confidence_score": round(pass_rate / 100.0, 3),
+                    "observed_error_rate": observed_error_rate,
+                    "budget_error_rate": budget_rate,
+                    "within_error_budget": observed_error_rate <= budget_rate,
+                },
+            }
+        )
 
     return rows
 
@@ -170,31 +172,61 @@ async def plugin_quality():
     plugins = _plugin_quality_rows()
     validated_or_better = {"validated", "gold"}
 
-    all_validated = all(row["quality_band"] in validated_or_better for row in plugins) if plugins else False
+    all_validated = (
+        all(row["quality_band"] in validated_or_better for row in plugins) if plugins else False
+    )
     rows_by_id = {row["plugin_id"]: row for row in plugins}
 
-    stage1_rows = [rows_by_id[plugin_id] for plugin_id in sorted(STAGE1_VALIDATION_PLUGINS) if plugin_id in rows_by_id]
-    stage1_validated = all(row["quality_band"] in validated_or_better for row in stage1_rows) if stage1_rows else False
+    stage1_rows = [
+        rows_by_id[plugin_id]
+        for plugin_id in sorted(STAGE1_VALIDATION_PLUGINS)
+        if plugin_id in rows_by_id
+    ]
+    stage1_validated = (
+        all(row["quality_band"] in validated_or_better for row in stage1_rows)
+        if stage1_rows
+        else False
+    )
 
-    stage2_rows = [rows_by_id[plugin_id] for plugin_id in sorted(STAGE2_VALIDATION_PLUGINS) if plugin_id in rows_by_id]
-    stage2_validated = all(row["quality_band"] in validated_or_better for row in stage2_rows) if stage2_rows else False
+    stage2_rows = [
+        rows_by_id[plugin_id]
+        for plugin_id in sorted(STAGE2_VALIDATION_PLUGINS)
+        if plugin_id in rows_by_id
+    ]
+    stage2_validated = (
+        all(row["quality_band"] in validated_or_better for row in stage2_rows)
+        if stage2_rows
+        else False
+    )
 
-    all_within_error_budget = all(
-        row.get("confidence_calibration", {}).get("within_error_budget", False)
-        for row in plugins
-    ) if plugins else False
+    all_within_error_budget = (
+        all(
+            row.get("confidence_calibration", {}).get("within_error_budget", False)
+            for row in plugins
+        )
+        if plugins
+        else False
+    )
 
     return {
         "plugins": plugins,
         "count": len(plugins),
         "stage1": {
             "target_plugins": sorted(STAGE1_VALIDATION_PLUGINS),
-            "validated_plugins": [row["plugin_id"] for row in stage1_rows if row["quality_band"] in validated_or_better],
+            "validated_plugins": [
+                row["plugin_id"]
+                for row in stage1_rows
+                if row["quality_band"] in validated_or_better
+            ],
             "all_stage1_validated": stage1_validated,
         },
         "stage2": {
             "target_plugins": sorted(STAGE2_VALIDATION_PLUGINS),
-            "validated_plugins": [row["plugin_id"] for row in stage2_rows if row["quality_band"] in validated_or_better],
+            "validated_plugins": [
+                row["plugin_id"]
+                for row in stage2_rows
+                if row["quality_band"] in validated_or_better
+            ],
             "all_stage2_validated": stage2_validated,
         },
         "global": {
@@ -209,7 +241,9 @@ async def plugin_quality():
 @router.get("/convert")
 async def convert_with_plugin(
     date_str: str = Query(..., alias="date", description="Gregorian date YYYY-MM-DD"),
-    calendar: str = Query("bs", description="Plugin id: bs|ns|tibetan|islamic|hebrew|chinese|julian"),
+    calendar: str = Query(
+        "bs", description="Plugin id: bs|ns|tibetan|islamic|hebrew|chinese|julian"
+    ),
 ):
     """Convert Gregorian date via selected calendar plugin."""
     try:
@@ -251,7 +285,9 @@ def _calculate_observance_internal(
         raise HTTPException(status_code=404, detail=f"Unknown observance plugin: {plugin}")
     result = _observance_plugins[plugin].calculate(rule_id, year, mode=mode)
     if not result:
-        raise HTTPException(status_code=404, detail=f"Rule not found or could not be calculated: {rule_id}")
+        raise HTTPException(
+            status_code=404, detail=f"Rule not found or could not be calculated: {rule_id}"
+        )
     return {
         "plugin": plugin,
         "mode": mode,
@@ -264,7 +300,9 @@ async def calculate_observance_v2(
     plugin: str = Query("nepali_hindu"),
     rule_id: str = Query(..., description="Rule/festival identifier"),
     year: int = Query(..., ge=2000, le=2200),
-    mode: str = Query("computed", description="calculation mode: computed|tabular|astronomical|announced"),
+    mode: str = Query(
+        "computed", description="calculation mode: computed|tabular|astronomical|announced"
+    ),
 ):
     """Calculate one observance through selected observance plugin."""
     return _calculate_observance_internal(plugin=plugin, rule_id=rule_id, year=year, mode=mode)
@@ -275,7 +313,9 @@ async def calculate_observance(
     plugin: str = Query("nepali_hindu"),
     rule_id: str = Query(..., description="Rule/festival identifier"),
     year: int = Query(..., ge=2000, le=2200),
-    mode: str = Query("computed", description="calculation mode: computed|tabular|astronomical|announced"),
+    mode: str = Query(
+        "computed", description="calculation mode: computed|tabular|astronomical|announced"
+    ),
 ):
     """Backward-compatible alias for observance plugin calculation."""
     return _calculate_observance_internal(plugin=plugin, rule_id=rule_id, year=year, mode=mode)

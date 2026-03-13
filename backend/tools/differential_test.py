@@ -13,13 +13,12 @@ import json
 import sys
 from datetime import date
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict
 
 # Add backend to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
-
 
 # ── Known External References ─────────────────────────────────────
 # These are manually verified festival dates from published sources
@@ -65,44 +64,52 @@ def run_differential_test(year: int) -> Dict:
         parva_result = calculate_festival_v2(fid, year)
 
         if parva_result is None:
-            results["reference_only"].append({
-                "festival_id": fid,
-                "reference_date": ref_date,
-                "source": ref["source"],
-                "parva_status": "not_found",
-            })
+            results["reference_only"].append(
+                {
+                    "festival_id": fid,
+                    "reference_date": ref_date,
+                    "source": ref["source"],
+                    "parva_status": "not_found",
+                }
+            )
             continue
 
         parva_date = parva_result.start_date.isoformat()
         results["total_compared"] += 1
 
         if parva_date == ref_date:
-            results["matches"].append({
-                "festival_id": fid,
-                "date": parva_date,
-                "source": ref["source"],
-                "method": parva_result.method,
-            })
+            results["matches"].append(
+                {
+                    "festival_id": fid,
+                    "date": parva_date,
+                    "source": ref["source"],
+                    "method": parva_result.method,
+                }
+            )
         else:
-            results["mismatches"].append({
-                "festival_id": fid,
-                "parva_date": parva_date,
-                "reference_date": ref_date,
-                "source": ref["source"],
-                "method": parva_result.method,
-                "delta_days": (parva_result.start_date - date.fromisoformat(ref_date)).days,
-            })
+            results["mismatches"].append(
+                {
+                    "festival_id": fid,
+                    "parva_date": parva_date,
+                    "reference_date": ref_date,
+                    "source": ref["source"],
+                    "method": parva_result.method,
+                    "delta_days": (parva_result.start_date - date.fromisoformat(ref_date)).days,
+                }
+            )
 
     # Festivals in Parva but not in reference
     for fid in all_festivals:
         if fid not in reference:
             result = calculate_festival_v2(fid, year)
             if result:
-                results["parva_only"].append({
-                    "festival_id": fid,
-                    "parva_date": result.start_date.isoformat(),
-                    "method": result.method,
-                })
+                results["parva_only"].append(
+                    {
+                        "festival_id": fid,
+                        "parva_date": result.start_date.isoformat(),
+                        "method": result.method,
+                    }
+                )
 
     # Calculate accuracy
     if results["total_compared"] > 0:
@@ -138,7 +145,9 @@ def main():
     if args.verbose and results["mismatches"]:
         print("\nMismatches:")
         for m in results["mismatches"]:
-            print(f"  {m['festival_id']}: Parva={m['parva_date']}, Ref={m['reference_date']} ({m['source']})")
+            print(
+                f"  {m['festival_id']}: Parva={m['parva_date']}, Ref={m['reference_date']} ({m['source']})"
+            )
 
 
 if __name__ == "__main__":

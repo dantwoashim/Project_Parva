@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-02-12T01:46:41.289027+00:00",
-  "current": "/Users/rohanbasnet14/Documents/Project Parva/benchmark/results/bs_conversion_v1_report.json",
-  "baseline": "/Users/rohanbasnet14/Documents/Project Parva/benchmark/results/baseline_2028Q1_bs_conversion.json",
+  "current": "benchmark/results/bs_conversion_v1_report.json",
+  "baseline": "benchmark/results/baseline_2028Q1_bs_conversion.json",
   "result": {
     "total_compared": 3,
     "taxonomy": {

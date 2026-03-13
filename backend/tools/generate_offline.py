@@ -17,9 +17,8 @@ from typing import Dict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from app.calendar.bikram_sambat import get_bs_month_name, gregorian_to_bs
 from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
-from app.calendar.bikram_sambat import gregorian_to_bs, get_bs_month_name, get_bs_confidence
-from app.calendar.tithi.tithi_udaya import get_udaya_tithi
 from app.calendar.panchanga import get_panchanga
 
 
@@ -50,14 +49,21 @@ def generate_panchanga_package(start_date: date, days: int = 365) -> list:
         try:
             panchanga = get_panchanga(d)
             bs_y, bs_m, bs_d = gregorian_to_bs(d)
-            entries.append({
-                "date": d.isoformat(),
-                "bs": {"year": bs_y, "month": bs_m, "day": bs_d, "month_name": get_bs_month_name(bs_m)},
-                "tithi": panchanga["tithi"]["name"],
-                "nakshatra": panchanga["nakshatra"]["name"],
-                "yoga": panchanga["yoga"]["name"],
-                "vaara": panchanga["vaara"]["name_english"],
-            })
+            entries.append(
+                {
+                    "date": d.isoformat(),
+                    "bs": {
+                        "year": bs_y,
+                        "month": bs_m,
+                        "day": bs_d,
+                        "month_name": get_bs_month_name(bs_m),
+                    },
+                    "tithi": panchanga["tithi"]["name"],
+                    "nakshatra": panchanga["nakshatra"]["name"],
+                    "yoga": panchanga["yoga"]["name"],
+                    "vaara": panchanga["vaara"]["name_english"],
+                }
+            )
         except Exception:
             entries.append({"date": d.isoformat(), "error": True})
     return entries
@@ -79,10 +85,12 @@ def generate_bs_calendar_package(bs_year: int) -> Dict:
             for day in range(1, month_days + 1):
                 try:
                     greg = bs_to_gregorian(bs_year, month, day)
-                    month_data["dates"].append({
-                        "bs_day": day,
-                        "gregorian": greg.isoformat(),
-                    })
+                    month_data["dates"].append(
+                        {
+                            "bs_day": day,
+                            "gregorian": greg.isoformat(),
+                        }
+                    )
                 except Exception:
                     break
             months[month] = month_data

@@ -4,12 +4,19 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.venv/
+.venv*/
+.verify*/
 .coverage
 htmlcov/
+*.egg-info/
 
 # Node
 node_modules/
+frontend/node_modules/
+frontend/.vite/
 dist/
+frontend/dist/
 
 # Local env
 .env
@@ -24,6 +31,7 @@ dist/
 output/
 reports/
 benchmark/results/
+*.zip
 
 # Runtime data
 backend/data/webhooks/subscriptions.json

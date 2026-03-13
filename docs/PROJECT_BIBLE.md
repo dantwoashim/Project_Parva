@@ -23,7 +23,7 @@ In plain language, it answers:
 Core direction:
 - Public API profile is **v3** (`/v3/api/*`) with `/api/*` convenience alias.
 - Experimental API tracks (`/v2`, `/v4`, `/v5`) are disabled by default.
-- Truth-first policy: implementation claims must be verifiable by tests/reports.
+- Truth-first policy: implementation claims must be verifiable by tests and generated artifacts.
 
 ---
 
@@ -288,23 +288,20 @@ Frontend tests:
 
 Local quality checks:
 ```bash
-cd /Users/rohanbasnet14/Documents/Project_Parva
-PYTHONPATH=backend python3 -m pytest -q
+python -m pytest -q
 npm --prefix frontend test -- --run
 npm --prefix frontend run build
 ```
 
 Contract and conformance:
 ```bash
-cd /Users/rohanbasnet14/Documents/Project_Parva
-PYTHONPATH=backend python3 scripts/release/check_contract_freeze.py
-PYTHONPATH=backend python3 scripts/spec/run_conformance_tests.py
+python scripts/release/check_contract_freeze.py
+python scripts/spec/run_conformance_tests.py
 ```
 
 Full release gate pack:
 ```bash
-cd /Users/rohanbasnet14/Documents/Project_Parva
-bash scripts/release/run_month9_release_gates.sh
+sh scripts/release/run_month9_release_gates.sh
 ```
 
 ---
@@ -327,8 +324,7 @@ Important environment variables:
 
 Smoke test script:
 ```bash
-cd /Users/rohanbasnet14/Documents/Project_Parva
-python3 scripts/live_smoke.py --base https://<your-backend-host>
+python scripts/live_smoke.py --base https://<your-backend-host>
 ```
 
 ---

@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-from datetime import timedelta
-
 from app.calendar.lunar_calendar import (
+    detect_adhik_maas,
     lunar_month_boundaries,
     name_lunar_month,
-    detect_adhik_maas,
 )
 
 

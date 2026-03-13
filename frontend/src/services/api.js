@@ -4,7 +4,7 @@
  * Public profile defaults to v3.
  */
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000/v3/api';
+const API_BASE = import.meta.env.VITE_API_BASE || '/v3/api';
 
 export async function fetchAPI(endpoint, options = {}, parseAs = 'json') {
   const envelope = await fetchAPIEnvelope(endpoint, options, parseAs);

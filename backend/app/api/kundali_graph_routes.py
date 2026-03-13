@@ -2,13 +2,19 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Query
 from typing import Optional
+
+from fastapi import APIRouter, Query
 
 from app.explainability import create_reason_trace
 from app.services import build_kundali_graph
 
-from ._personal_utils import base_meta_payload, normalize_coordinates, normalize_timezone, parse_datetime
+from ._personal_utils import (
+    base_meta_payload,
+    normalize_coordinates,
+    normalize_timezone,
+    parse_datetime,
+)
 
 router = APIRouter(prefix="/api/kundali", tags=["kundali"])
 
@@ -34,7 +40,12 @@ async def kundali_graph_endpoint(
     trace = create_reason_trace(
         trace_type="kundali_graph",
         subject={"datetime": birth_dt.isoformat()},
-        inputs={"datetime": birth_dt.isoformat(), "lat": latitude, "lon": longitude, "tz": timezone_name},
+        inputs={
+            "datetime": birth_dt.isoformat(),
+            "lat": latitude,
+            "lon": longitude,
+            "tz": timezone_name,
+        },
         outputs={
             "house_nodes": len(payload.get("layout", {}).get("house_nodes", [])),
             "graha_nodes": len(payload.get("layout", {}).get("graha_nodes", [])),
@@ -42,7 +53,10 @@ async def kundali_graph_endpoint(
         },
         steps=[
             {"step": "kundali", "detail": "Computed D1 graph source from planetary positions."},
-            {"step": "layout", "detail": "Mapped houses/grahas into deterministic SVG coordinates."},
+            {
+                "step": "layout",
+                "detail": "Mapped houses/grahas into deterministic SVG coordinates.",
+            },
             {"step": "insights", "detail": "Generated plain-language insight blocks for sidebar."},
         ],
     )

@@ -10,7 +10,6 @@ from pydantic import BaseModel, Field
 
 from app.integrations import get_webhook_service
 
-
 router = APIRouter(prefix="/api/webhooks", tags=["webhooks"])
 _service = get_webhook_service()
 

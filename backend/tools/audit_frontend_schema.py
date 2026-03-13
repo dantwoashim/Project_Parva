@@ -6,9 +6,8 @@ from __future__ import annotations
 from datetime import date
 from pathlib import Path
 
-from fastapi.testclient import TestClient
-
 from app.main import app
+from fastapi.testclient import TestClient
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 OUT_MD = PROJECT_ROOT / "docs" / "SCHEMA_DIFF_WEEK37.md"

@@ -4,7 +4,7 @@ import { KnowledgePanel } from '../components/UI/KnowledgePanel';
 import { AuthorityInspector } from '../components/UI/AuthorityInspector';
 import { PANCHANGA_GLOSSARY, PERSONAL_PANCHANGA_GLOSSARY } from '../data/temporalGlossary';
 import { festivalAPI, personalAPI } from '../services/api';
-import { useTemporalContext } from '../context/TemporalContext';
+import { useTemporalContext } from '../context/useTemporalContext';
 import './PersonalPanchangaPage.css';
 
 function parseTimeMinutes(iso) {

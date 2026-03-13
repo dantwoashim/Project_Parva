@@ -7,15 +7,17 @@ Endpoints for verifying festival date authenticity using hashes + Merkle proofs.
 import hashlib
 import json
 from pathlib import Path
+from typing import Any, Dict, List, Optional
+
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
-from typing import List, Dict, Any, Optional
 
 from app.calendar.merkle import (
+    MerkleTree,
     get_festival_proof,
     get_merkle_root,
-    MerkleTree,
 )
+from app.explainability.store import get_reason_trace
 from app.provenance.snapshot import (
     LEGACY_FESTIVAL_SNAPSHOT,
     SNAPSHOT_DIR,
@@ -35,8 +37,6 @@ from app.provenance.transparency import (
     replay_state,
     verify_log_integrity,
 )
-from app.explainability.store import get_reason_trace
-
 
 router = APIRouter(prefix="/api/provenance", tags=["provenance"])
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -45,6 +45,7 @@ PUBLIC_BETA_DASHBOARD = PROJECT_ROOT / "docs" / "public_beta" / "dashboard_metri
 
 class ProofResponse(BaseModel):
     """Merkle proof response."""
+
     festival_id: str
     year: int
     leaf_hash: str
@@ -55,6 +56,7 @@ class ProofResponse(BaseModel):
 
 class RootResponse(BaseModel):
     """Merkle root response."""
+
     merkle_root: str
     snapshot_id: Optional[str] = None
     dataset_hash: Optional[str] = None
@@ -64,6 +66,7 @@ class RootResponse(BaseModel):
 
 class SnapshotVerifyResponse(BaseModel):
     """Snapshot verification output."""
+
     snapshot_id: str
     valid: bool
     checks: Dict[str, bool]
@@ -111,7 +114,7 @@ def _resolve_festival_snapshot_path(snapshot_id: Optional[str]) -> Optional[str]
 async def get_provenance_root() -> RootResponse:
     """
     Get the current Merkle root and snapshot hash.
-    
+
     This root can be anchored to a blockchain for immutable verification.
     """
     snapshot = get_latest_snapshot(create_if_missing=False)
@@ -120,6 +123,7 @@ async def get_provenance_root() -> RootResponse:
     total_entries = 0
     if snapshot_path and Path(snapshot_path).exists():
         import json
+
         with open(snapshot_path, encoding="utf-8") as f:
             data = json.load(f)
             total_entries = data.get("total_entries", 0)
@@ -172,32 +176,24 @@ async def verify_festival(
 ) -> ProofResponse:
     """
     Get Merkle proof for a specific festival date.
-    
+
     Use this proof to verify that the festival date comes from
     the canonical, auditable dataset.
     """
     snapshot_path = _resolve_festival_snapshot_path(snapshot)
     if not snapshot_path:
-        raise HTTPException(
-            status_code=503,
-            detail="Snapshot not available"
-        )
+        raise HTTPException(status_code=503, detail="Snapshot not available")
 
     proof = get_festival_proof(Path(snapshot_path), year, festival_id)
-    
+
     if proof is None:
         raise HTTPException(
-            status_code=404,
-            detail=f"Festival {festival_id} not found for year {year}"
+            status_code=404, detail=f"Festival {festival_id} not found for year {year}"
         )
-    
+
     # Verify the proof is valid
-    verified = MerkleTree.verify_proof(
-        proof.leaf_hash,
-        proof.proof,
-        proof.root
-    )
-    
+    verified = MerkleTree.verify_proof(proof.leaf_hash, proof.proof, proof.root)
+
     return ProofResponse(
         festival_id=festival_id,
         year=year,
@@ -233,7 +229,9 @@ async def verify_trace(trace_id: str) -> TraceVerifyResponse:
         "steps": trace.get("steps"),
         "provenance": trace.get("provenance"),
     }
-    canonical = json.dumps(canonical_payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    canonical = json.dumps(
+        canonical_payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    )
     digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
     expected_trace_id = f"tr_{digest[:20]}"
     deterministic_id_match = trace_id == expected_trace_id
@@ -279,7 +277,7 @@ async def batch_verify(
 ) -> Dict[str, Any]:
     """
     Verify multiple festivals at once.
-    
+
     Returns Merkle root and individual verification status.
     """
     snapshot_path = _resolve_festival_snapshot_path(snapshot)
@@ -287,30 +285,31 @@ async def batch_verify(
         raise HTTPException(status_code=503, detail="Snapshot not available")
 
     import json
+
     with open(snapshot_path, encoding="utf-8") as f:
         snapshot_data = json.load(f)
 
     year_data = snapshot_data.get("data", {}).get(str(year), {})
-    
+
     if festivals:
         festival_ids = [f.strip() for f in festivals.split(",")]
     else:
         festival_ids = list(year_data.keys())
-    
+
     results = []
     for fid in festival_ids:
         if fid in year_data:
             proof = get_festival_proof(Path(snapshot_path), year, fid)
             if proof:
-                verified = MerkleTree.verify_proof(
-                    proof.leaf_hash, proof.proof, proof.root
+                verified = MerkleTree.verify_proof(proof.leaf_hash, proof.proof, proof.root)
+                results.append(
+                    {
+                        "festival_id": fid,
+                        "verified": verified,
+                        "date": year_data[fid].get("start"),
+                    }
                 )
-                results.append({
-                    "festival_id": fid,
-                    "verified": verified,
-                    "date": year_data[fid].get("start"),
-                })
-    
+
     return {
         "year": year,
         "merkle_root": get_merkle_root(Path(snapshot_path)),

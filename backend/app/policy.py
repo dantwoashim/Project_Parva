@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-
 DEFAULT_POLICY = {
     "usage": "informational",
     "advisory": "For religious observance, consult local authorities/panchang.",

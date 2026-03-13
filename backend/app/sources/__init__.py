@@ -1,7 +1,7 @@
 """Source package exports."""
 
 from .interface import SourceInterface
-from .loader import JsonSourceLoader, get_source_loader, DEFAULT_PRIORITY
+from .loader import DEFAULT_PRIORITY, JsonSourceLoader, get_source_loader
 
 __all__ = [
     "SourceInterface",

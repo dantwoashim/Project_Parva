@@ -7,9 +7,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from fastapi.testclient import TestClient
-
 from app.main import app
+from fastapi.testclient import TestClient
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 OUT_MD = PROJECT_ROOT / "docs" / "weekly_execution" / "year1_week36" / "e2e_smoke.md"

@@ -1,0 +1,13 @@
+.venv export-ignore
+.venv311 export-ignore
+.verify_311_clean export-ignore
+.pytest_cache export-ignore
+.mypy_cache export-ignore
+.ruff_cache export-ignore
+frontend/node_modules export-ignore
+frontend/dist export-ignore
+output export-ignore
+reports export-ignore
+backend/project_parva.egg-info export-ignore
+**/__pycache__ export-ignore
+*.pyc export-ignore

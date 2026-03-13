@@ -33,7 +33,7 @@ def main() -> None:
         matched_rows.extend(load_rows(fp))
 
     total_parsed = len(parsed_rows)
-    total_matched = sum(1 for r in matched_rows if (r.get("match_id") or "").strip())
+    sum(1 for r in matched_rows if (r.get("match_id") or "").strip())
 
     def normalized_confidence(row: dict[str, str]) -> str:
         c = (row.get("parse_confidence") or "").strip()

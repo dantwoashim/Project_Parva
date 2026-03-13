@@ -7,7 +7,6 @@ from fastapi import APIRouter
 from app.policy import get_policy_metadata
 from app.reliability import evaluate_slos, get_runtime_status
 
-
 router = APIRouter(prefix="/api/reliability", tags=["reliability"])
 
 
@@ -47,5 +46,13 @@ async def reliability_playbooks():
                 "doc": "/docs/RELIABILITY.md#incident-playbooks",
             },
         ],
+        "policy": get_policy_metadata(),
+    }
+
+
+@router.get("/metrics")
+async def reliability_metrics():
+    return {
+        "runtime": get_runtime_status(),
         "policy": get_policy_metadata(),
     }

@@ -9,7 +9,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SITE_DIR = PROJECT_ROOT / "output" / "deploy" / "site"
 PRECOMPUTED_DIR = PROJECT_ROOT / "output" / "precomputed"
@@ -38,20 +37,29 @@ def _write_json(path: Path, payload: Dict) -> None:
 
 
 def _render_index(payload: Dict) -> str:
-    precomputed_links = "\n".join(
-        f'<li><a href="precomputed/{item["name"]}">{item["name"]}</a> ({item["size_bytes"]} bytes)</li>'
-        for item in payload.get("precomputed", [])
-    ) or "<li>No precomputed artifacts found.</li>"
+    precomputed_links = (
+        "\n".join(
+            f'<li><a href="precomputed/{item["name"]}">{item["name"]}</a> ({item["size_bytes"]} bytes)</li>'
+            for item in payload.get("precomputed", [])
+        )
+        or "<li>No precomputed artifacts found.</li>"
+    )
 
-    report_links = "\n".join(
-        f'<li><a href="{item["href"]}">{item["label"]}</a></li>'
-        for item in payload.get("reports", [])
-    ) or "<li>No report artifacts found.</li>"
+    report_links = (
+        "\n".join(
+            f'<li><a href="{item["href"]}">{item["label"]}</a></li>'
+            for item in payload.get("reports", [])
+        )
+        or "<li>No report artifacts found.</li>"
+    )
 
-    contract_links = "\n".join(
-        f'<li><a href="contracts/{name}">{name}</a></li>'
-        for name in payload.get("contracts", [])
-    ) or "<li>No OpenAPI snapshots found.</li>"
+    contract_links = (
+        "\n".join(
+            f'<li><a href="contracts/{name}">{name}</a></li>'
+            for name in payload.get("contracts", [])
+        )
+        or "<li>No OpenAPI snapshots found.</li>"
+    )
 
     return f"""<!doctype html>
 <html lang="en">

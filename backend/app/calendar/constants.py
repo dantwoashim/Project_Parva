@@ -17,23 +17,23 @@ Data Sources:
 Coverage: 2070-2095 BS (2013-2038 AD)
 """
 
-from typing import Optional
 from datetime import date
+from typing import Optional
 
 # Bikram Sambat month names in English
 BS_MONTH_NAMES = [
-    "Baishakh",   # 1 - बैशाख
-    "Jestha",     # 2 - जेठ
-    "Ashadh",     # 3 - आषाढ
-    "Shrawan",    # 4 - श्रावण
-    "Bhadra",     # 5 - भाद्र
-    "Ashwin",     # 6 - आश्विन
-    "Kartik",     # 7 - कार्तिक
-    "Mangsir",    # 8 - मंसिर
-    "Poush",      # 9 - पौष
-    "Magh",       # 10 - माघ
-    "Falgun",     # 11 - फाल्गुन
-    "Chaitra",    # 12 - चैत्र
+    "Baishakh",  # 1 - बैशाख
+    "Jestha",  # 2 - जेठ
+    "Ashadh",  # 3 - आषाढ
+    "Shrawan",  # 4 - श्रावण
+    "Bhadra",  # 5 - भाद्र
+    "Ashwin",  # 6 - आश्विन
+    "Kartik",  # 7 - कार्तिक
+    "Mangsir",  # 8 - मंसिर
+    "Poush",  # 9 - पौष
+    "Magh",  # 10 - माघ
+    "Falgun",  # 11 - फाल्गुन
+    "Chaitra",  # 12 - चैत्र
 ]
 
 # Bikram Sambat month names in Nepali
@@ -54,13 +54,13 @@ BS_MONTH_NAMES_NEPALI = [
 
 # Weekday names in Nepali
 WEEKDAY_NAMES_NEPALI = [
-    "आइतबार",    # Sunday
-    "सोमबार",     # Monday
-    "मंगलबार",    # Tuesday
-    "बुधबार",     # Wednesday
-    "बिहीबार",    # Thursday
-    "शुक्रबार",   # Friday
-    "शनिबार",     # Saturday
+    "आइतबार",  # Sunday
+    "सोमबार",  # Monday
+    "मंगलबार",  # Tuesday
+    "बुधबार",  # Wednesday
+    "बिहीबार",  # Thursday
+    "शुक्रबार",  # Friday
+    "शनिबार",  # Saturday
 ]
 
 # Bikram Sambat calendar data
@@ -79,7 +79,6 @@ BS_MONTH_LENGTHS: dict[int, list[int]] = {
     2077: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
     2078: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
     2079: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
-    
     # 2080s - Current decade
     2080: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
     2081: [31, 32, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],  # 366 days
@@ -92,7 +91,6 @@ BS_MONTH_LENGTHS: dict[int, list[int]] = {
     2087: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
     2088: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
     2089: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
-    
     # 2090s - Future decade
     2090: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
     2091: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
@@ -114,7 +112,7 @@ BS_REFERENCE_YEAR = 2080
 def _calculate_year_start(year: int) -> date:
     """Calculate the Gregorian start date for a BS year."""
     from datetime import timedelta
-    
+
     if year == BS_REFERENCE_YEAR:
         return BS_REFERENCE_START
     elif year > BS_REFERENCE_YEAR:
@@ -146,13 +144,13 @@ for _year in BS_MONTH_LENGTHS:
 def get_bs_year_data(year: int) -> Optional[tuple]:
     """
     Get the month lengths and start date for a BS year.
-    
+
     Args:
         year: Bikram Sambat year (e.g., 2080)
-    
+
     Returns:
         Tuple of (list of 12 month lengths, gregorian start date) or None if not found
-    
+
     Example:
         >>> month_lengths, start_date = get_bs_year_data(2080)
         >>> month_lengths[0]  # Days in Baishakh 2080
@@ -166,43 +164,45 @@ def get_bs_year_data(year: int) -> Optional[tuple]:
 def total_days_in_bs_year(year: int) -> int:
     """
     Calculate total days in a BS year.
-    
+
     Args:
         year: Bikram Sambat year
-    
+
     Returns:
         Total number of days in that year (364-366)
-    
+
     Raises:
         ValueError: If year is not in the lookup table
-    
+
     Example:
         >>> total_days_in_bs_year(2080)
         365
     """
     data = get_bs_year_data(year)
     if data is None:
-        raise ValueError(f"BS year {year} is not in the supported range ({BS_MIN_YEAR}-{BS_MAX_YEAR})")
+        raise ValueError(
+            f"BS year {year} is not in the supported range ({BS_MIN_YEAR}-{BS_MAX_YEAR})"
+        )
     return sum(data[0])
 
 
 # Tithi (lunar day) names
 TITHI_NAMES = [
-    "Pratipada",    # 1
-    "Dwitiya",      # 2
-    "Tritiya",      # 3
-    "Chaturthi",    # 4
-    "Panchami",     # 5
-    "Shashthi",     # 6
-    "Saptami",      # 7
-    "Ashtami",      # 8
-    "Navami",       # 9
-    "Dashami",      # 10
-    "Ekadashi",     # 11
-    "Dwadashi",     # 12
-    "Trayodashi",   # 13
+    "Pratipada",  # 1
+    "Dwitiya",  # 2
+    "Tritiya",  # 3
+    "Chaturthi",  # 4
+    "Panchami",  # 5
+    "Shashthi",  # 6
+    "Saptami",  # 7
+    "Ashtami",  # 8
+    "Navami",  # 9
+    "Dashami",  # 10
+    "Ekadashi",  # 11
+    "Dwadashi",  # 12
+    "Trayodashi",  # 13
     "Chaturdashi",  # 14
-    "Purnima",      # 15 (Full Moon) / Amavasya (New Moon)
+    "Purnima",  # 15 (Full Moon) / Amavasya (New Moon)
 ]
 
 TITHI_NAMES_NEPALI = [

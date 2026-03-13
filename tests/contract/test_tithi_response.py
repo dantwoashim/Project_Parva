@@ -1,8 +1,7 @@
 """Contract tests for /api/calendar/tithi metadata (Week 15)."""
 
-from fastapi.testclient import TestClient
-
 from app.main import app
+from fastapi.testclient import TestClient
 
 
 def test_calendar_tithi_endpoint_contract():

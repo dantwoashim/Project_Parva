@@ -6,6 +6,7 @@ from typing import Any
 
 from app.cache import get_cache_stats
 from app.calendar.ephemeris.swiss_eph import get_ephemeris_info
+from app.reliability.metrics import get_metrics_registry
 
 
 def get_runtime_status() -> dict[str, Any]:
@@ -29,4 +30,5 @@ def get_runtime_status() -> dict[str, Any]:
             "file_count": cache.get("file_count", 0),
             "total_bytes": cache.get("total_bytes", 0),
         },
+        "metrics": get_metrics_registry().snapshot(),
     }

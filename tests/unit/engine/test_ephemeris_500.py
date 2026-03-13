@@ -8,7 +8,6 @@ from pathlib import Path
 
 from app.calendar.ephemeris.swiss_eph import get_sun_moon_positions
 
-
 FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "ephemeris_500.json"
 
 

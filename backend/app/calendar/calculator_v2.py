@@ -12,27 +12,27 @@ This fixes the mid-year festival discrepancies caused by Adhik Maas.
 """
 
 import json
-from datetime import date, timedelta, datetime, timezone
-from pathlib import Path
-from typing import Dict, Optional, List, Literal, Tuple
 from dataclasses import dataclass
+from datetime import date, timedelta
+from pathlib import Path
+from typing import Dict, List, Literal, Optional, Tuple
 
-from .lunar_calendar import (
-    get_lunar_year,
-    find_festival_in_lunar_month,
-    LUNAR_MONTH_NAMES,
-)
 from .bikram_sambat import bs_to_gregorian
-from .sankranti import find_mesh_sankranti, find_makara_sankranti
-
+from .lunar_calendar import (
+    find_festival_in_lunar_month,
+    get_lunar_year,
+)
+from .sankranti import find_makara_sankranti, find_mesh_sankranti
 
 # =============================================================================
 # FESTIVAL RULES V3 LOADER
 # =============================================================================
 
+
 @dataclass
 class FestivalRuleV3:
     """Festival rule using lunar_month model."""
+
     name_en: str
     name_ne: str
     type: Literal["solar", "lunar"]
@@ -54,14 +54,14 @@ class FestivalRuleV3:
 def load_festival_rules_v3() -> Dict[str, FestivalRuleV3]:
     """Load V3 festival rules with lunar_month support."""
     rules_path = Path(__file__).parent / "festival_rules_v3.json"
-    
+
     if not rules_path.exists():
         # Fallback to empty dict
         return {}
-    
+
     with open(rules_path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    
+
     rules = {}
     for fid, rule_data in data.get("festivals", {}).items():
         rules[fid] = FestivalRuleV3(
@@ -79,7 +79,7 @@ def load_festival_rules_v3() -> Dict[str, FestivalRuleV3]:
             importance=rule_data.get("importance", "national"),
             category=rule_data.get("category", "hindu"),
         )
-    
+
     return rules
 
 
@@ -99,9 +99,11 @@ def get_festival_rules_v3() -> Dict[str, FestivalRuleV3]:
 # FESTIVAL DATE CALCULATION
 # =============================================================================
 
+
 @dataclass
 class FestivalDate:
     """Result of festival date calculation."""
+
     festival_id: str
     start_date: date
     end_date: date
@@ -109,7 +111,7 @@ class FestivalDate:
     method: str  # "lunar_month" or "solar" or "fallback"
     lunar_month: Optional[str] = None
     is_adhik_year: bool = False
-    
+
     @property
     def duration_days(self) -> int:
         return (self.end_date - self.start_date).days + 1
@@ -120,17 +122,15 @@ class FestivalDate:
 
 
 def calculate_festival_date_v2(
-    festival_id: str,
-    year: int,
-    use_overrides: bool = True
+    festival_id: str, year: int, use_overrides: bool = True
 ) -> Optional[FestivalDate]:
     """
     Calculate festival date using the CORRECT lunar month model.
-    
+
     Args:
         festival_id: Festival identifier
         year: Gregorian year
-    
+
     Returns:
         FestivalDate with computed date, or None if not found
     """
@@ -138,6 +138,7 @@ def calculate_festival_date_v2(
         # Authoritative overrides (official dates) when available
         try:
             from .overrides import get_festival_override
+
             override_date = get_festival_override(festival_id, year)
             if override_date:
                 rules = get_festival_rules_v3()
@@ -155,13 +156,14 @@ def calculate_festival_date_v2(
         except Exception:
             # Fall back to algorithmic calculation
             pass
-    
+
     rules = get_festival_rules_v3()
-    
+
     if festival_id not in rules:
         # Fallback to legacy rule set (bs_month-based) if available
         try:
             from .calculator import calculate_festival_date as calculate_festival_date_v1
+
             dr = calculate_festival_date_v1(festival_id, year, use_overrides=use_overrides)
             return FestivalDate(
                 festival_id=festival_id,
@@ -174,9 +176,9 @@ def calculate_festival_date_v2(
             )
         except Exception:
             return None
-    
+
     rule = rules[festival_id]
-    
+
     if rule.type == "solar":
         return _calculate_solar_festival(festival_id, rule, year)
     else:
@@ -184,12 +186,10 @@ def calculate_festival_date_v2(
 
 
 def _calculate_solar_festival(
-    festival_id: str,
-    rule: FestivalRuleV3,
-    year: int
+    festival_id: str, rule: FestivalRuleV3, year: int
 ) -> Optional[FestivalDate]:
     """Calculate solar festival using sankranti."""
-    
+
     if festival_id == "maghe-sankranti" or rule.bs_month == 10:
         # Makara Sankranti
         sankranti_dt = find_makara_sankranti(year)
@@ -202,7 +202,7 @@ def _calculate_solar_festival(
                 year=year,
                 method="solar",
             )
-    
+
     elif festival_id == "bs-new-year" or rule.bs_month == 1:
         # Mesh Sankranti (BS New Year)
         sankranti_dt = find_mesh_sankranti(year)
@@ -215,7 +215,7 @@ def _calculate_solar_festival(
                 year=year,
                 method="solar",
             )
-    
+
     # Generic solar festival using BS calendar
     if rule.bs_month and rule.solar_day:
         bs_year = year + 56 if year > 1943 else year + 57
@@ -230,18 +230,16 @@ def _calculate_solar_festival(
             )
         except Exception:
             pass
-    
+
     return None
 
 
 def _calculate_lunar_festival(
-    festival_id: str,
-    rule: FestivalRuleV3,
-    year: int
+    festival_id: str, rule: FestivalRuleV3, year: int
 ) -> Optional[FestivalDate]:
     """
     Calculate lunar festival using the CORRECT lunar month model.
-    
+
     This properly handles Adhik Maas by:
     1. Building the lunar year to identify Adhik months
     2. Using lunar_month_name to find the correct month
@@ -250,10 +248,10 @@ def _calculate_lunar_festival(
     """
     if not rule.lunar_month or not rule.tithi or not rule.paksha:
         return None
-    
+
     # Get lunar year to check for Adhik
     lunar_year = get_lunar_year(year)
-    
+
     # Find festival date using lunar month model
     festival_date = find_festival_in_lunar_month(
         lunar_month_name=rule.lunar_month,
@@ -262,10 +260,10 @@ def _calculate_lunar_festival(
         gregorian_year=year,
         adhik_policy=rule.adhik_policy,
     )
-    
+
     if festival_date is None:
         return None
-    
+
     return FestivalDate(
         festival_id=festival_id,
         start_date=festival_date,
@@ -281,14 +279,13 @@ def _calculate_lunar_festival(
 # PUBLIC API
 # =============================================================================
 
+
 def calculate_festival_v2(
-    festival_id: str,
-    year: int,
-    use_overrides: bool = True
+    festival_id: str, year: int, use_overrides: bool = True
 ) -> Optional[FestivalDate]:
     """
     Public API: Calculate festival date with correct Adhik handling.
-    
+
     This is the V2 calculator that uses lunar_month model.
     """
     return calculate_festival_date_v2(festival_id, year, use_overrides=use_overrides)
@@ -297,12 +294,13 @@ def calculate_festival_v2(
 def list_festivals_v2() -> List[str]:
     """
     List all festivals supported by V2 engine.
-    
+
     Includes V3 lunar-month rules and fallback legacy rules (festival_rules.json).
     """
     ids = set(get_festival_rules_v3().keys())
     try:
         from .festival_rules_loader import list_festivals
+
         ids.update(list_festivals())
     except Exception:
         pass
@@ -315,10 +313,7 @@ def get_festival_info_v2(festival_id: str) -> Optional[FestivalRuleV3]:
     return rules.get(festival_id)
 
 
-def get_upcoming_festivals_v2(
-    from_date: date,
-    days: int = 30
-) -> List[Tuple[str, FestivalDate]]:
+def get_upcoming_festivals_v2(from_date: date, days: int = 30) -> List[Tuple[str, FestivalDate]]:
     """
     Get all festivals occurring within a date range using V2 engine.
     """
@@ -331,7 +326,11 @@ def get_upcoming_festivals_v2(
         for year in years_to_check:
             try:
                 date_range = calculate_festival_v2(festival_id, year)
-                if date_range and date_range.end_date >= from_date and date_range.start_date <= end_date:
+                if (
+                    date_range
+                    and date_range.end_date >= from_date
+                    and date_range.start_date <= end_date
+                ):
                     results.append((festival_id, date_range))
             except Exception:
                 continue
@@ -368,8 +367,7 @@ def get_festivals_on_date_v2(target_date: date) -> List[Tuple[str, FestivalDate]
 
 
 def get_next_occurrence_v2(
-    festival_id: str,
-    after_date: Optional[date] = None
+    festival_id: str, after_date: Optional[date] = None
 ) -> Optional[FestivalDate]:
     """
     Get the next occurrence of a specific festival using V2 engine.

@@ -6,7 +6,6 @@ from datetime import date, timedelta
 
 from ..base import CalendarDate, CalendarMetadata
 
-
 # Lunar New Year reference table (Gregorian) for year-boundary conversion.
 LUNAR_NEW_YEAR = {
     2024: date(2024, 2, 10),
@@ -85,7 +84,9 @@ class ChineseCalendarPlugin:
 
     def convert_to_gregorian(self, year: int, month: int, day: int) -> date:
         if year not in LUNAR_NEW_YEAR:
-            raise ValueError("Chinese plugin v1 only supports years present in Lunar New Year table")
+            raise ValueError(
+                "Chinese plugin v1 only supports years present in Lunar New Year table"
+            )
         if not self.validate(year, month, day):
             raise ValueError("Invalid Chinese date")
 

@@ -10,7 +10,6 @@ from fastapi import APIRouter, Query
 from app.forecast import build_error_curve, forecast_festivals, list_default_forecast_festivals
 from app.policy import get_policy_metadata
 
-
 router = APIRouter(prefix="/api/forecast", tags=["forecast"])
 
 

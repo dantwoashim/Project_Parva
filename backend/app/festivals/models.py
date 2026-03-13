@@ -9,12 +9,14 @@ locations, and API responses.
 from __future__ import annotations
 
 from datetime import date
-from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field, ConfigDict
+from typing import Any, Dict, List, Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class LocationLink(BaseModel):
     """Reference to a temple or location."""
+
     id: str
     name: str
     role: Optional[str] = None  # e.g., "main temple", "pilgrimage start"
@@ -23,6 +25,7 @@ class LocationLink(BaseModel):
 
 class RitualStep(BaseModel):
     """A step in a ritual sequence."""
+
     order: int = Field(..., ge=1)
     name: str
     name_nepali: Optional[str] = None
@@ -36,6 +39,7 @@ class RitualStep(BaseModel):
 
 class DayRituals(BaseModel):
     """Rituals for a specific day of a multi-day festival."""
+
     day: int = Field(..., ge=1)
     name: str
     name_nepali: Optional[str] = None
@@ -46,6 +50,7 @@ class DayRituals(BaseModel):
 
 class DeityLink(BaseModel):
     """Reference to a deity associated with a festival."""
+
     id: str
     name: str
     name_nepali: Optional[str] = None
@@ -54,6 +59,7 @@ class DeityLink(BaseModel):
 
 class MythologyContent(BaseModel):
     """Mythological/origin story content for a festival."""
+
     summary: str = Field(..., min_length=50)
     origin_story: Optional[str] = None  # Full narrative (800-1000 words for priority festivals)
     legends: Optional[List[str]] = None  # Additional legends
@@ -64,12 +70,11 @@ class MythologyContent(BaseModel):
 
 class ProvenanceMeta(BaseModel):
     """Provenance metadata for response verification."""
+
     dataset_hash: Optional[str] = None
     rules_hash: Optional[str] = None
     snapshot_id: Optional[str] = None
     verify_url: Optional[str] = None
-
-
 
 
 class BSDateLite(BaseModel):
@@ -84,6 +89,7 @@ class BSDateLite(BaseModel):
 
 class FestivalDates(BaseModel):
     """Calculated dates for a festival in a specific year."""
+
     gregorian_year: int
     bs_year: int
     start_date: date
@@ -97,49 +103,49 @@ class FestivalDates(BaseModel):
 
 class Festival(BaseModel):
     """Complete festival data model."""
-    
+
     # Core Identity
     id: str = Field(..., pattern=r"^[a-z0-9-]+$")
     name: str
     name_nepali: Optional[str] = None
     name_local: Optional[str] = None  # Alternative local names
-    
+
     # Classification
     calendar_type: str = Field(default="lunar")  # lunar, solar, hybrid
     category: str  # national, newari, regional, buddhist, hindu
     significance_level: int = Field(default=2, ge=1, le=5)  # 1=minor, 5=major
-    
+
     # Brief Description
     tagline: str = Field(..., max_length=200)  # Short memorable description
     description: str  # 2-3 paragraph description
-    
+
     # Timing
     typical_month_bs: Optional[int] = None  # 1-12
     typical_month_gregorian: Optional[str] = None  # e.g., "September-October"
     duration_days: int = Field(default=1, ge=1)
-    
+
     # Content Depth (for priority festivals)
     mythology: Optional[MythologyContent] = None
     daily_rituals: Optional[List[DayRituals]] = None
     simple_rituals: Optional[List[RitualStep]] = None  # For single-day festivals
     ritual_sequence: Optional[Dict[str, Any]] = None  # Canonical UI shape: {days: [...]}
-    
+
     # Connections
     deities: Optional[List[DeityLink]] = None  # Detailed deity info (future use)
     connected_deities: Optional[List[str]] = None  # Simple deity name list for display
     locations: Optional[List[LocationLink]] = None
     related_festivals: Optional[List[str]] = None  # IDs of related festivals
-    
+
     # Observance
     who_celebrates: Optional[str] = None  # e.g., "All Hindus", "Newari community"
     is_national_holiday: bool = False
     regional_focus: Optional[List[str]] = None  # e.g., ["Kathmandu Valley", "Bhaktapur"]
-    
+
     # Visual/Media
     primary_color: Optional[str] = None  # Hex color for theming
     icon: Optional[str] = None  # Icon identifier
     images: Optional[List[str]] = None  # Image URLs/paths
-    
+
     # Metadata
     content_status: str = Field(default="minimal")  # minimal, basic, complete
     sources: Optional[List[str]] = None
@@ -160,7 +166,7 @@ class Festival(BaseModel):
                 "typical_month_gregorian": "September-October",
                 "duration_days": 15,
                 "is_national_holiday": True,
-                "content_status": "complete"
+                "content_status": "complete",
             }
         }
     )
@@ -168,6 +174,7 @@ class Festival(BaseModel):
 
 class FestivalSummary(BaseModel):
     """Condensed festival info for list views."""
+
     id: str
     name: str
     name_nepali: Optional[str] = None
@@ -192,6 +199,7 @@ class FestivalSummary(BaseModel):
 
 class FestivalListResponse(BaseModel):
     """API response for festival list."""
+
     festivals: List[FestivalSummary]
     total: int
     page: int = 1
@@ -201,6 +209,7 @@ class FestivalListResponse(BaseModel):
 
 class FestivalDetailResponse(BaseModel):
     """API response for single festival detail."""
+
     festival: Festival
     dates: Optional[FestivalDates] = None
     nearby_festivals: Optional[List[FestivalSummary]] = None
@@ -209,6 +218,7 @@ class FestivalDetailResponse(BaseModel):
 
 class FestivalExplainResponse(BaseModel):
     """Human-readable explanation of computed festival date."""
+
     festival_id: str
     festival_name: str
     year: int
@@ -225,6 +235,7 @@ class FestivalExplainResponse(BaseModel):
 
 class UpcomingFestival(BaseModel):
     """Festival in upcoming festivals list."""
+
     id: str
     name: str
     name_nepali: Optional[str] = None
@@ -243,6 +254,7 @@ class UpcomingFestival(BaseModel):
 
 class UpcomingFestivalsResponse(BaseModel):
     """API response for upcoming festivals."""
+
     festivals: List[UpcomingFestival]
     from_date: date
     to_date: date
@@ -252,6 +264,7 @@ class UpcomingFestivalsResponse(BaseModel):
 
 class CalendarDayFestivals(BaseModel):
     """Festivals on a specific calendar day."""
+
     date: date
     bs_date: Optional[str] = None  # Formatted BS date
     festivals: List[FestivalSummary]
@@ -262,6 +275,7 @@ class CalendarDayFestivals(BaseModel):
 
 class FestivalCalendarResponse(BaseModel):
     """API response for calendar view."""
+
     days: List[CalendarDayFestivals]
     month: int
     year: int

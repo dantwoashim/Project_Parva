@@ -8,7 +8,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 REPORTS = PROJECT_ROOT / "reports"
 OUT_DIR = PROJECT_ROOT / "docs" / "public_beta"

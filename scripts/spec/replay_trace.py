@@ -19,7 +19,11 @@ def main() -> int:
 
     path = TRACE_DIR / f"{args.trace_id}.json"
     if not path.exists():
-        print(json.dumps({"trace_id": args.trace_id, "valid": False, "reason": "trace_not_found"}, indent=2))
+        print(
+            json.dumps(
+                {"trace_id": args.trace_id, "valid": False, "reason": "trace_not_found"}, indent=2
+            )
+        )
         return 1
 
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -40,7 +44,10 @@ def main() -> int:
         "expected_trace_id": expected,
         "valid": args.trace_id == expected,
         "checks": {
-            "required_fields_present": all(k in payload for k in ["trace_type", "subject", "inputs", "outputs", "steps", "provenance"]),
+            "required_fields_present": all(
+                k in payload
+                for k in ["trace_type", "subject", "inputs", "outputs", "steps", "provenance"]
+            ),
             "deterministic_id_match": args.trace_id == expected,
         },
     }

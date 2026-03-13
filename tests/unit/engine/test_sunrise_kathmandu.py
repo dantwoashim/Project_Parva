@@ -9,7 +9,6 @@ from pathlib import Path
 from app.calendar.ephemeris.swiss_eph import LAT_KATHMANDU, LON_KATHMANDU, calculate_sunrise
 from app.calendar.ephemeris.time_utils import to_nepal_time
 
-
 FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "sunrise_kathmandu_50.json"
 
 

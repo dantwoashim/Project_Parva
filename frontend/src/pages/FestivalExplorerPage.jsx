@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { festivalAPI } from '../services/api';
-import { useTemporalContext } from '../context/TemporalContext';
+import { useTemporalContext } from '../context/useTemporalContext';
 import { TimelineRibbon } from '../components/TimelineRibbon/TimelineRibbon';
 import { AuthorityInspector } from '../components/UI/AuthorityInspector';
 import './FestivalExplorerPage.css';

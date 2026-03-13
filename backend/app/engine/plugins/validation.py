@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
-import json
 
 from .registry import get_plugin_registry
 
@@ -55,15 +55,17 @@ class PluginValidationSuite:
                 "day": out.day,
             }
             ok = all(actual.get(k) == v for k, v in case.expected.items())
-            results.append({
-                "plugin": case.plugin,
-                "gregorian": case.gregorian,
-                "expected": case.expected,
-                "actual": actual,
-                "source_class": case.source_class,
-                "source_ref": case.source_ref,
-                "pass": ok,
-            })
+            results.append(
+                {
+                    "plugin": case.plugin,
+                    "gregorian": case.gregorian,
+                    "expected": case.expected,
+                    "actual": actual,
+                    "source_class": case.source_class,
+                    "source_ref": case.source_ref,
+                    "pass": ok,
+                }
+            )
             if ok:
                 passed += 1
 

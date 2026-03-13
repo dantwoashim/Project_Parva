@@ -7,7 +7,6 @@ from datetime import date
 from ..base import CalendarDate, CalendarMetadata
 from ..julian import gregorian_to_jd, jd_to_gregorian
 
-
 _MONTH_NAMES = {
     1: "January",
     2: "February",

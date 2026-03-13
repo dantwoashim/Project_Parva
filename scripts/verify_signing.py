@@ -24,8 +24,8 @@ REPORT_DIR = PROJECT_ROOT / "reports" / "provenance"
 def _generate_keypair():
     """Generate Ed25519 keypair using cryptography library or fallback to HMAC."""
     try:
-        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
         from cryptography.hazmat.primitives import serialization
+        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
         private_key = Ed25519PrivateKey.generate()
         public_key = private_key.public_key()
@@ -44,6 +44,7 @@ def _generate_keypair():
     except ImportError:
         # Fallback: HMAC-SHA256 for environments without cryptography
         import secrets
+
         key = secrets.token_hex(32)
         return key.encode(), key.encode(), "hmac-sha256"
 
@@ -53,13 +54,14 @@ def _sign_payload(payload: dict, private_key_bytes: bytes, method: str) -> str:
     canonical = json.dumps(payload, sort_keys=True, ensure_ascii=True)
 
     if method == "ed25519":
-        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
         from cryptography.hazmat.primitives import serialization
+
         private_key = serialization.load_pem_private_key(private_key_bytes, password=None)
         sig = private_key.sign(canonical.encode("utf-8"))
         return sig.hex()
     else:
         import hmac
+
         sig = hmac.new(private_key_bytes, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
         return f"hmac-sha256:{sig}"
 
@@ -69,8 +71,8 @@ def _verify_signature(payload: dict, signature: str, public_key_bytes: bytes, me
     canonical = json.dumps(payload, sort_keys=True, ensure_ascii=True)
 
     if method == "ed25519":
-        from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
         from cryptography.hazmat.primitives import serialization
+
         public_key = serialization.load_pem_public_key(public_key_bytes)
         try:
             public_key.verify(bytes.fromhex(signature), canonical.encode("utf-8"))
@@ -79,6 +81,7 @@ def _verify_signature(payload: dict, signature: str, public_key_bytes: bytes, me
             return False
     else:
         import hmac
+
         expected = hmac.new(public_key_bytes, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
         return signature == f"hmac-sha256:{expected}"
 
@@ -115,7 +118,9 @@ def main():
     tampered = dict(payload)
     tampered["computed_rules"] = 999
     tampered_valid = _verify_signature(tampered, signature, public_key, method)
-    print(f"Tamper test:  {'❌ INVALID (correct!)' if not tampered_valid else '⚠️ VALID (unexpected)'}")
+    print(
+        f"Tamper test:  {'❌ INVALID (correct!)' if not tampered_valid else '⚠️ VALID (unexpected)'}"
+    )
 
     # 6. Save report
     REPORT_DIR.mkdir(parents=True, exist_ok=True)

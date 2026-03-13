@@ -7,8 +7,12 @@ services:
     envVars:
       - key: PARVA_ENABLE_EXPERIMENTAL_API
         value: "false"
+      - key: PARVA_ALLOW_EXPERIMENTAL_IN_PROD
+        value: "false"
       - key: PARVA_ENV
         value: production
+      - key: PARVA_RATE_LIMIT_ENABLED
+        value: "true"
       - key: PARVA_SERVE_FRONTEND
         value: "true"
       - key: CORS_ALLOW_ORIGINS

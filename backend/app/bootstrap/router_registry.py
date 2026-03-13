@@ -13,8 +13,12 @@ from app.api import (
     festival_router,
     festival_timeline_router,
     forecast_router,
+    glossary_router,
     integration_feed_router,
+    kundali_graph_router,
+    kundali_router,
     locations_router,
+    muhurta_heatmap_router,
     muhurta_router,
     observance_router,
     personal_router,
@@ -24,12 +28,7 @@ from app.api import (
     reliability_router,
     resolve_router,
     spec_router,
-    webhook_router,
-    kundali_router,
     temporal_compass_router,
-    muhurta_heatmap_router,
-    kundali_graph_router,
-    glossary_router,
 )
 
 PUBLIC_ROUTERS = [
@@ -43,7 +42,6 @@ PUBLIC_ROUTERS = [
     observance_router,
     policy_router,
     feed_router,
-    webhook_router,
     engine_router,
     forecast_router,
     resolve_router,

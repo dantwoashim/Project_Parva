@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from collections import Counter
 from datetime import datetime, timezone
-import json
-import hashlib
 from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -80,6 +80,7 @@ def _to_repo_relative(path: Path) -> str:
         return path.relative_to(PROJECT_ROOT).as_posix()
     except ValueError:
         return path.as_posix()
+
 
 def _load_json(path: Path) -> dict:
     if not path.exists():
@@ -282,7 +283,9 @@ def _build_seed_rules(existing_ids: set[str]) -> Dict[str, FestivalRuleV4]:
                 continue
             generated[festival_id] = FestivalRuleV4(
                 festival_id=festival_id,
-                name_en=family.get("name_template", "{month} Weekly Vrata").format(month=month_name),
+                name_en=family.get("name_template", "{month} Weekly Vrata").format(
+                    month=month_name
+                ),
                 rule_type="override",
                 status="provisional",
                 confidence="low",
@@ -378,20 +381,12 @@ def _load_variant_profile_map() -> tuple[Dict[str, dict], Dict[str, List[str]]]:
     payload = _load_json(REGIONAL_VARIANT_PATH)
     profiles = payload.get("profiles", [])
     profile_map = {
-        str(profile.get("profile_id")): profile
-        for profile in profiles
-        if profile.get("profile_id")
+        str(profile.get("profile_id")): profile for profile in profiles if profile.get("profile_id")
     }
 
     festival_profile_ids: Dict[str, List[str]] = {}
     for festival_id, variants in payload.get("festival_variants", {}).items():
-        ids = sorted(
-            {
-                str(item.get("profile_id"))
-                for item in variants
-                if item.get("profile_id")
-            }
-        )
+        ids = sorted({str(item.get("profile_id")) for item in variants if item.get("profile_id")})
         festival_profile_ids[festival_id] = ids
     return profile_map, festival_profile_ids
 
@@ -454,7 +449,10 @@ def _promote_computed_baseline(merged: Dict[str, FestivalRuleV4]) -> None:
         if rule.rule_type not in ALGORITHMIC_RULE_TYPES:
             continue
 
-        if rule.source == "rule_ingestion_seed_v1" and rule.rule_family not in PROMOTABLE_SEED_RULE_FAMILIES:
+        if (
+            rule.source == "rule_ingestion_seed_v1"
+            and rule.rule_family not in PROMOTABLE_SEED_RULE_FAMILIES
+        ):
             continue
 
         if not is_rule_executable(rule):
@@ -472,7 +470,6 @@ def _promote_computed_baseline(merged: Dict[str, FestivalRuleV4]) -> None:
         # Keep source lineage intact, but indicate execution path for the promoted set.
         if rule.source == "rule_ingestion_seed_v1":
             rule.engine = "rule_dsl_executor_v1"
-
 
 
 def _from_v3(festival_id: str, rule_data: dict) -> FestivalRuleV4:
@@ -720,7 +717,9 @@ def get_rules_scoreboard(target: int = 300) -> dict:
 
     computed_count = len(computed_rows)
     source_validated_count = sum(1 for row in computed_rows if row.confidence == "high")
-    computed_pass_rate = round((source_validated_count / computed_count) * 100, 2) if computed_count else 0.0
+    computed_pass_rate = (
+        round((source_validated_count / computed_count) * 100, 2) if computed_count else 0.0
+    )
 
     provisional_algo_count = sum(1 for row in provisional_rows if rule_has_algorithm(row))
 

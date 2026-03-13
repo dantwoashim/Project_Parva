@@ -4,53 +4,51 @@ Tithi Module for Project Parva v2.0
 Provides complete tithi calculation functionality using Swiss Ephemeris.
 """
 
-from .tithi_core import (
-    calculate_tithi,
-    calculate_tithi_at_sunrise,
-    get_tithi_name,
-    tithi_at_time,
-    is_same_tithi,
-    is_purnima,
-    is_amavasya,
-    is_ekadashi,
-    is_chaturdashi,
-    is_ashtami,
-    format_tithi,
-    format_tithi_short,
-    TITHI_NAMES,
-)
-
-from ..ephemeris.positions import get_tithi_angle
-from datetime import datetime, date, timezone
+from datetime import date, datetime, timezone
 from typing import Optional
 
+from ..ephemeris.positions import get_tithi_angle
 from .tithi_boundaries import (
-    find_tithi_end,
-    find_tithi_start,
-    get_tithi_window,
     find_next_tithi,
+    find_tithi_end,
     find_tithi_in_month,
-    get_tithis_in_range,
+    find_tithi_start,
     get_tithi_duration,
+    get_tithi_window,
+    get_tithis_in_range,
 )
-
+from .tithi_core import (
+    TITHI_NAMES,
+    calculate_tithi,
+    calculate_tithi_at_sunrise,
+    format_tithi,
+    format_tithi_short,
+    get_tithi_name,
+    is_amavasya,
+    is_ashtami,
+    is_chaturdashi,
+    is_ekadashi,
+    is_purnima,
+    is_same_tithi,
+    tithi_at_time,
+)
 from .tithi_udaya import (
-    get_udaya_tithi,
-    get_tithi_for_date,
-    get_official_tithi,
-    detect_vriddhi,
     detect_ksheepana,
+    detect_vriddhi,
+    get_official_tithi,
+    get_tithi_for_date,
+    get_udaya_tithi,
 )
-
 
 # =============================================================================
 # COMPATIBILITY HELPERS (for routes.py and legacy code)
 # =============================================================================
 
+
 def get_paksha(tithi_num: int) -> str:
     """
     Get paksha (fortnight) from tithi number.
-    
+
     Tithis 1-15 are Shukla (bright), 16-30 are Krishna (dark).
     But our new module uses 1-15 for each paksha separately.
     """
@@ -66,7 +64,7 @@ def get_paksha(tithi_num: int) -> str:
 def calculate_moon_phase(target_date: date) -> float:
     """
     Calculate moon phase fraction using elongation angle.
-    
+
     Returns:
         0.0 = new moon, 0.5 = full moon, 1.0 = next new moon
     """
@@ -156,11 +154,12 @@ def _moon_phase_from_tithi(tithi_num: int, paksha: str) -> str:
 def get_moon_phase_name(date_or_tithi) -> str:
     """
     Get descriptive moon phase name from date/datetime or tithi.
-    
+
     Uses ephemeris elongation when a datetime/date is provided.
     """
-    from datetime import date as date_type, datetime, timezone
-    
+    from datetime import date as date_type
+    from datetime import datetime, timezone
+
     if isinstance(date_or_tithi, (date_type, datetime)):
         if isinstance(date_or_tithi, date_type) and not isinstance(date_or_tithi, datetime):
             # Date-only calls should be stable and day-level friendly.
@@ -178,7 +177,7 @@ def get_moon_phase_name(date_or_tithi) -> str:
             dt = dt.replace(tzinfo=timezone.utc)
         angle = get_tithi_angle(dt)
         return _moon_phase_from_angle(angle)
-    
+
     # Fallback: treat input as tithi number (1-15 or 1-30)
     tithi_num = int(date_or_tithi)
     paksha = "shukla" if tithi_num <= 15 else "krishna"

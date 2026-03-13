@@ -6,7 +6,7 @@ import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
-from app.calendar.tithi.tithi_udaya import get_udaya_tithi, detect_vriddhi, detect_ksheepana
+from app.calendar.tithi.tithi_udaya import detect_ksheepana, detect_vriddhi, get_udaya_tithi
 
 
 def main() -> None:

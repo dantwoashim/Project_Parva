@@ -37,13 +37,15 @@ def main() -> None:
         if ok:
             passed += 1
 
-        rows.append({
-            **case,
-            "actual_date": actual,
-            "method": result.method,
-            "confidence": result.confidence,
-            "pass": ok,
-        })
+        rows.append(
+            {
+                **case,
+                "actual_date": actual,
+                "method": result.method,
+                "confidence": result.confidence,
+                "pass": ok,
+            }
+        )
 
     total = len(rows)
     report = {
@@ -57,7 +59,15 @@ def main() -> None:
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    print(json.dumps({"output": str(out), "summary": {k: report[k] for k in ('total', 'passed', 'failed', 'pass_rate')}}, indent=2))
+    print(
+        json.dumps(
+            {
+                "output": str(out),
+                "summary": {k: report[k] for k in ("total", "passed", "failed", "pass_rate")},
+            },
+            indent=2,
+        )
+    )
 
     if report["failed"]:
         raise SystemExit(1)

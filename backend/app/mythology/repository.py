@@ -7,11 +7,10 @@ Data access layer for deity and mythology content.
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
 from functools import lru_cache
+from typing import Dict, List, Optional
 
 from .models import Deity, DeitySummary
-
 
 # Built-in deity data for core festivals
 DEITIES: Dict[str, Deity] = {
@@ -28,7 +27,7 @@ DEITIES: Dict[str, Deity] = {
         mythology="Durga is the warrior goddess created by the combined powers of all gods to defeat the buffalo demon Mahishasura. Her nine forms (Navadurga) are worshipped during Dashain.",
         nepali_significance="Central deity of Dashain, Nepal's largest festival. The nine nights of Navaratri honor her nine forms.",
         associated_festivals=["dashain"],
-        associated_temples=[]
+        associated_temples=[],
     ),
     "lakshmi": Deity(
         id="lakshmi",
@@ -43,7 +42,7 @@ DEITIES: Dict[str, Deity] = {
         mythology="Lakshmi emerged from the churning of the ocean (Samudra Manthan) and chose Vishnu as her eternal consort. She brings prosperity wherever she is welcomed.",
         nepali_significance="Worshipped on Laxmi Puja during Tihar. Houses are cleaned and lit with oil lamps to welcome her.",
         associated_festivals=["tihar"],
-        associated_temples=[]
+        associated_temples=[],
     ),
     "indra": Deity(
         id="indra",
@@ -58,7 +57,7 @@ DEITIES: Dict[str, Deity] = {
         mythology="Indra rules Svarga (heaven) and controls weather. In the legend of Indra Jatra, he descended to steal parijat flowers and was captured by the valley's residents.",
         nepali_significance="Indra Jatra celebrates his capture and release, bringing the blessing of rain for harvest.",
         associated_festivals=["indra-jatra"],
-        associated_temples=[]
+        associated_temples=[],
     ),
     "kumari": Deity(
         id="kumari",
@@ -73,7 +72,7 @@ DEITIES: Dict[str, Deity] = {
         mythology="The Kumari is a living goddess worshipped by both Hindus and Buddhists. Selected as young girls from the Shakya caste, they embody the goddess Taleju until puberty.",
         nepali_significance="The Royal Kumari of Kathmandu appears during Indra Jatra and blesses the nation. Three Kumaris exist in the valley.",
         associated_festivals=["indra-jatra", "dashain"],
-        associated_temples=[]
+        associated_temples=[],
     ),
     "shiva": Deity(
         id="shiva",
@@ -88,7 +87,7 @@ DEITIES: Dict[str, Deity] = {
         mythology="Shiva is the third member of the Hindu trinity. He destroys to enable recreation. Pashupatinath is one of his most sacred temples.",
         nepali_significance="Pashupatinath Temple is the holiest Shiva temple. Shivaratri brings hundreds of thousands of devotees and sadhus.",
         associated_festivals=["shivaratri"],
-        associated_temples=[]
+        associated_temples=[],
     ),
     "krishna": Deity(
         id="krishna",
@@ -103,7 +102,7 @@ DEITIES: Dict[str, Deity] = {
         mythology="Krishna is the eighth avatar of Vishnu. His life story from mischievous child to divine warrior is central to Hindu philosophy through the Bhagavad Gita.",
         nepali_significance="Krishna Mandir in Patan is a major pilgrimage site. Krishna Janmashtami celebrates his birth with midnight celebrations.",
         associated_festivals=["holi", "krishna-janmashtami"],
-        associated_temples=[]
+        associated_temples=[],
     ),
     "buddha": Deity(
         id="buddha",
@@ -118,7 +117,7 @@ DEITIES: Dict[str, Deity] = {
         mythology="Siddhartha Gautama was born in Lumbini, Nepal, and attained enlightenment to become the Buddha. His teachings form the foundation of Buddhism.",
         nepali_significance="Nepal is Buddha's birthplace. Lumbini, Swayambhunath, and Boudhanath are major Buddhist sites.",
         associated_festivals=["buddha-jayanti"],
-        associated_temples=[]
+        associated_temples=[],
     ),
     "bhairav": Deity(
         id="bhairav",
@@ -133,7 +132,7 @@ DEITIES: Dict[str, Deity] = {
         mythology="Bhairav is the wrathful form of Shiva. He guards sacred spaces and destroys evil. Various forms include Kal Bhairav and Akash Bhairav.",
         nepali_significance="Prominent in Newari culture. Akash Bhairav's mask is displayed during Indra Jatra. Kal Bhairav statue at Durbar Square is famous.",
         associated_festivals=["indra-jatra", "bisket-jatra"],
-        associated_temples=[]
+        associated_temples=[],
     ),
 }
 
@@ -147,10 +146,10 @@ def _get_all_deities() -> Dict[str, Deity]:
 def get_deity(deity_id: str) -> Optional[Deity]:
     """
     Get a deity by ID.
-    
+
     Args:
         deity_id: The deity identifier
-        
+
     Returns:
         Deity if found, None otherwise
     """
@@ -160,7 +159,7 @@ def get_deity(deity_id: str) -> Optional[Deity]:
 def get_all_deities() -> List[DeitySummary]:
     """
     Get all deities as summaries.
-    
+
     Returns:
         List of deity summaries
     """
@@ -170,7 +169,7 @@ def get_all_deities() -> List[DeitySummary]:
             name=d.name,
             name_nepali=d.name_nepali,
             role=d.role,
-            associated_festivals=d.associated_festivals
+            associated_festivals=d.associated_festivals,
         )
         for d in DEITIES.values()
     ]
@@ -179,10 +178,10 @@ def get_all_deities() -> List[DeitySummary]:
 def get_deity_festivals(deity_id: str) -> List[str]:
     """
     Get festivals associated with a deity.
-    
+
     Args:
         deity_id: The deity identifier
-        
+
     Returns:
         List of festival IDs
     """
@@ -195,10 +194,10 @@ def get_deity_festivals(deity_id: str) -> List[str]:
 def get_deities_for_festival(festival_id: str) -> List[DeitySummary]:
     """
     Get deities associated with a festival.
-    
+
     Args:
         festival_id: The festival identifier
-        
+
     Returns:
         List of deity summaries
     """
@@ -208,7 +207,7 @@ def get_deities_for_festival(festival_id: str) -> List[DeitySummary]:
             name=d.name,
             name_nepali=d.name_nepali,
             role=d.role,
-            associated_festivals=d.associated_festivals
+            associated_festivals=d.associated_festivals,
         )
         for d in DEITIES.values()
         if festival_id in d.associated_festivals

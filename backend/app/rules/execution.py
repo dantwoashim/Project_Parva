@@ -20,7 +20,6 @@ from app.calendar.tithi.tithi_boundaries import find_next_tithi as find_next_tit
 
 from .schema_v4 import FestivalRuleV4
 
-
 _LUNAR_MONTH_ALIASES = {
     "baisakh": "Baishakh",
     "baishakh": "Baishakh",
@@ -278,7 +277,9 @@ def calculate_rule_occurrence(rule: FestivalRuleV4, year: int) -> RuleExecutionR
     return None
 
 
-def calculate_rule_occurrence_with_fallback(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | None:
+def calculate_rule_occurrence_with_fallback(
+    rule: FestivalRuleV4, year: int
+) -> RuleExecutionResult | None:
     """Calculate rule occurrence with v2 fallback for known rule IDs."""
     direct = calculate_rule_occurrence(rule, year)
     if direct is not None:
@@ -300,7 +301,9 @@ def calculate_rule_occurrence_with_fallback(rule: FestivalRuleV4, year: int) -> 
     )
 
 
-def validation_cases_for_rule(rule: FestivalRuleV4, years: tuple[int, ...] = (2025, 2026, 2027)) -> list[dict[str, Any]]:
+def validation_cases_for_rule(
+    rule: FestivalRuleV4, years: tuple[int, ...] = (2025, 2026, 2027)
+) -> list[dict[str, Any]]:
     """Build deterministic validation cases for triad artifacts."""
     cases: list[dict[str, Any]] = []
     for year in years:

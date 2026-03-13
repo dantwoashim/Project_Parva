@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from datetime import date
 
-from app.engine.plugins.chinese.plugin import ChineseCalendarPlugin, LUNAR_NEW_YEAR
+from app.engine.plugins.chinese.plugin import LUNAR_NEW_YEAR, ChineseCalendarPlugin
 from app.rules.plugins.base import ObservanceDate, ObservanceRule
-
 
 _RULES = {
     "chinese-new-year": (1, 1),

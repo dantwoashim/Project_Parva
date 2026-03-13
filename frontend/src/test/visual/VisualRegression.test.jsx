@@ -275,7 +275,7 @@ describe('visual regression harness', () => {
   beforeEach(() => {
     vi.stubGlobal('fetch', buildVisualFetchMock());
     vi.stubGlobal('open', vi.fn());
-    vi.spyOn(Date, 'now').mockReturnValue(new Date('2026-02-18T00:45:00Z').valueOf());
+    vi.spyOn(Date, 'now').mockReturnValue(new Date('2026-02-25T06:30:00Z').valueOf());
   });
 
   afterEach(() => {

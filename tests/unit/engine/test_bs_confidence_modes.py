@@ -5,8 +5,8 @@ from __future__ import annotations
 from datetime import date
 
 from app.calendar.bikram_sambat import (
-    BS_MIN_YEAR,
     BS_MAX_YEAR,
+    BS_MIN_YEAR,
     bs_to_gregorian,
     get_bs_confidence,
     get_bs_estimated_error_days,

@@ -2,14 +2,15 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 import json
+from datetime import datetime
 from pathlib import Path
 
 from app.calendar.kundali import compute_kundali
 
-
-FIXTURE_PATH = Path(__file__).resolve().parents[2] / "fixtures" / "kundali" / "kundali_v2_regression.json"
+FIXTURE_PATH = (
+    Path(__file__).resolve().parents[2] / "fixtures" / "kundali" / "kundali_v2_regression.json"
+)
 
 
 def _load_cases() -> list[dict]:

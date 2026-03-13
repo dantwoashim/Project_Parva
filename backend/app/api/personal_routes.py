@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Query
 from typing import Optional
+
+from fastapi import APIRouter, Query
 
 from app.calendar.bikram_sambat import (
     get_bs_confidence,
@@ -16,7 +17,12 @@ from app.calendar.panchanga import get_panchanga
 from app.explainability import create_reason_trace
 from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
 
-from ._personal_utils import base_meta_payload, normalize_coordinates, normalize_timezone, parse_date
+from ._personal_utils import (
+    base_meta_payload,
+    normalize_coordinates,
+    normalize_timezone,
+    parse_date,
+)
 
 router = APIRouter(prefix="/api/personal", tags=["personal"])
 
@@ -31,7 +37,9 @@ async def personal_panchanga(
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
     timezone_name, tz_warnings = normalize_timezone(tz)
-    timezone_source = "user_input" if tz and tz.strip() and timezone_name == tz.strip() else "fallback_default"
+    timezone_source = (
+        "user_input" if tz and tz.strip() and timezone_name == tz.strip() else "fallback_default"
+    )
 
     panchanga = get_panchanga(target_date, latitude=latitude, longitude=longitude)
     bs_year, bs_month, bs_day = gregorian_to_bs(target_date)
@@ -98,7 +106,10 @@ async def personal_panchanga(
         },
         steps=[
             {"step": "sunrise", "detail": "Calculated sunrise at provided coordinates."},
-            {"step": "panchanga", "detail": "Derived tithi/nakshatra/yoga/karana/vaara from ephemeris."},
+            {
+                "step": "panchanga",
+                "detail": "Derived tithi/nakshatra/yoga/karana/vaara from ephemeris.",
+            },
             {"step": "bs_conversion", "detail": "Converted Gregorian date to Bikram Sambat."},
         ],
     )

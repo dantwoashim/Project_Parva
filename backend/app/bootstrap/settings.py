@@ -1,0 +1,130 @@
+"""Application settings and startup validation."""
+
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass, field
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DEV_ENV_VALUES = {"dev", "development", "local", "test"}
+DEFAULT_DEV_ADMIN_TOKEN = "parva-dev-admin-token"
+DEFAULT_DEV_READ_KEY = "parva-dev-read-key"
+
+
+def _parse_bool(value: str | None, *, default: bool = False) -> bool:
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+@dataclass(frozen=True)
+class APIKeyRecord:
+    key_id: str
+    secret: str
+    scopes: frozenset[str]
+
+
+@dataclass(frozen=True)
+class AppSettings:
+    environment: str
+    enable_experimental_api: bool
+    allow_experimental_in_prod: bool
+    enable_webhooks: bool
+    serve_frontend: bool
+    frontend_dist: Path
+    max_request_bytes: int
+    max_query_length: int
+    admin_token: str | None
+    api_keys: dict[str, APIKeyRecord] = field(default_factory=dict)
+    rate_limit_enabled: bool = True
+    require_precomputed: bool = False
+
+    @property
+    def is_dev_environment(self) -> bool:
+        return self.environment.strip().lower() in DEV_ENV_VALUES
+
+
+def _frontend_dist_from_env() -> Path:
+    configured = os.getenv("PARVA_FRONTEND_DIST", "").strip()
+    if configured:
+        return Path(configured).expanduser().resolve()
+    return (PROJECT_ROOT / "frontend" / "dist").resolve()
+
+
+def _parse_api_keys(raw: str, *, environment: str) -> dict[str, APIKeyRecord]:
+    records: dict[str, APIKeyRecord] = {}
+    raw = raw.strip()
+    if not raw and environment.strip().lower() in DEV_ENV_VALUES:
+        raw = f"local-read:{DEFAULT_DEV_READ_KEY}:commercial.read|public.read"
+
+    if not raw:
+        return records
+
+    for item in raw.split(";"):
+        token = item.strip()
+        if not token:
+            continue
+        parts = [part.strip() for part in token.split(":", 2)]
+        if len(parts) != 3:
+            raise ValueError(
+                "PARVA_API_KEYS entries must follow key-id:secret:scope1|scope2 format"
+            )
+        key_id, secret, scopes_raw = parts
+        scopes = frozenset(scope.strip() for scope in scopes_raw.split("|") if scope.strip())
+        if not key_id or not secret or not scopes:
+            raise ValueError("PARVA_API_KEYS entries must include key id, secret, and scopes")
+        records[key_id] = APIKeyRecord(key_id=key_id, secret=secret, scopes=scopes)
+
+    return records
+
+
+def load_settings() -> AppSettings:
+    environment = os.getenv("PARVA_ENV", "development").strip() or "development"
+    admin_token = os.getenv("PARVA_ADMIN_TOKEN", "").strip() or None
+    if admin_token is None and environment.lower() in DEV_ENV_VALUES:
+        admin_token = DEFAULT_DEV_ADMIN_TOKEN
+
+    return AppSettings(
+        environment=environment,
+        enable_experimental_api=_parse_bool(
+            os.getenv("PARVA_ENABLE_EXPERIMENTAL_API"), default=False
+        ),
+        allow_experimental_in_prod=_parse_bool(
+            os.getenv("PARVA_ALLOW_EXPERIMENTAL_IN_PROD"), default=False
+        ),
+        enable_webhooks=_parse_bool(os.getenv("PARVA_ENABLE_WEBHOOKS"), default=False),
+        serve_frontend=_parse_bool(os.getenv("PARVA_SERVE_FRONTEND"), default=False),
+        frontend_dist=_frontend_dist_from_env(),
+        max_request_bytes=int(os.getenv("PARVA_MAX_REQUEST_BYTES", "1048576")),
+        max_query_length=int(os.getenv("PARVA_MAX_QUERY_LENGTH", "4096")),
+        admin_token=admin_token,
+        api_keys=_parse_api_keys(os.getenv("PARVA_API_KEYS", ""), environment=environment),
+        rate_limit_enabled=_parse_bool(os.getenv("PARVA_RATE_LIMIT_ENABLED"), default=True),
+        require_precomputed=_parse_bool(os.getenv("PARVA_REQUIRE_PRECOMPUTED"), default=False),
+    )
+
+
+def validate_settings(settings: AppSettings) -> list[str]:
+    errors: list[str] = []
+
+    if settings.environment.lower() == "production" and settings.enable_experimental_api:
+        if not settings.allow_experimental_in_prod:
+            errors.append(
+                "Experimental routes require PARVA_ALLOW_EXPERIMENTAL_IN_PROD=true in production."
+            )
+
+    if settings.enable_experimental_api and not settings.admin_token:
+        errors.append("Experimental routes require PARVA_ADMIN_TOKEN.")
+
+    if settings.enable_webhooks:
+        errors.append(
+            "Webhook routes are not part of the v3 launch build. Keep PARVA_ENABLE_WEBHOOKS=false."
+        )
+
+    if settings.serve_frontend and settings.environment.lower() == "production":
+        index_path = settings.frontend_dist / "index.html"
+        if not index_path.exists():
+            errors.append(f"Frontend serving enabled but built assets are missing at {index_path}.")
+
+    return errors

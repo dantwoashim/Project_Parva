@@ -25,24 +25,25 @@ From repo root (single command):
 
 Manual equivalent:
 ```bash
-PYTHONPATH=backend python3 -m pytest -q
-PYTHONPATH=backend python3 scripts/spec/run_conformance_tests.py
-PYTHONPATH=backend python3 scripts/release/check_contract_freeze.py
-PYTHONPATH=backend python3 scripts/rules/ingest_rule_sources.py --check --target 300 --computed-target 300
-PYTHONPATH=backend python3 scripts/generate_accuracy_report.py
-PYTHONPATH=backend python3 scripts/generate_authority_dashboard.py
-PYTHONPATH=backend python3 scripts/release/generate_month9_dossier.py
+python -m pytest -q
+python scripts/spec/run_conformance_tests.py
+python scripts/release/check_contract_freeze.py
+python scripts/rules/ingest_rule_sources.py --check --target 300 --computed-target 300
+python scripts/generate_accuracy_report.py
+python scripts/generate_authority_dashboard.py
+python scripts/release/generate_month9_dossier.py
 npm --prefix frontend test -- --run
+npm --prefix frontend run lint
 npm --prefix frontend run build
 ```
 
 ## Key evidence artifacts
-- `/Users/rohanbasnet14/Documents/Project_Parva/reports/conformance_report.json`
-- `/Users/rohanbasnet14/Documents/Project_Parva/reports/authority_dashboard.json`
-- `/Users/rohanbasnet14/Documents/Project_Parva/reports/accuracy/annual_accuracy_2082.json`
-- `/Users/rohanbasnet14/Documents/Project_Parva/reports/release/month9_dossier.json`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/public_beta/month9_release_dossier.md`
-- `/Users/rohanbasnet14/Documents/Project_Parva/docs/UI_TEMPORAL_CARTOGRAPHY_SPEC.md`
+- `reports/conformance_report.json` (generated artifact)
+- `reports/authority_dashboard.json` (generated artifact)
+- `reports/accuracy/annual_accuracy_2082.json` (generated artifact)
+- `reports/release/month9_dossier.json` (generated artifact)
+- `docs/public_beta/month9_release_dossier.md`
+- `docs/UI_TEMPORAL_CARTOGRAPHY_SPEC.md`
 
 ## Known constraints
 - Public profile is v3.

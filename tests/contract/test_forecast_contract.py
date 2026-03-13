@@ -1,9 +1,7 @@
 """Forecast endpoint contract checks (Year 3 Week 13-16)."""
 
-from fastapi.testclient import TestClient
-
 from app.main import app
-
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 
@@ -19,7 +17,13 @@ def test_forecast_festivals_contract_shape():
     assert "note" in body
     if body["festivals"]:
         row = body["festivals"][0]
-        assert {"festival_id", "start_date", "end_date", "horizon_years", "estimated_accuracy"} <= set(row.keys())
+        assert {
+            "festival_id",
+            "start_date",
+            "end_date",
+            "horizon_years",
+            "estimated_accuracy",
+        } <= set(row.keys())
         assert 0 <= row["estimated_accuracy"] <= 1
         assert row["confidence_interval_days"] >= 0
 

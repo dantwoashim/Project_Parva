@@ -2,13 +2,12 @@
 
 from __future__ import annotations
 
+import json
 from datetime import timedelta
 from functools import lru_cache
 from pathlib import Path
-import json
 
 from app.rules import get_rule_service
-
 
 VARIANT_FILE = Path(__file__).resolve().parents[3] / "data" / "variants" / "regional_map.json"
 

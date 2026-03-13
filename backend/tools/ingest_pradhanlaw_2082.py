@@ -9,12 +9,11 @@ to internal festival IDs. It will not overwrite existing overrides unless
 
 import argparse
 import re
-from datetime import datetime, date
-from pathlib import Path
-from typing import Dict, List, Optional
-from html.parser import HTMLParser
 import urllib.request
-
+from datetime import date, datetime
+from html.parser import HTMLParser
+from pathlib import Path
+from typing import List, Optional
 
 DEFAULT_URL = "https://pradhanlaw.com/publications/list-of-public-holidays-2082-bs-202526-ad"
 
@@ -137,7 +136,10 @@ def ingest(url: str, force: bool = False):
         overrides.setdefault(year_key, {})
         if fid in overrides[year_key] and not force:
             # If existing entry lacks source, add it without overriding date
-            if isinstance(overrides[year_key][fid], dict) and "source" not in overrides[year_key][fid]:
+            if (
+                isinstance(overrides[year_key][fid], dict)
+                and "source" not in overrides[year_key][fid]
+            ):
                 overrides[year_key][fid]["source"] = "pradhanlaw_public_holidays_2082"
                 overrides[year_key][fid]["confidence"] = "secondary"
                 added += 1
@@ -147,7 +149,7 @@ def ingest(url: str, force: bool = False):
         overrides[year_key][fid] = {
             "start": ad.isoformat(),
             "source": "pradhanlaw_public_holidays_2082",
-            "confidence": "secondary"
+            "confidence": "secondary",
         }
         added += 1
 
@@ -157,6 +159,7 @@ def ingest(url: str, force: bool = False):
 
 if __name__ == "__main__":
     import json
+
     parser = argparse.ArgumentParser(description="Ingest Pradhan Law 2082 holiday table")
     parser.add_argument("--url", default=DEFAULT_URL, help="Source URL")
     parser.add_argument("--force", action="store_true", help="Overwrite existing overrides")

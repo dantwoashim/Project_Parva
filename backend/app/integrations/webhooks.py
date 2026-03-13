@@ -105,7 +105,9 @@ class WebhookService:
     def delete_subscription(self, subscription_id: str) -> bool:
         store = self._load_store()
         before = len(store["subscriptions"])
-        store["subscriptions"] = [row for row in store["subscriptions"] if row["id"] != subscription_id]
+        store["subscriptions"] = [
+            row for row in store["subscriptions"] if row["id"] != subscription_id
+        ]
         after = len(store["subscriptions"])
         if after == before:
             return False
@@ -118,13 +120,20 @@ class WebhookService:
                 return True
         return False
 
-    async def _deliver_event(self, url: str, payload: dict[str, Any], dry_run: bool) -> dict[str, Any]:
+    async def _deliver_event(
+        self, url: str, payload: dict[str, Any], dry_run: bool
+    ) -> dict[str, Any]:
         if dry_run:
             return {"status": "dry_run", "attempts": 0, "http_status": None, "error": None}
 
         if url.startswith("mock://"):
             if "fail" in url:
-                return {"status": "failed", "attempts": 3, "http_status": 500, "error": "mock failure"}
+                return {
+                    "status": "failed",
+                    "attempts": 3,
+                    "http_status": 500,
+                    "error": "mock failure",
+                }
             return {"status": "sent", "attempts": 1, "http_status": 200, "error": None}
 
         def _deliver_with_urllib() -> dict[str, Any]:
@@ -222,7 +231,9 @@ class WebhookService:
                             continue
 
                         totals["total_candidates"] += 1
-                        event_key = f"{sub_id}:{festival_id}:{dates.start_date.isoformat()}:{int(remind)}"
+                        event_key = (
+                            f"{sub_id}:{festival_id}:{dates.start_date.isoformat()}:{int(remind)}"
+                        )
                         if self._already_sent(deliveries, event_key):
                             totals["skipped_duplicate"] += 1
                             totals["results"].append(

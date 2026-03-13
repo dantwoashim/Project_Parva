@@ -3,12 +3,13 @@
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import shutil
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 REPORT_PATH = PROJECT_ROOT / "reports" / "security_audit.json"
@@ -34,16 +35,17 @@ def _run(cmd: list[str], cwd: Path) -> dict:
 
 def main() -> int:
     checks = []
+    npm_binary = shutil.which("npm.cmd") or shutil.which("npm")
 
     # Python dependency check
-    if shutil.which("pip-audit"):
-        checks.append(("pip_audit", _run(["pip-audit", "-f", "json"], PROJECT_ROOT)))
+    if importlib.util.find_spec("pip_audit") is not None:
+        checks.append(("pip_audit", _run([sys.executable, "-m", "pip_audit", "-f", "json"], PROJECT_ROOT)))
     else:
         checks.append(
             (
                 "pip_audit",
                 {
-                    "cmd": "pip-audit -f json",
+                    "cmd": f"{sys.executable} -m pip_audit -f json",
                     "returncode": None,
                     "stdout": "",
                     "stderr": "pip-audit not installed; skipped",
@@ -52,8 +54,8 @@ def main() -> int:
         )
 
     # Node dependency check
-    if shutil.which("npm"):
-        checks.append(("npm_audit", _run(["npm", "audit", "--json"], PROJECT_ROOT / "frontend")))
+    if npm_binary:
+        checks.append(("npm_audit", _run([npm_binary, "audit", "--json"], PROJECT_ROOT / "frontend")))
     else:
         checks.append(
             (
@@ -75,6 +77,10 @@ def main() -> int:
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORT_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(json.dumps({"report": str(REPORT_PATH)}, indent=2))
+
+    for _, result in checks:
+        if result.get("returncode") not in {0, None}:
+            return 1
     return 0
 
 

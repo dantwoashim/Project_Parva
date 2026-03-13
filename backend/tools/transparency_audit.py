@@ -16,7 +16,9 @@ def main() -> None:
     report = verify_log_integrity()
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(report, indent=2), encoding="utf-8")
-    print(json.dumps({"valid": report["valid"], "total_entries": report["total_entries"]}, indent=2))
+    print(
+        json.dumps({"valid": report["valid"], "total_entries": report["total_entries"]}, indent=2)
+    )
     print(f"Wrote {OUT_JSON}")
 
 
