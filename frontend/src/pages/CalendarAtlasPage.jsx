@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { calendarAPI } from '../services/api';
-import { useTemporalContext } from '../context/useTemporalContext';
 import './CalendarAtlasPage.css';
 
 const MONTHS = [
@@ -16,24 +15,14 @@ function currentGregorian() {
   };
 }
 
-function formatWeekday(day, lang = 'en') {
-  if (!day) return '—';
-  if (lang === 'ne') {
-    const map = {
-      Sunday: 'आइतबार', Monday: 'सोमबार', Tuesday: 'मंगलबार', Wednesday: 'बुधबार',
-      Thursday: 'बिहीबार', Friday: 'शुक्रबार', Saturday: 'शनिबार',
-    };
-    return map[day] || day;
-  }
-  return day;
+function formatWeekday(day) {
+  return day || 'Unavailable';
 }
 
 export function CalendarAtlasPage() {
   const now = useMemo(() => currentGregorian(), []);
-  const { state } = useTemporalContext();
   const [year, setYear] = useState(now.year);
   const [month, setMonth] = useState(now.month);
-
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -67,7 +56,7 @@ export function CalendarAtlasPage() {
     const min = payload?.supported_range?.gregorian_min_year ?? now.year - 200;
     const max = payload?.supported_range?.gregorian_max_year ?? now.year + 200;
     const options = [];
-    for (let y = max; y >= min; y -= 1) options.push(y);
+    for (let value = max; value >= min; value -= 1) options.push(value);
     return options;
   }, [payload, now.year]);
 
@@ -80,53 +69,51 @@ export function CalendarAtlasPage() {
   return (
     <section className="calendar-atlas-page animate-fade-in-up">
       <header className="calendar-atlas-hero ink-card">
-        <div>
-          <p className="calendar-atlas-eyebrow">Dual Calendar Atlas</p>
-          <h1>
-            Gregorian + Bikram Sambat
-          </h1>
+        <div className="calendar-atlas-hero__copy">
+          <p className="today-page__eyebrow">Calendar tool</p>
+          <h1 className="text-hero">Browse Gregorian and Bikram Sambat together.</h1>
           <p>
-            Explore monthly date mappings across a ±200 year window with Nepali and Gregorian alignment.
+            Use this utility view when you want month-by-month alignment across the public calendar range.
           </p>
         </div>
 
         <div className="calendar-atlas-controls">
           <button type="button" className="btn btn-secondary" onClick={() => shiftMonth(-1)}>
-            ← Previous
+            Previous month
           </button>
           <label className="ink-input">
             <span>Year</span>
-            <select value={year} onChange={(e) => setYear(Number(e.target.value))}>
-              {yearOptions.map((y) => (
-                <option key={y} value={y}>{y}</option>
+            <select value={year} onChange={(event) => setYear(Number(event.target.value))}>
+              {yearOptions.map((value) => (
+                <option key={value} value={value}>{value}</option>
               ))}
             </select>
           </label>
           <label className="ink-input">
             <span>Month</span>
-            <select value={month} onChange={(e) => setMonth(Number(e.target.value))}>
-              {MONTHS.map((name, idx) => (
-                <option key={name} value={idx + 1}>{name}</option>
+            <select value={month} onChange={(event) => setMonth(Number(event.target.value))}>
+              {MONTHS.map((name, index) => (
+                <option key={name} value={index + 1}>{name}</option>
               ))}
             </select>
           </label>
           <button type="button" className="btn btn-secondary" onClick={() => shiftMonth(1)}>
-            Next →
+            Next month
           </button>
         </div>
       </header>
 
       {loading && (
         <div className="calendar-atlas-grid calendar-atlas-grid--loading">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="skeleton calendar-atlas-skeleton" />
+          {Array.from({ length: 12 }).map((_, index) => (
+            <div key={index} className="skeleton calendar-atlas-skeleton" />
           ))}
         </div>
       )}
 
       {!loading && error && (
         <div className="ink-card calendar-atlas-error" role="alert">
-          <h3>Could not load calendar atlas</h3>
+          <h3>Could not load the calendar tool</h3>
           <p>{error}</p>
         </div>
       )}
@@ -146,9 +133,9 @@ export function CalendarAtlasPage() {
                 <div className="calendar-atlas-day__ad">
                   <strong>{entry.gregorian.day}</strong>
                   <span>{MONTHS[entry.gregorian.month - 1]} {entry.gregorian.year}</span>
-                  <small>{formatWeekday(entry.gregorian.weekday, state.language)}</small>
+                  <small>{formatWeekday(entry.gregorian.weekday)}</small>
                 </div>
-                <div className="calendar-atlas-day__bs text-nepali">
+                <div className="calendar-atlas-day__bs">
                   <strong>{entry.bikram_sambat.day}</strong>
                   <span>{entry.bikram_sambat.month_name} {entry.bikram_sambat.year}</span>
                 </div>

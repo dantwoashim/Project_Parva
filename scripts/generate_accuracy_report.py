@@ -6,29 +6,31 @@ Runs V2 calculator for known festivals against ground truth overrides.
 Produces a structured accuracy report with mismatch taxonomy.
 """
 
+from __future__ import annotations
+
 import json
 import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
+from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 OVERRIDES_PATH = PROJECT_ROOT / "backend" / "app" / "calendar" / "ground_truth_overrides.json"
 REPORT_DIR = PROJECT_ROOT / "reports" / "accuracy"
 
 
+def _load_overrides() -> dict[str, Any]:
+    raw = json.loads(OVERRIDES_PATH.read_text(encoding="utf-8"))
+    return {k: v for k, v in raw.items() if not k.startswith("_")}
+
+
 def run_benchmark():
     """Compare V2 calculator output against ground truth for all years."""
-    # Add backend to path
     sys.path.insert(0, str(PROJECT_ROOT / "backend"))
 
     from app.calendar.calculator_v2 import calculate_festival_v2
 
-    with open(OVERRIDES_PATH) as f:
-        raw = json.load(f)
-
-    # Remove metadata key
-    overrides = {k: v for k, v in raw.items() if not k.startswith("_")}
-
+    overrides = _load_overrides()
     results = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "benchmark_years": sorted(overrides.keys()),
@@ -59,10 +61,9 @@ def run_benchmark():
             except ValueError:
                 continue
 
-            # Run calculator
             try:
                 calc_result = calculate_festival_v2(festival_id, year)
-            except Exception as e:
+            except Exception as exc:
                 results["calculator_failed"] += 1
                 year_stats["failed"] += 1
                 results["mismatches"].append(
@@ -71,7 +72,7 @@ def run_benchmark():
                         "year": year,
                         "truth": truth_date_str,
                         "computed": None,
-                        "error": str(e),
+                        "error": str(exc),
                         "category": "calculator_error",
                     }
                 )
@@ -95,7 +96,6 @@ def run_benchmark():
             computed_date = calc_result.start_date
             delta_days = abs((computed_date - truth_date).days)
 
-            # Classify
             if delta_days == 0:
                 results["exact_matches"] += 1
                 year_stats["exact"] += 1
@@ -128,20 +128,18 @@ def run_benchmark():
                     }
                 )
 
-            # Per-festival tracking
-            if festival_id not in results["per_festival"]:
-                results["per_festival"][festival_id] = {"total": 0, "exact": 0, "errors": []}
-            results["per_festival"][festival_id]["total"] += 1
+            festival_stats = results["per_festival"].setdefault(
+                festival_id,
+                {"total": 0, "exact": 0, "errors": []},
+            )
+            festival_stats["total"] += 1
             if delta_days == 0:
-                results["per_festival"][festival_id]["exact"] += 1
+                festival_stats["exact"] += 1
             else:
-                results["per_festival"][festival_id]["errors"].append(
-                    {"year": year, "delta": delta_days}
-                )
+                festival_stats["errors"].append({"year": year, "delta": delta_days})
 
         results["per_year"][year_str] = year_stats
 
-    # Compute summary
     total = results["total_comparisons"]
     results["accuracy_pct"] = round(100 * results["exact_matches"] / max(total, 1), 1)
     results["within_one_day_pct"] = round(
@@ -157,9 +155,10 @@ def main():
 
     REPORT_DIR.mkdir(parents=True, exist_ok=True)
     report_path = REPORT_DIR / "annual_accuracy_2082.json"
-
-    with open(report_path, "w") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+    report_path.write_text(
+        json.dumps(results, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
 
     print("\n=== Accuracy Benchmark ===")
     print(f"  Total comparisons:    {results['total_comparisons']}")
@@ -168,16 +167,16 @@ def main():
     print(f"  Off-by-more:          {results['off_by_more']}")
     print(f"  Calculator failed:    {results['calculator_failed']}")
     print(f"  Accuracy:             {results['accuracy_pct']}%")
-    print(f"  Within ±1 day:        {results['within_one_day_pct']}%")
+    print(f"  Within +/-1 day:      {results['within_one_day_pct']}%")
     print(f"\nReport: {report_path}")
 
     if results["mismatches"]:
         print(f"\n  Mismatches ({len(results['mismatches'])}):")
-        for m in results["mismatches"][:10]:
+        for mismatch in results["mismatches"][:10]:
             print(
-                f"    {m['festival_id']} ({m['year']}): "
-                f"truth={m['truth']}, computed={m.get('computed', 'N/A')}, "
-                f"cat={m['category']}"
+                f"    {mismatch['festival_id']} ({mismatch['year']}): "
+                f"truth={mismatch['truth']}, computed={mismatch.get('computed', 'N/A')}, "
+                f"cat={mismatch['category']}"
             )
 
     return 0

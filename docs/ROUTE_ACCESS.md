@@ -47,3 +47,10 @@ deterministic local-only credentials if none are provided:
 - Admin bearer token: `parva-dev-admin-token`
 
 These defaults are for local testing only and must not be used in production.
+
+## Recommended external packaging
+
+- Keep anonymous public `v3` product routes free.
+- Gate reliability, conformance, public-artifact, and provenance verification reads behind `commercial.read`.
+- Use `PARVA_API_KEYS` to provision external partners instead of exposing admin credentials.
+- See `docs/HOSTED_API_ONBOARDING.md`, `docs/PARTNER_ACCESS.md`, and `docs/USAGE_TIERS.md`.

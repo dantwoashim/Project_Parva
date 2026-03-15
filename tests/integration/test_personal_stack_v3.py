@@ -21,6 +21,46 @@ def test_personal_panchanga_v3_fields():
     assert body["advisory_scope"] == "ritual_planning"
 
 
+def test_personal_panchanga_post_hides_inputs_from_url_and_disables_caching():
+    resp = client.post(
+        "/v3/api/personal/panchanga",
+        json={"date": "2026-02-15", "lat": "27.7172", "lon": "85.3240"},
+    )
+    assert resp.status_code == 200
+    assert resp.request.url.query == b""
+    assert resp.headers["Cache-Control"] == "no-store"
+
+
+def test_personal_panchanga_post_accepts_numeric_coordinates():
+    resp = client.post(
+        "/v3/api/personal/panchanga",
+        json={"date": "2026-02-15", "lat": 27.7172, "lon": 85.3240},
+    )
+    assert resp.status_code == 200
+    assert resp.json()["location"] == {
+        "latitude": 27.7172,
+        "longitude": 85.324,
+        "timezone": "Asia/Kathmandu",
+    }
+
+
+def test_personal_panchanga_get_and_post_normalize_coordinates_equivalently():
+    params = {"date": "2026-02-15", "lat": "27.7172", "lon": "85.3240"}
+    payload = {"date": "2026-02-15", "lat": 27.7172, "lon": 85.3240}
+
+    get_resp = client.get("/v3/api/personal/panchanga", params=params)
+    post_resp = client.post("/v3/api/personal/panchanga", json=payload)
+
+    assert get_resp.status_code == 200
+    assert post_resp.status_code == 200
+
+    get_body = get_resp.json()
+    post_body = post_resp.json()
+    assert get_body["location"] == post_body["location"]
+    assert get_body["bikram_sambat"] == post_body["bikram_sambat"]
+    assert get_body["tithi"] == post_body["tithi"]
+
+
 def test_muhurta_returns_named_slots():
     resp = client.get("/v3/api/muhurta", params={"date": "2026-02-15"})
     assert resp.status_code == 200
@@ -38,6 +78,40 @@ def test_muhurta_returns_named_slots():
     assert "tara_bala" in body
     assert body["method_profile"] == "muhurta_v2_hora_chaughadia_tarabala"
     assert body["quality_band"] in {"beta", "validated", "gold"}
+
+
+def test_muhurta_heatmap_post_supported_for_private_inputs():
+    resp = client.post(
+        "/v3/api/muhurta/heatmap",
+        json={"date": "2026-02-15", "lat": "27.7172", "lon": "85.3240"},
+    )
+    assert resp.status_code == 200
+    assert resp.headers["Cache-Control"] == "no-store"
+
+
+def test_muhurta_heatmap_post_accepts_numeric_coordinates():
+    resp = client.post(
+        "/v3/api/muhurta/heatmap",
+        json={"date": "2026-02-15", "lat": 27.7172, "lon": 85.3240},
+    )
+    assert resp.status_code == 200
+    assert resp.json()["best_window"]["name"]
+
+
+def test_muhurta_heatmap_get_and_post_normalize_coordinates_equivalently():
+    params = {"date": "2026-02-15", "lat": "27.7172", "lon": "85.3240"}
+    payload = {"date": "2026-02-15", "lat": 27.7172, "lon": 85.3240}
+
+    get_resp = client.get("/v3/api/muhurta/heatmap", params=params)
+    post_resp = client.post("/v3/api/muhurta/heatmap", json=payload)
+
+    assert get_resp.status_code == 200
+    assert post_resp.status_code == 200
+
+    get_body = get_resp.json()
+    post_body = post_resp.json()
+    assert get_body["best_window"] == post_body["best_window"]
+    assert get_body["blocks"] == post_body["blocks"]
 
 
 def test_rahu_kalam_changes_by_weekday():
@@ -89,15 +163,58 @@ def test_kundali_returns_12_houses_and_navagraha():
     assert body["advisory_scope"] == "astrology_assist"
 
 
+def test_kundali_post_supported_for_private_inputs():
+    resp = client.post(
+        "/v3/api/kundali",
+        json={"datetime": "2026-02-15T06:30:00+05:45", "lat": "27.7172", "lon": "85.3240"},
+    )
+    assert resp.status_code == 200
+    assert resp.headers["Cache-Control"] == "no-store"
+
+
+def test_kundali_post_accepts_numeric_coordinates():
+    resp = client.post(
+        "/v3/api/kundali",
+        json={"datetime": "2026-02-15T06:30:00+05:45", "lat": 27.7172, "lon": 85.3240},
+    )
+    assert resp.status_code == 200
+    assert resp.json()["location"] == {
+        "latitude": 27.7172,
+        "longitude": 85.324,
+        "timezone": "Asia/Kathmandu",
+    }
+
+
+def test_kundali_get_and_post_normalize_coordinates_equivalently():
+    params = {"datetime": "2026-02-15T06:30:00+05:45", "lat": "27.7172", "lon": "85.3240"}
+    payload = {"datetime": "2026-02-15T06:30:00+05:45", "lat": 27.7172, "lon": 85.3240}
+
+    get_resp = client.get("/v3/api/kundali", params=params)
+    post_resp = client.post("/v3/api/kundali", json=payload)
+
+    assert get_resp.status_code == 200
+    assert post_resp.status_code == 200
+
+    get_body = get_resp.json()
+    post_body = post_resp.json()
+    assert get_body["location"] == post_body["location"]
+    assert get_body["lagna"] == post_body["lagna"]
+    assert get_body["houses"] == post_body["houses"]
+
+
 def test_kundali_invalid_datetime_returns_400():
     resp = client.get("/v3/api/kundali", params={"datetime": "not-a-datetime"})
     assert resp.status_code == 400
 
 
-def test_invalid_coordinates_fallback_with_warning():
-    resp = client.get("/v3/api/muhurta", params={"date": "2026-02-15", "lat": "999", "lon": "xyz"})
-    assert resp.status_code == 200
-    body = resp.json()
-    assert body["location"]["latitude"] == 27.7172
-    assert body["location"]["longitude"] == 85.324
-    assert body.get("warnings")
+def test_invalid_coordinates_return_400():
+    get_resp = client.get("/v3/api/muhurta", params={"date": "2026-02-15", "lat": "999", "lon": "85.3240"})
+    post_resp = client.post(
+        "/v3/api/muhurta/heatmap",
+        json={"date": "2026-02-15", "lat": 27.7172, "lon": 999},
+    )
+
+    assert get_resp.status_code == 400
+    assert post_resp.status_code == 400
+    assert "Out-of-range lat" in get_resp.json()["detail"]
+    assert "Out-of-range lon" in post_resp.json()["detail"]

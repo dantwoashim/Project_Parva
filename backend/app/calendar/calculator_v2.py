@@ -14,6 +14,7 @@ This fixes the mid-year festival discrepancies caused by Adhik Maas.
 import json
 from dataclasses import dataclass
 from datetime import date, timedelta
+from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Tuple
 
@@ -288,6 +289,13 @@ def calculate_festival_v2(
 
     This is the V2 calculator that uses lunar_month model.
     """
+    return _calculate_festival_v2_cached(festival_id, year, use_overrides)
+
+
+@lru_cache(maxsize=2048)
+def _calculate_festival_v2_cached(
+    festival_id: str, year: int, use_overrides: bool
+) -> Optional[FestivalDate]:
     return calculate_festival_date_v2(festival_id, year, use_overrides=use_overrides)
 
 
@@ -297,6 +305,11 @@ def list_festivals_v2() -> List[str]:
 
     Includes V3 lunar-month rules and fallback legacy rules (festival_rules.json).
     """
+    return list(_list_festivals_v2_cached())
+
+
+@lru_cache(maxsize=1)
+def _list_festivals_v2_cached() -> tuple[str, ...]:
     ids = set(get_festival_rules_v3().keys())
     try:
         from .festival_rules_loader import list_festivals
@@ -304,7 +317,7 @@ def list_festivals_v2() -> List[str]:
         ids.update(list_festivals())
     except Exception:
         pass
-    return sorted(ids)
+    return tuple(sorted(ids))
 
 
 def get_festival_info_v2(festival_id: str) -> Optional[FestivalRuleV3]:

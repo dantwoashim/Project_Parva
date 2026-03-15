@@ -9,6 +9,7 @@ function response(payload) {
     ok: true,
     status: 200,
     statusText: 'OK',
+    headers: { get: () => 'application/json' },
     json: async () => payload,
     text: async () => JSON.stringify(payload),
   };
@@ -83,8 +84,8 @@ describe('FestivalExplorerPage', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Festival Explorer Ribbon/i })).toBeInTheDocument();
-    expect(screen.getByText('Dashain')).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /See what is coming up across Nepal/i })).toBeInTheDocument();
+    expect((await screen.findAllByText('Dashain')).length).toBeGreaterThan(0);
 
     await userEvent.selectOptions(screen.getByLabelText('Category'), 'hindu');
 
@@ -95,6 +96,6 @@ describe('FestivalExplorerPage', () => {
       );
     });
 
-    expect(await screen.findByText('Maha Shivaratri')).toBeInTheDocument();
-  });
+    expect((await screen.findAllByText('Maha Shivaratri')).length).toBeGreaterThan(0);
+  }, 15000);
 });

@@ -1438,34 +1438,6 @@
             "who_celebrates": "All Nepalis",
             "primary_color": "#9B1B30",
             "content_status": "complete"
-        },
-        {
-            "id": "gyalpo-lhosar",
-            "name": "Gyalpo Lhosar",
-            "name_nepali": "ग्याल्पो ल्होसार",
-            "calendar_type": "tibetan",
-            "category": "ethnic",
-            "significance_level": 4,
-            "tagline": "Sherpa New Year celebrating high mountain culture and traditions",
-            "description": "Gyalpo Lhosar is the Sherpa New Year, celebrated in the high Himalayan regions of Nepal, particularly in Solukhumbu, Dolakha, and Sindhupalchok. The festival marks the beginning of the Tibetan lunar calendar and includes monastery prayers, traditional dances, feasting on Sherpa delicacies like khapse (fried bread) and butter tea, and visiting family and friends. Homes are decorated, and the atmosphere is festive with traditional music and ceremonial offerings at Buddhist monasteries.",
-            "typical_month_bs": 11,
-            "typical_month_gregorian": "February",
-            "duration_days": 3,
-            "is_national_holiday": false,
-            "who_celebrates": "Sherpa, Tamang, and Himalayan communities",
-            "regional_focus": [
-                "Solukhumbu",
-                "Himalayan Region"
-            ],
-            "primary_color": "#FF6347",
-            "connected_deities": [
-                "Buddha"
-            ],
-            "related_festivals": [
-                "sonam-lhosar",
-                "tamu-lhosar"
-            ],
-            "content_status": "complete"
         }
     ]
 }

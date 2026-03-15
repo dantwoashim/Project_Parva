@@ -78,7 +78,7 @@ def _render_index(payload: Dict) -> str:
 </head>
 <body>
 <main>
-  <h1>Project Parva — Public Artifacts</h1>
+  <h1>Project Parva - Public Artifacts</h1>
   <p>Generated at <code>{payload.get("generated_at")}</code></p>
 
   <div class="card">
@@ -127,7 +127,10 @@ def main() -> int:
         ("authority_dashboard.json", REPORTS_DIR / "authority_dashboard.json"),
         ("conformance_report.json", REPORTS_DIR / "conformance_report.json"),
         ("rule_ingestion_summary.json", REPORTS_DIR / "rule_ingestion_summary.json"),
+        ("month9_dossier.json", REPORTS_DIR / "release" / "month9_dossier.json"),
+        ("annual_accuracy_2082.json", REPORTS_DIR / "accuracy" / "annual_accuracy_2082.json"),
         ("authority_dashboard.md", DOCS_PUBLIC_BETA / "authority_dashboard.md"),
+        ("month9_release_dossier.md", DOCS_PUBLIC_BETA / "month9_release_dossier.md"),
     ]
     for label, src in report_map:
         if _copy_if_exists(src, SITE_DIR / "reports" / src.name):

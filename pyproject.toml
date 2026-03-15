@@ -7,7 +7,7 @@ name = "project-parva"
 version = "3.0.0"
 description = "Nepal Festival Discovery System"
 requires-python = ">=3.11,<3.12"
-license = { text = "MIT" }
+license = { text = "AGPL-3.0-or-later" }
 readme = "README.md"
 dependencies = [
     "fastapi>=0.135.1",
@@ -34,7 +34,7 @@ ops = [
 ]
 
 [tool.pytest.ini_options]
-pythonpath = ["backend"]
+pythonpath = [".", "backend"]
 testpaths = ["tests", "backend/tests"]
 
 [tool.ruff]

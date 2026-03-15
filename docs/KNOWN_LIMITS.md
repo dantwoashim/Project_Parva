@@ -9,3 +9,4 @@
 7. Authority Mode exposes computation metadata; it is not a legal or doctrinal certification layer.
 8. Temporal Compass and ribbon views are optimized for modern browsers; older embedded webviews may degrade to basic card rendering.
 9. Visual regression snapshots are deterministic fixtures, not live observational truth data.
+10. This repository now uses the AGPL zero-budget path for Swiss Ephemeris / `pyswisseph`, so hosted commercial use remains possible only if users can access the corresponding deployed source.

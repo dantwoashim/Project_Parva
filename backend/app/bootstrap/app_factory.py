@@ -68,6 +68,11 @@ def _build_startup_checks(settings) -> dict[str, object]:
     frontend_index = settings.frontend_dist / "index.html"
     checks = {
         "config": {"required": True, "ok": True, "detail": "validated"},
+        "source_code": {
+            "required": settings.environment.lower() == "production",
+            "ok": bool(settings.source_url),
+            "detail": settings.source_url or "Set PARVA_SOURCE_URL to a public repository or source archive.",
+        },
         "precomputed": {
             "required": settings.require_precomputed,
             "ok": cache_stats.get("file_count", 0) > 0,
@@ -87,6 +92,13 @@ def _build_startup_checks(settings) -> dict[str, object]:
     }
 
 
+def _service_metadata(settings) -> dict[str, object]:
+    return {
+        "license": settings.license_mode,
+        "source_code_url": settings.source_url,
+    }
+
+
 def create_app() -> FastAPI:
     settings = load_settings()
     validation_errors = validate_settings(settings)
@@ -102,7 +114,9 @@ def create_app() -> FastAPI:
     app.state.started_at = datetime.now(timezone.utc)
     app.state.enable_experimental_api = settings.enable_experimental_api
     app.state.environment = settings.environment
+    app.state.license_mode = settings.license_mode
     app.state.serve_frontend = settings.serve_frontend
+    app.state.source_url = settings.source_url
     app.state.settings = settings
     app.state.startup_checks = _build_startup_checks(settings)
 
@@ -117,6 +131,8 @@ def create_app() -> FastAPI:
     app.middleware("http")(
         build_engine_headers(
             ephemeris_header_value=_ephemeris_header_value,
+            license_mode=settings.license_mode,
+            source_url=settings.source_url,
             enable_experimental_api=settings.enable_experimental_api,
         )
     )
@@ -134,7 +150,9 @@ def create_app() -> FastAPI:
             max_request_bytes=settings.max_request_bytes,
         )
     )
-    app.middleware("http")(build_request_context(product_version=PRODUCT_VERSION))
+    app.middleware("http")(
+        build_request_context(product_version=PRODUCT_VERSION, settings=settings)
+    )
 
     @app.exception_handler(HTTPException)
     async def http_exception_handler(request, exc: HTTPException):
@@ -188,6 +206,18 @@ def create_app() -> FastAPI:
     async def v3_docs():
         return RedirectResponse(url="/docs")
 
+    @app.get("/source", include_in_schema=False)
+    async def source_code():
+        if settings.source_url:
+            return RedirectResponse(url=settings.source_url)
+        return JSONResponse(
+            status_code=503,
+            content={
+                "detail": "Source publication URL is not configured. Set PARVA_SOURCE_URL.",
+                **_service_metadata(settings),
+            },
+        )
+
     if settings.enable_experimental_api:
 
         @app.get("/v2/openapi.json")
@@ -223,6 +253,7 @@ def create_app() -> FastAPI:
             "name": "Project Parva",
             "description": "Nepal Festival Discovery System",
             "version": PRODUCT_VERSION,
+            **_service_metadata(settings),
             "public_profile": "v3",
             "experimental_api_enabled": settings.enable_experimental_api,
             "webhook_support": "not_shipped",
@@ -235,6 +266,7 @@ def create_app() -> FastAPI:
                 "panchanga": "/v3/api/calendar/panchanga?date=2026-02-15",
                 "feeds": "/v3/api/feeds/all.ics",
                 "docs": "/docs",
+                "source": "/source",
             },
         }
 
@@ -245,6 +277,7 @@ def create_app() -> FastAPI:
         return {
             "status": "healthy" if app.state.startup_checks.get("ready") else "degraded",
             "version": PRODUCT_VERSION,
+            **_service_metadata(settings),
             "uptime_seconds": uptime_seconds,
             "public_profile": "v3",
             "experimental_api_enabled": settings.enable_experimental_api,
@@ -271,6 +304,7 @@ def create_app() -> FastAPI:
         payload = {
             "status": "ready" if app.state.startup_checks.get("ready") else "not_ready",
             "version": PRODUCT_VERSION,
+            **_service_metadata(settings),
             "checks": app.state.startup_checks.get("checks", {}),
         }
         return JSONResponse(

@@ -1,224 +1,90 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`visual regression harness > compass page visual baseline 1`] = `
+exports[`visual regression harness > about page visual baseline 1`] = `
 <section
-  class="compass-page animate-fade-in-up"
+  class="about-page animate-fade-in-up"
 >
   <header
-    class="compass-hero ink-card"
+    class="about-hero editorial-card"
   >
-    <div
-      class="compass-hero__copy"
+    <p
+      class="landing-eyebrow"
     >
-      <p
-        class="compass-eyebrow"
-      >
-        Temporal Compass
-      </p>
-      <h1>
-        2082 Falgun 3
-      </h1>
-      <p
-        class="compass-subtitle"
-      >
-        Chaturdashi
-         · 
-        krishna
-      </p>
-      <div
-        class="compass-hero__actions"
-      >
-        <label
-          class="ink-input compass-date-input"
-        >
-          <span>
-            Date
-          </span>
-          <input
-            type="date"
-            value="2026-02-25"
-          />
-        </label>
-        <button
-          class="btn btn-secondary"
-          type="button"
-        >
-          Open ±200 Year Calendar
-        </button>
-      </div>
-      <div
-        class="compass-search ink-card"
-      >
-        <label
-          class="ink-input"
-        >
-          <span>
-            Search Festival
-          </span>
-          <input
-            placeholder="Search and open a festival detail page..."
-            value=""
-          />
-        </label>
-      </div>
-    </div>
-    <div
-      class="compass-hero__ring"
-    >
-      <figure
-        aria-label="Lunar progression"
-        class="orbital-ring"
-      >
-        <svg
-          role="img"
-          viewBox="0 0 220 220"
-        >
-          <title>
-            Lunar progression
-          </title>
-          <circle
-            class="orbital-ring__track"
-            cx="110"
-            cy="110"
-            r="88"
-          />
-          <circle
-            class="orbital-ring__value"
-            cx="110"
-            cy="110"
-            r="88"
-            stroke-dasharray="552.9203070318035"
-            stroke-dashoffset="143.75927982826892"
-          />
-        </svg>
-        <figcaption>
-          <strong>
-            14
-          </strong>
-          <span>
-            74
-            %
-          </span>
-        </figcaption>
-      </figure>
-    </div>
+      About Parva
+    </p>
+    <h1>
+      Parva is built to make sacred time feel clear before it feels technical.
+    </h1>
+    <p>
+      The product is designed for everyday people first: calm language, one useful answer, and deeper detail only when someone wants it.
+    </p>
   </header>
-  <div
-    aria-live="polite"
-    class="horizon-strip"
-    role="status"
-  >
-    <p>
-      <span>
-        Sunrise
-      </span>
-       
-      06:42 AM
-    </p>
-    <p>
-      <span>
-        Sunset
-      </span>
-       
-      05:53 PM
-    </p>
-    <p>
-      <span>
-        Current Muhurta
-      </span>
-       
-      Abhijit
-    </p>
-    <p>
-      <span>
-        Class
-      </span>
-       
-      auspicious
-    </p>
-  </div>
   <section
-    class="compass-signals"
+    class="about-grid"
   >
     <article
-      class="ink-card"
+      class="editorial-card about-card"
     >
-      <h3>
-        Nakshatra
-      </h3>
+      <h2>
+        What it is
+      </h2>
       <p>
-        Shravana
+        A Nepal-focused guide for festivals, panchanga, muhurta, and kundali that tries to feel trustworthy without feeling overloaded.
       </p>
     </article>
     <article
-      class="ink-card"
+      class="editorial-card about-card"
     >
-      <h3>
-        Yoga
-      </h3>
+      <h2>
+        How trust works
+      </h2>
       <p>
-        Shubha
-      </p>
-    </article>
-    <article
-      class="ink-card"
-    >
-      <h3>
-        Karana
-      </h3>
-      <p>
-        Vishti
-      </p>
-    </article>
-    <article
-      class="ink-card"
-    >
-      <h3>
-        Vaara
-      </h3>
-      <p>
-        Sunday
+        The first answer stays calm and useful. Method notes, where results can vary, and deeper evidence stay available when you want to inspect them.
       </p>
     </article>
   </section>
   <section
-    class="compass-festivals ink-card"
+    class="editorial-card about-details"
   >
-    <header>
-      <h2>
-        Today's Festivals
-      </h2>
-      <p>
-        1
-         active
-      </p>
-    </header>
     <div
-      class="compass-festivals__list"
+      class="landing-section-header"
     >
-      <button
-        class="compass-festival-card"
-        type="button"
+      <p
+        class="landing-eyebrow"
       >
-        <div>
-          <span>
-            Dashain
-          </span>
-        </div>
-        <div
-          class="compass-festival-card__dates"
-        >
-          <small>
-            2026-10-20
-          </small>
-          <small
-            class="compass-festival-card__bs"
-          >
-            BS: 
-            —
-          </small>
-        </div>
-      </button>
+        Principles
+      </p>
+      <h2>
+        What the interface promises
+      </h2>
+    </div>
+    <div
+      class="about-details__grid"
+    >
+      <article>
+        <h3>
+          Meaning before mechanics
+        </h3>
+        <p>
+          The first screen should answer the question, not explain the machinery.
+        </p>
+      </article>
+      <article>
+        <h3>
+          Calm trust
+        </h3>
+        <p>
+          Evidence, method, and variance notes stay available, but they never crowd the first answer.
+        </p>
+      </article>
+      <article>
+        <h3>
+          One product language
+        </h3>
+        <p>
+          Landing, reading, and planning surfaces should feel like one premium product, not separate dashboards.
+        </p>
+      </article>
     </div>
   </section>
 </section>
@@ -229,187 +95,275 @@ exports[`visual regression harness > explorer page visual baseline 1`] = `
   class="explorer-page animate-fade-in-up"
 >
   <header
-    class="explorer-hero"
+    class="explorer-hero editorial-card"
   >
-    <h1
-      class="text-hero"
+    <div
+      class="explorer-hero__copy"
     >
-      Festival Explorer Ribbon
-    </h1>
-    <p
-      class="explorer-hero__sub"
+      <p
+        class="landing-eyebrow"
+      >
+        Festivals
+      </p>
+      <h1>
+        Follow observances through meaning first, then the wider calendar.
+      </h1>
+      <p
+        class="explorer-hero__sub"
+      >
+        Start with the next featured observance, keep the rest of this month in view, and open the full timeline only when you want more range.
+      </p>
+    </div>
+    <div
+      class="explorer-hero__actions"
     >
-      Browse observances continuously across months with quality-aware filters.
-    </p>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Open filters
+      </button>
+      <button
+        class="btn btn-secondary evidence-drawer__trigger"
+        type="button"
+      >
+        How this was calculated
+      </button>
+    </div>
   </header>
-  <div
-    class="explorer-filters"
+  <section
+    class="explorer-chip-row"
   >
-    <label
-      class="ink-input explorer-control"
+    <button
+      class="explorer-chip is-active"
+      type="button"
     >
-      <span>
-        From
-      </span>
-      <input
-        type="date"
-        value="2026-02-25"
-      />
-    </label>
-    <label
-      class="ink-input explorer-control"
+      All traditions
+    </button>
+    <button
+      class="explorer-chip"
+      type="button"
     >
-      <span>
-        Window
-      </span>
-      <select>
-        <option
-          value="90"
-        >
-          90 days
-        </option>
-        <option
-          value="180"
-        >
-          180 days
-        </option>
-        <option
-          value="365"
-        >
-          365 days
-        </option>
-      </select>
-    </label>
-    <label
-      class="ink-input explorer-control"
+      National
+    </button>
+    <button
+      class="explorer-chip"
+      type="button"
     >
-      <span>
-        Category
-      </span>
-      <select>
-        <option
-          value=""
-        >
-          All
-        </option>
-        <option
-          value="national"
-        >
-          National
-        </option>
-        <option
-          value="newari"
-        >
-          Newari
-        </option>
-        <option
-          value="hindu"
-        >
-          Hindu
-        </option>
-        <option
-          value="buddhist"
-        >
-          Buddhist
-        </option>
-        <option
-          value="regional"
-        >
-          Regional
-        </option>
-      </select>
-    </label>
-    <label
-      class="ink-input explorer-control explorer-control--wide"
+      Newari
+    </button>
+    <button
+      class="explorer-chip"
+      type="button"
     >
-      <span>
-        Region
-      </span>
-      <input
-        placeholder="kathmandu_valley"
-        value=""
-      />
-    </label>
-    <label
-      class="ink-input explorer-control explorer-control--wide"
+      Hindu
+    </button>
+    <button
+      class="explorer-chip"
+      type="button"
     >
-      <span>
-        Search Festival
-      </span>
-      <input
-        placeholder="Dashain, Indra Jatra, Shivaratri..."
-        value=""
-      />
-    </label>
-  </div>
-  <div
-    aria-label="Festival timeline"
-    class="timeline-ribbon"
+      Buddhist
+    </button>
+    <button
+      class="explorer-chip"
+      type="button"
+    >
+      Regional
+    </button>
+  </section>
+  <section
+    class="explorer-featured"
   >
-    <section
-      class="timeline-month"
+    <a
+      class="ink-card explorer-featured__lead"
+      data-discover="true"
+      href="/festivals/dashain"
     >
-      <header
-        class="timeline-month__header sticky-month"
+      <span
+        class="today-page__eyebrow"
       >
-        Kartik 2083
-      </header>
-      <ul
-        class="timeline-month__list"
+        Featured next observance
+      </span>
+      <h2>
+        Dashain
+      </h2>
+      <p>
+        Open the observance when you want the story, ritual arc, and date guidance together instead of buried inside a dense calendar wall.
+      </p>
+      <div
+        class="explorer-featured__lead-meta"
       >
-        <li>
-          <button
-            class="timeline-card"
-            type="button"
-          >
-            <div
-              class="timeline-card__title-row"
+        <span>
+          national
+        </span>
+        <strong>
+          Oct 20, 2026
+        </strong>
+      </div>
+    </a>
+    <div
+      class="explorer-featured__stack"
+    >
+      <a
+        class="ink-card explorer-featured__card"
+        data-discover="true"
+        href="/festivals/tihar"
+      >
+        <span
+          class="today-page__eyebrow"
+        >
+          Also coming soon
+        </span>
+        <h3>
+          Tihar
+        </h3>
+        <p>
+          national
+        </p>
+        <small>
+          Nov 7, 2026
+        </small>
+      </a>
+    </div>
+  </section>
+  <section
+    class="ink-card explorer-month"
+  >
+    <div
+      class="explorer-section-header"
+    >
+      <div>
+        <p
+          class="today-page__eyebrow"
+        >
+          Coming this month
+        </p>
+        <h2>
+          Kartik 2083
+        </h2>
+      </div>
+    </div>
+    <div
+      class="explorer-month__grid"
+    >
+      <a
+        class="explorer-month__item is-lead"
+        data-discover="true"
+        href="/festivals/dashain"
+      >
+        <strong>
+          Dashain
+        </strong>
+        <span>
+          Oct 20, 2026
+        </span>
+        <p>
+          national
+        </p>
+      </a>
+      <a
+        class="explorer-month__item"
+        data-discover="true"
+        href="/festivals/tihar"
+      >
+        <strong>
+          Tihar
+        </strong>
+        <span>
+          Nov 7, 2026
+        </span>
+        <p>
+          national
+        </p>
+      </a>
+    </div>
+  </section>
+  <section
+    class="explorer-timeline"
+  >
+    <div
+      class="explorer-section-header"
+    >
+      <div>
+        <p
+          class="today-page__eyebrow"
+        >
+          Full timeline
+        </p>
+        <h2>
+          Browse the wider calendar
+        </h2>
+      </div>
+    </div>
+    <div
+      aria-label="Festival timeline"
+      class="timeline-ribbon"
+    >
+      <section
+        class="timeline-month"
+      >
+        <header
+          class="timeline-month__header sticky-month"
+        >
+          Kartik 2083
+        </header>
+        <ul
+          class="timeline-month__list"
+        >
+          <li>
+            <button
+              class="timeline-card"
+              type="button"
             >
-              <h3>
-                Dashain
-              </h3>
-              <span
-                aria-label="computed"
-                class="quality-marker quality-marker--computed"
-              />
-            </div>
-            <p
-              class="timeline-card__meta"
+              <div
+                class="timeline-card__title-row"
+              >
+                <h3>
+                  Dashain
+                </h3>
+                <span
+                  aria-label="computed"
+                  class="quality-marker quality-marker--computed"
+                />
+              </div>
+              <p
+                class="timeline-card__meta"
+              >
+                2026-10-20 to 2026-10-30
+                 | 
+                National
+              </p>
+            </button>
+          </li>
+          <li>
+            <button
+              class="timeline-card"
+              type="button"
             >
-              2026-10-20 → 2026-10-30
-               · 
-              national
-            </p>
-          </button>
-        </li>
-        <li>
-          <button
-            class="timeline-card"
-            type="button"
-          >
-            <div
-              class="timeline-card__title-row"
-            >
-              <h3>
-                Tihar
-              </h3>
-              <span
-                aria-label="computed"
-                class="quality-marker quality-marker--computed"
-              />
-            </div>
-            <p
-              class="timeline-card__meta"
-            >
-              2026-11-07 → 2026-11-11
-               · 
-              national
-            </p>
-          </button>
-        </li>
-      </ul>
-    </section>
-  </div>
+              <div
+                class="timeline-card__title-row"
+              >
+                <h3>
+                  Tihar
+                </h3>
+                <span
+                  aria-label="computed"
+                  class="quality-marker quality-marker--computed"
+                />
+              </div>
+              <p
+                class="timeline-card__meta"
+              >
+                2026-11-07 to 2026-11-11
+                 | 
+                National
+              </p>
+            </button>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </section>
 </section>
 `;
 
@@ -418,18 +372,27 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
   class="feeds-page animate-fade-in-up"
 >
   <header
-    class="feeds-hero"
+    class="feeds-hero ink-card"
   >
-    <h1
-      class="text-hero"
+    <div
+      class="feeds-hero__copy"
     >
-      Calendar Feeds
-    </h1>
-    <p
-      class="feeds-hero__sub"
-    >
-      Subscribe from Google Calendar, Apple Calendar, or Outlook
-    </p>
+      <p
+        class="feeds-page__eyebrow"
+      >
+        Calendar integrations
+      </p>
+      <h1
+        class="text-hero"
+      >
+        Connect Parva without dealing with raw calendar plumbing first.
+      </h1>
+      <p
+        class="feeds-hero__sub"
+      >
+        Choose a guided calendar setup first, then drop into manual setup only when you really need the direct link.
+      </p>
+    </div>
     <div
       class="feeds-hero__controls"
     >
@@ -492,112 +455,163 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
     class="feeds-grid stagger-children"
   >
     <article
-      class="ink-card ink-card--gold feed-card"
+      class="ink-card feed-card"
     >
-      <h3>
-        All Festivals
-      </h3>
-      <p
-        class="feed-card__desc"
-      >
-        Every festival computed by the engine
-      </p>
       <div
-        class="feed-card__url"
+        class="feed-card__copy"
       >
-        <code>
-          /v3/api/feeds/all.ics?years=2&lang=en
-        </code>
+        <span
+          class="feeds-page__eyebrow"
+        >
+          Ready to connect
+        </span>
+        <h2>
+          Google Calendar
+        </h2>
+        <p>
+          Add the broad Nepal-focused festival calendar to Google Calendar in one step.
+        </p>
       </div>
       <div
         class="feed-card__actions"
       >
-        <a
+        <button
           class="btn btn-primary btn-sm"
-          href="/v3/api/feeds/all.ics?years=2&lang=en"
-          rel="noreferrer"
-          target="_blank"
+          type="button"
         >
-          Open Feed
-        </a>
+          Add to Google Calendar
+        </button>
         <button
           class="btn btn-secondary btn-sm"
+          type="button"
         >
-          Copy Link
+          Copy link
         </button>
       </div>
+      <details
+        class="feed-card__advanced"
+      >
+        <summary>
+          Advanced manual setup
+        </summary>
+        <label
+          class="ink-input feed-card__advanced-field"
+        >
+          <span>
+            Manual calendar link
+          </span>
+          <input
+            readonly=""
+            value="/v3/api/feeds/all.ics?years=2&lang=en"
+          />
+        </label>
+      </details>
     </article>
     <article
-      class="ink-card ink-card--vermillion feed-card"
+      class="ink-card feed-card"
     >
-      <h3>
-        National Holidays
-      </h3>
-      <p
-        class="feed-card__desc"
-      >
-        Official government-declared holidays
-      </p>
       <div
-        class="feed-card__url"
+        class="feed-card__copy"
       >
-        <code>
-          /v3/api/feeds/national.ics?years=2&lang=en
-        </code>
+        <span
+          class="feeds-page__eyebrow"
+        >
+          Ready to connect
+        </span>
+        <h2>
+          Apple Calendar
+        </h2>
+        <p>
+          Use the same calendar feed with Apple Calendar or any app that supports calendar subscriptions.
+        </p>
       </div>
       <div
         class="feed-card__actions"
       >
-        <a
+        <button
           class="btn btn-primary btn-sm"
-          href="/v3/api/feeds/national.ics?years=2&lang=en"
-          rel="noreferrer"
-          target="_blank"
+          type="button"
         >
-          Open Feed
-        </a>
+          Add to Apple Calendar
+        </button>
         <button
           class="btn btn-secondary btn-sm"
+          type="button"
         >
-          Copy Link
+          Copy link
         </button>
       </div>
+      <details
+        class="feed-card__advanced"
+      >
+        <summary>
+          Advanced manual setup
+        </summary>
+        <label
+          class="ink-input feed-card__advanced-field"
+        >
+          <span>
+            Manual calendar link
+          </span>
+          <input
+            readonly=""
+            value="/v3/api/feeds/national.ics?years=2&lang=en"
+          />
+        </label>
+      </details>
     </article>
     <article
-      class="ink-card ink-card--amber feed-card"
+      class="ink-card feed-card"
     >
-      <h3>
-        Newari Festivals
-      </h3>
-      <p
-        class="feed-card__desc"
-      >
-        Traditional Newar community observances
-      </p>
       <div
-        class="feed-card__url"
+        class="feed-card__copy"
       >
-        <code>
-          /v3/api/feeds/newari.ics?years=2&lang=en
-        </code>
+        <span
+          class="feeds-page__eyebrow"
+        >
+          Ready to connect
+        </span>
+        <h2>
+          Manual setup
+        </h2>
+        <p>
+          Keep a direct calendar link for advanced manual setup or smaller custom integrations.
+        </p>
       </div>
       <div
         class="feed-card__actions"
       >
-        <a
+        <button
           class="btn btn-primary btn-sm"
-          href="/v3/api/feeds/newari.ics?years=2&lang=en"
-          rel="noreferrer"
-          target="_blank"
+          type="button"
         >
-          Open Feed
-        </a>
+          Open manual setup
+        </button>
         <button
           class="btn btn-secondary btn-sm"
+          type="button"
         >
-          Copy Link
+          Copy link
         </button>
       </div>
+      <details
+        class="feed-card__advanced"
+      >
+        <summary>
+          Advanced manual setup
+        </summary>
+        <label
+          class="ink-input feed-card__advanced-field"
+        >
+          <span>
+            Manual calendar link
+          </span>
+          <input
+            readonly=""
+            value="/v3/api/feeds/newari.ics?years=2&lang=en"
+          />
+        </label>
+      </details>
     </article>
   </section>
   <section
@@ -606,27 +620,36 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
     <div
       class="feeds-custom__header"
     >
-      <h3>
-        Custom Festival Feed
-      </h3>
+      <div>
+        <p
+          class="feeds-page__eyebrow"
+        >
+          Build your own
+        </p>
+        <h2>
+          Make a smaller calendar for the observances you follow closely.
+        </h2>
+      </div>
       <p>
-        Select specific festivals to create a focused calendar feed.
+        Select the observances you want, then add the link to the calendar tool you already use.
       </p>
     </div>
-    <div
-      class="feeds-custom__search ink-input"
+    <label
+      class="ink-input feeds-custom__search"
     >
       <span>
-        Search
+        Search festivals
       </span>
       <input
         placeholder="Dashain, Teej, Shivaratri..."
         type="search"
         value=""
       />
-    </div>
+    </label>
     <div
+      aria-label="Festival selector"
       class="feeds-picker"
+      role="group"
     >
       <label
         class="feeds-picker__item"
@@ -652,21 +675,607 @@ exports[`visual regression harness > feeds page visual baseline 1`] = `
     <div
       class="feeds-custom__output"
     >
-      <p>
+      <div
+        class="feeds-custom__summary"
+      >
+        <span>
+          Selected festivals
+        </span>
         <strong>
-          Selected:
+          0
         </strong>
-         
-        0
-         festivals
-      </p>
+      </div>
       <p
         class="feeds-custom__hint"
       >
-        Select at least one festival above
+        Select at least one festival above to generate a custom feed.
       </p>
     </div>
   </section>
+</section>
+`;
+
+exports[`visual regression harness > festival detail page visual baseline 1`] = `
+<section
+  class="fd-page animate-fade-in-scale"
+  style="--accent: var(--vermillion);"
+>
+  <div
+    class="fd-shell"
+  >
+    <button
+      class="btn btn-secondary fd-back"
+      type="button"
+    >
+      Back to festivals
+    </button>
+    <header
+      class="fd-hero ink-card"
+    >
+      <div
+        class="fd-hero__copy"
+      >
+        <div
+          class="fd-hero__eyebrow-row"
+        >
+          <span
+            class="badge"
+          >
+            national
+          </span>
+          <span
+            class="fd-hero__meta-pill"
+          >
+            Significance 5/5
+          </span>
+        </div>
+        <h1
+          class="fd-hero__title"
+        >
+          Dashain
+        </h1>
+        <p
+          class="fd-hero__nepali text-nepali"
+        >
+          दशैं
+        </p>
+        <p
+          class="fd-hero__summary"
+        >
+          Blessing, reunion, and seasonal turning gathered into one long observance.
+        </p>
+        <div
+          class="fd-hero__actions"
+        >
+          <button
+            class="btn btn-primary btn-sm"
+            type="button"
+          >
+            Save
+          </button>
+          <button
+            class="btn btn-secondary btn-sm"
+            type="button"
+          >
+            Remind me
+          </button>
+          <button
+            class="btn btn-secondary btn-sm"
+            type="button"
+          >
+            Share
+          </button>
+        </div>
+        <div
+          class="fd-hero__facts"
+        >
+          <article
+            class="fd-hero__fact"
+          >
+            <span>
+              Calendar
+            </span>
+            <strong>
+              Lunisolar profile
+            </strong>
+          </article>
+          <article
+            class="fd-hero__fact"
+          >
+            <span>
+              Duration
+            </span>
+            <strong>
+              10 days
+            </strong>
+          </article>
+          <article
+            class="fd-hero__fact"
+          >
+            <span>
+              Profile
+            </span>
+            <strong>
+              computed
+            </strong>
+          </article>
+        </div>
+      </div>
+      <div
+        class="fd-hero__side"
+      >
+        <article
+          class="fd-seal-card"
+        >
+          <div
+            aria-hidden="true"
+            class="fd-seal-card__art"
+          >
+            <svg
+              class="fd-seal-card__svg"
+              viewBox="0 0 120 120"
+            >
+              <circle
+                class="fd-seal-card__ring fd-seal-card__ring--outer"
+                cx="60"
+                cy="60"
+                r="44"
+              />
+              <circle
+                class="fd-seal-card__ring fd-seal-card__ring--inner"
+                cx="60"
+                cy="60"
+                r="28"
+              />
+              <path
+                class="fd-seal-card__petal"
+                d="M60 26 L70 60 L60 94 L50 60 Z"
+              />
+              <path
+                class="fd-seal-card__petal fd-seal-card__petal--soft"
+                d="M26 60 L60 70 L94 60 L60 50 Z"
+              />
+            </svg>
+          </div>
+          <span
+            class="fd-seal-card__eyebrow"
+          >
+            Festival seal
+          </span>
+          <strong>
+            Shared civic rhythm
+          </strong>
+          <p>
+            This observance next appears on October 20, 2026 and stays visible in the rolling festival calendar for the coming years.
+          </p>
+        </article>
+        <article
+          class="fd-date-card"
+        >
+          <span
+            class="fd-countdown fd-countdown--future"
+          >
+            219 days away
+          </span>
+          <strong>
+            October 20, 2026
+          </strong>
+          <small>
+            October 30, 2026 end
+          </small>
+          <div
+            class="fd-date-card__row"
+          >
+            <span>
+              Bikram Sambat
+            </span>
+            <span>
+              2083 Ashwin 4
+               - 2083 Ashwin 14
+            </span>
+          </div>
+          <div
+            class="fd-date-card__row"
+          >
+            <span>
+              Method
+            </span>
+            <span>
+              lunisolar festival profile
+            </span>
+          </div>
+          <div
+            class="fd-date-card__actions"
+          >
+            <button
+              class="btn btn-secondary btn-sm"
+              type="button"
+            >
+              Add to calendar
+            </button>
+            <button
+              class="btn btn-secondary btn-sm"
+              type="button"
+            >
+              Future years
+            </button>
+          </div>
+        </article>
+      </div>
+    </header>
+    <div
+      class="fd-layout"
+    >
+      <div
+        class="fd-main"
+      >
+        <article
+          class="ink-card fd-story"
+        >
+          <div
+            class="fd-section-head"
+          >
+            <div>
+              <p
+                class="today-page__eyebrow"
+              >
+                Meaning
+              </p>
+              <h2>
+                Why it matters
+              </h2>
+            </div>
+          </div>
+          <p>
+            Dashain gathers family, blessing, and renewal into the largest festival rhythm in Nepal.
+          </p>
+          <p>
+            The observance is commonly tied to the victory of Durga over disorder and the renewal of protective strength.
+          </p>
+          <div
+            class="fd-story__highlight"
+          >
+            <span>
+              Context
+            </span>
+            <strong>
+              Families mark the season through blessing, homecoming, and ritual continuity across generations.
+            </strong>
+          </div>
+        </article>
+        <article
+          class="ink-card fd-practice"
+        >
+          <div
+            class="fd-section-head"
+          >
+            <div>
+              <p
+                class="today-page__eyebrow"
+              >
+                Observance
+              </p>
+              <h2>
+                How it is practiced
+              </h2>
+            </div>
+          </div>
+          <div
+            class="fd-practice__list"
+          >
+            <article
+              class="fd-practice__item"
+            >
+              <span
+                class="fd-practice__index"
+              >
+                01
+              </span>
+              <div
+                class="fd-practice__content"
+              >
+                <h3>
+                  Ghatasthapana
+                </h3>
+                <p>
+                  The observance begins by establishing sacred space and invoking protective presence.
+                </p>
+                <ul
+                  class="fd-practice__events"
+                >
+                  <li>
+                    <strong>
+                      Kalash Sthapana
+                    </strong>
+                    <span>
+                      A ritual vessel and barley planting begin the seasonal sequence.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </article>
+            <article
+              class="fd-practice__item"
+            >
+              <span
+                class="fd-practice__index"
+              >
+                02
+              </span>
+              <div
+                class="fd-practice__content"
+              >
+                <h3>
+                  Maha Ashtami
+                </h3>
+                <p>
+                  The household rhythm intensifies around worship, preparation, and offering.
+                </p>
+                <ul
+                  class="fd-practice__events"
+                >
+                  <li>
+                    <strong>
+                      Durga Puja
+                    </strong>
+                    <span>
+                      Families and temples observe the fierce protecting form of the goddess.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </article>
+        <article
+          class="ink-card fd-rhythm"
+          id="future-years"
+        >
+          <div
+            class="fd-section-head"
+          >
+            <div>
+              <p
+                class="today-page__eyebrow"
+              >
+                Date rhythm
+              </p>
+              <h2>
+                How the observance moves over time
+              </h2>
+            </div>
+          </div>
+          <p
+            class="fd-rhythm__intro"
+          >
+            This observance next appears on October 20, 2026 and stays visible in the rolling festival calendar for the coming years.
+          </p>
+          <div
+            class="fd-rhythm__rows"
+          >
+            <article
+              class="fd-rhythm__row"
+            >
+              <div>
+                <span>
+                  2026
+                </span>
+                <strong>
+                  Oct 20, 2026
+                   - Oct 30, 2026
+                </strong>
+              </div>
+              <small>
+                2083 Ashwin 4
+                 - 2083 Ashwin 14
+              </small>
+            </article>
+            <article
+              class="fd-rhythm__row"
+            >
+              <div>
+                <span>
+                  2027
+                </span>
+                <strong>
+                  Oct 10, 2027
+                   - Oct 20, 2027
+                </strong>
+              </div>
+              <small>
+                2084 Ashwin 23
+                 - 2084 Kartik 2
+              </small>
+            </article>
+          </div>
+        </article>
+      </div>
+      <aside
+        class="fd-sidebar"
+      >
+        <article
+          class="ink-card fd-summary-panel"
+        >
+          <div
+            class="fd-section-head"
+          >
+            <div>
+              <p
+                class="today-page__eyebrow"
+              >
+                Profile
+              </p>
+              <h2>
+                At a glance
+              </h2>
+            </div>
+          </div>
+          <div
+            class="fd-summary-panel__rows"
+          >
+            <div
+              class="fd-summary-panel__row"
+            >
+              <span>
+                Calendar
+              </span>
+              <strong>
+                Lunisolar profile
+              </strong>
+            </div>
+            <div
+              class="fd-summary-panel__row"
+            >
+              <span>
+                Regions
+              </span>
+              <strong>
+                Kathmandu Valley, Nationwide
+              </strong>
+            </div>
+            <div
+              class="fd-summary-panel__row"
+            >
+              <span>
+                Deities
+              </span>
+              <strong>
+                Durga
+              </strong>
+            </div>
+            <div
+              class="fd-summary-panel__row"
+            >
+              <span>
+                Duration
+              </span>
+              <strong>
+                10
+                 days
+              </strong>
+            </div>
+          </div>
+        </article>
+        <article
+          class="ink-card fd-related"
+        >
+          <div
+            class="fd-section-head"
+          >
+            <div>
+              <p
+                class="today-page__eyebrow"
+              >
+                Nearby
+              </p>
+              <h2>
+                Related festivals
+              </h2>
+            </div>
+          </div>
+          <div
+            class="fd-related__list"
+          >
+            <button
+              class="fd-related__item"
+              type="button"
+            >
+              <span
+                class="fd-related__dot"
+                style="background: var(--gold-soft);"
+              />
+              <div>
+                <strong>
+                  Indra Jatra
+                </strong>
+                <span>
+                  newari
+                </span>
+              </div>
+            </button>
+            <button
+              class="fd-related__item"
+              type="button"
+            >
+              <span
+                class="fd-related__dot"
+                style="background: var(--vermillion);"
+              />
+              <div>
+                <strong>
+                  Tihar
+                </strong>
+                <span>
+                  national
+                </span>
+              </div>
+            </button>
+          </div>
+        </article>
+        <details
+          class="ink-card fd-technical"
+        >
+          <summary>
+            Method and technical details
+          </summary>
+          <div
+            class="fd-technical__body"
+          >
+            <div
+              class="fd-calculation__rows"
+            >
+              <div
+                class="fd-calc-row"
+              >
+                <span>
+                  Method
+                </span>
+                <span>
+                  lunisolar festival profile
+                </span>
+              </div>
+              <div
+                class="fd-calc-row"
+              >
+                <span>
+                  Calendar
+                </span>
+                <span>
+                  Lunisolar profile
+                </span>
+              </div>
+              <div
+                class="fd-calc-row"
+              >
+                <span>
+                  Confidence
+                </span>
+                <span>
+                  computed
+                </span>
+              </div>
+              <div
+                class="fd-calc-row"
+              >
+                <span>
+                  Quality
+                </span>
+                <span>
+                  computed
+                </span>
+              </div>
+            </div>
+            <button
+              class="btn btn-secondary fd-trace-btn"
+              type="button"
+            >
+              View technical trace
+            </button>
+          </div>
+        </details>
+      </aside>
+    </div>
+  </div>
 </section>
 `;
 
@@ -674,285 +1283,375 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
 <section
   class="kundali-page animate-fade-in-up"
 >
-  <form
-    class="kundali-controls ink-card"
-  >
-    <label
-      class="ink-input"
-    >
-      <span>
-        Birth Date & Time
-      </span>
-      <input
-        required=""
-        type="datetime-local"
-        value="2026-02-25T06:30"
-      />
-    </label>
-    <label
-      class="ink-input"
-    >
-      <span>
-        Latitude
-      </span>
-      <input
-        value="27.7172"
-      />
-    </label>
-    <label
-      class="ink-input"
-    >
-      <span>
-        Longitude
-      </span>
-      <input
-        value="85.324"
-      />
-    </label>
-    <label
-      class="ink-input"
-    >
-      <span>
-        Timezone
-      </span>
-      <input
-        value="Asia/Kathmandu"
-      />
-    </label>
-    <button
-      class="btn btn-primary"
-      type="submit"
-    >
-      Generate
-    </button>
-  </form>
-  <section
-    class="kundali-hero-row"
-  >
-    <article
-      class="ink-card ink-card--saffron kundali-rashi-card"
-    >
-      <h3>
-        Moon Rashi
-      </h3>
-      <p>
-        —
-      </p>
-      <small>
-        Capricorn
-      </small>
-    </article>
-    <article
-      class="ink-card ink-card--gold kundali-rashi-card"
-    >
-      <h3>
-        Lagna
-      </h3>
-      <p>
-        Meena
-      </p>
-      <small>
-        Pisces
-      </small>
-    </article>
-    <article
-      class="ink-card kundali-rashi-card"
-    >
-      <h3>
-        Signals
-      </h3>
-      <p>
-        1
-         yoga · 
-        1
-         dosha
-      </p>
-      <small>
-        1
-         aspects
-      </small>
-    </article>
-  </section>
-  <section
-    class="kundali-graph-layout"
+  <header
+    class="kundali-page__hero ink-card"
   >
     <div
-      class="ink-card kundali-graph-shell"
+      class="kundali-page__hero-copy"
     >
-      <figure
-        aria-label="Interactive kundali graph"
-        class="kundali-graph"
+      <p
+        class="today-page__eyebrow"
       >
-        <svg
-          role="img"
-          viewBox="0 0 400 400"
-        >
-          <title>
-            Kundali Graph
-          </title>
-        </svg>
-        <figcaption>
-          <p>
-            Select a house or graha to focus related aspect links.
-          </p>
-        </figcaption>
-      </figure>
+        Birth Reading
+      </p>
+      <h1
+        class="text-hero"
+      >
+        Start with the reading, not the wiring.
+      </h1>
+      <p
+        class="kundali-page__intro"
+      >
+        Start with the reading and strongest patterns. The full graph and detailed tables stay one step lower.
+      </p>
     </div>
-    <aside
-      class="ink-card kundali-insight-pane"
-    >
-      <h3>
-        Interpretation Sidebar
-      </h3>
-      <div
-        class="kundali-insight-list"
-      >
-        <article
-          class="kundali-insight-item"
-        >
-          <h4>
-            Mars-Venus link
-          </h4>
-          <p>
-            Supportive trinal relation in this profile.
-          </p>
-        </article>
-      </div>
-    </aside>
-  </section>
-  <section
-    class="ink-card kundali-table-wrap"
-  >
-    <h3>
-      Graha Table
-    </h3>
-    <table
-      class="ink-table"
-    >
-      <thead>
-        <tr>
-          <th>
-            Graha
-          </th>
-          <th>
-            Rashi
-          </th>
-          <th>
-            Longitude
-          </th>
-          <th>
-            Dignity
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            Mars
-          </td>
-          <td>
-            Cancer
-          </td>
-          <td>
-            102.4
-            °
-          </td>
-          <td>
-            neutral
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Sun
-          </td>
-          <td>
-            Aquarius
-          </td>
-          <td>
-            332.1
-            °
-          </td>
-          <td>
-            neutral
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Moon
-          </td>
-          <td>
-            Capricorn
-          </td>
-          <td>
-            289.3
-            °
-          </td>
-          <td>
-            neutral
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-  <section
-    aria-label="Glossary"
-    class="knowledge-panel ink-card kundali-knowledge"
-  >
-    <header
-      class="knowledge-panel__header"
-    >
-      <p
-        class="knowledge-panel__eyebrow"
-      >
-        Explainability
-      </p>
-      <h2>
-        Glossary
-      </h2>
-      <p
-        class="knowledge-panel__intro"
-      >
-        Reference glossary payload for visual snapshots.
-      </p>
-    </header>
     <div
-      class="knowledge-panel__sections"
+      class="kundali-page__hero-side"
     >
+      <article
+        class="kundali-page__thesis-card"
+      >
+        <span>
+          Chart thesis
+        </span>
+        <p>
+          This chart opens with Unknown rising, so it meets the world in a complex way. The Moon in Unknown adds an inner tone that feels layered.
+        </p>
+      </article>
+      <div
+        class="kundali-page__signature"
+      >
+        <div
+          class="kundali-page__signature-chip"
+        >
+          <span>
+            Outer style
+          </span>
+          <strong>
+            Lagna pending
+          </strong>
+        </div>
+        <div
+          class="kundali-page__signature-chip"
+        >
+          <span>
+            Inner weather
+          </span>
+          <strong>
+            Moon placement pending
+          </strong>
+        </div>
+        <div
+          class="kundali-page__signature-chip"
+        >
+          <span>
+            Strongest pull
+          </span>
+          <strong>
+            Strength signal pending
+          </strong>
+        </div>
+      </div>
       <details
-        class="knowledge-section"
-        open=""
+        class="kundali-page__birth-panel"
       >
         <summary>
-          <span
-            class="knowledge-section__title"
-          >
-            Core Terms
-          </span>
+          Birth details
         </summary>
-        <ul
-          class="knowledge-terms"
+        <form
+          class="kundali-controls"
         >
-          <li
-            class="knowledge-term"
+          <label
+            class="ink-input"
           >
-            <h3>
-              Tithi
-            </h3>
-            <p>
-              Lunar day
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Used to determine observance timing.
-            </p>
+            <span>
+              Birth date and time
+            </span>
+            <input
+              required=""
+              type="datetime-local"
+              value="2026-02-25T06:30"
+            />
+          </label>
+          <label
+            class="ink-input"
+          >
+            <span>
+              Latitude
+            </span>
+            <input
+              value="27.7172"
+            />
+          </label>
+          <label
+            class="ink-input"
+          >
+            <span>
+              Longitude
+            </span>
+            <input
+              value="85.324"
+            />
+          </label>
+          <label
+            class="ink-input"
+          >
+            <span>
+              Timezone
+            </span>
+            <input
+              value="Asia/Kathmandu"
+            />
+          </label>
+          <button
+            class="btn btn-primary"
+            type="submit"
+          >
+            Refresh reading
+          </button>
+        </form>
+      </details>
+      <button
+        class="btn btn-secondary btn-sm"
+        type="button"
+      >
+        Save reading
+      </button>
+    </div>
+  </header>
+  <div
+    class="skeleton"
+    style="min-height: 320px; border-radius: 1.4rem;"
+  />
+</section>
+`;
+
+exports[`visual regression harness > landing page visual baseline 1`] = `
+<section
+  class="landing-page animate-fade-in-up"
+>
+  <section
+    class="landing-hero editorial-card"
+  >
+    <div
+      class="landing-hero__copy"
+    >
+      <div
+        class="landing-hero__intro"
+      >
+        <p
+          class="landing-eyebrow"
+        >
+          Project Parva
+        </p>
+        <span
+          class="landing-hero__status"
+        >
+          A calm guide to Nepal's sacred time
+        </span>
+      </div>
+      <h1
+        class="landing-title"
+      >
+        A calm guide to Nepal's sacred time.
+      </h1>
+      <p
+        class="landing-subtitle"
+      >
+        See what matters today, find the best time for a plan, and follow upcoming observances with clarity instead of clutter.
+      </p>
+      <div
+        class="landing-actions"
+      >
+        <a
+          class="btn btn-primary"
+          data-discover="true"
+          href="/today"
+        >
+          See today
+        </a>
+        <a
+          class="btn btn-secondary"
+          data-discover="true"
+          href="/my-place"
+        >
+          Set my place
+        </a>
+      </div>
+    </div>
+    <div
+      class="landing-hero__visual"
+    >
+      <article
+        class="landing-seal-card"
+      >
+        <div
+          class="landing-seal-card__art"
+        >
+          <svg
+            class="landing-seal-card__svg"
+            viewBox="0 0 180 180"
+          >
+            <circle
+              class="landing-seal-card__ring landing-seal-card__ring--outer"
+              cx="90"
+              cy="90"
+              r="66"
+            />
+            <circle
+              class="landing-seal-card__ring landing-seal-card__ring--inner"
+              cx="90"
+              cy="90"
+              r="42"
+            />
+            <path
+              class="landing-seal-card__petal"
+              d="M90 34 L105 90 L90 146 L75 90 Z"
+            />
+            <path
+              class="landing-seal-card__petal landing-seal-card__petal--soft"
+              d="M34 90 L90 105 L146 90 L90 75 Z"
+            />
+          </svg>
+        </div>
+        <span>
+          One clear answer
+        </span>
+        <strong>
+          Meaning first
+        </strong>
+        <small>
+          Details only when asked for.
+        </small>
+      </article>
+      <article
+        class="landing-trust-card"
+      >
+        <p
+          class="landing-trust-card__eyebrow"
+        >
+          Why trust Parva
+        </p>
+        <h2>
+          Built for Nepal-focused use cases, with method available when you want it.
+        </h2>
+        <ul
+          class="landing-trust-list"
+        >
+          <li>
+            Built for Nepal-focused observances, timing, and reading use cases.
+          </li>
+          <li>
+            Method detail stays available, but never blocks the first answer.
           </li>
         </ul>
-      </details>
+        <p
+          class="landing-trust-card__note"
+        >
+          Upcoming observances appear here when the current calendar feed is available.
+        </p>
+      </article>
+    </div>
+  </section>
+  <section
+    class="landing-intents"
+  >
+    <div
+      class="landing-section-header"
+    >
+      <p
+        class="landing-eyebrow"
+      >
+        Choose your path
+      </p>
+      <h2>
+        Start with one clear question.
+      </h2>
+    </div>
+    <div
+      class="landing-intent-grid stagger-children"
+    >
+      <a
+        class="landing-intent-card editorial-card"
+        data-discover="true"
+        href="/today"
+      >
+        <strong>
+          Today
+        </strong>
+        <span>
+          What matters right now?
+        </span>
+      </a>
+      <a
+        class="landing-intent-card editorial-card"
+        data-discover="true"
+        href="/best-time"
+      >
+        <strong>
+          Best Time
+        </strong>
+        <span>
+          When is the clearest opening?
+        </span>
+      </a>
+      <a
+        class="landing-intent-card editorial-card"
+        data-discover="true"
+        href="/festivals"
+      >
+        <strong>
+          Festivals
+        </strong>
+        <span>
+          What is coming up next?
+        </span>
+      </a>
+      <a
+        class="landing-intent-card editorial-card"
+        data-discover="true"
+        href="/birth-reading"
+      >
+        <strong>
+          Birth Reading
+        </strong>
+        <span>
+          What does the reading say first?
+        </span>
+      </a>
+    </div>
+  </section>
+  <section
+    class="landing-rhythm editorial-card"
+  >
+    <div
+      class="landing-section-header"
+    >
+      <p
+        class="landing-eyebrow"
+      >
+        Festival rhythm
+      </p>
+      <h2>
+        Keep the next observance in view without opening the full calendar first.
+      </h2>
+    </div>
+    <div
+      class="landing-rhythm__grid"
+    >
+      <div
+        class="skeleton landing-featured__skeleton"
+      />
+      <div
+        class="landing-rhythm__stack"
+      >
+        <div
+          class="skeleton landing-featured__skeleton"
+        />
+        <div
+          class="skeleton landing-featured__skeleton"
+        />
+      </div>
     </div>
   </section>
 </section>
@@ -962,246 +1661,48 @@ exports[`visual regression harness > muhurta page visual baseline 1`] = `
 <section
   class="muhurta-page animate-fade-in-up"
 >
-  <form
-    class="muhurta-controls ink-card"
+  <header
+    class="muhurta-page__hero ink-card"
   >
-    <label
-      class="ink-input"
-    >
-      <span>
-        Date
-      </span>
-      <input
-        required=""
-        type="date"
-        value="2026-02-25"
-      />
-    </label>
-    <label
-      class="ink-input"
-    >
-      <span>
-        Ceremony
-      </span>
-      <select>
-        <option
-          value="general"
-        >
-          General
-        </option>
-        <option
-          value="vivah"
-        >
-          Wedding
-        </option>
-        <option
-          value="griha_pravesh"
-        >
-          Griha Pravesh
-        </option>
-        <option
-          value="travel"
-        >
-          Travel
-        </option>
-        <option
-          value="upanayana"
-        >
-          Upanayana
-        </option>
-      </select>
-    </label>
-    <label
-      class="ink-input"
-    >
-      <span>
-        Assumption Set
-      </span>
-      <select>
-        <option
-          value="np-mainstream-v2"
-        >
-          NP Mainstream
-        </option>
-        <option
-          value="diaspora-practical-v2"
-        >
-          Diaspora Practical
-        </option>
-      </select>
-    </label>
-    <label
-      class="ink-input"
-    >
-      <span>
-        Timezone
-      </span>
-      <input
-        value="Asia/Kathmandu"
-      />
-    </label>
-  </form>
-  <section
-    class="ink-card muhurta-hero-grid"
-  >
-    <article>
-      <h3>
-        Best Window
-      </h3>
-      <p>
-        Abhijit Muhurta
-      </p>
-      <small>
-        Score: 
-        88
-      </small>
-    </article>
-    <article>
-      <h3>
-        Rahu Kalam
-      </h3>
-      <p>
-        04:12 PM - 05:00 PM
-      </p>
-      <small>
-        Segment 
-        8
-      </small>
-    </article>
-    <article>
-      <h3>
-        Tara Bala
-      </h3>
-      <p>
-        good
-      </p>
-      <small>
-        Sampat
-      </small>
-    </article>
-  </section>
-  <section
-    class="ink-card muhurta-heatmap-shell"
-  >
-    <h3>
-      24h Muhurta Heatmap
-    </h3>
     <div
-      aria-label="Muhurta heatmap"
-      class="muhurta-heatmap"
-      role="list"
-    >
-      <button
-        aria-pressed="true"
-        class="muhurta-heatmap__block muhurta-heatmap__block--good is-selected"
-        role="listitem"
-        type="button"
-      >
-        <span
-          class="muhurta-heatmap__name"
-        >
-          Abhijit Muhurta
-        </span>
-        <span
-          class="muhurta-heatmap__time"
-        >
-          11:48 AM
-          –
-          12:36 PM
-        </span>
-        <span
-          class="muhurta-heatmap__score"
-        >
-          88
-        </span>
-      </button>
-    </div>
-    <div
-      class="muhurta-selected-details"
-    >
-      <h4>
-        Abhijit Muhurta
-      </h4>
-      <p>
-        Ranked with hora/chaughadia/tara-bala constraints.
-      </p>
-      <p>
-        <strong>
-          Reason codes:
-        </strong>
-         
-        hora_supportive · tara_good
-      </p>
-      <p>
-        <strong>
-          Confidence score:
-        </strong>
-         
-        0.91
-      </p>
-    </div>
-  </section>
-  <section
-    aria-label="Glossary"
-    class="knowledge-panel ink-card muhurta-knowledge"
-  >
-    <header
-      class="knowledge-panel__header"
+      class="muhurta-page__hero-copy"
     >
       <p
-        class="knowledge-panel__eyebrow"
+        class="today-page__eyebrow"
       >
-        Explainability
+        Best Time
       </p>
-      <h2>
-        Glossary
-      </h2>
+      <h1
+        class="text-hero"
+      >
+        Find the day's clearest opening before the details.
+      </h1>
       <p
-        class="knowledge-panel__intro"
+        class="muhurta-page__intro"
       >
-        Reference glossary payload for visual snapshots.
+        Start with the strongest and second-best windows. The full schedule stays behind a deliberate action.
       </p>
-    </header>
-    <div
-      class="knowledge-panel__sections"
-    >
-      <details
-        class="knowledge-section"
-        open=""
-      >
-        <summary>
-          <span
-            class="knowledge-section__title"
-          >
-            Core Terms
-          </span>
-        </summary>
-        <ul
-          class="knowledge-terms"
-        >
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Tithi
-            </h3>
-            <p>
-              Lunar day
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Used to determine observance timing.
-            </p>
-          </li>
-        </ul>
-      </details>
     </div>
-  </section>
+    <article
+      class="muhurta-page__hero-note"
+    >
+      <span
+        class="muhurta-page__story-label"
+      >
+        Reading posture
+      </span>
+      <strong>
+        One clean recommendation first.
+      </strong>
+      <p>
+        Use the top window when it fits your schedule, and only open the ranked list when you need more options.
+      </p>
+    </article>
+  </header>
+  <div
+    class="skeleton"
+    style="min-height: 240px; border-radius: 1.4rem;"
+  />
 </section>
 `;
 
@@ -1210,25 +1711,35 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
   class="panchanga-page animate-fade-in-up"
 >
   <header
-    class="panchanga-hero"
+    class="panchanga-hero ink-card"
   >
     <div
-      class="panchanga-hero__left"
+      class="panchanga-hero__copy"
     >
+      <p
+        class="today-page__eyebrow"
+      >
+        Panchanga
+      </p>
       <h1
         class="text-hero"
       >
-        2082
-         
-        Falgun
-         
-        3
+        2082 Falgun 3
       </h1>
       <p
         class="panchanga-hero__date"
       >
         Wednesday, February 25, 2026
       </p>
+      <p
+        class="panchanga-hero__intro"
+      >
+        Chaturdashi sets the lunar tone in the krishna half, while Sunday holds the civic rhythm.
+      </p>
+    </div>
+    <div
+      class="panchanga-hero__side"
+    >
       <label
         class="panchanga-hero__picker ink-input"
       >
@@ -1241,10 +1752,6 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
           value="2026-02-25"
         />
       </label>
-    </div>
-    <div
-      class="panchanga-hero__right"
-    >
       <div
         aria-label="Lunar phase view"
         class="moon-phase"
@@ -1260,12 +1767,60 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
         <span
           class="moon-phase__label"
         >
-          Shukla
-           Paksha
+          Shukla Paksha
         </span>
       </div>
     </div>
   </header>
+  <section
+    class="panchanga-summary-grid"
+  >
+    <article
+      class="ink-card panchanga-summary-card"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        Lunar tone
+      </span>
+      <strong>
+        Chaturdashi
+      </strong>
+      <p>
+        krishna half of the cycle
+      </p>
+    </article>
+    <article
+      class="ink-card panchanga-summary-card"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        Weekday
+      </span>
+      <strong>
+        Sunday
+      </strong>
+      <p>
+        Ravivara
+      </p>
+    </article>
+    <article
+      class="ink-card panchanga-summary-card"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        Confidence note
+      </span>
+      <strong>
+        astronomical
+      </strong>
+      <p>
+        Method and supporting notes stay below the main answer.
+      </p>
+    </article>
+  </section>
   <section
     class="panchanga-festivals animate-fade-in-up"
   >
@@ -1292,7 +1847,7 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
     class="panchanga-cards stagger-children"
   >
     <article
-      class="ink-card ink-card--vermillion panchanga-card"
+      class="ink-card panchanga-card"
     >
       <h3>
         Tithi
@@ -1307,12 +1862,12 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
       >
         #
         14
-         · 
+         | 
         krishna
       </p>
     </article>
     <article
-      class="ink-card ink-card--saffron panchanga-card"
+      class="ink-card panchanga-card"
     >
       <h3>
         Nakshatra
@@ -1330,7 +1885,7 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
       </p>
     </article>
     <article
-      class="ink-card ink-card--gold panchanga-card"
+      class="ink-card panchanga-card"
     >
       <h3>
         Yoga
@@ -1348,7 +1903,7 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
       </p>
     </article>
     <article
-      class="ink-card ink-card--jade panchanga-card"
+      class="ink-card panchanga-card"
     >
       <h3>
         Karana
@@ -1366,7 +1921,7 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
       </p>
     </article>
     <article
-      class="ink-card ink-card--amber panchanga-card"
+      class="ink-card panchanga-card"
     >
       <h3>
         Vaara
@@ -1447,16 +2002,36 @@ exports[`visual regression harness > panchanga page visual baseline 1`] = `
   <section
     class="ink-card panchanga-details-card"
   >
+    <div
+      class="panchanga-details-card__header"
+    >
+      <div>
+        <p
+          class="today-page__eyebrow"
+        >
+          Method available
+        </p>
+        <h2>
+          Inspect the daily reading only when you want to go deeper.
+        </h2>
+      </div>
+      <button
+        class="btn btn-secondary evidence-drawer__trigger"
+        type="button"
+      >
+        How this was calculated
+      </button>
+    </div>
     <p>
       <strong>
-        Confidence:
+        Confidence note:
       </strong>
        
       astronomical
     </p>
     <p>
       <strong>
-        Tithi Method:
+        Method profile:
       </strong>
        
       ephemeris_udaya
@@ -1469,419 +2044,259 @@ exports[`visual regression harness > personal page visual baseline 1`] = `
 <section
   class="personal-page animate-fade-in-up"
 >
-  <form
-    class="personal-inputs ink-card"
+  <header
+    class="personal-page__hero ink-card"
+  >
+    <div
+      class="personal-page__hero-copy"
+    >
+      <p
+        class="today-page__eyebrow"
+      >
+        My Place
+      </p>
+      <h1
+        class="text-hero"
+      >
+        See how the day shifts for your place.
+      </h1>
+      <p
+        class="personal-page__intro"
+      >
+        Start with a city or your device location. Advanced coordinates stay tucked away in More options.
+      </p>
+      <button
+        class="btn btn-secondary btn-sm"
+        type="button"
+      >
+        Save this place
+      </button>
+    </div>
+    <form
+      class="personal-page__controls"
+    >
+      <label
+        class="ink-input"
+      >
+        <span>
+          Date
+        </span>
+        <input
+          required=""
+          type="date"
+          value="2026-02-25"
+        />
+      </label>
+      <label
+        class="ink-input"
+      >
+        <span>
+          Place
+        </span>
+        <select>
+          <option
+            value=""
+          >
+            Choose a city preset
+          </option>
+          <option
+            value="kathmandu"
+          >
+            Kathmandu
+          </option>
+          <option
+            value="pokhara"
+          >
+            Pokhara
+          </option>
+          <option
+            value="biratnagar"
+          >
+            Biratnagar
+          </option>
+          <option
+            value="nepalgunj"
+          >
+            Nepalgunj
+          </option>
+        </select>
+      </label>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Use my device
+      </button>
+    </form>
+  </header>
+  <div
+    class="personal-loading"
+  >
+    <div
+      class="skeleton"
+      style="min-height: 220px; border-radius: 1.4rem;"
+    />
+    <div
+      class="personal-cards-grid"
+    >
+      <div
+        class="skeleton"
+        style="min-height: 140px; border-radius: 1.2rem;"
+      />
+      <div
+        class="skeleton"
+        style="min-height: 140px; border-radius: 1.2rem;"
+      />
+      <div
+        class="skeleton"
+        style="min-height: 140px; border-radius: 1.2rem;"
+      />
+      <div
+        class="skeleton"
+        style="min-height: 140px; border-radius: 1.2rem;"
+      />
+      <div
+        class="skeleton"
+        style="min-height: 140px; border-radius: 1.2rem;"
+      />
+    </div>
+  </div>
+</section>
+`;
+
+exports[`visual regression harness > today page visual baseline 1`] = `
+<section
+  class="today-page animate-fade-in-up"
+>
+  <header
+    class="today-page__hero ink-card"
+  >
+    <div
+      class="today-page__hero-copy"
+    >
+      <p
+        class="today-page__eyebrow"
+      >
+        Today
+      </p>
+      <h1
+        class="text-hero"
+      >
+        What today means in 
+        Kathmandu
+      </h1>
+      <p
+        class="today-page__summary"
+      >
+        Today's lunar context will appear here when the daily summary is available.
+      </p>
+      <p
+        class="today-page__subsummary"
+      >
+        No major observance is active in the current view.
+      </p>
+      <p
+        class="today-page__hero-context"
+      >
+        Date in view: 2026-02-25.
+      </p>
+    </div>
+    <aside
+      class="today-page__hero-side"
+    >
+      <div
+        class="today-page__hero-grid"
+      >
+        <article
+          class="today-page__hero-panel today-page__hero-panel--accent"
+        >
+          <span
+            class="today-page__label"
+          >
+            Best window
+          </span>
+          <strong>
+            Best window will appear with the next successful timing pass
+          </strong>
+          <p>
+            Open Best Time for the fuller day view when timing returns.
+          </p>
+        </article>
+        <article
+          class="today-page__hero-panel"
+        >
+          <span
+            class="today-page__label"
+          >
+            Avoid period
+          </span>
+          <strong>
+            Use normal caution
+          </strong>
+          <p>
+            Use normal caution.
+          </p>
+        </article>
+      </div>
+    </aside>
+  </header>
+  <section
+    class="today-page__utility-bar ink-card"
   >
     <label
-      class="ink-input"
+      class="ink-input today-page__date-field"
     >
       <span>
         Date
       </span>
       <input
-        required=""
         type="date"
         value="2026-02-25"
       />
     </label>
-    <label
-      class="ink-input"
+    <a
+      class="btn btn-secondary"
+      data-discover="true"
+      href="/my-place"
     >
-      <span>
-        Latitude
-      </span>
-      <input
-        value="27.7172"
-      />
-    </label>
-    <label
-      class="ink-input"
-    >
-      <span>
-        Longitude
-      </span>
-      <input
-        value="85.324"
-      />
-    </label>
-    <label
-      class="ink-input"
-    >
-      <span>
-        Timezone
-      </span>
-      <input
-        value="Asia/Kathmandu"
-      />
-    </label>
+      Set my place
+    </a>
     <button
-      class="btn btn-primary personal-submit"
-      type="submit"
+      class="btn btn-secondary"
+      type="button"
     >
-      Compute
+      Explore festivals
     </button>
-  </form>
-  <header
-    class="personal-hero"
-  >
-    <div>
-      <h1
-        class="text-hero"
-      >
-        2082
-         
-        Falgun
-         
-        3
-      </h1>
-      <p
-        class="personal-hero__sub"
-      >
-        Asia/Kathmandu
-         · 
-        27.7172
-        °N, 
-        85.324
-        °E
-      </p>
-      <p
-        class="personal-hero__delta"
-      >
-        Local sunrise delta vs Kathmandu baseline: 
-        +2 min
-      </p>
-    </div>
-  </header>
-  <section
-    class="personal-festivals animate-fade-in-up"
-  >
-    <h2
-      class="personal-festivals__title"
+    <button
+      class="btn btn-secondary evidence-drawer__trigger"
+      type="button"
     >
-      Festivals on this day
-    </h2>
+      How this was calculated
+    </button>
+  </section>
+  <div
+    class="today-page__loading"
+  >
     <div
-      class="personal-festivals__chips"
-    >
-      <button
-        class="festival-chip"
-      >
-        <span
-          class="festival-chip__name"
-        >
-          Dashain
-        </span>
-      </button>
-    </div>
-  </section>
-  <section
-    class="personal-cards-grid stagger-children"
-  >
-    <article
-      class="ink-card ink-card--vermillion panchanga-card"
-    >
-      <h3>
-        Tithi
-      </h3>
-      <p
-        class="panchanga-card__value"
-      >
-        Chaturdashi
-      </p>
-      <p
-        class="panchanga-card__meta"
-      >
-        #
-        14
-         · 
-        krishna
-      </p>
-    </article>
-    <article
-      class="ink-card ink-card--saffron panchanga-card"
-    >
-      <h3>
-        Nakshatra
-      </h3>
-      <p
-        class="panchanga-card__value"
-      >
-        Shravana
-      </p>
-      <p
-        class="panchanga-card__meta"
-      >
-        #
-        22
-      </p>
-    </article>
-    <article
-      class="ink-card ink-card--gold panchanga-card"
-    >
-      <h3>
-        Yoga
-      </h3>
-      <p
-        class="panchanga-card__value"
-      >
-        Shubha
-      </p>
-      <p
-        class="panchanga-card__meta"
-      >
-        #
-        9
-      </p>
-    </article>
-    <article
-      class="ink-card ink-card--jade panchanga-card"
-    >
-      <h3>
-        Karana
-      </h3>
-      <p
-        class="panchanga-card__value"
-      >
-        Vishti
-      </p>
-      <p
-        class="panchanga-card__meta"
-      >
-        #
-        7
-      </p>
-    </article>
-    <article
-      class="ink-card ink-card--amber panchanga-card"
-    >
-      <h3>
-        Vaara
-      </h3>
-      <p
-        class="panchanga-card__value"
-      >
-        Sunday
-      </p>
-      <p
-        class="panchanga-card__meta"
-      >
-        Ravivara
-      </p>
-    </article>
-  </section>
-  <section
-    aria-label="How Personal Panchanga Is Different"
-    class="knowledge-panel ink-card personal-knowledge"
-  >
-    <header
-      class="knowledge-panel__header"
-    >
-      <p
-        class="knowledge-panel__eyebrow"
-      >
-        Explainability
-      </p>
-      <h2>
-        How Personal Panchanga Is Different
-      </h2>
-      <p
-        class="knowledge-panel__intro"
-      >
-        Personal Panchanga recalculates the day using your location and timezone, so sunrise-based results match your city, not only Kathmandu.
-      </p>
-    </header>
+      class="skeleton"
+      style="min-height: 320px; border-radius: 1.5rem;"
+    />
     <div
-      class="knowledge-panel__sections"
+      class="today-page__grid"
     >
-      <details
-        class="knowledge-section"
-        open=""
-      >
-        <summary>
-          <span
-            class="knowledge-section__title"
-          >
-            Inputs That Change the Result
-          </span>
-        </summary>
-        <ul
-          class="knowledge-terms"
-        >
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Latitude / Longitude
-            </h3>
-            <p>
-              Your physical location for sunrise and local sky calculations.
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              A tithi boundary can shift when sunrise changes by location.
-            </p>
-          </li>
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Timezone
-            </h3>
-            <p>
-              Local civil time context for date boundaries and display.
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Diaspora users get date labels aligned with their local day.
-            </p>
-          </li>
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Method Profile
-            </h3>
-            <p>
-              Named ruleset used to compute this personal output.
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Makes results auditable and consistent across clients.
-            </p>
-          </li>
-        </ul>
-      </details>
-      <details
-        class="knowledge-section"
-      >
-        <summary>
-          <span
-            class="knowledge-section__title"
-          >
-            The 5 Limbs of Panchanga
-          </span>
-          <span
-            class="knowledge-section__description"
-          >
-            Each day is described using five markers:
-          </span>
-        </summary>
-        <ul
-          class="knowledge-terms"
-        >
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Tithi
-            </h3>
-            <p>
-              The lunar day based on Moon-Sun angle (1 to 30).
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Most festivals and fasts are tied to a specific tithi at sunrise.
-            </p>
-          </li>
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Nakshatra
-            </h3>
-            <p>
-              The Moon's star sector among 27 nakshatras.
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Used in puja planning, naming traditions, and muhurta filtering.
-            </p>
-          </li>
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Yoga
-            </h3>
-            <p>
-              A combined Sun-Moon angle classification among 27 yogas.
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Traditionally used to classify general day quality.
-            </p>
-          </li>
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Karana
-            </h3>
-            <p>
-              Half of a tithi; a finer time unit for action windows.
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Useful when selecting specific periods within a day.
-            </p>
-          </li>
-          <li
-            class="knowledge-term"
-          >
-            <h3>
-              Vaara
-            </h3>
-            <p>
-              Weekday (Ravivara, Somavara, etc.).
-            </p>
-            <p
-              class="knowledge-term__why"
-            >
-              <strong>
-                Why it matters:
-              </strong>
-               
-              Many rituals have weekday preferences or restrictions.
-            </p>
-          </li>
-        </ul>
-      </details>
+      <div
+        class="skeleton"
+        style="min-height: 180px; border-radius: 1.2rem;"
+      />
+      <div
+        class="skeleton"
+        style="min-height: 180px; border-radius: 1.2rem;"
+      />
+      <div
+        class="skeleton"
+        style="min-height: 180px; border-radius: 1.2rem;"
+      />
     </div>
-  </section>
+  </div>
 </section>
 `;

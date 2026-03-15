@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from datetime import date, datetime
-from typing import Any, Dict, List, Optional, Tuple
+from math import isfinite
+from typing import Any, Dict, List, Optional, Tuple, TypeAlias
 from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException
@@ -14,6 +15,7 @@ from app.provenance import get_provenance_payload
 DEFAULT_LAT = 27.7172
 DEFAULT_LON = 85.3240
 DEFAULT_TZ = "Asia/Kathmandu"
+CoordinateInput: TypeAlias = str | int | float | None
 
 
 def parse_date(date_str: str) -> date:
@@ -54,27 +56,62 @@ def normalize_timezone(tz_name: Optional[str]) -> Tuple[str, List[str]]:
         return DEFAULT_TZ, warnings
 
 
+def _parse_coordinate(
+    raw: CoordinateInput,
+    *,
+    fallback: float,
+    lo: float,
+    hi: float,
+    name: str,
+    warnings: list[str],
+) -> float:
+    if raw is None:
+        warnings.append(f"Missing {name}; using default {fallback}.")
+        return fallback
+
+    if isinstance(raw, str):
+        candidate = raw.strip()
+        if candidate == "":
+            warnings.append(f"Missing {name}; using default {fallback}.")
+            return fallback
+    else:
+        candidate = str(raw)
+
+    try:
+        value = float(candidate)
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid {name}. Use a finite decimal between {lo} and {hi}.",
+        ) from exc
+
+    if not isfinite(value):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid {name}. Use a finite decimal between {lo} and {hi}.",
+        )
+
+    if not (lo <= value <= hi):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Out-of-range {name}. Use a value between {lo} and {hi}.",
+        )
+
+    # Canonicalize through float parsing so GET query strings and POST numbers normalize identically.
+    return float(f"{value:.12g}")
+
+
 def normalize_coordinates(
-    lat_raw: Optional[str], lon_raw: Optional[str]
+    lat_raw: CoordinateInput, lon_raw: CoordinateInput
 ) -> Tuple[float, float, List[str]]:
     warnings: list[str] = []
 
-    def _parse(raw: Optional[str], *, fallback: float, lo: float, hi: float, name: str) -> float:
-        if raw is None or raw.strip() == "":
-            warnings.append(f"Missing {name}; using default {fallback}.")
-            return fallback
-        try:
-            value = float(raw)
-        except ValueError:
-            warnings.append(f"Invalid {name} '{raw}'; using default {fallback}.")
-            return fallback
-        if not (lo <= value <= hi):
-            warnings.append(f"Out-of-range {name} '{raw}'; using default {fallback}.")
-            return fallback
-        return value
-
-    lat = _parse(lat_raw, fallback=DEFAULT_LAT, lo=-90.0, hi=90.0, name="lat")
-    lon = _parse(lon_raw, fallback=DEFAULT_LON, lo=-180.0, hi=180.0, name="lon")
+    lat = _parse_coordinate(
+        lat_raw, fallback=DEFAULT_LAT, lo=-90.0, hi=90.0, name="lat", warnings=warnings
+    )
+    lon = _parse_coordinate(
+        lon_raw, fallback=DEFAULT_LON, lo=-180.0, hi=180.0, name="lon", warnings=warnings
+    )
     return lat, lon, warnings
 
 

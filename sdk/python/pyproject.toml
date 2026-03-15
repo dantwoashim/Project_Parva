@@ -8,10 +8,10 @@ version = "3.0.0"
 description = "Typed Python SDK for Project Parva authority-track APIs"
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
-license = { text = "MIT" }
+license = { text = "AGPL-3.0-or-later" }
 dependencies = [
   "httpx>=0.27.0"
 ]
 
 [tool.setuptools]
-packages = ["parva_sdk"]
+packages = ["parva_sdk", "parva"]

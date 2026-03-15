@@ -61,6 +61,28 @@ class InMemoryRateLimiter:
 
 
 _rate_limiter = InMemoryRateLimiter()
+_PRIVATE_RESPONSE_PREFIXES = (
+    "/api/personal",
+    "/v3/api/personal",
+    "/api/muhurta",
+    "/v3/api/muhurta",
+    "/api/kundali",
+    "/v3/api/kundali",
+    "/api/temporal",
+    "/v3/api/temporal",
+)
+_RATE_LIMITED_PREFIXES = (
+    "/api",
+    "/v2/api",
+    "/v3/api",
+    "/v4/api",
+    "/v5/api",
+)
+
+
+def _append_link_header(response: Response, value: str) -> None:
+    existing = response.headers.get("Link")
+    response.headers["Link"] = f"{existing}, {value}" if existing else value
 
 
 def parse_bool(value: str | None, *, default: bool = False) -> bool:
@@ -86,27 +108,54 @@ def build_request_size_guard(*, max_query_length: int, max_request_bytes: int):
                     status_code=400, content={"detail": "Invalid content-length header"}
                 )
 
+        if request.method.upper() in {"POST", "PUT", "PATCH"}:
+            body = b""
+            async for chunk in request.stream():
+                if chunk:
+                    body += chunk
+                    if len(body) > max_request_bytes:
+                        return JSONResponse(
+                            status_code=413, content={"detail": "Request payload too large"}
+                        )
+
+            body_sent = False
+
+            async def receive():
+                nonlocal body_sent
+                if body_sent:
+                    return {"type": "http.request", "body": b"", "more_body": False}
+                body_sent = True
+                return {"type": "http.request", "body": body, "more_body": False}
+
+            request._receive = receive
+            request._body = body
+
         return await call_next(request)
 
     return request_size_guard
 
 
-def _client_ip(request: Request) -> str:
+def _client_ip(request: Request, settings: AppSettings) -> str:
+    remote_host = request.client.host if request.client and request.client.host else ""
     forwarded_for = request.headers.get("x-forwarded-for")
-    if forwarded_for:
-        return forwarded_for.split(",")[0].strip()
+    trusted_proxy_ips = settings.trusted_proxy_ips
+    trust_proxy_headers = "*" in trusted_proxy_ips or remote_host in trusted_proxy_ips
+    if forwarded_for and trust_proxy_headers:
+        forwarded_values = [value.strip() for value in forwarded_for.split(",") if value.strip()]
+        if forwarded_values:
+            return forwarded_values[0]
     if request.client and request.client.host:
         return request.client.host
     return "unknown"
 
 
-def build_request_context(*, product_version: str):
+def build_request_context(*, product_version: str, settings: AppSettings):
     metrics = get_metrics_registry()
 
     async def request_context(request: Request, call_next):
         request_id = request.headers.get("x-request-id", "").strip() or uuid.uuid4().hex
         request.state.request_id = request_id
-        request.state.client_ip = _client_ip(request)
+        request.state.client_ip = _client_ip(request, settings)
         started = time.perf_counter()
 
         try:
@@ -244,11 +293,15 @@ def _rate_policy_for_request(path: str, principal_type: str | None) -> tuple[str
     return "public", RatePolicy(limit=120, window_seconds=60)
 
 
+def _should_rate_limit(path: str) -> bool:
+    return path.startswith(_RATE_LIMITED_PREFIXES)
+
+
 def build_rate_limit_guard(*, settings: AppSettings):
     metrics = get_metrics_registry()
 
     async def rate_limit_guard(request: Request, call_next):
-        if not settings.rate_limit_enabled:
+        if not settings.rate_limit_enabled or not _should_rate_limit(request.url.path):
             return await call_next(request)
 
         principal = getattr(request.state, "principal", None)
@@ -373,11 +426,16 @@ def build_envelope_adapter(*, enable_experimental_api: bool):
 
 
 def build_engine_headers(
-    *, ephemeris_header_value: Callable[[], str], enable_experimental_api: bool
+    *,
+    ephemeris_header_value: Callable[[], str],
+    license_mode: str,
+    source_url: str | None,
+    enable_experimental_api: bool,
 ):
     async def add_engine_headers(request: Request, call_next):
         response = await call_next(request)
         response.headers["X-Parva-Ephemeris"] = ephemeris_header_value()
+        response.headers["X-Parva-License"] = license_mode
 
         if request.url.path.startswith("/v3/") or request.url.path.startswith("/api/"):
             response.headers["X-Parva-Engine"] = "v3"
@@ -393,11 +451,17 @@ def build_engine_headers(
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "no-referrer"
+        if request.url.path.startswith(_PRIVATE_RESPONSE_PREFIXES):
+            response.headers["Cache-Control"] = "no-store"
+            response.headers["Pragma"] = "no-cache"
+
+        if source_url:
+            _append_link_header(response, f'<{source_url}>; rel="source"')
 
         if request.url.path.startswith("/api/"):
             response.headers["Deprecation"] = "true"
             response.headers["Sunset"] = "Thu, 01 May 2027 00:00:00 GMT"
-            response.headers["Link"] = '</v3/docs>; rel="successor-version"'
+            _append_link_header(response, '</v3/docs>; rel="successor-version"')
 
         if not enable_experimental_api and request.url.path.startswith(("/v2/", "/v4/", "/v5/")):
             # Should not happen due to gate, but keep explicit.

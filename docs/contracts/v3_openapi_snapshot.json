@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-13T05:25:56.907606+00:00",
+  "generated_at": "2026-03-14T07:45:00.886918+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -3712,6 +3712,43 @@
               }
             }
           }
+        },
+        "post": {
+          "tags": [
+            "personal"
+          ],
+          "summary": "Personal Panchanga Post",
+          "operationId": "personal_panchanga_post_v3_api_personal_panchanga_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPanchangaRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "/v3/api/muhurta": {
@@ -3827,6 +3864,43 @@
               }
             }
           }
+        },
+        "post": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Muhurta For Day Post",
+          "operationId": "muhurta_for_day_post_v3_api_muhurta_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MuhurtaDayRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "/v3/api/muhurta/rahu-kalam": {
@@ -3904,6 +3978,43 @@
               "description": "IANA timezone"
             }
           ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Rahu Kalam Post",
+          "operationId": "rahu_kalam_post_v3_api_muhurta_rahu_kalam_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RahuKalamRequest"
+                }
+              }
+            }
+          },
           "responses": {
             "200": {
               "description": "Successful Response",
@@ -4063,6 +4174,43 @@
               }
             }
           }
+        },
+        "post": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Auspicious Muhurta Post",
+          "operationId": "auspicious_muhurta_post_v3_api_muhurta_auspicious_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuspiciousMuhurtaRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "/v3/api/kundali": {
@@ -4140,6 +4288,43 @@
               "description": "IANA timezone"
             }
           ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "kundali"
+          ],
+          "summary": "Kundali Endpoint Post",
+          "operationId": "kundali_endpoint_post_v3_api_kundali_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KundaliRequest"
+                }
+              }
+            }
+          },
           "responses": {
             "200": {
               "description": "Successful Response",
@@ -4257,6 +4442,43 @@
               }
             }
           }
+        },
+        "post": {
+          "tags": [
+            "kundali"
+          ],
+          "summary": "Lagna Endpoint Post",
+          "operationId": "lagna_endpoint_post_v3_api_kundali_lagna_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KundaliRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "/v3/api/temporal/compass": {
@@ -4346,6 +4568,43 @@
               "description": "computed|provisional|inventory|all"
             }
           ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "temporal"
+          ],
+          "summary": "Temporal Compass Post",
+          "operationId": "temporal_compass_post_v3_api_temporal_compass_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemporalCompassRequest"
+                }
+              }
+            }
+          },
           "responses": {
             "200": {
               "description": "Successful Response",
@@ -4485,6 +4744,43 @@
               }
             }
           }
+        },
+        "post": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Muhurta Heatmap Post",
+          "operationId": "muhurta_heatmap_post_v3_api_muhurta_heatmap_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MuhurtaHeatmapRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
         }
       },
       "/v3/api/kundali/graph": {
@@ -4562,6 +4858,43 @@
               "description": "IANA timezone"
             }
           ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "kundali"
+          ],
+          "summary": "Kundali Graph Endpoint Post",
+          "operationId": "kundali_graph_endpoint_post_v3_api_kundali_graph_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KundaliGraphRequest"
+                }
+              }
+            }
+          },
           "responses": {
             "200": {
               "description": "Successful Response",
@@ -5543,6 +5876,93 @@
     },
     "components": {
       "schemas": {
+        "AuspiciousMuhurtaRequest": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "title": "Date",
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            "type": {
+              "type": "string",
+              "title": "Type",
+              "description": "vivah|griha_pravesh|travel|upanayana|general",
+              "default": "general"
+            },
+            "lat": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat",
+              "description": "Latitude"
+            },
+            "lon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon",
+              "description": "Longitude"
+            },
+            "tz": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu"
+            },
+            "birth_nakshatra": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Birth Nakshatra",
+              "description": "Birth nakshatra name or number 1-27"
+            },
+            "assumption_set": {
+              "type": "string",
+              "title": "Assumption Set",
+              "description": "np-mainstream-v2|diaspora-practical-v2",
+              "default": "np-mainstream-v2"
+            }
+          },
+          "type": "object",
+          "required": [
+            "date"
+          ],
+          "title": "AuspiciousMuhurtaRequest"
+        },
         "BSConversionRequest": {
           "properties": {
             "year": {
@@ -6695,6 +7115,132 @@
           "type": "object",
           "title": "HTTPValidationError"
         },
+        "KundaliGraphRequest": {
+          "properties": {
+            "datetime": {
+              "type": "string",
+              "title": "Datetime",
+              "description": "ISO8601 datetime"
+            },
+            "lat": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat",
+              "description": "Latitude"
+            },
+            "lon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon",
+              "description": "Longitude"
+            },
+            "tz": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu"
+            }
+          },
+          "type": "object",
+          "required": [
+            "datetime"
+          ],
+          "title": "KundaliGraphRequest"
+        },
+        "KundaliRequest": {
+          "properties": {
+            "datetime": {
+              "type": "string",
+              "title": "Datetime",
+              "description": "ISO8601 datetime"
+            },
+            "lat": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat",
+              "description": "Latitude"
+            },
+            "lon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon",
+              "description": "Longitude"
+            },
+            "tz": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu"
+            }
+          },
+          "type": "object",
+          "required": [
+            "datetime"
+          ],
+          "title": "KundaliRequest"
+        },
         "LocationLink": {
           "properties": {
             "id": {
@@ -6745,6 +7291,155 @@
           ],
           "title": "LocationLink",
           "description": "Reference to a temple or location."
+        },
+        "MuhurtaDayRequest": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "title": "Date",
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            "lat": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat",
+              "description": "Latitude"
+            },
+            "lon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon",
+              "description": "Longitude"
+            },
+            "tz": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu"
+            },
+            "birth_nakshatra": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Birth Nakshatra",
+              "description": "Birth nakshatra name or number 1-27 (optional tara-bala)"
+            }
+          },
+          "type": "object",
+          "required": [
+            "date"
+          ],
+          "title": "MuhurtaDayRequest"
+        },
+        "MuhurtaHeatmapRequest": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "title": "Date",
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            "lat": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat",
+              "description": "Latitude"
+            },
+            "lon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon",
+              "description": "Longitude"
+            },
+            "tz": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu"
+            },
+            "type": {
+              "type": "string",
+              "title": "Type",
+              "description": "vivah|griha_pravesh|travel|upanayana|general",
+              "default": "general"
+            },
+            "assumption_set": {
+              "type": "string",
+              "title": "Assumption Set",
+              "default": "np-mainstream-v2"
+            }
+          },
+          "type": "object",
+          "required": [
+            "date"
+          ],
+          "title": "MuhurtaHeatmapRequest"
         },
         "MythologyContent": {
           "properties": {
@@ -6844,6 +7539,69 @@
           "title": "NSDate",
           "description": "Nepal Sambat date."
         },
+        "PersonalPanchangaRequest": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "title": "Date",
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            "lat": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat",
+              "description": "Latitude"
+            },
+            "lon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon",
+              "description": "Longitude"
+            },
+            "tz": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu"
+            }
+          },
+          "type": "object",
+          "required": [
+            "date"
+          ],
+          "title": "PersonalPanchangaRequest"
+        },
         "ProofResponse": {
           "properties": {
             "festival_id": {
@@ -6939,6 +7697,69 @@
           "type": "object",
           "title": "ProvenanceMeta",
           "description": "Provenance metadata for response verification."
+        },
+        "RahuKalamRequest": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "title": "Date",
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            "lat": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat",
+              "description": "Latitude"
+            },
+            "lon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon",
+              "description": "Longitude"
+            },
+            "tz": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu"
+            }
+          },
+          "type": "object",
+          "required": [
+            "date"
+          ],
+          "title": "RahuKalamRequest"
         },
         "ResolveResult": {
           "properties": {
@@ -7391,6 +8212,75 @@
           ],
           "title": "TempleSummary",
           "description": "Summary view of temple for list displays."
+        },
+        "TemporalCompassRequest": {
+          "properties": {
+            "date": {
+              "type": "string",
+              "title": "Date",
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            "lat": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lat",
+              "description": "Latitude"
+            },
+            "lon": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lon",
+              "description": "Longitude"
+            },
+            "tz": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu"
+            },
+            "quality_band": {
+              "type": "string",
+              "title": "Quality Band",
+              "description": "computed|provisional|inventory|all",
+              "default": "computed"
+            }
+          },
+          "type": "object",
+          "required": [
+            "date"
+          ],
+          "title": "TemporalCompassRequest"
         },
         "TithiInfo": {
           "properties": {

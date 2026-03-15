@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-24T02:13:48.654769+00:00",
-  "release_track": "public-v3",
+  "generated_at": "2026-03-14T09:22:26.336916+00:00",
+  "release_track": "public-beta-v3",
   "pipeline_health": {
     "conformance_total": 6,
     "conformance_passed": 6,
@@ -32,9 +32,8 @@
   },
   "artifacts": {
     "conformance_report": "reports/conformance_report.json",
-    "evaluation_v4": "reports/evaluation_v4/evaluation_v4.json",
-    "discrepancies": "data/ground_truth/discrepancies.json",
     "rule_catalog": "data/festivals/festival_rules_v4.json",
-    "rule_ingestion_summary": "reports/rule_ingestion_summary.json"
+    "rule_ingestion_summary": "reports/rule_ingestion_summary.json",
+    "discrepancies": "data/ground_truth/discrepancies.json"
   }
 }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { KnowledgePanel } from '../components/UI/KnowledgePanel';
-import { AuthorityInspector } from '../components/UI/AuthorityInspector';
+import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
 import { PANCHANGA_GLOSSARY } from '../data/temporalGlossary';
 import { calendarAPI, festivalAPI, glossaryAPI } from '../services/api';
 import { useTemporalContext } from '../context/useTemporalContext';
@@ -39,13 +39,35 @@ function MoonPhase({ tithi }) {
             clipPath: phase < 0.5
               ? `inset(0 0 0 ${(1 - phase * 2) * 100}%)`
               : `inset(0 ${(phase * 2 - 1) * 100}% 0 0)`,
-            opacity: isWaxing ? 1 : 0.85,
+            opacity: isWaxing ? 1 : 0.88,
           }}
         />
       </div>
-      <span className="moon-phase__label">{isWaxing ? 'Shukla' : 'Krishna'} Paksha</span>
+      <span className="moon-phase__label">{isWaxing ? 'Shukla Paksha' : 'Krishna Paksha'}</span>
     </div>
   );
+}
+
+function formatDisplayDate(value, timeZone) {
+  const parsed = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(parsed.valueOf())) return value;
+
+  try {
+    return parsed.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone,
+    });
+  } catch {
+    return parsed.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
 }
 
 export function PanchangaPage() {
@@ -71,6 +93,7 @@ export function PanchangaPage() {
           festivalAPI.getOnDate(state.date).catch(() => []),
           glossaryAPI.get({ domain: 'panchanga', lang: state.language }).catch(() => null),
         ]);
+
         if (!cancelled) {
           setPayload(panchangaEnvelope.data);
           setMeta(panchangaEnvelope.meta || resolveEnvelope?.meta || null);
@@ -99,32 +122,42 @@ export function PanchangaPage() {
   const karana = payload?.panchanga?.karana;
   const vaara = payload?.panchanga?.vaara;
   const bs = payload?.bikram_sambat;
+  const confidence = useMemo(() => payload?.panchanga?.confidence || meta?.confidence?.level || 'Computed guidance', [payload, meta]);
+  const introLine = useMemo(() => {
+    if (!tithi && !vaara) {
+      return 'The daily reading appears here with the lunar tone first and deeper mechanics one step lower.';
+    }
 
-  const confidence = useMemo(() => payload?.panchanga?.confidence || meta?.confidence?.level || 'computed', [payload, meta]);
+    return `${tithi?.name || 'Today'} sets the lunar tone${tithi?.paksha ? ` in the ${tithi.paksha} half` : ''}, while ${vaara?.name_english || 'the weekday'} holds the civic rhythm.`;
+  }, [tithi, vaara]);
+  const displayDate = useMemo(() => formatDisplayDate(state.date, state.timezone), [state.date, state.timezone]);
 
   return (
     <section className="panchanga-page animate-fade-in-up">
-      <header className="panchanga-hero">
-        <div className="panchanga-hero__left">
-          {bs && <h1 className="text-hero">{bs.year} {bs.month_name} {bs.day}</h1>}
-          <p className="panchanga-hero__date">
-            {new Date(`${state.date}T00:00:00`).toLocaleDateString('en-US', {
-              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-            })}
-          </p>
+      <header className="panchanga-hero ink-card">
+        <div className="panchanga-hero__copy">
+          <p className="today-page__eyebrow">Panchanga</p>
+          <h1 className="text-hero">{bs ? `${bs.year} ${bs.month_name} ${bs.day}` : 'Daily lunar reading'}</h1>
+          <p className="panchanga-hero__date">{displayDate}</p>
+          <p className="panchanga-hero__intro">{introLine}</p>
+        </div>
+
+        <div className="panchanga-hero__side">
           <label className="panchanga-hero__picker ink-input">
             <span>Date</span>
-            <input id="panchanga-date" type="date" value={state.date} onChange={(e) => setDate(e.target.value)} />
+            <input id="panchanga-date" type="date" value={state.date} onChange={(event) => setDate(event.target.value)} />
           </label>
+          {tithi ? <MoonPhase tithi={tithi} /> : null}
         </div>
-        <div className="panchanga-hero__right">{tithi && <MoonPhase tithi={tithi} />}</div>
       </header>
 
       {loading && (
         <div className="panchanga-loading">
-          <div className="skeleton" style={{ height: '120px', borderRadius: '16px' }} />
+          <div className="skeleton" style={{ minHeight: '180px', borderRadius: '1.4rem' }} />
           <div className="panchanga-cards stagger-children">
-            {Array.from({ length: 5 }).map((_, i) => <div key={i} className="skeleton" style={{ height: '140px', borderRadius: '16px' }} />)}
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="skeleton" style={{ minHeight: '150px', borderRadius: '1.1rem' }} />
+            ))}
           </div>
         </div>
       )}
@@ -138,13 +171,31 @@ export function PanchangaPage() {
 
       {!loading && !error && payload && (
         <>
+          <section className="panchanga-summary-grid">
+            <article className="ink-card panchanga-summary-card">
+              <span className="today-page__eyebrow">Lunar tone</span>
+              <strong>{tithi?.name || 'Appears when available'}</strong>
+              <p>{tithi?.paksha ? `${tithi.paksha} half of the cycle` : 'Lunar phase detail appears when available.'}</p>
+            </article>
+            <article className="ink-card panchanga-summary-card">
+              <span className="today-page__eyebrow">Weekday</span>
+              <strong>{vaara?.name_english || 'Appears when available'}</strong>
+              <p>{vaara?.name_sanskrit || 'Weekday detail appears when available.'}</p>
+            </article>
+            <article className="ink-card panchanga-summary-card">
+              <span className="today-page__eyebrow">Confidence note</span>
+              <strong>{confidence}</strong>
+              <p>Method and supporting notes stay below the main answer.</p>
+            </article>
+          </section>
+
           {festivals?.length > 0 && (
             <section className="panchanga-festivals animate-fade-in-up">
               <h2 className="panchanga-festivals__title">Festivals on this day</h2>
               <div className="panchanga-festivals__chips">
-                {festivals.map((f) => (
-                  <button key={f.id} className="festival-chip" onClick={() => navigate(`/festivals/${f.id}`)}>
-                    <span className="festival-chip__name">{f.name}</span>
+                {festivals.map((festival) => (
+                  <button key={festival.id} className="festival-chip" onClick={() => navigate(`/festivals/${festival.id}`)}>
+                    <span className="festival-chip__name">{festival.name}</span>
                   </button>
                 ))}
               </div>
@@ -152,22 +203,59 @@ export function PanchangaPage() {
           )}
 
           <section className="panchanga-cards stagger-children">
-            <article className="ink-card ink-card--vermillion panchanga-card"><h3>Tithi</h3><p className="panchanga-card__value">{tithi?.name || '—'}</p><p className="panchanga-card__meta">#{tithi?.number} · {tithi?.paksha}</p></article>
-            <article className="ink-card ink-card--saffron panchanga-card"><h3>Nakshatra</h3><p className="panchanga-card__value">{nakshatra?.name || '—'}</p><p className="panchanga-card__meta">Pada {nakshatra?.pada || '—'}</p></article>
-            <article className="ink-card ink-card--gold panchanga-card"><h3>Yoga</h3><p className="panchanga-card__value">{yoga?.name || '—'}</p><p className="panchanga-card__meta">#{yoga?.number || '—'}</p></article>
-            <article className="ink-card ink-card--jade panchanga-card"><h3>Karana</h3><p className="panchanga-card__value">{karana?.name || '—'}</p><p className="panchanga-card__meta">#{karana?.number || '—'}</p></article>
-            <article className="ink-card ink-card--amber panchanga-card"><h3>Vaara</h3><p className="panchanga-card__value">{vaara?.name_english || '—'}</p><p className="panchanga-card__meta">{vaara?.name_sanskrit || '—'}</p></article>
+            <article className="ink-card panchanga-card">
+              <h3>Tithi</h3>
+              <p className="panchanga-card__value">{tithi?.name || 'Appears when available'}</p>
+              <p className="panchanga-card__meta">#{tithi?.number || '-'} | {tithi?.paksha || 'Lunar phase detail appears when available.'}</p>
+            </article>
+            <article className="ink-card panchanga-card">
+              <h3>Nakshatra</h3>
+              <p className="panchanga-card__value">{nakshatra?.name || 'Appears when available'}</p>
+              <p className="panchanga-card__meta">Pada {nakshatra?.pada || '-'}</p>
+            </article>
+            <article className="ink-card panchanga-card">
+              <h3>Yoga</h3>
+              <p className="panchanga-card__value">{yoga?.name || 'Appears when available'}</p>
+              <p className="panchanga-card__meta">#{yoga?.number || '-'}</p>
+            </article>
+            <article className="ink-card panchanga-card">
+              <h3>Karana</h3>
+              <p className="panchanga-card__value">{karana?.name || 'Appears when available'}</p>
+              <p className="panchanga-card__meta">#{karana?.number || '-'}</p>
+            </article>
+            <article className="ink-card panchanga-card">
+              <h3>Vaara</h3>
+              <p className="panchanga-card__value">{vaara?.name_english || 'Appears when available'}</p>
+              <p className="panchanga-card__meta">{vaara?.name_sanskrit || 'Weekday detail appears when available.'}</p>
+            </article>
           </section>
 
           <KnowledgePanel title={knowledge.title} intro={knowledge.intro} sections={knowledge.sections} className="panchanga-knowledge" />
 
-          {state.mode === 'authority' && (
-            <AuthorityInspector title="Panchanga Authority" meta={meta} traceFallbackId={payload?.calculation_trace_id} />
-          )}
-
           <section className="ink-card panchanga-details-card">
-            <p><strong>Confidence:</strong> {confidence}</p>
-            <p><strong>Tithi Method:</strong> {tithi?.method || 'ephemeris_udaya'}</p>
+            <div className="panchanga-details-card__header">
+              <div>
+                <p className="today-page__eyebrow">Method available</p>
+                <h2>Inspect the daily reading only when you want to go deeper.</h2>
+              </div>
+              <EvidenceDrawer
+                title="Panchanga"
+                intro="This drawer keeps place, date, confidence, and method context nearby without forcing the page into an expert mode."
+                methodRef={tithi?.method || meta?.method || 'Panchanga daily profile'}
+                confidenceNote={confidence}
+                placeUsed={state.timezone}
+                computedForDate={state.date}
+                availability={[
+                  { label: 'Daily panchanga', available: Boolean(payload?.panchanga), note: 'The summary cards only appear when the daily reading is present.' },
+                  { label: 'Festival context', available: Boolean(festivals?.length), note: 'Festival chips only appear when the on-date service returns observances.' },
+                  { label: 'Glossary guidance', available: Boolean(knowledge?.sections?.length), note: 'Glossary sections stay available as a secondary learning surface.' },
+                ]}
+                meta={meta}
+                traceFallbackId={payload?.calculation_trace_id}
+              />
+            </div>
+            <p><strong>Confidence note:</strong> {confidence}</p>
+            <p><strong>Method profile:</strong> {tithi?.method || meta?.method || 'Panchanga daily profile'}</p>
           </section>
         </>
       )}

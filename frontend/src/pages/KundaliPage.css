@@ -1,68 +1,431 @@
 .kundali-page {
   display: grid;
-  gap: 1rem;
+  gap: 1.3rem;
+}
+
+.kundali-page__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.95fr);
+  gap: 1.15rem;
+  padding: 1.35rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.kundali-page__hero::after {
+  content: '';
+  position: absolute;
+  inset: auto -10% -42% auto;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214, 170, 103, 0.16), transparent 66%);
+  pointer-events: none;
+}
+
+.kundali-page__hero-copy {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.kundali-page__intro {
+  margin: 0;
+  color: var(--text-secondary);
+  max-width: 58ch;
+}
+
+.kundali-page__hero-side {
+  display: grid;
+  gap: 0.95rem;
+  align-content: start;
+}
+
+.kundali-page__thesis-card {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(214, 170, 103, 0.16);
+  background:
+    radial-gradient(circle at top right, rgba(214, 170, 103, 0.1), transparent 44%),
+    rgba(255, 255, 255, 0.03);
+}
+
+.kundali-page__thesis-card span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kundali-page__thesis-card p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.kundali-page__signature {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.kundali-page__signature-chip {
+  border: 1px solid rgba(214, 170, 103, 0.14);
+  border-radius: 1rem;
+  padding: 0.85rem 0.95rem;
+  background: rgba(255, 255, 255, 0.03);
+  display: grid;
+  gap: 0.15rem;
+}
+
+.kundali-page__signature-chip span {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kundali-page__signature-chip strong {
+  color: var(--text-primary);
+}
+
+.kundali-page__birth-panel {
+  border: 1px solid var(--border-subtle);
+  border-radius: 1.05rem;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.2rem 0.9rem 0.85rem;
+}
+
+.kundali-page__birth-panel summary {
+  cursor: pointer;
+  padding: 0.8rem 0;
+  font-weight: 600;
 }
 
 .kundali-controls {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.7rem;
-  padding: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
 }
 
 .kundali-error {
+  padding: 1.25rem;
+}
+
+.kundali-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(260px, 0.8fr);
+  gap: 1rem;
+}
+
+.kundali-overview__thesis,
+.kundali-overview__snapshot {
   padding: 1rem;
 }
 
-.kundali-hero-row {
+.kundali-overview__label {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kundali-overview__thesis h2 {
+  margin: 0.3rem 0 0.55rem;
+  font-size: 1.5rem;
+}
+
+.kundali-overview__thesis p,
+.kundali-overview__snapshot dd {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.kundali-overview__snapshot dl {
+  margin: 0.8rem 0 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.kundali-overview__snapshot div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.kundali-overview__snapshot dt {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kundali-tabs {
+  display: inline-flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.kundali-tab {
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.kundali-tab.is-active {
+  color: var(--text-inverse);
+  background: linear-gradient(135deg, var(--gold-soft), var(--gold-bright));
+}
+
+.kundali-summary {
+  display: grid;
+  gap: 1rem;
+}
+
+.kundali-summary__reading,
+.kundali-summary__themes {
+  display: grid;
+  gap: 1rem;
+}
+
+.kundali-summary__reading,
+.kundali-summary__signals,
+.kundali-summary__insights {
+  padding: 1rem;
+}
+
+.kundali-summary__section-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.kundali-summary__section-header h2 {
+  margin: 0.2rem 0 0;
+}
+
+.kundali-summary__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.kundali-summary__reading-copy {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 1.02rem;
+  line-height: 1.72;
+  max-width: 74ch;
+}
+
+.kundali-summary__signature {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.kundali-summary__signature div {
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.2rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.kundali-summary__signature span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kundali-summary__themes {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.kundali-summary__themes--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kundali-summary__theme {
+  padding: 1rem;
+}
+
+.kundali-summary__theme h3 {
+  margin: 0 0 0.45rem;
+}
+
+.kundali-summary__theme p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.kundali-summary__lower {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 1rem;
+}
+
+.kundali-summary__insight-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.kundali-summary__insight-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 0.95rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.kundali-summary__insight-card h3,
+.kundali-summary__insight-card p {
+  margin: 0;
+}
+
+.kundali-summary__insight-card p {
+  margin-top: 0.35rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.kundali-summary__signal-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.kundali-summary__signal-list div {
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 0.85rem;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.kundali-summary__signal-list span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kundali-graph-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.85fr);
+  gap: 1rem;
+}
+
+.kundali-graph-shell {
+  padding: 1rem;
+}
+
+.kundali-graph-shell__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+.kundali-graph-shell__header h2 {
+  margin: 0.2rem 0 0;
+}
+
+.kundali-graph-shell__note {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--text-secondary);
+}
+
+.kundali-graph-shell__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.95fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.kundali-graph-shell__legend {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
-.kundali-rashi-card {
-  padding: 0.8rem;
+.kundali-graph-shell__legend-item,
+.kundali-graph-shell__focus-card {
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
 }
 
-.kundali-rashi-card h3 {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: 0.76rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.kundali-rashi-card p {
-  margin: 0.3rem 0 0;
-  font-size: 1.2rem;
-  color: var(--gold-bright);
-}
-
-.kundali-rashi-card small {
-  color: var(--text-secondary);
-}
-
-.kundali-graph-layout {
+.kundali-graph-shell__legend-item {
+  padding: 0.9rem;
   display: grid;
-  grid-template-columns: 1.45fr 1fr;
-  gap: 0.8rem;
+  gap: 0.2rem;
 }
 
-.kundali-graph-shell {
-  padding: 0.5rem;
+.kundali-graph-shell__legend-item span,
+.kundali-graph-shell__focus-card span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.kundali-graph-shell__focus-card {
+  padding: 1rem;
+  display: grid;
+  gap: 0.35rem;
+  background:
+    radial-gradient(circle at top right, rgba(214, 170, 103, 0.12), transparent 46%),
+    rgba(255, 255, 255, 0.03);
+}
+
+.kundali-graph-shell__focus-card h3,
+.kundali-graph-shell__focus-card p,
+.kundali-graph-shell__focus-card small {
+  margin: 0;
+}
+
+.kundali-graph-shell__focus-card p,
+.kundali-graph-shell__focus-card small {
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 .kundali-graph {
   margin: 0;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.7rem;
 }
 
 .kundali-graph svg {
   width: 100%;
   height: auto;
-  border-radius: 12px;
-  background: radial-gradient(circle at center, rgba(232, 197, 115, 0.06), transparent 65%);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at center, rgba(214, 170, 103, 0.14), transparent 56%),
+    radial-gradient(circle at center, rgba(76, 134, 104, 0.08), transparent 78%);
+}
+
+.kundali-graph__stage-ring {
+  fill: none;
+  stroke: rgba(214, 170, 103, 0.14);
+  stroke-width: 1;
+  stroke-dasharray: 4 8;
+}
+
+.kundali-graph__stage-ring--inner {
+  stroke: rgba(76, 134, 104, 0.18);
+  stroke-dasharray: 2 8;
 }
 
 .kundali-graph__edge {
@@ -70,7 +433,7 @@
 }
 
 .kundali-graph__edge.active {
-  stroke: rgba(232, 197, 115, 0.48);
+  stroke: rgba(214, 170, 103, 0.56);
 }
 
 .kundali-graph__edge.muted {
@@ -78,15 +441,15 @@
 }
 
 .kundali-graph__house {
-  fill: rgba(255, 255, 255, 0.06);
-  stroke: rgba(255, 255, 255, 0.25);
-  stroke-width: 1.2;
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1.1;
   cursor: pointer;
 }
 
 .kundali-graph__house.is-selected {
-  fill: rgba(232, 197, 115, 0.3);
-  stroke: rgba(232, 197, 115, 0.9);
+  fill: rgba(214, 170, 103, 0.28);
+  stroke: rgba(214, 170, 103, 0.9);
 }
 
 .kundali-graph__house-label {
@@ -96,15 +459,29 @@
 }
 
 .kundali-graph__graha {
-  fill: rgba(201, 169, 110, 0.9);
-  stroke: rgba(0, 0, 0, 0.5);
+  fill: rgba(214, 170, 103, 0.92);
+  stroke: rgba(0, 0, 0, 0.45);
   stroke-width: 1;
   cursor: pointer;
 }
 
+.kundali-graph__selection-halo {
+  fill: none;
+  stroke-width: 1.4;
+  animation: haloPulse 3.8s ease-in-out infinite;
+}
+
+.kundali-graph__selection-halo--house {
+  stroke: rgba(214, 170, 103, 0.45);
+}
+
+.kundali-graph__selection-halo--graha {
+  stroke: rgba(240, 207, 149, 0.62);
+}
+
 .kundali-graph__graha.is-selected {
-  fill: rgba(232, 197, 115, 1);
-  stroke: rgba(232, 197, 115, 0.9);
+  fill: rgba(240, 207, 149, 1);
+  stroke: rgba(240, 207, 149, 0.96);
   stroke-width: 2;
 }
 
@@ -115,64 +492,132 @@
 
 .kundali-graph figcaption {
   color: var(--text-secondary);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .kundali-insight-pane {
-  padding: 0.9rem;
+  padding: 1rem;
+  display: grid;
+  gap: 0.85rem;
 }
 
-.kundali-insight-pane h3 {
-  margin: 0 0 0.6rem;
+.kundali-insight-pane h2 {
+  margin: 0;
 }
 
 .kundali-insight-list {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.7rem;
 }
 
 .kundali-insight-item {
-  border: 1px solid var(--border-card);
-  border-radius: 10px;
-  padding: 0.65rem;
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
 }
 
-.kundali-insight-item h4 {
+.kundali-insight-item h3,
+.kundali-insight-item p {
   margin: 0;
-  font-size: 0.92rem;
 }
 
 .kundali-insight-item p {
-  margin: 0.3rem 0 0;
+  margin-top: 0.35rem;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.kundali-details {
+  display: grid;
+  gap: 1rem;
 }
 
 .kundali-table-wrap {
+  padding: 1rem;
+}
+
+.kundali-table-wrap h2 {
+  margin: 0 0 0.75rem;
+}
+
+.kundali-details__cards {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.kundali-details__cards div {
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
   padding: 0.9rem;
+  display: grid;
+  gap: 0.25rem;
 }
 
-.kundali-table-wrap h3 {
-  margin: 0 0 0.6rem;
+.kundali-details__cards span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-@media (max-width: 1100px) {
-  .kundali-controls {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.kundali-technical {
+  border: 1px solid var(--border-subtle);
+  border-radius: 1rem;
+  padding: 0.2rem 1rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+}
 
-  .kundali-graph-layout {
+.kundali-technical summary {
+  cursor: pointer;
+  padding: 0.8rem 0;
+  font-weight: 600;
+}
+
+.kundali-technical__body {
+  display: grid;
+  gap: 1rem;
+}
+
+.kundali-technical__raw {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.kundali-technical__raw pre {
+  margin: 0;
+  overflow: auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 1080px) {
+  .kundali-page__hero,
+  .kundali-overview,
+  .kundali-summary__signature,
+  .kundali-summary__themes,
+  .kundali-summary__themes--compact,
+  .kundali-summary__lower,
+  .kundali-graph-shell__stage,
+  .kundali-graph-shell__legend,
+  .kundali-graph-layout,
+  .kundali-details__cards {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 700px) {
-  .kundali-hero-row {
+  .kundali-controls {
     grid-template-columns: 1fr;
   }
 
-  .kundali-controls {
-    grid-template-columns: 1fr;
+  .kundali-summary__section-header,
+  .kundali-graph-shell__header {
+    flex-direction: column;
   }
 }

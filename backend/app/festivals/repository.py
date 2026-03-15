@@ -22,6 +22,7 @@ from .models import (
     FestivalDates,
     FestivalSummary,
 )
+from .validation import validate_festival_catalog_rows
 
 # Path to festival data files
 DATA_DIR = Path(__file__).parent.parent.parent.parent / "data" / "festivals"
@@ -78,7 +79,12 @@ class FestivalRepository:
             with open(festivals_file, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
-            for festival_data in data.get("festivals", []):
+            festival_rows = data.get("festivals", [])
+            errors = validate_festival_catalog_rows(festival_rows)
+            if errors:
+                raise ValueError("; ".join(errors))
+
+            for festival_data in festival_rows:
                 festival = Festival(**festival_data)
                 self._festivals[festival.id] = festival
 

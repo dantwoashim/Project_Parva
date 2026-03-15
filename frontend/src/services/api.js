@@ -6,6 +6,69 @@
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/v3/api';
 
+export class ParvaApiError extends Error {
+  constructor(message, { status, statusText, detail, requestId, errors, payload } = {}) {
+    super(message);
+    this.name = 'ParvaApiError';
+    this.status = status;
+    this.statusText = statusText;
+    this.detail = detail;
+    this.requestId = requestId || null;
+    this.errors = errors || null;
+    this.payload = payload || null;
+  }
+}
+
+async function parseErrorPayload(response) {
+  const contentType = response.headers.get('content-type') || '';
+
+  try {
+    if (contentType.includes('application/json')) {
+      return await response.json();
+    }
+
+    const text = await response.text();
+    return text ? { detail: text } : null;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeCoordinateField(value) {
+  if (value === undefined || value === null) return value;
+  if (typeof value === 'number') return Number.isFinite(value) ? String(value) : value;
+  if (typeof value === 'string') return value.trim();
+  return value;
+}
+
+function normalizePrivatePayload(payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    return payload;
+  }
+
+  const normalized = { ...payload };
+  for (const key of ['lat', 'lon']) {
+    if (key in normalized) {
+      normalized[key] = normalizeCoordinateField(normalized[key]);
+    }
+  }
+  return normalized;
+}
+
+function createPrivateJsonOptions(payload, options = {}) {
+  const normalizedPayload = normalizePrivatePayload(payload);
+  return {
+    method: 'POST',
+    cache: 'no-store',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+    body: JSON.stringify(normalizedPayload),
+  };
+}
+
 export async function fetchAPI(endpoint, options = {}, parseAs = 'json') {
   const envelope = await fetchAPIEnvelope(endpoint, options, parseAs);
   if (parseAs === 'text') return envelope;
@@ -14,16 +77,26 @@ export async function fetchAPI(endpoint, options = {}, parseAs = 'json') {
 
 export async function fetchAPIEnvelope(endpoint, options = {}, parseAs = 'json') {
   const url = `${API_BASE}${endpoint}`;
+  const hasBody = options.body !== undefined;
   const response = await fetch(url, {
     headers: {
-      ...(parseAs === 'json' ? { 'Content-Type': 'application/json' } : {}),
+      ...(hasBody && parseAs === 'json' ? { 'Content-Type': 'application/json' } : {}),
       ...options.headers,
     },
     ...options,
   });
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    const errorPayload = await parseErrorPayload(response);
+    const detail = errorPayload?.detail || errorPayload?.message || `${response.status} ${response.statusText}`;
+    throw new ParvaApiError(detail, {
+      status: response.status,
+      statusText: response.statusText,
+      detail: errorPayload?.detail || null,
+      requestId: errorPayload?.request_id || null,
+      errors: errorPayload?.errors || null,
+      payload: errorPayload,
+    });
   }
 
   if (parseAs === 'text') {
@@ -53,20 +126,22 @@ export function getApiBase() {
 }
 
 export const temporalAPI = {
-  getCompass: ({ date, lat, lon, tz, qualityBand = 'computed' } = {}) => {
-    const params = new URLSearchParams({ date, quality_band: qualityBand });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPI(`/temporal/compass?${params.toString()}`);
-  },
-  getCompassEnvelope: ({ date, lat, lon, tz, qualityBand = 'computed' } = {}) => {
-    const params = new URLSearchParams({ date, quality_band: qualityBand });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPIEnvelope(`/temporal/compass?${params.toString()}`);
-  },
+  getCompass: ({ date, lat, lon, tz, qualityBand = 'computed' } = {}) =>
+    fetchAPI('/temporal/compass', createPrivateJsonOptions({
+      date,
+      lat,
+      lon,
+      tz,
+      quality_band: qualityBand,
+    })),
+  getCompassEnvelope: ({ date, lat, lon, tz, qualityBand = 'computed' } = {}) =>
+    fetchAPIEnvelope('/temporal/compass', createPrivateJsonOptions({
+      date,
+      lat,
+      lon,
+      tz,
+      quality_band: qualityBand,
+    })),
 };
 
 export const glossaryAPI = {
@@ -134,91 +209,62 @@ export const calendarAPI = {
 };
 
 export const personalAPI = {
-  getPanchanga: ({ date, lat, lon, tz } = {}) => {
-    const params = new URLSearchParams({ date });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPI(`/personal/panchanga?${params.toString()}`);
-  },
-  getPanchangaEnvelope: ({ date, lat, lon, tz } = {}) => {
-    const params = new URLSearchParams({ date });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPIEnvelope(`/personal/panchanga?${params.toString()}`);
-  },
+  getPanchanga: ({ date, lat, lon, tz } = {}) =>
+    fetchAPI('/personal/panchanga', createPrivateJsonOptions({ date, lat, lon, tz })),
+  getPanchangaEnvelope: ({ date, lat, lon, tz } = {}) =>
+    fetchAPIEnvelope('/personal/panchanga', createPrivateJsonOptions({ date, lat, lon, tz })),
 };
 
 export const muhurtaAPI = {
-  getDay: ({ date, lat, lon, tz, birthNakshatra } = {}) => {
-    const params = new URLSearchParams({ date });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    if (birthNakshatra) params.set('birth_nakshatra', birthNakshatra);
-    return fetchAPI(`/muhurta?${params.toString()}`);
-  },
-  getAuspicious: ({ date, type = 'general', lat, lon, tz, birthNakshatra, assumptionSet = 'np-mainstream-v2' } = {}) => {
-    const params = new URLSearchParams({ date, type, assumption_set: assumptionSet });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    if (birthNakshatra) params.set('birth_nakshatra', birthNakshatra);
-    return fetchAPI(`/muhurta/auspicious?${params.toString()}`);
-  },
-  getRahuKalam: ({ date, lat, lon, tz } = {}) => {
-    const params = new URLSearchParams({ date });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPI(`/muhurta/rahu-kalam?${params.toString()}`);
-  },
-  getHeatmap: ({ date, lat, lon, tz, type = 'general', assumptionSet = 'np-mainstream-v2' } = {}) => {
-    const params = new URLSearchParams({ date, type, assumption_set: assumptionSet });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPI(`/muhurta/heatmap?${params.toString()}`);
-  },
-  getHeatmapEnvelope: ({ date, lat, lon, tz, type = 'general', assumptionSet = 'np-mainstream-v2' } = {}) => {
-    const params = new URLSearchParams({ date, type, assumption_set: assumptionSet });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPIEnvelope(`/muhurta/heatmap?${params.toString()}`);
-  },
+  getDay: ({ date, lat, lon, tz, birthNakshatra } = {}) =>
+    fetchAPI('/muhurta', createPrivateJsonOptions({
+      date,
+      lat,
+      lon,
+      tz,
+      birth_nakshatra: birthNakshatra,
+    })),
+  getAuspicious: ({ date, type = 'general', lat, lon, tz, birthNakshatra, assumptionSet = 'np-mainstream-v2' } = {}) =>
+    fetchAPI('/muhurta/auspicious', createPrivateJsonOptions({
+      date,
+      type,
+      lat,
+      lon,
+      tz,
+      birth_nakshatra: birthNakshatra,
+      assumption_set: assumptionSet,
+    })),
+  getRahuKalam: ({ date, lat, lon, tz } = {}) =>
+    fetchAPI('/muhurta/rahu-kalam', createPrivateJsonOptions({ date, lat, lon, tz })),
+  getHeatmap: ({ date, lat, lon, tz, type = 'general', assumptionSet = 'np-mainstream-v2' } = {}) =>
+    fetchAPI('/muhurta/heatmap', createPrivateJsonOptions({
+      date,
+      lat,
+      lon,
+      tz,
+      type,
+      assumption_set: assumptionSet,
+    })),
+  getHeatmapEnvelope: ({ date, lat, lon, tz, type = 'general', assumptionSet = 'np-mainstream-v2' } = {}) =>
+    fetchAPIEnvelope('/muhurta/heatmap', createPrivateJsonOptions({
+      date,
+      lat,
+      lon,
+      tz,
+      type,
+      assumption_set: assumptionSet,
+    })),
 };
 
 export const kundaliAPI = {
-  getKundali: ({ datetime, lat, lon, tz } = {}) => {
-    const params = new URLSearchParams({ datetime });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPI(`/kundali?${params.toString()}`);
-  },
-  getLagna: ({ datetime, lat, lon, tz } = {}) => {
-    const params = new URLSearchParams({ datetime });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPI(`/kundali/lagna?${params.toString()}`);
-  },
-  getGraph: ({ datetime, lat, lon, tz } = {}) => {
-    const params = new URLSearchParams({ datetime });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPI(`/kundali/graph?${params.toString()}`);
-  },
-  getGraphEnvelope: ({ datetime, lat, lon, tz } = {}) => {
-    const params = new URLSearchParams({ datetime });
-    if (lat !== undefined) params.set('lat', lat);
-    if (lon !== undefined) params.set('lon', lon);
-    if (tz) params.set('tz', tz);
-    return fetchAPIEnvelope(`/kundali/graph?${params.toString()}`);
-  },
+  getKundali: ({ datetime, lat, lon, tz } = {}) =>
+    fetchAPI('/kundali', createPrivateJsonOptions({ datetime, lat, lon, tz })),
+  getLagna: ({ datetime, lat, lon, tz } = {}) =>
+    fetchAPI('/kundali/lagna', createPrivateJsonOptions({ datetime, lat, lon, tz })),
+  getGraph: ({ datetime, lat, lon, tz } = {}) =>
+    fetchAPI('/kundali/graph', createPrivateJsonOptions({ datetime, lat, lon, tz })),
+  getGraphEnvelope: ({ datetime, lat, lon, tz } = {}) =>
+    fetchAPIEnvelope('/kundali/graph', createPrivateJsonOptions({ datetime, lat, lon, tz })),
 };
 
 export const feedAPI = {

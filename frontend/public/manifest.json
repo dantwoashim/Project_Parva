@@ -1,7 +1,7 @@
 {
   "name": "Project Parva",
   "short_name": "Parva",
-  "description": "Nepal temporal authority interface with computed festival dates, personal panchanga, and verification metadata.",
+  "description": "A calm, premium guide to Nepal's sacred time with daily guidance, observances, and personal timing.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#faf7f2",
@@ -15,7 +15,7 @@
   "lang": "en",
   "icons": [
     {
-      "src": "/vite.svg",
+      "src": "/parva-mark.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
@@ -23,16 +23,16 @@
   ],
   "shortcuts": [
     {
-      "name": "Festival Explorer",
-      "short_name": "Explorer",
-      "description": "Browse computed and provisional festival coverage",
-      "url": "/"
+      "name": "Festivals",
+      "short_name": "Festivals",
+      "description": "Browse upcoming observances and seasonal rhythm",
+      "url": "/festivals"
     },
     {
-      "name": "Today's Panchanga",
-      "short_name": "Panchanga",
-      "description": "View the daily panchanga",
-      "url": "/panchanga"
+      "name": "Today",
+      "short_name": "Today",
+      "description": "See today's guidance for your place",
+      "url": "/today"
     }
   ]
 }

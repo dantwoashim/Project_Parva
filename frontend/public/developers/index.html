@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Parva Developer Onboarding</title>
+  <link rel="stylesheet" href="../portals.css" />
+</head>
+<body>
+  <main class="portal-shell">
+    <section class="portal-hero">
+      <div>
+        <p class="portal-eyebrow">Project Parva Developer Portal</p>
+        <h1 class="portal-title">Adopt the API without adopting chaos.</h1>
+        <p class="portal-subtitle">
+          Project Parva is a Nepal-focused temporal API and embed layer for
+          calendar, festival, panchanga, best-time, and birth-reading workflows. The stable
+          contract is <code>/v3/api/*</code>.
+        </p>
+      </div>
+      <div class="portal-actions">
+        <a class="portal-button portal-button--primary" href="/v3/docs">Open API Docs</a>
+        <a class="portal-button" href="/access/index.html">Choose Access Path</a>
+        <a class="portal-button" href="/embed/index.html">View Embed Examples</a>
+        <a class="portal-button" href="/source">Open Source</a>
+      </div>
+    </section>
+
+    <section class="portal-grid">
+      <article class="portal-card portal-card--third">
+        <h2>Public read</h2>
+        <p>Use this first if you need product routes, feeds, and embeds.</p>
+        <ul class="portal-list">
+          <li><code>/v3/api/calendar/today</code></li>
+          <li><code>/v3/api/festivals/upcoming</code></li>
+          <li><code>/v3/api/personal/panchanga</code></li>
+          <li><code>/v3/api/muhurta/heatmap</code></li>
+          <li><code>/v3/api/kundali</code></li>
+        </ul>
+      </article>
+
+      <article class="portal-card portal-card--third">
+        <h2>Evidence-backed reads</h2>
+        <p>Use these when you need reliability, conformance, and provenance visibility.</p>
+        <ul class="portal-list">
+          <li><code>/v3/api/reliability/status</code></li>
+          <li><code>/v3/api/spec/conformance</code></li>
+          <li><code>/v3/api/public/artifacts/manifest</code></li>
+          <li><code>/v3/api/provenance/root</code></li>
+        </ul>
+      </article>
+
+      <article class="portal-card portal-card--third">
+        <h2>Embeds</h2>
+        <p>Use these when you want a website integration without building on the API directly.</p>
+        <ul class="portal-list">
+          <li><code>/embed/temporal-compass.html</code></li>
+          <li><code>/embed/upcoming-festivals.html</code></li>
+          <li><code>/embed/parva-embed.js</code></li>
+        </ul>
+      </article>
+
+      <article class="portal-card portal-card--half">
+        <h2>10-minute start</h2>
+        <ol class="portal-steps">
+          <li>Hit <code>GET /v3/api/calendar/today</code> to confirm connectivity.</li>
+          <li>Use POST JSON for privacy-sensitive routes instead of query strings.</li>
+          <li>Keep <code>calculation_trace_id</code>, <code>method</code>, and <code>provenance</code>.</li>
+          <li>Use embeds first if you only need a public-facing website surface.</li>
+        </ol>
+      </article>
+
+      <article class="portal-card portal-card--half">
+        <h2>Commercial.read example</h2>
+        <pre><code>curl "https://your-host.example/v3/api/spec/conformance" ^
+  -H "X-API-Key: replace-me"</code></pre>
+        <p class="portal-note">
+          Evidence-backed routes are not part of the anonymous public surface.
+          They require <code>commercial.read</code> through <code>PARVA_API_KEYS</code>.
+        </p>
+      </article>
+
+      <article class="portal-card">
+        <h2>POST-first personal compute example</h2>
+        <pre><code>curl -X POST https://your-host.example/v3/api/temporal/compass ^
+  -H "Content-Type: application/json" ^
+  -d "{\"date\":\"2026-10-21\",\"lat\":\"27.7172\",\"lon\":\"85.3240\",\"tz\":\"Asia/Kathmandu\",\"quality_band\":\"computed\"}"</code></pre>
+      </article>
+
+      <article class="portal-card">
+        <h2>What to preserve in your own systems</h2>
+        <div class="portal-kpis">
+          <div class="portal-kpi">
+            <strong>Trace</strong>
+            <span><code>calculation_trace_id</code> lets you link results back to explainability.</span>
+          </div>
+          <div class="portal-kpi">
+            <strong>Method</strong>
+            <span><code>method</code> and <code>method_profile</code> keep your integration honest.</span>
+          </div>
+          <div class="portal-kpi">
+            <strong>Quality</strong>
+            <span><code>quality_band</code> and <code>assumption_set_id</code> preserve context.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="portal-card">
+        <h2>Truth-first constraints</h2>
+        <ul class="portal-list">
+          <li>This build is still under active review, not a final authority on every local tradition.</li>
+          <li>Variance notes should remain visible wherever results are presented as authoritative.</li>
+          <li>Hosted use on the zero-budget path still requires published corresponding source.</li>
+        </ul>
+        <div class="portal-links">
+          <a class="portal-link" href="/access/index.html">Access Paths</a>
+          <a class="portal-link" href="/institutions/index.html">Institution Launch Checklist</a>
+          <a class="portal-link" href="/health/ready">Readiness Check</a>
+          <a class="portal-link" href="/source">Repository Docs</a>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

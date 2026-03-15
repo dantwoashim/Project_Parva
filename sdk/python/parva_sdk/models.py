@@ -5,7 +5,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, Generic, Optional, TypeVar
 
-
 T = TypeVar("T")
 
 
@@ -73,6 +72,10 @@ class PolicyMeta:
 class ResponseMeta:
     confidence: ConfidenceMeta = field(default_factory=ConfidenceMeta)
     method: str = "unknown"
+    method_profile: Optional[str] = None
+    quality_band: Optional[str] = None
+    assumption_set_id: Optional[str] = None
+    advisory_scope: Optional[str] = None
     provenance: ProvenanceMeta = field(default_factory=ProvenanceMeta)
     uncertainty: UncertaintyMeta = field(default_factory=UncertaintyMeta)
     trace_id: Optional[str] = None
@@ -89,13 +92,17 @@ class ResponseMeta:
         return cls(
             confidence=confidence,
             method=str(payload.get("method", "unknown")),
+            method_profile=payload.get("method_profile"),
+            quality_band=payload.get("quality_band"),
+            assumption_set_id=payload.get("assumption_set_id"),
+            advisory_scope=payload.get("advisory_scope"),
             provenance=ProvenanceMeta.from_dict(
                 payload.get("provenance") if isinstance(payload.get("provenance"), dict) else {}
             ),
             uncertainty=UncertaintyMeta.from_dict(
                 payload.get("uncertainty") if isinstance(payload.get("uncertainty"), dict) else {}
             ),
-            trace_id=payload.get("trace_id"),
+            trace_id=payload.get("trace_id") or payload.get("calculation_trace_id"),
             policy=PolicyMeta.from_dict(payload.get("policy") if isinstance(payload.get("policy"), dict) else {}),
         )
 
@@ -112,5 +119,5 @@ class DataEnvelope(Generic[T]):
                 data=payload.get("data"),
                 meta=ResponseMeta.from_dict(payload.get("meta") if isinstance(payload.get("meta"), dict) else {}),
             )
-        # Compatibility mode for v3 payloads.
-        return cls(data=payload, meta=ResponseMeta())
+        # Compatibility mode for v3 payloads where metadata is flattened at the top level.
+        return cls(data=payload, meta=ResponseMeta.from_dict(payload))

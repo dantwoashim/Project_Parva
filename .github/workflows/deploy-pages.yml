@@ -29,21 +29,16 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install fastapi uvicorn pydantic pytest httpx pyswisseph aiohttp
+          pip install -c requirements/constraints.txt -e .[test,dev]
 
       - name: Generate precomputed artifacts
         run: |
           python scripts/precompute/precompute_all.py --start-year 2026 --end-year 2028
 
-      - name: Build rule-ingestion summary
+      - name: Generate conformance + public-beta reports
         run: |
-          PYTHONPATH=backend python scripts/rules/ingest_rule_sources.py --check --target 300 || \
-          PYTHONPATH=backend python scripts/rules/ingest_rule_sources.py --target 300
-
-      - name: Generate conformance + authority reports
-        run: |
-          PYTHONPATH=backend python scripts/spec/run_conformance_tests.py
-          PYTHONPATH=backend python scripts/generate_authority_dashboard.py
+          python scripts/spec/run_conformance_tests.py
+          python scripts/release/generate_public_beta_artifacts.py --target 300 --computed-target 300
 
       - name: Build static artifacts site
         run: python scripts/deploy/build_static_artifacts_site.py
