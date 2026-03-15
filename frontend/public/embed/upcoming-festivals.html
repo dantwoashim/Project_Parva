@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Parva Upcoming Festivals</title>
+  <link rel="stylesheet" href="./shared.css" />
+</head>
+<body>
+  <div class="widget-shell">
+    <section class="widget-card">
+      <header class="widget-header">
+        <div>
+          <p class="widget-eyebrow">Project Parva Embed</p>
+          <h1 class="widget-title">Upcoming Festivals</h1>
+          <p class="widget-subtitle" id="subtitle">Loading public-beta festival outlook...</p>
+        </div>
+        <span class="widget-badge">Public Beta</span>
+      </header>
+      <div class="widget-body">
+        <p class="widget-status" id="status">Loading...</p>
+        <ul class="widget-list" id="festival-list" hidden></ul>
+        <p style="margin-top:16px;">
+          <a class="widget-link" href="/festivals" target="_blank" rel="noreferrer">Open full festival explorer</a>
+        </p>
+      </div>
+    </section>
+  </div>
+  <script>
+    function params() {
+      return new URLSearchParams(window.location.search);
+    }
+
+    function festivalRange(item) {
+      if (!item) return '-';
+      if (!item.end_date || item.end_date === item.start_date) {
+        return item.start_date || '-';
+      }
+      return item.start_date + ' -> ' + item.end_date;
+    }
+
+    function createFestivalRow(item) {
+      const li = document.createElement('li');
+      const left = document.createElement('span');
+      const right = document.createElement('strong');
+      left.textContent = item.display_name || item.name || item.id || 'Festival';
+      right.textContent = festivalRange(item);
+      li.append(left, right);
+      return li;
+    }
+
+    async function loadWidget() {
+      const query = params();
+      const days = query.get('days') || '30';
+      const limit = Number(query.get('limit') || '5');
+      const qualityBand = query.get('quality_band') || 'computed';
+      const lang = query.get('lang') || 'en';
+
+      try {
+        const response = await fetch(
+          '/v3/api/festivals/upcoming?days='
+            + encodeURIComponent(days)
+            + '&quality_band='
+            + encodeURIComponent(qualityBand)
+            + '&lang='
+            + encodeURIComponent(lang),
+        );
+        const envelope = await response.json();
+        if (!response.ok) {
+          throw new Error(envelope.detail || 'Request failed');
+        }
+
+        const data = envelope.data || envelope;
+        const items = (data.festivals || []).slice(0, Math.max(limit, 1));
+        const status = document.getElementById('status');
+        const list = document.getElementById('festival-list');
+
+        status.hidden = true;
+        list.hidden = false;
+        document.getElementById('subtitle').textContent = 'Next ' + days + ' days';
+
+        if (!items.length) {
+          const empty = document.createElement('li');
+          empty.innerHTML = '<span>No festivals in this window.</span><strong>-</strong>';
+          list.appendChild(empty);
+          return;
+        }
+
+        items.forEach((item) => {
+          list.appendChild(createFestivalRow(item));
+        });
+      } catch (error) {
+        const status = document.getElementById('status');
+        status.dataset.state = 'error';
+        status.textContent = 'Unable to load widget: ' + (error && error.message ? error.message : String(error));
+      }
+    }
+
+    loadWidget();
+  </script>
+</body>
+</html>

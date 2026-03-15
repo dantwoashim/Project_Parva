@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,8 +23,12 @@ REPORTS_RELEASE_JSON = REPORTS_RELEASE_DIR / "month9_dossier.json"
 DOCS_RELEASE_MD = PROJECT_ROOT / "docs" / "public_beta" / "month9_release_dossier.md"
 
 
+class ArtifactError(RuntimeError):
+    """Raised when dossier prerequisites are missing or incomplete."""
+
+
 def _rel(path: Path) -> str:
-    return str(path.relative_to(PROJECT_ROOT))
+    return path.relative_to(PROJECT_ROOT).as_posix()
 
 
 def _read_json(path: Path) -> dict:
@@ -35,57 +40,132 @@ def _read_json(path: Path) -> dict:
         return {}
 
 
+def _require_json(path: Path) -> dict:
+    payload = _read_json(path)
+    if not payload:
+        raise ArtifactError(f"Missing or unreadable required artifact: {path}")
+    return payload
+
+
+def _require_response_json(response, *, label: str) -> dict:
+    if response.status_code != 200:
+        raise ArtifactError(f"{label} request failed with status {response.status_code}")
+    return response.json()
+
+
 def _load_known_limits() -> list[str]:
     known_limits_path = PROJECT_ROOT / "docs" / "KNOWN_LIMITS.md"
     if not known_limits_path.exists():
         return []
 
     lines = known_limits_path.read_text(encoding="utf-8").splitlines()
-    bullet_lines = [
-        line.strip().lstrip("- ").strip() for line in lines if line.strip().startswith("-")
+    extracted: list[str] = []
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith(("-", "*")):
+            extracted.append(line[1:].strip())
+            continue
+        if re.match(r"^\d+\.\s+", line):
+            extracted.append(re.sub(r"^\d+\.\s+", "", line))
+    return [line for line in extracted if line]
+
+
+def _validate_quality_gates(payload: dict) -> None:
+    required_paths = [
+        ("quality_gates.conformance.total", payload["quality_gates"]["conformance"].get("total")),
+        ("quality_gates.conformance.passed", payload["quality_gates"]["conformance"].get("passed")),
+        (
+            "quality_gates.conformance.pass_rate",
+            payload["quality_gates"]["conformance"].get("pass_rate"),
+        ),
+        (
+            "quality_gates.authority_dashboard.conformance_pass_rate",
+            payload["quality_gates"]["authority_dashboard"].get("conformance_pass_rate"),
+        ),
+        (
+            "quality_gates.authority_dashboard.catalog_total",
+            payload["quality_gates"]["authority_dashboard"].get("catalog_total"),
+        ),
+        (
+            "quality_gates.authority_dashboard.catalog_coverage_pct",
+            payload["quality_gates"]["authority_dashboard"].get("catalog_coverage_pct"),
+        ),
+        (
+            "quality_gates.accuracy.total_comparisons",
+            payload["quality_gates"]["accuracy"].get("total_comparisons"),
+        ),
+        (
+            "quality_gates.accuracy.accuracy_pct",
+            payload["quality_gates"]["accuracy"].get("accuracy_pct"),
+        ),
+        (
+            "quality_gates.accuracy.within_one_day_pct",
+            payload["quality_gates"]["accuracy"].get("within_one_day_pct"),
+        ),
     ]
-    return [line for line in bullet_lines if line]
+    missing = [path for path, value in required_paths if value is None]
+    if missing:
+        raise ArtifactError(f"Month 9 dossier has null quality-gate fields: {', '.join(missing)}")
 
 
 def _build_payload() -> dict:
     client = TestClient(app)
 
     scoreboard = get_rules_scoreboard(target=300)
-    plugin_quality = client.get("/v3/api/engine/plugins/quality").json()
+    plugin_quality = _require_response_json(
+        client.get("/v3/api/engine/plugins/quality"),
+        label="plugin quality",
+    )
 
-    personal = client.get(
-        "/v3/api/personal/panchanga",
-        params={"date": "2026-02-15", "lat": 27.7172, "lon": 85.3240, "tz": "Asia/Kathmandu"},
-    ).json()
-    muhurta = client.get(
-        "/v3/api/muhurta/auspicious",
-        params={
-            "date": "2026-02-15",
-            "type": "vivah",
-            "lat": 27.7172,
-            "lon": 85.3240,
-            "tz": "Asia/Kathmandu",
-            "birth_nakshatra": "7",
-            "assumption_set": "np-mainstream-v2",
-        },
-    ).json()
-    kundali = client.get(
-        "/v3/api/kundali",
-        params={
-            "datetime": "2026-02-15T06:30:00+05:45",
-            "lat": 27.7172,
-            "lon": 85.3240,
-            "tz": "Asia/Kathmandu",
-        },
-    ).json()
+    personal = _require_response_json(
+        client.get(
+            "/v3/api/personal/panchanga",
+            params={
+                "date": "2026-02-15",
+                "lat": 27.7172,
+                "lon": 85.3240,
+                "tz": "Asia/Kathmandu",
+            },
+        ),
+        label="personal panchanga",
+    )
+    muhurta = _require_response_json(
+        client.get(
+            "/v3/api/muhurta/auspicious",
+            params={
+                "date": "2026-02-15",
+                "type": "vivah",
+                "lat": 27.7172,
+                "lon": 85.3240,
+                "tz": "Asia/Kathmandu",
+                "birth_nakshatra": "7",
+                "assumption_set": "np-mainstream-v2",
+            },
+        ),
+        label="muhurta auspicious",
+    )
+    kundali = _require_response_json(
+        client.get(
+            "/v3/api/kundali",
+            params={
+                "datetime": "2026-02-15T06:30:00+05:45",
+                "lat": 27.7172,
+                "lon": 85.3240,
+                "tz": "Asia/Kathmandu",
+            },
+        ),
+        label="kundali",
+    )
 
-    conformance = _read_json(PROJECT_ROOT / "reports" / "conformance_report.json")
-    authority = _read_json(PROJECT_ROOT / "reports" / "authority_dashboard.json")
-    accuracy = _read_json(PROJECT_ROOT / "reports" / "accuracy" / "annual_accuracy_2082.json")
+    conformance = _require_json(PROJECT_ROOT / "reports" / "conformance_report.json")
+    authority = _require_json(PROJECT_ROOT / "reports" / "authority_dashboard.json")
+    accuracy = _require_json(PROJECT_ROOT / "reports" / "accuracy" / "annual_accuracy_2082.json")
 
-    return {
+    payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "release_track": "v3-public-month9",
+        "release_track": "public-beta-v3",
         "coverage_scoreboard": scoreboard,
         "plugin_quality": plugin_quality,
         "quality_gates": {
@@ -141,6 +221,8 @@ def _build_payload() -> dict:
             ),
         },
     }
+    _validate_quality_gates(payload)
+    return payload
 
 
 def _render_markdown(payload: dict) -> str:
@@ -149,7 +231,7 @@ def _render_markdown(payload: dict) -> str:
     personal = payload["personal_stack_methodology"]
 
     lines = [
-        "# Month 9 Release Dossier (v3 Public)",
+        "# Month 9 Release Dossier (Public Beta)",
         "",
         f"Generated at: `{payload['generated_at']}`",
         "",
@@ -201,9 +283,9 @@ def _render_markdown(payload: dict) -> str:
             "",
             "## Evidence Artifacts",
             "",
-            f"- `{payload['artifacts']['conformance_report']}`",
-            f"- `{payload['artifacts']['authority_dashboard']}`",
-            f"- `{payload['artifacts']['accuracy_report']}`",
+            f"- `{payload['artifacts']['conformance_report']}` (generated artifact)",
+            f"- `{payload['artifacts']['authority_dashboard']}` (generated artifact)",
+            f"- `{payload['artifacts']['accuracy_report']}` (generated artifact)",
             f"- `{payload['artifacts']['coverage_catalog']}`",
             "",
         ]
@@ -213,7 +295,11 @@ def _render_markdown(payload: dict) -> str:
 
 
 def main() -> int:
-    payload = _build_payload()
+    try:
+        payload = _build_payload()
+    except ArtifactError as exc:
+        print(f"[FAIL] {exc}")
+        return 1
 
     REPORTS_RELEASE_DIR.mkdir(parents=True, exist_ok=True)
     REPORTS_RELEASE_JSON.write_text(

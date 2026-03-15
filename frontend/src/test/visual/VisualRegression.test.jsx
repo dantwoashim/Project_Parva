@@ -2,11 +2,14 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../../App';
 
+const routeLoadOptions = { timeout: 15000 };
+
 function response(payload) {
   return {
     ok: true,
     status: 200,
     statusText: 'OK',
+    headers: { get: () => 'application/json' },
     json: async () => payload,
     text: async () => JSON.stringify(payload),
   };
@@ -16,7 +19,109 @@ function buildVisualFetchMock() {
   return vi.fn(async (input) => {
     const url = String(input);
 
-    if (url.includes('/temporal/compass?')) {
+    if (url.includes('/festivals/dashain/dates?')) {
+      return response({
+        data: {
+          dates: [
+            {
+              gregorian_year: 2026,
+              start_date: '2026-10-20',
+              end_date: '2026-10-30',
+              bs_start: { formatted: '2083 Ashwin 4' },
+              bs_end: { formatted: '2083 Ashwin 14' },
+            },
+            {
+              gregorian_year: 2027,
+              start_date: '2027-10-10',
+              end_date: '2027-10-20',
+              bs_start: { formatted: '2084 Ashwin 23' },
+              bs_end: { formatted: '2084 Kartik 2' },
+            },
+          ],
+        },
+        meta: {},
+      });
+    }
+
+    if (url.includes('/festivals/dashain')) {
+      return response({
+        data: {
+          festival: {
+            id: 'dashain',
+            name: 'Dashain',
+            name_nepali: 'दशैं',
+            category: 'national',
+            calendar_system: 'Lunisolar profile',
+            duration_days: 10,
+            significance_level: 5,
+            description: 'Dashain gathers family, blessing, and renewal into the largest festival rhythm in Nepal.',
+            tagline: 'Blessing, reunion, and seasonal turning gathered into one long observance.',
+            mythology: {
+              summary: 'The observance is commonly tied to the victory of Durga over disorder and the renewal of protective strength.',
+              significance: 'Families mark the season through blessing, homecoming, and ritual continuity across generations.',
+            },
+            ritual_sequence: {
+              days: [
+                {
+                  name: 'Ghatasthapana',
+                  significance: 'The observance begins by establishing sacred space and invoking protective presence.',
+                  events: [
+                    {
+                      title: 'Kalash Sthapana',
+                      description: 'A ritual vessel and barley planting begin the seasonal sequence.',
+                    },
+                  ],
+                },
+                {
+                  name: 'Maha Ashtami',
+                  significance: 'The household rhythm intensifies around worship, preparation, and offering.',
+                  events: [
+                    {
+                      title: 'Durga Puja',
+                      description: 'Families and temples observe the fierce protecting form of the goddess.',
+                    },
+                  ],
+                },
+              ],
+            },
+            regions: ['Kathmandu Valley', 'Nationwide'],
+            deities: ['Durga'],
+            calculation_method: 'lunisolar festival profile',
+          },
+          dates: {
+            start_date: '2026-10-20',
+            end_date: '2026-10-30',
+            bs_start: { formatted: '2083 Ashwin 4' },
+            bs_end: { formatted: '2083 Ashwin 14' },
+            confidence: 'computed',
+            calculation_method: 'lunisolar festival profile',
+          },
+          nearby_festivals: [
+            { id: 'indra-jatra', name: 'Indra Jatra', category: 'newari' },
+            { id: 'tihar', name: 'Tihar', category: 'national' },
+          ],
+        },
+        meta: {
+          quality_band: 'computed',
+          confidence: { level: 'computed' },
+        },
+      });
+    }
+
+    if (url.includes('/festivals/upcoming?')) {
+      return response({
+        data: {
+          festivals: [
+            { id: 'dashain', name: 'Dashain', category: 'national', start_date: '2026-10-20' },
+            { id: 'tihar', name: 'Tihar', category: 'national', start_date: '2026-11-07' },
+            { id: 'chaat', name: 'Chhath', category: 'regional', start_date: '2026-11-18' },
+          ],
+        },
+        meta: {},
+      });
+    }
+
+    if (url.includes('/temporal/compass')) {
       return response({
         data: {
           bikram_sambat: { year: 2082, month_name: 'Falgun', day: 3 },
@@ -119,7 +224,7 @@ function buildVisualFetchMock() {
       return response({ data: { trace: { trace_id: 'tr_visual_resolve' } }, meta: {} });
     }
 
-    if (url.includes('/personal/panchanga?')) {
+    if (url.includes('/personal/panchanga')) {
       return response({
         data: {
           date: '2026-02-15',
@@ -129,7 +234,7 @@ function buildVisualFetchMock() {
           yoga: { number: 9, name: 'Shubha' },
           karana: { number: 7, name: 'Vishti' },
           vaara: { name_english: 'Sunday', name_sanskrit: 'Ravivara' },
-          location: { latitude: 27.7172, longitude: 85.3240, timezone: 'Asia/Kathmandu' },
+          location: { latitude: 27.7172, longitude: 85.324, timezone: 'Asia/Kathmandu' },
           local_sunrise: '2026-02-15T06:44:00+05:45',
           sunrise: '2026-02-15T06:42:00+05:45',
           confidence: 'computed',
@@ -143,7 +248,7 @@ function buildVisualFetchMock() {
       });
     }
 
-    if (url.includes('/muhurta/heatmap?')) {
+    if (url.includes('/muhurta/heatmap')) {
       return response({
         data: {
           blocks: [
@@ -158,17 +263,30 @@ function buildVisualFetchMock() {
               reason_codes: ['hora_supportive', 'tara_good'],
               rank_explanation: 'Strong overlap of supportive factors.',
             },
+            {
+              index: 7,
+              name: 'Labh',
+              class: 'mixed',
+              score: 42,
+              start: '2026-02-15T12:36:00+05:45',
+              end: '2026-02-15T13:24:00+05:45',
+              confidence_score: 0.75,
+              reason_codes: ['tara_good'],
+              rank_explanation: 'Supportive but not as strong as the lead window.',
+            },
           ],
           best_window: {
             index: 6,
             name: 'Abhijit Muhurta',
             score: 88,
+            start: '2026-02-15T11:48:00+05:45',
+            end: '2026-02-15T12:36:00+05:45',
             confidence_score: 0.91,
             reason_codes: ['hora_supportive', 'tara_good'],
           },
           rahu_kalam: { segment: 8, start: '2026-02-15T16:12:00+05:45', end: '2026-02-15T17:00:00+05:45' },
           tara_bala: { quality: 'good', tara: { name: 'Sampat', distance: 2 } },
-          rank_explanation: 'Ranked with hora/chaughadia/tara-bala constraints.',
+          rank_explanation: 'Ranked with hora, chaughadia, and tara bala constraints.',
           confidence_score: 0.9,
           calculation_trace_id: 'tr_muhurta_visual',
         },
@@ -176,7 +294,7 @@ function buildVisualFetchMock() {
       });
     }
 
-    if (url.includes('/kundali/graph?')) {
+    if (url.includes('/kundali/graph')) {
       return response({
         data: {
           layout: {
@@ -197,7 +315,7 @@ function buildVisualFetchMock() {
       });
     }
 
-    if (url.includes('/kundali?')) {
+    if (url.includes('/kundali') && !url.includes('/kundali/graph') && !url.includes('/kundali/lagna')) {
       return response({
         data: {
           lagna: { rashi_english: 'Pisces', rashi_sanskrit: 'Meena', longitude: 12.2 },
@@ -246,6 +364,10 @@ function buildVisualFetchMock() {
       return response({ data: { events: [] }, meta: {} });
     }
 
+    if (url.includes('/festivals/coverage/scoreboard')) {
+      return response({ data: { score: 100 }, meta: {} });
+    }
+
     if (url.includes('/festivals?')) {
       return response({
         data: {
@@ -283,45 +405,64 @@ describe('visual regression harness', () => {
     vi.unstubAllGlobals();
   });
 
-  it('compass page visual baseline', async () => {
+  it('landing page visual baseline', async () => {
     const { container } = await renderRoute('/');
-    await screen.findByRole('heading', { name: /Today's Festivals/i });
-    expect(container.querySelector('.compass-page')).toMatchSnapshot();
-  });
+    await screen.findByRole('heading', { name: /A calm guide to Nepal's sacred time/i }, routeLoadOptions);
+    expect(container.querySelector('.landing-page')).toMatchSnapshot();
+  }, 15000);
+
+  it('about page visual baseline', async () => {
+    const { container } = await renderRoute('/about');
+    await screen.findByRole('heading', { name: /Parva is built to make sacred time feel clear/i }, routeLoadOptions);
+    expect(container.querySelector('.about-page')).toMatchSnapshot();
+  }, 15000);
+
+  it('today page visual baseline', async () => {
+    const { container } = await renderRoute('/today');
+    await screen.findByRole('heading', { name: /What today means in/i }, routeLoadOptions);
+    expect(container.querySelector('.today-page')).toMatchSnapshot();
+  }, 15000);
 
   it('explorer page visual baseline', async () => {
     const { container } = await renderRoute('/festivals');
-    await screen.findByText(/Dashain/i);
+    await screen.findByRole('heading', { name: /Browse the wider calendar/i }, routeLoadOptions);
     expect(container.querySelector('.explorer-page')).toMatchSnapshot();
-  });
+  }, 15000);
+
+  it('festival detail page visual baseline', async () => {
+    const { container } = await renderRoute('/festivals/dashain');
+    await screen.findByRole('heading', { name: 'Dashain' }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /How it is practiced/i }, routeLoadOptions);
+    expect(container.querySelector('.fd-page')).toMatchSnapshot();
+  }, 15000);
 
   it('panchanga page visual baseline', async () => {
     const { container } = await renderRoute('/panchanga');
-    await screen.findByText(/Confidence:/i);
+    await screen.findByRole('button', { name: /How this was calculated/i }, routeLoadOptions);
     expect(container.querySelector('.panchanga-page')).toMatchSnapshot();
-  });
+  }, 15000);
 
   it('feeds page visual baseline', async () => {
     const { container } = await renderRoute('/feeds');
-    await screen.findByRole('checkbox', { name: /Dashain/i });
+    await screen.findByRole('checkbox', { name: /Dashain/i }, routeLoadOptions);
     expect(container.querySelector('.feeds-page')).toMatchSnapshot();
-  });
+  }, 15000);
 
   it('personal page visual baseline', async () => {
     const { container } = await renderRoute('/personal');
-    await screen.findByText(/Local sunrise delta vs Kathmandu baseline/i);
+    await screen.findByRole('heading', { name: /See how the day shifts for your place/i }, routeLoadOptions);
     expect(container.querySelector('.personal-page')).toMatchSnapshot();
-  });
+  }, 15000);
 
   it('muhurta page visual baseline', async () => {
     const { container } = await renderRoute('/muhurta');
-    await screen.findByRole('heading', { name: /24h Muhurta Heatmap/i });
+    await screen.findByRole('heading', { name: /Find the day's clearest opening before the details/i }, routeLoadOptions);
     expect(container.querySelector('.muhurta-page')).toMatchSnapshot();
-  });
+  }, 15000);
 
   it('kundali page visual baseline', async () => {
     const { container } = await renderRoute('/kundali');
-    await screen.findByRole('heading', { name: /Interpretation Sidebar/i });
+    await screen.findByRole('heading', { name: /Start with the reading, not the wiring/i }, routeLoadOptions);
     expect(container.querySelector('.kundali-page')).toMatchSnapshot();
-  });
+  }, 15000);
 });

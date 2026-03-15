@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Parva Embed Examples</title>
+  <link rel="stylesheet" href="./shared.css" />
+  <style>
+    .gallery {
+      display: grid;
+      gap: 18px;
+    }
+
+    .example-frame {
+      width: 100%;
+      min-height: 320px;
+      border: 0;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: var(--parva-shadow);
+    }
+
+    pre {
+      margin: 0;
+      overflow: auto;
+      padding: 14px;
+      border-radius: 14px;
+      background: #211a16;
+      color: #fff7ef;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-shell">
+    <section class="widget-card">
+      <header class="widget-header">
+        <div>
+          <p class="widget-eyebrow">Project Parva Embed</p>
+          <h1 class="widget-title">Embed Examples</h1>
+          <p class="widget-subtitle">These are the static institutional widgets shipped with the frontend build.</p>
+        </div>
+        <span class="widget-badge">Public Beta</span>
+      </header>
+      <div class="widget-body gallery">
+        <article class="widget-panel">
+          <p class="widget-label">Temporal Compass</p>
+          <iframe
+            class="example-frame"
+            src="./temporal-compass.html?date=2026-10-21&lat=27.7172&lon=85.3240&tz=Asia%2FKathmandu"
+            title="Temporal Compass Example"
+          ></iframe>
+        </article>
+        <article class="widget-panel">
+          <p class="widget-label">Upcoming Festivals</p>
+          <iframe
+            class="example-frame"
+            src="./upcoming-festivals.html?days=30&limit=4"
+            title="Upcoming Festivals Example"
+          ></iframe>
+        </article>
+        <article class="widget-panel">
+          <p class="widget-label">Loader Script</p>
+          <pre>&lt;div
+  data-parva-widget="temporal-compass"
+  data-date="2026-10-21"
+  data-lat="27.7172"
+  data-lon="85.3240"
+  data-tz="Asia/Kathmandu"
+  data-height="320"
+&gt;&lt;/div&gt;
+
+&lt;script async src="https://your-parva-host.example/embed/parva-embed.js"&gt;&lt;/script&gt;</pre>
+        </article>
+        <article class="widget-panel">
+          <p class="widget-label">Next Surfaces</p>
+          <p style="margin:0 0 10px;color:#6d6258;line-height:1.6;">
+            Need rollout help instead of just the widgets?
+          </p>
+          <p style="margin:0;">
+            <a class="widget-link" href="/developers/index.html">Developer Onboarding</a>
+            <span style="color:#6d6258;"> · </span>
+            <a class="widget-link" href="/institutions/index.html">Institution Launch Checklist</a>
+          </p>
+        </article>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

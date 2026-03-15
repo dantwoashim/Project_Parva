@@ -41,6 +41,39 @@ def load_precomputed_festival_year(year: int) -> Optional[dict[str, Any]]:
     return payload
 
 
+def load_precomputed_festivals_between(start_date: date, end_date: date) -> Optional[list[dict[str, Any]]]:
+    rows: list[dict[str, Any]] = []
+
+    for year in range(start_date.year, end_date.year + 1):
+        payload = load_precomputed_festival_year(year)
+        if not payload or not isinstance(payload.get("festivals"), list):
+            return None
+
+        for row in payload["festivals"]:
+            try:
+                festival_start = date.fromisoformat(str(row["start"]))
+                festival_end = date.fromisoformat(str(row["end"]))
+            except Exception:
+                continue
+
+            if festival_end < start_date or festival_start > end_date:
+                continue
+
+            rows.append(
+                {
+                    "festival_id": row["festival_id"],
+                    "start_date": festival_start,
+                    "end_date": festival_end,
+                    "year": year,
+                    "method": row.get("method", "precomputed"),
+                    "lunar_month": row.get("lunar_month"),
+                    "is_adhik_year": bool(row.get("is_adhik_year", False)),
+                }
+            )
+
+    return rows
+
+
 def get_cache_stats() -> dict[str, Any]:
     PRECOMPUTE_DIR.mkdir(parents=True, exist_ok=True)
     files = sorted(PRECOMPUTE_DIR.glob("*.json"))

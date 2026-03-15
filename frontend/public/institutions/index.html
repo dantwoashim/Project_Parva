@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Parva Institution Launch Checklist</title>
+  <link rel="stylesheet" href="../portals.css" />
+</head>
+<body>
+  <main class="portal-shell">
+    <section class="portal-hero">
+      <div>
+        <p class="portal-eyebrow">Project Parva Institution Portal</p>
+        <h1 class="portal-title">Launch carefully, not casually.</h1>
+        <p class="portal-subtitle">
+          This checklist is for municipalities, publishers, temples, schools, and community
+          organizations that want to launch Parva publicly while staying aligned with the
+          current methodology, release review, and AGPL source obligations.
+        </p>
+      </div>
+      <div class="portal-actions">
+        <a class="portal-button portal-button--primary" href="/embed/index.html">Embed Examples</a>
+        <a class="portal-button" href="/access/index.html">Choose Access Path</a>
+        <a class="portal-button" href="/developers/index.html">Developer Onboarding</a>
+        <a class="portal-button" href="/source">Source and Docs</a>
+      </div>
+    </section>
+
+    <section class="portal-grid">
+      <article class="portal-card portal-card--half">
+        <h2>Before launch</h2>
+        <ol class="portal-steps">
+          <li>State clearly what has been reviewed and what can still vary.</li>
+          <li>Keep variance notes visible in operator or editor handoff.</li>
+          <li>Publish the corresponding source for the deployed build.</li>
+          <li>Set <code>PARVA_SOURCE_URL</code> and verify <code>/source</code>.</li>
+        </ol>
+      </article>
+
+      <article class="portal-card portal-card--half">
+        <h2>Choose a rollout path</h2>
+        <ul class="portal-list">
+          <li>Informational website: use embeds first.</li>
+          <li>Product integration: use the public <code>v3</code> API.</li>
+          <li>Evidence-backed review: add a <code>commercial.read</code> key.</li>
+        </ul>
+      </article>
+
+      <article class="portal-card">
+        <h2>Release gate command set</h2>
+        <pre><code>py -3.11 scripts/release/check_repo_hygiene.py
+py -3.11 scripts/release/check_sdk_install.py
+py -3.11 -m pytest -q
+py -3.11 scripts/release/check_contract_freeze.py
+py -3.11 scripts/spec/run_conformance_tests.py
+py -3.11 scripts/release/generate_public_beta_artifacts.py --target 300 --computed-target 300
+npm --prefix frontend run build
+py -3.11 scripts/run_browser_smoke.py</code></pre>
+      </article>
+
+      <article class="portal-card portal-card--third">
+        <h2>Must-pass pages</h2>
+        <ul class="portal-list">
+          <li><code>/</code></li>
+          <li><code>/festivals</code></li>
+          <li><code>/my-place</code></li>
+          <li><code>/best-time</code></li>
+          <li><code>/birth-reading</code></li>
+        </ul>
+      </article>
+
+      <article class="portal-card portal-card--third">
+        <h2>Must-pass embeds</h2>
+        <ul class="portal-list">
+          <li><code>/embed/temporal-compass.html</code></li>
+          <li><code>/embed/upcoming-festivals.html</code></li>
+          <li><code>/embed/parva-embed.js</code></li>
+        </ul>
+      </article>
+
+      <article class="portal-card portal-card--third">
+        <h2>Must-pass health</h2>
+        <ul class="portal-list">
+          <li><code>/health/live</code></li>
+          <li><code>/health/ready</code></li>
+          <li><code>/v3/api/calendar/today</code></li>
+          <li><code>/source</code></li>
+        </ul>
+      </article>
+
+      <article class="portal-card">
+        <h2>Metadata to keep</h2>
+        <div class="portal-kpis">
+          <div class="portal-kpi">
+            <strong>Trace ID</strong>
+            <span>Keep <code>calculation_trace_id</code> for auditability and support.</span>
+          </div>
+          <div class="portal-kpi">
+            <strong>Method</strong>
+            <span>Keep <code>method</code> and <code>method_profile</code> in ops notes or logs.</span>
+          </div>
+          <div class="portal-kpi">
+            <strong>Policy</strong>
+            <span>Keep <code>quality_band</code>, <code>assumption_set_id</code>, and <code>policy</code>.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="portal-card">
+        <h2>What not to claim yet</h2>
+        <ul class="portal-list">
+          <li>Do not market the current build as the final authority for every tradition and locality.</li>
+          <li>Do not promise zero issues or perfect universal accuracy.</li>
+          <li>Do not hide review posture or variance notes from editors, operators, or end users.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

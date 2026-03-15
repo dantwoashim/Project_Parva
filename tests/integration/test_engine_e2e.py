@@ -9,6 +9,7 @@ def test_e2e_calendar_today_pipeline_has_metadata_and_npt_sunrise():
     response = client.get("/api/calendar/today")
     assert response.status_code == 200
     assert response.headers["X-Parva-Engine"] == "v3"
+    assert response.headers["X-Parva-License"] == "AGPL-3.0-or-later"
 
     data = response.json()
     tithi = data["tithi"]

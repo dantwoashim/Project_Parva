@@ -78,7 +78,7 @@ describe('FestivalDetailPage', () => {
     );
 
     expect(await screen.findByRole('heading', { name: 'Dashain' })).toBeInTheDocument();
-    expect(await screen.findByRole('heading', { name: /Calculation/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Method and technical details/i)).toBeInTheDocument();
     expect(await screen.findByText(/Ghatasthapana/i)).toBeInTheDocument();
     expect(await screen.findByText(/Kalash Sthapana/i)).toBeInTheDocument();
   });

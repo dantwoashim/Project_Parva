@@ -15,5 +15,7 @@ services:
         value: "true"
       - key: PARVA_SERVE_FRONTEND
         value: "true"
+      - key: PARVA_SOURCE_URL
+        sync: false
       - key: CORS_ALLOW_ORIGINS
         value: https://project-parva.onrender.com

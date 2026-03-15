@@ -4,29 +4,40 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT_DIR"
 
-echo "[Month9] 1/8 Rule ingestion drift + computed target gate"
-PYTHONPATH=backend python3 scripts/rules/ingest_rule_sources.py --check --target 300 --computed-target 300
+echo "[Month9] 1/12 Repo hygiene"
+python3 scripts/release/check_repo_hygiene.py
 
-echo "[Month9] 2/8 Backend test suite"
+echo "[Month9] 2/12 Render blueprint"
+python3 scripts/release/check_render_blueprint.py
+
+echo "[Month9] 3/12 SDK install surface"
+python3 scripts/release/check_sdk_install.py
+
+echo "[Month9] 4/12 License compliance"
+PYTHONPATH=backend python3 scripts/release/check_license_compliance.py
+
+echo "[Month9] 5/12 Backend test suite"
 PYTHONPATH=backend python3 -m pytest -q
 
-echo "[Month9] 3/8 Conformance pack"
+echo "[Month9] 6/12 Conformance pack"
 PYTHONPATH=backend python3 scripts/spec/run_conformance_tests.py
 
-echo "[Month9] 4/8 Contract freeze"
+echo "[Month9] 7/12 Contract freeze"
 PYTHONPATH=backend python3 scripts/release/check_contract_freeze.py
 
-echo "[Month9] 5/8 Accuracy benchmark"
-PYTHONPATH=backend python3 scripts/generate_accuracy_report.py
+echo "[Month9] 8/12 Public beta artifacts"
+python3 scripts/release/generate_public_beta_artifacts.py --target 300 --computed-target 300
 
-echo "[Month9] 6/8 Authority dashboard"
-PYTHONPATH=backend python3 scripts/generate_authority_dashboard.py
+echo "[Month9] 9/12 Frontend lint"
+npm --prefix frontend run lint
 
-echo "[Month9] 7/8 Evaluator dossier"
-PYTHONPATH=backend python3 scripts/release/generate_month9_dossier.py
-
-echo "[Month9] 8/8 Frontend tests + build"
+echo "[Month9] 10/12 Frontend tests"
 npm --prefix frontend test -- --run
+
+echo "[Month9] 11/12 Frontend build"
 npm --prefix frontend run build
+
+echo "[Month9] 12/12 Browser smoke"
+python3 scripts/run_browser_smoke.py
 
 echo "[Month9] All release gates passed."

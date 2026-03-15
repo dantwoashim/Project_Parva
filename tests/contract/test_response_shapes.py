@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 def _assert_common_headers(response):
     assert response.headers.get("X-Parva-Engine") == "v3"
     assert response.headers.get("X-Parva-Ephemeris")
+    assert response.headers.get("X-Parva-License") == "AGPL-3.0-or-later"
 
 
 def test_convert_contract_fields():

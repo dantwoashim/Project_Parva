@@ -45,7 +45,7 @@ Primary widgets:
 - Today festival quick cards
 
 Data source:
-- `GET /v3/api/temporal/compass`
+- `POST /v3/api/temporal/compass` with JSON body for date/location inputs
 
 Authority mode:
 - Shows `Temporal Compass Authority` inspector card.
@@ -94,7 +94,7 @@ Primary widgets:
 - Sunrise delta indicator vs Kathmandu baseline
 
 Data source:
-- `GET /v3/api/personal/panchanga`
+- `POST /v3/api/personal/panchanga`
 
 ### `/muhurta`
 Primary widgets:
@@ -105,7 +105,7 @@ Primary widgets:
 - Knowledge panel
 
 Data source:
-- `GET /v3/api/muhurta/heatmap`
+- `POST /v3/api/muhurta/heatmap`
 
 ### `/kundali`
 Primary widgets:
@@ -117,8 +117,8 @@ Primary widgets:
 - Knowledge panel
 
 Data sources:
-- `GET /v3/api/kundali`
-- `GET /v3/api/kundali/graph`
+- `POST /v3/api/kundali`
+- `POST /v3/api/kundali/graph`
 - `GET /v3/api/glossary?domain=kundali&lang=`
 
 ### `/feeds`

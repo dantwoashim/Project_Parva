@@ -5,11 +5,13 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import APIRouter, Query
+from pydantic import BaseModel, Field
 
 from app.explainability import create_reason_trace
 from app.services import build_temporal_compass
 
 from ._personal_utils import (
+    CoordinateInput,
     base_meta_payload,
     normalize_coordinates,
     normalize_timezone,
@@ -19,13 +21,21 @@ from ._personal_utils import (
 router = APIRouter(prefix="/api/temporal", tags=["temporal"])
 
 
-@router.get("/compass")
-async def temporal_compass(
-    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
-    lat: Optional[str] = Query(None, description="Latitude"),
-    lon: Optional[str] = Query(None, description="Longitude"),
-    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
-    quality_band: str = Query("computed", description="computed|provisional|inventory|all"),
+class TemporalCompassRequest(BaseModel):
+    date: str = Field(..., description="Gregorian date in YYYY-MM-DD format")
+    lat: CoordinateInput = Field(None, description="Latitude")
+    lon: CoordinateInput = Field(None, description="Longitude")
+    tz: Optional[str] = Field("Asia/Kathmandu", description="IANA timezone")
+    quality_band: str = Field("computed", description="computed|provisional|inventory|all")
+
+
+def _build_temporal_compass_response(
+    *,
+    date_str: str,
+    lat: CoordinateInput,
+    lon: CoordinateInput,
+    tz: Optional[str],
+    quality_band: str,
 ):
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
@@ -73,3 +83,31 @@ async def temporal_compass(
             advisory_scope="informational",
         ),
     }
+
+
+@router.get("/compass")
+async def temporal_compass(
+    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
+    lat: Optional[str] = Query(None, description="Latitude"),
+    lon: Optional[str] = Query(None, description="Longitude"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+    quality_band: str = Query("computed", description="computed|provisional|inventory|all"),
+):
+    return _build_temporal_compass_response(
+        date_str=date_str,
+        lat=lat,
+        lon=lon,
+        tz=tz,
+        quality_band=quality_band,
+    )
+
+
+@router.post("/compass")
+async def temporal_compass_post(payload: TemporalCompassRequest):
+    return _build_temporal_compass_response(
+        date_str=payload.date,
+        lat=payload.lat,
+        lon=payload.lon,
+        tz=payload.tz,
+        quality_band=payload.quality_band,
+    )

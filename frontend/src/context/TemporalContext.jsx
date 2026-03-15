@@ -1,10 +1,17 @@
-import { useEffect, useMemo, useReducer } from 'react';
+import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { TemporalContext } from './temporalContextShared';
 import { STORAGE_KEY, loadInitialState, reducer } from './temporalContextState';
 
 export function TemporalProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, undefined, loadInitialState);
+
+  const setDate = useCallback((date) => dispatch({ type: 'setDate', payload: date }), []);
+  const setLocation = useCallback((location) => dispatch({ type: 'setLocation', payload: location }), []);
+  const setTimezone = useCallback((timezone) => dispatch({ type: 'setTimezone', payload: timezone }), []);
+  const setLanguage = useCallback((language) => dispatch({ type: 'setLanguage', payload: language }), []);
+  const setTheme = useCallback((theme) => dispatch({ type: 'setTheme', payload: theme }), []);
+  const setLastViewed = useCallback((path) => dispatch({ type: 'setLastViewed', payload: path }), []);
 
   useEffect(() => {
     try {
@@ -19,13 +26,13 @@ export function TemporalProvider({ children }) {
 
   const value = useMemo(() => ({
     state,
-    setDate: (date) => dispatch({ type: 'setDate', payload: date }),
-    setLocation: (location) => dispatch({ type: 'setLocation', payload: location }),
-    setTimezone: (timezone) => dispatch({ type: 'setTimezone', payload: timezone }),
-    setMode: (mode) => dispatch({ type: 'setMode', payload: mode }),
-    setLanguage: (language) => dispatch({ type: 'setLanguage', payload: language }),
-    setQualityBand: (qualityBand) => dispatch({ type: 'setQualityBand', payload: qualityBand }),
-  }), [state]);
+    setDate,
+    setLocation,
+    setTimezone,
+    setLanguage,
+    setTheme,
+    setLastViewed,
+  }), [setDate, setLanguage, setLastViewed, setLocation, setTheme, setTimezone, state]);
 
   return <TemporalContext.Provider value={value}>{children}</TemporalContext.Provider>;
 }

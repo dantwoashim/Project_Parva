@@ -1,126 +1,98 @@
-/* PersonalPanchangaPage — Nepal × Ink Wash */
-
 .personal-page {
-  max-width: 900px;
-  margin: 0 auto;
+  display: grid;
+  gap: 1.45rem;
 }
 
-.personal-inputs {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--sp-4);
-  padding: var(--sp-6);
-  margin-bottom: var(--sp-8);
-  flex-wrap: wrap;
+.personal-page__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: 1rem;
+  padding: 1.35rem;
 }
 
-.personal-inputs .ink-input {
-  flex: 1;
-  min-width: 140px;
+.personal-page__hero-copy,
+.personal-page__controls,
+.personal-summary-card {
+  display: grid;
 }
 
-.personal-submit {
-  align-self: flex-end;
-  white-space: nowrap;
+.personal-page__hero-copy {
+  gap: 0.8rem;
+  align-content: center;
 }
 
-.personal-hero {
-  padding: var(--sp-6) 0 var(--sp-8);
-}
-
-.personal-hero__sub {
-  margin-top: var(--sp-2);
+.personal-page__intro,
+.personal-page__status,
+.personal-summary-card p,
+.personal-page .panchanga-card__meta {
+  margin: 0;
   color: var(--text-secondary);
-  font-size: var(--text-base);
+  line-height: 1.7;
 }
 
-.personal-hero__delta {
-  margin-top: var(--sp-2);
-  color: var(--gold-soft);
-  font-size: var(--text-sm);
+.personal-page__controls {
+  gap: 0.85rem;
+  align-content: start;
+}
+
+.personal-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.personal-summary-card {
+  gap: 0.35rem;
+  padding: 1rem;
+}
+
+.personal-summary-card strong {
+  font-size: 1.1rem;
 }
 
 .personal-cards-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: var(--sp-4);
-  margin-bottom: var(--sp-8);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
 }
 
-/* Reuse panchanga card styles from PanchangaPage.css */
 .personal-page .panchanga-card {
-  padding: var(--sp-6) var(--sp-5);
-  text-align: center;
+  padding: 1.05rem;
+  text-align: left;
 }
 
-.personal-details {
-  margin-top: var(--sp-4);
+.personal-page .panchanga-card__value {
+  margin: 0.28rem 0;
 }
 
-.personal-details__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--sp-2) var(--sp-8);
-  padding: var(--sp-6);
-  margin-top: var(--sp-3);
-}
-
-.personal-details__grid p {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-}
-
-.personal-details__grid strong {
-  color: var(--text-primary);
-}
-
-.personal-error {
-  padding: var(--sp-8);
-  text-align: center;
-}
-
-.personal-error h3 {
-  color: var(--vermillion);
-}
-
-.personal-loading {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-4);
-}
-
-/* ── Festivals on Date ── */
 .personal-festivals {
-  margin-bottom: var(--sp-6);
+  display: grid;
+  gap: 0.75rem;
 }
 
 .personal-festivals__title {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  color: var(--gold);
-  margin-bottom: var(--sp-4);
+  margin: 0;
 }
 
 .personal-festivals__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-3);
+  gap: 0.75rem;
 }
 
-@media (max-width: 768px) {
-  .personal-inputs {
-    flex-direction: column;
-  }
+.personal-error {
+  padding: 1.25rem;
+}
 
+.personal-loading {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (max-width: 1080px) {
+  .personal-page__hero,
+  .personal-summary-grid,
   .personal-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .personal-cards-grid> :last-child {
-    grid-column: span 2;
-  }
-
-  .personal-details__grid {
     grid-template-columns: 1fr;
   }
 }

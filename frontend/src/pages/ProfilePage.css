@@ -1,0 +1,141 @@
+.profile-page {
+  display: grid;
+  gap: 1.3rem;
+}
+
+.profile-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 1rem;
+  padding: 1.4rem;
+}
+
+.profile-hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
+  line-height: 0.95;
+}
+
+.profile-hero p,
+.profile-session p {
+  color: var(--editorial-muted);
+}
+
+.profile-session {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(214, 170, 103, 0.14);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.profile-session__note {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.profile-session__eyebrow {
+  color: var(--gold-bright);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.profile-summary,
+.profile-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-summary {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.profile-summary-card {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.95rem 1rem;
+}
+
+.profile-summary-card span {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.profile-summary-card strong {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  line-height: 1;
+}
+
+.profile-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.profile-card {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+}
+
+.profile-card h2 {
+  margin: 0;
+}
+
+.profile-controls,
+.profile-links,
+.profile-card__actions,
+.profile-card__confirm {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.profile-card__hint {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.profile-card__status {
+  margin: 0;
+  color: var(--gold-bright);
+  line-height: 1.6;
+}
+
+.profile-card__danger {
+  border-color: rgba(162, 76, 66, 0.28);
+}
+
+.profile-card__confirm {
+  padding: 0.9rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(162, 76, 66, 0.22);
+  background: rgba(162, 76, 66, 0.08);
+}
+
+.profile-card__confirm p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.profile-links a {
+  color: inherit;
+  text-decoration: none;
+  padding: 0.8rem 0.9rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+@media (max-width: 1080px) {
+  .profile-hero,
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+}

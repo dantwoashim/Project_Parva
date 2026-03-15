@@ -28,6 +28,8 @@ class APIKeyRecord:
 @dataclass(frozen=True)
 class AppSettings:
     environment: str
+    license_mode: str
+    source_url: str | None
     enable_experimental_api: bool
     allow_experimental_in_prod: bool
     enable_webhooks: bool
@@ -39,6 +41,7 @@ class AppSettings:
     api_keys: dict[str, APIKeyRecord] = field(default_factory=dict)
     rate_limit_enabled: bool = True
     require_precomputed: bool = False
+    trusted_proxy_ips: frozenset[str] = field(default_factory=frozenset)
 
     @property
     def is_dev_environment(self) -> bool:
@@ -79,6 +82,17 @@ def _parse_api_keys(raw: str, *, environment: str) -> dict[str, APIKeyRecord]:
     return records
 
 
+def _parse_csv_set(raw: str) -> frozenset[str]:
+    return frozenset(token.strip() for token in raw.split(",") if token.strip())
+
+
+def _parse_optional_text(value: str | None) -> str | None:
+    if value is None:
+        return None
+    stripped = value.strip()
+    return stripped or None
+
+
 def load_settings() -> AppSettings:
     environment = os.getenv("PARVA_ENV", "development").strip() or "development"
     admin_token = os.getenv("PARVA_ADMIN_TOKEN", "").strip() or None
@@ -87,6 +101,9 @@ def load_settings() -> AppSettings:
 
     return AppSettings(
         environment=environment,
+        license_mode=os.getenv("PARVA_LICENSE_MODE", "AGPL-3.0-or-later").strip()
+        or "AGPL-3.0-or-later",
+        source_url=_parse_optional_text(os.getenv("PARVA_SOURCE_URL")),
         enable_experimental_api=_parse_bool(
             os.getenv("PARVA_ENABLE_EXPERIMENTAL_API"), default=False
         ),
@@ -102,17 +119,35 @@ def load_settings() -> AppSettings:
         api_keys=_parse_api_keys(os.getenv("PARVA_API_KEYS", ""), environment=environment),
         rate_limit_enabled=_parse_bool(os.getenv("PARVA_RATE_LIMIT_ENABLED"), default=True),
         require_precomputed=_parse_bool(os.getenv("PARVA_REQUIRE_PRECOMPUTED"), default=False),
+        trusted_proxy_ips=_parse_csv_set(os.getenv("PARVA_TRUSTED_PROXY_IPS", "")),
     )
 
 
 def validate_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
+    normalized_license = settings.license_mode.strip().lower()
+
+    if normalized_license not in {"agpl-3.0-only", "agpl-3.0-or-later"}:
+        errors.append(
+            "PARVA_LICENSE_MODE must stay AGPL-compatible for the zero-budget Swiss Ephemeris deployment path."
+        )
+
+    if settings.source_url and not settings.source_url.startswith(("http://", "https://", "/")):
+        errors.append("PARVA_SOURCE_URL must be an absolute http(s) URL or an absolute site path.")
+
+    if settings.source_url == "/source":
+        errors.append("PARVA_SOURCE_URL cannot point to /source itself.")
 
     if settings.environment.lower() == "production" and settings.enable_experimental_api:
         if not settings.allow_experimental_in_prod:
             errors.append(
                 "Experimental routes require PARVA_ALLOW_EXPERIMENTAL_IN_PROD=true in production."
             )
+
+    if settings.environment.lower() == "production" and not settings.source_url:
+        errors.append(
+            "Production deployments must publish corresponding source code via PARVA_SOURCE_URL."
+        )
 
     if settings.enable_experimental_api and not settings.admin_token:
         errors.append("Experimental routes require PARVA_ADMIN_TOKEN.")

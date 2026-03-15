@@ -1,0 +1,48 @@
+.method-page {
+  display: grid;
+  gap: 1.3rem;
+}
+
+.method-hero,
+.method-detail {
+  padding: 1.4rem;
+}
+
+.method-hero h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
+  line-height: 0.95;
+}
+
+.method-grid,
+.method-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.method-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.method-card h2,
+.method-detail__grid h3 {
+  margin: 0;
+}
+
+.method-card p,
+.method-detail__grid p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+@media (max-width: 1080px) {
+  .method-grid,
+  .method-detail__grid {
+    grid-template-columns: 1fr;
+  }
+}

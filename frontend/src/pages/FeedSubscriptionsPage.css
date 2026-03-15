@@ -1,161 +1,213 @@
-/* FeedSubscriptionsPage — Nepal × Ink Wash */
-
 .feeds-page {
-    max-width: 900px;
-    margin: 0 auto;
+  display: grid;
+  gap: 1.5rem;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.feeds-page__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-accent);
 }
 
 .feeds-hero {
-    text-align: center;
-    padding: var(--sp-8) 0 var(--sp-6);
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
+  align-items: end;
+}
+
+.feeds-hero__copy {
+  display: grid;
+  gap: 0.8rem;
 }
 
 .feeds-hero__sub {
-    margin-top: var(--sp-2);
-    color: var(--text-secondary);
+  max-width: 62ch;
+  margin: 0;
+  color: var(--ink-muted);
 }
 
 .feeds-hero__controls {
-    display: flex;
-    justify-content: center;
-    gap: var(--sp-4);
-    margin-top: var(--sp-6);
+  display: grid;
+  gap: 0.9rem;
 }
 
-.feeds-hero__controls .ink-input {
-    min-width: 100px;
-}
-
-/* ── Feed Cards ── */
 .feeds-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--sp-4);
-    margin-bottom: var(--sp-8);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
 }
 
 .feed-card {
-    padding: var(--sp-6);
+  display: grid;
+  gap: 1rem;
 }
 
-.feed-card h3 {
-    font-family: var(--font-display);
-    font-size: var(--text-xl);
-    font-weight: 600;
-    margin-bottom: var(--sp-2);
+.feed-card__copy {
+  display: grid;
+  gap: 0.6rem;
 }
 
-.feed-card__desc {
-    font-size: var(--text-sm);
-    color: var(--text-muted);
-    margin-bottom: var(--sp-4);
+.feed-card__copy h2 {
+  margin: 0;
+  font-size: 1.4rem;
 }
 
-.feed-card__url {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: var(--radius-md);
-    padding: var(--sp-3);
-    margin-bottom: var(--sp-4);
-    overflow-x: auto;
-}
-
-.feed-card__url code {
-    font-size: var(--text-xs);
-    color: var(--text-secondary);
-    word-break: break-all;
+.feed-card__copy p {
+  margin: 0;
+  color: var(--ink-muted);
 }
 
 .feed-card__actions {
-    display: flex;
-    gap: var(--sp-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
 }
 
-.btn-sm {
-    padding: var(--sp-2) var(--sp-4);
-    font-size: var(--text-xs);
+.feed-card__advanced {
+  border-top: 1px solid var(--ink-border);
+  padding-top: 0.9rem;
 }
 
-/* ── Custom Feed ── */
+.feed-card__advanced summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink-text);
+}
+
+.feed-card__advanced[open] summary {
+  margin-bottom: 0.8rem;
+}
+
+.feed-card__advanced-field input {
+  font-size: 0.9rem;
+}
+
 .feeds-custom {
-    padding: var(--sp-8);
+  display: grid;
+  gap: 1.2rem;
 }
 
 .feeds-custom__header {
-    margin-bottom: var(--sp-6);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: end;
 }
 
-.feeds-custom__header h3 {
-    font-family: var(--font-display);
-    font-size: var(--text-2xl);
-    margin-bottom: var(--sp-2);
+.feeds-custom__header h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.5rem;
 }
 
 .feeds-custom__header p {
-    color: var(--text-secondary);
+  margin: 0;
+  max-width: 38ch;
+  color: var(--ink-muted);
 }
 
 .feeds-custom__search {
-    max-width: 400px;
-    margin-bottom: var(--sp-6);
+  max-width: 460px;
 }
 
 .feeds-custom__status {
-    color: var(--text-muted);
-    font-style: italic;
-    padding: var(--sp-4) 0;
+  margin: 0;
+  color: var(--ink-muted);
 }
 
 .feeds-picker {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: var(--sp-2);
-    max-height: 300px;
-    overflow-y: auto;
-    margin-bottom: var(--sp-6);
-    padding: var(--sp-2);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.75rem;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 0.15rem;
 }
 
 .feeds-picker__item {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-2);
-    padding: var(--sp-2) var(--sp-3);
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    font-size: var(--text-sm);
-    color: var(--text-secondary);
-    transition: background var(--duration-fast) var(--ease-out);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 54px;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--ink-border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--ink-text);
+  transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
+  cursor: pointer;
 }
 
 .feeds-picker__item:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-primary);
+  border-color: rgba(255, 211, 138, 0.34);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
 }
 
-.feeds-picker__item input[type="checkbox"] {
-    accent-color: var(--gold);
+.feeds-picker__item input[type='checkbox'] {
+  accent-color: var(--ink-accent);
 }
 
 .feeds-custom__output {
-    padding-top: var(--sp-4);
-    border-top: 1px solid var(--border-subtle);
+  display: grid;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ink-border);
 }
 
-.feeds-custom__output p {
-    margin-bottom: var(--sp-3);
+.feeds-custom__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.feeds-custom__output strong {
-    color: var(--gold);
+.feeds-custom__summary span {
+  color: var(--ink-muted);
+}
+
+.feeds-custom__summary strong {
+  font-size: 1.6rem;
+  color: var(--ink-accent);
+}
+
+.feeds-custom__actions {
+  display: grid;
+  gap: 0.9rem;
 }
 
 .feeds-custom__hint {
-    color: var(--text-muted);
-    font-style: italic;
+  margin: 0;
+  color: var(--ink-muted);
 }
 
-@media (max-width: 768px) {
-    .feeds-grid {
-        grid-template-columns: 1fr;
-    }
+.feed-card__advanced--custom {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.btn-sm {
+  padding: 0.72rem 1rem;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 960px) {
+  .feeds-hero,
+  .feeds-custom__header {
+    grid-template-columns: 1fr;
+  }
+
+  .feeds-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feeds-custom__header {
+    display: grid;
+    align-items: start;
+  }
 }

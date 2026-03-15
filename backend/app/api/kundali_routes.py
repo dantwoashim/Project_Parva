@@ -5,11 +5,13 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import APIRouter, Query
+from pydantic import BaseModel, Field
 
 from app.calendar.kundali import compute_kundali
 from app.explainability import create_reason_trace
 
 from ._personal_utils import (
+    CoordinateInput,
     base_meta_payload,
     normalize_coordinates,
     normalize_timezone,
@@ -17,6 +19,13 @@ from ._personal_utils import (
 )
 
 router = APIRouter(prefix="/api/kundali", tags=["kundali"])
+
+
+class KundaliRequest(BaseModel):
+    datetime: str = Field(..., description="ISO8601 datetime")
+    lat: CoordinateInput = Field(None, description="Latitude")
+    lon: CoordinateInput = Field(None, description="Longitude")
+    tz: Optional[str] = Field("Asia/Kathmandu", description="IANA timezone")
 
 
 def _build_insight_blocks(kundali: dict) -> list[dict]:
@@ -67,12 +76,12 @@ def _build_insight_blocks(kundali: dict) -> list[dict]:
     return blocks
 
 
-@router.get("")
-async def kundali_endpoint(
-    datetime_str: str = Query(..., alias="datetime", description="ISO8601 datetime"),
-    lat: Optional[str] = Query(None, description="Latitude"),
-    lon: Optional[str] = Query(None, description="Longitude"),
-    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+def _build_kundali_response(
+    *,
+    datetime_str: str,
+    lat: CoordinateInput,
+    lon: CoordinateInput,
+    tz: Optional[str],
 ):
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
     timezone_name, tz_warnings = normalize_timezone(tz)
@@ -156,12 +165,12 @@ async def kundali_endpoint(
     }
 
 
-@router.get("/lagna")
-async def lagna_endpoint(
-    datetime_str: str = Query(..., alias="datetime", description="ISO8601 datetime"),
-    lat: Optional[str] = Query(None, description="Latitude"),
-    lon: Optional[str] = Query(None, description="Longitude"),
-    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+def _build_lagna_response(
+    *,
+    datetime_str: str,
+    lat: CoordinateInput,
+    lon: CoordinateInput,
+    tz: Optional[str],
 ):
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
     timezone_name, tz_warnings = normalize_timezone(tz)
@@ -208,3 +217,43 @@ async def lagna_endpoint(
             advisory_scope="astrology_assist",
         ),
     }
+
+
+@router.get("")
+async def kundali_endpoint(
+    datetime_str: str = Query(..., alias="datetime", description="ISO8601 datetime"),
+    lat: Optional[str] = Query(None, description="Latitude"),
+    lon: Optional[str] = Query(None, description="Longitude"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+):
+    return _build_kundali_response(datetime_str=datetime_str, lat=lat, lon=lon, tz=tz)
+
+
+@router.post("")
+async def kundali_endpoint_post(payload: KundaliRequest):
+    return _build_kundali_response(
+        datetime_str=payload.datetime,
+        lat=payload.lat,
+        lon=payload.lon,
+        tz=payload.tz,
+    )
+
+
+@router.get("/lagna")
+async def lagna_endpoint(
+    datetime_str: str = Query(..., alias="datetime", description="ISO8601 datetime"),
+    lat: Optional[str] = Query(None, description="Latitude"),
+    lon: Optional[str] = Query(None, description="Longitude"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+):
+    return _build_lagna_response(datetime_str=datetime_str, lat=lat, lon=lon, tz=tz)
+
+
+@router.post("/lagna")
+async def lagna_endpoint_post(payload: KundaliRequest):
+    return _build_lagna_response(
+        datetime_str=payload.datetime,
+        lat=payload.lat,
+        lon=payload.lon,
+        tz=payload.tz,
+    )

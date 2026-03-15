@@ -25,8 +25,12 @@ OUT_DOC_JSON = DOCS_DIR / "authority_dashboard.json"
 OUT_MD = DOCS_DIR / "authority_dashboard.md"
 
 
+class ArtifactError(RuntimeError):
+    """Raised when required release artifacts are missing or incomplete."""
+
+
 def _rel(path: Path) -> str:
-    return str(path.relative_to(PROJECT_ROOT))
+    return path.relative_to(PROJECT_ROOT).as_posix()
 
 
 def _read_json(path: Path) -> Dict[str, Any]:
@@ -36,6 +40,13 @@ def _read_json(path: Path) -> Dict[str, Any]:
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return {}
+
+
+def _require_json(path: Path) -> Dict[str, Any]:
+    payload = _read_json(path)
+    if not payload:
+        raise ArtifactError(f"Missing or unreadable required artifact: {path}")
+    return payload
 
 
 def _collect_discrepancy_classes() -> Dict[str, int]:
@@ -141,10 +152,10 @@ def _collect_response_confidence_breakdown() -> Dict[str, Any]:
 
 
 def _collect_pipeline_health() -> Dict[str, Any]:
-    conformance = _read_json(REPORTS_DIR / "conformance_report.json")
-    ingestion = _read_json(REPORTS_DIR / "rule_ingestion_summary.json")
+    conformance = _require_json(REPORTS_DIR / "conformance_report.json")
+    ingestion = _require_json(REPORTS_DIR / "rule_ingestion_summary.json")
 
-    return {
+    pipeline_health = {
         "conformance_total": conformance.get("total"),
         "conformance_passed": conformance.get("passed"),
         "conformance_pass_rate": conformance.get("pass_rate"),
@@ -152,6 +163,28 @@ def _collect_pipeline_health() -> Dict[str, Any]:
         "rule_catalog_generated": ingestion.get("generated_rules"),
         "rule_catalog_coverage_pct": ingestion.get("coverage_pct"),
     }
+    missing = [key for key, value in pipeline_health.items() if value is None]
+    if missing:
+        joined = ", ".join(missing)
+        raise ArtifactError(f"Authority dashboard has null pipeline health fields: {joined}")
+    return pipeline_health
+
+
+def _build_artifacts_payload() -> Dict[str, str]:
+    artifacts = {
+        "conformance_report": _rel(REPORTS_DIR / "conformance_report.json"),
+        "rule_catalog": _rel(PROJECT_ROOT / "data" / "festivals" / "festival_rules_v4.json"),
+        "rule_ingestion_summary": _rel(REPORTS_DIR / "rule_ingestion_summary.json"),
+    }
+
+    optional_artifacts = {
+        "evaluation_v4": REPORTS_DIR / "evaluation_v4" / "evaluation_v4.json",
+        "discrepancies": PROJECT_ROOT / "data" / "ground_truth" / "discrepancies.json",
+    }
+    for key, path in optional_artifacts.items():
+        if path.exists():
+            artifacts[key] = _rel(path)
+    return artifacts
 
 
 def _build_markdown(payload: Dict[str, Any]) -> str:
@@ -219,23 +252,21 @@ def _build_markdown(payload: Dict[str, Any]) -> str:
 
 
 def main() -> int:
-    payload = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "release_track": "public-v3",
-        "pipeline_health": _collect_pipeline_health(),
-        "discrepancy_classes": _collect_discrepancy_classes(),
-        "confidence_breakdown": {
-            "rule_catalog": _collect_rule_confidence_breakdown(),
-            "response_samples": _collect_response_confidence_breakdown(),
-        },
-        "artifacts": {
-            "conformance_report": _rel(REPORTS_DIR / "conformance_report.json"),
-            "evaluation_v4": _rel(REPORTS_DIR / "evaluation_v4" / "evaluation_v4.json"),
-            "discrepancies": _rel(PROJECT_ROOT / "data" / "ground_truth" / "discrepancies.json"),
-            "rule_catalog": _rel(PROJECT_ROOT / "data" / "festivals" / "festival_rules_v4.json"),
-            "rule_ingestion_summary": _rel(REPORTS_DIR / "rule_ingestion_summary.json"),
-        },
-    }
+    try:
+        payload = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "release_track": "public-beta-v3",
+            "pipeline_health": _collect_pipeline_health(),
+            "discrepancy_classes": _collect_discrepancy_classes(),
+            "confidence_breakdown": {
+                "rule_catalog": _collect_rule_confidence_breakdown(),
+                "response_samples": _collect_response_confidence_breakdown(),
+            },
+            "artifacts": _build_artifacts_payload(),
+        }
+    except ArtifactError as exc:
+        print(f"[FAIL] {exc}")
+        return 1
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     DOCS_DIR.mkdir(parents=True, exist_ok=True)

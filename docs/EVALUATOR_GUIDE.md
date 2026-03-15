@@ -25,16 +25,16 @@ From repo root (single command):
 
 Manual equivalent:
 ```bash
+python scripts/release/check_repo_hygiene.py
+python scripts/release/check_sdk_install.py
 python -m pytest -q
 python scripts/spec/run_conformance_tests.py
 python scripts/release/check_contract_freeze.py
-python scripts/rules/ingest_rule_sources.py --check --target 300 --computed-target 300
-python scripts/generate_accuracy_report.py
-python scripts/generate_authority_dashboard.py
-python scripts/release/generate_month9_dossier.py
-npm --prefix frontend test -- --run
+python scripts/release/generate_public_beta_artifacts.py --target 300 --computed-target 300
 npm --prefix frontend run lint
+npm --prefix frontend test -- --run
 npm --prefix frontend run build
+python scripts/run_browser_smoke.py
 ```
 
 ## Key evidence artifacts
@@ -44,9 +44,12 @@ npm --prefix frontend run build
 - `reports/release/month9_dossier.json` (generated artifact)
 - `docs/public_beta/month9_release_dossier.md`
 - `docs/UI_TEMPORAL_CARTOGRAPHY_SPEC.md`
+- `docs/API_QUICKSTART.md`
+- `docs/EMBED_GUIDE.md`
 
 ## Known constraints
 - Public profile is v3.
 - Experimental tracks are disabled by default.
+- Public messaging should remain public-beta, explainable, and known-limits-first until stronger evidence gates are green.
 - Policy metadata is informational; local religious authority takes precedence.
 - Free-tier hosting may show occasional cold-start latency.

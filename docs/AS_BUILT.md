@@ -13,6 +13,7 @@ This file describes only what is implemented and verifiable in the repository no
    - Kundali
 6. Deterministic trace generation + provenance metadata on key responses.
 7. CI pipeline for backend tests, frontend build, contract freeze check, conformance run.
+8. Static institutional embed surfaces and public onboarding portals under `frontend/public/`.
 
 ## Not implemented (or partial)
 1. 300+ fully computed festival rules with verified regional jurisprudence.
@@ -26,3 +27,5 @@ This file describes only what is implemented and verifiable in the repository no
 - Frontend routes/pages: `frontend/src/App.jsx`
 - Conformance report output: generated artifact `reports/conformance_report.json`
   (see `docs/GENERATED_ARTIFACTS.md`)
+- Hosted API onboarding: `docs/HOSTED_API_ONBOARDING.md`
+- Institutional launch checklist: `docs/INSTITUTIONAL_LAUNCH_CHECKLIST.md`

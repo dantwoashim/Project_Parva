@@ -5,11 +5,13 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import APIRouter, Query
+from pydantic import BaseModel, Field
 
 from app.calendar.muhurta import get_auspicious_windows, get_muhurtas, get_rahu_kalam
 from app.explainability import create_reason_trace
 
 from ._personal_utils import (
+    CoordinateInput,
     base_meta_payload,
     normalize_coordinates,
     normalize_timezone,
@@ -17,6 +19,39 @@ from ._personal_utils import (
 )
 
 router = APIRouter(prefix="/api/muhurta", tags=["muhurta"])
+
+
+class MuhurtaDayRequest(BaseModel):
+    date: str = Field(..., description="Gregorian date in YYYY-MM-DD format")
+    lat: CoordinateInput = Field(None, description="Latitude")
+    lon: CoordinateInput = Field(None, description="Longitude")
+    tz: Optional[str] = Field("Asia/Kathmandu", description="IANA timezone")
+    birth_nakshatra: Optional[str] = Field(
+        None, description="Birth nakshatra name or number 1-27 (optional tara-bala)"
+    )
+
+
+class RahuKalamRequest(BaseModel):
+    date: str = Field(..., description="Gregorian date in YYYY-MM-DD format")
+    lat: CoordinateInput = Field(None, description="Latitude")
+    lon: CoordinateInput = Field(None, description="Longitude")
+    tz: Optional[str] = Field("Asia/Kathmandu", description="IANA timezone")
+
+
+class AuspiciousMuhurtaRequest(BaseModel):
+    date: str = Field(..., description="Gregorian date in YYYY-MM-DD format")
+    type: str = Field(
+        "general", description="vivah|griha_pravesh|travel|upanayana|general"
+    )
+    lat: CoordinateInput = Field(None, description="Latitude")
+    lon: CoordinateInput = Field(None, description="Longitude")
+    tz: Optional[str] = Field("Asia/Kathmandu", description="IANA timezone")
+    birth_nakshatra: Optional[str] = Field(
+        None, description="Birth nakshatra name or number 1-27"
+    )
+    assumption_set: str = Field(
+        "np-mainstream-v2", description="np-mainstream-v2|diaspora-practical-v2"
+    )
 
 
 def _window_reason_codes(row: dict) -> list[str]:
@@ -99,15 +134,13 @@ def _enrich_ranked_window(row: dict) -> dict:
     return enriched
 
 
-@router.get("")
-async def muhurta_for_day(
-    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
-    lat: Optional[str] = Query(None, description="Latitude"),
-    lon: Optional[str] = Query(None, description="Longitude"),
-    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
-    birth_nakshatra: Optional[str] = Query(
-        None, description="Birth nakshatra name or number 1-27 (optional tara-bala)"
-    ),
+def _build_muhurta_for_day_response(
+    *,
+    date_str: str,
+    lat: CoordinateInput,
+    lon: CoordinateInput,
+    tz: Optional[str],
+    birth_nakshatra: Optional[str],
 ):
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
@@ -185,12 +218,12 @@ async def muhurta_for_day(
     }
 
 
-@router.get("/rahu-kalam")
-async def rahu_kalam(
-    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
-    lat: Optional[str] = Query(None, description="Latitude"),
-    lon: Optional[str] = Query(None, description="Longitude"),
-    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+def _build_rahu_kalam_response(
+    *,
+    date_str: str,
+    lat: CoordinateInput,
+    lon: CoordinateInput,
+    tz: Optional[str],
 ):
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
@@ -245,19 +278,15 @@ async def rahu_kalam(
     }
 
 
-@router.get("/auspicious")
-async def auspicious_muhurta(
-    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
-    ceremony_type: str = Query(
-        "general", alias="type", description="vivah|griha_pravesh|travel|upanayana|general"
-    ),
-    lat: Optional[str] = Query(None, description="Latitude"),
-    lon: Optional[str] = Query(None, description="Longitude"),
-    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
-    birth_nakshatra: Optional[str] = Query(None, description="Birth nakshatra name or number 1-27"),
-    assumption_set: str = Query(
-        "np-mainstream-v2", description="np-mainstream-v2|diaspora-practical-v2"
-    ),
+def _build_auspicious_muhurta_response(
+    *,
+    date_str: str,
+    ceremony_type: str,
+    lat: CoordinateInput,
+    lon: CoordinateInput,
+    tz: Optional[str],
+    birth_nakshatra: Optional[str],
+    assumption_set: str,
 ):
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
@@ -344,3 +373,91 @@ async def auspicious_muhurta(
             advisory_scope="ritual_planning",
         ),
     }
+
+
+@router.get("")
+async def muhurta_for_day(
+    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
+    lat: Optional[str] = Query(None, description="Latitude"),
+    lon: Optional[str] = Query(None, description="Longitude"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+    birth_nakshatra: Optional[str] = Query(
+        None, description="Birth nakshatra name or number 1-27 (optional tara-bala)"
+    ),
+):
+    return _build_muhurta_for_day_response(
+        date_str=date_str,
+        lat=lat,
+        lon=lon,
+        tz=tz,
+        birth_nakshatra=birth_nakshatra,
+    )
+
+
+@router.post("")
+async def muhurta_for_day_post(payload: MuhurtaDayRequest):
+    return _build_muhurta_for_day_response(
+        date_str=payload.date,
+        lat=payload.lat,
+        lon=payload.lon,
+        tz=payload.tz,
+        birth_nakshatra=payload.birth_nakshatra,
+    )
+
+
+@router.get("/rahu-kalam")
+async def rahu_kalam(
+    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
+    lat: Optional[str] = Query(None, description="Latitude"),
+    lon: Optional[str] = Query(None, description="Longitude"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+):
+    return _build_rahu_kalam_response(date_str=date_str, lat=lat, lon=lon, tz=tz)
+
+
+@router.post("/rahu-kalam")
+async def rahu_kalam_post(payload: RahuKalamRequest):
+    return _build_rahu_kalam_response(
+        date_str=payload.date,
+        lat=payload.lat,
+        lon=payload.lon,
+        tz=payload.tz,
+    )
+
+
+@router.get("/auspicious")
+async def auspicious_muhurta(
+    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
+    ceremony_type: str = Query(
+        "general", alias="type", description="vivah|griha_pravesh|travel|upanayana|general"
+    ),
+    lat: Optional[str] = Query(None, description="Latitude"),
+    lon: Optional[str] = Query(None, description="Longitude"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+    birth_nakshatra: Optional[str] = Query(None, description="Birth nakshatra name or number 1-27"),
+    assumption_set: str = Query(
+        "np-mainstream-v2", description="np-mainstream-v2|diaspora-practical-v2"
+    ),
+):
+    return _build_auspicious_muhurta_response(
+        date_str=date_str,
+        ceremony_type=ceremony_type,
+        lat=lat,
+        lon=lon,
+        tz=tz,
+        birth_nakshatra=birth_nakshatra,
+        assumption_set=assumption_set,
+    )
+
+
+@router.post("/auspicious")
+async def auspicious_muhurta_post(payload: AuspiciousMuhurtaRequest):
+    return _build_auspicious_muhurta_response(
+        date_str=payload.date,
+        ceremony_type=payload.type,
+        lat=payload.lat,
+        lon=payload.lon,
+        tz=payload.tz,
+        birth_nakshatra=payload.birth_nakshatra,
+        assumption_set=payload.assumption_set,
+    )

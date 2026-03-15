@@ -5,11 +5,13 @@ from __future__ import annotations
 from typing import Optional
 
 from fastapi import APIRouter, Query
+from pydantic import BaseModel, Field
 
 from app.explainability import create_reason_trace
 from app.services import build_kundali_graph
 
 from ._personal_utils import (
+    CoordinateInput,
     base_meta_payload,
     normalize_coordinates,
     normalize_timezone,
@@ -19,12 +21,19 @@ from ._personal_utils import (
 router = APIRouter(prefix="/api/kundali", tags=["kundali"])
 
 
-@router.get("/graph")
-async def kundali_graph_endpoint(
-    datetime_str: str = Query(..., alias="datetime", description="ISO8601 datetime"),
-    lat: Optional[str] = Query(None, description="Latitude"),
-    lon: Optional[str] = Query(None, description="Longitude"),
-    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+class KundaliGraphRequest(BaseModel):
+    datetime: str = Field(..., description="ISO8601 datetime")
+    lat: CoordinateInput = Field(None, description="Latitude")
+    lon: CoordinateInput = Field(None, description="Longitude")
+    tz: Optional[str] = Field("Asia/Kathmandu", description="IANA timezone")
+
+
+def _build_kundali_graph_response(
+    *,
+    datetime_str: str,
+    lat: CoordinateInput,
+    lon: CoordinateInput,
+    tz: Optional[str],
 ):
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
     timezone_name, tz_warnings = normalize_timezone(tz)
@@ -74,3 +83,23 @@ async def kundali_graph_endpoint(
             advisory_scope="astrology_assist",
         ),
     }
+
+
+@router.get("/graph")
+async def kundali_graph_endpoint(
+    datetime_str: str = Query(..., alias="datetime", description="ISO8601 datetime"),
+    lat: Optional[str] = Query(None, description="Latitude"),
+    lon: Optional[str] = Query(None, description="Longitude"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+):
+    return _build_kundali_graph_response(datetime_str=datetime_str, lat=lat, lon=lon, tz=tz)
+
+
+@router.post("/graph")
+async def kundali_graph_endpoint_post(payload: KundaliGraphRequest):
+    return _build_kundali_graph_response(
+        datetime_str=payload.datetime,
+        lat=payload.lat,
+        lon=payload.lon,
+        tz=payload.tz,
+    )

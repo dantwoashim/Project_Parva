@@ -1,12 +1,21 @@
 # API Reference (v3 Public)
 
-Base URL (local): `http://localhost:8000/v3/api`
+Base URL (deployment example): `https://your-host.example/v3/api`
+
+Privacy-sensitive compute routes now support `POST` JSON bodies and should use
+that shape by default. Legacy `GET` query forms remain available for
+compatibility.
+
+Practical integration guides:
+
+- `docs/API_QUICKSTART.md`
+- `docs/EMBED_GUIDE.md`
 
 ## Temporal Cartography Endpoints
-- `GET /temporal/compass?date=YYYY-MM-DD&lat=&lon=&tz=&quality_band=`
+- `POST /temporal/compass` with JSON body `{ "date", "lat", "lon", "tz", "quality_band" }`
 - `GET /festivals/timeline?from=YYYY-MM-DD&to=YYYY-MM-DD&quality_band=&category=&region=&lang=en|ne`
-- `GET /muhurta/heatmap?date=YYYY-MM-DD&lat=&lon=&tz=&type=&assumption_set=`
-- `GET /kundali/graph?datetime=ISO8601&lat=&lon=&tz=`
+- `POST /muhurta/heatmap` with JSON body `{ "date", "lat", "lon", "tz", "type", "assumption_set" }`
+- `POST /kundali/graph` with JSON body `{ "datetime", "lat", "lon", "tz" }`
 - `GET /glossary?domain=panchanga|muhurta|kundali&lang=en|ne`
 
 ## Core Calendar
@@ -46,15 +55,15 @@ Base URL (local): `http://localhost:8000/v3/api`
 ```
 
 ## Personal Stack
-- `GET /personal/panchanga?date=YYYY-MM-DD&lat=&lon=&tz=`
+- `POST /personal/panchanga` with JSON body `{ "date", "lat", "lon", "tz" }`
   - includes `local_sunrise`, `local_sunset`, `timezone_source`, `method_profile`, `assumption_set_id`, `quality_band`.
-- `GET /muhurta?date=YYYY-MM-DD&lat=&lon=&tz=&birth_nakshatra=`
-- `GET /muhurta/auspicious?date=YYYY-MM-DD&type=general|vivah|griha_pravesh|travel|upanayana&lat=&lon=&tz=&birth_nakshatra=&assumption_set=np-mainstream-v2|diaspora-practical-v2`
+- `POST /muhurta` with JSON body `{ "date", "lat", "lon", "tz", "birth_nakshatra" }`
+- `POST /muhurta/auspicious` with JSON body `{ "date", "type", "lat", "lon", "tz", "birth_nakshatra", "assumption_set" }`
   - includes `reason_codes[]`, `rank_explanation`, `confidence_score`.
-- `GET /muhurta/rahu-kalam?date=YYYY-MM-DD&lat=&lon=&tz=`
-- `GET /kundali?datetime=ISO8601&lat=&lon=&tz=`
+- `POST /muhurta/rahu-kalam` with JSON body `{ "date", "lat", "lon", "tz" }`
+- `POST /kundali` with JSON body `{ "datetime", "lat", "lon", "tz" }`
   - includes `insight_blocks[]` for plain-language sidebar mapping.
-- `GET /kundali/lagna?datetime=ISO8601&lat=&lon=&tz=`
+- `POST /kundali/lagna` with JSON body `{ "datetime", "lat", "lon", "tz" }`
 
 ## Feeds
 - `GET /feeds/all.ics?years=2&lang=en`

@@ -1,6 +1,6 @@
-# Month 9 Release Dossier (v3 Public)
+# Month 9 Release Dossier (Public Beta)
 
-Generated at: `2026-02-24T02:13:49.422796+00:00`
+Generated at: `2026-03-14T09:22:29.711845+00:00`
 
 ## Coverage Scoreboard
 
@@ -33,7 +33,16 @@ Generated at: `2026-02-24T02:13:49.422796+00:00`
 
 ## Known Limits
 
-- See `/docs/KNOWN_LIMITS.md`.
+- Regional observance jurisprudence can differ by tradition; API output is profile-based, not absolute religious authority.
+- Some festival entries remain provisional and rely on source curation before being promoted to fully computed status.
+- Very fine boundary cases near sunrise can vary when location/timezone inputs differ.
+- Personal Muhurta/Kundali outputs are informational and include policy advisories.
+- Public API profile is v3; experimental routes may change without compatibility guarantees.
+- Zero-budget hosting implies occasional cold-start latency on free tiers.
+- Authority Mode exposes computation metadata; it is not a legal or doctrinal certification layer.
+- Temporal Compass and ribbon views are optimized for modern browsers; older embedded webviews may degrade to basic card rendering.
+- Visual regression snapshots are deterministic fixtures, not live observational truth data.
+- This repository now uses the AGPL zero-budget path for Swiss Ephemeris / `pyswisseph`, so hosted commercial use remains possible only if users can access the corresponding deployed source.
 
 ## Evidence Artifacts
 

@@ -125,12 +125,15 @@ Implemented personal modules:
 - Kundali v2 outputs with lagna/aspects/yoga/dosha/dasha structures.
 
 Key API endpoints:
-- `GET /v3/api/personal/panchanga?date=&lat=&lon=&tz=`
-- `GET /v3/api/muhurta?date=&lat=&lon=&tz=&birth_nakshatra=`
-- `GET /v3/api/muhurta/auspicious?date=&type=&...`
-- `GET /v3/api/muhurta/rahu-kalam?date=&lat=&lon=&tz=`
-- `GET /v3/api/kundali?datetime=&lat=&lon=&tz=`
-- `GET /v3/api/kundali/lagna?datetime=&lat=&lon=&tz=`
+- `POST /v3/api/personal/panchanga`
+- `POST /v3/api/muhurta`
+- `POST /v3/api/muhurta/auspicious`
+- `POST /v3/api/muhurta/rahu-kalam`
+- `POST /v3/api/kundali`
+- `POST /v3/api/kundali/lagna`
+
+These sensitive routes still accept legacy query-string `GET` requests for
+compatibility, but production clients should prefer POST JSON bodies.
 
 Response metadata includes:
 - `engine_version`
