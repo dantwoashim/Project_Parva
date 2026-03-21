@@ -67,6 +67,7 @@ export function reducer(state, action) {
       return {
         ...state,
         ...rest,
+        language: 'en',
         theme: normalizeTheme(action.payload?.theme, state.theme),
         location: {
           ...state.location,
@@ -81,7 +82,7 @@ export function reducer(state, action) {
     case 'setTimezone':
       return { ...state, timezone: action.payload || 'Asia/Kathmandu' };
     case 'setLanguage':
-      return { ...state, language: action.payload === 'ne' ? 'ne' : 'en' };
+      return state.language === 'en' ? state : { ...state, language: 'en' };
     case 'setTheme':
       return state.theme === normalizeTheme(action.payload, state.theme)
         ? state

@@ -162,6 +162,47 @@ function buildHeatmapEnvelope(overrides = {}) {
   };
 }
 
+function buildCalendarPayload(fromDate = '2026-02-01', toDate = '2026-03-31') {
+  return {
+    from: fromDate,
+    to: toDate,
+    location: {
+      latitude: 27.7172,
+      longitude: 85.324,
+      timezone: 'Asia/Kathmandu',
+    },
+    type: 'general',
+    assumption_set_id: 'np-mainstream-v2',
+    days: [
+      {
+        date: fromDate,
+        has_viable_window: true,
+        minimum_score: 25,
+        top_score: 88,
+        tone: 'strong',
+        window_count: 3,
+        best_window: {
+          index: 6,
+          name: 'Abhijit Muhurta',
+          start: `${fromDate}T10:30:00+05:45`,
+          end: `${fromDate}T12:15:00+05:45`,
+          score: 88,
+          quality: 'auspicious',
+          reason_codes: ['tara_good'],
+          rank_explanation: 'One of the clearest dates in the current planning range.',
+        },
+        caution: {
+          rahu_kalam: {
+            start: `${fromDate}T13:15:00+05:45`,
+            end: `${fromDate}T14:30:00+05:45`,
+          },
+        },
+      },
+    ],
+    total: 1,
+  };
+}
+
 function buildPersonalContextEnvelope(overrides = {}) {
   return {
     data: {
@@ -234,6 +275,14 @@ function buildFetchMock() {
 
     if (url.includes('/muhurta/heatmap')) {
       return jsonResponse(buildHeatmapEnvelope());
+    }
+
+    if (url.includes('/muhurta/calendar')) {
+      const parsed = new URL(url, 'https://example.test');
+      return jsonResponse(buildCalendarPayload(
+        parsed.searchParams.get('from') || '2026-02-01',
+        parsed.searchParams.get('to') || '2026-03-31',
+      ));
     }
 
     if (url.includes('/festivals/timeline?')) {
@@ -330,7 +379,7 @@ function buildFetchMock() {
     }
 
     if (url.includes('/festivals/on-date/')) {
-      return jsonResponse({ data: [{ id: 'dashain', name: 'Dashain', start_date: '2026-10-20' }], meta: {} });
+      return jsonResponse([{ id: 'dashain', name: 'Dashain', start_date: '2026-10-20' }]);
     }
 
     if (url.includes('/personal/context')) {
@@ -495,7 +544,7 @@ describe('App routing', () => {
     expect(within(primaryNav).getByRole('link', { name: /^Birth Reading$/i })).toBeInTheDocument();
 
     await userEvent.click(within(primaryNav).getByRole('link', { name: /^Best Time$/i }));
-    expect(await screen.findByRole('heading', { name: /Muhurta Explorer/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Choose a date first/i }, routeLoadOptions)).toBeInTheDocument();
   }, 30000);
 
   it('keeps festivals and my-place inside the same product shell', async () => {
@@ -506,7 +555,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Seasonal observance ribbon/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Closest observances first/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /National/i })).toBeInTheDocument();
     festivalsRender.unmount();
 
@@ -569,7 +618,7 @@ describe('App routing', () => {
     );
 
     await waitFor(() => {
-      expect(document.documentElement.lang).toBe('ne');
+      expect(document.documentElement.lang).toBe('en');
     });
   }, 30000);
 
@@ -591,7 +640,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Muhurta Explorer/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Choose a date first/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
   }, 30000);
 });

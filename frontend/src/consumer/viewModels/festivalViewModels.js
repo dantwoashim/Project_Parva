@@ -5,6 +5,7 @@ import {
   formatTime,
   getConsumerFestivalArtKey,
   normalizeRitualSteps,
+  resolveSunsetReferenceValue,
   startOfSentence,
   sunriseShiftLabel,
 } from './shared';
@@ -60,11 +61,8 @@ function buildRelatedEmptyState(relatedStatus) {
   };
 }
 
-export function buildConsumerFestivalsViewModel({ payload, search, category, savedFestivals = [], temporalState = {} }) {
-  const savedIds = new Set(savedFestivals.map((item) => item.id));
-  const groups = payload?.groups || [];
-  const facets = payload?.facets || {};
-  const allItems = groups.flatMap((group) => (group.items || []).map((item) => ({
+function normalizeTimelineItem(item, savedIds, temporalState = {}) {
+  return {
     id: item.id,
     href: `/festivals/${item.id}`,
     title: item.display_name || item.name,
@@ -76,11 +74,48 @@ export function buildConsumerFestivalsViewModel({ payload, search, category, sav
     artKey: getConsumerFestivalArtKey(item.id, item.category),
     badges: [item.category, ...(item.regional_focus || []).slice(0, 1)].filter(Boolean),
     saved: savedIds.has(item.id),
-  })));
+    startDate: item.start_date,
+    endDate: item.end_date,
+    isToday: false,
+  };
+}
+
+function normalizeOnDateItem(item, savedIds, temporalState = {}) {
+  return {
+    id: item.id,
+    href: `/festivals/${item.id}`,
+    title: item.name,
+    summary: startOfSentence(
+      item.tagline,
+      `${item.name} is active in the current observance window.`,
+    ),
+    dateLabel: formatDateRange(item.next_start, item.next_end, temporalState),
+    artKey: getConsumerFestivalArtKey(item.id, item.category),
+    badges: ['Happening now', item.category].filter(Boolean),
+    saved: savedIds.has(item.id),
+    startDate: item.next_start,
+    endDate: item.next_end,
+    isToday: true,
+  };
+}
+
+export function buildConsumerFestivalsViewModel({ payload, search, category, savedFestivals = [], temporalState = {} }) {
+  const savedIds = new Set(savedFestivals.map((item) => item.id));
+  const groups = payload?.groups || [];
+  const facets = payload?.facets || {};
+  const activeTodayRaw = Array.isArray(payload?.active_today) ? payload.active_today : [];
+  const activeToday = activeTodayRaw.map((item) => normalizeOnDateItem(item, savedIds, temporalState));
+  const timelineItems = groups.flatMap((group) => (group.items || []).map((item) => normalizeTimelineItem(item, savedIds, temporalState)));
+  const seen = new Set();
+  const allItems = [...activeToday, ...timelineItems].filter((item) => {
+    if (!item?.id || seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
 
   return {
     title: 'Festivals',
-    subtitle: 'Keep the next observance in view, then browse deeper only when you need the full seasonal picture.',
+    subtitle: 'See what is happening now, then move outward through the next observances only when you need more calendar depth.',
     searchValue: search || '',
     activeFilter: category || '',
     facets: {
@@ -89,8 +124,9 @@ export function buildConsumerFestivalsViewModel({ payload, search, category, sav
       regions: Array.isArray(facets.regions) ? facets.regions : [],
     },
     resultCount: allItems.length,
-    featured: allItems[0] || null,
-    supporting: allItems.slice(1, 3),
+    closestLead: allItems[0] || null,
+    closestSupporting: allItems.slice(1, 3),
+    activeToday,
     chapters: groups.map((group) => ({
       id: group.month_key || group.month_label,
       label: group.month_label || group.month_key || 'Current chapter',
@@ -117,9 +153,9 @@ export function buildConsumerFestivalsViewModel({ payload, search, category, sav
         ),
         dateLabel: formatDateRange(item.start_date, item.end_date, temporalState),
         artKey: getConsumerFestivalArtKey(item.id, item.category),
-      })),
+        })),
     })),
-    timelineCards: allItems.slice(0, 8),
+    allFestivalCards: timelineItems,
     emptyState: {
       title: 'No observances match this view yet',
       body: 'Try clearing the filters or searching for a broader observance family.',
@@ -244,6 +280,7 @@ export function buildConsumerMyPlaceViewModel({
     contextSummary: contextPayload?.context_summary || 'Place-aware context will appear here when the live context payload is available.',
     sunriseShift: sunriseShiftLabel(panchanga),
     localSunrise: formatTime(panchanga?.local_sunrise, temporalState) || 'Pending',
+    localSunset: formatTime(resolveSunsetReferenceValue(panchanga), temporalState) || 'Pending',
     savedStatus: contextPayload?.visit_note || 'Saved place details remain local-first on this device.',
     reminders: reminders.map((item, index) => ({
       id: item.id || `reminder_${index}`,
@@ -259,6 +296,11 @@ export function buildConsumerMyPlaceViewModel({
         label: 'What changes here',
         value: sunriseShiftLabel(panchanga),
         note: 'This is the simplest signal for whether the place materially changes the day rhythm.',
+      },
+      {
+        label: 'Local sunset',
+        value: formatTime(resolveSunsetReferenceValue(panchanga), temporalState) || 'Pending',
+        note: 'The close of the day should stay visible anywhere local timing is part of the answer.',
       },
       {
         label: 'Reminder rhythm',
@@ -295,6 +337,7 @@ export function buildConsumerMyPlaceViewModel({
       computedForDate: temporalState.date,
       availability: [
         { label: 'Local sunrise shift', available: Boolean(panchanga?.local_sunrise && panchanga?.sunrise), note: 'Shift is shown only when both local and comparison sunrise values are available.' },
+        { label: 'Local sunset', available: Boolean(resolveSunsetReferenceValue(panchanga)), note: 'Sunset should remain visible when the personal panchanga payload includes it.' },
         { label: 'Place context', available: Boolean(contextPayload?.context_summary), note: 'The sanctuary summary appears when the personal context endpoint returns a live context block.' },
         { label: 'Same-day observances', available: Boolean(festivals.length), note: 'Observances appear when the selected date intersects current festival coverage.' },
       ],

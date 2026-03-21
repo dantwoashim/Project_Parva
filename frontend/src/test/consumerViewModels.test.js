@@ -118,7 +118,7 @@ describe('consumer view models', () => {
       placeLabel: 'Kathmandu',
     });
 
-    expect(model.activityLabel).toBe('Focus work');
+    expect(model.activityLabel).toBe('Focused work');
     expect(model.best.title).toMatch(/10:30 AM/i);
     expect(model.alternates).toHaveLength(1);
     expect(model.avoid.title).toMatch(/1:15 PM/i);
@@ -165,8 +165,9 @@ describe('consumer view models', () => {
       savedFestivals: [{ id: 'dashain' }],
     });
 
-    expect(model.featured.title).toBe('Dashain');
-    expect(model.timelineCards[0].saved).toBe(true);
+    expect(model.closestLead.title).toBe('Dashain');
+    expect(model.activeToday).toHaveLength(0);
+    expect(model.allFestivalCards[0].saved).toBe(true);
     expect(model.facets.categories[0].label).toBe('National');
     expect(model.chapters[0].lead.title).toBe('Dashain');
   });
@@ -261,6 +262,11 @@ describe('consumer view models', () => {
           utc: '2026-02-15T00:57:00Z',
           local_time: '06:42 AM',
         },
+        local_sunset: {
+          local: '2026-02-15T17:53:00+05:45',
+          utc: '2026-02-15T12:08:00Z',
+          local_time: '05:53 PM',
+        },
       },
       contextPayload: {
         context_title: 'Morning Calm',
@@ -279,6 +285,7 @@ describe('consumer view models', () => {
     expect(model.cards[0].label).toBe('What changes here');
     expect(model.sunriseShift).toBe('+2 minutes vs Kathmandu');
     expect(model.localSunrise).toMatch(/6:44 AM/i);
+    expect(model.localSunset).toMatch(/5:53 PM/i);
     expect(model.evidence.methodRef).toBe('personal place profile');
   });
 });

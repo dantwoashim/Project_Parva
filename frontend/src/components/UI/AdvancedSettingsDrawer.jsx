@@ -8,7 +8,6 @@ import './AdvancedSettingsDrawer.css';
 
 function AdvancedSettingsPanel({
   state,
-  setLanguage,
   setLocation,
   setTheme,
   setTimezone,
@@ -125,13 +124,6 @@ function AdvancedSettingsPanel({
                 <option value="ink-black">Ink Black</option>
               </select>
             </label>
-            <label className="ink-input">
-              <span>{copy('settings.language')}</span>
-              <select value={state.language} onChange={(event) => setLanguage(event.target.value)}>
-                <option value="en">{copy('common.english')}</option>
-                <option value="ne">{copy('common.nepali')}</option>
-              </select>
-            </label>
           </div>
         </section>
 
@@ -211,14 +203,13 @@ function AdvancedSettingsPanel({
 }
 
 export function AdvancedSettingsDrawer({ open, onClose }) {
-  const { state, setLanguage, setLocation, setTimezone, setTheme } = useTemporalContext();
+  const { state, setLocation, setTimezone, setTheme } = useTemporalContext();
 
   if (!open) return null;
 
   return (
     <AdvancedSettingsPanel
       state={state}
-      setLanguage={setLanguage}
       setLocation={setLocation}
       setTheme={setTheme}
       setTimezone={setTimezone}

@@ -24,6 +24,15 @@ describe('productDateTime', () => {
     expect(formatted).not.toBe('');
   });
 
+  it('formats time-only values without shifting them through the product timezone', () => {
+    expect(
+      formatProductTime('06:16:10', {
+        language: 'en',
+        timeZone: 'Asia/Kathmandu',
+      }),
+    ).toMatch(/6:16/i);
+  });
+
   it('builds a time range from the same product context', () => {
     expect(
       formatProductTimeRange(

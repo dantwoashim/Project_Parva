@@ -13,10 +13,12 @@ from .integration_feed_routes import router as integration_feed_router
 from .kundali_graph_routes import router as kundali_graph_router
 from .kundali_routes import router as kundali_router
 from .location_routes import router as locations_router
+from .muhurta_calendar_routes import router as muhurta_calendar_router
 from .muhurta_heatmap_routes import router as muhurta_heatmap_router
 from .muhurta_routes import router as muhurta_router
 from .observance_routes import router as observance_router
 from .personal_routes import router as personal_router
+from .place_routes import router as place_router
 from .policy_routes import router as policy_router
 from .provenance_routes import router as provenance_router
 from .public_artifacts_routes import router as public_artifacts_router
@@ -38,12 +40,14 @@ __all__ = [
     "provenance_router",
     "reliability_router",
     "engine_router",
+    "place_router",
     "resolve_router",
     "spec_router",
     "integration_feed_router",
     "public_artifacts_router",
     "personal_router",
     "muhurta_router",
+    "muhurta_calendar_router",
     "kundali_router",
     "temporal_compass_router",
     "festival_timeline_router",

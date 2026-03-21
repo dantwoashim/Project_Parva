@@ -1,209 +1,223 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useMemo, useState } from 'react';
 import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
-import { KnowledgePanel } from '../components/UI/KnowledgePanel';
 import { KundaliGraph } from '../components/KundaliGraph/KundaliGraph';
-import { KUNDALI_GLOSSARY } from '../data/temporalGlossary';
-import { findPresetByLocation } from '../data/locationPresets';
 import { useMemberContext } from '../context/useMemberContext';
-import { useTemporalContext } from '../context/useTemporalContext';
-import { glossaryAPI, kundaliAPI, muhurtaAPI, personalAPI } from '../services/api';
+import { placesAPI, kundaliAPI } from '../services/api';
 import { describeSupportError } from '../services/errorFormatting';
-import { formatProductTime, formatProductTimeRange } from '../utils/productDateTime';
 import {
   buildChartFocus,
-  buildChartStats,
   buildInsightHighlights,
-  buildSignalList,
   buildSignature,
-  buildThemeCards,
   buildThesis,
-  defaultDateTime,
-  toKnowledge,
 } from './kundali/kundaliPresentation';
 import './KundaliPage.css';
 
-function strongestGraha(payload) {
-  return Object.values(payload?.grahas || {}).find((graha) => graha?.dignity?.state && graha.dignity.state !== 'neutral')
-    || Object.values(payload?.grahas || {})[0]
-    || null;
+function titleCase(value) {
+  return String(value || '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-function formatBsDate(bsDate) {
-  if (!bsDate?.month_name || !bsDate?.day || !bsDate?.year) {
-    return 'Bikram Sambat date pending';
+function buildBirthDateIso(form) {
+  const year = Number(form.birthYear);
+  const month = Number(form.birthMonth);
+  const day = Number(form.birthDay);
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) return null;
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (
+    Number.isNaN(date.valueOf())
+    || date.getUTCFullYear() !== year
+    || date.getUTCMonth() !== month - 1
+    || date.getUTCDate() !== day
+  ) {
+    return null;
   }
-  return `${bsDate.month_name} ${bsDate.day}`;
+  return `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
-function formatBsMeta(bsDate, panchanga) {
-  const lunarNote = [panchanga?.tithi?.paksha, panchanga?.tithi?.name].filter(Boolean).join(' | ');
-  if (!lunarNote) return `Bikram Sambat ${bsDate?.year || ''}`.trim();
-  return lunarNote;
+function resolveBirthInput(form) {
+  const birthDate = buildBirthDateIso(form);
+  const errors = [];
+
+  if (!birthDate) {
+    errors.push('Enter a valid birth date.');
+  }
+  if (!/^\d{2}:\d{2}$/.test(form.birthTime || '')) {
+    errors.push('Enter an exact birth time.');
+  }
+
+  const latitude = Number(form.latitude);
+  const longitude = Number(form.longitude);
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    errors.push('Select a birth place or enter valid coordinates.');
+  }
+  if (!String(form.timezone || '').trim()) {
+    errors.push('Choose a timezone for the birth place.');
+  }
+  if (!String(form.placeQuery || '').trim()) {
+    errors.push('Search and select a birth place.');
+  }
+
+  if (errors.length) {
+    return {
+      errors,
+      value: null,
+    };
+  }
+
+  return {
+    errors: [],
+    value: {
+      date: birthDate,
+      time: form.birthTime,
+      datetime: `${birthDate}T${form.birthTime}:00`,
+      latitude,
+      longitude,
+      timezone: form.timezone.trim(),
+      placeLabel: form.placeQuery.trim(),
+    },
+  };
 }
 
-function formatPlanetSpeed(graha) {
-  return graha?.is_retrograde ? 'Retro' : 'Direct';
+function buildSavedReading(resolvedInput, payload) {
+  return {
+    id: `kundali:${resolvedInput.datetime}:${resolvedInput.latitude}:${resolvedInput.longitude}:${resolvedInput.timezone}`,
+    title: `Birth reading | ${resolvedInput.placeLabel}`,
+    datetime: resolvedInput.datetime,
+    placeLabel: resolvedInput.placeLabel,
+    location: {
+      latitude: resolvedInput.latitude,
+      longitude: resolvedInput.longitude,
+      timezone: resolvedInput.timezone,
+    },
+    lagna: payload?.lagna?.rashi_english || null,
+    moon: payload?.grahas?.moon?.rashi_english || null,
+    createdAt: new Date().toISOString(),
+  };
 }
 
-function formatPlanetDegree(graha) {
-  const value = Number(graha?.longitude);
-  if (!Number.isFinite(value)) return 'Pending';
-  return `${value.toFixed(1)} deg`;
+function PlacementsTab({ payload, selectedNode, onSelectNode }) {
+  const grahaRows = Object.entries(payload?.grahas || {});
+  const houses = payload?.houses || [];
+
+  return (
+    <div className="kundali-reset__tab-grid">
+      <article className="kundali-reset__panel">
+        <div className="kundali-reset__panel-head">
+          <p className="kundali-reset__eyebrow">Planetary placements</p>
+          <h3>Grahas by sign</h3>
+        </div>
+        <div className="kundali-reset__table-wrap">
+          <table className="kundali-reset__table">
+            <thead>
+              <tr>
+                <th>Graha</th>
+                <th>Sign</th>
+                <th>Degree</th>
+                <th>Dignity</th>
+              </tr>
+            </thead>
+            <tbody>
+              {grahaRows.map(([id, graha]) => (
+                <tr key={id}>
+                  <td>
+                    <button type="button" className="kundali-reset__inline-link" onClick={() => onSelectNode(id)}>
+                      {graha.name_english}
+                    </button>
+                  </td>
+                  <td>{graha.rashi_english}</td>
+                  <td>{Number(graha.longitude).toFixed(1)} deg</td>
+                  <td>{titleCase(graha?.dignity?.state || 'neutral')}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article className="kundali-reset__panel">
+        <div className="kundali-reset__panel-head">
+          <p className="kundali-reset__eyebrow">House placements</p>
+          <h3>Twelve fixed houses</h3>
+        </div>
+        <div className="kundali-reset__houses-grid">
+          {houses.map((house) => {
+            const isSelected = selectedNode === `house_${house.house_number}`;
+            return (
+              <button
+                key={house.house_number}
+                type="button"
+                className={`kundali-reset__house-card ${isSelected ? 'is-selected' : ''}`.trim()}
+                onClick={() => onSelectNode(isSelected ? null : `house_${house.house_number}`)}
+              >
+                <span>House {house.house_number}</span>
+                <strong>{house.rashi_english}</strong>
+                <small>{house.occupants?.length ? house.occupants.map((item) => titleCase(item)).join(', ') : 'No grahas in this house'}</small>
+              </button>
+            );
+          })}
+        </div>
+      </article>
+    </div>
+  );
 }
 
-function buildPanchangaCards(personalPayload) {
-  return [
-    {
-      label: 'Tithi',
-      sanskrit: 'तिथि',
-      value: personalPayload?.tithi?.name || 'Pending',
-      note: personalPayload?.tithi?.paksha ? `Until ${personalPayload.tithi.paksha}` : 'Lunar day guidance appears when available.',
-    },
-    {
-      label: 'Vara',
-      sanskrit: 'वार',
-      value: personalPayload?.vaara?.name_english || 'Pending',
-      note: personalPayload?.vaara?.name_sanskrit || 'Weekday rhythm appears when available.',
-    },
-    {
-      label: 'Nakshatra',
-      sanskrit: 'नक्षत्र',
-      value: personalPayload?.nakshatra?.name || 'Pending',
-      note: personalPayload?.nakshatra?.lord || personalPayload?.nakshatra?.deity || 'Star field detail appears when available.',
-    },
-    {
-      label: 'Yoga',
-      sanskrit: 'योग',
-      value: personalPayload?.yoga?.name || 'Pending',
-      note: personalPayload?.yoga?.quality || 'Auspiciousness appears when available.',
-    },
-    {
-      label: 'Karana',
-      sanskrit: 'करण',
-      value: personalPayload?.karana?.name || 'Pending',
-      note: personalPayload?.karana?.quality || 'Action quality appears when available.',
-    },
-  ];
-}
+function AspectsTab({ payload }) {
+  const aspects = payload?.aspects || [];
+  if (!aspects.length) {
+    return (
+      <article className="kundali-reset__panel">
+        <div className="kundali-reset__panel-head">
+          <p className="kundali-reset__eyebrow">Aspect structure</p>
+          <h3>No aspect detail returned</h3>
+        </div>
+      </article>
+    );
+  }
 
-function buildContextCards({ personalPayload, muhurtaPayload, selectedFocus, state }) {
-  return [
-    {
-      icon: 'bedtime',
-      title: 'Moon Phase',
-      body: personalPayload?.tithi?.paksha
-        ? `${personalPayload.tithi.paksha} fortnight | ${personalPayload.tithi.name || 'Current tithi'}`
-        : 'Moon phase detail appears when the personal panchanga payload is available.',
-    },
-    {
-      icon: 'timer',
-      title: 'Rahu Kaal',
-      body: muhurtaPayload?.rahu_kalam
-        ? formatProductTimeRange(muhurtaPayload.rahu_kalam.start, muhurtaPayload.rahu_kalam.end, state)
-        : 'Rahu Kaal appears when the daily muhurta context is available.',
-    },
-    {
-      icon: 'network_node',
-      title: selectedFocus.eyebrow,
-      body: selectedFocus.note,
-    },
-  ];
-}
-
-function buildDashaCards(payload) {
-  return (payload?.dasha?.timeline || []).slice(0, 3).map((period, index) => ({
-    id: `${period.lord || 'period'}_${index}`,
-    label: index === 0 ? 'Major period' : index === 1 ? 'Following period' : 'Long arc',
-    value: period.lord || 'Pending',
-    note: period.duration_years ? `${period.duration_years} year cycle` : 'Timeline detail appears when available.',
-  }));
+  return (
+    <div className="kundali-reset__aspect-grid">
+      {aspects.map((aspect, index) => (
+        <article key={`${aspect.from}-${aspect.to}-${index}`} className="kundali-reset__aspect-card">
+          <span>{titleCase(aspect.nature || 'aspect')}</span>
+          <strong>{titleCase(aspect.from)} to {titleCase(aspect.to)}</strong>
+          <p>House {aspect.aspect_house} | Angle {aspect.aspect_angle} deg | Strength {Number(aspect.strength || 0).toFixed(2)}</p>
+        </article>
+      ))}
+    </div>
+  );
 }
 
 export function KundaliPage() {
-  const { state } = useTemporalContext();
   const { saveReading } = useMemberContext();
-  const [datetimeLocal, setDatetimeLocal] = useState(defaultDateTime());
-  const [lat, setLat] = useState(String(state.location?.latitude ?? 27.7172));
-  const [lon, setLon] = useState(String(state.location?.longitude ?? 85.324));
-  const [tz, setTz] = useState(state.timezone || 'Asia/Kathmandu');
-  const [selectedNode, setSelectedNode] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [form, setForm] = useState({
+    birthDay: '',
+    birthMonth: '',
+    birthYear: '',
+    birthTime: '',
+    placeQuery: '',
+    latitude: '',
+    longitude: '',
+    timezone: '',
+  });
+  const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState('');
+  const [searchAttribution, setSearchAttribution] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [payload, setPayload] = useState(null);
   const [graphPayload, setGraphPayload] = useState(null);
-  const [meta, setMeta] = useState(null);
   const [graphMeta, setGraphMeta] = useState(null);
-  const [personalPayload, setPersonalPayload] = useState(null);
-  const [muhurtaPayload, setMuhurtaPayload] = useState(null);
-  const [knowledge, setKnowledge] = useState(KUNDALI_GLOSSARY);
+  const [selectedNode, setSelectedNode] = useState(null);
+  const [activeTab, setActiveTab] = useState('chart');
+  const [submittedInput, setSubmittedInput] = useState(null);
 
-  const datetimeIso = useMemo(() => `${datetimeLocal}:00`, [datetimeLocal]);
-  const readingDate = useMemo(() => datetimeLocal.slice(0, 10), [datetimeLocal]);
-  const preset = useMemo(() => findPresetByLocation(state.location), [state.location]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const [kundali, graphEnvelope, glossary, personalEnvelope, muhurtaEnvelope] = await Promise.all([
-          kundaliAPI.getKundali({ datetime: datetimeIso, lat, lon, tz }),
-          kundaliAPI.getGraphEnvelope({ datetime: datetimeIso, lat, lon, tz }),
-          glossaryAPI.get({ domain: 'kundali', lang: state.language }).catch(() => null),
-          personalAPI.getPanchangaEnvelope({ date: readingDate, lat, lon, tz }).catch(() => null),
-          muhurtaAPI.getHeatmapEnvelope({ date: readingDate, lat, lon, tz, type: 'general' }).catch(() => null),
-        ]);
-
-        if (cancelled) return;
-
-        setPayload(kundali);
-        setGraphPayload(graphEnvelope.data || null);
-        setMeta(kundali);
-        setGraphMeta(graphEnvelope.meta || null);
-        setPersonalPayload(personalEnvelope?.data || null);
-        setMuhurtaPayload(muhurtaEnvelope?.data || null);
-        setKnowledge(toKnowledge(glossary?.content, KUNDALI_GLOSSARY));
-        setSelectedNode(null);
-      } catch (err) {
-        if (cancelled) return;
-        setPayload(null);
-        setGraphPayload(null);
-        setMeta(null);
-        setGraphMeta(null);
-        setPersonalPayload(null);
-        setMuhurtaPayload(null);
-        setError(describeSupportError(err, 'Failed to load kundali'));
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, [datetimeIso, lat, lon, readingDate, state.language, tz]);
-
-  const thesis = useMemo(() => buildThesis(payload, graphPayload), [payload, graphPayload]);
-  const themeCards = useMemo(() => buildThemeCards(payload, graphPayload), [payload, graphPayload]);
-  const signalList = useMemo(() => buildSignalList(payload), [payload]);
+  const resolvedInput = useMemo(() => resolveBirthInput(form), [form]);
   const signature = useMemo(() => buildSignature(payload), [payload]);
-  const insightHighlights = useMemo(() => buildInsightHighlights(payload, graphPayload), [payload, graphPayload]);
-  const chartStats = useMemo(() => buildChartStats(graphPayload), [graphPayload]);
-  const graphDisplayPayload = useMemo(
-    () => ({
-      ...(graphPayload || {}),
-      lagna: graphPayload?.lagna || payload?.lagna || null,
-      houses: payload?.houses || [],
-    }),
-    [graphPayload, payload],
-  );
+  const thesis = useMemo(() => buildThesis(payload, graphPayload), [graphPayload, payload]);
+  const insightHighlights = useMemo(() => buildInsightHighlights(payload, graphPayload), [graphPayload, payload]);
   const focusPayload = useMemo(
     () => ({
       ...payload,
@@ -212,385 +226,373 @@ export function KundaliPage() {
     }),
     [graphPayload, payload],
   );
-  const chartFocus = useMemo(() => buildChartFocus(selectedNode, focusPayload), [focusPayload, selectedNode]);
-  const planetOfDay = useMemo(() => strongestGraha(payload), [payload]);
-  const panchangaCards = useMemo(() => buildPanchangaCards(personalPayload), [personalPayload]);
-  const dashaCards = useMemo(() => buildDashaCards(payload), [payload]);
-  const grahaRows = useMemo(() => Object.entries(payload?.grahas || {}), [payload]);
+  const focus = useMemo(() => buildChartFocus(selectedNode, focusPayload), [focusPayload, selectedNode]);
 
-  const selectedFocus = useMemo(() => {
-    if (selectedNode) {
-      return chartFocus;
+  const handlePlaceSearch = async (event) => {
+    event.preventDefault();
+    setSearchLoading(true);
+    setSearchError('');
+
+    try {
+      const response = await placesAPI.search({ query: form.placeQuery, limit: 5 });
+      setSearchResults(response.items || []);
+      setSearchAttribution(response.attribution || '');
+      if (!(response.items || []).length) {
+        setSearchError('No matching places were found. Try a city, district, or country.');
+      }
+    } catch (error) {
+      setSearchResults([]);
+      setSearchAttribution('');
+      setSearchError(describeSupportError(error, 'Place search is unavailable right now.'));
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const applyPlace = (item) => {
+    setForm((current) => ({
+      ...current,
+      placeQuery: item.label,
+      latitude: String(item.latitude),
+      longitude: String(item.longitude),
+      timezone: item.timezone,
+    }));
+    setSearchResults([]);
+    setSearchError('');
+  };
+
+  const handleGenerate = async (event) => {
+    event.preventDefault();
+
+    if (resolvedInput.errors.length || !resolvedInput.value) {
+      setSubmitError(resolvedInput.errors[0] || 'Enter complete birth details before generating the chart.');
+      return;
     }
 
-    if (planetOfDay) {
-      return {
-        eyebrow: 'Planet of the day',
-        title: `${planetOfDay.name_english || 'Graha'} in ${planetOfDay.rashi_english || 'its sign'}`,
-        body: planetOfDay.dignity?.state && planetOfDay.dignity.state !== 'neutral'
-          ? `${planetOfDay.name_english} carries ${planetOfDay.dignity.state} dignity today, which makes it the clearest place to start reading the chart.`
-          : `${planetOfDay.name_english} is the easiest anchor into the chart when you want one planet to orient the whole reading.`,
-        note: planetOfDay.is_retrograde ? 'Retrograde motion is active in this placement.' : 'Open the chart and select another graha or house to compare the structure.',
-      };
+    setLoading(true);
+    setSubmitError('');
+
+    try {
+      const nextInput = resolvedInput.value;
+      const [kundali, graphEnvelope] = await Promise.all([
+        kundaliAPI.getKundali({
+          datetime: nextInput.datetime,
+          lat: nextInput.latitude,
+          lon: nextInput.longitude,
+          tz: nextInput.timezone,
+        }),
+        kundaliAPI.getGraphEnvelope({
+          datetime: nextInput.datetime,
+          lat: nextInput.latitude,
+          lon: nextInput.longitude,
+          tz: nextInput.timezone,
+        }),
+      ]);
+
+      setPayload(kundali);
+      setGraphPayload(graphEnvelope.data || null);
+      setGraphMeta(graphEnvelope.meta || null);
+      setSelectedNode(null);
+      setActiveTab('chart');
+      setSubmittedInput(nextInput);
+    } catch (error) {
+      setPayload(null);
+      setGraphPayload(null);
+      setGraphMeta(null);
+      setSubmittedInput(null);
+      setSubmitError(describeSupportError(error, 'Birth chart generation failed.'));
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return chartFocus;
-  }, [chartFocus, planetOfDay, selectedNode]);
-
-  const contextCards = useMemo(
-    () => buildContextCards({ personalPayload, muhurtaPayload, selectedFocus, state }),
-    [muhurtaPayload, personalPayload, selectedFocus, state],
-  );
-
-  const sunriseValue = personalPayload?.local_sunrise || personalPayload?.sunrise;
-  const sunsetValue = personalPayload?.sunset;
-  const placeLabel = preset?.label || personalPayload?.location?.title || payload?.location?.title || 'Kathmandu, NP';
-
-  if (loading) {
-    return (
-      <section className="kundali-editorial animate-fade-in-up consumer-route consumer-route--analysis">
-        <div className="skeleton kundali-editorial__hero-skeleton" />
-        <div className="skeleton kundali-editorial__band-skeleton" />
-        <div className="skeleton kundali-editorial__band-skeleton" />
-      </section>
-    );
-  }
-
-  if (error || !payload) {
-    return (
-      <section className="kundali-editorial animate-fade-in-up consumer-route consumer-route--analysis">
-        <article className="kundali-editorial__error editorial-card" role="alert">
-          <p className="kundali-editorial__eyebrow">Personal Path</p>
-          <h1>Birth Reading is unavailable right now.</h1>
-          <p>{error || 'The kundali profile could not be assembled from the live payloads.'}</p>
-        </article>
-      </section>
-    );
-  }
+  const handleSaveReading = async () => {
+    if (!submittedInput || !payload) return;
+    await saveReading(buildSavedReading(submittedInput, payload));
+  };
 
   return (
-    <section className="kundali-editorial animate-fade-in-up consumer-route consumer-route--analysis">
-      <header className="kundali-editorial__masthead">
-        <div className="kundali-editorial__masthead-copy">
-          <div className="kundali-editorial__kicker-row">
-            <span className="kundali-editorial__eyebrow">Personal Path</span>
-            <span className="kundali-editorial__rule" />
-          </div>
-          <h1>Janma Kundali</h1>
-          <p>
-            The celestial map of your soul&apos;s descent, etched in the alignment of the stars at the moment of your first breath.
+    <section className="kundali-reset animate-fade-in-up consumer-route consumer-route--analysis">
+      <header className="kundali-reset__hero">
+        <div>
+          <p className="kundali-reset__eyebrow">Birth Reading</p>
+          <h1>Enter the birth details first.</h1>
+          <p className="kundali-reset__intro">
+            Generate the natal chart from the actual birth date, exact time, and birth place. The reading starts with ascendant, moon placement, and the strongest graha.
           </p>
-        </div>
-
-        <div className="kundali-editorial__masthead-meta">
-          <div className="kundali-editorial__place-row">
-            <span className="material-symbols-outlined">location_on</span>
-            <span>{placeLabel}</span>
-          </div>
-          <div className="kundali-editorial__calendar-readout">
-            <strong>{formatBsDate(personalPayload?.bikram_sambat)}</strong>
-            <span>{formatBsMeta(personalPayload?.bikram_sambat, personalPayload)}</span>
-          </div>
         </div>
       </header>
 
-      <section className="kundali-editorial__hero-grid">
-        <article className="kundali-editorial__chart-panel editorial-card">
-          <div className="kundali-editorial__panel-label">Birth chart / राशिचक्र</div>
-          <div className="kundali-editorial__chart-stage">
-            <KundaliGraph payload={graphDisplayPayload} selectedNode={selectedNode} onSelectNode={setSelectedNode} />
-          </div>
-
-          <div className="kundali-editorial__signature-row">
+      <div className="kundali-reset__layout">
+        <form className="kundali-reset__form-card" onSubmit={handleGenerate}>
+          <div className="kundali-reset__section-head">
             <div>
-              <span>Ascendant</span>
-              <strong>{payload?.lagna?.rashi_english || 'Pending'}</strong>
-            </div>
-            <div>
-              <span>Nakshatra</span>
-              <strong>{personalPayload?.nakshatra?.name || 'Pending'}</strong>
-            </div>
-            <div>
-              <span>Strongest pull</span>
-              <strong>{signature[2]?.value || 'Pending'}</strong>
+              <p className="kundali-reset__eyebrow">Birth details</p>
+              <h2>Required inputs</h2>
             </div>
           </div>
-        </article>
 
-        <div className="kundali-editorial__side-stack">
-          <article className="kundali-editorial__insight-card glass-panel">
-            <div className="kundali-editorial__insight-head">
-              <span className="material-symbols-outlined">flare</span>
+          <div className="kundali-reset__date-grid">
+            <label className="ink-input">
+              <span>Day</span>
+              <input
+                inputMode="numeric"
+                value={form.birthDay}
+                onChange={(event) => setForm((current) => ({ ...current, birthDay: event.target.value }))}
+              />
+            </label>
+            <label className="ink-input">
+              <span>Month</span>
+              <input
+                inputMode="numeric"
+                value={form.birthMonth}
+                onChange={(event) => setForm((current) => ({ ...current, birthMonth: event.target.value }))}
+              />
+            </label>
+            <label className="ink-input">
+              <span>Year</span>
+              <input
+                inputMode="numeric"
+                value={form.birthYear}
+                onChange={(event) => setForm((current) => ({ ...current, birthYear: event.target.value }))}
+              />
+            </label>
+            <label className="ink-input">
+              <span>Birth time</span>
+              <input
+                type="time"
+                value={form.birthTime}
+                onChange={(event) => setForm((current) => ({ ...current, birthTime: event.target.value }))}
+              />
+            </label>
+          </div>
+
+          <div className="kundali-reset__place-block">
+            <div className="kundali-reset__section-head">
               <div>
-                <span>{selectedFocus.eyebrow}</span>
-                <strong>{selectedFocus.title}</strong>
+                <p className="kundali-reset__eyebrow">Birth place</p>
+                <h2>Search and select</h2>
               </div>
             </div>
-            <div className="kundali-editorial__insight-copy">
-              <h2>{selectedFocus.body}</h2>
-              <p>{thesis}</p>
-            </div>
-            <div className="kundali-editorial__insight-actions">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => saveReading({
-                  id: datetimeIso,
-                  title: `${payload?.lagna?.rashi_english || 'Birth'} Reading`,
-                  summary: thesis,
-                })}
-              >
-                Save Reading
+
+            <div className="kundali-reset__place-search">
+              <label className="ink-input kundali-reset__place-input">
+                <span>Place</span>
+                <input
+                  type="search"
+                  value={form.placeQuery}
+                  onChange={(event) => setForm((current) => ({ ...current, placeQuery: event.target.value }))}
+                  placeholder="Kathmandu, Nepal"
+                />
+              </label>
+              <button type="button" className="btn btn-secondary" onClick={handlePlaceSearch} disabled={searchLoading}>
+                {searchLoading ? 'Searching...' : 'Search place'}
               </button>
+            </div>
+
+            {searchError ? <p className="kundali-reset__status" role="status">{searchError}</p> : null}
+            {searchResults.length ? (
+              <div className="kundali-reset__search-results">
+                {searchResults.map((item) => (
+                  <button key={`${item.label}-${item.latitude}-${item.longitude}`} type="button" className="kundali-reset__search-result" onClick={() => applyPlace(item)}>
+                    <strong>{item.label}</strong>
+                    <span>{item.timezone}</span>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {searchAttribution ? <p className="kundali-reset__attribution">{searchAttribution}</p> : null}
+
+            <button type="button" className="kundali-reset__advanced-toggle" onClick={() => setAdvancedOpen((value) => !value)}>
+              {advancedOpen ? 'Hide manual coordinates' : 'Show manual coordinates'}
+            </button>
+
+            {advancedOpen ? (
+              <div className="kundali-reset__advanced-grid">
+                <label className="ink-input">
+                  <span>Latitude</span>
+                  <input
+                    inputMode="decimal"
+                    value={form.latitude}
+                    onChange={(event) => setForm((current) => ({ ...current, latitude: event.target.value }))}
+                  />
+                </label>
+                <label className="ink-input">
+                  <span>Longitude</span>
+                  <input
+                    inputMode="decimal"
+                    value={form.longitude}
+                    onChange={(event) => setForm((current) => ({ ...current, longitude: event.target.value }))}
+                  />
+                </label>
+                <label className="ink-input">
+                  <span>Timezone</span>
+                  <input
+                    value={form.timezone}
+                    onChange={(event) => setForm((current) => ({ ...current, timezone: event.target.value }))}
+                    placeholder="Asia/Kathmandu"
+                  />
+                </label>
+              </div>
+            ) : null}
+          </div>
+
+          {submitError ? <p className="kundali-reset__error" role="alert">{submitError}</p> : null}
+
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? 'Generating chart...' : 'Generate chart'}
+          </button>
+        </form>
+
+        <aside className="kundali-reset__anchors">
+          <article className="kundali-reset__anchor-card">
+            <p className="kundali-reset__eyebrow">Reading flow</p>
+            <h2>Three anchors, then detail.</h2>
+            <p>Start with the ascendant, then moon placement, then the strongest graha. After that, open houses or aspects only when you need more structure.</p>
+          </article>
+          {signature.map((item) => (
+            <article key={item.label} className="kundali-reset__anchor-card">
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+            </article>
+          ))}
+        </aside>
+      </div>
+
+      {payload && graphPayload && submittedInput ? (
+        <section className="kundali-reset__results">
+          <div className="kundali-reset__results-head">
+            <div>
+              <p className="kundali-reset__eyebrow">Generated chart</p>
+              <h2>{submittedInput.placeLabel}</h2>
+              <p>{submittedInput.date} at {submittedInput.time} | {submittedInput.timezone}</p>
+            </div>
+            <div className="kundali-reset__results-actions">
+              <button type="button" className="btn btn-secondary" onClick={handleSaveReading}>Save reading</button>
               <EvidenceDrawer
                 title="Birth Reading"
-                intro="This keeps the place, method profile, and trace metadata nearby without forcing the technical reading first."
-                methodRef={graphMeta?.method || meta?.method || payload?.method_profile || 'Birth reading profile'}
-                confidenceNote={graphMeta?.confidence?.level || graphMeta?.confidence || meta?.confidence?.level || payload?.quality_band || 'Interpretive guidance'}
-                placeUsed={placeLabel}
-                computedForDate={datetimeLocal}
+                intro="This birth chart is computed from the submitted birth datetime and place."
+                methodRef={graphMeta?.method || payload?.method || 'Kundali profile'}
+                confidenceNote={graphMeta?.confidence?.level || payload?.confidence || 'Computed guidance'}
+                placeUsed={submittedInput.placeLabel}
+                computedForDate={submittedInput.datetime}
                 availability={[
-                  { label: 'Summary reading', available: Boolean(thesis), note: 'The main reading is built from lagna, moon placement, and available insight blocks.' },
-                  { label: 'Interactive chart', available: Boolean(graphPayload?.layout), note: 'Chart relationships stay visible without overwhelming the opening read.' },
-                  { label: 'Personal panchanga', available: Boolean(personalPayload), note: 'Daily rhythm appears when the place-aware panchanga payload is available.' },
+                  { label: 'North Indian chart', available: Boolean(graphPayload?.layout), note: 'The house grid stays fixed so the reading starts from the actual natal structure.' },
+                  { label: 'Placements', available: Boolean(Object.keys(payload?.grahas || {}).length), note: 'Every graha placement is available in the placements tab.' },
+                  { label: 'Aspects', available: Boolean(payload?.aspects?.length), note: 'Aspect links stay separate from the opening chart so the first read remains clear.' },
                 ]}
-                meta={graphMeta || meta}
+                meta={graphMeta || payload}
                 traceFallbackId={graphPayload?.calculation_trace_id || payload?.calculation_trace_id}
               />
             </div>
-          </article>
-
-          <article className="kundali-editorial__positions-card editorial-card">
-            <h2>Planetary Positions</h2>
-            <div className="kundali-editorial__positions-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Graha</th>
-                    <th>Rashi</th>
-                    <th>Degree</th>
-                    <th>Speed</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {grahaRows.map(([id, row]) => (
-                    <tr key={id}>
-                      <td>{row.name_english}</td>
-                      <td>{row.rashi_english || 'Pending'}</td>
-                      <td>{formatPlanetDegree(row)}</td>
-                      <td>{formatPlanetSpeed(row)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section className="kundali-editorial__panchanga-block">
-        <div className="kundali-editorial__section-head">
-          <div>
-            <h2>Personal Panchanga</h2>
-            <p>Your daily rhythms recalculated for the same place and time as the chart.</p>
           </div>
-          <Link className="kundali-editorial__spark-link" to="/my-place">
-            <span className="material-symbols-outlined">auto_awesome</span>
-          </Link>
-        </div>
 
-        <div className="kundali-editorial__panchanga-grid">
-          {panchangaCards.map((item) => (
-            <article key={item.label} className="kundali-editorial__panchanga-card">
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-              <small>{item.note}</small>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="kundali-editorial__context-grid">
-        <article className="kundali-editorial__context-card kundali-editorial__context-card--map editorial-card">
-          <span className="material-symbols-outlined">map</span>
-          <h2>Almanac Context</h2>
-          <p>Celestial timings adjusted for your current terrestrial coordinates and saved timezone.</p>
-          <div className="kundali-editorial__sun-marks">
-            <div>
-              <span>Sunrise</span>
-              <strong>{sunriseValue ? formatProductTime(sunriseValue, state) : 'Pending'}</strong>
-            </div>
-            <div>
-              <span>Sunset</span>
-              <strong>{sunsetValue ? formatProductTime(sunsetValue, state) : 'Pending'}</strong>
-            </div>
+          <div className="kundali-reset__thesis-card">
+            <p className="kundali-reset__eyebrow">Opening read</p>
+            <h3>{focus.title}</h3>
+            <p>{selectedNode ? focus.body : thesis}</p>
+            <small>{selectedNode ? focus.note : 'Select a house or graha to tighten the reading.'}</small>
           </div>
-        </article>
 
-        <div className="kundali-editorial__context-stack">
-          {contextCards.map((item) => (
-            <article key={item.title} className="kundali-editorial__context-card">
-              <div className="kundali-editorial__context-icon">
-                <span className="material-symbols-outlined">{item.icon}</span>
-              </div>
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="kundali-editorial__reading-grid">
-        <article className="kundali-editorial__reading-card editorial-card">
-          <div className="kundali-editorial__section-tag">Chart themes</div>
-          <h2>The reading in plain language</h2>
-          <p className="kundali-editorial__reading-copy">{thesis}</p>
-          <div className="kundali-editorial__theme-grid">
-            {themeCards.map((card) => (
-              <article key={card.title} className="kundali-editorial__theme-card">
-                <h3>{card.title}</h3>
-                <p>{card.body}</p>
-              </article>
+          <div className="kundali-reset__tabs" role="tablist" aria-label="Birth reading sections">
+            {[
+              { id: 'chart', label: 'Chart' },
+              { id: 'placements', label: 'Placements' },
+              { id: 'aspects', label: 'Aspects' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                id={`kundali-tab-${tab.id}`}
+                role="tab"
+                className={`kundali-reset__tab ${activeTab === tab.id ? 'is-active' : ''}`.trim()}
+                aria-controls={`kundali-panel-${tab.id}`}
+                aria-selected={activeTab === tab.id}
+                tabIndex={activeTab === tab.id ? 0 : -1}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </button>
             ))}
           </div>
-        </article>
 
-        <div className="kundali-editorial__reading-rail">
-          <article className="kundali-editorial__signals-card">
-            <div className="kundali-editorial__section-tag">What shapes it</div>
-            <div className="kundali-editorial__signal-list">
-              {signalList.map((item) => (
-                <div key={item.label}>
-                  <span>{item.label}</span>
-                  <strong>{item.value}</strong>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="kundali-editorial__signals-card">
-            <div className="kundali-editorial__section-tag">Chart geometry</div>
-            <div className="kundali-editorial__signal-list">
-              {chartStats.map((item) => (
-                <div key={item.label}>
-                  <span>{item.label}</span>
-                  <strong>{item.value}</strong>
-                </div>
-              ))}
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section className="kundali-editorial__bottom-grid">
-        <article className="kundali-editorial__insight-list-card editorial-card">
-          <div className="kundali-editorial__section-tag">Interpretive highlights</div>
-          <h2>Where the chart concentrates</h2>
-          <div className="kundali-editorial__highlight-list">
-            {insightHighlights.length ? insightHighlights.map((item) => (
-              <article key={item.id} className="kundali-editorial__highlight-item">
-                <h3>{item.title}</h3>
-                <p>{item.summary}</p>
+          {activeTab === 'chart' ? (
+            <div
+              id="kundali-panel-chart"
+              role="tabpanel"
+              aria-labelledby="kundali-tab-chart"
+              className="kundali-reset__chart-grid"
+            >
+              <article className="kundali-reset__panel">
+                <KundaliGraph payload={{ ...(graphPayload || {}), grahas: payload?.grahas || {}, houses: payload?.houses || [] }} selectedNode={selectedNode} onSelectNode={setSelectedNode} />
               </article>
-            )) : (
-              <p className="muted">Interpretive highlights will appear here when the graph payload includes them.</p>
-            )}
-          </div>
-        </article>
 
-        <article className="kundali-editorial__dasha-card editorial-card">
-          <div className="kundali-editorial__section-tag">Dasha rhythm</div>
-          <h2>Long-cycle emphasis</h2>
-          <div className="kundali-editorial__highlight-list">
-            {dashaCards.length ? dashaCards.map((item) => (
-              <article key={item.id} className="kundali-editorial__highlight-item">
-                <h3>{item.value}</h3>
-                <p>{item.note}</p>
-              </article>
-            )) : (
-              <p className="muted">Major period highlights appear here when the dasha timeline is available.</p>
-            )}
-          </div>
-        </article>
-      </section>
+              <aside className="kundali-reset__side-reading">
+                <article className="kundali-reset__panel">
+                  <div className="kundali-reset__panel-head">
+                    <p className="kundali-reset__eyebrow">{focus.eyebrow}</p>
+                    <h3>{focus.title}</h3>
+                  </div>
+                  <p>{focus.body}</p>
+                  <small>{focus.note}</small>
+                </article>
 
-      <details className="kundali-editorial__drawer editorial-card">
-        <summary>Birth details and coordinates</summary>
-        <form className="kundali-editorial__controls" onSubmit={(event) => event.preventDefault()}>
-          <label className="ink-input">
-            <span>Birth date and time</span>
-            <input type="datetime-local" value={datetimeLocal} onChange={(event) => setDatetimeLocal(event.target.value)} required />
-          </label>
-          <label className="ink-input">
-            <span>Latitude</span>
-            <input value={lat} onChange={(event) => setLat(event.target.value)} />
-          </label>
-          <label className="ink-input">
-            <span>Longitude</span>
-            <input value={lon} onChange={(event) => setLon(event.target.value)} />
-          </label>
-          <label className="ink-input">
-            <span>Timezone</span>
-            <input value={tz} onChange={(event) => setTz(event.target.value)} />
-          </label>
-        </form>
-      </details>
+                <article className="kundali-reset__panel">
+                  <div className="kundali-reset__panel-head">
+                    <p className="kundali-reset__eyebrow">Primary anchors</p>
+                    <h3>Where to start reading</h3>
+                  </div>
+                  <div className="kundali-reset__anchor-list">
+                    {signature.map((item) => (
+                      <div key={item.label}>
+                        <span>{item.label}</span>
+                        <strong>{item.value}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </article>
 
-      <details className="kundali-editorial__drawer editorial-card">
-        <summary>Technical details</summary>
-        <div className="kundali-editorial__technical-grid">
-          <article className="kundali-editorial__technical-card">
-            <h3>Graha detail</h3>
-            <table className="ink-table">
-              <thead>
-                <tr>
-                  <th>Graha</th>
-                  <th>Rashi</th>
-                  <th>Longitude</th>
-                  <th>Dignity</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(payload.grahas || {}).map(([id, row]) => (
-                  <tr key={id}>
-                    <td>{row.name_english}</td>
-                    <td>{row.rashi_english}</td>
-                    <td>{formatPlanetDegree(row)}</td>
-                    <td>{row.dignity?.state || 'neutral'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </article>
-
-          <article className="kundali-editorial__technical-card">
-            <h3>Pattern counts</h3>
-            <div className="kundali-editorial__signal-list">
-              <div>
-                <span>Yogas</span>
-                <strong>{payload.yogas?.length || 0}</strong>
-              </div>
-              <div>
-                <span>Doshas</span>
-                <strong>{payload.doshas?.length || 0}</strong>
-              </div>
-              <div>
-                <span>Aspects</span>
-                <strong>{payload.aspects?.length || 0}</strong>
-              </div>
+                {insightHighlights.length ? (
+                  <article className="kundali-reset__panel">
+                    <div className="kundali-reset__panel-head">
+                      <p className="kundali-reset__eyebrow">Interpretive signals</p>
+                      <h3>Three useful highlights</h3>
+                    </div>
+                    <div className="kundali-reset__highlight-list">
+                      {insightHighlights.map((item) => (
+                        <div key={item.id}>
+                          <strong>{item.title}</strong>
+                          <p>{item.summary}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                ) : null}
+              </aside>
             </div>
-          </article>
-        </div>
-      </details>
+          ) : null}
 
-      <KnowledgePanel
-        title={knowledge.title}
-        intro={knowledge.intro}
-        sections={knowledge.sections}
-        className="kundali-editorial__knowledge"
-      />
+          {activeTab === 'placements' ? (
+            <div
+              id="kundali-panel-placements"
+              role="tabpanel"
+              aria-labelledby="kundali-tab-placements"
+            >
+              <PlacementsTab payload={payload} selectedNode={selectedNode} onSelectNode={setSelectedNode} />
+            </div>
+          ) : null}
+
+          {activeTab === 'aspects' ? (
+            <div
+              id="kundali-panel-aspects"
+              role="tabpanel"
+              aria-labelledby="kundali-tab-aspects"
+            >
+              <AspectsTab payload={payload} />
+            </div>
+          ) : null}
+        </section>
+      ) : null}
     </section>
   );
 }

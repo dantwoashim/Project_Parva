@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { buildConsumerTodayViewModel } from '../consumer/consumerViewModels';
 import { findPresetByLocation } from '../data/locationPresets';
 import { useTemporalContext } from '../context/useTemporalContext';
-import { festivalAPI, muhurtaAPI, temporalAPI } from '../services/api';
-import { describeSupportError, pickRejectedReason } from '../services/errorFormatting';
+import { useTodayBundle } from '../hooks/useTodayBundle';
 import { formatProductDate } from '../utils/productDateTime';
 import './ConsumerHome.css';
 
@@ -26,76 +25,46 @@ function formatFestivalSummary(item) {
 export function ConsumerHome() {
   const { state } = useTemporalContext();
   const activePreset = useMemo(() => findPresetByLocation(state.location), [state.location]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [todayViewModel, setTodayViewModel] = useState(null);
-  const [upcomingFestivals, setUpcomingFestivals] = useState([]);
+  const {
+    loading,
+    error,
+    compass,
+    compassMeta,
+    muhurta,
+    muhurtaMeta,
+    onDateFestivals,
+    upcomingFestivals,
+  } = useTodayBundle({
+    date: state.date,
+    latitude: state.location?.latitude,
+    longitude: state.location?.longitude,
+    timezone: state.timezone,
+    upcomingDays: 6,
+    fallbackErrorMessage: 'Home guidance is temporarily unavailable.',
+  });
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadHome() {
-      setLoading(true);
-      setError(null);
-
-      const placeLabel = activePreset?.label || 'Kathmandu';
-      const [compassResult, muhurtaResult, onDateResult, upcomingResult] = await Promise.allSettled([
-        temporalAPI.getCompassEnvelope({
-          date: state.date,
-          lat: state.location?.latitude,
-          lon: state.location?.longitude,
-          tz: state.timezone,
-          qualityBand: 'computed',
-        }),
-        muhurtaAPI.getHeatmapEnvelope({
-          date: state.date,
-          lat: state.location?.latitude,
-          lon: state.location?.longitude,
-          tz: state.timezone,
-          type: 'general',
-        }),
-        festivalAPI.getOnDate(state.date),
-        festivalAPI.getUpcoming(6, 'computed'),
-      ]);
-
-      if (cancelled) return;
-
-      const compassEnvelope = compassResult.status === 'fulfilled' ? compassResult.value : null;
-      const muhurtaEnvelope = muhurtaResult.status === 'fulfilled' ? muhurtaResult.value : null;
-      const onDateFestivals = onDateResult.status === 'fulfilled' && Array.isArray(onDateResult.value) ? onDateResult.value : [];
-      const upcomingPayload = upcomingResult.status === 'fulfilled' ? upcomingResult.value : null;
-      const upcoming = Array.isArray(upcomingPayload?.festivals) ? upcomingPayload.festivals : [];
-
-      setTodayViewModel(
-        buildConsumerTodayViewModel({
-          state,
-          placeLabel,
-          compass: compassEnvelope?.data || null,
-          compassMeta: compassEnvelope?.meta || null,
-          muhurta: muhurtaEnvelope?.data || null,
-          muhurtaMeta: muhurtaEnvelope?.meta || null,
-          onDateFestivals,
-          upcomingFestivals: upcoming,
-        }),
-      );
-      setUpcomingFestivals(upcoming.slice(0, 3));
-      setError(
-        !compassEnvelope && !muhurtaEnvelope
-          ? describeSupportError(
-              pickRejectedReason(compassResult, muhurtaResult),
-              'Home guidance is temporarily unavailable.',
-            )
-          : null,
-      );
-      setLoading(false);
-    }
-
-    loadHome();
-    return () => {
-      cancelled = true;
-    };
-  }, [activePreset?.label, state, state.date, state.location?.latitude, state.location?.longitude, state.timezone]);
-
+  const todayViewModel = useMemo(
+    () => buildConsumerTodayViewModel({
+      state,
+      placeLabel: activePreset?.label || 'Kathmandu',
+      compass,
+      compassMeta,
+      muhurta,
+      muhurtaMeta,
+      onDateFestivals,
+      upcomingFestivals,
+    }),
+    [
+      activePreset?.label,
+      compass,
+      compassMeta,
+      muhurta,
+      muhurtaMeta,
+      onDateFestivals,
+      state,
+      upcomingFestivals,
+    ],
+  );
   const [titleLineOne, titleLineTwo] = splitPrimaryTitle(
     todayViewModel?.signals?.[0]?.value || todayViewModel?.headline || 'Sacred Alignment',
   );
@@ -147,12 +116,7 @@ export function ConsumerHome() {
           <div className="almanac-home__signal-grid">
             {todayViewModel.signals.slice(0, 4).map((signal) => (
               <article key={signal.label}>
-                <p>
-                  {signal.label}
-                  <span className="text-nepali">
-                    {signal.label === 'Nakshatra' ? 'नक्षत्र' : signal.label === 'Yoga' ? 'योग' : signal.label === 'Karana' ? 'करण' : 'तिथि'}
-                  </span>
-                </p>
+                <p>{signal.label}</p>
                 <strong>{signal.value}</strong>
               </article>
             ))}
@@ -177,19 +141,19 @@ export function ConsumerHome() {
           <div className="almanac-home__glimpse-list">
             <div>
               <span className="almanac-home__glimpse-icon"><span className="material-symbols-outlined" style={{ color: '#735c00' }}>wb_twilight</span>Sunrise</span>
-              <strong>{todayViewModel.sunrise || 'Pending'}</strong>
+              <strong>{todayViewModel.sunrise || 'Unavailable'}</strong>
             </div>
             <div>
               <span className="almanac-home__glimpse-icon"><span className="material-symbols-outlined" style={{ color: '#9c3f00' }}>wb_sunny</span>Sunset</span>
-              <strong>{todayViewModel.sunset || 'Pending'}</strong>
+              <strong>{todayViewModel.sunset || 'Unavailable'}</strong>
             </div>
             <div className="is-warning">
               <span className="almanac-home__glimpse-icon"><span className="material-symbols-outlined" style={{ color: '#ba1a1a' }}>warning</span>Rahu Kaal</span>
-              <strong>{todayViewModel.avoidWindow?.value || 'Pending'}</strong>
+              <strong>{todayViewModel.avoidWindow?.value || 'Unavailable'}</strong>
             </div>
             <div>
               <span className="almanac-home__glimpse-icon"><span className="material-symbols-outlined" style={{ color: '#595f66' }}>schedule</span>Gulika Kaal</span>
-              <strong>{todayViewModel.bestWindow?.value || 'Pending'}</strong>
+              <strong>{todayViewModel.bestWindow?.value || 'Unavailable'}</strong>
             </div>
           </div>
           <blockquote className="almanac-home__quote">
@@ -205,7 +169,7 @@ export function ConsumerHome() {
           <Link to="/festivals">View Full Calendar</Link>
         </div>
         <div className="almanac-home__festival-grid">
-          {upcomingFestivals.length ? upcomingFestivals.map((festival) => (
+          {upcomingFestivals.length ? upcomingFestivals.slice(0, 3).map((festival) => (
             <Link key={festival.id} to={`/festivals/${festival.id}`} className="almanac-home__festival-card">
               <span>{formatProductDate(festival.start_date || festival.start, { month: 'short', day: 'numeric' }, state)}</span>
               <h3>{festival.display_name || festival.name}</h3>
@@ -222,15 +186,18 @@ export function ConsumerHome() {
       </section>
 
       <section className="almanac-home__banner">
-        <img
-          className="almanac-home__banner-img"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRA3vB7U5NjLNm3WAGSamnpazqNxiQknPYlR7IX0PvVUzNqJDs9-vSvc12vTuu7ucRD5HX0UEOHBOjbsCLJd0ULtinx-pxmNu9LRsIIoO0EQY1ef7LTK5Qm5tWUDUt4D3wqnS0b0deP-PN_ljEGo412B74cRBbwUdueWv6cOTluwxr5pMlRUIF7IGKyb7ndUHt95cEOEPV4D_ToDtEhfAzpGwJgb3PuaVa5zXT8A5_n_814H8RifKuP2IKKKbUDmVJ9W47DaUIt9NQ"
-          alt="Serene Himalayan landscape with soft morning light"
-        />
+        <div className="almanac-home__banner-art" aria-hidden="true">
+          <span className="almanac-home__banner-orb almanac-home__banner-orb--sun" />
+          <span className="almanac-home__banner-orb almanac-home__banner-orb--moon" />
+          <span className="almanac-home__banner-ridge almanac-home__banner-ridge--far" />
+          <span className="almanac-home__banner-ridge almanac-home__banner-ridge--mid" />
+          <span className="almanac-home__banner-ridge almanac-home__banner-ridge--near" />
+        </div>
         <div className="almanac-home__banner-overlay" />
         <div className="almanac-home__banner-copy">
           <p className="almanac-home__eyebrow">Space for Reflection</p>
           <h2>Embrace the Divine Rhythm</h2>
+          <p>Let the answer arrive first, then open the deeper method only when you want the full reasoning.</p>
         </div>
       </section>
     </section>
