@@ -32,6 +32,7 @@ from ..services.ritual_normalization import normalize_ritual_sequence
 from .models import (
     CalendarDayFestivals,
     FestivalCalendarResponse,
+    FestivalDateAvailability,
     FestivalDates,
     FestivalDetailResponse,
     FestivalExplainResponse,
@@ -104,6 +105,7 @@ def _build_detail_completeness(
     festival,
     *,
     dates: Optional[FestivalDates],
+    date_availability: Optional[FestivalDateAvailability],
     nearby: list[FestivalSummary],
 ) -> dict[str, object]:
     mythology = festival.mythology
@@ -160,6 +162,16 @@ def _build_detail_completeness(
         date_resolution = _completeness_section(
             "available",
             "Resolved calendar dates are available for the requested year.",
+        )
+    elif date_availability and date_availability.status == "missing_rule":
+        date_resolution = _completeness_section(
+            "missing",
+            "No computed rule is published for this observance yet, so live dates cannot be resolved.",
+        )
+    elif date_availability and date_availability.status == "calculation_error":
+        date_resolution = _completeness_section(
+            "partial",
+            "A rule exists, but the date engine failed while resolving the requested year.",
         )
     else:
         date_resolution = _completeness_section(
@@ -375,6 +387,8 @@ async def get_upcoming(
                     rule_family=meta["rule_family"],
                     validation_band=meta["validation_band"],
                     source_evidence_ids=meta["source_evidence_ids"],
+                    date_status="available",
+                    date_status_note="Resolved calendar dates are available for this upcoming occurrence.",
                 )
             )
 
@@ -407,6 +421,8 @@ async def festivals_on_date(target_date: date):
             summary = repo.to_summary(festival)
             summary.next_start = dates.start_date
             summary.next_end = dates.end_date
+            summary.date_status = "available"
+            summary.date_status_note = "Resolved calendar dates are available for this day."
             results.append(summary)
 
     return results
@@ -495,11 +511,24 @@ async def get_festival(
 
     # Get dates for specified year or current/next occurrence
     target_year = year or date.today().year
-    dates = repo.get_dates(festival_id, target_year)
+    dates, date_availability = repo.get_dates_with_availability(festival_id, target_year)
 
     if not dates and not year:
         # Try next year
-        dates = repo.get_dates(festival_id, target_year + 1)
+        fallback_year = target_year + 1
+        fallback_dates, fallback_availability = repo.get_dates_with_availability(
+            festival_id, fallback_year
+        )
+        if fallback_dates is not None:
+            dates = fallback_dates
+            date_availability = FestivalDateAvailability(
+                status="available",
+                note="The current year's occurrence was unavailable or already passed, so the next resolved occurrence is shown.",
+                requested_year=target_year,
+                resolved_year=fallback_year,
+            )
+        else:
+            date_availability = fallback_availability
 
     if not dates:
         # No dates available - don't fake it, let frontend handle gracefully
@@ -527,10 +556,12 @@ async def get_festival(
     return FestivalDetailResponse(
         festival=festival,
         dates=dates,
+        date_availability=date_availability,
         nearby_festivals=nearby[:4] if nearby else None,
         completeness=_build_detail_completeness(
             festival,
             dates=dates,
+            date_availability=date_availability,
             nearby=nearby[:4] if nearby else [],
         ),
         provenance=_build_provenance(festival_id=festival_id, year=target_year),
@@ -715,7 +746,7 @@ async def get_festival_dates(
     results = []
 
     for year in range(start, start + years):
-        dates = repo.get_dates(festival_id, year)
+        dates, availability = repo.get_dates_with_availability(festival_id, year)
         if dates:
             dates.provenance = _build_provenance(festival_id=festival_id, year=year)
             results.append(dates)
