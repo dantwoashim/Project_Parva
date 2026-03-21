@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { buildConsumerFestivalsViewModel } from '../consumer/consumerViewModels';
 import { festivalAPI } from '../services/api';
 import { describeSupportError } from '../services/errorFormatting';
@@ -20,7 +20,9 @@ export function useFestivalExplorerData({
 }) {
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const hasPayloadRef = useRef(false);
 
   const fromDate = date;
   const toDate = useMemo(() => addDays(date, 180), [date]);
@@ -29,7 +31,9 @@ export function useFestivalExplorerData({
     let cancelled = false;
 
     async function load() {
-      setLoading(true);
+      const bootstrapping = !hasPayloadRef.current;
+      setLoading(bootstrapping);
+      setRefreshing(!bootstrapping);
       setError(null);
 
       try {
@@ -53,6 +57,7 @@ export function useFestivalExplorerData({
           ...(timelineEnvelope.data || {}),
           active_today: Array.isArray(todayFestivals) ? todayFestivals : [],
         });
+        hasPayloadRef.current = true;
       } catch (reason) {
         if (cancelled) return;
 
@@ -61,6 +66,7 @@ export function useFestivalExplorerData({
       } finally {
         if (!cancelled) {
           setLoading(false);
+          setRefreshing(false);
         }
       }
     }
@@ -87,6 +93,7 @@ export function useFestivalExplorerData({
 
   return {
     loading,
+    refreshing,
     error,
     payload,
     viewModel,

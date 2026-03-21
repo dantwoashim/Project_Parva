@@ -57,6 +57,7 @@ async def festivals_timeline(
             "groups": len(timeline.get("groups", [])),
             "items": timeline.get("total", 0),
             "facets": bool(timeline.get("facets")),
+            "unresolved_matches": len(timeline.get("unresolved_matches", [])),
         },
         steps=[
             {
@@ -64,6 +65,10 @@ async def festivals_timeline(
                 "detail": "Loaded computed upcoming festivals in the selected date window.",
             },
             {"step": "filter", "detail": "Applied quality/category/region constraints."},
+            {
+                "step": "truth_state",
+                "detail": "Captured matched observances that still lack resolved live dates for the requested window.",
+            },
             {"step": "facet_counting", "detail": "Computed category, month, and region facet counts for desktop browse controls."},
             {"step": "group", "detail": "Grouped items by month for ribbon rendering."},
         ],

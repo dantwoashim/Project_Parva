@@ -98,8 +98,27 @@ def _serialize_timeline_item(*, festival, dates, lang: str, band: str, rule) -> 
         "duration_days": dates.duration_days,
         "quality_band": band,
         "rule_status": getattr(rule, "status", "inventory"),
+        "date_status": "available",
+        "date_status_note": "Resolved calendar dates are available for this observance in the selected window.",
         "algorithmic": bool(rule_has_algorithm(rule)) if rule else False,
         "ritual_preview": ritual_preview(festival),
+        "summary": festival.tagline or festival.description or ritual_preview(festival),
+        "regional_focus": festival.regional_focus or [],
+    }
+
+
+def _serialize_unresolved_match(*, festival, lang: str, availability, band: str, rule) -> dict:
+    return {
+        "id": festival.id,
+        "name": festival.name,
+        "name_nepali": festival.name_nepali,
+        "display_name": _display_name(festival, lang=lang),
+        "category": festival.category,
+        "quality_band": band,
+        "rule_status": getattr(rule, "status", "inventory"),
+        "date_status": availability.status,
+        "date_status_note": availability.note,
+        "algorithmic": bool(rule_has_algorithm(rule)) if rule else False,
         "summary": festival.tagline or festival.description or ritual_preview(festival),
         "regional_focus": festival.regional_focus or [],
     }
@@ -255,6 +274,38 @@ def build_festival_timeline(
                 }
             groups[month_key]["items"].append(item)
 
+        unresolved_matches: list[dict] = []
+        if search:
+            visible_ids = {item["id"] for item in items}
+            for festival in repo.get_all():
+                if festival.id in visible_ids:
+                    continue
+                if not _match_search(festival, search):
+                    continue
+                if category and festival.category != category:
+                    continue
+                if not _match_region(festival, region):
+                    continue
+
+                rule = get_rule_v4(festival.id)
+                band = rule_quality_band(rule) if rule else "inventory"
+                if normalized_band != "all" and band != normalized_band:
+                    continue
+
+                _dates, availability = repo.get_dates_with_availability(festival.id, from_date.year)
+                if availability.status == "available":
+                    continue
+
+                unresolved_matches.append(
+                    _serialize_unresolved_match(
+                        festival=festival,
+                        lang=lang,
+                        availability=availability,
+                        band=band,
+                        rule=rule,
+                    )
+                )
+
         return {
             "from": from_date.isoformat(),
             "to": to_date.isoformat(),
@@ -267,6 +318,7 @@ def build_festival_timeline(
             "total": len(items),
             "groups": list(groups.values()),
             "facets": facets,
+            "unresolved_matches": unresolved_matches,
         }
 
     return cached(cache_key, ttl_seconds=240, compute=_compute)

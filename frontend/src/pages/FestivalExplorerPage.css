@@ -265,6 +265,21 @@
   text-transform: uppercase;
 }
 
+.explorer-card__status-note {
+  margin: -0.15rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.explorer-unresolved {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.8rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(115, 92, 0, 0.12);
+}
+
 .explorer-sheet__overlay {
   position: fixed;
   inset: 0;

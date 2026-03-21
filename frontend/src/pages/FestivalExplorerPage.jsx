@@ -35,6 +35,7 @@ function FestivalCard({ item, emphasis = 'default', source = 'festival_card' }) 
         ) : null}
         <h3>{item.title}</h3>
         <p className="explorer-card__meta">{item.dateLabel}</p>
+        {item.statusNote ? <p className="explorer-card__status-note">{item.statusNote}</p> : null}
         <p>{item.summary}</p>
       </div>
     </Link>
@@ -197,6 +198,19 @@ export function FestivalExplorerPage() {
             </article>
           )}
         </div>
+
+        {viewModel.unresolvedMatches?.length ? (
+          <section className="explorer-unresolved" aria-label="Verification still in progress">
+            <div className="explorer-month__head">
+              <p className="explorer-eyebrow">Still being verified</p>
+            </div>
+            <div className="explorer-month__stack">
+              {viewModel.unresolvedMatches.map((item) => (
+                <FestivalCard key={item.id} item={item} emphasis="compact" source="unresolved_match" />
+              ))}
+            </div>
+          </section>
+        ) : null}
       </section>
 
       {filtersOpen ? (
