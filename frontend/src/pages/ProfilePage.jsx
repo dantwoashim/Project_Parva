@@ -26,7 +26,7 @@ const ACTIVITY_OPTIONS = [
 ];
 
 export function ProfilePage() {
-  const { state, setLanguage, setTheme } = useTemporalContext();
+  const { state, setTheme } = useTemporalContext();
   const { copy } = useCopy();
   const {
     state: memberState,
@@ -125,11 +125,6 @@ export function ProfilePage() {
                 ))}
               </select>
             </label>
-
-            <div className="profile-links">
-              <button type="button" aria-pressed={state.language === 'en'} className="btn btn-secondary btn-sm" onClick={() => setLanguage('en')}>{copy('common.english')}</button>
-              <button type="button" aria-pressed={state.language === 'ne'} className="btn btn-secondary btn-sm" onClick={() => setLanguage('ne')}>{copy('common.nepali')}</button>
-            </div>
             <p className="profile-card__hint">{copy('profile.hint.theme')}</p>
           </div>
         </article>

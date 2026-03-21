@@ -1,100 +1,34 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
 import { buildConsumerTodayViewModel } from '../consumer/consumerViewModels';
 import { TodaySection } from '../consumer/ConsumerSections';
-import { festivalAPI, muhurtaAPI, temporalAPI } from '../services/api';
 import { useTemporalContext } from '../context/useTemporalContext';
 import { findPresetByLocation } from '../data/locationPresets';
+import { useTodayBundle } from '../hooks/useTodayBundle';
 import { trackEvent } from '../services/analytics';
-import { describeSupportError, pickRejectedReason } from '../services/errorFormatting';
 import './TemporalCompassPage.css';
 
 export function TemporalCompassPage() {
   const { state, setDate } = useTemporalContext();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [compass, setCompass] = useState(null);
-  const [compassMeta, setCompassMeta] = useState(null);
-  const [muhurta, setMuhurta] = useState(null);
-  const [muhurtaMeta, setMuhurtaMeta] = useState(null);
-  const [onDateFestivals, setOnDateFestivals] = useState([]);
-  const [upcomingFestivals, setUpcomingFestivals] = useState([]);
   const preset = useMemo(() => findPresetByLocation(state.location), [state.location]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      setLoading(true);
-      setError(null);
-
-      const [compassResult, muhurtaResult, onDateResult, upcomingResult] = await Promise.allSettled([
-        temporalAPI.getCompassEnvelope({
-          date: state.date,
-          lat: state.location?.latitude,
-          lon: state.location?.longitude,
-          tz: state.timezone,
-          qualityBand: 'computed',
-        }),
-        muhurtaAPI.getHeatmapEnvelope({
-          date: state.date,
-          lat: state.location?.latitude,
-          lon: state.location?.longitude,
-          tz: state.timezone,
-          type: 'general',
-        }),
-        festivalAPI.getOnDate(state.date),
-        festivalAPI.getUpcoming(120, 'computed'),
-      ]);
-
-      if (cancelled) return;
-
-      if (compassResult.status === 'fulfilled') {
-        setCompass(compassResult.value.data || null);
-        setCompassMeta(compassResult.value.meta || null);
-      } else {
-        setCompass(null);
-        setCompassMeta(null);
-      }
-
-      if (muhurtaResult.status === 'fulfilled') {
-        setMuhurta(muhurtaResult.value.data || null);
-        setMuhurtaMeta(muhurtaResult.value.meta || null);
-      } else {
-        setMuhurta(null);
-        setMuhurtaMeta(null);
-      }
-
-      if (onDateResult.status === 'fulfilled') {
-        setOnDateFestivals(Array.isArray(onDateResult.value) ? onDateResult.value : []);
-      } else {
-        setOnDateFestivals([]);
-      }
-
-      if (upcomingResult.status === 'fulfilled') {
-        setUpcomingFestivals(Array.isArray(upcomingResult.value?.festivals) ? upcomingResult.value.festivals : []);
-      } else {
-        setUpcomingFestivals([]);
-      }
-
-      if (compassResult.status === 'rejected' && muhurtaResult.status === 'rejected') {
-        setError(
-          describeSupportError(
-            pickRejectedReason(compassResult, muhurtaResult),
-            'We could not build today\'s live reading right now. Please try again in a moment.',
-          ),
-        );
-      }
-
-      setLoading(false);
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, [state.date, state.location?.latitude, state.location?.longitude, state.timezone]);
+  const {
+    loading,
+    error,
+    compass,
+    compassMeta,
+    muhurta,
+    muhurtaMeta,
+    onDateFestivals,
+    upcomingFestivals,
+  } = useTodayBundle({
+    date: state.date,
+    latitude: state.location?.latitude,
+    longitude: state.location?.longitude,
+    timezone: state.timezone,
+    upcomingDays: 120,
+    fallbackErrorMessage: 'We could not build today\'s live reading right now. Please try again in a moment.',
+  });
 
   useEffect(() => {
     if (muhurta?.best_window?.start) {

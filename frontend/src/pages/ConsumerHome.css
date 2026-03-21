@@ -304,20 +304,87 @@
   display: grid;
   place-items: center;
   overflow: hidden;
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at top right, rgba(204, 168, 48, 0.18), transparent 22rem),
+    linear-gradient(180deg, rgba(81, 46, 16, 0.94) 0%, rgba(120, 63, 16, 0.9) 42%, rgba(245, 228, 206, 0.98) 100%);
 }
 
-.almanac-home__banner-img {
+.almanac-home__banner-art {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  overflow: hidden;
+}
+
+.almanac-home__banner-orb,
+.almanac-home__banner-ridge {
+  position: absolute;
+  display: block;
+}
+
+.almanac-home__banner-orb {
+  border-radius: 999px;
+  filter: blur(0.2px);
+}
+
+.almanac-home__banner-orb--sun {
+  top: 3rem;
+  right: 8%;
+  width: 8.5rem;
+  height: 8.5rem;
+  background:
+    radial-gradient(circle, rgba(255, 230, 159, 0.95) 0%, rgba(204, 168, 48, 0.95) 42%, rgba(204, 168, 48, 0.16) 72%, transparent 100%);
+  box-shadow: 0 0 70px rgba(204, 168, 48, 0.3);
+}
+
+.almanac-home__banner-orb--moon {
+  top: 4.2rem;
+  left: 12%;
+  width: 4rem;
+  height: 4rem;
+  background:
+    radial-gradient(circle, rgba(255, 248, 243, 0.94) 0%, rgba(255, 248, 243, 0.55) 62%, transparent 100%);
+  opacity: 0.72;
+}
+
+.almanac-home__banner-ridge {
+  inset-inline: -8%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(255, 248, 243, 0.02), rgba(255, 248, 243, 0.14));
+}
+
+.almanac-home__banner-ridge--far {
+  bottom: 28%;
+  height: 18rem;
+  background:
+    radial-gradient(ellipse at center, rgba(255, 248, 243, 0.08), rgba(255, 248, 243, 0.02) 62%, transparent 100%);
+  transform: scaleX(1.1);
+}
+
+.almanac-home__banner-ridge--mid {
+  bottom: 14%;
+  height: 18rem;
+  background:
+    linear-gradient(180deg, rgba(58, 31, 12, 0.05), rgba(58, 31, 12, 0.26)),
+    radial-gradient(ellipse at center, rgba(255, 232, 204, 0.18), rgba(255, 232, 204, 0.02) 70%, transparent 100%);
+  transform: scaleX(1.18);
+}
+
+.almanac-home__banner-ridge--near {
+  bottom: -22%;
+  height: 20rem;
+  background:
+    linear-gradient(180deg, rgba(36, 21, 10, 0.06), rgba(36, 21, 10, 0.42)),
+    radial-gradient(ellipse at center, rgba(253, 233, 209, 0.24), rgba(253, 233, 209, 0.04) 72%, transparent 100%);
+  transform: scaleX(1.24);
 }
 
 .almanac-home__banner-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(156, 63, 0, 0.1);
+  background:
+    linear-gradient(180deg, rgba(18, 13, 8, 0.08), rgba(18, 13, 8, 0.26)),
+    linear-gradient(135deg, rgba(255, 248, 243, 0.04), rgba(255, 248, 243, 0));
   mix-blend-mode: multiply;
 }
 
@@ -329,6 +396,7 @@
   justify-items: center;
   text-align: center;
   color: #fff8f3;
+  padding: 2rem;
 }
 
 .almanac-home__banner-copy .almanac-home__eyebrow {
@@ -402,5 +470,9 @@
 
   .almanac-home__festival-card {
     padding: 1.4rem;
+  }
+
+  .almanac-home__banner {
+    min-height: 20rem;
   }
 }

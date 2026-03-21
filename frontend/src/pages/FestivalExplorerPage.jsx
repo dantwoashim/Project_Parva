@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   CONSUMER_FESTIVAL_FILTERS,
@@ -11,40 +11,37 @@ import { useCopy } from '../i18n/useCopy';
 import { festivalAPI } from '../services/api';
 import { trackEvent } from '../services/analytics';
 import { describeSupportError } from '../services/errorFormatting';
+import { addIsoDays } from '../utils/isoDate';
 import './FestivalExplorerPage.css';
 
 function addDays(base, days) {
-  const date = new Date(`${base}T00:00:00`);
-  date.setDate(date.getDate() + days);
-  return date.toISOString().slice(0, 10);
+  return addIsoDays(base, days);
 }
 
 function posterClass(item) {
   return `explorer-poster explorer-poster--${item?.artKey || 'lamp'}`.trim();
 }
 
-function dedupeFestivalItems(items = []) {
-  const seen = new Set();
-  return items.filter((item) => {
-    const key = item?.id || item?.href || item?.title;
-    if (!key || seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-}
-
-function FeaturedFestival({ item, lead = false, source = 'chapter' }) {
+function FestivalCard({ item, emphasis = 'default', source = 'festival_card' }) {
   if (!item) return null;
+
   return (
     <Link
       to={item.href}
-      className={`explorer-card ${lead ? 'is-lead' : ''}`.trim()}
+      className={`explorer-card explorer-card--${emphasis}`.trim()}
       onClick={() => trackEvent('festival_opened', { festival_id: item.id, source })}
     >
       <div className={posterClass(item)}>
         <span>{item.title}</span>
       </div>
       <div className="explorer-card__copy">
+        {item.badges?.length ? (
+          <div className="explorer-card__badges">
+            {item.badges.map((badge) => (
+              <span key={`${item.id}-${badge}`}>{badge}</span>
+            ))}
+          </div>
+        ) : null}
         <h3>{item.title}</h3>
         <p className="explorer-card__meta">{item.dateLabel}</p>
         <p>{item.summary}</p>
@@ -60,12 +57,13 @@ export function FestivalExplorerPage() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [region, setRegion] = useState('');
-  const [sort, setSort] = useState('recommended');
+  const [sort, setSort] = useState('chronological');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const { dialogRef } = useDialogA11y(filtersOpen, () => setFiltersOpen(false));
   const [payload, setPayload] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const allFestivalsRef = useRef(null);
 
   const fromDate = state.date;
   const toDate = useMemo(() => addDays(state.date, 180), [state.date]);
@@ -78,19 +76,25 @@ export function FestivalExplorerPage() {
       setError(null);
 
       try {
-        const envelope = await festivalAPI.getTimelineEnvelope({
-          from: fromDate,
-          to: toDate,
-          qualityBand: 'computed',
-          category: category || undefined,
-          region: region || undefined,
-          search: search.trim() || undefined,
-          sort: sort || undefined,
-          lang: state.language,
-        });
+        const [todayFestivals, timelineEnvelope] = await Promise.all([
+          festivalAPI.getOnDate(fromDate),
+          festivalAPI.getTimelineEnvelope({
+            from: fromDate,
+            to: toDate,
+            qualityBand: 'computed',
+            category: category || undefined,
+            region: region || undefined,
+            search: search.trim() || undefined,
+            sort: sort || 'chronological',
+            lang: 'en',
+          }),
+        ]);
 
         if (!cancelled) {
-          setPayload(envelope.data || null);
+          setPayload({
+            ...(timelineEnvelope.data || {}),
+            active_today: Array.isArray(todayFestivals) ? todayFestivals : [],
+          });
         }
       } catch (err) {
         if (!cancelled) {
@@ -108,7 +112,7 @@ export function FestivalExplorerPage() {
     return () => {
       cancelled = true;
     };
-  }, [category, fromDate, region, search, sort, state.language, toDate]);
+  }, [category, fromDate, region, search, sort, toDate]);
 
   const viewModel = useMemo(
     () => buildConsumerFestivalsViewModel({
@@ -117,34 +121,23 @@ export function FestivalExplorerPage() {
       category,
       savedFestivals: memberState.savedFestivals,
       temporalState: {
-        language: state.language,
+        language: 'en',
         timezone: state.timezone,
       },
     }),
-    [payload, search, category, memberState.savedFestivals, state.language, state.timezone],
+    [payload, search, category, memberState.savedFestivals, state.timezone],
   );
 
-  const galleryItems = useMemo(() => {
-    const lead = viewModel.featured;
-    const supporting = [...viewModel.supporting];
-    if (viewModel.chapters[0]?.items?.length) {
-      supporting.push(...viewModel.chapters[0].items.slice(0, Math.max(0, 4 - supporting.length)));
-    }
-    return { lead, supporting: dedupeFestivalItems(supporting).slice(0, 4) };
-  }, [viewModel]);
+  const scrollToAllFestivals = () => {
+    allFestivalsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   if (loading) {
     return (
       <section className="explorer-page animate-fade-in-up consumer-route consumer-route--explorer">
         <div className="skeleton explorer-hero-skeleton" />
-        <div className="explorer-gallery">
-          <div className="skeleton explorer-gallery__lead-skeleton" />
-          <div className="explorer-gallery__stack">
-            {Array.from({ length: 4 }).map((_, index) => (
-              <div key={index} className="skeleton explorer-gallery__card-skeleton" />
-            ))}
-          </div>
-        </div>
+        <div className="skeleton explorer-gallery__lead-skeleton" />
+        <div className="skeleton explorer-gallery__card-skeleton" />
       </section>
     );
   }
@@ -165,11 +158,8 @@ export function FestivalExplorerPage() {
     <section className="explorer-page animate-fade-in-up consumer-route consumer-route--explorer">
       <header className="explorer-hero">
         <div className="explorer-hero__copy">
-          <p className="explorer-eyebrow">Sacred Calendars</p>
-          <h1>
-            <span>Festival</span>
-            <em>Explorer</em>
-          </h1>
+          <p className="explorer-eyebrow">Festivals</p>
+          <h1>Closest observances first.</h1>
           <p>{viewModel.subtitle}</p>
         </div>
 
@@ -193,39 +183,79 @@ export function FestivalExplorerPage() {
         </div>
       </header>
 
-      <section className="explorer-gallery">
-        <FeaturedFestival item={galleryItems.lead} lead source="lead_gallery" />
-        <div className="explorer-gallery__stack">
-          {galleryItems.supporting.map((item, index) => (
-            <FeaturedFestival key={item.id} item={item} source={`gallery_${index + 1}`} />
-          ))}
+      <section className="explorer-closest">
+        <div className="explorer-section-head">
+          <div>
+            <p className="explorer-eyebrow">Closest observances</p>
+            <h2>Start with what is happening now, then what comes next.</h2>
+            <p>
+              {viewModel.activeToday.length
+                ? `${viewModel.activeToday.length} observance${viewModel.activeToday.length === 1 ? ' is' : 's are'} active today.`
+                : 'No observance is active today, so the next dates lead this list.'}
+            </p>
+          </div>
+          <button type="button" className="btn btn-secondary" onClick={scrollToAllFestivals}>
+            See all festivals
+          </button>
         </div>
+
+        {viewModel.closestLead ? (
+          <div className="explorer-closest__grid">
+            <FestivalCard item={viewModel.closestLead} emphasis="lead" source="closest_lead" />
+            <div className="explorer-closest__stack">
+              {viewModel.closestSupporting.map((item, index) => (
+                <FestivalCard
+                  key={item.id}
+                  item={item}
+                  emphasis="compact"
+                  source={`closest_supporting_${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <article className="explorer-card explorer-card--empty">
+            <div className="explorer-card__copy">
+              <h3>{viewModel.emptyState.title}</h3>
+              <p>{viewModel.emptyState.body}</p>
+            </div>
+          </article>
+        )}
       </section>
 
-      <section className="explorer-cta">
-        <div>
-          <h2>Never miss a sacred moment.</h2>
-          <p>Sync the Panchanga with your personal calendar and receive ritual guidance based on your precise location.</p>
-        </div>
-        <Link to="/integrations" className="btn btn-primary">Sync My Calendar</Link>
-      </section>
-
-      <section className="explorer-ribbon">
+      <section ref={allFestivalsRef} className="explorer-ribbon">
         <div className="explorer-ribbon__head">
           <div>
-            <p className="explorer-eyebrow">Browse all</p>
-            <h2>Seasonal observance ribbon</h2>
+            <p className="explorer-eyebrow">All festivals</p>
+            <h2>From today forward, grouped by month.</h2>
           </div>
           <button type="button" className="btn btn-secondary" onClick={() => setFiltersOpen(true)}>
             {copy('festivalExplorer.filters.more')}
           </button>
         </div>
 
-        <div className="explorer-ribbon__grid">
-          {viewModel.timelineCards.length ? viewModel.timelineCards.map((item) => (
-            <FeaturedFestival key={item.id} item={item} source="ribbon" />
+        <div className="explorer-months">
+          {viewModel.chapters.length ? viewModel.chapters.map((chapter, chapterIndex) => (
+            <section key={chapter.id} className="explorer-month">
+              <div className="explorer-month__head">
+                <p className="explorer-eyebrow">{chapter.label}</p>
+              </div>
+              <div className="explorer-month__grid">
+                <FestivalCard item={chapter.lead} emphasis={chapterIndex === 0 ? 'feature' : 'default'} source={`month_${chapter.id}_lead`} />
+                <div className="explorer-month__stack">
+                  {chapter.items.map((item, index) => (
+                    <FestivalCard
+                      key={item.id}
+                      item={item}
+                      emphasis="compact"
+                      source={`month_${chapter.id}_${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </section>
           )) : (
-            <article className="explorer-card">
+            <article className="explorer-card explorer-card--empty">
               <div className="explorer-card__copy">
                 <h3>{viewModel.emptyState.title}</h3>
                 <p>{viewModel.emptyState.body}</p>
@@ -293,9 +323,8 @@ export function FestivalExplorerPage() {
               <label className="ink-input explorer-control">
                 <span>{copy('festivalExplorer.filters.sort')}</span>
                 <select value={sort} onChange={(event) => setSort(event.target.value)}>
-                  <option value="recommended">{copy('festivalExplorer.sort.recommended')}</option>
-                  <option value="soonest">{copy('festivalExplorer.sort.soonest')}</option>
-                  <option value="latest">{copy('festivalExplorer.sort.latest')}</option>
+                  <option value="chronological">{copy('festivalExplorer.sort.soonest')}</option>
+                  <option value="popular">Popular</option>
                 </select>
               </label>
             </div>

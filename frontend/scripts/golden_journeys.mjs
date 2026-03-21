@@ -235,7 +235,7 @@ const journeys = [
     run: async (page, step) => {
       await step('Open Best Time', async () => {
         await page.goto(new URL('/best-time', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.getByRole('heading', { name: /Muhurta Explorer/i }).waitFor({ timeout: readyTimeout });
+        await page.getByRole('heading', { name: /Choose a date first/i }).waitFor({ timeout: readyTimeout });
         await page.locator('.muhurta-page__activity-pill').first().waitFor({ timeout: readyTimeout });
       });
 
@@ -247,8 +247,8 @@ const journeys = [
       });
 
       await step('Select a timing block', async () => {
-        await page.locator('.muhurta-page__heat-cell').first().click();
-        await page.getByRole('heading', { name: /Recommended Windows/i }).waitFor({ timeout: readyTimeout });
+        await page.locator('.muhurta-page__summary-item, .muhurta-page__day-card').first().click();
+        await page.locator('.muhurta-page__timeline-item').first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Inspect muhurta evidence', async () => {
@@ -263,13 +263,23 @@ const journeys = [
     run: async (page, step) => {
       await step('Open Birth Reading', async () => {
         await page.goto(new URL('/birth-reading', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.getByRole('heading', { name: /Janma Kundali/i }).waitFor({ timeout: readyTimeout });
+        await page.getByRole('heading', { name: /Enter the birth details first/i }).waitFor({ timeout: readyTimeout });
       });
 
-      await step('Open birth details', async () => {
-        await page.locator('summary').filter({ hasText: 'Birth details and coordinates' }).click();
-        await page.getByLabel('Birth date and time').waitFor({ timeout: readyTimeout });
-        await page.getByLabel('Latitude').waitFor({ timeout: readyTimeout });
+      await step('Enter birth details', async () => {
+        const form = page.locator('.kundali-reset__form-card');
+        await form.getByLabel(/^Day$/i, { exact: true }).fill('15');
+        await form.getByLabel(/^Month$/i, { exact: true }).fill('2');
+        await form.getByLabel(/^Year$/i, { exact: true }).fill('1994');
+        await form.getByLabel(/^Birth time$/i, { exact: true }).fill('06:30');
+        await form.getByLabel(/^Place$/i, { exact: true }).fill('Kathmandu, Nepal');
+        await form.getByRole('button', { name: /Show manual coordinates/i }).click();
+        await form.getByLabel(/^Latitude$/i, { exact: true }).fill('27.7172');
+        await form.getByLabel(/^Longitude$/i, { exact: true }).fill('85.3240');
+        await form.getByLabel(/^Timezone$/i, { exact: true }).fill('Asia/Kathmandu');
+        await form.getByRole('button', { name: /Generate chart/i }).click();
+        await page.getByRole('heading', { name: /Kathmandu, Nepal/i }).waitFor({ timeout: readyTimeout });
+        await page.getByRole('tab', { name: /Chart/i }).waitFor({ timeout: readyTimeout });
       });
 
       await step('Save reading', async () => {

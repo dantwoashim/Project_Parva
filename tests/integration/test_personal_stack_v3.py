@@ -28,7 +28,12 @@ def test_personal_panchanga_v3_fields():
         assert value["local"]
         assert value["utc"]
         assert value["local_time"]
+    assert "sunset" in body
+    assert "local_sunset" in body
     if body["local_sunset"] is not None:
+        assert body["sunset"] == body["local_sunset"]
+        assert isinstance(body["sunset"], dict)
+        assert set(["local", "utc", "local_time"]).issubset(body["sunset"])
         assert isinstance(body["local_sunset"], dict)
         assert set(["local", "utc", "local_time"]).issubset(body["local_sunset"])
 

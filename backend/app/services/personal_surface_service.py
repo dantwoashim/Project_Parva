@@ -196,6 +196,7 @@ def build_personal_panchanga_response(
         "vaara": panchanga["vaara"],
         "sunrise": panchanga["sunrise"],
         "local_sunrise": panchanga.get("sunrise"),
+        "sunset": panchanga.get("sunset"),
         "local_sunset": panchanga.get("sunset"),
         "timezone_source": timezone_source,
         "ephemeris": {

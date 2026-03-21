@@ -110,6 +110,26 @@ class TestFestivalDatesEndpoint:
         assert data[0]["start_date"] == "2026-11-07"  # Kaag Tihar
         assert data[0]["end_date"] == "2026-11-11"  # Bhai Tika
 
+    def test_multi_year_lunar_dates_do_not_fall_back_to_prior_gregorian_year(self):
+        """Autumn/spring lunar observances should not regress to prior-year dates."""
+        for festival_id, start_year in [
+            ("dashain", 2026),
+            ("teej", 2027),
+            ("ghode-jatra", 2027),
+        ]:
+            response = client.get(
+                f"/api/festivals/{festival_id}/dates",
+                params={"years": 2, "start_year": start_year},
+            )
+            assert response.status_code == 200
+
+            data = response.json()
+            assert data, f"Expected date rows for {festival_id}"
+            for row in data:
+                assert row["start_date"][:4] == str(row["gregorian_year"]), (
+                    f"{festival_id} returned mismatched year row: {row}"
+                )
+
 
 class TestUpcomingFestivals:
     """Test GET /api/festivals/upcoming endpoint."""

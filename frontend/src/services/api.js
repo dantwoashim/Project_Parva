@@ -10,7 +10,9 @@ import {
   normalizeFestivalDetailEnvelope,
   normalizeFestivalTimelineEnvelope,
   normalizeKundaliGraphEnvelope,
+  normalizeMuhurtaCalendarPayload,
   normalizeMuhurtaHeatmapEnvelope,
+  normalizePlaceSearchPayload,
   normalizePersonalContextEnvelope,
   normalizePersonalPanchangaEnvelope,
   normalizeTemporalCompassEnvelope,
@@ -148,28 +150,31 @@ function createRequestSignal({ timeoutMs, signal: upstreamSignal } = {}) {
   };
 }
 
-export function ensureJsonObjectPayload(payload, endpoint) {
-  if (payload && typeof payload === 'object' && !Array.isArray(payload)) {
+export function ensureJsonPayload(payload, endpoint) {
+  if (payload !== null && payload !== undefined && typeof payload === 'object') {
     return payload;
   }
   throw new ParvaApiError(`Unexpected response shape for ${endpoint}`, {
     status: 502,
-    detail: 'Upstream response did not match the expected JSON object contract.',
+    detail: 'Upstream response did not match the expected JSON contract.',
     payload,
   });
 }
 
 function buildMetaEnvelope(payload) {
+  const metadataSource = payload && typeof payload === 'object' && !Array.isArray(payload)
+    ? payload
+    : {};
   return {
     data: payload,
     meta: {
-      confidence: payload?.confidence || 'unknown',
-      method: payload?.method || 'unknown',
-      provenance: payload?.provenance || {},
-      uncertainty: payload?.uncertainty || { boundary_risk: 'unknown', interval_hours: null },
-      trace_id: payload?.calculation_trace_id || payload?.trace_id || null,
-      policy: payload?.policy || { profile: 'np-mainstream', jurisdiction: 'NP', advisory: true },
-      degraded: payload?.degraded || { active: false, reasons: [], defaults_applied: [] },
+      confidence: metadataSource.confidence || 'unknown',
+      method: metadataSource.method || 'unknown',
+      provenance: metadataSource.provenance || {},
+      uncertainty: metadataSource.uncertainty || { boundary_risk: 'unknown', interval_hours: null },
+      trace_id: metadataSource.calculation_trace_id || metadataSource.trace_id || null,
+      policy: metadataSource.policy || { profile: 'np-mainstream', jurisdiction: 'NP', advisory: true },
+      degraded: metadataSource.degraded || { active: false, reasons: [], defaults_applied: [] },
     },
   };
 }
@@ -241,13 +246,13 @@ export async function fetchAPIEnvelope(endpoint, options = {}, parseAs = 'json')
 
     let payload;
     try {
-      payload = ensureJsonObjectPayload(await response.json(), endpoint);
+      payload = ensureJsonPayload(await response.json(), endpoint);
     } catch (error) {
       throw attachRequestId(error, extractRequestId(response));
     }
 
     const requestId = extractRequestId(response, payload);
-    if ('data' in payload && 'meta' in payload) {
+    if (payload && typeof payload === 'object' && !Array.isArray(payload) && 'data' in payload && 'meta' in payload) {
       const envelope = ensureApiEnvelope(endpoint, payload);
       if (requestId && !envelope.meta.request_id) {
         envelope.meta.request_id = requestId;
@@ -424,6 +429,18 @@ export const muhurtaAPI = {
       }),
       preferEnvelope: true,
     }).then(normalizeMuhurtaHeatmapEnvelope),
+  getCalendar: ({ from, to, lat, lon, tz, type = 'general', assumptionSet = 'np-mainstream-v2' } = {}) => {
+    const params = new URLSearchParams({
+      from,
+      to,
+      type,
+      assumption_set: assumptionSet,
+    });
+    if (lat !== undefined && lat !== null) params.set('lat', normalizeCoordinateField(lat));
+    if (lon !== undefined && lon !== null) params.set('lon', normalizeCoordinateField(lon));
+    if (tz) params.set('tz', tz);
+    return fetchAPI(`/muhurta/calendar?${params.toString()}`).then(normalizeMuhurtaCalendarPayload);
+  },
 };
 
 export const kundaliAPI = {
@@ -438,6 +455,13 @@ export const kundaliAPI = {
       ...createPrivateJsonOptions({ datetime, lat, lon, tz }),
       preferEnvelope: true,
     }).then(normalizeKundaliGraphEnvelope),
+};
+
+export const placesAPI = {
+  search: ({ query, limit = 5 } = {}) => {
+    const params = new URLSearchParams({ q: query || '', limit: String(limit) });
+    return fetchAPI(`/places/search?${params.toString()}`).then(normalizePlaceSearchPayload);
+  },
 };
 
 export const feedAPI = {
@@ -459,5 +483,6 @@ export default {
   personal: personalAPI,
   muhurta: muhurtaAPI,
   kundali: kundaliAPI,
+  places: placesAPI,
   feeds: feedAPI,
 };

@@ -16,6 +16,7 @@ dependencies = [
     "pyswisseph>=2.10.0",
     "numpy>=1.26.0",
     "redis>=5.2.0",
+    "timezonefinder>=6.5.9",
     "tzdata>=2024.1",
 ]
 

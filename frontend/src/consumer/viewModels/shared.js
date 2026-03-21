@@ -15,8 +15,8 @@ export const CONSUMER_FESTIVAL_FILTERS = [
 ];
 
 export const CONSUMER_BEST_TIME_OPTIONS = [
-  { value: 'general', label: 'Puja' },
-  { value: 'creative_focus', label: 'Focus work' },
+  { value: 'general', label: 'Everyday rituals' },
+  { value: 'creative_focus', label: 'Focused work' },
   { value: 'travel', label: 'Travel' },
   { value: 'vivah', label: 'Wedding' },
   { value: 'griha_pravesh', label: 'Home blessing' },
@@ -35,6 +35,15 @@ export function formatTime(value, context = {}) {
     language: context.language,
     timeZone: context.timezone,
   });
+}
+
+export function resolveSunsetReferenceValue(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return resolveTimeReferenceValue(value);
+  }
+  return resolveTimeReferenceValue(value.local_sunset)
+    || resolveTimeReferenceValue(value.sunset)
+    || null;
 }
 
 export function formatTimeRange(start, end, context = {}) {

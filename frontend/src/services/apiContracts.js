@@ -136,7 +136,10 @@ function ensureTimeReference(value, endpoint, fieldName) {
 
 export function ensureApiEnvelope(endpoint, envelope) {
   const normalized = ensureObject(envelope, endpoint);
-  const data = ensureObject(normalized.data, endpoint, 'Envelope data must be a JSON object.');
+  if (!('data' in normalized)) {
+    throw buildContractError(endpoint, 'Envelope data must be present.', normalized);
+  }
+  const data = normalized.data;
   const meta = ensureObject(normalized.meta, endpoint, 'Envelope meta must be a JSON object.');
   return {
     ...normalized,
@@ -420,6 +423,65 @@ export function normalizeMuhurtaHeatmapEnvelope(envelope) {
     });
     return normalized;
   });
+}
+
+export function normalizeMuhurtaCalendarPayload(payload) {
+  const data = ensureObject(payload, '/muhurta/calendar');
+  ensureString(data.from, '/muhurta/calendar', 'Muhurta calendar payload must include a from date string.');
+  ensureString(data.to, '/muhurta/calendar', 'Muhurta calendar payload must include a to date string.');
+  ensureLocation(data.location, '/muhurta/calendar');
+  ensureString(data.type, '/muhurta/calendar', 'Muhurta calendar payload must include a type string.');
+  ensureString(
+    data.assumption_set_id,
+    '/muhurta/calendar',
+    'Muhurta calendar payload must include an assumption_set_id string.',
+  );
+  const days = ensureObjectArray(
+    data.days,
+    '/muhurta/calendar',
+    'Muhurta calendar payload must include a days array.',
+  );
+  days.forEach((day) => {
+    ensureString(day.date, '/muhurta/calendar', 'Muhurta calendar day.date must be a non-empty string.');
+    ensureOptionalString(day.tone, '/muhurta/calendar', 'Muhurta calendar day.tone must be a string when present.');
+    ensureNumber(day.window_count, '/muhurta/calendar', 'Muhurta calendar day.window_count must be a finite number.');
+    if (day.best_window !== undefined && day.best_window !== null) {
+      const bestWindow = ensureObject(
+        day.best_window,
+        '/muhurta/calendar',
+        'Muhurta calendar day.best_window must be an object when present.',
+      );
+      ensureOptionalString(bestWindow.name, '/muhurta/calendar', 'Muhurta calendar day.best_window.name must be a string when present.');
+      if (bestWindow.start !== undefined && bestWindow.start !== null) {
+        ensureTimeReference(bestWindow.start, '/muhurta/calendar', 'day.best_window.start');
+      }
+      if (bestWindow.end !== undefined && bestWindow.end !== null) {
+        ensureTimeReference(bestWindow.end, '/muhurta/calendar', 'day.best_window.end');
+      }
+      if (bestWindow.reason_codes !== undefined && bestWindow.reason_codes !== null) {
+        ensureOptionalArray(bestWindow.reason_codes, '/muhurta/calendar', 'Muhurta calendar day.best_window.reason_codes must be an array when present.');
+      }
+    }
+  });
+  return data;
+}
+
+export function normalizePlaceSearchPayload(payload) {
+  const data = ensureObject(payload, '/places/search');
+  ensureString(data.query, '/places/search', 'Place search payload must include the submitted query string.');
+  const items = ensureObjectArray(
+    data.items,
+    '/places/search',
+    'Place search payload must include an items array.',
+  );
+  items.forEach((item) => {
+    ensureString(item.label, '/places/search', 'Place search item.label must be a non-empty string.');
+    ensureNumber(item.latitude, '/places/search', 'Place search item.latitude must be a finite number.');
+    ensureNumber(item.longitude, '/places/search', 'Place search item.longitude must be a finite number.');
+    ensureString(item.timezone, '/places/search', 'Place search item.timezone must be a non-empty string.');
+    ensureString(item.source, '/places/search', 'Place search item.source must be a non-empty string.');
+  });
+  return data;
 }
 
 export function normalizeKundaliGraphEnvelope(envelope) {

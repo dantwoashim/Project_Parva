@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
 import { KnowledgePanel } from '../components/UI/KnowledgePanel';
@@ -8,22 +8,28 @@ import { PANCHANGA_GLOSSARY, PERSONAL_PANCHANGA_GLOSSARY } from '../data/tempora
 import { LOCATION_PRESETS, findPresetByLocation } from '../data/locationPresets';
 import { useMemberContext } from '../context/useMemberContext';
 import { useTemporalContext } from '../context/useTemporalContext';
-import { festivalAPI, personalAPI } from '../services/api';
-import { describeSupportError } from '../services/errorFormatting';
+import { usePersonalPlaceBundle } from '../hooks/usePersonalPlaceBundle';
 import './PersonalPanchangaPage.css';
 
 export function PersonalPanchangaPage() {
   const { state, setDate, setLocation, setTimezone } = useTemporalContext();
   const { state: memberState, savePlace } = useMemberContext();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [payload, setPayload] = useState(null);
-  const [contextPayload, setContextPayload] = useState(null);
-  const [meta, setMeta] = useState(null);
-  const [festivals, setFestivals] = useState([]);
   const [deviceStatus, setDeviceStatus] = useState('');
 
   const activePreset = useMemo(() => findPresetByLocation(state.location), [state.location]);
+  const {
+    loading,
+    error,
+    payload,
+    contextPayload,
+    meta,
+    festivals,
+  } = usePersonalPlaceBundle({
+    date: state.date,
+    latitude: state.location?.latitude,
+    longitude: state.location?.longitude,
+    timezone: state.timezone,
+  });
 
   function applyPreset(presetId) {
     const preset = LOCATION_PRESETS.find((item) => item.id === presetId);
@@ -60,57 +66,6 @@ export function PersonalPanchangaPage() {
     );
   }
 
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      setLoading(true);
-      setError(null);
-
-      const [panchangaResult, festivalsResult, contextResult] = await Promise.allSettled([
-        personalAPI.getPanchangaEnvelope({
-          date: state.date,
-          lat: state.location?.latitude,
-          lon: state.location?.longitude,
-          tz: state.timezone,
-        }),
-        festivalAPI.getOnDate(state.date),
-        personalAPI.getContextEnvelope({
-          date: state.date,
-          lat: state.location?.latitude,
-          lon: state.location?.longitude,
-          tz: state.timezone,
-        }),
-      ]);
-
-      if (cancelled) return;
-
-      try {
-        if (panchangaResult.status === 'rejected') {
-          throw panchangaResult.reason;
-        }
-
-        setPayload(panchangaResult.value.data || null);
-        setMeta(panchangaResult.value.meta || null);
-        setFestivals(festivalsResult.status === 'fulfilled' && Array.isArray(festivalsResult.value) ? festivalsResult.value : []);
-        setContextPayload(contextResult.status === 'fulfilled' ? contextResult.value.data || null : null);
-      } catch (err) {
-        setPayload(null);
-        setContextPayload(null);
-        setMeta(null);
-        setFestivals([]);
-        setError(describeSupportError(err, 'Failed to load personal place guidance.'));
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, [state.date, state.location?.latitude, state.location?.longitude, state.timezone]);
-
   const viewModel = useMemo(
     () => buildConsumerMyPlaceViewModel({
       temporalState: state,
@@ -125,7 +80,7 @@ export function PersonalPanchangaPage() {
   );
 
   const preferencesSummary = [
-    state.language === 'ne' ? 'Nepali' : 'English',
+    'English',
     state.timezone,
     memberState.preferences.notificationStyle,
   ].join(' / ');
@@ -219,6 +174,11 @@ export function PersonalPanchangaPage() {
           <span className="today-page__eyebrow">Local sunrise</span>
           <strong>{viewModel.localSunrise}</strong>
           <p>Use this when your place materially shifts the start of the day.</p>
+        </article>
+        <article className="ink-card personal-summary-card">
+          <span className="today-page__eyebrow">Local sunset</span>
+          <strong>{viewModel.localSunset}</strong>
+          <p>Keep the close of the day visible alongside sunrise when timing is place-sensitive.</p>
         </article>
         <article className="ink-card personal-summary-card">
           <span className="today-page__eyebrow">What changes here</span>

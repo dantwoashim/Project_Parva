@@ -5,6 +5,7 @@ import {
   kundaliAPI,
   muhurtaAPI,
   personalAPI,
+  placesAPI,
   temporalAPI,
 } from '../services/api';
 
@@ -178,6 +179,54 @@ function buildHeatmapEnvelope(overrides = {}) {
       confidence: { level: 'high' },
       ...overrides.meta,
     },
+  };
+}
+
+function buildMuhurtaCalendarPayload(overrides = {}) {
+  return {
+    from: '2026-03-01',
+    to: '2026-04-30',
+    location: {
+      latitude: 27.7172,
+      longitude: 85.324,
+      timezone: 'Asia/Kathmandu',
+    },
+    type: 'general',
+    assumption_set_id: 'np-mainstream-v2',
+    days: [
+      {
+        date: '2026-03-21',
+        tone: 'strong',
+        window_count: 4,
+        best_window: {
+          name: 'Abhijit Muhurta',
+          start: '2026-03-21T10:30:00+05:45',
+          end: '2026-03-21T12:15:00+05:45',
+          reason_codes: ['quality:auspicious'],
+        },
+      },
+    ],
+    total: 1,
+    ...overrides,
+  };
+}
+
+function buildPlaceSearchPayload(overrides = {}) {
+  return {
+    query: 'kathmandu',
+    items: [
+      {
+        label: 'Kathmandu, Bagmati Province, Nepal',
+        latitude: 27.7172,
+        longitude: 85.324,
+        timezone: 'Asia/Kathmandu',
+        source: 'openstreetmap_nominatim',
+      },
+    ],
+    total: 1,
+    source: 'openstreetmap_nominatim',
+    attribution: 'Search results use OpenStreetMap Nominatim data.',
+    ...overrides,
   };
 }
 
@@ -602,6 +651,38 @@ describe('API service', () => {
     });
   });
 
+  it('accepts ranked muhurta calendar summaries and normalizes coordinate query params', async () => {
+    const fetchMock = vi.fn(async () => jsonResponse(buildMuhurtaCalendarPayload()));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await expect(muhurtaAPI.getCalendar({
+      from: '2026-03-01',
+      to: '2026-04-30',
+      lat: 27.7172,
+      lon: 85.3240,
+      tz: 'Asia/Kathmandu',
+      type: 'general',
+    })).resolves.toMatchObject({
+      days: [{ best_window: { name: 'Abhijit Muhurta' } }],
+    });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining('/muhurta/calendar?from=2026-03-01&to=2026-04-30&type=general&assumption_set=np-mainstream-v2&lat=27.7172&lon=85.324&tz=Asia%2FKathmandu'),
+      expect.any(Object),
+    );
+  });
+
+  it('accepts normalized place search payloads', async () => {
+    vi.stubGlobal('fetch', async () => jsonResponse(buildPlaceSearchPayload()));
+
+    await expect(placesAPI.search({
+      query: 'kathmandu',
+      limit: 4,
+    })).resolves.toMatchObject({
+      items: [{ label: 'Kathmandu, Bagmati Province, Nepal' }],
+    });
+  });
+
   it('accepts live-shaped kundali graph envelopes', async () => {
     vi.stubGlobal('fetch', async () => jsonResponse(buildKundaliGraphEnvelope()));
 
@@ -665,6 +746,23 @@ describe('API service', () => {
         }),
       }),
     );
+  });
+
+  it('accepts raw list responses for festival on-date reads', async () => {
+    vi.stubGlobal('fetch', async () => jsonResponse([
+      {
+        id: 'holi',
+        name: 'Holi',
+        start_date: '2026-03-21',
+      },
+    ]));
+
+    await expect(festivalAPI.getOnDate('2026-03-21')).resolves.toMatchObject([
+      {
+        id: 'holi',
+        name: 'Holi',
+      },
+    ]);
   });
 
   it('accepts structured sunrise objects for personal panchanga envelopes', async () => {

@@ -1,556 +1,296 @@
-.kundali-editorial {
+.kundali-reset {
   display: grid;
-  gap: 4rem;
+  gap: 2rem;
 }
 
-.kundali-editorial__masthead,
-.kundali-editorial__section-head,
-.kundali-editorial__insight-head,
-.kundali-editorial__insight-actions,
-.kundali-editorial__sun-marks,
-.kundali-editorial__kicker-row {
+.kundali-reset__hero,
+.kundali-reset__layout,
+.kundali-reset__results-head,
+.kundali-reset__section-head,
+.kundali-reset__panel-head {
   display: flex;
   justify-content: space-between;
   gap: 1.2rem;
 }
 
-.kundali-editorial__masthead {
+.kundali-reset__hero,
+.kundali-reset__results-head,
+.kundali-reset__section-head,
+.kundali-reset__panel-head {
   align-items: end;
 }
 
-.kundali-editorial__masthead-copy,
-.kundali-editorial__masthead-meta,
-.kundali-editorial__side-stack,
-.kundali-editorial__insight-copy,
-.kundali-editorial__panchanga-block,
-.kundali-editorial__reading-card,
-.kundali-editorial__reading-rail,
-.kundali-editorial__signals-card,
-.kundali-editorial__insight-list-card,
-.kundali-editorial__dasha-card,
-.kundali-editorial__highlight-list,
-.kundali-editorial__context-stack,
-.kundali-editorial__context-card,
-.kundali-editorial__drawer,
-.kundali-editorial__technical-card {
-  display: grid;
-  gap: 1rem;
-}
-
-.kundali-editorial__masthead-copy {
-  max-width: 44rem;
-}
-
-.kundali-editorial__eyebrow,
-.kundali-editorial__section-tag,
-.kundali-editorial__panel-label,
-.kundali-editorial__signature-row span,
-.kundali-editorial__panchanga-card span,
-.kundali-editorial__signal-list span {
+.kundali-reset__eyebrow,
+.kundali-reset__anchor-card span,
+.kundali-reset__anchor-list span,
+.kundali-reset__aspect-card span {
+  margin: 0;
   color: var(--editorial-accent);
   font-size: 0.68rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-}
-
-.kundali-editorial__chart-panel > .kundali-editorial__panel-label {
-  font-size: 0;
-}
-
-.kundali-editorial__chart-panel > .kundali-editorial__panel-label::before {
-  content: 'North Indian birth chart / Rashichakra';
-  color: var(--editorial-accent);
-  font-size: 0.68rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-}
-
-.kundali-editorial__rule {
-  flex: 1 1 auto;
-  align-self: center;
-  height: 0.5px;
-  background: rgba(140, 113, 102, 0.28);
-}
-
-.kundali-editorial h1,
-.kundali-editorial h2,
-.kundali-editorial h3 {
-  margin: 0;
-  font-family: var(--font-serif);
-  color: var(--text-primary);
-}
-
-.kundali-editorial h1 {
-  font-size: clamp(3.5rem, 8vw, 5.4rem);
-  line-height: 0.94;
-  letter-spacing: -0.06em;
-}
-
-.kundali-editorial__masthead-copy p,
-.kundali-editorial__reading-copy,
-.kundali-editorial__theme-card p,
-.kundali-editorial__positions-card td,
-.kundali-editorial__context-card p,
-.kundali-editorial__highlight-item p,
-.kundali-editorial__insight-copy p {
-  margin: 0;
-  color: var(--text-secondary);
-  line-height: 1.75;
-}
-
-.kundali-editorial__masthead-copy > p {
-  max-width: 34rem;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.08rem;
-}
-
-.kundali-editorial__masthead-meta {
-  justify-items: end;
-  text-align: right;
-}
-
-.kundali-editorial__place-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: var(--text-primary);
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.kundali-editorial__place-row .material-symbols-outlined {
-  color: var(--editorial-accent);
-  font-size: 1rem;
-}
-
-.kundali-editorial__calendar-readout strong {
-  display: block;
-  font-family: var(--font-serif);
-  font-size: 2.2rem;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.kundali-editorial__calendar-readout span {
-  color: var(--text-muted);
-  font-size: 0.82rem;
-}
-
-.kundali-editorial__hero-grid,
-.kundali-editorial__context-grid,
-.kundali-editorial__reading-grid,
-.kundali-editorial__bottom-grid,
-.kundali-editorial__technical-grid {
-  display: grid;
-  gap: 2rem;
-}
-
-.kundali-editorial__hero-grid {
-  grid-template-columns: minmax(0, 1.18fr) minmax(300px, 0.82fr);
-  align-items: start;
-}
-
-.kundali-editorial__chart-panel,
-.kundali-editorial__positions-card,
-.kundali-editorial__reading-card,
-.kundali-editorial__insight-list-card,
-.kundali-editorial__dasha-card,
-.kundali-editorial__drawer {
-  padding: clamp(1.4rem, 2.8vw, 2.5rem);
-}
-
-.kundali-editorial__chart-panel {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at top left, rgba(184, 130, 60, 0.12), transparent 34%),
-    linear-gradient(180deg, rgba(255, 250, 243, 0.98), rgba(247, 239, 228, 0.98));
-}
-
-.kundali-editorial__chart-panel::after {
-  content: '';
-  position: absolute;
-  inset: auto auto -24% -8%;
-  width: 18rem;
-  height: 18rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(204, 168, 48, 0.14), transparent 72%);
-  pointer-events: none;
-}
-
-.kundali-editorial__chart-stage {
-  display: grid;
-  place-items: center;
-  min-height: 0;
-  padding: 0.85rem;
-  border-radius: 1.25rem;
-  border: 1px solid rgba(115, 92, 0, 0.12);
-  background:
-    linear-gradient(180deg, rgba(255, 250, 243, 0.92), rgba(255, 245, 232, 0.92)),
-    rgba(255, 242, 226, 0.76);
-}
-
-.kundali-editorial__chart-stage .kundali-graph {
-  width: 100%;
-  max-width: 56rem;
-  gap: 1rem;
-}
-
-.kundali-editorial__signature-row {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
-  padding-top: 1rem;
-  border-top: 0.5px solid rgba(140, 113, 102, 0.2);
-}
-
-.kundali-editorial__signature-row div {
-  display: grid;
-  gap: 0.3rem;
-}
-
-.kundali-editorial__signature-row strong,
-.kundali-editorial__panchanga-card strong,
-.kundali-editorial__signal-list strong,
-.kundali-editorial__highlight-item h3,
-.kundali-editorial__context-card h3,
-.kundali-editorial__insight-head strong {
-  font-family: var(--font-serif);
-  color: var(--text-primary);
-}
-
-.kundali-editorial__signature-row strong {
-  font-size: 1.35rem;
-  font-style: italic;
-}
-
-.kundali-editorial__insight-card {
-  border: 0.5px solid rgba(115, 92, 0, 0.22);
-  background:
-    radial-gradient(circle at top right, rgba(184, 130, 60, 0.14), transparent 34%),
-    rgba(239, 224, 205, 0.72);
-  backdrop-filter: blur(20px);
-}
-
-.kundali-editorial__insight-head .material-symbols-outlined {
-  color: #cca830;
-  font-size: 1.5rem;
-  font-variation-settings: 'FILL' 1, 'wght' 260, 'GRAD' 0, 'opsz' 24;
-}
-
-.kundali-editorial__insight-head span {
-  display: block;
-  color: var(--editorial-accent);
-  font-size: 0.64rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
-.kundali-editorial__insight-copy h2 {
-  font-size: 2rem;
-  font-style: italic;
+.kundali-reset h1,
+.kundali-reset h2,
+.kundali-reset h3 {
+  margin: 0;
+  font-family: var(--font-serif);
   color: var(--text-primary);
 }
 
-.kundali-editorial__insight-actions {
-  align-items: center;
+.kundali-reset h1 {
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
 }
 
-.kundali-editorial__positions-card h2,
-.kundali-editorial__section-head h2,
-.kundali-editorial__reading-card h2,
-.kundali-editorial__insight-list-card h2,
-.kundali-editorial__dasha-card h2,
-.kundali-editorial__context-card--map h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
+.kundali-reset__intro,
+.kundali-reset__thesis-card p,
+.kundali-reset__anchor-card p,
+.kundali-reset__highlight-list p,
+.kundali-reset__aspect-card p,
+.kundali-reset__panel p,
+.kundali-reset__status,
+.kundali-reset__attribution,
+.kundali-reset__error {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
-.kundali-editorial__positions-card,
-.kundali-editorial__reading-card,
-.kundali-editorial__insight-list-card,
-.kundali-editorial__dasha-card,
-.kundali-editorial__context-card {
-  background: rgba(255, 250, 243, 0.9);
-}
-
-.kundali-editorial__positions-table {
-  overflow-x: auto;
-}
-
-.kundali-editorial__positions-card table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.kundali-editorial__positions-card th,
-.kundali-editorial__positions-card td {
-  padding: 0.9rem 0;
-  text-align: left;
-  border-bottom: 0.5px solid rgba(140, 113, 102, 0.18);
-}
-
-.kundali-editorial__positions-card th {
-  color: var(--text-muted);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-}
-
-.kundali-editorial__panchanga-block {
-  gap: 1.5rem;
-}
-
-.kundali-editorial__section-head {
-  align-items: end;
-}
-
-.kundali-editorial__section-head p {
-  margin: 0.35rem 0 0;
-  color: var(--text-muted);
-}
-
-.kundali-editorial__spark-link {
-  width: 3.5rem;
-  height: 3.5rem;
+.kundali-reset__layout,
+.kundali-reset__chart-grid,
+.kundali-reset__tab-grid {
   display: grid;
-  place-items: center;
-  border-left: 3px solid var(--editorial-accent);
-  background: rgba(239, 224, 205, 0.62);
-  color: var(--editorial-accent);
-  text-decoration: none;
+  gap: 1.2rem;
 }
 
-.kundali-editorial__panchanga-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.kundali-editorial__panchanga-card {
-  display: grid;
-  gap: 0.4rem;
-  padding: 1.2rem 1rem;
-  background: rgba(255, 248, 239, 0.86);
-}
-
-.kundali-editorial__panchanga-card strong {
-  font-size: 1.35rem;
-  font-style: italic;
-}
-
-.kundali-editorial__panchanga-card small {
-  color: var(--text-muted);
-  line-height: 1.45;
-}
-
-.kundali-editorial__context-grid {
-  grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.08fr);
-  align-items: stretch;
-}
-
-.kundali-editorial__context-card {
-  padding: 1.6rem;
-  border: 0.5px solid rgba(140, 113, 102, 0.18);
-  background: rgba(255, 248, 243, 0.9);
-}
-
-.kundali-editorial__context-card--map {
-  position: relative;
-  min-height: 18rem;
-  overflow: hidden;
-}
-
-.kundali-editorial__context-card--map::after {
-  content: '';
-  position: absolute;
-  inset: auto -14% -18% auto;
-  width: 14rem;
-  height: 14rem;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(115, 92, 0, 0.14), transparent 74%);
-  pointer-events: none;
-}
-
-.kundali-editorial__context-card--map .material-symbols-outlined {
-  color: var(--editorial-accent);
-}
-
-.kundali-editorial__sun-marks {
-  justify-content: flex-start;
-  padding-top: 1rem;
-}
-
-.kundali-editorial__sun-marks div {
-  display: grid;
-  gap: 0.25rem;
-  text-align: center;
-}
-
-.kundali-editorial__sun-marks div + div {
-  padding-left: 1.4rem;
-  border-left: 0.5px solid rgba(140, 113, 102, 0.22);
-}
-
-.kundali-editorial__sun-marks span,
-.kundali-editorial__context-card p {
-  color: var(--text-muted);
-}
-
-.kundali-editorial__sun-marks strong {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  font-style: italic;
-}
-
-.kundali-editorial__context-stack {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.kundali-editorial__context-stack .kundali-editorial__context-card:last-child {
-  grid-column: span 2;
-}
-
-.kundali-editorial__context-icon {
-  width: 3rem;
-  height: 3rem;
-  display: grid;
-  place-items: center;
-  background: rgba(239, 224, 205, 0.72);
-  color: var(--editorial-accent);
-}
-
-.kundali-editorial__reading-grid {
-  grid-template-columns: minmax(0, 1.16fr) minmax(280px, 0.84fr);
-  align-items: start;
-}
-
-.kundali-editorial__reading-copy {
-  max-width: 54rem;
-  font-size: 1.08rem;
-}
-
-.kundali-editorial__theme-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.kundali-editorial__theme-card,
-.kundali-editorial__highlight-item,
-.kundali-editorial__signals-card {
-  padding: 1.1rem;
-  background: rgba(255, 248, 239, 0.82);
-}
-
-.kundali-editorial__theme-card h3,
-.kundali-editorial__highlight-item h3 {
-  margin-bottom: 0.35rem;
-}
-
-.kundali-editorial__signal-list {
-  display: grid;
-  gap: 0.8rem;
-}
-
-.kundali-editorial__signal-list div {
-  display: grid;
-  gap: 0.25rem;
-}
-
-.kundali-editorial__bottom-grid {
+.kundali-reset__layout {
   grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
   align-items: start;
 }
 
-.kundali-editorial__highlight-list {
-  gap: 0.8rem;
+.kundali-reset__form-card,
+.kundali-reset__anchor-card,
+.kundali-reset__results,
+.kundali-reset__panel,
+.kundali-reset__thesis-card,
+.kundali-reset__aspect-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-radius: 1.3rem;
+  border: 1px solid rgba(115, 92, 0, 0.12);
+  background: rgba(255, 250, 243, 0.92);
 }
 
-.kundali-editorial__drawer summary {
-  cursor: pointer;
+.kundali-reset__anchors,
+.kundali-reset__side-reading,
+.kundali-reset__highlight-list,
+.kundali-reset__anchor-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.kundali-reset__date-grid,
+.kundali-reset__advanced-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.kundali-reset__advanced-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.kundali-reset__place-block,
+.kundali-reset__search-results,
+.kundali-reset__results-actions,
+.kundali-reset__tabs,
+.kundali-reset__houses-grid,
+.kundali-reset__aspect-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.kundali-reset__place-search {
+  display: flex;
+  gap: 0.8rem;
+  align-items: end;
+}
+
+.kundali-reset__place-input {
+  flex: 1 1 auto;
+}
+
+.kundali-reset__search-results {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kundali-reset__search-result,
+.kundali-reset__house-card {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.9rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(115, 92, 0, 0.12);
+  background: rgba(255, 250, 243, 0.96);
+  text-align: left;
+}
+
+.kundali-reset__search-result strong,
+.kundali-reset__house-card strong,
+.kundali-reset__anchor-card strong,
+.kundali-reset__anchor-list strong,
+.kundali-reset__highlight-list strong,
+.kundali-reset__aspect-card strong {
+  color: var(--text-primary);
   font-family: var(--font-serif);
-  font-size: 1.45rem;
+}
+
+.kundali-reset__search-result span,
+.kundali-reset__house-card small,
+.kundali-reset__panel small,
+.kundali-reset__results-head p {
+  color: var(--text-muted);
+}
+
+.kundali-reset__advanced-toggle,
+.kundali-reset__inline-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--editorial-accent);
+  text-align: left;
+}
+
+.kundali-reset__results {
+  gap: 1.3rem;
+}
+
+.kundali-reset__results-actions {
+  justify-items: end;
+}
+
+.kundali-reset__thesis-card small {
+  color: var(--text-muted);
+}
+
+.kundali-reset__tabs {
+  grid-auto-flow: column;
+  justify-content: start;
+}
+
+.kundali-reset__tab {
+  min-height: 2.7rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(115, 92, 0, 0.12);
+  background: rgba(255, 250, 243, 0.96);
   color: var(--text-primary);
 }
 
-.kundali-editorial__controls {
-  display: grid;
+.kundali-reset__tab.is-active,
+.kundali-reset__tab:hover,
+.kundali-reset__tab:focus-visible,
+.kundali-reset__search-result:hover,
+.kundali-reset__search-result:focus-visible,
+.kundali-reset__house-card:hover,
+.kundali-reset__house-card:focus-visible,
+.kundali-reset__house-card.is-selected {
+  border-color: rgba(156, 63, 0, 0.24);
+  background: rgba(255, 242, 226, 0.96);
+}
+
+.kundali-reset__chart-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  align-items: start;
+}
+
+.kundali-reset__tab-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1.2rem;
 }
 
-.kundali-editorial__technical-grid {
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-  margin-top: 1.2rem;
+.kundali-reset__table-wrap {
+  overflow-x: auto;
 }
 
-.kundali-editorial__technical-card {
-  padding: 1rem 0 0;
+.kundali-reset__table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.kundali-editorial__knowledge {
-  background: rgba(255, 242, 226, 0.52);
+.kundali-reset__table th,
+.kundali-reset__table td {
+  padding: 0.8rem 0;
+  text-align: left;
+  border-bottom: 1px solid rgba(115, 92, 0, 0.12);
 }
 
-.kundali-editorial__hero-skeleton {
-  min-height: 32rem;
-  border-radius: 0.5rem;
+.kundali-reset__table th {
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
-.kundali-editorial__band-skeleton {
-  min-height: 16rem;
-  border-radius: 0.5rem;
+.kundali-reset__houses-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.kundali-editorial__error {
-  padding: 2rem;
+.kundali-reset__anchor-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-@media (max-width: 1180px) {
-  .kundali-editorial__hero-grid,
-  .kundali-editorial__context-grid,
-  .kundali-editorial__reading-grid,
-  .kundali-editorial__bottom-grid,
-  .kundali-editorial__technical-grid,
-  .kundali-editorial__context-stack,
-  .kundali-editorial__panchanga-grid,
-  .kundali-editorial__theme-grid,
-  .kundali-editorial__signature-row {
-    grid-template-columns: 1fr;
-  }
-
-  .kundali-editorial__context-stack .kundali-editorial__context-card:last-child {
-    grid-column: auto;
-  }
+.kundali-reset__anchor-list div,
+.kundali-reset__highlight-list div {
+  display: grid;
+  gap: 0.25rem;
 }
 
-@media (max-width: 760px) {
-  .kundali-editorial {
-    gap: 2.8rem;
-  }
+.kundali-reset__aspect-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 
-  .kundali-editorial__masthead,
-  .kundali-editorial__section-head,
-  .kundali-editorial__insight-head,
-  .kundali-editorial__insight-actions,
-  .kundali-editorial__sun-marks {
+@media (max-width: 1080px) {
+  .kundali-reset__hero,
+  .kundali-reset__results-head,
+  .kundali-reset__section-head,
+  .kundali-reset__panel-head {
     flex-direction: column;
     align-items: start;
   }
 
-  .kundali-editorial__masthead-meta {
-    justify-items: start;
-    text-align: left;
-  }
-
-  .kundali-editorial__chart-stage {
-    padding: 1rem;
-  }
-
-  .kundali-editorial__controls {
+  .kundali-reset__layout,
+  .kundali-reset__chart-grid,
+  .kundali-reset__tab-grid,
+  .kundali-reset__aspect-grid {
     grid-template-columns: 1fr;
+  }
+
+  .kundali-reset__date-grid,
+  .kundali-reset__advanced-grid,
+  .kundali-reset__search-results,
+  .kundali-reset__houses-grid,
+  .kundali-reset__anchor-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .kundali-reset__date-grid,
+  .kundali-reset__advanced-grid,
+  .kundali-reset__search-results,
+  .kundali-reset__houses-grid,
+  .kundali-reset__anchor-list {
+    grid-template-columns: 1fr;
+  }
+
+  .kundali-reset__place-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kundali-reset__tabs {
+    grid-auto-flow: row;
   }
 }

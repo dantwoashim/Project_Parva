@@ -327,8 +327,9 @@ def find_festival_in_lunar_month(
         Gregorian date of the festival, or None if not found
     """
     # Search both current year and previous year's lunar calendars
-    # because early-year festivals (Jan-Apr) may be in prev lunar year
-    candidates = []  # List of (date, is_adhik_month) tuples
+    # because early-year festivals (Jan-Apr) may be in prev lunar year.
+    # Rank candidates so same-year results always beat cross-year fallbacks.
+    candidates: list[tuple[date, bool]] = []  # (date, exact_udaya_match)
 
     for search_year in [gregorian_year - 1, gregorian_year]:
         lunar_year = get_lunar_year(search_year)
@@ -347,60 +348,66 @@ def find_festival_in_lunar_month(
                     continue
             # "both" policy: include both Adhik and Nija
 
-            # Search for tithi in this month
-            result = _search_tithi_in_month(month, tithi, paksha, gregorian_year)
-            if result:
-                candidates.append((result, month.is_adhik))
+            # Search for a sunrise-confirmed tithi in this month first.
+            exact_result = _search_tithi_in_month(month, tithi, paksha, gregorian_year)
+            if exact_result:
+                candidates.append((exact_result, True))
+                continue
+
+            # If the tithi exists in this month but is skipped at sunrise
+            # (kshaya/short boundary case), keep the boundary day as a lower-
+            # confidence fallback instead of incorrectly falling back to an
+            # older Gregorian year.
+            boundary_result = _boundary_tithi_date_in_month(month, tithi, paksha)
+            if boundary_result:
+                candidates.append((boundary_result, False))
 
     if not candidates:
         return None
 
-    # Return the candidate that's in the target Gregorian year
-    # Prefer Nija over Adhik unless policy says otherwise
-    for result_date, is_adhik in candidates:
-        if result_date.year == gregorian_year:
-            if adhik_policy == "use_adhik":
-                if is_adhik:
-                    return result_date
-            else:
-                return result_date
+    def _candidate_rank(candidate: tuple[date, bool]) -> tuple[int, int, int, int, date]:
+        result_date, exact_udaya_match = candidate
+        year_distance = abs(result_date.year - gregorian_year)
+        same_year_miss = 0 if result_date.year == gregorian_year else 1
+        # When two candidates are equally close, prefer the later/future one
+        # over a stale previous-year fallback.
+        future_bias = 0 if result_date.year >= gregorian_year else 1
+        exact_penalty = 0 if exact_udaya_match else 1
+        return (same_year_miss, year_distance, future_bias, exact_penalty, result_date)
 
-    # Fallback to first matching result
-    return candidates[0][0]
+    return min(candidates, key=_candidate_rank)[0]
+
+
+def _boundary_tithi_date_in_month(month: LunarMonth, tithi: int, paksha: str) -> Optional[date]:
+    """Return the raw tithi-boundary date within a lunar month, if present."""
+
+    if paksha == "shukla":
+        search_start = month.start_amavasya
+    else:
+        search_start = month.end_purnima
+
+    search_end = month.end_amavasya
+    tithi_datetime = find_next_tithi(tithi, paksha, search_start, within_days=35)
+
+    if tithi_datetime is None:
+        return None
+
+    if paksha == "krishna" and tithi == 15:
+        if not (search_start <= tithi_datetime <= month.end_amavasya + timedelta(hours=24)):
+            return None
+    elif not (search_start <= tithi_datetime < search_end):
+        return None
+
+    return tithi_datetime.date()
 
 
 def _search_tithi_in_month(
     month: LunarMonth, tithi: int, paksha: str, target_year: int
 ) -> Optional[date]:
     """Search for a specific tithi within a lunar month."""
-
-    # For Shukla paksha (waxing): search from month start (Amavasya)
-    # For Krishna paksha (waning): search from Purnima (middle of month)
-    if paksha == "shukla":
-        search_start = month.start_amavasya
-    else:
-        # Krishna paksha starts after Purnima
-        search_start = month.end_purnima
-
-    search_end = month.end_amavasya
-
-    # Find the tithi in this month
-    tithi_datetime = find_next_tithi(tithi, paksha, search_start, within_days=35)
-
-    if tithi_datetime is None:
+    candidate_date = _boundary_tithi_date_in_month(month, tithi, paksha)
+    if candidate_date is None:
         return None
-
-    # For Krishna 15, allow it to be exactly at month end (Amavasya is the boundary)
-    if paksha == "krishna" and tithi == 15:
-        # Allow up to 1 day after end_amavasya for boundary tithis
-        if not (search_start <= tithi_datetime <= month.end_amavasya + timedelta(hours=24)):
-            return None
-    else:
-        # Ensure it's within this month's boundaries
-        if not (search_start <= tithi_datetime < search_end):
-            return None
-
-    candidate_date = tithi_datetime.date()
 
     # Use udaya tithi to get the exact festival date
     # MUST find udaya match; no fallback to avoid off-by-one errors

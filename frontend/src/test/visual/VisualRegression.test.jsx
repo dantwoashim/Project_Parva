@@ -501,13 +501,13 @@ describe('visual regression harness', () => {
 
   it('best-time page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/best-time', 390, 844);
-    await screen.findByRole('heading', { name: /Muhurta Explorer/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Choose a date first/i }, routeLoadOptions);
     expect(container.querySelector('.muhurta-page')).toMatchSnapshot();
   }, 15000);
 
   it('festivals page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/festivals', 390, 844);
-    await screen.findByRole('heading', { name: /Festival\s*Explorer/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Closest observances first/i }, routeLoadOptions);
     expect(container.querySelector('.explorer-page')).toMatchSnapshot();
   }, 15000);
 
@@ -526,9 +526,9 @@ describe('visual regression harness', () => {
 
   it('kundali page visual baseline', async () => {
     const { container } = await renderRoute('/kundali');
-    await screen.findByRole('heading', { name: /Janma Kundali/i }, routeLoadOptions);
-    await screen.findByRole('heading', { name: /The reading in plain language/i }, routeLoadOptions);
-    expect(container.querySelector('.kundali-editorial')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /Enter the birth details first/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Three anchors, then detail/i }, routeLoadOptions);
+    expect(container.querySelector('.kundali-reset')).toMatchSnapshot();
   }, 20000);
 
   it('today page visual baseline on desktop', async () => {
@@ -539,7 +539,7 @@ describe('visual regression harness', () => {
 
   it('festivals page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/festivals', 1440, 900);
-    await screen.findByRole('heading', { name: /Festival\s*Explorer/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Closest observances first/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
@@ -551,7 +551,7 @@ describe('visual regression harness', () => {
 
   it('best-time page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/best-time', 1440, 900);
-    await screen.findByRole('heading', { name: /Muhurta Explorer/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Choose a date first/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
