@@ -77,6 +77,8 @@ function normalizeTimelineItem(item, savedIds, temporalState = {}) {
     startDate: item.start_date,
     endDate: item.end_date,
     isToday: false,
+    statusNote: item.date_status_note || '',
+    dateStatus: item.date_status || 'available',
   };
 }
 
@@ -96,6 +98,25 @@ function normalizeOnDateItem(item, savedIds, temporalState = {}) {
     startDate: item.next_start,
     endDate: item.next_end,
     isToday: true,
+    statusNote: item.date_status_note || '',
+    dateStatus: item.date_status || 'available',
+  };
+}
+
+function normalizeUnresolvedItem(item) {
+  return {
+    id: item.id,
+    href: `/festivals/${item.id}`,
+    title: item.display_name || item.name,
+    summary: startOfSentence(
+      item.summary,
+      `${item.display_name || item.name} matches this search, but its live date profile is still incomplete.`,
+    ),
+    badges: [
+      item.category,
+      item.date_status === 'missing_rule' ? 'Needs date rule' : 'Date unresolved',
+    ].filter(Boolean),
+    statusNote: item.date_status_note || 'Live dates are not resolved for this observance yet.',
   };
 }
 
@@ -104,8 +125,10 @@ export function buildConsumerFestivalsViewModel({ payload, search, category, sav
   const groups = payload?.groups || [];
   const facets = payload?.facets || {};
   const activeTodayRaw = Array.isArray(payload?.active_today) ? payload.active_today : [];
+  const unresolvedMatchesRaw = Array.isArray(payload?.unresolved_matches) ? payload.unresolved_matches : [];
   const activeToday = activeTodayRaw.map((item) => normalizeOnDateItem(item, savedIds, temporalState));
   const timelineItems = groups.flatMap((group) => (group.items || []).map((item) => normalizeTimelineItem(item, savedIds, temporalState)));
+  const unresolvedMatches = unresolvedMatchesRaw.map((item) => normalizeUnresolvedItem(item));
   const seen = new Set();
   const allItems = [...activeToday, ...timelineItems].filter((item) => {
     if (!item?.id || seen.has(item.id)) return false;
@@ -141,6 +164,8 @@ export function buildConsumerFestivalsViewModel({ payload, search, category, sav
             ),
             dateLabel: formatDateRange(group.items[0].start_date, group.items[0].end_date, temporalState),
             artKey: getConsumerFestivalArtKey(group.items[0].id, group.items[0].category),
+            statusNote: group.items[0].date_status_note || '',
+            dateStatus: group.items[0].date_status || 'available',
           }
         : null,
       items: (group.items || []).slice(1, 5).map((item) => ({
@@ -153,12 +178,17 @@ export function buildConsumerFestivalsViewModel({ payload, search, category, sav
         ),
         dateLabel: formatDateRange(item.start_date, item.end_date, temporalState),
         artKey: getConsumerFestivalArtKey(item.id, item.category),
+        statusNote: item.date_status_note || '',
+        dateStatus: item.date_status || 'available',
         })),
     })),
     allFestivalCards: timelineItems,
+    unresolvedMatches,
     emptyState: {
-      title: 'No observances match this view yet',
-      body: 'Try clearing the filters or searching for a broader observance family.',
+      title: unresolvedMatches.length ? 'No resolved observances match this view yet' : 'No observances match this view yet',
+      body: unresolvedMatches.length
+        ? 'Some observances matched the search, but their live dates are still incomplete. Review the verification notes below.'
+        : 'Try clearing the filters or searching for a broader observance family.',
     },
   };
 }

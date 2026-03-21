@@ -51,3 +51,21 @@ def test_timeline_search_with_unknown_term_returns_empty_groups():
     payload = _payload(response)
     assert payload['total'] == 0
     assert payload['groups'] == []
+
+
+def test_timeline_search_surfaces_unresolved_matches_when_search_hits_inventory_content():
+    response = client.get(
+        '/v3/api/festivals/timeline',
+        params={
+            'from': '2026-09-01',
+            'to': '2026-12-01',
+            'quality_band': 'all',
+            'search': 'lhosar',
+        },
+    )
+    assert response.status_code == 200
+    payload = _payload(response)
+    assert payload['groups'] == []
+    assert payload['unresolved_matches']
+    assert payload['unresolved_matches'][0]['id'] == 'lhosar'
+    assert payload['unresolved_matches'][0]['date_status'] == 'missing_rule'
