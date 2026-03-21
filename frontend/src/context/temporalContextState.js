@@ -1,6 +1,12 @@
 export const STORAGE_KEY = 'parva.temporal_context.v2';
 export const DEFAULT_LOCATION = { latitude: 27.7172, longitude: 85.324 };
 
+function normalizeTheme(theme, fallback = 'warm-paper') {
+  if (theme === 'warm-paper' || theme === 'dawn-paper') return 'warm-paper';
+  if (theme === 'ink-black') return 'ink-black';
+  return fallback;
+}
+
 function formatDateParts(date, timeZone) {
   const formatter = new Intl.DateTimeFormat('en-US', {
     timeZone,
@@ -29,7 +35,7 @@ export function createInitialState() {
     location: { ...DEFAULT_LOCATION },
     timezone,
     language: 'en',
-    theme: 'nocturne-ink',
+    theme: 'warm-paper',
     lastViewed: '/',
   };
 }
@@ -61,6 +67,7 @@ export function reducer(state, action) {
       return {
         ...state,
         ...rest,
+        theme: normalizeTheme(action.payload?.theme, state.theme),
         location: {
           ...state.location,
           ...(action.payload?.location || {}),
@@ -76,9 +83,9 @@ export function reducer(state, action) {
     case 'setLanguage':
       return { ...state, language: action.payload === 'ne' ? 'ne' : 'en' };
     case 'setTheme':
-      return state.theme === (action.payload === 'nocturne-ink' ? 'nocturne-ink' : 'dawn-paper')
+      return state.theme === normalizeTheme(action.payload, state.theme)
         ? state
-        : { ...state, theme: action.payload === 'nocturne-ink' ? 'nocturne-ink' : 'dawn-paper' };
+        : { ...state, theme: normalizeTheme(action.payload, state.theme) };
     case 'setLastViewed':
       return state.lastViewed === (action.payload || '/')
         ? state

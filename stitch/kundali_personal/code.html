@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#735c00",
+              "background": "#fff8f3",
+              "on-tertiary-fixed-variant": "#574500",
+              "surface-container-highest": "#efe0cd",
+              "surface-container-high": "#f5e6d3",
+              "on-secondary-container": "#5f656c",
+              "tertiary-fixed": "#ffe088",
+              "on-primary": "#ffffff",
+              "on-primary-fixed-variant": "#7a3000",
+              "surface-bright": "#fff8f3",
+              "inverse-surface": "#372f22",
+              "on-tertiary-container": "#4f3e00",
+              "surface-container": "#fbecd9",
+              "secondary": "#595f66",
+              "on-surface-variant": "#584238",
+              "primary-fixed": "#ffdbcc",
+              "primary": "#9c3f00",
+              "tertiary-fixed-dim": "#e9c349",
+              "on-primary-fixed": "#351000",
+              "outline": "#8c7166",
+              "on-error-container": "#93000a",
+              "surface": "#fff8f3",
+              "secondary-fixed-dim": "#c1c7cf",
+              "surface-tint": "#a04100",
+              "surface-container-lowest": "#ffffff",
+              "error": "#ba1a1a",
+              "outline-variant": "#e0c0b2",
+              "on-secondary-fixed-variant": "#41474e",
+              "secondary-container": "#dde3eb",
+              "on-tertiary-fixed": "#241a00",
+              "on-surface": "#221a0f",
+              "on-background": "#221a0f",
+              "inverse-primary": "#ffb693",
+              "surface-container-low": "#fff2e2",
+              "on-secondary-fixed": "#161c22",
+              "on-secondary": "#ffffff",
+              "surface-dim": "#e6d8c5",
+              "surface-variant": "#efe0cd",
+              "error-container": "#ffdad6",
+              "secondary-fixed": "#dde3eb",
+              "primary-container": "#c45100",
+              "on-tertiary": "#ffffff",
+              "primary-fixed-dim": "#ffb693",
+              "on-primary-container": "#fffbff",
+              "inverse-on-surface": "#feefdb",
+              "tertiary-container": "#cca830",
+              "on-error": "#ffffff"
+            },
+            fontFamily: {
+              "headline": ["Noto Serif", "serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"],
+              "serif": ["Playfair Display", "serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .kundali-chart {
+            transform: rotate(-15deg);
+        }
+        .glass-panel {
+            background: rgba(239, 224, 205, 0.6);
+            backdrop-filter: blur(20px);
+            border: 0.5px solid #735c0033;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full flex justify-between items-center px-12 py-6 bg-orange-50/60 dark:bg-stone-900/60 backdrop-blur-md border-b border-orange-200/20 dark:border-stone-700/30 z-50">
+<div class="text-3xl font-serif italic text-orange-900 dark:text-orange-500">Parva</div>
+<div class="hidden md:flex gap-12 items-center">
+<a class="text-stone-600 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-300 transition-colors font-serif text-lg tracking-tight" href="#">Home</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-300 transition-colors font-serif text-lg tracking-tight" href="#">Festivals</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-300 transition-colors font-serif text-lg tracking-tight" href="#">Muhurta</a>
+<a class="text-orange-800 dark:text-orange-400 font-semibold border-b-2 border-orange-800 dark:border-orange-400 pb-1 font-serif text-lg tracking-tight" href="#">Kundali</a>
+</div>
+<div class="flex gap-6 items-center">
+<span class="material-symbols-outlined text-orange-900 cursor-pointer">location_on</span>
+<span class="material-symbols-outlined text-orange-900 cursor-pointer">account_circle</span>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col items-center py-24 gap-8 z-40 bg-stone-50/40 dark:bg-stone-950/40 backdrop-blur-xl border-r border-orange-100/10 dark:border-stone-800/20 w-20 hidden lg:flex">
+<div class="flex flex-col items-center gap-1 mb-12">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary text-xl">spa</span>
+</div>
+<span class="font-serif text-[10px] uppercase tracking-widest text-orange-800 mt-2">Sadhaka</span>
+</div>
+<div class="flex flex-col gap-10">
+<div class="text-stone-400 dark:text-stone-600 p-3 hover:text-orange-700 dark:hover:text-orange-300 scale-110 transition-transform cursor-pointer group flex flex-col items-center">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<div class="text-stone-400 dark:text-stone-600 p-3 hover:text-orange-700 dark:hover:text-orange-300 scale-110 transition-transform cursor-pointer flex flex-col items-center">
+<span class="material-symbols-outlined">auto_awesome</span>
+</div>
+<div class="text-orange-900 dark:text-orange-200 bg-orange-100/50 dark:bg-stone-800/50 rounded-full p-3 flex flex-col items-center">
+<span class="material-symbols-outlined">explore</span>
+</div>
+<div class="text-stone-400 dark:text-stone-600 p-3 hover:text-orange-700 dark:hover:text-orange-300 scale-110 transition-transform cursor-pointer flex flex-col items-center">
+<span class="material-symbols-outlined">flare</span>
+</div>
+</div>
+</aside>
+<main class="pt-32 pb-24 px-6 md:px-24 lg:ml-20 min-h-screen">
+<!-- Hero Title & Location Header -->
+<header class="mb-20 flex flex-col md:flex-row justify-between items-end gap-8">
+<div class="max-w-2xl">
+<div class="flex items-center gap-3 mb-4">
+<span class="text-xs font-label tracking-[0.2em] uppercase text-primary">Personal Path</span>
+<div class="h-[1px] w-12 bg-outline-variant"></div>
+</div>
+<h1 class="text-6xl md:text-8xl font-serif text-on-surface leading-none tracking-tight mb-6">Janma Kundali</h1>
+<p class="text-on-surface-variant font-serif italic text-lg opacity-80 max-w-lg">The celestial map of your soul's descent, etched in the alignment of the stars at the moment of your first breath.</p>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary scale-75">location_on</span>
+<span class="font-label text-sm uppercase tracking-widest text-on-surface">Kathmandu, NP</span>
+</div>
+<div class="text-right">
+<div class="text-3xl font-serif text-on-surface">Margashirsha 12</div>
+<div class="text-sm font-label text-on-surface-variant opacity-60">Shukla Paksha | Dashami</div>
+</div>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Kundali Visualization Panel -->
+<div class="lg:col-span-7 bg-surface-container-low p-12 relative overflow-hidden flex flex-col items-center justify-center border-t-0 border-l-0 border-r-0 border-b-0">
+<div class="absolute top-0 left-0 p-8">
+<span class="text-[10px] font-label tracking-widest uppercase text-outline opacity-60">Birth Chart / राशि चक्र</span>
+</div>
+<div class="relative w-full aspect-square max-w-md flex items-center justify-center kundali-chart">
+<!-- Modern Circular Kundali SVG -->
+<svg class="w-full h-full text-primary/20" viewbox="0 0 400 400">
+<circle cx="200" cy="200" fill="none" r="195" stroke="currentColor" stroke-dasharray="2 4" stroke-width="0.5"></circle>
+<circle cx="200" cy="200" fill="none" r="150" stroke="currentColor" stroke-width="0.5"></circle>
+<path d="M200 5 L200 395 M5 200 L395 200 M61.6 61.6 L338.4 338.4 M338.4 61.6 L61.6 338.4" opacity="0.3" stroke="currentColor" stroke-width="0.5"></path>
+<!-- Decorative Center -->
+<circle class="fill-surface-container-low" cx="200" cy="200" fill="white" r="40" stroke="currentColor" stroke-width="1"></circle>
+<text class="font-serif text-2xl fill-primary" text-anchor="middle" x="200" y="208">ॐ</text>
+<!-- Planet Markers -->
+<g class="fill-primary text-[10px] font-serif">
+<text x="310" y="120">Su</text>
+<text x="340" y="200">Me</text>
+<text x="200" y="50">Mo</text>
+<text x="90" y="280">Ma</text>
+<text x="120" y="340">Ju</text>
+</g>
+</svg>
+<!-- Floating Labels around chart -->
+<div class="absolute inset-0 pointer-events-none">
+<div class="absolute top-4 left-1/2 -translate-x-1/2 font-label text-[10px] tracking-widest opacity-40">ZENITH</div>
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 font-label text-[10px] tracking-widest opacity-40">NADIR</div>
+</div>
+</div>
+<div class="mt-12 flex gap-16 border-t border-outline-variant/20 pt-8 w-full">
+<div>
+<div class="text-xs font-label uppercase tracking-tighter text-outline-variant mb-1">Ascendant</div>
+<div class="text-2xl font-serif text-on-surface italic">Leo (Simha)</div>
+</div>
+<div>
+<div class="text-xs font-label uppercase tracking-tighter text-outline-variant mb-1">Nakshatra</div>
+<div class="text-2xl font-serif text-on-surface italic">Pushya</div>
+</div>
+</div>
+</div>
+<!-- Side Content Stack -->
+<div class="lg:col-span-5 flex flex-col gap-12">
+<!-- Daily Insight Glass Card -->
+<div class="glass-panel p-10 flex flex-col gap-6">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">flare</span>
+<div class="text-right">
+<div class="text-xs font-label tracking-widest uppercase text-tertiary">Planet of the Day</div>
+<div class="font-serif italic text-on-tertiary-fixed-variant">Brihaspati (Jupiter)</div>
+</div>
+</div>
+<div>
+<h3 class="text-2xl font-serif text-on-surface mb-3 italic">"A window of expansion opens."</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed opacity-80">Jupiter's alignment today suggests a period of spiritual growth and learning. Focus on wisdom over impulse.</p>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary font-label text-xs uppercase tracking-[0.3em] border-[0.5px] border-tertiary">Seek Guidance</button>
+</div>
+<!-- Planetary Positions Table -->
+<div class="bg-surface-container p-8">
+<h4 class="font-serif text-xl mb-6 flex items-center gap-2">
+<span class="text-primary italic">Planetary Positions</span>
+<span class="text-xs font-label opacity-40 uppercase tracking-tighter mt-1">ग्रह स्थिति</span>
+</h4>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant/30">
+<th class="py-4 font-serif italic font-normal text-on-surface-variant">Graha</th>
+<th class="py-4 font-serif italic font-normal text-on-surface-variant">Rashi</th>
+<th class="py-4 font-serif italic font-normal text-on-surface-variant">Degree</th>
+<th class="py-4 font-serif italic font-normal text-on-surface-variant">Speed</th>
+</tr>
+</thead>
+<tbody class="text-sm font-label">
+<tr class="border-b border-outline-variant/10">
+<td class="py-4 flex items-center gap-2">Sun <span class="text-[10px] text-primary opacity-60">सूर्य</span></td>
+<td class="py-4">Scorpio</td>
+<td class="py-4">12° 24'</td>
+<td class="py-4 text-xs">Direct</td>
+</tr>
+<tr class="border-b border-outline-variant/10">
+<td class="py-4 flex items-center gap-2">Moon <span class="text-[10px] text-primary opacity-60">चंद्र</span></td>
+<td class="py-4">Cancer</td>
+<td class="py-4">04° 11'</td>
+<td class="py-4 text-xs">Fast</td>
+</tr>
+<tr class="border-b border-outline-variant/10">
+<td class="py-4 flex items-center gap-2">Mars <span class="text-[10px] text-primary opacity-60">मंगल</span></td>
+<td class="py-4">Leo</td>
+<td class="py-4">28° 45'</td>
+<td class="py-4 text-xs text-error">Retro</td>
+</tr>
+<tr class="border-b border-outline-variant/10">
+<td class="py-4 flex items-center gap-2">Jupiter <span class="text-[10px] text-primary opacity-60">गुरु</span></td>
+<td class="py-4">Taurus</td>
+<td class="py-4">19° 08'</td>
+<td class="py-4 text-xs">Direct</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<!-- Personal Panchanga Section -->
+<section class="mt-24">
+<div class="mb-12 flex items-center justify-between">
+<div>
+<h2 class="text-4xl font-serif text-on-surface mb-2 italic">Personal Panchanga</h2>
+<p class="text-on-surface-variant font-serif italic">Your daily rhythms calculated for 04:32:00 UTC+5:45</p>
+</div>
+<div class="h-16 w-16 bg-surface-container-highest flex items-center justify-center border-l-[3px] border-primary">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+<!-- Panchanga Elements -->
+<div class="flex flex-col gap-2 p-6 bg-surface-container-low border border-transparent hover:border-outline-variant/20 transition-all cursor-default">
+<span class="text-[10px] font-label uppercase tracking-widest text-primary">Tithi</span>
+<span class="text-xl font-serif italic">Dashami</span>
+<span class="text-[10px] text-on-surface-variant opacity-60">Until 14:23</span>
+</div>
+<div class="flex flex-col gap-2 p-6 bg-surface-container-low border border-transparent hover:border-outline-variant/20 transition-all cursor-default">
+<span class="text-[10px] font-label uppercase tracking-widest text-primary">Vara</span>
+<span class="text-xl font-serif italic">Guruvara</span>
+<span class="text-[10px] text-on-surface-variant opacity-60">Thursday</span>
+</div>
+<div class="flex flex-col gap-2 p-6 bg-surface-container-low border border-transparent hover:border-outline-variant/20 transition-all cursor-default">
+<span class="text-[10px] font-label uppercase tracking-widest text-primary">Nakshatra</span>
+<span class="text-xl font-serif italic">Pushya</span>
+<span class="text-[10px] text-on-surface-variant opacity-60">Shani Dev</span>
+</div>
+<div class="flex flex-col gap-2 p-6 bg-surface-container-low border border-transparent hover:border-outline-variant/20 transition-all cursor-default">
+<span class="text-[10px] font-label uppercase tracking-widest text-primary">Yoga</span>
+<span class="text-xl font-serif italic">Harshana</span>
+<span class="text-[10px] text-on-surface-variant opacity-60">Auspicious</span>
+</div>
+<div class="flex flex-col gap-2 p-6 bg-surface-container-low border border-transparent hover:border-outline-variant/20 transition-all cursor-default">
+<span class="text-[10px] font-label uppercase tracking-widest text-primary">Karana</span>
+<span class="text-xl font-serif italic">Vanija</span>
+<span class="text-[10px] text-on-surface-variant opacity-60">Commercial</span>
+</div>
+</div>
+</section>
+<!-- Location Context Section -->
+<section class="mt-24 grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+<div class="lg:col-span-1 p-10 bg-surface-container-high relative overflow-hidden h-[300px]">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-primary mb-4">map</span>
+<h3 class="text-2xl font-serif mb-4 italic">Almanac Context</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Celestial timings adjusted for your current terrestrial coordinates in Kathmandu.</p>
+<div class="mt-8 flex gap-4">
+<div class="text-center">
+<div class="text-xs font-label uppercase text-primary mb-1">Sunrise</div>
+<div class="font-serif italic text-lg">06:34</div>
+</div>
+<div class="w-[1px] h-10 bg-outline-variant/30"></div>
+<div class="text-center">
+<div class="text-xs font-label uppercase text-primary mb-1">Sunset</div>
+<div class="font-serif italic text-lg">17:12</div>
+</div>
+</div>
+</div>
+<!-- Mock Map Background Element -->
+<div class="absolute -right-12 -bottom-12 w-64 h-64 opacity-10">
+<img alt="Abstract map pattern" class="w-full h-full object-cover" data-alt="Faint golden line map of Kathmandu terrain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6dU64BMPd4A042smgprBzM98vptQ7E2oUxID-CPfPmYphbEOZL0TWDPXgAWyJAp_pUv99HsSH7GYoArE-Vn65RCJ0hiOZMieDMjKO8dWxuPf-p2GfhVz3pVJ0jyepbYUbkDf8YXLDB-vUqa4ZrNpFOFqFSEqkp2vDDHUgFeS2SyWTxE5TBlxk6Q6vV6aESazEpdrg7ncKgy1pjjSOzh0luohXuz7D_P2w8Q2OgXVlb-qhR-4H9WPDldj-R8VvenCK8bS_SSEaAomt"/>
+</div>
+</div>
+<div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="p-8 border border-outline-variant/20 flex gap-6 items-start">
+<div class="p-3 bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bedtime</span>
+</div>
+<div>
+<h4 class="font-serif text-lg mb-1 italic">Moon Phase</h4>
+<p class="text-sm text-on-surface-variant opacity-80">Waxing Gibbous (74%) — The mind is illuminated and expansive.</p>
+</div>
+</div>
+<div class="p-8 border border-outline-variant/20 flex gap-6 items-start">
+<div class="p-3 bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">timer</span>
+</div>
+<div>
+<h4 class="font-serif text-lg mb-1 italic">Rahu Kaal</h4>
+<p class="text-sm text-on-surface-variant opacity-80">13:30 to 15:00 — Delay major decisions or new ventures.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full px-24 py-20 flex flex-col items-center text-center border-t border-orange-100 dark:border-stone-900 bg-stone-100 dark:bg-stone-950 relative mt-24">
+<span class="text-4xl font-serif text-orange-900 dark:text-orange-700 mb-4 block">Parva</span>
+<div class="flex gap-12 mb-10">
+<a class="text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors font-serif italic text-base" href="#">Cultural Heritage</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors font-serif italic text-base" href="#">Ritual Guides</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors font-serif italic text-base" href="#">Panchanga API</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors font-serif italic text-base" href="#">Contact</a>
+</div>
+<p class="text-stone-500 dark:text-stone-400 font-serif italic text-base">© 2024 Parva. Sacred Wisdom for the Digital Era.</p>
+</footer>
+</body></html>

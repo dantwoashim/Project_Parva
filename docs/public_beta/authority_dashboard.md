@@ -1,6 +1,6 @@
 # Authority Dashboard
 
-- Generated: `2026-03-14T09:22:26.336916+00:00`
+- Generated: `2026-03-21T11:05:13.533795+00:00`
 - Release Track: `public-beta-v3`
 
 ## Pipeline Health

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 from typing import Any
 
 from app.provenance import get_provenance_payload
@@ -49,16 +48,54 @@ def derive_boundary_risk(payload: Any) -> str:
     return "unknown"
 
 
-def derive_signature(provenance: dict[str, Any]) -> str | None:
-    snapshot_id = provenance.get("snapshot_id")
-    dataset_hash = provenance.get("dataset_hash")
-    rules_hash = provenance.get("rules_hash")
-    if not snapshot_id or not dataset_hash or not rules_hash:
-        return None
+def normalize_attestation(provenance: dict[str, Any]) -> dict[str, Any]:
+    attestation = provenance.get("attestation")
+    if isinstance(attestation, dict):
+        return attestation
 
-    seed = f"{snapshot_id}:{dataset_hash}:{rules_hash}"
-    digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()
-    return f"sha256sig:{digest[:40]}"
+    legacy_signature = provenance.get("signature")
+    if legacy_signature:
+        return {
+            "mode": "legacy-unverified",
+            "algorithm": "legacy-hash-label",
+            "key_id": None,
+            "value": legacy_signature,
+        }
+
+    return {
+        "mode": "unsigned",
+        "algorithm": None,
+        "key_id": None,
+        "value": None,
+    }
+
+
+def normalize_policy(payload: Any) -> dict[str, Any]:
+    if isinstance(payload, dict):
+        policy = payload.get("policy")
+        if isinstance(policy, dict):
+            return policy
+    return {
+        "profile": "np-mainstream",
+        "jurisdiction": "NP",
+        "advisory": True,
+    }
+
+
+def normalize_degraded(payload: Any) -> dict[str, Any]:
+    if isinstance(payload, dict):
+        degraded = payload.get("degraded")
+        if isinstance(degraded, dict):
+            return {
+                "active": bool(degraded.get("active", False)),
+                "reasons": list(degraded.get("reasons", []) or []),
+                "defaults_applied": list(degraded.get("defaults_applied", []) or []),
+            }
+    return {
+        "active": False,
+        "reasons": [],
+        "defaults_applied": [],
+    }
 
 
 def merge_meta_defaults(defaults: dict[str, Any], provided: dict[str, Any]) -> dict[str, Any]:
@@ -109,9 +146,8 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
     )
     provenance = merge_meta_defaults(fallback_provenance, raw_provenance)
 
-    signature = derive_signature(provenance)
-    if "signature" not in provenance:
-        provenance = {**provenance, "signature": signature}
+    if "attestation" not in provenance:
+        provenance = {**provenance, "attestation": normalize_attestation(provenance)}
 
     uncertainty = payload.get("uncertainty")
     if not isinstance(uncertainty, dict):
@@ -147,6 +183,17 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
                 "jurisdiction": "NP",
                 "advisory": True,
             },
+        }
+
+    if track == "v3":
+        return {
+            "confidence": confidence_level,
+            "method": method,
+            "provenance": provenance,
+            "uncertainty": uncertainty,
+            "trace_id": trace_id,
+            "policy": normalize_policy(payload),
+            "degraded": normalize_degraded(payload),
         }
 
     return {

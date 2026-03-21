@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from datetime import date
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from ..calendar import (
     get_bs_month_name,
@@ -48,7 +48,7 @@ class FestivalRepository:
     Caches data in memory for performance.
     """
 
-    def __init__(self, data_dir: Optional[Path] = None):
+    def __init__(self, data_dir: Optional[Path] = None, *, allow_builtin_fallback: bool = False):
         """
         Initialize repository.
 
@@ -56,6 +56,7 @@ class FestivalRepository:
             data_dir: Path to data directory (defaults to data/festivals/)
         """
         self.data_dir = data_dir or DATA_DIR
+        self.allow_builtin_fallback = allow_builtin_fallback
         self._festivals: Dict[str, Festival] = {}
         self._loaded = False
         self._rule_service = get_rule_service()
@@ -70,10 +71,11 @@ class FestivalRepository:
         festivals_file = self.data_dir / "festivals.json"
 
         if not festivals_file.exists():
-            # If no file exists, use built-in minimal data
-            self._load_builtin_festivals()
-            self._loaded = True
-            return
+            if self.allow_builtin_fallback:
+                self._load_builtin_festivals()
+                self._loaded = True
+                return
+            raise FileNotFoundError(f"Festival catalog missing: {festivals_file}")
 
         try:
             with open(festivals_file, "r", encoding="utf-8") as f:
@@ -89,10 +91,12 @@ class FestivalRepository:
                 self._festivals[festival.id] = festival
 
             self._loaded = True
-        except (json.JSONDecodeError, FileNotFoundError) as e:
-            print(f"Warning: Could not load festivals.json: {e}")
-            self._load_builtin_festivals()
-            self._loaded = True
+        except (json.JSONDecodeError, FileNotFoundError, ValueError):
+            if self.allow_builtin_fallback:
+                self._load_builtin_festivals()
+                self._loaded = True
+                return
+            raise
 
     def _load_builtin_festivals(self) -> None:
         """Load minimal built-in festival data."""
@@ -510,6 +514,26 @@ class FestivalRepository:
 
 # Global repository instance
 _repository: Optional[FestivalRepository] = None
+
+
+def validate_festival_catalog(data_dir: Optional[Path] = None) -> dict[str, Any]:
+    """Validate that the production festival catalog exists and parses cleanly."""
+
+    base_dir = data_dir or DATA_DIR
+    festivals_file = base_dir / "festivals.json"
+    if not festivals_file.exists():
+        raise FileNotFoundError(f"Festival catalog missing: {festivals_file}")
+
+    payload = json.loads(festivals_file.read_text(encoding="utf-8"))
+    festival_rows = payload.get("festivals", [])
+    errors = validate_festival_catalog_rows(festival_rows)
+    if errors:
+        raise ValueError("; ".join(errors))
+
+    return {
+        "path": str(festivals_file),
+        "festival_count": len(festival_rows),
+    }
 
 
 def get_repository() -> FestivalRepository:

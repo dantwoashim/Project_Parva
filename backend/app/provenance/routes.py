@@ -399,7 +399,7 @@ async def get_public_beta_dashboard() -> Dict[str, Any]:
     if not PUBLIC_BETA_DASHBOARD.exists():
         raise HTTPException(
             status_code=404,
-            detail="Dashboard metrics not generated yet. Run backend/tools/generate_beta_dashboard.py",
+            detail="Dashboard metrics not generated yet. Run scripts/release/generate_dashboard_metrics.py",
         )
     import json
 

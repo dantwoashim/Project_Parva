@@ -12,13 +12,29 @@ This file describes only what is implemented and verifiable in the repository no
    - Muhurta
    - Kundali
 6. Deterministic trace generation + provenance metadata on key responses.
-7. CI pipeline for backend tests, frontend build, contract freeze check, conformance run.
-8. Static institutional embed surfaces and public onboarding portals under `frontend/public/`.
+7. Additive `X-Parva-Envelope: data-meta` response envelopes for launch-critical `/v3/api/*` flows.
+8. CI pipeline for backend tests, frontend build, contract freeze check, conformance run.
+9. Static institutional embed surfaces and public onboarding portals under `frontend/public/`.
+10. Release evidence gates for frontend bundle budget, dependency audit, browser smoke, golden journeys, and launch signoff.
+11. Closed-beta operations and launch signoff repository artifacts.
+
+## Launch-critical surfaces
+
+The current launch-critical product surface is intentionally narrower than the
+full route inventory:
+
+1. Today / Temporal Compass
+2. Personal Panchanga / My Place
+3. Muhurta / Best Time
+4. Festival Explorer + Festival Detail
+5. Kundali / Birth Reading
 
 ## Not implemented (or partial)
 1. 300+ fully computed festival rules with verified regional jurisprudence.
-2. Full institutional governance/operations model beyond repository artifacts.
+2. Fully staffed human operational ownership beyond the repository-backed runbooks and signoff matrix.
 3. Persistent community layer and AR/WebXR production features.
+4. Full parity/polish for every noncritical public route outside the
+   launch-critical surface above.
 
 ## Evidence pointers
 - API bootstrap: `backend/app/bootstrap/`

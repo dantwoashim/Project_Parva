@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-14T07:45:00.886918+00:00",
+  "generated_at": "2026-03-21T11:02:50.421189+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -114,6 +114,18 @@
                 "title": "Lang"
               },
               "description": "en|ne"
+            },
+            {
+              "name": "sort",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "chronological|recommended|popular|upcoming",
+                "default": "chronological",
+                "title": "Sort"
+              },
+              "description": "chronological|recommended|popular|upcoming"
             }
           ],
           "responses": {
@@ -2774,6 +2786,26 @@
           }
         }
       },
+      "/v3/api/engine/manifest": {
+        "get": {
+          "tags": [
+            "engine"
+          ],
+          "summary": "Get Engine Manifest",
+          "description": "Return the authoritative engine manifest for public route families.",
+          "operationId": "get_engine_manifest_v3_api_engine_manifest_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/engine/health": {
         "get": {
           "tags": [
@@ -3686,7 +3718,6 @@
                   }
                 ],
                 "description": "IANA timezone, e.g. Asia/Kathmandu",
-                "default": "Asia/Kathmandu",
                 "title": "Tz"
               },
               "description": "IANA timezone, e.g. Asia/Kathmandu"
@@ -3719,6 +3750,139 @@
           ],
           "summary": "Personal Panchanga Post",
           "operationId": "personal_panchanga_post_v3_api_personal_panchanga_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPanchangaRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/personal/context": {
+        "get": {
+          "tags": [
+            "personal"
+          ],
+          "summary": "Personal Context",
+          "operationId": "personal_context_v3_api_personal_context_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone, e.g. Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone, e.g. Asia/Kathmandu"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "personal"
+          ],
+          "summary": "Personal Context Post",
+          "operationId": "personal_context_post_v3_api_personal_context_post",
           "requestBody": {
             "required": true,
             "content": {
@@ -4062,11 +4226,11 @@
               "required": false,
               "schema": {
                 "type": "string",
-                "description": "vivah|griha_pravesh|travel|upanayana|general",
+                "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general",
                 "default": "general",
                 "title": "Type"
               },
-              "description": "vivah|griha_pravesh|travel|upanayana|general"
+              "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general"
             },
             {
               "name": "lat",
@@ -4707,11 +4871,11 @@
               "required": false,
               "schema": {
                 "type": "string",
-                "description": "vivah|griha_pravesh|travel|upanayana|general",
+                "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general",
                 "default": "general",
                 "title": "Type"
               },
-              "description": "vivah|griha_pravesh|travel|upanayana|general"
+              "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general"
             },
             {
               "name": "assumption_set",
@@ -5886,7 +6050,7 @@
             "type": {
               "type": "string",
               "title": "Type",
-              "description": "vivah|griha_pravesh|travel|upanayana|general",
+              "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general",
               "default": "general"
             },
             "lat": {
@@ -6793,6 +6957,57 @@
           "title": "FestivalDates",
           "description": "Calculated dates for a festival in a specific year."
         },
+        "FestivalDetailCompleteness": {
+          "properties": {
+            "overall": {
+              "type": "string",
+              "pattern": "^(complete|partial|minimal)$",
+              "title": "Overall"
+            },
+            "narrative": {
+              "$ref": "#/components/schemas/FestivalDetailCompletenessSection"
+            },
+            "ritual_sequence": {
+              "$ref": "#/components/schemas/FestivalDetailCompletenessSection"
+            },
+            "dates": {
+              "$ref": "#/components/schemas/FestivalDetailCompletenessSection"
+            },
+            "related_observances": {
+              "$ref": "#/components/schemas/FestivalDetailCompletenessSection"
+            }
+          },
+          "type": "object",
+          "required": [
+            "overall",
+            "narrative",
+            "ritual_sequence",
+            "dates",
+            "related_observances"
+          ],
+          "title": "FestivalDetailCompleteness",
+          "description": "Truthful completeness signals for the festival detail experience."
+        },
+        "FestivalDetailCompletenessSection": {
+          "properties": {
+            "status": {
+              "type": "string",
+              "pattern": "^(available|partial|missing)$",
+              "title": "Status"
+            },
+            "note": {
+              "type": "string",
+              "title": "Note"
+            }
+          },
+          "type": "object",
+          "required": [
+            "status",
+            "note"
+          ],
+          "title": "FestivalDetailCompletenessSection",
+          "description": "Availability state for one festival-detail section."
+        },
         "FestivalDetailResponse": {
           "properties": {
             "festival": {
@@ -6821,6 +7036,16 @@
                 }
               ],
               "title": "Nearby Festivals"
+            },
+            "completeness": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/FestivalDetailCompleteness"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             },
             "provenance": {
               "anyOf": [
@@ -7426,7 +7651,7 @@
             "type": {
               "type": "string",
               "title": "Type",
-              "description": "vivah|griha_pravesh|travel|upanayana|general",
+              "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general",
               "default": "general"
             },
             "assumption_set": {
@@ -7592,8 +7817,7 @@
                 }
               ],
               "title": "Tz",
-              "description": "IANA timezone",
-              "default": "Asia/Kathmandu"
+              "description": "IANA timezone"
             }
           },
           "type": "object",

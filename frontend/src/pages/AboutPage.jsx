@@ -1,24 +1,35 @@
+import { UtilityPageHeader } from '../consumer/UtilityPages';
 import './AboutPage.css';
 
 export function AboutPage() {
   return (
-    <section className="about-page animate-fade-in-up">
-      <header className="about-hero editorial-card">
-        <p className="landing-eyebrow">About Parva</p>
-        <h1>Parva is built to make sacred time feel clear before it feels technical.</h1>
-        <p>
-          The product is designed for everyday people first: calm language, one useful answer, and deeper detail only when someone wants it.
-        </p>
-      </header>
+    <section className="about-page utility-page animate-fade-in-up">
+      <UtilityPageHeader
+        eyebrow="About Parva"
+        title="Parva is built to make sacred time feel clear before it feels technical."
+        body="The product is designed for everyday people first: calm language, one useful answer, and deeper detail only when someone wants it."
+        links={[
+          { label: 'Today', to: '/#today' },
+          { label: 'Festivals', to: '/#festivals' },
+          { label: 'Best Time', to: '/#best-time' },
+        ]}
+        aside={(
+          <>
+            <span className="utility-page__eyebrow">Category position</span>
+            <strong>Nepal-first sacred time guide</strong>
+            <p>The consumer product should feel singular, calm, and serious across every route.</p>
+          </>
+        )}
+      />
 
       <section className="about-grid">
-        <article className="editorial-card about-card">
+        <article className="editorial-card about-card utility-page__panel">
           <h2>What it is</h2>
           <p>
             A Nepal-focused guide for festivals, panchanga, muhurta, and kundali that tries to feel trustworthy without feeling overloaded.
           </p>
         </article>
-        <article className="editorial-card about-card">
+        <article className="editorial-card about-card utility-page__panel">
           <h2>How trust works</h2>
           <p>
             The first answer stays calm and useful. Method notes, where results can vary, and deeper evidence stay available when you want to inspect them.
@@ -26,7 +37,7 @@ export function AboutPage() {
         </article>
       </section>
 
-      <section className="editorial-card about-details">
+      <section className="editorial-card about-details utility-page__panel">
         <div className="landing-section-header">
           <p className="landing-eyebrow">Principles</p>
           <h2>What the interface promises</h2>

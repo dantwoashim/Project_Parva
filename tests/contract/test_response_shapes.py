@@ -54,6 +54,22 @@ def test_engine_config_endpoint():
     body = response.json()
     assert "ephemeris_mode" in body
     assert "ayanamsa" in body
+    assert body["canonical_engine_id"] == "parva-v3-canonical"
+    assert body["manifest_version"] == "2026-03-20"
+
+
+def test_engine_manifest_endpoint():
+    client = TestClient(app)
+    response = client.get("/api/engine/manifest")
+    assert response.status_code == 200
+    _assert_common_headers(response)
+
+    body = response.json()
+    assert body["canonical_engine_id"] == "parva-v3-canonical"
+    assert body["manifest_version"] == "2026-03-20"
+    assert body["engine_version"] == "v3"
+    assert "public_route_families" in body
+    assert len(body["public_route_families"]) >= 3
 
 
 def test_convert_compare_contract_fields():
@@ -67,3 +83,23 @@ def test_convert_compare_contract_fields():
     assert "official" in body
     assert "estimated" in body
     assert "match" in body
+
+
+def test_festival_timeline_accepts_upcoming_sort_alias():
+    client = TestClient(app)
+    response = client.get(
+        "/v3/api/festivals/timeline",
+        params={
+            "from": "2026-03-21",
+            "to": "2026-09-16",
+            "quality_band": "computed",
+            "lang": "en",
+            "sort": "upcoming",
+        },
+    )
+    assert response.status_code == 200
+    _assert_common_headers(response)
+
+    body = response.json()
+    assert body["sort"] == "chronological"
+    assert "groups" in body

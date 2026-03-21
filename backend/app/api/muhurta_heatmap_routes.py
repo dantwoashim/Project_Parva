@@ -27,7 +27,7 @@ class MuhurtaHeatmapRequest(BaseModel):
     lon: CoordinateInput = Field(None, description="Longitude")
     tz: Optional[str] = Field("Asia/Kathmandu", description="IANA timezone")
     type: str = Field(
-        "general", description="vivah|griha_pravesh|travel|upanayana|general"
+        "general", description="creative_focus|vivah|griha_pravesh|travel|upanayana|general"
     )
     assumption_set: str = Field("np-mainstream-v2")
 
@@ -99,7 +99,7 @@ async def muhurta_heatmap(
     lon: Optional[str] = Query(None, description="Longitude"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
     ceremony_type: str = Query(
-        "general", alias="type", description="vivah|griha_pravesh|travel|upanayana|general"
+        "general", alias="type", description="creative_focus|vivah|griha_pravesh|travel|upanayana|general"
     ),
     assumption_set: str = Query("np-mainstream-v2"),
 ):

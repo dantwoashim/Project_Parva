@@ -5,6 +5,28 @@ import App from '../App';
 
 const routeLoadOptions = { timeout: 15000 };
 
+function setViewportWidth(width) {
+  window.innerWidth = width;
+  window.dispatchEvent(new Event('resize'));
+}
+
+function createMemoryStorage() {
+  const backing = new Map();
+
+  return {
+    getItem: vi.fn((key) => (backing.has(key) ? backing.get(key) : null)),
+    setItem: vi.fn((key, value) => {
+      backing.set(key, String(value));
+    }),
+    removeItem: vi.fn((key) => {
+      backing.delete(key);
+    }),
+    clear: vi.fn(() => {
+      backing.clear();
+    }),
+  };
+}
+
 function jsonResponse(payload) {
   return {
     ok: true,
@@ -16,46 +38,202 @@ function jsonResponse(payload) {
   };
 }
 
+function buildCompassEnvelope(overrides = {}) {
+  return {
+    data: {
+      date: '2026-02-15',
+      location: {
+        latitude: 27.7172,
+        longitude: 85.324,
+        timezone: 'Asia/Kathmandu',
+      },
+      bikram_sambat: {
+        year: 2082,
+        month: 11,
+        day: 3,
+        month_name: 'Falgun',
+      },
+      primary_readout: {
+        tithi_name: 'Chaturdashi',
+        tithi_number: 14,
+        paksha: 'krishna',
+      },
+      horizon: {
+        sunrise: {
+          local: '2026-02-15T06:42:00+05:45',
+          utc: '2026-02-15T00:57:00Z',
+          local_time: '06:42 AM',
+        },
+        sunset: {
+          local: '2026-02-15T17:53:00+05:45',
+          utc: '2026-02-15T12:08:00Z',
+          local_time: '05:53 PM',
+        },
+        current_muhurta: {
+          name: 'Abhijit Muhurta',
+          start: '2026-02-15T10:30:00+05:45',
+          end: '2026-02-15T12:15:00+05:45',
+          score: 88,
+          class: 'auspicious',
+        },
+        rahu_kalam: {
+          start: '2026-02-15T13:15:00+05:45',
+          end: '2026-02-15T14:30:00+05:45',
+        },
+      },
+      today: {
+        festivals: [],
+        count: 0,
+      },
+      signals: {
+        nakshatra: { name: 'Shravana', pada: 1 },
+        yoga: { name: 'Shubha' },
+        karana: { name: 'Vishti' },
+        vaara: { name_english: 'Sunday' },
+      },
+      quality_band_filter: 'computed',
+      engine: {
+        method: 'ephemeris_udaya',
+        method_profile: 'temporal_compass_v1',
+      },
+      ...overrides.data,
+    },
+    meta: {
+      method: 'ephemeris_udaya',
+      confidence: { level: 'high' },
+      ...overrides.meta,
+    },
+  };
+}
+
+function buildHeatmapEnvelope(overrides = {}) {
+  return {
+    data: {
+      date: '2026-02-15',
+      location: {
+        latitude: 27.7172,
+        longitude: 85.324,
+        timezone: 'Asia/Kathmandu',
+      },
+      type: 'general',
+      assumption_set_id: 'np-mainstream-v2',
+      best_window: {
+        index: 6,
+        name: 'Abhijit Muhurta',
+        start: '2026-02-15T10:30:00+05:45',
+        end: '2026-02-15T12:15:00+05:45',
+        score: 88,
+      },
+      blocks: [
+        {
+          index: 6,
+          name: 'Abhijit Muhurta',
+          class: 'auspicious',
+          score: 88,
+          start: '2026-02-15T10:30:00+05:45',
+          end: '2026-02-15T12:15:00+05:45',
+          reason_codes: ['tara_good', 'hora_supportive'],
+        },
+        {
+          index: 7,
+          name: 'Labh',
+          class: 'mixed',
+          score: 41,
+          start: '2026-02-15T15:45:00+05:45',
+          end: '2026-02-15T17:00:00+05:45',
+          reason_codes: [],
+        },
+      ],
+      rahu_kalam: {
+        start: '2026-02-15T13:15:00+05:45',
+        end: '2026-02-15T14:30:00+05:45',
+      },
+      sunrise: '2026-02-15T06:42:00+05:45',
+      sunset: '2026-02-15T17:53:00+05:45',
+      ranking_profile: { minimum_score: 25 },
+      tara_bala: { status: 'neutral' },
+      ...overrides.data,
+    },
+    meta: {
+      method: 'rule_ranked_muhurta_v2',
+      confidence: { level: 'high' },
+      ...overrides.meta,
+    },
+  };
+}
+
+function buildPersonalContextEnvelope(overrides = {}) {
+  return {
+    data: {
+      date: '2026-02-15',
+      location: {
+        latitude: 27.7172,
+        longitude: 85.324,
+        timezone: 'Asia/Kathmandu',
+      },
+      place_title: 'Kyoto Villa',
+      status_line: 'Sunrise 6:45 AM - Asia/Kathmandu',
+      visit_note: 'Last visited Oct 15. Next reminder: Cherry Blossom (Apr).',
+      context_title: 'Morning Calm',
+      context_summary: 'Quiet morning at your saved Kyoto Villa location. Air is crisp. 14C.',
+      temperature_note: 'Air is crisp. 14C.',
+      daily_inspiration: 'The soul sits here, in the quiet spaces we keep. - A. Chen.',
+      upcoming_reminders: [{ id: 'gion-matsuri', title: 'Gion Matsuri', date_label: 'Jul 1-31', status: 'Active' }],
+      ...overrides.data,
+    },
+    meta: {
+      method: 'personal_context_synthesis',
+      confidence: { level: 'high' },
+      ...overrides.meta,
+    },
+  };
+}
+
+function buildKundaliGraphEnvelope(overrides = {}) {
+  return {
+    data: {
+      datetime: '2026-02-15T06:30:00+05:45',
+      location: {
+        latitude: 27.7172,
+        longitude: 85.324,
+        timezone: 'Asia/Kathmandu',
+      },
+      lagna: {
+        rashi_english: 'Pisces',
+      },
+      layout: {
+        viewbox: '0 0 400 400',
+        house_nodes: [
+          { id: 'house_1', house_number: 1, x: 200, y: 60 },
+          { id: 'house_7', house_number: 7, x: 200, y: 340 },
+        ],
+        graha_nodes: [
+          { id: 'mars', label: 'Mars', x: 120, y: 90 },
+          { id: 'venus', label: 'Venus', x: 220, y: 210 },
+        ],
+        aspect_edges: [{ id: 'asp_1', source: 'mars', target: 'venus', type: 'trine' }],
+      },
+      insight_blocks: [{ id: 'ins_1', title: 'Mars-Venus link', summary: 'Supportive trinal relation in this profile.' }],
+      ...overrides.data,
+    },
+    meta: {
+      method: 'swiss_ephemeris_sidereal',
+      confidence: { level: 'high' },
+      ...overrides.meta,
+    },
+  };
+}
+
 function buildFetchMock() {
   return vi.fn(async (input) => {
     const url = String(input);
 
-    if (url.includes('/festivals/upcoming?')) {
-      return jsonResponse({
-        data: {
-          festivals: [
-            { id: 'dashain', name: 'Dashain', category: 'national', start_date: '2026-10-20' },
-            { id: 'tihar', name: 'Tihar', category: 'national', start_date: '2026-11-07' },
-          ],
-        },
-        meta: {},
-      });
+    if (url.includes('/temporal/compass')) {
+      return jsonResponse(buildCompassEnvelope());
     }
 
-    if (url.includes('/temporal/compass')) {
-      return jsonResponse({
-        data: {
-          bikram_sambat: { year: 2082, month_name: 'Falgun', day: 3 },
-          primary_readout: { tithi_name: 'Chaturdashi', paksha: 'krishna' },
-          orbital: { phase_ratio: 0.74, tithi: 14 },
-          horizon: {
-            sunrise: '2026-02-15T06:42:00+05:45',
-            sunset: '2026-02-15T17:53:00+05:45',
-            current_muhurta: { name: 'Abhijit', class: 'auspicious' },
-          },
-          signals: {
-            nakshatra: { name: 'Shravana' },
-            yoga: { name: 'Shubha' },
-            karana: { name: 'Vishti' },
-            vaara: { name_english: 'Sunday' },
-          },
-          today: {
-            festivals: [{ id: 'dashain', name: 'Dashain', start_date: '2026-10-20' }],
-          },
-          calculation_trace_id: 'tr_compass_routes',
-        },
-        meta: {},
-      });
+    if (url.includes('/muhurta/heatmap')) {
+      return jsonResponse(buildHeatmapEnvelope());
     }
 
     if (url.includes('/festivals/timeline?')) {
@@ -72,36 +250,126 @@ function buildFetchMock() {
                   display_name: 'Dashain',
                   category: 'national',
                   start_date: '2026-10-20',
-                  end_date: '2026-10-30',
-                  quality_band: 'computed',
+                  summary: 'Blessing, reunion, and seasonal turning gathered into one long observance.',
+                  regional_focus: ['Nepal'],
+                },
+                {
+                  id: 'tihar',
+                  name: 'Tihar',
+                  display_name: 'Tihar',
+                  category: 'national',
+                  start_date: '2026-11-07',
+                  summary: 'Festival of lights with layered family and household observance.',
+                  regional_focus: ['Kathmandu Valley'],
                 },
               ],
             },
           ],
-          calculation_trace_id: 'tr_timeline_routes',
+          facets: {
+            categories: [{ value: 'national', label: 'National', count: 2 }],
+            months: [{ value: '2026-10', label: 'October', count: 2 }],
+            regions: [{ value: 'nepal', label: 'Nepal', count: 1 }],
+          },
         },
         meta: {},
       });
     }
 
-    if (url.includes('/festivals/') && !url.includes('/festivals/timeline')) {
+    if (url.includes('/festivals/dashain/dates?')) {
+      return jsonResponse({
+        data: {
+          dates: [
+            {
+              gregorian_year: 2026,
+              start_date: '2026-10-20',
+              end_date: '2026-10-30',
+              bs_start: { formatted: '2083 Ashwin 4' },
+            },
+          ],
+        },
+        meta: {},
+      });
+    }
+
+    if (url.includes('/festivals/dashain')) {
       return jsonResponse({
         data: {
           festival: {
             id: 'dashain',
             name: 'Dashain',
+            name_nepali: 'Dasain',
             category: 'national',
+            calendar_system: 'Lunisolar profile',
             duration_days: 10,
-            description: 'Major Nepali festival.',
+            description: 'Dashain gathers family, blessing, and renewal into the largest festival rhythm in Nepal.',
+            tagline: 'Blessing, reunion, and seasonal turning gathered into one long observance.',
+            mythology: {
+              summary: 'The observance is tied to renewal, protection, and family blessing.',
+              significance: 'Families mark the season through blessing, homecoming, and ritual continuity across generations.',
+            },
+            ritual_sequence: {
+              days: [
+                {
+                  name: 'Ghatasthapana',
+                  events: [{ title: 'Kalash Sthapana', description: 'A ritual vessel and barley planting begin the seasonal sequence.' }],
+                },
+              ],
+            },
           },
-          dates: { start_date: '2026-10-20', end_date: '2026-10-30' },
+          dates: {
+            start_date: '2026-10-20',
+            end_date: '2026-10-30',
+            calculation_method: 'lunisolar festival profile',
+          },
+          nearby_festivals: [
+            { id: 'tihar', name: 'Tihar', category: 'national' },
+          ],
         },
         meta: {},
       });
     }
 
     if (url.includes('/festivals/on-date/')) {
-      return jsonResponse({ data: [{ id: 'dashain', name: 'Dashain' }], meta: {} });
+      return jsonResponse({ data: [{ id: 'dashain', name: 'Dashain', start_date: '2026-10-20' }], meta: {} });
+    }
+
+    if (url.includes('/personal/context')) {
+      return jsonResponse(buildPersonalContextEnvelope());
+    }
+
+    if (url.includes('/personal/panchanga')) {
+      return jsonResponse({
+        data: {
+          date: '2026-02-15',
+          location: {
+            latitude: 27.7172,
+            longitude: 85.324,
+            timezone: 'Asia/Kathmandu',
+            input_sources: {
+              latitude: 'user_input',
+              longitude: 'user_input',
+              timezone: 'user_input',
+            },
+          },
+          bikram_sambat: { year: 2082, month: 11, day: 3, month_name: 'Falgun' },
+          tithi: { name: 'Chaturdashi', paksha: 'krishna' },
+          nakshatra: { name: 'Shravana', number: 22 },
+          yoga: { name: 'Shubha', number: 9 },
+          vaara: { name_english: 'Sunday' },
+          local_sunrise: {
+            local: '2026-02-15T06:44:00+05:45',
+            utc: '2026-02-15T00:59:00Z',
+            local_time: '06:44 AM',
+          },
+          sunrise: {
+            local: '2026-02-15T06:42:00+05:45',
+            utc: '2026-02-15T00:57:00Z',
+            local_time: '06:42 AM',
+          },
+          quality_band: 'computed',
+        },
+        meta: {},
+      });
     }
 
     if (url.includes('/calendar/panchanga?')) {
@@ -127,122 +395,10 @@ function buildFetchMock() {
       return jsonResponse({ data: { trace: { trace_id: 'tr_routes' } }, meta: {} });
     }
 
-    if (url.includes('/personal/panchanga')) {
+    if (url.includes('/festivals/upcoming?')) {
       return jsonResponse({
         data: {
-          date: '2026-02-12',
-          bikram_sambat: { year: 2082, month: 10, day: 30, month_name: 'Magh' },
-          tithi: { number: 10, name: 'Dashami', paksha: 'shukla' },
-          nakshatra: { number: 4, name: 'Rohini' },
-          yoga: { number: 1, name: 'Siddha' },
-          karana: { number: 1, name: 'Bava' },
-          vaara: { name_english: 'Thursday', name_sanskrit: 'Guruvara' },
-          location: { latitude: 27.7172, longitude: 85.324, timezone: 'Asia/Kathmandu' },
-          local_sunrise: '2026-02-12T06:44:00+05:45',
-          sunrise: '2026-02-12T06:42:00+05:45',
-          method_profile: 'personal_panchanga_v2_udaya',
-          quality_band: 'gold',
-          advisory_scope: 'ritual_planning',
-          calculation_trace_id: 'tr_personal_routes_001',
-        },
-        meta: {},
-      });
-    }
-
-    if (url.includes('/muhurta/heatmap')) {
-      return jsonResponse({
-        data: {
-          blocks: [
-            {
-              index: 6,
-              name: 'Abhijit Muhurta',
-              class: 'auspicious',
-              score: 88,
-              start: '2026-02-15T11:48:00+05:45',
-              end: '2026-02-15T12:36:00+05:45',
-              confidence_score: 0.91,
-              reason_codes: ['hora_supportive', 'tara_good'],
-            },
-            {
-              index: 7,
-              name: 'Labh',
-              class: 'mixed',
-              score: 41,
-              start: '2026-02-15T12:36:00+05:45',
-              end: '2026-02-15T13:24:00+05:45',
-              confidence_score: 0.71,
-              reason_codes: ['tara_good'],
-            },
-          ],
-          best_window: {
-            index: 6,
-            name: 'Abhijit Muhurta',
-            score: 88,
-            start: '2026-02-15T11:48:00+05:45',
-            end: '2026-02-15T12:36:00+05:45',
-            confidence_score: 0.91,
-            reason_codes: ['hora_supportive', 'tara_good'],
-          },
-          rahu_kalam: { segment: 7, start: '2026-02-15T13:36:00+05:45', end: '2026-02-15T15:00:00+05:45' },
-          tara_bala: { quality: 'good', tara: { name: 'Sampat' } },
-          rank_explanation: 'Filtered by hora, chaughadia, and tara bala.',
-          confidence_score: 0.9,
-          calculation_trace_id: 'tr_muhurta_routes',
-        },
-        meta: {},
-      });
-    }
-
-    if (url.includes('/kundali/graph')) {
-      return jsonResponse({
-        data: {
-          layout: {
-            houses: [{ id: 'house_1', label: '1', x: 60, y: 60 }],
-            grahas: [{ id: 'mars', label: 'Mars', x: 140, y: 60, house_id: 'house_1' }],
-            aspects: [{ id: 'asp_1', from: 'mars', to: 'house_1', type: 'trine' }],
-          },
-          insight_blocks: [{ id: 'ins_1', title: 'Mars in House 1', summary: 'Direct initiative signal.' }],
-          calculation_trace_id: 'tr_kundali_graph_routes',
-        },
-        meta: {},
-      });
-    }
-
-    if (url.includes('/kundali') && !url.includes('/kundali/graph') && !url.includes('/kundali/lagna')) {
-      return jsonResponse({
-        data: {
-          lagna: { rashi_english: 'Pisces', rashi_sanskrit: 'Meena', longitude: 12.3 },
-          grahas: {
-            sun: { name_english: 'Sun', rashi_english: 'Aquarius', longitude: 332, dignity: { state: 'neutral' } },
-            moon: { name_english: 'Moon', rashi_english: 'Capricorn', longitude: 288, dignity: { state: 'neutral' } },
-          },
-          houses: Array.from({ length: 12 }).map((_, index) => ({ house_number: index + 1, rashi_english: `House ${index + 1}`, occupants: [] })),
-          aspects: [{ from: 'sun', to: 'moon', aspect_degree: 180, orb: 1, strength: 0.9 }],
-          yogas: [{ id: 'gaja_kesari', description: 'Moon and Jupiter relation' }],
-          doshas: [{ id: 'manglik', description: 'Mars influence marker' }],
-          insight_blocks: [{ id: 'i1', title: 'Lagna context', summary: 'Pisces lagna baseline.' }],
-          dasha: { total_major_periods: 9, timeline: [] },
-          method_profile: 'kundali_v2_aspects_dasha',
-          advisory_scope: 'astrology_assist',
-        },
-        meta: {},
-      });
-    }
-
-    if (url.includes('/glossary?')) {
-      return jsonResponse({
-        data: {
-          content: {
-            title: 'Glossary',
-            intro: 'Test glossary payload.',
-            sections: [
-              {
-                id: 'core',
-                title: 'Core',
-                terms: [{ name: 'Tithi', meaning: 'Lunar day', why_it_matters: 'Determines observance timing.' }],
-              },
-            ],
-          },
+          festivals: [{ id: 'dashain', name: 'Dashain', category: 'national', start_date: '2026-10-20' }],
         },
         meta: {},
       });
@@ -252,8 +408,38 @@ function buildFetchMock() {
       return jsonResponse({ data: { events: [] }, meta: {} });
     }
 
-    if (url.includes('/festivals?')) {
-      return jsonResponse({ data: { festivals: [], total: 0 }, meta: {} });
+    if (url.includes('/glossary?')) {
+      return jsonResponse({ data: { content: { title: 'Glossary', intro: 'Glossary intro', sections: [] } }, meta: {} });
+    }
+
+    if (url.includes('/kundali/graph')) {
+      return jsonResponse(buildKundaliGraphEnvelope());
+    }
+
+    if (url.includes('/kundali') && !url.includes('/kundali/lagna')) {
+      return jsonResponse({
+        data: {
+          lagna: { rashi_english: 'Pisces', rashi_sanskrit: 'Meena', longitude: 12.2 },
+          grahas: {
+            mars: { name_english: 'Mars', name_sanskrit: 'Mangala', rashi_english: 'Cancer', longitude: 102.4, is_retrograde: false, dignity: { state: 'neutral', strength: 'moderate' } },
+            sun: { name_english: 'Sun', name_sanskrit: 'Surya', rashi_english: 'Aquarius', longitude: 332.1, is_retrograde: false, dignity: { state: 'neutral', strength: 'moderate' } },
+            moon: { name_english: 'Moon', name_sanskrit: 'Chandra', rashi_english: 'Capricorn', longitude: 289.3, is_retrograde: false, dignity: { state: 'neutral', strength: 'moderate' } },
+          },
+          houses: Array.from({ length: 12 }).map((_, index) => ({ house_number: index + 1, rashi_english: `House ${index + 1}`, occupants: [] })),
+          aspects: [{ from: 'mars', to: 'venus', aspect_degree: 120, orb: 0.8, strength: 0.92 }],
+          yogas: [{ id: 'gaja_kesari', description: 'Moon and Jupiter in kendra relation.' }],
+          doshas: [{ id: 'manglik', description: 'Mars influence in sensitive houses.' }],
+          consistency_checks: [{ id: 'graha_count', status: 'pass', message: 'All 9 grahas present.' }],
+          dasha: { total_major_periods: 9, timeline: [{ lord: 'Jupiter', duration_years: 16, antar_dasha: [] }] },
+          insight_blocks: [{ id: 'i1', title: 'Lagna baseline', summary: 'Pisces lagna reflects the reference profile.' }],
+          method_profile: 'kundali_v2_aspects_dasha',
+          quality_band: 'validated',
+          advisory_scope: 'astrology_assist',
+          confidence: 'computed',
+          calculation_trace_id: 'tr_kundali_visual',
+        },
+        meta: {},
+      });
     }
 
     return jsonResponse({ data: {}, meta: {} });
@@ -262,79 +448,150 @@ function buildFetchMock() {
 
 describe('App routing', () => {
   beforeEach(() => {
+    const storage = createMemoryStorage();
+    vi.stubGlobal('localStorage', storage);
+    Object.defineProperty(window, 'localStorage', {
+      configurable: true,
+      value: storage,
+    });
     vi.stubGlobal('fetch', buildFetchMock());
+    vi.stubGlobal('open', vi.fn());
   });
 
   afterEach(() => {
     vi.unstubAllGlobals();
   });
 
-  it('loads the landing page by default and navigates to today, festivals, and legacy panchanga', async () => {
-    const firstRender = render(
+  it('renders the editorial consumer home inside the unified shell', async () => {
+    setViewportWidth(1024);
+    render(
       <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /A calm guide to Nepal's sacred time/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Daily Glimpse/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Upcoming Festivals/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Embrace the Divine Rhythm/i })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /For developers/i })).toHaveAttribute('href', '/developers/index.html');
-    expect(screen.queryByRole('link', { name: /Institutions/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /^Source$/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /Advanced settings/i })).not.toBeInTheDocument();
+  }, 30000);
+
+  it('keeps the same consumer shell on desktop routes', async () => {
+    setViewportWidth(1440);
+    render(
+      <MemoryRouter initialEntries={['/today']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /The rest of today in one compact pass/i }, routeLoadOptions)).toBeInTheDocument();
 
     const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
-    expect(within(primaryNav).queryByRole('link', { name: /Developers/i })).not.toBeInTheDocument();
-    expect(within(primaryNav).queryByRole('link', { name: /Institutions/i })).not.toBeInTheDocument();
-    expect(within(primaryNav).queryByRole('link', { name: /About/i })).not.toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^Today$/i })).toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^My Place$/i })).toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^Festivals$/i })).toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^Best Time$/i })).toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^Birth Reading$/i })).toBeInTheDocument();
 
-    await userEvent.click(within(primaryNav).getByRole('link', { name: /^Today$/i }));
-    expect(await screen.findByRole('heading', { name: /What today means in/i }, routeLoadOptions)).toBeInTheDocument();
+    await userEvent.click(within(primaryNav).getByRole('link', { name: /^Best Time$/i }));
+    expect(await screen.findByRole('heading', { name: /Muhurta Explorer/i }, routeLoadOptions)).toBeInTheDocument();
+  }, 30000);
 
-    await userEvent.click(within(screen.getByRole('navigation', { name: /Primary/i })).getByRole('link', { name: /^Festivals$/i }));
-    expect(await screen.findByRole('heading', { name: /Browse the wider calendar/i }, routeLoadOptions)).toBeInTheDocument();
+  it('keeps festivals and my-place inside the same product shell', async () => {
+    setViewportWidth(1440);
+    const festivalsRender = render(
+      <MemoryRouter initialEntries={['/festivals']}>
+        <App />
+      </MemoryRouter>,
+    );
 
-    firstRender.unmount();
+    expect(await screen.findByRole('heading', { name: /Seasonal observance ribbon/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /National/i })).toBeInTheDocument();
+    festivalsRender.unmount();
 
     render(
+      <MemoryRouter initialEntries={['/my-place']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /Adjust the place only when the answer needs to change/i }, routeLoadOptions)).toBeInTheDocument();
+    expect((await screen.findAllByText(/Morning Calm/i, {}, routeLoadOptions)).length).toBeGreaterThan(0);
+  }, 30000);
+
+  it('keeps the same shell on mobile widths and exposes the bottom navigation', async () => {
+    setViewportWidth(390);
+    render(
+      <MemoryRouter initialEntries={['/today']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /The rest of today in one compact pass/i }, routeLoadOptions)).toBeInTheDocument();
+    const bottomNav = document.querySelector('.app-shell__bottom-nav');
+    expect(bottomNav).not.toBeNull();
+    expect(within(bottomNav).getByText(/^Today$/i)).toBeInTheDocument();
+    expect(within(bottomNav).getByText(/^My Place$/i)).toBeInTheDocument();
+    expect(within(bottomNav).getByText(/^Festivals$/i)).toBeInTheDocument();
+    expect(within(bottomNav).getByText(/^Best Time$/i)).toBeInTheDocument();
+    expect(within(bottomNav).getByText(/^Birth Reading$/i)).toBeInTheDocument();
+  }, 30000);
+
+  it('closes the mobile dialog navigation on Escape', async () => {
+    setViewportWidth(390);
+    render(
+      <MemoryRouter initialEntries={['/today']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /The rest of today in one compact pass/i }, routeLoadOptions)).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: /^Menu$/i }));
+    expect(screen.getByRole('dialog', { name: /Mobile menu/i })).toBeInTheDocument();
+
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog', { name: /Mobile menu/i })).not.toBeInTheDocument();
+    });
+  }, 30000);
+
+  it('applies the selected UI language to document lang', async () => {
+    setViewportWidth(390);
+    window.localStorage.setItem('parva.temporal_context.v2', JSON.stringify({ language: 'ne' }));
+
+    render(
+      <MemoryRouter initialEntries={['/today']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(document.documentElement.lang).toBe('ne');
+    });
+  }, 30000);
+
+  it('preserves secondary routes and legacy redirects under the consumer shell', async () => {
+    setViewportWidth(390);
+    const firstRender = render(
       <MemoryRouter initialEntries={['/panchanga']}>
         <App />
       </MemoryRouter>,
     );
 
     expect(await screen.findByRole('button', { name: /How this was calculated/i }, routeLoadOptions)).toBeInTheDocument();
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/calendar/panchanga?date='),
-        expect.any(Object),
-      );
-    });
-  }, 30000);
-
-  it('navigates through legacy redirects and the renamed best-time and birth-reading views', async () => {
-    const firstRender = render(
-      <MemoryRouter initialEntries={['/today']}>
-        <App />
-      </MemoryRouter>,
-    );
-
-    expect(await screen.findByRole('heading', { name: /What today means in/i }, routeLoadOptions)).toBeInTheDocument();
-    const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
-
-    await userEvent.click(within(primaryNav).getByRole('link', { name: /Best Time/i }));
-    expect(await screen.findByRole('heading', { name: /Find the day's clearest opening/i }, routeLoadOptions)).toBeInTheDocument();
-
-    await userEvent.click(within(screen.getByRole('navigation', { name: /Primary/i })).getByRole('link', { name: /Birth Reading/i }));
-    expect(await screen.findByRole('tab', { name: /Summary/i }, routeLoadOptions)).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByText(/Chart thesis/i)).toBeInTheDocument();
-
+    expect(screen.getByText(/Secondary surface/i)).toBeInTheDocument();
     firstRender.unmount();
 
     render(
-      <MemoryRouter initialEntries={['/personal']}>
+      <MemoryRouter initialEntries={['/muhurta']}>
         <App />
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /See how the day shifts for your place/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Muhurta Explorer/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
   }, 30000);
 });

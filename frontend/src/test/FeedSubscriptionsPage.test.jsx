@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { FeedSubscriptionsPage } from '../pages/FeedSubscriptionsPage';
 import { MemberProvider } from '../context/MemberContext';
 
@@ -48,9 +49,11 @@ describe('FeedSubscriptionsPage', () => {
 
   it('keeps raw feed urls hidden until the user opens advanced link details', async () => {
     render(
-      <MemberProvider>
-        <FeedSubscriptionsPage />
-      </MemberProvider>,
+      <MemoryRouter>
+        <MemberProvider>
+          <FeedSubscriptionsPage />
+        </MemberProvider>
+      </MemoryRouter>,
     );
 
     expect(await screen.findByRole('heading', { name: /Connect Parva without dealing with raw calendar plumbing first/i })).toBeInTheDocument();

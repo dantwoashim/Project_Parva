@@ -1,19 +1,23 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDialogA11y } from '../../hooks/useDialogA11y';
 import { festivalAPI } from '../../services/api';
 import './ExplainPanel.css';
 
 export function ExplainPanel({ data, loading, error, onClose }) {
     const [trace, setTrace] = useState(null);
     const [traceError, setTraceError] = useState(null);
+    const { dialogRef } = useDialogA11y(true, onClose);
 
     useEffect(() => {
         let active = true;
+
         async function loadTrace() {
             if (!data?.calculation_trace_id) {
                 setTrace(null);
                 return;
             }
+
             try {
                 const payload = await festivalAPI.getTrace(data.calculation_trace_id);
                 if (active) {
@@ -27,6 +31,7 @@ export function ExplainPanel({ data, loading, error, onClose }) {
                 }
             }
         }
+
         loadTrace();
         return () => {
             active = false;
@@ -34,12 +39,24 @@ export function ExplainPanel({ data, loading, error, onClose }) {
     }, [data?.calculation_trace_id]);
 
     return (
-        <div className="explain-panel-overlay" role="dialog" aria-modal="true">
-            <div className="explain-panel glass-card">
+        <div className="explain-panel-overlay" role="presentation" onClick={onClose}>
+            <div
+                ref={dialogRef}
+                className="explain-panel glass-card"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="explain-panel-title"
+                onClick={(event) => event.stopPropagation()}
+            >
                 <header className="explain-panel__header">
-                    <h3>Why This Date?</h3>
-                    <button className="btn btn-secondary" onClick={onClose} aria-label="Close explain panel">
-                        ✕
+                    <h3 id="explain-panel-title">Why This Date?</h3>
+                    <button
+                        className="btn btn-secondary"
+                        onClick={onClose}
+                        aria-label="Close explain panel"
+                        data-dialog-initial-focus="true"
+                    >
+                        x
                     </button>
                 </header>
 
@@ -80,8 +97,8 @@ export function ExplainPanel({ data, loading, error, onClose }) {
                                     {(trace.steps || []).map((step, idx) => (
                                         <li key={`${step.step_type || 'step'}-${idx}`}>
                                             <strong>{step.step_type || 'step'}</strong>
-                                            {step.rule_id ? ` • rule: ${step.rule_id}` : ''}
-                                            {step.math_expression ? ` • ${step.math_expression}` : ''}
+                                            {step.rule_id ? ` - rule: ${step.rule_id}` : ''}
+                                            {step.math_expression ? ` - ${step.math_expression}` : ''}
                                         </li>
                                     ))}
                                 </ul>

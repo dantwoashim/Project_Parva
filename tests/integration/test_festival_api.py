@@ -73,6 +73,12 @@ class TestFestivalDetailEndpoint:
         assert "dates" in data
         assert data["dates"]["start_date"] == "2026-10-10"
         assert data["dates"]["end_date"] == "2026-10-24"
+        assert data["completeness"]["overall"] in {"complete", "partial", "minimal"}
+        assert data["completeness"]["ritual_sequence"]["status"] in {
+            "available",
+            "partial",
+            "missing",
+        }
 
     def test_get_nonexistent_festival(self):
         """Nonexistent festival returns 404."""

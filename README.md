@@ -4,6 +4,8 @@ Project Parva is an ephemeris-backed Nepali temporal engine and festival
 platform. The launch-safe public contract is the stable `v3` read-only
 profile under `/v3/api/*`, with `/api/*` kept as a compatibility alias.
 The supported runtime target for this build is Python 3.11.
+The supported frontend runtime target is Node 20.
+If your global `node` is newer, `scripts/verify_environment.py` and the release-candidate gate runner can fall back to a managed `node@20` runtime resolved through `npx`.
 
 ## Launch profile
 
@@ -30,6 +32,7 @@ current shipped contract.
 ### Backend
 
 ```bash
+py -3.11 scripts/verify_environment.py
 py -3.11 -m pip install -e .[test,dev]
 uvicorn app.main:app --app-dir backend --reload --port 8000
 ```
@@ -43,6 +46,7 @@ py -3.11 --version
 ### Frontend
 
 ```bash
+npm --version
 npm --prefix frontend install
 npm --prefix frontend run dev
 ```
@@ -99,6 +103,7 @@ py -3.11 scripts/release/package_source_archive.py
 ## Validation
 
 ```bash
+py -3.11 scripts/verify_environment.py
 py -3.11 -m pip install -e .[test,dev]
 py -3.11 -m pip install -e sdk/python
 py -3.11 scripts/release/check_repo_hygiene.py
@@ -122,6 +127,13 @@ py -3.11 scripts/run_browser_smoke.py
 
 Files under `reports/` are generated artifacts, not required committed files.
 The policy is documented in `docs/GENERATED_ARTIFACTS.md`.
+
+## Supported runtime matrix
+
+- Python `3.11.x`
+- Node `20.x`
+- Release archives must be produced from a clean checkout via
+  `py -3.11 scripts/release/package_source_archive.py`
 
 ## Open-source commercial use
 

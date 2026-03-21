@@ -20,13 +20,28 @@ function normalizeConfidence(confidence) {
   return { level: 'unknown', score: null };
 }
 
+function formatAttestation(attestation, legacySignature) {
+  if (attestation && typeof attestation === 'object') {
+    const mode = attestation.mode || 'unsigned';
+    const value = typeof attestation.value === 'string' ? attestation.value : null;
+    return value ? `${mode}:${value}` : mode;
+  }
+  if (legacySignature && typeof legacySignature === 'string') {
+    return `legacy:${legacySignature}`;
+  }
+  return null;
+}
+
 function buildTechnicalRows(provenance, traceId) {
   return [
     { label: 'Trace ID', value: traceId },
     { label: 'Snapshot', value: provenance.snapshot_id },
     { label: 'Dataset hash', value: provenance.dataset_hash },
     { label: 'Rules hash', value: provenance.rules_hash },
-    { label: 'Signature', value: provenance.signature },
+    {
+      label: 'Attestation',
+      value: formatAttestation(provenance.attestation, provenance.signature),
+    },
   ].filter((item) => Boolean(item.value));
 }
 
@@ -113,6 +128,12 @@ AuthorityInspector.propTypes = {
       dataset_hash: PropTypes.string,
       rules_hash: PropTypes.string,
       verify_url: PropTypes.string,
+      attestation: PropTypes.shape({
+        mode: PropTypes.string,
+        algorithm: PropTypes.string,
+        key_id: PropTypes.string,
+        value: PropTypes.string,
+      }),
       signature: PropTypes.string,
     }),
     uncertainty: PropTypes.shape({

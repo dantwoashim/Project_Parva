@@ -6,61 +6,24 @@ import json
 import logging
 import time
 import uuid
-from collections import defaultdict, deque
 from collections.abc import Callable
-from dataclasses import dataclass
-from threading import Lock
 from typing import Any
 
 from fastapi import Request
 from fastapi.responses import JSONResponse, Response
+from starlette.datastructures import Headers, QueryParams
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.bootstrap.access_control import WEBHOOK_PREFIXES, authenticate_request, classify_request
+from app.bootstrap.rate_limit import RateLimiterBackend, RatePolicy
 from app.bootstrap.settings import AppSettings
 from app.core.meta_envelope import extract_meta, merge_meta_defaults
 from app.reliability.metrics import get_metrics_registry
 
 logger = logging.getLogger("parva.request")
+security_logger = logging.getLogger("parva.security")
 if not logger.handlers:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-
-
-@dataclass(frozen=True)
-class RatePolicy:
-    limit: int
-    window_seconds: int
-
-
-class InMemoryRateLimiter:
-    def __init__(self) -> None:
-        self._lock = Lock()
-        self._buckets: dict[tuple[str, str], deque[float]] = defaultdict(deque)
-
-    def check(
-        self,
-        *,
-        identifier: str,
-        bucket: str,
-        policy: RatePolicy,
-        now: float,
-    ) -> tuple[bool, int, int | None]:
-        bucket_key = (bucket, identifier)
-        with self._lock:
-            entries = self._buckets[bucket_key]
-            cutoff = now - policy.window_seconds
-            while entries and entries[0] <= cutoff:
-                entries.popleft()
-
-            if len(entries) >= policy.limit:
-                retry_after = max(1, int(policy.window_seconds - (now - entries[0])))
-                return False, 0, retry_after
-
-            entries.append(now)
-            remaining = max(policy.limit - len(entries), 0)
-            return True, remaining, None
-
-
-_rate_limiter = InMemoryRateLimiter()
 _PRIVATE_RESPONSE_PREFIXES = (
     "/api/personal",
     "/v3/api/personal",
@@ -78,11 +41,36 @@ _RATE_LIMITED_PREFIXES = (
     "/v4/api",
     "/v5/api",
 )
+_ENVELOPE_PREFERENCE_HEADER = "X-Parva-Envelope"
+_ENVELOPE_PREFERENCE_VALUE = "data-meta"
+_ENVELOPE_PREFERENCE_ALIASES = {
+    "1",
+    "true",
+    "yes",
+    "on",
+    "data-meta",
+    "envelope",
+    "full",
+    "v1",
+}
 
 
 def _append_link_header(response: Response, value: str) -> None:
     existing = response.headers.get("Link")
     response.headers["Link"] = f"{existing}, {value}" if existing else value
+
+
+def _append_vary_header(headers: dict[str, str], value: str) -> None:
+    vary_key = next((key for key in headers if key.lower() == "vary"), "Vary")
+    existing = headers.get(vary_key)
+    if not existing:
+        headers[vary_key] = value
+        return
+
+    entries = [item.strip() for item in existing.split(",") if item.strip()]
+    if value.lower() not in {item.lower() for item in entries}:
+        entries.append(value)
+    headers[vary_key] = ", ".join(entries)
 
 
 def parse_bool(value: str | None, *, default: bool = False) -> bool:
@@ -91,48 +79,100 @@ def parse_bool(value: str | None, *, default: bool = False) -> bool:
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
-def build_request_size_guard(*, max_query_length: int, max_request_bytes: int):
-    async def request_size_guard(request: Request, call_next):
-        if len(request.url.query) > max_query_length:
-            return JSONResponse(status_code=414, content={"detail": "Query string too long"})
+def _wants_data_meta_envelope(scope: Scope) -> bool:
+    headers = Headers(raw=scope.get("headers", []))
+    header_value = headers.get(_ENVELOPE_PREFERENCE_HEADER)
+    query_params = QueryParams(scope.get("query_string", b"").decode("latin-1"))
+    query_value = query_params.get("envelope")
+    preference = header_value or query_value
+    if preference is None:
+        return False
+    return preference.strip().lower() in _ENVELOPE_PREFERENCE_ALIASES
 
-        cl = request.headers.get("content-length")
-        if cl:
+
+class RequestTooLargeError(Exception):
+    """Internal signal to abort oversized streamed requests."""
+
+
+def _headers_without_content_length(raw_headers: list[tuple[bytes, bytes]]) -> dict[str, str]:
+    filtered: dict[str, str] = {}
+    for key, value in raw_headers:
+        decoded_key = key.decode("latin-1")
+        if decoded_key.lower() == "content-length":
+            continue
+        filtered[decoded_key] = value.decode("latin-1")
+    return filtered
+
+
+class RequestSizeGuardMiddleware:
+    def __init__(self, app: ASGIApp, *, max_query_length: int, max_request_bytes: int) -> None:
+        self.app = app
+        self.max_query_length = max_query_length
+        self.max_request_bytes = max_request_bytes
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+
+        if len(scope.get("query_string", b"")) > self.max_query_length:
+            await JSONResponse(
+                status_code=414, content={"detail": "Query string too long"}
+            )(scope, receive, send)
+            return
+
+        headers = Headers(raw=scope.get("headers", []))
+        content_length = headers.get("content-length")
+        if content_length:
             try:
-                if int(cl) > max_request_bytes:
-                    return JSONResponse(
-                        status_code=413, content={"detail": "Request payload too large"}
-                    )
+                declared_length = int(content_length)
             except ValueError:
-                return JSONResponse(
+                await JSONResponse(
                     status_code=400, content={"detail": "Invalid content-length header"}
-                )
+                )(scope, receive, send)
+                return
 
-        if request.method.upper() in {"POST", "PUT", "PATCH"}:
-            body = b""
-            async for chunk in request.stream():
-                if chunk:
-                    body += chunk
-                    if len(body) > max_request_bytes:
-                        return JSONResponse(
-                            status_code=413, content={"detail": "Request payload too large"}
-                        )
+            if declared_length < 0:
+                await JSONResponse(
+                    status_code=400, content={"detail": "Invalid content-length header"}
+                )(scope, receive, send)
+                return
 
-            body_sent = False
+            if declared_length > self.max_request_bytes:
+                await JSONResponse(
+                    status_code=413, content={"detail": "Request payload too large"}
+                )(scope, receive, send)
+                return
 
-            async def receive():
-                nonlocal body_sent
-                if body_sent:
-                    return {"type": "http.request", "body": b"", "more_body": False}
-                body_sent = True
-                return {"type": "http.request", "body": body, "more_body": False}
+        streamed_bytes = 0
+        response_started = False
 
-            request._receive = receive
-            request._body = body
+        async def guarded_send(message: Message) -> None:
+            nonlocal response_started
+            if message["type"] == "http.response.start":
+                response_started = True
+            await send(message)
 
-        return await call_next(request)
+        async def guarded_receive() -> Message:
+            nonlocal streamed_bytes
+            message = await receive()
+            if message["type"] != "http.request":
+                return message
 
-    return request_size_guard
+            body = message.get("body", b"")
+            streamed_bytes += len(body)
+            if streamed_bytes > self.max_request_bytes:
+                raise RequestTooLargeError
+            return message
+
+        try:
+            await self.app(scope, guarded_receive, guarded_send)
+        except RequestTooLargeError:
+            if response_started:
+                raise
+            await JSONResponse(
+                status_code=413, content={"detail": "Request payload too large"}
+            )(scope, receive, send)
 
 
 def _client_ip(request: Request, settings: AppSettings) -> str:
@@ -200,9 +240,39 @@ def build_request_context(*, product_version: str, settings: AppSettings):
     return request_context
 
 
+def _log_security_event(
+    *,
+    event: str,
+    request: Request,
+    requirement_name: str,
+    principal_id: str | None = None,
+    reason: str | None = None,
+) -> None:
+    security_logger.info(
+        json.dumps(
+            {
+                "event": event,
+                "path": request.url.path,
+                "method": request.method,
+                "request_id": getattr(request.state, "request_id", None),
+                "policy": requirement_name,
+                "principal": principal_id,
+                "reason": reason,
+                "client_ip": getattr(request.state, "client_ip", None),
+            }
+        )
+    )
+
+
 def build_access_control_guard(*, settings: AppSettings):
     async def access_control(request: Request, call_next):
         if request.url.path.startswith(WEBHOOK_PREFIXES) and not settings.enable_webhooks:
+            _log_security_event(
+                event="auth.blocked",
+                request=request,
+                requirement_name="webhook_launch_gate",
+                reason="webhooks_disabled",
+            )
             return JSONResponse(
                 status_code=404,
                 content={
@@ -214,10 +284,24 @@ def build_access_control_guard(*, settings: AppSettings):
         requirement = classify_request(request.url.path, request.method)
         if not requirement.required:
             request.state.principal = None
+            _log_security_event(
+                event="auth.skipped",
+                request=request,
+                requirement_name=requirement.policy_name,
+            )
             return await call_next(request)
 
         principal = authenticate_request(request, settings)
         if principal is None:
+            reason = "credentials_missing"
+            if request.headers.get("authorization") or request.headers.get("x-api-key"):
+                reason = "credentials_invalid"
+            _log_security_event(
+                event="auth.denied",
+                request=request,
+                requirement_name=requirement.policy_name,
+                reason=reason,
+            )
             return JSONResponse(
                 status_code=401,
                 content={
@@ -227,6 +311,13 @@ def build_access_control_guard(*, settings: AppSettings):
             )
 
         if requirement.admin_only and principal.principal_type != "admin":
+            _log_security_event(
+                event="auth.denied",
+                request=request,
+                requirement_name=requirement.policy_name,
+                principal_id=principal.principal_id,
+                reason="admin_required",
+            )
             return JSONResponse(
                 status_code=403,
                 content={
@@ -240,6 +331,13 @@ def build_access_control_guard(*, settings: AppSettings):
             and principal.principal_type != "admin"
             and not principal.has_scope(requirement.scope)
         ):
+            _log_security_event(
+                event="auth.denied",
+                request=request,
+                requirement_name=requirement.policy_name,
+                principal_id=principal.principal_id,
+                reason=f"missing_scope:{requirement.scope}",
+            )
             return JSONResponse(
                 status_code=403,
                 content={
@@ -249,6 +347,12 @@ def build_access_control_guard(*, settings: AppSettings):
             )
 
         request.state.principal = principal
+        _log_security_event(
+            event="auth.allowed",
+            request=request,
+            requirement_name=requirement.policy_name,
+            principal_id=principal.principal_id,
+        )
         return await call_next(request)
 
     return access_control
@@ -297,7 +401,7 @@ def _should_rate_limit(path: str) -> bool:
     return path.startswith(_RATE_LIMITED_PREFIXES)
 
 
-def build_rate_limit_guard(*, settings: AppSettings):
+def build_rate_limit_guard(*, settings: AppSettings, backend: RateLimiterBackend):
     metrics = get_metrics_registry()
 
     async def rate_limit_guard(request: Request, call_next):
@@ -310,14 +414,14 @@ def build_rate_limit_guard(*, settings: AppSettings):
             getattr(principal, "principal_id", "") or getattr(request.state, "client_ip", "unknown")
         )
         bucket, policy = _rate_policy_for_request(request.url.path, principal_type)
-        allowed, remaining, retry_after = _rate_limiter.check(
+        decision = backend.check(
             identifier=principal_id,
             bucket=bucket,
             policy=policy,
             now=time.time(),
         )
 
-        if not allowed:
+        if not decision.allowed:
             metrics.record_throttle(request.url.path)
             logger.warning(
                 json.dumps(
@@ -327,7 +431,7 @@ def build_rate_limit_guard(*, settings: AppSettings):
                         "path": request.url.path,
                         "principal": principal_id,
                         "bucket": bucket,
-                        "retry_after": retry_after,
+                        "retry_after": decision.retry_after,
                     }
                 )
             )
@@ -338,7 +442,7 @@ def build_rate_limit_guard(*, settings: AppSettings):
                     "request_id": getattr(request.state, "request_id", None),
                 },
                 headers={
-                    "Retry-After": str(retry_after or policy.window_seconds),
+                    "Retry-After": str(decision.retry_after or policy.window_seconds),
                     "X-RateLimit-Limit": str(policy.limit),
                     "X-RateLimit-Remaining": "0",
                 },
@@ -346,7 +450,7 @@ def build_rate_limit_guard(*, settings: AppSettings):
 
         response = await call_next(request)
         response.headers["X-RateLimit-Limit"] = str(policy.limit)
-        response.headers["X-RateLimit-Remaining"] = str(remaining)
+        response.headers["X-RateLimit-Remaining"] = str(decision.remaining)
         return response
 
     return rate_limit_guard
@@ -369,60 +473,98 @@ def build_experimental_version_gate(*, enable_experimental_api: bool):
     return version_gate
 
 
-def build_envelope_adapter(*, enable_experimental_api: bool):
-    async def envelope_adapter(request: Request, call_next):
-        response = await call_next(request)
+class ExperimentalEnvelopeMiddleware:
+    def __init__(self, app: ASGIApp, *, enable_experimental_api: bool) -> None:
+        self.app = app
+        self.enable_experimental_api = enable_experimental_api
 
-        if not enable_experimental_api:
-            return response
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
 
-        is_v4 = request.url.path.startswith("/v4/api/")
-        is_v5 = request.url.path.startswith("/v5/api/")
-        if not (is_v4 or is_v5):
-            return response
-        if response.status_code >= 400:
-            return response
-
-        content_type = response.headers.get("content-type", "").lower()
-        if "application/json" not in content_type:
-            return response
-
-        body = b""
-        async for chunk in response.body_iterator:
-            body += chunk
-
-        if not body:
-            return response
-
-        try:
-            payload: Any = json.loads(body)
-        except Exception:
-            headers = dict(response.headers)
-            headers.pop("content-length", None)
-            return Response(
-                content=body,
-                status_code=response.status_code,
-                media_type=response.media_type,
-                headers=headers,
-            )
-
-        track = "v5" if is_v5 else "v4"
-
-        if isinstance(payload, dict) and "data" in payload and "meta" in payload:
-            existing_meta = payload.get("meta")
-            if not isinstance(existing_meta, dict):
-                existing_meta = {}
-            default_meta = extract_meta(payload.get("data"), track=track)
-            merged_meta = merge_meta_defaults(default_meta, existing_meta)
-            envelope = {"data": payload.get("data"), "meta": merged_meta}
+        path = scope.get("path", "")
+        wants_v3_envelope = _wants_data_meta_envelope(scope)
+        is_v3 = path.startswith("/v3/api/") or path.startswith("/api/")
+        is_v4 = path.startswith("/v4/api/")
+        is_v5 = path.startswith("/v5/api/")
+        if wants_v3_envelope and is_v3:
+            track = "v3"
+        elif self.enable_experimental_api and (is_v4 or is_v5):
+            track = "v5" if is_v5 else "v4"
         else:
-            envelope = {"data": payload, "meta": extract_meta(payload, track=track)}
+            await self.app(scope, receive, send)
+            return
 
-        headers = dict(response.headers)
-        headers.pop("content-length", None)
-        return JSONResponse(status_code=response.status_code, content=envelope, headers=headers)
+        response_start: Message | None = None
+        body_buffer = bytearray()
+        should_wrap = False
 
-    return envelope_adapter
+        async def send_wrapper(message: Message) -> None:
+            nonlocal response_start, should_wrap
+            if message["type"] == "http.response.start":
+                headers = Headers(raw=message.get("headers", []))
+                content_type = headers.get("content-type", "").lower()
+                should_wrap = message["status"] < 400 and "application/json" in content_type
+                if should_wrap:
+                    response_start = message
+                    return
+                await send(message)
+                return
+
+            if message["type"] == "http.response.body" and should_wrap and response_start is not None:
+                body_buffer.extend(message.get("body", b""))
+                if message.get("more_body", False):
+                    return
+
+                raw_headers = response_start.get("headers", [])
+                headers = _headers_without_content_length(list(raw_headers))
+                if track == "v3":
+                    _append_vary_header(headers, _ENVELOPE_PREFERENCE_HEADER)
+                    headers[_ENVELOPE_PREFERENCE_HEADER] = _ENVELOPE_PREFERENCE_VALUE
+                body = bytes(body_buffer)
+                media_type = Headers(raw=raw_headers).get("content-type")
+
+                if not body:
+                    await Response(
+                        content=body,
+                        status_code=response_start["status"],
+                        media_type=media_type,
+                        headers=headers,
+                    )(scope, receive, send)
+                    return
+
+                try:
+                    payload: Any = json.loads(body)
+                except Exception:
+                    await Response(
+                        content=body,
+                        status_code=response_start["status"],
+                        media_type=media_type,
+                        headers=headers,
+                    )(scope, receive, send)
+                    return
+
+                if isinstance(payload, dict) and "data" in payload and "meta" in payload:
+                    existing_meta = payload.get("meta")
+                    if not isinstance(existing_meta, dict):
+                        existing_meta = {}
+                    default_meta = extract_meta(payload.get("data"), track=track)
+                    merged_meta = merge_meta_defaults(default_meta, existing_meta)
+                    envelope = {"data": payload.get("data"), "meta": merged_meta}
+                else:
+                    envelope = {"data": payload, "meta": extract_meta(payload, track=track)}
+
+                await JSONResponse(
+                    status_code=response_start["status"],
+                    content=envelope,
+                    headers=headers,
+                )(scope, receive, send)
+                return
+
+            await send(message)
+
+        await self.app(scope, receive, send_wrapper)
 
 
 def build_engine_headers(

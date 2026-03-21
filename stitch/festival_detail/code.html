@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "tertiary": "#735c00",
+                "background": "#fff8f3",
+                "on-tertiary-fixed-variant": "#574500",
+                "surface-container-highest": "#efe0cd",
+                "surface-container-high": "#f5e6d3",
+                "on-secondary-container": "#5f656c",
+                "tertiary-fixed": "#ffe088",
+                "on-primary": "#ffffff",
+                "on-primary-fixed-variant": "#7a3000",
+                "surface-bright": "#fff8f3",
+                "inverse-surface": "#372f22",
+                "on-tertiary-container": "#4f3e00",
+                "surface-container": "#fbecd9",
+                "secondary": "#595f66",
+                "on-surface-variant": "#584238",
+                "primary-fixed": "#ffdbcc",
+                "primary": "#9c3f00",
+                "tertiary-fixed-dim": "#e9c349",
+                "on-primary-fixed": "#351000",
+                "outline": "#8c7166",
+                "on-error-container": "#93000a",
+                "surface": "#fff8f3",
+                "secondary-fixed-dim": "#c1c7cf",
+                "surface-tint": "#a04100",
+                "surface-container-lowest": "#ffffff",
+                "error": "#ba1a1a",
+                "outline-variant": "#e0c0b2",
+                "on-secondary-fixed-variant": "#41474e",
+                "secondary-container": "#dde3eb",
+                "on-tertiary-fixed": "#241a00",
+                "on-surface": "#221a0f",
+                "on-background": "#221a0f",
+                "inverse-primary": "#ffb693",
+                "surface-container-low": "#fff2e2",
+                "on-secondary-fixed": "#161c22",
+                "on-secondary": "#ffffff",
+                "surface-dim": "#e6d8c5",
+                "surface-variant": "#efe0cd",
+                "error-container": "#ffdad6",
+                "secondary-fixed": "#dde3eb",
+                "primary-container": "#c45100",
+                "on-tertiary": "#ffffff",
+                "primary-fixed-dim": "#ffb693",
+                "on-primary-container": "#fffbff",
+                "inverse-on-surface": "#feefdb",
+                "tertiary-container": "#cca830",
+                "on-error": "#ffffff"
+              },
+              fontFamily: {
+                "headline": ["Noto Serif"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-nav {
+            background: rgba(255, 248, 243, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        .editorial-shadow {
+            box-shadow: 0 20px 50px rgba(88, 66, 56, 0.08);
+        }
+        .leaf-radius {
+            border-top-left-radius: 0.25rem;
+            border-bottom-right-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 left-0 w-full flex justify-between items-center px-12 py-6 bg-orange-50/60 dark:bg-stone-900/60 backdrop-blur-md border-b border-orange-200/20 dark:border-stone-700/30 z-50">
+<div class="text-3xl font-serif italic text-orange-900 dark:text-orange-500">Parva</div>
+<div class="hidden md:flex gap-10 items-center">
+<a class="text-stone-600 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-300 transition-colors font-serif text-lg tracking-tight" href="#">Home</a>
+<a class="text-orange-800 dark:text-orange-400 font-semibold border-b-2 border-orange-800 dark:border-orange-400 pb-1 font-serif text-lg tracking-tight" href="#">Festivals</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-300 transition-colors font-serif text-lg tracking-tight" href="#">Muhurta</a>
+<a class="text-stone-600 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-300 transition-colors font-serif text-lg tracking-tight" href="#">Kundali</a>
+</div>
+<div class="flex gap-6 items-center">
+<span class="material-symbols-outlined text-orange-900 cursor-pointer p-2 hover:bg-orange-100/30 rounded-sm">location_on</span>
+<span class="material-symbols-outlined text-orange-900 cursor-pointer p-2 hover:bg-orange-100/30 rounded-sm">account_circle</span>
+</div>
+</nav>
+<main class="pt-24 min-h-screen">
+<!-- Hero Section -->
+<section class="relative w-full h-[870px] overflow-hidden">
+<div class="absolute inset-0 bg-secondary-container/40 z-10"></div>
+<img class="w-full h-full object-cover" data-alt="Ancient stone Shiva temple with evening lamps and incense smoke" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiJUfG5drpfZdlErQi3QqQOgi1K0vJ096HCxtBoGXQlTBQeRNVC7m31OvGEGvOzY6yGg_WbUI8LqwuZF3WBCd4G30YCRExCKH59tQTLbUs_XSgqB6_xW-7gKF0XEqeWWvpKwftMsu_JFXpIxvCbxX1AuJOqWTmW9a92Up5iPKVEVnTo2eUKoYsOqsVP23zChomySvibMKy60CPmg7xAD1GjAkBmH9BmW9ZMY4N4XX8mFP4XWQU-tFIfu46MvGDl39urUQtk6WwI_lU"/>
+<div class="absolute inset-0 z-20 flex flex-col justify-end items-start px-24 pb-24 max-w-6xl">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<span class="font-label text-sm tracking-widest uppercase text-on-surface-variant opacity-80">Phalguna Krushna Chaturdashi</span>
+<div class="h-[1px] w-12 bg-outline-variant/40"></div>
+<span class="font-headline italic text-lg text-primary">महाशिवरात्रि</span>
+</div>
+<h1 class="font-headline text-8xl md:text-9xl text-on-surface tracking-tighter leading-none">Maha Shivaratri</h1>
+<p class="font-body text-lg text-on-surface-variant max-w-xl mt-6 leading-relaxed">
+                        The Great Night of Shiva. A cosmic convergence of consciousness, stillness, and the eternal dance of creation and dissolution.
+                    </p>
+<div class="flex gap-6 mt-10">
+<button class="bg-primary text-on-primary px-8 py-4 font-body tracking-wide border-[0.5px] border-tertiary flex items-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm">calendar_add_on</span>
+                            Add to Calendar
+                        </button>
+<button class="bg-transparent text-on-surface border-b border-tertiary/50 px-2 py-4 font-body tracking-wide flex items-center gap-2 hover:border-tertiary transition-all">
+<span class="material-symbols-outlined text-sm">share</span>
+                            Share Insight
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Editorial Content: Mythology -->
+<section class="px-24 py-32 grid grid-cols-12 gap-16 bg-surface">
+<div class="col-span-12 md:col-span-4 flex flex-col gap-8">
+<div class="sticky top-40">
+<h2 class="font-headline text-4xl text-primary leading-tight">The Celestial Origin</h2>
+<div class="mt-4 h-[1px] w-full bg-outline-variant/20"></div>
+<div class="mt-8 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">flare</span>
+</div>
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Sacred Heritage • Purana Vijnana</span>
+</div>
+</div>
+</div>
+<div class="col-span-12 md:col-span-8">
+<div class="font-body text-xl leading-relaxed text-on-surface-variant space-y-12">
+<p class="first-letter:text-7xl first-letter:font-headline first-letter:float-left first-letter:mr-4 first-letter:text-primary">
+                        According to the Linga Purana, Maha Shivaratri marks the night when Lord Shiva performed the Tandava—the dance of primordial creation, preservation, and destruction. It is the night when the formless Absolute (Nirguna) manifested as the Infinite Column of Light (Jyotirlinga).
+                    </p>
+<div class="relative py-12 px-12 bg-surface-container-low leaf-radius border-l-4 border-primary">
+<span class="material-symbols-outlined absolute -top-4 left-8 text-primary opacity-20 text-6xl">format_quote</span>
+<blockquote class="font-headline italic text-3xl text-on-surface">
+                            "Shiva is the silence between your thoughts; the stillness within the movement."
+                        </blockquote>
+</div>
+<p>
+                        Devotees believe that on this auspicious night, the planetary positions are aligned in such a way that there is a natural upsurge of energy in the human system. Staying awake and maintaining an upright spine throughout the night facilitates this cosmic energy flow.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Ritual Timeline -->
+<section class="bg-surface-container-low py-32 px-24">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-24">
+<h2 class="font-headline text-5xl mb-4">The Four Prahara Rituals</h2>
+<p class="font-body text-on-surface-variant">Vedic ceremonies spanning the 12 hours of the Great Night</p>
+</div>
+<div class="relative space-y-24">
+<!-- Timeline Line -->
+<div class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-outline-variant/40 -translate-x-1/2 hidden md:block"></div>
+<!-- Prahara 1 -->
+<div class="relative flex flex-col md:flex-row items-center gap-12 group">
+<div class="flex-1 text-right hidden md:block">
+<h3 class="font-headline text-2xl text-primary">First Prahara</h3>
+<p class="text-on-surface-variant mt-2 font-label text-sm">6:00 PM – 9:00 PM</p>
+</div>
+<div class="z-10 w-4 h-4 rounded-full bg-primary ring-8 ring-surface-container-low group-hover:scale-125 transition-transform"></div>
+<div class="flex-1 bg-surface leaf-radius p-10 editorial-shadow">
+<h4 class="font-headline text-xl mb-4">Panchamrut Abhishek</h4>
+<p class="font-body text-sm leading-relaxed text-on-surface-variant">Offering of milk, honey, ghee, curd, and sugar. This ritual focuses on the physical body and stability.</p>
+</div>
+</div>
+<!-- Prahara 2 -->
+<div class="relative flex flex-col md:flex-row-reverse items-center gap-12 group">
+<div class="flex-1 text-left hidden md:block">
+<h3 class="font-headline text-2xl text-primary">Second Prahara</h3>
+<p class="text-on-surface-variant mt-2 font-label text-sm">9:00 PM – 12:00 AM</p>
+</div>
+<div class="z-10 w-4 h-4 rounded-full bg-primary ring-8 ring-surface-container-low group-hover:scale-125 transition-transform"></div>
+<div class="flex-1 bg-surface leaf-radius p-10 editorial-shadow">
+<h4 class="font-headline text-xl mb-4">Curd Abhishek</h4>
+<p class="font-body text-sm leading-relaxed text-on-surface-variant">Symbolizing the purification of the mind and emotions as the night deepens into silence.</p>
+</div>
+</div>
+<!-- Prahara 3 -->
+<div class="relative flex flex-col md:flex-row items-center gap-12 group">
+<div class="flex-1 text-right hidden md:block">
+<h3 class="font-headline text-2xl text-primary">Third Prahara</h3>
+<p class="text-on-surface-variant mt-2 font-label text-sm">12:00 AM – 3:00 AM</p>
+</div>
+<div class="z-10 w-4 h-4 rounded-full bg-primary ring-8 ring-surface-container-low group-hover:scale-125 transition-transform"></div>
+<div class="flex-1 bg-surface leaf-radius p-10 editorial-shadow">
+<h4 class="font-headline text-xl mb-4">Ghee Abhishek</h4>
+<p class="font-body text-sm leading-relaxed text-on-surface-variant">A ritual for the soul (Atman). The midnight hour represents the ultimate stillness of consciousness.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Deity Connections (Bento-ish Grid) -->
+<section class="px-24 py-32 bg-surface">
+<h2 class="font-headline text-5xl text-center mb-24">Sacred Presence</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+<div class="bg-surface-container-low p-8 leaf-radius flex flex-col gap-6 group hover:bg-surface-container transition-colors">
+<img class="w-full h-64 object-cover leaf-radius grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Intricate sculpture of Lord Shiva in meditation" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOjNsSjweSrmnjlW32bnY1vzJ6tx5u_FfGkjG9uqjhW0pcp9xVwyaqHFhdwcs7iU5IKHegSJdkb_VnAyBWADTlysUDeb-_lHtEkrS6kmQluZ-IJnbZK-Hw9ufPQ1VPpl2DL3SRc4P7gLbhsvSPsDdtgPcXhtKmf24fhNHkpRSuy3itXi_iP6wdFO0NKOZgVjaZxR7gUh6c7ZGZZiWzRypOEXG19Ld491Ujt02Duf_jE6ENqZhVDG-_1HSAuKvxZYUYlKBjtIR8MXHW"/>
+<div>
+<h3 class="font-headline text-2xl text-on-surface">Mahadeva</h3>
+<p class="font-label text-xs uppercase tracking-widest text-primary mt-1">The Great God</p>
+<p class="font-body text-sm text-on-surface-variant mt-4 leading-relaxed">Representing the transcendental reality beyond space and time.</p>
+</div>
+</div>
+<div class="bg-surface-container-high p-8 leaf-radius flex flex-col gap-6 group hover:bg-surface-container-highest transition-colors md:mt-12">
+<img class="w-full h-64 object-cover leaf-radius grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Vibrant painting of Goddess Parvati representing Shakti" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAcaVILpscCz6jd_m9_Ez6WShYqSR-iVOv44eCIIGtD1KZxDIAIYbv5qPUNsWCyY_Ob-Ju9_ZLnGEF3oZYvRP-Oz1Xd2P0o1JuqNZKGcy8tpABlf6y8-lcHjYFmTRFPON1qm1vNAYq8eKdKjMfY8sl4tMNktkKJ5xTY5wsjCY3CtxAFYH8ljgFxAg0GItBWzMJ-AWA4ZoTZ6lDX3l7mrxWdEFVF2gACUJerBJMICxbq4GGJGgHrCvo1YLoRS5jHAZIdy2IIiL8Nsdm"/>
+<div>
+<h3 class="font-headline text-2xl text-on-surface">Parvati</h3>
+<p class="font-label text-xs uppercase tracking-widest text-primary mt-1">The Primordial Shakti</p>
+<p class="font-body text-sm text-on-surface-variant mt-4 leading-relaxed">The personification of energy and the cosmic mother who completes Shiva.</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-8 leaf-radius flex flex-col gap-6 group hover:bg-surface-container transition-colors">
+<img class="w-full h-64 object-cover leaf-radius grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Golden statue of Nandi the Bull in a temple courtyard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV-KF3PIgqB9wX5ytcTmHjR6C_lM3vPQ4ARkMi-F2UVikjKZf3NHUe8CRxY64zjNubmAeBdQpxX_iDVC9YzV8HM4rokKAhoj2l7QSfeLJTBKkVOAPj1XXFCzzcmnjSkAIWW3HF3IrYV04-76MKRrcKvPS41XNoAHKgDASKPP4OdiFJaMgAkgArvxoTUBvihaXIr3vF27mm56gpVTynlWAleHGGms8HU07uLoef3quDivcot_KbfimldBuYI69x2ZZ6sQZzP_b4I-2C"/>
+<div>
+<h3 class="font-headline text-2xl text-on-surface">Nandi</h3>
+<p class="font-label text-xs uppercase tracking-widest text-primary mt-1">The Eternal Wait</p>
+<p class="font-body text-sm text-on-surface-variant mt-4 leading-relaxed">Symbolizing patience, devotion, and the mastery of animal instincts.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Ritual Items Grid -->
+<section class="px-24 py-24 bg-surface-container-low/50">
+<div class="flex justify-between items-end mb-16">
+<div>
+<h2 class="font-headline text-4xl">Essential Offerings</h2>
+<p class="font-body text-on-surface-variant mt-2">Traditional components for your Puja</p>
+</div>
+<div class="flex gap-4">
+<button class="w-12 h-12 border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<button class="w-12 h-12 border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="flex gap-8 overflow-x-auto pb-8 no-scrollbar">
+<div class="min-w-[280px] bg-surface p-6 leaf-radius editorial-shadow">
+<div class="w-12 h-12 bg-surface-container mb-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">eco</span>
+</div>
+<h4 class="font-headline text-xl mb-2">Bilva Leaves</h4>
+<p class="text-sm text-on-surface-variant">The trifoliate leaf representing the three Gunas and Shiva's three eyes.</p>
+</div>
+<div class="min-w-[280px] bg-surface p-6 leaf-radius editorial-shadow">
+<div class="w-12 h-12 bg-surface-container mb-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">water_drop</span>
+</div>
+<h4 class="font-headline text-xl mb-2">Ganga Jal</h4>
+<p class="text-sm text-on-surface-variant">Sacred river water used for continuous Abhishekam (pouring).</p>
+</div>
+<div class="min-w-[280px] bg-surface p-6 leaf-radius editorial-shadow">
+<div class="w-12 h-12 bg-surface-container mb-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">local_fire_department</span>
+</div>
+<h4 class="font-headline text-xl mb-2">Vibhuti</h4>
+<p class="text-sm text-on-surface-variant">Sacred ash reminding us of the transient nature of existence.</p>
+</div>
+<div class="min-w-[280px] bg-surface p-6 leaf-radius editorial-shadow">
+<div class="w-12 h-12 bg-surface-container mb-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">circle_notifications</span>
+</div>
+<h4 class="font-headline text-xl mb-2">Rudraksha</h4>
+<p class="text-sm text-on-surface-variant">Prayer beads meant to connect the wearer with cosmic vibrations.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full px-24 py-20 flex flex-col items-center text-center border-t border-orange-100 dark:border-stone-900 bg-stone-100 dark:bg-stone-950">
+<span class="text-4xl font-serif text-orange-900 dark:text-orange-700 mb-4 block">Parva</span>
+<div class="flex gap-12 mb-12">
+<a class="text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors font-serif italic text-base" href="#">Cultural Heritage</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors font-serif italic text-base" href="#">Ritual Guides</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors font-serif italic text-base" href="#">Panchanga API</a>
+<a class="text-stone-500 dark:text-stone-400 hover:text-orange-800 dark:hover:text-orange-200 transition-colors font-serif italic text-base" href="#">Contact</a>
+</div>
+<p class="font-serif italic text-base text-orange-950 dark:text-orange-100">© 2024 Parva. Sacred Wisdom for the Digital Era.</p>
+</footer>
+<!-- SideNavBar Shell (Suppressed on detail pages based on context, but here for structural completeness if requested) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col items-center py-24 gap-8 z-40 bg-stone-50/40 dark:bg-stone-950/40 backdrop-blur-xl w-20 border-r border-orange-100/10 dark:border-stone-800/20">
+<div class="flex flex-col items-center gap-2 mb-12">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User Avatar Profile Portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBig2XwT4BeRBZ8KSbocD0XONJobUW_gEI_fMV3PC1j6DsqdqB4oWuuuZnSxMcOZ6SQHg3pJcT_WLIO3pBgRiT01j647YU5RePlTsZZ4jbbHR3L_C1ubtQdlEuW-A-1CZTJQZeK76KGjSh_HqfOhVNChRYkRSnahEK5IS7VjMBQ0-yOVPbxGfYKS2FcKVyuk9LNFstprzxHzw72BaMcx27KLopT0oAUawwgTJRM4mEIjzVYoTDjDR_tT-Q1xPzzKWIKz9Q0XxG_4lIP"/>
+</div>
+<span class="font-serif text-[10px] uppercase tracking-widest text-orange-800 dark:text-orange-400">Sadhaka</span>
+</div>
+<a class="text-orange-900 dark:text-orange-200 bg-orange-100/50 dark:bg-stone-800/50 rounded-full p-3 hover:text-orange-700 dark:hover:text-orange-300 scale-110 transition-all" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+</a>
+<a class="text-stone-400 dark:text-stone-600 p-3 hover:text-orange-700 dark:hover:text-orange-300 scale-110 transition-all" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+</a>
+<a class="text-stone-400 dark:text-stone-600 p-3 hover:text-orange-700 dark:hover:text-orange-300 scale-110 transition-all" href="#">
+<span class="material-symbols-outlined">explore</span>
+</a>
+<a class="text-stone-400 dark:text-stone-600 p-3 hover:text-orange-700 dark:hover:text-orange-300 scale-110 transition-all" href="#">
+<span class="material-symbols-outlined">flare</span>
+</a>
+</aside>
+</body></html>

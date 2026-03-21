@@ -1,10 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { festivalAPI } from '../services/api';
+import {
+  CONSUMER_FESTIVAL_FILTERS,
+  buildConsumerFestivalsViewModel,
+} from '../consumer/consumerViewModels';
+import { useMemberContext } from '../context/useMemberContext';
 import { useTemporalContext } from '../context/useTemporalContext';
-import { TimelineRibbon } from '../components/TimelineRibbon/TimelineRibbon';
-import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
+import { useDialogA11y } from '../hooks/useDialogA11y';
+import { useCopy } from '../i18n/useCopy';
+import { festivalAPI } from '../services/api';
 import { trackEvent } from '../services/analytics';
+import { describeSupportError } from '../services/errorFormatting';
 import './FestivalExplorerPage.css';
 
 function addDays(base, days) {
@@ -13,60 +19,64 @@ function addDays(base, days) {
   return date.toISOString().slice(0, 10);
 }
 
-function monthKey(dateString) {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  if (Number.isNaN(date.valueOf())) return '';
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+function posterClass(item) {
+  return `explorer-poster explorer-poster--${item?.artKey || 'lamp'}`.trim();
 }
 
-function formatDate(dateString) {
-  if (!dateString) return 'Date in details';
-  const date = new Date(dateString);
-  if (Number.isNaN(date.valueOf())) return dateString;
-  return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+function dedupeFestivalItems(items = []) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = item?.id || item?.href || item?.title;
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
-const CATEGORY_CHIPS = [
-  { value: '', label: 'All traditions' },
-  { value: 'national', label: 'National' },
-  { value: 'newari', label: 'Newari' },
-  { value: 'hindu', label: 'Hindu' },
-  { value: 'buddhist', label: 'Buddhist' },
-  { value: 'regional', label: 'Regional' },
-];
+function FeaturedFestival({ item, lead = false, source = 'chapter' }) {
+  if (!item) return null;
+  return (
+    <Link
+      to={item.href}
+      className={`explorer-card ${lead ? 'is-lead' : ''}`.trim()}
+      onClick={() => trackEvent('festival_opened', { festival_id: item.id, source })}
+    >
+      <div className={posterClass(item)}>
+        <span>{item.title}</span>
+      </div>
+      <div className="explorer-card__copy">
+        <h3>{item.title}</h3>
+        <p className="explorer-card__meta">{item.dateLabel}</p>
+        <p>{item.summary}</p>
+      </div>
+    </Link>
+  );
+}
 
 export function FestivalExplorerPage() {
   const { state } = useTemporalContext();
-  const [fromDate, setFromDate] = useState(state.date);
-  const [windowDays, setWindowDays] = useState(180);
+  const { state: memberState } = useMemberContext();
+  const { copy } = useCopy();
+  const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [region, setRegion] = useState('');
-  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState('recommended');
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const { dialogRef } = useDialogA11y(filtersOpen, () => setFiltersOpen(false));
   const [payload, setPayload] = useState(null);
-  const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const toDate = useMemo(() => addDays(fromDate, windowDays), [fromDate, windowDays]);
-  const allItems = useMemo(() => (payload?.groups || []).flatMap((group) => group.items || []), [payload]);
-  const featuredItems = allItems.slice(0, 3);
-  const leadFestival = featuredItems[0] || null;
-  const supportingFestivals = featuredItems.slice(1);
-  const currentMonthKey = useMemo(() => monthKey(fromDate), [fromDate]);
-  const currentMonthGroup = useMemo(
-    () => (payload?.groups || []).find((group) => group.month_key === currentMonthKey) || payload?.groups?.[0] || null,
-    [currentMonthKey, payload],
-  );
-  const monthItems = currentMonthGroup?.items?.slice(0, 4) || [];
+  const fromDate = state.date;
+  const toDate = useMemo(() => addDays(state.date, 180), [state.date]);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function load() {
+    async function loadTimeline() {
       setLoading(true);
       setError(null);
+
       try {
         const envelope = await festivalAPI.getTimelineEnvelope({
           from: fromDate,
@@ -74,223 +84,223 @@ export function FestivalExplorerPage() {
           qualityBand: 'computed',
           category: category || undefined,
           region: region || undefined,
-          search: search || undefined,
+          search: search.trim() || undefined,
+          sort: sort || undefined,
           lang: state.language,
         });
 
         if (!cancelled) {
-          setPayload(envelope.data);
-          setMeta(envelope.meta);
+          setPayload(envelope.data || null);
         }
       } catch (err) {
         if (!cancelled) {
           setPayload(null);
-          setMeta(null);
-          setError(err.message || 'Failed to load festival timeline');
+          setError(describeSupportError(err, 'Festival timeline is unavailable right now.'));
         }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
-    load();
+    loadTimeline();
     return () => {
       cancelled = true;
     };
-  }, [fromDate, toDate, category, region, search, state.language]);
+  }, [category, fromDate, region, search, sort, state.language, toDate]);
 
-  function openFestival(item, source) {
-    trackEvent('festival_opened', {
-      festival_id: item.id,
-      source,
-    });
+  const viewModel = useMemo(
+    () => buildConsumerFestivalsViewModel({
+      payload,
+      search,
+      category,
+      savedFestivals: memberState.savedFestivals,
+      temporalState: {
+        language: state.language,
+        timezone: state.timezone,
+      },
+    }),
+    [payload, search, category, memberState.savedFestivals, state.language, state.timezone],
+  );
+
+  const galleryItems = useMemo(() => {
+    const lead = viewModel.featured;
+    const supporting = [...viewModel.supporting];
+    if (viewModel.chapters[0]?.items?.length) {
+      supporting.push(...viewModel.chapters[0].items.slice(0, Math.max(0, 4 - supporting.length)));
+    }
+    return { lead, supporting: dedupeFestivalItems(supporting).slice(0, 4) };
+  }, [viewModel]);
+
+  if (loading) {
+    return (
+      <section className="explorer-page animate-fade-in-up consumer-route consumer-route--explorer">
+        <div className="skeleton explorer-hero-skeleton" />
+        <div className="explorer-gallery">
+          <div className="skeleton explorer-gallery__lead-skeleton" />
+          <div className="explorer-gallery__stack">
+            {Array.from({ length: 4 }).map((_, index) => (
+              <div key={index} className="skeleton explorer-gallery__card-skeleton" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="explorer-page animate-fade-in-up consumer-route consumer-route--explorer">
+        <article className="explorer-error ink-card" role="alert">
+          <p className="explorer-eyebrow">Festivals</p>
+          <h1>Festival guidance is temporarily unavailable.</h1>
+          <p>{error}</p>
+        </article>
+      </section>
+    );
   }
 
   return (
-    <section className="explorer-page animate-fade-in-up">
-      <header className="explorer-hero editorial-card">
+    <section className="explorer-page animate-fade-in-up consumer-route consumer-route--explorer">
+      <header className="explorer-hero">
         <div className="explorer-hero__copy">
-          <p className="landing-eyebrow">Festivals</p>
-          <h1>Follow observances through meaning first, then the wider calendar.</h1>
-          <p className="explorer-hero__sub">
-            Start with the next featured observance, keep the rest of this month in view, and open the full timeline only when you want more range.
-          </p>
+          <p className="explorer-eyebrow">Sacred Calendars</p>
+          <h1>
+            <span>Festival</span>
+            <em>Explorer</em>
+          </h1>
+          <p>{viewModel.subtitle}</p>
         </div>
+
         <div className="explorer-hero__actions">
-          <button type="button" className="btn btn-secondary" onClick={() => setFiltersOpen(true)}>
-            Open filters
-          </button>
-          <EvidenceDrawer
-            title="Festivals"
-            intro="This drawer keeps the festival timeline method, language profile, and data-availability context nearby without leading the page with system detail."
-            methodRef={meta?.method || 'Festival timeline profile'}
-            confidenceNote={meta?.confidence?.level || meta?.confidence || 'Computed festival guidance'}
-            placeUsed="Nepal-focused calendar profile"
-            computedForDate={`${fromDate} to ${toDate}`}
-            availability={[
-              { label: 'Featured observance', available: Boolean(leadFestival), note: 'The lead card uses the first available observance in the visible range.' },
-              { label: 'This month chapter', available: Boolean(monthItems.length), note: 'Monthly discovery should stay visible even when the wider timeline is long.' },
-              { label: 'Full timeline', available: Boolean(payload?.groups?.length), note: 'Timeline chapters remain available below the fold for browsing.' },
-            ]}
-            meta={meta}
-            traceFallbackId={payload?.calculation_trace_id}
-          />
+          {CONSUMER_FESTIVAL_FILTERS.map((option) => (
+            <button
+              key={option.value || 'all'}
+              type="button"
+              className={`explorer-pill ${category === option.value ? 'is-active' : ''}`.trim()}
+              onClick={() => {
+                setCategory(option.value);
+                trackEvent('path_card_selected', {
+                  surface: 'festivals',
+                  filter: option.value || 'all_observances',
+                });
+              }}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
       </header>
 
-      <section className="explorer-chip-row">
-        {CATEGORY_CHIPS.map((chip) => (
-          <button
-            key={chip.label}
-            type="button"
-            className={`explorer-chip ${category === chip.value ? 'is-active' : ''}`.trim()}
-            onClick={() => setCategory(chip.value)}
-          >
-            {chip.label}
+      <section className="explorer-gallery">
+        <FeaturedFestival item={galleryItems.lead} lead source="lead_gallery" />
+        <div className="explorer-gallery__stack">
+          {galleryItems.supporting.map((item, index) => (
+            <FeaturedFestival key={item.id} item={item} source={`gallery_${index + 1}`} />
+          ))}
+        </div>
+      </section>
+
+      <section className="explorer-cta">
+        <div>
+          <h2>Never miss a sacred moment.</h2>
+          <p>Sync the Panchanga with your personal calendar and receive ritual guidance based on your precise location.</p>
+        </div>
+        <Link to="/integrations" className="btn btn-primary">Sync My Calendar</Link>
+      </section>
+
+      <section className="explorer-ribbon">
+        <div className="explorer-ribbon__head">
+          <div>
+            <p className="explorer-eyebrow">Browse all</p>
+            <h2>Seasonal observance ribbon</h2>
+          </div>
+          <button type="button" className="btn btn-secondary" onClick={() => setFiltersOpen(true)}>
+            {copy('festivalExplorer.filters.more')}
           </button>
-        ))}
+        </div>
+
+        <div className="explorer-ribbon__grid">
+          {viewModel.timelineCards.length ? viewModel.timelineCards.map((item) => (
+            <FeaturedFestival key={item.id} item={item} source="ribbon" />
+          )) : (
+            <article className="explorer-card">
+              <div className="explorer-card__copy">
+                <h3>{viewModel.emptyState.title}</h3>
+                <p>{viewModel.emptyState.body}</p>
+              </div>
+            </article>
+          )}
+        </div>
       </section>
 
       {filtersOpen ? (
         <div className="explorer-sheet__overlay" role="presentation" onClick={() => setFiltersOpen(false)}>
           <aside
-            className="explorer-sheet ink-card"
+            ref={dialogRef}
+            className="explorer-sheet"
             role="dialog"
             aria-modal="true"
-            aria-label="Festival filters"
+            aria-labelledby="festival-explorer-filters-title"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="explorer-sheet__header">
               <div>
-                <p className="landing-eyebrow">Filters</p>
-                <h2>Tune the calendar without leading with a dense form.</h2>
+                <p className="explorer-eyebrow">{copy('festivalExplorer.filters.eyebrow')}</p>
+                <h2 id="festival-explorer-filters-title">{copy('festivalExplorer.filters.title')}</h2>
               </div>
-              <button type="button" className="btn btn-secondary btn-sm" onClick={() => setFiltersOpen(false)}>
-                Close
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dialog-initial-focus="true"
+                onClick={() => setFiltersOpen(false)}
+              >
+                {copy('festivalExplorer.filters.close')}
               </button>
             </div>
-            <div className="explorer-filters explorer-filters--sheet">
-              <label className="ink-input explorer-control">
-                <span>From</span>
-                <input type="date" value={fromDate} onChange={(event) => setFromDate(event.target.value)} />
+
+            <div className="explorer-filters">
+              <label className="ink-input explorer-control explorer-control--wide">
+                <span>{copy('festivalExplorer.filters.searchLabel')}</span>
+                <input
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder={copy('festivalExplorer.filters.searchPlaceholder')}
+                />
               </label>
+
               <label className="ink-input explorer-control">
-                <span>Window</span>
-                <select value={windowDays} onChange={(event) => setWindowDays(Number(event.target.value))}>
-                  <option value={90}>90 days</option>
-                  <option value={180}>180 days</option>
-                  <option value={365}>365 days</option>
+                <span>{copy('festivalExplorer.filters.category')}</span>
+                <select value={category} onChange={(event) => setCategory(event.target.value)}>
+                  {CONSUMER_FESTIVAL_FILTERS.map((chip) => (
+                    <option key={chip.value || 'all'} value={chip.value}>{chip.label}</option>
+                  ))}
                 </select>
               </label>
+
               <label className="ink-input explorer-control">
-                <span>Region</span>
-                <input value={region} onChange={(event) => setRegion(event.target.value)} placeholder="Kathmandu Valley" />
+                <span>{copy('festivalExplorer.filters.region')}</span>
+                <select value={region} onChange={(event) => setRegion(event.target.value)}>
+                  <option value="">{copy('festivalExplorer.region.all')}</option>
+                  {viewModel.facets.regions.map((item) => (
+                    <option key={item.value} value={item.value}>{item.label || item.value}</option>
+                  ))}
+                </select>
               </label>
-              <label className="ink-input explorer-control explorer-control--wide">
-                <span>Search</span>
-                <input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Dashain, Indra Jatra, Shivaratri..." />
+
+              <label className="ink-input explorer-control">
+                <span>{copy('festivalExplorer.filters.sort')}</span>
+                <select value={sort} onChange={(event) => setSort(event.target.value)}>
+                  <option value="recommended">{copy('festivalExplorer.sort.recommended')}</option>
+                  <option value="soonest">{copy('festivalExplorer.sort.soonest')}</option>
+                  <option value="latest">{copy('festivalExplorer.sort.latest')}</option>
+                </select>
               </label>
             </div>
           </aside>
         </div>
-      ) : null}
-
-      {loading ? (
-        <div className="explorer-grid">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="skeleton explorer-skeleton" />
-          ))}
-        </div>
-      ) : null}
-
-      {!loading && error ? (
-        <div className="ink-card explorer-error" role="alert">
-          <h2>Festival guidance is unavailable right now</h2>
-          <p>{error}</p>
-        </div>
-      ) : null}
-
-      {!loading && !error ? (
-        <>
-          <section className="explorer-featured">
-            {leadFestival ? (
-              <Link
-                to={`/festivals/${leadFestival.id}`}
-                className="ink-card explorer-featured__lead"
-                onClick={() => openFestival(leadFestival, 'featured')}
-              >
-                <span className="today-page__eyebrow">Featured next observance</span>
-                <h2>{leadFestival.display_name || leadFestival.name}</h2>
-                <p>
-                  Open the observance when you want the story, ritual arc, and date guidance together instead of buried inside a dense calendar wall.
-                </p>
-                <div className="explorer-featured__lead-meta">
-                  <span>{leadFestival.category || 'Festival'}</span>
-                  <strong>{formatDate(leadFestival.start_date)}</strong>
-                </div>
-              </Link>
-            ) : (
-              <article className="ink-card explorer-featured__lead explorer-featured__lead--empty">
-                <span className="today-page__eyebrow">Featured next observance</span>
-                <h2>The next observance will appear here when the current festival range is available.</h2>
-                <p>Use filters if you want to widen the range or search a specific tradition.</p>
-              </article>
-            )}
-
-            <div className="explorer-featured__stack">
-              {supportingFestivals.map((item) => (
-                <Link
-                  key={`${item.id}-${item.start_date}`}
-                  to={`/festivals/${item.id}`}
-                  className="ink-card explorer-featured__card"
-                  onClick={() => openFestival(item, 'supporting')}
-                >
-                  <span className="today-page__eyebrow">Also coming soon</span>
-                  <h3>{item.display_name || item.name}</h3>
-                  <p>{item.category || 'Festival'}</p>
-                  <small>{formatDate(item.start_date)}</small>
-                </Link>
-              ))}
-            </div>
-          </section>
-
-          <section className="ink-card explorer-month">
-            <div className="explorer-section-header">
-              <div>
-                <p className="today-page__eyebrow">Coming this month</p>
-                <h2>{currentMonthGroup?.month_label || 'Current festival chapter'}</h2>
-              </div>
-            </div>
-            {monthItems.length ? (
-              <div className="explorer-month__grid">
-                {monthItems.map((item, index) => (
-                  <Link
-                    key={`${item.id}-${item.start_date}-${index}`}
-                    to={`/festivals/${item.id}`}
-                    className={`explorer-month__item ${index === 0 ? 'is-lead' : ''}`.trim()}
-                    onClick={() => openFestival(item, 'month_chapter')}
-                  >
-                    <strong>{item.display_name || item.name}</strong>
-                    <span>{formatDate(item.start_date)}</span>
-                    <p>{item.category || 'Festival'}</p>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p className="muted">This month chapter will appear here when the selected range returns observances.</p>
-            )}
-          </section>
-
-          <section className="explorer-timeline">
-            <div className="explorer-section-header">
-              <div>
-                <p className="today-page__eyebrow">Full timeline</p>
-                <h2>Browse the wider calendar</h2>
-              </div>
-            </div>
-            <TimelineRibbon groups={payload?.groups || []} />
-          </section>
-        </>
       ) : null}
     </section>
   );

@@ -30,6 +30,17 @@ def test_rejects_oversized_payload():
     assert response.json()["detail"] == "Request payload too large"
 
 
+def test_rejects_invalid_content_length_header():
+    response = _client().post(
+        "/api/personal/panchanga",
+        content=b'{"date":"2026-02-15"}',
+        headers={"Content-Type": "application/json", "Content-Length": "not-a-number"},
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Invalid content-length header"
+
+
 def test_private_compute_routes_return_no_store_headers():
     response = _client().post("/api/personal/panchanga", json={"date": "2026-02-15"})
     assert response.status_code == 200

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { UtilityPageHeader } from '../consumer/UtilityPages';
 import { trackEvent } from '../services/analytics';
 import './MethodologyPage.css';
 
@@ -27,25 +28,35 @@ export function MethodologyPage() {
   }, []);
 
   return (
-    <section className="method-page animate-fade-in-up">
-      <header className="method-hero editorial-card">
-        <p className="landing-eyebrow">Methodology</p>
-        <h1>Trust should come from visible seriousness, not extra chrome.</h1>
-        <p>
-          Parva is built to lead with calm guidance first, then offer method, variance, and evidence when you want to inspect the answer more closely.
-        </p>
-      </header>
+    <section className="method-page utility-page animate-fade-in-up">
+      <UtilityPageHeader
+        eyebrow="Methodology"
+        title="Trust should come from visible seriousness, not extra chrome."
+        body="Parva is built to lead with calm guidance first, then offer method, variance, and evidence when you want to inspect the answer more closely."
+        links={[
+          { label: 'Today', to: '/#today' },
+          { label: 'Best Time', to: '/#best-time' },
+          { label: 'My Place', to: '/#my-place' },
+        ]}
+        aside={(
+          <>
+            <span className="utility-page__eyebrow">Trust posture</span>
+            <strong>Meaning first</strong>
+            <p>Every result page should answer the question before it explains the method.</p>
+          </>
+        )}
+      />
 
       <section className="method-grid">
         {TRUST_LAYERS.map((item) => (
-          <article key={item.title} className="ink-card method-card">
+          <article key={item.title} className="ink-card method-card utility-page__panel">
             <h2>{item.title}</h2>
             <p>{item.body}</p>
           </article>
         ))}
       </section>
 
-      <section className="ink-card method-detail">
+      <section className="ink-card method-detail utility-page__panel">
         <div className="landing-section-header">
           <p className="landing-eyebrow">What you should expect</p>
           <h2>Parva should always tell you enough to act, then enough to verify.</h2>
@@ -66,7 +77,7 @@ export function MethodologyPage() {
         </div>
       </section>
 
-      <section className="ink-card method-detail">
+      <section className="ink-card method-detail utility-page__panel">
         <div className="landing-section-header">
           <p className="landing-eyebrow">Current product posture</p>
           <h2>Guest-first means local continuity first and heavier systems later.</h2>

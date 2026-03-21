@@ -8,13 +8,27 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import shutil
-from dataclasses import dataclass
+import subprocess
+import sys
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
 from app.engine.ephemeris_config import get_ephemeris_config
+from app.engine.manifest import (
+    CANONICAL_ENGINE_ID,
+    CANONICAL_MANIFEST_VERSION,
+    build_engine_manifest,
+)
+from app.provenance.attestation import (
+    attestation_key_configured,
+    build_attestation,
+    canonical_json,
+    verify_attestation,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 BACKEND_ROOT = Path(__file__).resolve().parents[2]
@@ -37,6 +51,11 @@ DEFAULT_RULE_FILES = [
     BACKEND_ROOT / "app" / "calendar" / "festival_rules_v3.json",
     BACKEND_ROOT / "app" / "calendar" / "festival_rules.json",
 ]
+DEFAULT_DEPENDENCY_LOCK_FILES = [
+    PROJECT_ROOT / "pyproject.toml",
+    PROJECT_ROOT / "requirements" / "constraints.txt",
+    PROJECT_ROOT / "frontend" / "package-lock.json",
+]
 
 
 @dataclass
@@ -51,6 +70,15 @@ class SnapshotRecord:
     dataset_files: list[str]
     rule_files: list[str]
     festival_snapshot_path: Optional[str] = None
+    manifest_version: str = CANONICAL_MANIFEST_VERSION
+    canonical_engine_id: str = CANONICAL_ENGINE_ID
+    manifest_hash: Optional[str] = None
+    build_sha: Optional[str] = None
+    dependency_lock_hash: Optional[str] = None
+    python_runtime: Optional[str] = None
+    ephemeris_header: Optional[str] = None
+    engine_manifest: dict[str, Any] = field(default_factory=dict)
+    attestation: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -62,7 +90,26 @@ class SnapshotRecord:
             "dataset_files": self.dataset_files,
             "rule_files": self.rule_files,
             "festival_snapshot_path": self.festival_snapshot_path,
+            "manifest_version": self.manifest_version,
+            "canonical_engine_id": self.canonical_engine_id,
+            "manifest_hash": self.manifest_hash,
+            "build_sha": self.build_sha,
+            "dependency_lock_hash": self.dependency_lock_hash,
+            "python_runtime": self.python_runtime,
+            "ephemeris_header": self.ephemeris_header,
+            "engine_manifest": self.engine_manifest,
+            "attestation": self.attestation,
         }
+
+    def signing_payload(self) -> dict[str, Any]:
+        payload = self.to_dict()
+        payload.pop("attestation", None)
+        return payload
+
+    def manifest_payload(self) -> dict[str, Any]:
+        payload = self.signing_payload()
+        payload.pop("manifest_hash", None)
+        return payload
 
 
 def _canonical_json_bytes(path: Path) -> bytes:
@@ -125,6 +172,29 @@ def _snapshot_path(snapshot_id: str) -> Path:
     return SNAPSHOT_DIR / f"{snapshot_id}.json"
 
 
+def _dependency_lock_hash() -> str:
+    return _hash_file_set(DEFAULT_DEPENDENCY_LOCK_FILES, {"type": "dependency-lock"})
+
+
+def _build_sha() -> str | None:
+    env_sha = os.getenv("PARVA_BUILD_SHA", "").strip()
+    if env_sha:
+        return env_sha
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=PROJECT_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return None
+    if result.returncode != 0:
+        return None
+    return result.stdout.strip() or None
+
+
 def create_snapshot(snapshot_id: Optional[str] = None) -> SnapshotRecord:
     """
     Create a snapshot record under backend/data/snapshots.
@@ -152,11 +222,22 @@ def create_snapshot(snapshot_id: Optional[str] = None) -> SnapshotRecord:
         created_at=now_utc.isoformat(),
         dataset_hash=dataset_hash,
         rules_hash=rules_hash,
-        engine_version="v2",
+        engine_version="v3",
         dataset_files=dataset_files,
         rule_files=rule_files,
         festival_snapshot_path=festival_snapshot_copy,
+        manifest_version=CANONICAL_MANIFEST_VERSION,
+        canonical_engine_id=CANONICAL_ENGINE_ID,
+        build_sha=_build_sha(),
+        dependency_lock_hash=_dependency_lock_hash(),
+        python_runtime=f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}",
+        ephemeris_header=get_ephemeris_config().header_value,
+        engine_manifest=build_engine_manifest(),
     )
+    record.manifest_hash = hashlib.sha256(
+        canonical_json(record.manifest_payload()).encode("utf-8")
+    ).hexdigest()
+    record.attestation = build_attestation(record.signing_payload())
 
     path = _snapshot_path(sid)
     path.write_text(json.dumps(record.to_dict(), indent=2), encoding="utf-8")
@@ -191,12 +272,32 @@ def get_latest_snapshot(create_if_missing: bool = False) -> Optional[SnapshotRec
     sid = get_latest_snapshot_id()
     if sid:
         try:
-            return load_snapshot(sid)
+            snapshot = load_snapshot(sid)
+            if create_if_missing and _snapshot_requires_refresh(snapshot):
+                return create_snapshot()
+            return snapshot
         except Exception:
             pass
     if create_if_missing:
         return create_snapshot()
     return None
+
+
+def _snapshot_requires_refresh(record: SnapshotRecord) -> bool:
+    if record.manifest_version != CANONICAL_MANIFEST_VERSION:
+        return True
+    if record.canonical_engine_id != CANONICAL_ENGINE_ID:
+        return True
+    if not record.manifest_hash:
+        return True
+    attestation_mode = str((record.attestation or {}).get("mode") or "")
+    if not attestation_mode:
+        return True
+    if not verify_attestation(record.signing_payload(), record.attestation):
+        return True
+    if attestation_mode == "unsigned" and attestation_key_configured():
+        return True
+    return False
 
 
 def verify_snapshot(snapshot_id: str) -> dict[str, Any]:
@@ -208,6 +309,11 @@ def verify_snapshot(snapshot_id: str) -> dict[str, Any]:
     checks = {
         "dataset_hash_match": dataset_now == record.dataset_hash,
         "rules_hash_match": rules_now == record.rules_hash,
+        "manifest_hash_match": hashlib.sha256(
+            canonical_json(record.manifest_payload()).encode("utf-8")
+        ).hexdigest()
+        == record.manifest_hash,
+        "attestation_valid": verify_attestation(record.signing_payload(), record.attestation),
     }
     valid = all(checks.values())
     return {
@@ -217,10 +323,14 @@ def verify_snapshot(snapshot_id: str) -> dict[str, Any]:
         "expected": {
             "dataset_hash": record.dataset_hash,
             "rules_hash": record.rules_hash,
+            "manifest_hash": record.manifest_hash,
         },
         "actual": {
             "dataset_hash": dataset_now,
             "rules_hash": rules_now,
+            "manifest_hash": hashlib.sha256(
+                canonical_json(record.manifest_payload()).encode("utf-8")
+            ).hexdigest(),
         },
     }
 
@@ -245,5 +355,9 @@ def get_provenance_payload(
         "dataset_hash": snapshot.dataset_hash,
         "rules_hash": snapshot.rules_hash,
         "snapshot_id": snapshot.snapshot_id,
+        "canonical_engine_id": snapshot.canonical_engine_id,
+        "manifest_version": snapshot.manifest_version,
+        "manifest_hash": snapshot.manifest_hash,
+        "attestation": snapshot.attestation,
         "verify_url": verify_url,
     }

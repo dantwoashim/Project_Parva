@@ -11,6 +11,35 @@ Project Parva ships a narrow public stable profile.
 - `/health/ready`
 - `/health/startup`
 
+## Launch-critical product surface
+
+These are the only consumer experiences treated as launch-critical for contract,
+QA, and design-polish purposes:
+
+- Today / Temporal Compass
+- Personal Panchanga / My Place
+- Muhurta / Best Time
+- Festival Explorer + Festival Detail
+- Kundali / Birth Reading
+
+Other public routes remain available, but they are support or compatibility
+surfaces and are not a reason to loosen the launch gate for the five flows
+above.
+
+The consumer shell and command search now treat those five journeys as the only
+first-class destinations. Support, beta, and deferred pages remain reachable,
+but they are deliberately de-emphasized in primary navigation and surfaced with
+explicit tier messaging.
+
+## Public route tiers
+
+- Launch-critical: the five consumer flows above on `/v3/api/*` and the `/api/*`
+  compatibility alias
+- Support/public beta: feeds, glossary, health endpoints, methodology/about
+  content, and institutional/public-artifact read surfaces
+- Experimental/deferred: `/v2/*`, `/v4/*`, `/v5/*`, mutable provenance routes,
+  and webhook management
+
 ## Authenticated read
 
 These routes are disabled in the production public profile by default. When
@@ -38,15 +67,16 @@ Routes:
 - Experimental write routes
 - No webhook routes are available in the shipped launch profile
 
-## Local development credentials
+## Test-only credentials
 
-When `PARVA_ENV` is `development`, `dev`, `local`, or `test`, the app exposes
-deterministic local-only credentials if none are provided:
+When running tests, the app exposes deterministic test-only credentials if none
+are provided:
 
-- Read key: `parva-dev-read-key`
-- Admin bearer token: `parva-dev-admin-token`
+- Read key: `parva-test-read-key`
+- Admin bearer token: `parva-test-admin-token`
 
-These defaults are for local testing only and must not be used in production.
+These defaults are for automated/local test runs only and must not be used in
+development or production environments.
 
 ## Recommended external packaging
 

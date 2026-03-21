@@ -21,10 +21,18 @@ class FestivalRuleV5(BaseModel):
     quality_band: RuleQualityBand
 
 
+class ProvenanceAttestation(BaseModel):
+    mode: str = "unsigned"
+    algorithm: Optional[str] = None
+    key_id: Optional[str] = None
+    value: Optional[str] = None
+
+
 class ProvenanceMetaV2(BaseModel):
     snapshot_id: Optional[str] = None
     dataset_hash: Optional[str] = None
     rules_hash: Optional[str] = None
+    attestation: Optional[ProvenanceAttestation] = None
     signature: Optional[str] = None
     verify_url: Optional[str] = None
 

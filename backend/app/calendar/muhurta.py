@@ -121,6 +121,13 @@ CEREMONY_PROFILES = {
         "avoid_chaughadia": {"rog", "kal", "udveg"},
         "minimum_score": 40,
     },
+    "creative_focus": {
+        "preferred_hora_lords": {"mercury", "jupiter", "moon"},
+        "avoid_hora_lords": {"saturn", "mars"},
+        "preferred_chaughadia": {"labh", "shubh", "amrit", "char"},
+        "avoid_chaughadia": {"rog", "kal", "udveg"},
+        "minimum_score": 42,
+    },
     "vivah": {
         "preferred_hora_lords": {"jupiter", "venus", "moon"},
         "avoid_hora_lords": {"saturn", "mars", "sun"},

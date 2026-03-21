@@ -1,49 +1,38 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { KnowledgePanel } from '../components/UI/KnowledgePanel';
+import { Link } from 'react-router-dom';
 import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
+import { KnowledgePanel } from '../components/UI/KnowledgePanel';
+import { MyPlaceSection } from '../consumer/ConsumerSections';
+import { buildConsumerMyPlaceViewModel } from '../consumer/consumerViewModels';
 import { PANCHANGA_GLOSSARY, PERSONAL_PANCHANGA_GLOSSARY } from '../data/temporalGlossary';
-import { festivalAPI, personalAPI } from '../services/api';
-import { useTemporalContext } from '../context/useTemporalContext';
-import { useMemberContext } from '../context/useMemberContext';
 import { LOCATION_PRESETS, findPresetByLocation } from '../data/locationPresets';
+import { useMemberContext } from '../context/useMemberContext';
+import { useTemporalContext } from '../context/useTemporalContext';
+import { festivalAPI, personalAPI } from '../services/api';
+import { describeSupportError } from '../services/errorFormatting';
 import './PersonalPanchangaPage.css';
 
-function parseTimeMinutes(iso) {
-  if (!iso) return null;
-  const parsed = new Date(iso);
-  if (Number.isNaN(parsed.valueOf())) return null;
-  return parsed.getHours() * 60 + parsed.getMinutes();
-}
-
-function safeTime(iso, fallback = 'Time unavailable') {
-  if (!iso) return fallback;
-  const parsed = new Date(iso);
-  if (Number.isNaN(parsed.valueOf())) return fallback;
-  return parsed.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-}
-
 export function PersonalPanchangaPage() {
-  const navigate = useNavigate();
   const { state, setDate, setLocation, setTimezone } = useTemporalContext();
-  const { savePlace } = useMemberContext();
+  const { state: memberState, savePlace } = useMemberContext();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [payload, setPayload] = useState(null);
+  const [contextPayload, setContextPayload] = useState(null);
   const [meta, setMeta] = useState(null);
   const [festivals, setFestivals] = useState([]);
   const [deviceStatus, setDeviceStatus] = useState('');
 
   const activePreset = useMemo(() => findPresetByLocation(state.location), [state.location]);
 
-  const applyPreset = (presetId) => {
+  function applyPreset(presetId) {
     const preset = LOCATION_PRESETS.find((item) => item.id === presetId);
     if (!preset) return;
     setLocation({ latitude: preset.latitude, longitude: preset.longitude });
     setTimezone(preset.timezone);
-  };
+  }
 
-  const useDeviceLocation = () => {
+  function useDeviceLocation() {
     if (!navigator.geolocation) {
       setDeviceStatus('Device location is unavailable here.');
       return;
@@ -69,7 +58,7 @@ export function PersonalPanchangaPage() {
       },
       { maximumAge: 600000, timeout: 4000 },
     );
-  };
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -77,30 +66,42 @@ export function PersonalPanchangaPage() {
     async function load() {
       setLoading(true);
       setError(null);
+
+      const [panchangaResult, festivalsResult, contextResult] = await Promise.allSettled([
+        personalAPI.getPanchangaEnvelope({
+          date: state.date,
+          lat: state.location?.latitude,
+          lon: state.location?.longitude,
+          tz: state.timezone,
+        }),
+        festivalAPI.getOnDate(state.date),
+        personalAPI.getContextEnvelope({
+          date: state.date,
+          lat: state.location?.latitude,
+          lon: state.location?.longitude,
+          tz: state.timezone,
+        }),
+      ]);
+
+      if (cancelled) return;
+
       try {
-        const [envelope, festivalsData] = await Promise.all([
-          personalAPI.getPanchangaEnvelope({
-            date: state.date,
-            lat: state.location?.latitude,
-            lon: state.location?.longitude,
-            tz: state.timezone,
-          }),
-          festivalAPI.getOnDate(state.date).catch(() => []),
-        ]);
-        if (!cancelled) {
-          setPayload(envelope.data);
-          setMeta(envelope.meta);
-          setFestivals(Array.isArray(festivalsData) ? festivalsData : []);
+        if (panchangaResult.status === 'rejected') {
+          throw panchangaResult.reason;
         }
+
+        setPayload(panchangaResult.value.data || null);
+        setMeta(panchangaResult.value.meta || null);
+        setFestivals(festivalsResult.status === 'fulfilled' && Array.isArray(festivalsResult.value) ? festivalsResult.value : []);
+        setContextPayload(contextResult.status === 'fulfilled' ? contextResult.value.data || null : null);
       } catch (err) {
-        if (!cancelled) {
-          setPayload(null);
-          setMeta(null);
-          setFestivals([]);
-          setError(err.message || 'Failed to load personal place guidance');
-        }
+        setPayload(null);
+        setContextPayload(null);
+        setMeta(null);
+        setFestivals([]);
+        setError(describeSupportError(err, 'Failed to load personal place guidance.'));
       } finally {
-        if (!cancelled) setLoading(false);
+        setLoading(false);
       }
     }
 
@@ -110,37 +111,83 @@ export function PersonalPanchangaPage() {
     };
   }, [state.date, state.location?.latitude, state.location?.longitude, state.timezone]);
 
-  const bs = payload?.bikram_sambat;
-  const sunriseDelta = useMemo(() => {
-    const localMinutes = parseTimeMinutes(payload?.local_sunrise);
-    const kathmanduMinutes = parseTimeMinutes(payload?.sunrise);
-    if (localMinutes === null || kathmanduMinutes === null) return null;
-    const delta = localMinutes - kathmanduMinutes;
-    if (delta === 0) return 'Same as Kathmandu';
-    return `${delta > 0 ? '+' : '-'}${Math.abs(delta)} min vs Kathmandu`;
-  }, [payload]);
+  const viewModel = useMemo(
+    () => buildConsumerMyPlaceViewModel({
+      temporalState: state,
+      memberState,
+      activePreset,
+      panchanga: payload,
+      contextPayload,
+      festivals,
+      meta,
+    }),
+    [state, memberState, activePreset, payload, contextPayload, festivals, meta],
+  );
+
+  const preferencesSummary = [
+    state.language === 'ne' ? 'Nepali' : 'English',
+    state.timezone,
+    memberState.preferences.notificationStyle,
+  ].join(' / ');
+
+  if (loading) {
+    return (
+      <section className="personal-page animate-fade-in-up consumer-route consumer-route--utility">
+        <div className="skeleton personal-page__hero" />
+        <div className="personal-summary-grid">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="skeleton" style={{ minHeight: '140px', borderRadius: '1.2rem' }} />
+          ))}
+        </div>
+        <div className="skeleton" style={{ minHeight: '240px', borderRadius: '1.2rem' }} />
+      </section>
+    );
+  }
+
+  if (error || !payload) {
+    return (
+      <section className="personal-page animate-fade-in-up consumer-route consumer-route--utility">
+        <article className="ink-card personal-error" role="alert">
+          <p className="today-page__eyebrow">My Place</p>
+          <h1 className="text-hero">Place-aware guidance is temporarily unavailable.</h1>
+          <p className="personal-page__intro">{error || 'The selected place could not be resolved right now.'}</p>
+        </article>
+      </section>
+    );
+  }
 
   return (
-    <section className="personal-page animate-fade-in-up">
-      <header className="personal-page__hero ink-card">
-        <div className="personal-page__hero-copy">
-          <p className="today-page__eyebrow">My Place</p>
-          <h1 className="text-hero">See how the day shifts for your place.</h1>
-          <p className="personal-page__intro">
-            Start with a city or your device location. Advanced coordinates stay tucked away in More options.
-          </p>
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            onClick={() => savePlace({
-              label: activePreset?.label || 'My place',
-              latitude: state.location?.latitude,
-              longitude: state.location?.longitude,
-              timezone: state.timezone,
-            })}
-          >
-            Save this place
-          </button>
+    <section className="personal-page animate-fade-in-up consumer-route consumer-route--utility">
+      <MyPlaceSection
+        id={undefined}
+        viewModel={viewModel}
+        languageLabel={state.language === 'ne' ? 'Nepali' : 'English'}
+        timezoneLabel={state.timezone}
+        notificationStyle={memberState.preferences.notificationStyle}
+        activityFocus={memberState.preferences.activityFocus}
+        placeLabel={viewModel.placeLabel}
+        title="Keep the place that changes your day in view."
+        body={viewModel.subtitle}
+        action={<Link className="btn btn-secondary btn-sm" to="/#my-place">Jump to home section</Link>}
+        onSavePlace={() => savePlace({
+          label: viewModel.placeLabel,
+          latitude: state.location?.latitude,
+          longitude: state.location?.longitude,
+          timezone: state.timezone,
+        })}
+        onCyclePlace={() => {
+          const currentIndex = LOCATION_PRESETS.findIndex((item) => item.id === activePreset?.id);
+          const nextPreset = LOCATION_PRESETS[(currentIndex + 1 + LOCATION_PRESETS.length) % LOCATION_PRESETS.length];
+          applyPreset(nextPreset.id);
+        }}
+      />
+
+      <section className="ink-card personal-page__route-card">
+        <div className="personal-page__route-header">
+          <div>
+            <p className="today-page__eyebrow">Place controls</p>
+            <h2>Adjust the place only when the answer needs to change.</h2>
+          </div>
         </div>
 
         <form className="personal-page__controls" onSubmit={(event) => event.preventDefault()}>
@@ -148,6 +195,7 @@ export function PersonalPanchangaPage() {
             <span>Date</span>
             <input type="date" value={state.date} onChange={(event) => setDate(event.target.value)} required />
           </label>
+
           <label className="ink-input">
             <span>Place</span>
             <select value={activePreset?.id || ''} onChange={(event) => applyPreset(event.target.value)}>
@@ -157,85 +205,100 @@ export function PersonalPanchangaPage() {
               ))}
             </select>
           </label>
-          <button type="button" className="btn btn-secondary" onClick={useDeviceLocation}>Use my device</button>
-          {deviceStatus ? <p className="personal-page__status">{deviceStatus}</p> : null}
+
+          <button type="button" className="btn btn-secondary" onClick={useDeviceLocation}>
+            Use my device
+          </button>
         </form>
-      </header>
 
-      {loading ? (
-        <div className="personal-loading">
-          <div className="skeleton" style={{ minHeight: '220px', borderRadius: '1.4rem' }} />
-          <div className="personal-cards-grid">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="skeleton" style={{ minHeight: '140px', borderRadius: '1.2rem' }} />
-            ))}
-          </div>
-        </div>
-      ) : null}
+        {deviceStatus ? <p className="personal-page__status">{deviceStatus}</p> : null}
+      </section>
 
-      {!loading && error ? (
-        <div className="ink-card personal-error" role="alert">
-          <h2>My Place guidance is unavailable right now</h2>
-          <p>{error}</p>
-        </div>
-      ) : null}
+      <section className="personal-summary-grid">
+        <article className="ink-card personal-summary-card">
+          <span className="today-page__eyebrow">Local sunrise</span>
+          <strong>{viewModel.localSunrise}</strong>
+          <p>Use this when your place materially shifts the start of the day.</p>
+        </article>
+        <article className="ink-card personal-summary-card">
+          <span className="today-page__eyebrow">What changes here</span>
+          <strong>{viewModel.sunriseShift}</strong>
+          <p>{viewModel.savedStatus}</p>
+        </article>
+        <article className="ink-card personal-summary-card">
+          <span className="today-page__eyebrow">Preferences</span>
+          <strong>{memberState.preferences.activityFocus}</strong>
+          <p>{preferencesSummary}</p>
+        </article>
+      </section>
 
-      {!loading && !error && payload ? (
-        <>
-          <section className="personal-summary-grid">
-            <article className="ink-card personal-summary-card">
-              <span className="today-page__eyebrow">Date</span>
-              <strong>{bs ? `${bs.year} ${bs.month_name} ${bs.day}` : state.date}</strong>
-              <p>{activePreset?.label || payload.location?.timezone || state.timezone}</p>
-            </article>
-            <article className="ink-card personal-summary-card">
-              <span className="today-page__eyebrow">Local sunrise</span>
-              <strong>{safeTime(payload.local_sunrise)}</strong>
-              <p>Compared against Kathmandu timing for the same day.</p>
-            </article>
-            <article className="ink-card personal-summary-card">
-              <span className="today-page__eyebrow">What changes here</span>
-              <strong>{sunriseDelta || 'No sunrise shift available yet'}</strong>
-              <p>Useful when the day starts materially earlier or later for your place.</p>
-            </article>
-          </section>
+      <section className="personal-page__story-grid">
+        <article className="ink-card personal-context-card personal-context-card--primary">
+          <span className="today-page__eyebrow">Current context</span>
+          <strong>{viewModel.contextTitle}</strong>
+          <p>{viewModel.contextSummary}</p>
 
-          {festivals?.length > 0 ? (
-            <section className="personal-festivals animate-fade-in-up">
-              <h2 className="personal-festivals__title">Festivals on this day</h2>
+          {viewModel.festivals.length ? (
+            <div className="personal-festivals">
+              <h3 className="personal-festivals__title">Observances active for this place</h3>
               <div className="personal-festivals__chips">
-                {festivals.map((festival) => (
-                  <button key={festival.id} className="festival-chip" onClick={() => navigate(`/festivals/${festival.id}`)}>
-                    <span className="festival-chip__name">{festival.name}</span>
-                  </button>
+                {viewModel.festivals.map((festival) => (
+                  <Link key={festival.id} className="festival-chip" to={`/festivals/${festival.id}`}>
+                    <span className="festival-chip__name">{festival.title}</span>
+                  </Link>
                 ))}
               </div>
-            </section>
+            </div>
           ) : null}
+        </article>
 
+        <article className="ink-card personal-context-card">
+          <span className="today-page__eyebrow">Saved reminders</span>
+          <strong>{viewModel.reminders.length ? `${viewModel.reminders.length} in view` : 'No reminders yet'}</strong>
+          {viewModel.reminders.length ? (
+            <ul className="personal-reminders">
+              {viewModel.reminders.map((item) => (
+                <li key={item.id}>
+                  <strong>{item.title}</strong>
+                  <span>{item.note}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Festival and best-time reminders will appear here when you save them locally.</p>
+          )}
+
+          <dl className="personal-page__mini-facts">
+            <div>
+              <dt>Place basis</dt>
+              <dd>{viewModel.placeLabel}</dd>
+            </div>
+            <div>
+              <dt>Sunrise shift</dt>
+              <dd>{viewModel.sunriseShift}</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>{viewModel.savedStatus}</dd>
+            </div>
+          </dl>
+        </article>
+      </section>
+
+      <details className="personal-page__accordion">
+        <summary>Place signals and method</summary>
+        <div className="personal-page__accordion-body">
           <section className="personal-cards-grid stagger-children">
-            <article className="ink-card ink-card--vermillion panchanga-card"><h3>Tithi</h3><p className="panchanga-card__value">{payload.tithi?.name || 'Pending'}</p><p className="panchanga-card__meta">{payload.tithi?.paksha || 'Lunar phase pending'}</p></article>
-            <article className="ink-card ink-card--saffron panchanga-card"><h3>Nakshatra</h3><p className="panchanga-card__value">{payload.nakshatra?.name || 'Pending'}</p><p className="panchanga-card__meta">Number {payload.nakshatra?.number || '-'}</p></article>
-            <article className="ink-card ink-card--gold panchanga-card"><h3>Yoga</h3><p className="panchanga-card__value">{payload.yoga?.name || 'Pending'}</p><p className="panchanga-card__meta">Number {payload.yoga?.number || '-'}</p></article>
-            <article className="ink-card ink-card--jade panchanga-card"><h3>Karana</h3><p className="panchanga-card__value">{payload.karana?.name || 'Pending'}</p><p className="panchanga-card__meta">Number {payload.karana?.number || '-'}</p></article>
-            <article className="ink-card ink-card--amber panchanga-card"><h3>Weekday</h3><p className="panchanga-card__value">{payload.vaara?.name_english || 'Pending'}</p><p className="panchanga-card__meta">{payload.vaara?.name_sanskrit || ''}</p></article>
+            {viewModel.cards.map((card) => (
+              <article key={card.label} className="ink-card panchanga-card">
+                <h3>{card.label}</h3>
+                <p className="panchanga-card__value">{card.value}</p>
+                <p className="panchanga-card__meta">{card.note}</p>
+              </article>
+            ))}
           </section>
 
-          <EvidenceDrawer
-            title="My Place"
-            intro="This drawer shows the place used, timing basis, and how much personal timing context was available for the selected day."
-            methodRef={meta?.method || payload?.method_profile || 'Personal place profile'}
-            confidenceNote={meta?.confidence?.level || meta?.confidence || payload?.quality_band || 'Public guidance'}
-            placeUsed={activePreset?.label || state.timezone}
-            computedForDate={state.date}
-            availability={[
-              { label: 'Local sunrise', available: Boolean(payload?.local_sunrise), note: 'Sunrise shifts are shown only when both local and Kathmandu comparison values are available.' },
-              { label: 'Festival overlap', available: Boolean(festivals?.length), note: 'Same-day observances appear when the selected date intersects current festival coverage.' },
-              { label: 'Signal set', available: Boolean(payload?.tithi?.name || payload?.nakshatra?.name), note: 'Tithi, nakshatra, yoga, and karana are grouped into one place-aware reading.' },
-            ]}
-            meta={meta}
-            traceFallbackId={payload?.calculation_trace_id}
-          />
+          <EvidenceDrawer {...viewModel.evidence} />
 
           <KnowledgePanel
             title={PERSONAL_PANCHANGA_GLOSSARY.title}
@@ -243,8 +306,8 @@ export function PersonalPanchangaPage() {
             sections={[...PERSONAL_PANCHANGA_GLOSSARY.sections, ...PANCHANGA_GLOSSARY.sections.slice(0, 1)]}
             className="personal-knowledge"
           />
-        </>
-      ) : null}
+        </div>
+      </details>
     </section>
   );
 }

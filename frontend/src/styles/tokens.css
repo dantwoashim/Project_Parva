@@ -1,53 +1,237 @@
-/* tokens.css — Compatibility bridge
-   Main design tokens are now in index.css.
-   This file maps old variable names → new. */
+/* Canonical design tokens for the launch-critical frontend system. */
 
 :root {
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-serif: 'Noto Serif', Georgia, serif;
+  --font-sans: 'Inter', 'Segoe UI', sans-serif;
   --font-nepali: 'Noto Sans Devanagari', sans-serif;
 
+  --bp-xs: 360px;
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1440px;
+
+  --layout-max-utility: 960px;
+  --layout-max-overview: 1120px;
+  --layout-max-explorer: 1180px;
+  --layout-max-detail: 1200px;
+  --layout-max-analysis: 1280px;
+  --layout-section-gap-sm: 1rem;
+  --layout-section-gap-md: 1.5rem;
+  --layout-section-gap-lg: 2rem;
+  --layout-section-gap-xl: 2.75rem;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.3rem;
+  --text-2xl: 1.65rem;
+  --text-3xl: 2.15rem;
+  --text-hero: clamp(2.1rem, 5vw, 3.6rem);
+
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.25rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.4rem;
+  --radius-full: 999px;
+
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 320ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0.9, 0.2, 1);
+  --motion-rise-sm: translateY(6px);
+  --motion-rise-md: translateY(12px);
+  --motion-scale-press: 0.985;
+
+  --z-base: 1;
+  --z-sticky: 60;
+  --z-overlay: 100;
+  --z-modal: 120;
+  --z-toast: 140;
+
+  --gold: #735c00;
+  --gold-soft: #9c3f00;
+  --gold-bright: #c45100;
+  --saffron: #9c3f00;
+  --jade: #7a6a52;
+  --vermillion: #ba1a1a;
+  --indigo: #5f656c;
+  --amber: #cca830;
+
+  --bg-deep: #fff8f3;
+  --bg-surface: #fff2e7;
+  --bg-elevated: #fffdf9;
+  --surface-1: rgba(255, 248, 243, 0.96);
+  --surface-2: rgba(251, 236, 217, 0.94);
+  --surface-3: rgba(48, 43, 38, 0.03);
+  --surface-hover: rgba(156, 63, 0, 0.06);
+  --bg-card: var(--surface-1);
+  --bg-card-hover: rgba(48, 43, 38, 0.035);
+  --bg-input: rgba(48, 43, 38, 0.025);
+  --bg-input-focus: rgba(156, 63, 0, 0.04);
+
+  --editorial-paper: #fff8f3;
+  --editorial-panel: rgba(255, 248, 243, 0.94);
+  --editorial-ink: #221a0f;
+  --editorial-muted: #6f6558;
+  --editorial-accent: #9c3f00;
+
+  --text-primary: #221a0f;
+  --text-secondary: #584238;
+  --text-muted: #8c7166;
+  --text-inverse: #fff8f3;
+
+  --border-subtle: rgba(140, 113, 102, 0.16);
+  --border-strong: rgba(115, 92, 0, 0.22);
+  --border-card: var(--border-subtle);
+  --border-hover: rgba(115, 92, 0, 0.34);
+
+  --shadow-card: 0 20px 50px rgba(88, 66, 56, 0.08);
+  --shadow-soft: 0 12px 28px rgba(88, 66, 56, 0.06);
+  --shadow-glow-gold: 0 10px 26px rgba(115, 92, 0, 0.08);
+  --shadow-glow-gold-strong: 0 16px 38px rgba(115, 92, 0, 0.12);
+  --shadow-card-hover: 0 24px 56px rgba(88, 66, 56, 0.1);
+  --shell-bg-top: #fff8f3;
+  --shell-bg-bottom: #fff2e2;
+  --shell-header-bg: rgba(255, 248, 243, 0.72);
+
+  --focus-outline-color: rgba(214, 170, 103, 0.85);
+  --focus-outline-width: 2px;
+  --focus-ring: 0 0 0 3px rgba(201, 169, 110, 0.25);
+
+  /* Compatibility aliases for older shared styles. */
   --color-primary: var(--gold);
   --color-primary-dark: #a8862e;
   --color-primary-light: var(--gold-bright);
   --color-primary-subtle: rgba(201, 169, 110, 0.1);
-
   --color-secondary: var(--saffron);
   --color-secondary-dark: #c08520;
   --color-secondary-light: #f0b44a;
   --color-secondary-subtle: rgba(232, 164, 56, 0.1);
-
   --color-bg-deep: var(--bg-deep);
   --color-bg-surface: var(--bg-surface);
   --color-bg-elevated: var(--bg-elevated);
   --color-bg-card: var(--bg-card);
   --color-bg-hover: var(--bg-card-hover);
-
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-text-inverse: var(--text-inverse);
-
   --color-border: var(--border-card);
   --color-border-light: var(--border-subtle);
   --color-border-focus: var(--gold);
-
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
-  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-sm: var(--shadow-soft);
+  --shadow-md: var(--shadow-card);
+  --shadow-lg: var(--shadow-card-hover);
   --shadow-hover: var(--shadow-glow-gold);
-
   --transition-fast: var(--duration-fast) var(--ease-out);
   --transition-base: var(--duration-base) var(--ease-out);
   --transition-slow: var(--duration-slow) var(--ease-out);
+  --interactive-press-scale: var(--motion-scale-press);
+}
 
-  --focus-ring: 0 0 0 3px rgba(201, 169, 110, 0.25);
-  --interactive-press-scale: 0.985;
+[data-theme='warm-paper'],
+[data-theme='dawn-paper'] {
+  --bg-deep: #f6f1e7;
+  --bg-surface: #efe7da;
+  --bg-elevated: #fffaf2;
+  --surface-1: rgba(255, 250, 243, 0.95);
+  --surface-2: rgba(247, 239, 228, 0.98);
+  --surface-3: rgba(48, 43, 38, 0.03);
+  --surface-hover: rgba(200, 162, 103, 0.08);
+  --bg-card: var(--surface-1);
+  --bg-card-hover: rgba(48, 43, 38, 0.035);
+  --bg-input: rgba(48, 43, 38, 0.03);
+  --bg-input-focus: rgba(48, 43, 38, 0.06);
+  --editorial-paper: #f6f1e7;
+  --editorial-panel: rgba(255, 250, 243, 0.96);
+  --editorial-ink: #1e1711;
+  --editorial-muted: #5c4c40;
+  --editorial-accent: #b8823c;
+  --text-primary: #1f1711;
+  --text-secondary: #43342b;
+  --text-muted: #67574a;
+  --text-inverse: #f6f1e7;
+  --border-subtle: rgba(31, 23, 17, 0.1);
+  --border-strong: rgba(184, 130, 60, 0.24);
+  --border-card: var(--border-subtle);
+  --border-hover: rgba(184, 130, 60, 0.38);
+  --shadow-card: 0 22px 48px rgba(77, 63, 40, 0.12);
+  --shadow-soft: 0 14px 30px rgba(77, 63, 40, 0.08);
+  --shadow-card-hover: 0 26px 58px rgba(77, 63, 40, 0.16);
+  --shell-bg-top: #f6f1e7;
+  --shell-bg-bottom: #efe7da;
+  --shell-header-bg: rgba(255, 250, 243, 0.84);
+  --focus-outline-color: rgba(156, 63, 0, 0.82);
+  --focus-ring: 0 0 0 3px rgba(200, 162, 103, 0.24);
+}
+
+[data-theme='ink-black'],
+[data-theme='nocturne-ink'] {
+  --bg-deep: #14100d;
+  --bg-surface: #1d1713;
+  --bg-elevated: #241d19;
+  --surface-1: rgba(32, 25, 21, 0.94);
+  --surface-2: rgba(40, 31, 26, 0.98);
+  --surface-3: rgba(255, 243, 224, 0.04);
+  --surface-hover: rgba(200, 162, 103, 0.12);
+  --bg-card: var(--surface-1);
+  --bg-card-hover: rgba(255, 243, 224, 0.05);
+  --bg-input: rgba(255, 243, 224, 0.04);
+  --bg-input-focus: rgba(200, 162, 103, 0.12);
+  --editorial-paper: #1a1411;
+  --editorial-panel: rgba(29, 23, 19, 0.94);
+  --editorial-ink: #f7eee2;
+  --editorial-muted: #c4b39f;
+  --editorial-accent: #d8b173;
+  --text-primary: #f7eee2;
+  --text-secondary: #d6c6b3;
+  --text-muted: #ad9b87;
+  --text-inverse: #14100d;
+  --border-subtle: rgba(247, 238, 226, 0.12);
+  --border-strong: rgba(216, 177, 115, 0.28);
+  --border-card: var(--border-subtle);
+  --border-hover: rgba(216, 177, 115, 0.42);
+  --shadow-card: 0 24px 56px rgba(0, 0, 0, 0.34);
+  --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.28);
+  --shadow-glow-gold: 0 12px 30px rgba(216, 177, 115, 0.12);
+  --shadow-glow-gold-strong: 0 18px 42px rgba(216, 177, 115, 0.18);
+  --shadow-card-hover: 0 28px 64px rgba(0, 0, 0, 0.42);
+  --shell-bg-top: #14100d;
+  --shell-bg-bottom: #211915;
+  --shell-header-bg: rgba(20, 16, 13, 0.82);
+  --focus-outline-color: rgba(216, 177, 115, 0.92);
+  --focus-ring: 0 0 0 3px rgba(216, 177, 115, 0.24);
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+    --motion-rise-sm: translateY(0);
+    --motion-rise-md: translateY(0);
+    --motion-scale-press: 1;
     --interactive-press-scale: 1;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

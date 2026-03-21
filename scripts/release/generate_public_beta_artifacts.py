@@ -32,7 +32,7 @@ def main() -> int:
     python = sys.executable
     steps = [
         (
-            "1/4 Rule ingestion summary",
+            "1/6 Rule ingestion summary",
             [
                 python,
                 "scripts/rules/ingest_rule_sources.py",
@@ -43,9 +43,11 @@ def main() -> int:
                 str(args.computed_target),
             ],
         ),
-        ("2/4 Accuracy report", [python, "scripts/generate_accuracy_report.py"]),
-        ("3/4 Authority dashboard", [python, "scripts/generate_authority_dashboard.py"]),
-        ("4/4 Month 9 dossier", [python, "scripts/release/generate_month9_dossier.py"]),
+        ("2/6 Accuracy report", [python, "scripts/generate_accuracy_report.py"]),
+        ("3/6 Conformance report", [python, "scripts/spec/run_conformance_tests.py"]),
+        ("4/6 Authority dashboard", [python, "scripts/generate_authority_dashboard.py"]),
+        ("5/6 Dashboard metrics", [python, "scripts/release/generate_dashboard_metrics.py"]),
+        ("6/6 Month 9 dossier", [python, "scripts/release/generate_month9_dossier.py"]),
     ]
 
     for label, command in steps:

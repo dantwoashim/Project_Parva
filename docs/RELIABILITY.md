@@ -19,6 +19,9 @@ Current checks:
 
 ## Incident playbooks
 
+For beta intake, severity classification, and support routing, use
+`docs/CLOSED_BETA_OPERATIONS.md` alongside these technical playbooks.
+
 ### `ephemeris_unavailable`
 
 - keep responses up with degraded metadata only if cache artifacts exist
