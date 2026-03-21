@@ -1,22 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  CONSUMER_FESTIVAL_FILTERS,
-  buildConsumerFestivalsViewModel,
-} from '../consumer/consumerViewModels';
+import { CONSUMER_FESTIVAL_FILTERS } from '../consumer/consumerViewModels';
 import { useMemberContext } from '../context/useMemberContext';
 import { useTemporalContext } from '../context/useTemporalContext';
 import { useDialogA11y } from '../hooks/useDialogA11y';
+import { useFestivalExplorerData } from '../hooks/useFestivalExplorerData';
 import { useCopy } from '../i18n/useCopy';
-import { festivalAPI } from '../services/api';
 import { trackEvent } from '../services/analytics';
-import { describeSupportError } from '../services/errorFormatting';
-import { addIsoDays } from '../utils/isoDate';
 import './FestivalExplorerPage.css';
-
-function addDays(base, days) {
-  return addIsoDays(base, days);
-}
 
 function posterClass(item) {
   return `explorer-poster explorer-poster--${item?.artKey || 'lamp'}`.trim();
@@ -60,73 +51,16 @@ export function FestivalExplorerPage() {
   const [sort, setSort] = useState('chronological');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const { dialogRef } = useDialogA11y(filtersOpen, () => setFiltersOpen(false));
-  const [payload, setPayload] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const allFestivalsRef = useRef(null);
-
-  const fromDate = state.date;
-  const toDate = useMemo(() => addDays(state.date, 180), [state.date]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function loadTimeline() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const [todayFestivals, timelineEnvelope] = await Promise.all([
-          festivalAPI.getOnDate(fromDate),
-          festivalAPI.getTimelineEnvelope({
-            from: fromDate,
-            to: toDate,
-            qualityBand: 'computed',
-            category: category || undefined,
-            region: region || undefined,
-            search: search.trim() || undefined,
-            sort: sort || 'chronological',
-            lang: 'en',
-          }),
-        ]);
-
-        if (!cancelled) {
-          setPayload({
-            ...(timelineEnvelope.data || {}),
-            active_today: Array.isArray(todayFestivals) ? todayFestivals : [],
-          });
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setPayload(null);
-          setError(describeSupportError(err, 'Festival timeline is unavailable right now.'));
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    loadTimeline();
-    return () => {
-      cancelled = true;
-    };
-  }, [category, fromDate, region, search, sort, toDate]);
-
-  const viewModel = useMemo(
-    () => buildConsumerFestivalsViewModel({
-      payload,
-      search,
-      category,
-      savedFestivals: memberState.savedFestivals,
-      temporalState: {
-        language: 'en',
-        timezone: state.timezone,
-      },
-    }),
-    [payload, search, category, memberState.savedFestivals, state.timezone],
-  );
+  const { loading, error, viewModel } = useFestivalExplorerData({
+    date: state.date,
+    timezone: state.timezone,
+    savedFestivals: memberState.savedFestivals,
+    search,
+    category,
+    region,
+    sort,
+  });
 
   const scrollToAllFestivals = () => {
     allFestivalsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
