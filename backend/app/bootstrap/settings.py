@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 import os
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Final
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
-DEFAULT_DEV_ADMIN_TOKEN = "parva-dev-admin-token"
-DEFAULT_DEV_READ_KEY = "parva-dev-read-key"
+TEST_ENV_VALUES: Final[frozenset[str]] = frozenset({"test"})
+DEFAULT_TEST_ADMIN_TOKEN = "parva-test-admin-token"
+DEFAULT_TEST_READ_KEY = "parva-test-read-key"
 
 
 def _parse_bool(value: str | None, *, default: bool = False) -> bool:
@@ -40,12 +43,23 @@ class AppSettings:
     admin_token: str | None
     api_keys: dict[str, APIKeyRecord] = field(default_factory=dict)
     rate_limit_enabled: bool = True
+    rate_limit_backend: str = "memory"
+    redis_url: str | None = None
     require_precomputed: bool = False
     trusted_proxy_ips: frozenset[str] = field(default_factory=frozenset)
 
     @property
     def is_dev_environment(self) -> bool:
         return self.environment.strip().lower() in DEV_ENV_VALUES
+
+
+def _allow_test_only_credentials(environment: str) -> bool:
+    normalized = environment.strip().lower()
+    if normalized in TEST_ENV_VALUES:
+        return True
+    if "pytest" in sys.modules:
+        return True
+    return bool(os.getenv("PYTEST_CURRENT_TEST"))
 
 
 def _frontend_dist_from_env() -> Path:
@@ -58,8 +72,8 @@ def _frontend_dist_from_env() -> Path:
 def _parse_api_keys(raw: str, *, environment: str) -> dict[str, APIKeyRecord]:
     records: dict[str, APIKeyRecord] = {}
     raw = raw.strip()
-    if not raw and environment.strip().lower() in DEV_ENV_VALUES:
-        raw = f"local-read:{DEFAULT_DEV_READ_KEY}:commercial.read|public.read"
+    if not raw and _allow_test_only_credentials(environment):
+        raw = f"local-read:{DEFAULT_TEST_READ_KEY}:commercial.read|public.read"
 
     if not raw:
         return records
@@ -96,8 +110,8 @@ def _parse_optional_text(value: str | None) -> str | None:
 def load_settings() -> AppSettings:
     environment = os.getenv("PARVA_ENV", "development").strip() or "development"
     admin_token = os.getenv("PARVA_ADMIN_TOKEN", "").strip() or None
-    if admin_token is None and environment.lower() in DEV_ENV_VALUES:
-        admin_token = DEFAULT_DEV_ADMIN_TOKEN
+    if admin_token is None and _allow_test_only_credentials(environment):
+        admin_token = DEFAULT_TEST_ADMIN_TOKEN
 
     return AppSettings(
         environment=environment,
@@ -118,6 +132,8 @@ def load_settings() -> AppSettings:
         admin_token=admin_token,
         api_keys=_parse_api_keys(os.getenv("PARVA_API_KEYS", ""), environment=environment),
         rate_limit_enabled=_parse_bool(os.getenv("PARVA_RATE_LIMIT_ENABLED"), default=True),
+        rate_limit_backend=(os.getenv("PARVA_RATE_LIMIT_BACKEND", "memory").strip() or "memory"),
+        redis_url=_parse_optional_text(os.getenv("PARVA_REDIS_URL")),
         require_precomputed=_parse_bool(os.getenv("PARVA_REQUIRE_PRECOMPUTED"), default=False),
         trusted_proxy_ips=_parse_csv_set(os.getenv("PARVA_TRUSTED_PROXY_IPS", "")),
     )
@@ -156,6 +172,17 @@ def validate_settings(settings: AppSettings) -> list[str]:
         errors.append(
             "Webhook routes are not part of the v3 launch build. Keep PARVA_ENABLE_WEBHOOKS=false."
         )
+
+    if settings.rate_limit_enabled:
+        backend = settings.rate_limit_backend.strip().lower()
+        if backend not in {"memory", "redis"}:
+            errors.append("PARVA_RATE_LIMIT_BACKEND must be either memory or redis.")
+        if backend == "redis" and not settings.redis_url:
+            errors.append("PARVA_REDIS_URL is required when PARVA_RATE_LIMIT_BACKEND=redis.")
+        if settings.environment.lower() == "production" and backend == "memory":
+            errors.append(
+                "Production deployments must use PARVA_RATE_LIMIT_BACKEND=redis for distributed throttling."
+            )
 
     if settings.serve_frontend and settings.environment.lower() == "production":
         index_path = settings.frontend_dist / "index.html"

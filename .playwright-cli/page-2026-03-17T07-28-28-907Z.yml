@@ -1,0 +1,146 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - link "Parva Calm guide to Nepal's sacred time" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e7]:
+        - heading "Parva" [level=1] [ref=e8]
+        - paragraph [ref=e9]: Calm guide to Nepal's sacred time
+    - generic [ref=e10]:
+      - button "Search" [ref=e11] [cursor=pointer]
+      - button "Place Kathmandu" [ref=e12] [cursor=pointer]:
+        - generic [ref=e13]: Place
+        - strong [ref=e14]: Kathmandu
+      - link "Profile" [ref=e15] [cursor=pointer]:
+        - /url: /profile
+      - button "Menu" [ref=e16] [cursor=pointer]
+  - main [ref=e17]:
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - paragraph [ref=e32]: Kathmandu
+          - heading "Today in Kathmandu" [level=1] [ref=e33]
+          - paragraph [ref=e34]: Chaitra 3, 2082
+          - paragraph [ref=e35]: March 17, 2026
+          - paragraph [ref=e36]: Trayodashi shapes the day with a steadier, more intentional tone.
+          - paragraph [ref=e37]: Mitra is the clearest opening in the current live ranking.
+          - article [ref=e38]:
+            - text: Best window
+            - strong [ref=e39]: 7:48 AM - 8:36 AM
+            - paragraph [ref=e40]: Use this window for the most important plan of the day.
+            - link "Open Best Time" [ref=e41] [cursor=pointer]:
+              - /url: /best-time
+        - generic [ref=e42]:
+          - article [ref=e43]:
+            - text: Avoid window
+            - strong [ref=e44]: 3:11 PM - 4:41 PM
+            - paragraph [ref=e45]: Keep lower-priority tasks here when possible.
+          - article [ref=e46]:
+            - text: Day tone
+            - strong [ref=e47]: Siddha
+            - paragraph [ref=e48]: Dhanishta is shaping the social and emotional tone of the day.
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]: Date
+          - textbox "Date" [ref=e52]: 2026-03-17
+        - generic [ref=e53]:
+          - text: Rhythm
+          - strong [ref=e54]: Siddha
+        - button "How this was calculated" [ref=e55] [cursor=pointer]
+      - generic [ref=e56]:
+        - generic [ref=e58]:
+          - paragraph [ref=e59]: What the day feels like
+          - heading "Today's live timing rhythm" [level=2] [ref=e60]
+        - paragraph [ref=e61]: Start with the strongest windows. Expand into the rest of the day only when you need more than the first answer.
+        - generic [ref=e62]:
+          - article [ref=e63]:
+            - generic [ref=e64]: Mitra
+            - strong [ref=e65]: 7:48 AM - 8:36 AM
+            - paragraph [ref=e66]: quality:auspicious
+          - article [ref=e67]:
+            - generic [ref=e68]: Vishvedeva
+            - strong [ref=e69]: 11:00 AM - 11:48 AM
+            - paragraph [ref=e70]: quality:neutral
+          - article [ref=e71]:
+            - generic [ref=e72]: Bhaga
+            - strong [ref=e73]: 5:23 PM - 6:11 PM
+            - paragraph [ref=e74]: quality:neutral
+          - article [ref=e75]:
+            - generic [ref=e76]: Girisha
+            - strong [ref=e77]: 6:11 PM - 6:59 PM
+            - paragraph [ref=e78]: quality:neutral
+      - generic [ref=e79]:
+        - generic [ref=e80]:
+          - generic [ref=e82]:
+            - paragraph [ref=e83]: What's active
+            - heading "Observances in view" [level=2] [ref=e84]
+          - generic [ref=e85]:
+            - link "Ghode Jatra Date pending Horse parade festival at Tundikhel" [ref=e86] [cursor=pointer]:
+              - /url: /festivals/ghode-jatra
+              - strong [ref=e87]: Ghode Jatra
+              - generic [ref=e88]: Date pending
+              - paragraph [ref=e89]: Horse parade festival at Tundikhel
+            - link "Ram Navami March 26, 2026 Birthday of Lord Rama" [ref=e90] [cursor=pointer]:
+              - /url: /festivals/ram-navami
+              - strong [ref=e91]: Ram Navami
+              - generic [ref=e92]: March 26, 2026
+              - paragraph [ref=e93]: Birthday of Lord Rama
+            - 'link "Bisket Jatra April 8 - 2026 (day: 16) Bhaktapur''s dramatic New Year chariot festival" [ref=e94] [cursor=pointer]':
+              - /url: /festivals/bisket-jatra
+              - strong [ref=e95]: Bisket Jatra
+              - generic [ref=e96]: "April 8 - 2026 (day: 16)"
+              - paragraph [ref=e97]: Bhaktapur's dramatic New Year chariot festival
+            - link "Nepali New Year April 14, 2026 Beginning of the Bikram Sambat calendar year" [ref=e98] [cursor=pointer]:
+              - /url: /festivals/bs-new-year
+              - strong [ref=e99]: Nepali New Year
+              - generic [ref=e100]: April 14, 2026
+              - paragraph [ref=e101]: Beginning of the Bikram Sambat calendar year
+        - generic [ref=e102]:
+          - generic [ref=e104]:
+            - paragraph [ref=e105]: Why the day looks this way
+            - heading "Signal set" [level=2] [ref=e106]
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109]: Tithi
+              - strong [ref=e110]: Trayodashi
+              - paragraph [ref=e111]: krishna fortnight
+            - generic [ref=e112]:
+              - generic [ref=e113]: Nakshatra
+              - strong [ref=e114]: Dhanishta
+              - paragraph [ref=e115]: Star field context appears here when available.
+            - generic [ref=e116]:
+              - generic [ref=e117]: Yoga
+              - strong [ref=e118]: Siddha
+              - paragraph [ref=e119]: Vanija
+            - generic [ref=e120]:
+              - generic [ref=e121]: Karana
+              - strong [ref=e122]: Vanija
+              - paragraph [ref=e123]: Tuesday
+        - generic [ref=e124]:
+          - generic [ref=e126]:
+            - paragraph [ref=e127]: Act on it
+            - heading "How to use today" [level=2] [ref=e128]
+          - generic [ref=e129]:
+            - generic [ref=e130]:
+              - term [ref=e131]: Lead with
+              - definition [ref=e132]: Use this window for the most important plan of the day.
+            - generic [ref=e133]:
+              - term [ref=e134]: Keep light
+              - definition [ref=e135]: Keep lower-priority tasks here when possible.
+            - generic [ref=e136]:
+              - term [ref=e137]: Place context
+              - definition [ref=e138]: Kathmandu is the current place basis for today's answer.
+  - contentinfo [ref=e19]:
+    - generic [ref=e20]:
+      - strong [ref=e21]: Parva
+      - generic [ref=e22]: A calm guide to Nepal's sacred time, with meaning first and method available when you want it.
+    - generic [ref=e23]:
+      - link "About" [ref=e24] [cursor=pointer]:
+        - /url: /about
+      - link "Methodology" [ref=e25] [cursor=pointer]:
+        - /url: /methodology
+      - link "Integrations" [ref=e26] [cursor=pointer]:
+        - /url: /integrations
+      - link "Contact" [ref=e27] [cursor=pointer]:
+        - /url: mailto:hello@parva.app
+      - link "For developers" [ref=e28] [cursor=pointer]:
+        - /url: /developers/index.html

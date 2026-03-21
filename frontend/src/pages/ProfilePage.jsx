@@ -1,51 +1,71 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useMemberContext } from '../context/useMemberContext';
+import { UtilityPageHeader, UtilityStatGrid } from '../consumer/UtilityPages';
 import { serializeMemberState } from '../context/memberContextState';
+import { useMemberContext } from '../context/useMemberContext';
 import { useTemporalContext } from '../context/useTemporalContext';
 import { findPresetByLocation } from '../data/locationPresets';
+import { useCopy } from '../i18n/useCopy';
 import './ProfilePage.css';
+
+const THEME_OPTIONS = [
+  { value: 'ink-black', label: 'Ink Black' },
+  { value: 'warm-paper', label: 'Warm Paper' },
+];
+
+const NOTIFICATION_STYLES = [
+  { value: 'balanced', label: 'Balanced' },
+  { value: 'gentle', label: 'Gentle' },
+  { value: 'focused', label: 'Focused' },
+];
+
+const ACTIVITY_OPTIONS = [
+  { value: 'meditation', label: 'Meditation' },
+  { value: 'travel', label: 'Travel' },
+  { value: 'new_venture', label: 'New venture' },
+];
 
 export function ProfilePage() {
   const { state, setLanguage, setTheme } = useTemporalContext();
+  const { copy } = useCopy();
   const {
     state: memberState,
     updatePreferences,
     importLocalState,
     clearLocalState,
   } = useMemberContext();
-  const importInputRef = useRef(null);
-  const [localDataStatus, setLocalDataStatus] = useState('');
-  const [confirmClear, setConfirmClear] = useState(false);
   const activePreset = findPresetByLocation(state.location);
-  const hasLocalState = summaryCount(memberState) > 0;
+  const importInputRef = useRef(null);
+  const [status, setStatus] = useState('');
+  const [confirmClear, setConfirmClear] = useState(false);
+  const persistenceLabel = memberState.account.mode === 'guest'
+    ? copy('profile.cache.guest')
+    : copy('profile.cache.accountBacked');
 
   const summaryItems = [
     { label: 'Saved places', value: memberState.savedPlaces.length },
-    { label: 'Saved observances', value: memberState.savedFestivals.length },
+    { label: 'Saved festivals', value: memberState.savedFestivals.length },
     { label: 'Reminders', value: memberState.reminders.length },
-    { label: 'Readings', value: memberState.savedReadings.length },
     { label: 'Integrations', value: memberState.integrations.length },
   ];
 
   const exportLocalData = () => {
-    const payload = {
-      schema: 'parva-local-state.v1',
-      exportedAt: new Date().toISOString(),
-      data: serializeMemberState(memberState),
-    };
-
     try {
+      const payload = {
+        schema: 'parva-device-cache.v2',
+        exportedAt: new Date().toISOString(),
+        data: serializeMemberState(memberState),
+      };
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement('a');
       anchor.href = url;
-      anchor.download = `parva-local-data-${new Date().toISOString().slice(0, 10)}.json`;
+      anchor.download = `parva-device-cache-${new Date().toISOString().slice(0, 10)}.json`;
       anchor.click();
       URL.revokeObjectURL(url);
-      setLocalDataStatus('Local data exported as JSON for this device.');
+      setStatus(copy('profile.cache.exported'));
     } catch {
-      setLocalDataStatus('Local data could not be exported in this browser.');
+      setStatus(copy('profile.cache.cannotExport'));
     }
   };
 
@@ -56,124 +76,133 @@ export function ProfilePage() {
     try {
       const text = await file.text();
       const parsed = JSON.parse(text);
-      importLocalState(parsed?.data || parsed);
-      setLocalDataStatus(`${file.name} was imported into local Parva data.`);
-      setConfirmClear(false);
+      const imported = await importLocalState(parsed?.data || parsed);
+      if (imported) {
+        setStatus(copy('profile.cache.imported', { filename: file.name }));
+        setConfirmClear(false);
+      } else {
+        setStatus(copy('profile.cache.cannotImport'));
+      }
     } catch {
-      setLocalDataStatus('That file could not be imported. Use a Parva local data export JSON file.');
+      setStatus(copy('profile.cache.invalidImport'));
     } finally {
       event.target.value = '';
     }
   };
 
-  const handleClearLocalData = () => {
-    clearLocalState();
-    setLocalDataStatus('Local saved items and reminder preferences were cleared from this device.');
-    setConfirmClear(false);
-  };
-
   return (
-    <section className="profile-page animate-fade-in-up">
-      <header className="profile-hero editorial-card">
-        <div>
-          <p className="landing-eyebrow">Profile</p>
-          <h1>Keep Parva personal on this device without turning it into an account product.</h1>
-          <p>
-            Preferences, saved places, reminders, and integrations stay local for now so the product can remain simple, honest, and guest-first.
-          </p>
-        </div>
-        <article className="profile-session">
-          <span className="profile-session__eyebrow">Local profile</span>
-          <strong>{hasLocalState ? 'Saved state is active on this device' : 'Guest-first local mode is active'}</strong>
-          <p>Parva currently keeps your saved state in this browser so the product can stay simple and guest-first.</p>
-          <small className="profile-session__note">Export or import your local data below when you want a manual backup without turning this into a sign-in flow.</small>
-        </article>
-      </header>
+    <section className="profile-page utility-page animate-fade-in-up">
+      <UtilityPageHeader
+        eyebrow={copy('profile.eyebrow')}
+        title={copy('profile.title')}
+        body={copy('profile.body')}
+        links={[
+          { label: `Open ${copy('common.myPlace')}`, to: '/#my-place' },
+          { label: `Open ${copy('common.saved')}`, to: '/#saved' },
+          { label: copy('common.methodology'), to: '/methodology' },
+        ]}
+        aside={(
+          <>
+            <span className="utility-page__eyebrow">{copy('profile.currentPlace')}</span>
+            <strong>{activePreset?.label || 'Custom place'}</strong>
+            <p>{state.timezone}</p>
+            <Link className="btn btn-secondary btn-sm" to="/my-place">{`Open ${copy('common.myPlace')}`}</Link>
+          </>
+        )}
+      />
 
-      <section className="profile-summary">
-        {summaryItems.map((item) => (
-          <article key={item.label} className="ink-card profile-summary-card">
-            <span>{item.label}</span>
-            <strong>{item.value}</strong>
-          </article>
-        ))}
-      </section>
+      <UtilityStatGrid items={summaryItems} />
 
       <div className="profile-grid">
-        <article className="ink-card profile-card">
-          <h2>Preferences</h2>
+        <article className="ink-card profile-card utility-page__panel">
+          <h2>{copy('profile.section.appearance')}</h2>
           <div className="profile-controls">
             <label className="ink-input">
-              <span>Language</span>
-              <select value={state.language} onChange={(event) => setLanguage(event.target.value)}>
-                <option value="en">English</option>
-                <option value="ne">Nepali</option>
-              </select>
-            </label>
-            <label className="ink-input">
-              <span>Appearance</span>
+              <span>{copy('settings.theme')}</span>
               <select value={state.theme} onChange={(event) => setTheme(event.target.value)}>
-                <option value="dawn-paper">Dawn Paper</option>
-                <option value="nocturne-ink">Nocturne Ink</option>
+                {THEME_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
               </select>
             </label>
+
+            <div className="profile-links">
+              <button type="button" aria-pressed={state.language === 'en'} className="btn btn-secondary btn-sm" onClick={() => setLanguage('en')}>{copy('common.english')}</button>
+              <button type="button" aria-pressed={state.language === 'ne'} className="btn btn-secondary btn-sm" onClick={() => setLanguage('ne')}>{copy('common.nepali')}</button>
+            </div>
+            <p className="profile-card__hint">{copy('profile.hint.theme')}</p>
           </div>
         </article>
 
-        <article className="ink-card profile-card">
-          <h2>Reminder preferences</h2>
+        <article className="ink-card profile-card utility-page__panel">
+          <h2>{copy('profile.section.reminderBehavior')}</h2>
           <div className="profile-controls">
-            <label className="ink-input">
-              <span>Channel</span>
-              <select
-                value={memberState.preferences?.reminderChannel || 'in_app'}
-                onChange={(event) => updatePreferences({ reminderChannel: event.target.value })}
+            <div className="profile-links">
+              {NOTIFICATION_STYLES.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  aria-pressed={memberState.preferences.notificationStyle === option.value}
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => updatePreferences({ ...memberState.preferences, notificationStyle: option.value })}
+                >
+                  {option.value === 'balanced' ? copy('profile.style.balanced') : option.value === 'gentle' ? copy('profile.style.gentle') : copy('profile.style.focused')}
+                </button>
+              ))}
+            </div>
+
+            <div className="profile-links">
+              {ACTIVITY_OPTIONS.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  aria-pressed={memberState.preferences.activityFocus === option.value}
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => updatePreferences({ ...memberState.preferences, activityFocus: option.value })}
+                >
+                  {option.value === 'meditation' ? copy('profile.activity.meditation') : option.value === 'travel' ? copy('profile.activity.travel') : copy('profile.activity.newVenture')}
+                </button>
+              ))}
+            </div>
+
+            <div className="profile-links">
+              <button
+                type="button"
+                aria-pressed={memberState.preferences.festivalAlerts}
+                className="btn btn-secondary btn-sm"
+                onClick={() => updatePreferences({ ...memberState.preferences, festivalAlerts: !memberState.preferences.festivalAlerts })}
               >
-                <option value="in_app">Saved list on this device</option>
-                <option value="off">Off</option>
-              </select>
-            </label>
-            <label className="ink-input">
-              <span>Lead time</span>
-              <select
-                value={memberState.preferences?.reminderLeadTime || '1_day'}
-                onChange={(event) => updatePreferences({ reminderLeadTime: event.target.value })}
+                {copy('profile.reminders.festivalAlerts', {
+                  state: memberState.preferences.festivalAlerts ? copy('profile.status.on') : copy('profile.status.off'),
+                })}
+              </button>
+              <button
+                type="button"
+                aria-pressed={memberState.preferences.bestTimeAlerts}
+                className="btn btn-secondary btn-sm"
+                onClick={() => updatePreferences({ ...memberState.preferences, bestTimeAlerts: !memberState.preferences.bestTimeAlerts })}
               >
-                <option value="same_day">Same day</option>
-                <option value="1_day">1 day before</option>
-                <option value="3_days">3 days before</option>
-                <option value="1_week">1 week before</option>
-              </select>
-            </label>
+                {copy('profile.reminders.bestTimeAlerts', {
+                  state: memberState.preferences.bestTimeAlerts ? copy('profile.status.on') : copy('profile.status.off'),
+                })}
+              </button>
+            </div>
           </div>
-          <p className="profile-card__hint">Reminders are currently kept in Saved on this device. Delivery channels can come later without changing the guest-first model.</p>
         </article>
 
-        <article className="ink-card profile-card">
-          <h2>Current place</h2>
-          <p>{activePreset?.label || 'Custom place in view'}</p>
-          <span>{state.timezone}</span>
-          <Link className="btn btn-secondary btn-sm" to="/my-place">Open My Place</Link>
-        </article>
-
-        <article className="ink-card profile-card">
-          <h2>Local data</h2>
-          <p className="profile-card__hint">
-            Export a backup, restore a previous local snapshot, or clear the saved layer on this device.
-          </p>
+        <article className="ink-card profile-card utility-page__panel">
+          <h2>{copy('profile.section.deviceCache')}</h2>
           <div className="profile-card__actions">
-            <button type="button" className="btn btn-secondary btn-sm" onClick={exportLocalData}>
-              Export JSON
-            </button>
-            <button type="button" className="btn btn-secondary btn-sm" onClick={() => importInputRef.current?.click()}>
-              Import JSON
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary btn-sm profile-card__danger"
-              onClick={() => setConfirmClear((value) => !value)}
-            >
-              {confirmClear ? 'Cancel reset' : 'Clear local data'}
+            <p className="profile-card__hint">
+              {copy('profile.cache.revision', {
+                label: persistenceLabel,
+                revision: memberState.persistence.revision,
+              })}
+            </p>
+            <button type="button" className="btn btn-secondary btn-sm" onClick={exportLocalData}>{copy('profile.actions.exportJson')}</button>
+            <button type="button" className="btn btn-secondary btn-sm" onClick={() => importInputRef.current?.click()}>{copy('profile.actions.importJson')}</button>
+            <button type="button" className="btn btn-secondary btn-sm profile-card__danger" onClick={() => setConfirmClear((value) => !value)}>
+              {confirmClear ? copy('profile.actions.cancelClear') : copy('profile.actions.clearDeviceCache')}
             </button>
             <input
               ref={importInputRef}
@@ -182,39 +211,41 @@ export function ProfilePage() {
               onChange={importFromFile}
               style={{ display: 'none' }}
             />
+            {confirmClear ? (
+              <div className="profile-card__confirm">
+                <p>{copy('profile.cache.confirm')}</p>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  onClick={async () => {
+                    const cleared = await clearLocalState();
+                    setStatus(
+                      cleared
+                        ? copy('profile.cache.cleared')
+                        : copy('profile.cache.cannotClear'),
+                    );
+                    setConfirmClear(false);
+                  }}
+                >
+                  {copy('profile.actions.confirmClear')}
+                </button>
+              </div>
+            ) : null}
+            {status ? <p className="profile-card__status">{status}</p> : null}
           </div>
-          {confirmClear ? (
-            <div className="profile-card__confirm">
-              <p>This clears saved places, observances, readings, reminders, integrations, and reminder preferences from this device.</p>
-              <button type="button" className="btn btn-primary btn-sm" onClick={handleClearLocalData}>
-                Confirm clear
-              </button>
-            </div>
-          ) : null}
-          {localDataStatus ? <p className="profile-card__status">{localDataStatus}</p> : null}
         </article>
 
-        <article className="ink-card profile-card">
-          <h2>Open next</h2>
+        <article className="ink-card profile-card utility-page__panel">
+          <h2>{copy('profile.section.secondaryUtilities')}</h2>
           <div className="profile-links">
-            <Link to="/saved">Saved items</Link>
-            <Link to="/integrations">Calendar integrations</Link>
-            <Link to="/methodology">Method and evidence</Link>
-            <Link to="/about">About Parva</Link>
+            <Link to="/saved">{`Open ${copy('common.saved')}`}</Link>
+            <Link to="/integrations">{`Open ${copy('common.integrations')}`}</Link>
+            <Link to="/methodology">{`Open ${copy('common.methodology')}`}</Link>
+            <Link to="/about">{`${copy('common.about')} Parva`}</Link>
           </div>
         </article>
       </div>
     </section>
-  );
-}
-
-function summaryCount(memberState) {
-  return (
-    memberState.savedPlaces.length
-    + memberState.savedFestivals.length
-    + memberState.reminders.length
-    + memberState.integrations.length
-    + memberState.savedReadings.length
   );
 }
 

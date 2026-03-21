@@ -1,0 +1,52 @@
+.consumer-home,
+.consumer-route {
+  display: grid;
+  gap: var(--layout-section-gap-lg);
+}
+
+.consumer-route {
+  width: min(100%, var(--layout-max-overview));
+  margin: 0 auto;
+}
+
+.consumer-route--utility {
+  width: min(100%, var(--layout-max-utility));
+}
+
+.consumer-route--overview {
+  width: min(100%, var(--layout-max-overview));
+}
+
+.consumer-route--explorer {
+  width: min(100%, var(--layout-max-explorer));
+}
+
+.consumer-route--detail {
+  width: min(100%, var(--layout-max-detail));
+}
+
+.consumer-route--analysis,
+.consumer-route--wide {
+  width: min(100%, var(--layout-max-analysis));
+}
+
+.consumer-route > header,
+.consumer-route > article,
+.consumer-route > section,
+.consumer-route > details {
+  scroll-margin-top: 7rem;
+}
+
+@media (max-width: 760px) {
+  .consumer-home,
+  .consumer-route {
+    gap: var(--layout-section-gap-md);
+  }
+
+  .consumer-route > header,
+  .consumer-route > article,
+  .consumer-route > section,
+  .consumer-route > details {
+    scroll-margin-top: 5.5rem;
+  }
+}

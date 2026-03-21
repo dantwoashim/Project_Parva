@@ -43,4 +43,41 @@ describe('SearchSheet', () => {
     expect(screen.getByTestId('location-probe')).toHaveTextContent('/festivals/dashain');
     expect(onClose).toHaveBeenCalled();
   });
+
+  it('moves focus into the dialog and closes on Escape', async () => {
+    const onClose = vi.fn();
+
+    renderSearch({
+      savedPlaces: [],
+      savedFestivals: [],
+      savedReadings: [],
+      reminders: [],
+      integrations: [],
+    }, onClose);
+
+    const searchbox = await screen.findByRole('searchbox', { name: /Find a page or saved item/i });
+    expect(searchbox).toHaveFocus();
+
+    await userEvent.keyboard('{Escape}');
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps support surfaces out of the default command list until they are searched for', async () => {
+    renderSearch({
+      savedPlaces: [],
+      savedFestivals: [],
+      savedReadings: [],
+      reminders: [],
+      integrations: [],
+    });
+
+    expect(screen.getByText('Today')).toBeInTheDocument();
+    expect(screen.queryByText('Integrations')).not.toBeInTheDocument();
+
+    await userEvent.type(screen.getByRole('searchbox', { name: /Find a page or saved item/i }), 'integ');
+
+    expect(screen.getByText('Integrations')).toBeInTheDocument();
+    expect(screen.getByText('Beta page')).toBeInTheDocument();
+  });
 });

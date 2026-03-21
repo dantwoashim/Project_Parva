@@ -96,6 +96,115 @@ def _build_provenance(
     return ProvenanceMeta(**get_provenance_payload(verify_url=verify_url, create_if_missing=True))
 
 
+def _completeness_section(status: str, note: str) -> dict[str, str]:
+    return {"status": status, "note": note}
+
+
+def _build_detail_completeness(
+    festival,
+    *,
+    dates: Optional[FestivalDates],
+    nearby: list[FestivalSummary],
+) -> dict[str, object]:
+    mythology = festival.mythology
+    has_summary_narrative = bool(
+        mythology and (mythology.summary or mythology.origin_story or mythology.historical_context)
+    )
+    has_deep_narrative = bool(
+        mythology
+        and (
+            mythology.origin_story
+            or mythology.historical_context
+            or mythology.legends
+            or mythology.scriptural_references
+            or mythology.regional_variations
+        )
+    )
+
+    if has_summary_narrative and has_deep_narrative:
+        narrative = _completeness_section(
+            "available",
+            "Editorial origin, meaning, and contextual notes are published for this observance.",
+        )
+    elif festival.description or has_summary_narrative:
+        narrative = _completeness_section(
+            "partial",
+            "A summary is available, but the deeper editorial origin story is still partial.",
+        )
+    else:
+        narrative = _completeness_section(
+            "missing",
+            "Editorial origin material has not been published for this observance yet.",
+        )
+
+    ritual_days = festival.ritual_sequence.get("days", []) if isinstance(festival.ritual_sequence, dict) else []
+    has_canonical_rituals = bool(ritual_days)
+    has_source_rituals = bool(festival.daily_rituals or festival.simple_rituals)
+    if has_canonical_rituals:
+        ritual_sequence = _completeness_section(
+            "available",
+            "Structured ritual steps are published for this observance.",
+        )
+    elif has_source_rituals:
+        ritual_sequence = _completeness_section(
+            "partial",
+            "Source ritual material exists, but the canonical step-by-step timeline is still being normalized.",
+        )
+    else:
+        ritual_sequence = _completeness_section(
+            "missing",
+            "Structured ritual steps are not part of the live profile for this observance yet.",
+        )
+
+    if dates is not None:
+        date_resolution = _completeness_section(
+            "available",
+            "Resolved calendar dates are available for the requested year.",
+        )
+    else:
+        date_resolution = _completeness_section(
+            "missing",
+            "Resolved calendar dates are not available for the requested year.",
+        )
+
+    if nearby:
+        related_observances = _completeness_section(
+            "available",
+            "Nearby observances are available for the current ritual window.",
+        )
+    elif festival.related_festivals:
+        related_observances = _completeness_section(
+            "partial",
+            "Editorial related observances are known, but the live nearby calendar window did not return companion festivals.",
+        )
+    else:
+        related_observances = _completeness_section(
+            "missing",
+            "No nearby observances were returned for this festival window.",
+        )
+
+    statuses = [
+        narrative["status"],
+        ritual_sequence["status"],
+        date_resolution["status"],
+        related_observances["status"],
+    ]
+    if festival.content_status == "complete" and "missing" not in statuses:
+        overall = "complete"
+    elif "available" in statuses or "partial" in statuses:
+        overall = "partial"
+    else:
+        overall = "minimal"
+
+    return {
+        "overall": overall,
+        "narrative": narrative,
+        "ritual_sequence": ritual_sequence,
+        "dates": date_resolution,
+        "related_observances": related_observances,
+    }
+
+
 @router.get("", response_model=FestivalListResponse)
 async def list_festivals(
     category: Optional[str] = Query(None, description="Filter by category"),
@@ -419,6 +528,11 @@ async def get_festival(
         festival=festival,
         dates=dates,
         nearby_festivals=nearby[:4] if nearby else None,
+        completeness=_build_detail_completeness(
+            festival,
+            dates=dates,
+            nearby=nearby[:4] if nearby else [],
+        ),
         provenance=_build_provenance(festival_id=festival_id, year=target_year),
     )
 

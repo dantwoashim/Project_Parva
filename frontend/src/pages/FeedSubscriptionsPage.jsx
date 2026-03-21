@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { UtilityPageHeader } from '../consumer/UtilityPages';
 import { feedAPI } from '../services/api';
 import { useFestivals } from '../hooks/useFestivals';
 import { useMemberContext } from '../context/useMemberContext';
@@ -99,8 +100,8 @@ export function FeedSubscriptionsPage() {
     });
   }
 
-  function handleIntegration(platform, title, link) {
-    const allowed = startIntegration({
+  async function handleIntegration(platform, title, link) {
+    const allowed = await startIntegration({
       id: platform,
       platform,
       title,
@@ -116,33 +117,36 @@ export function FeedSubscriptionsPage() {
   }
 
   return (
-    <section className="feeds-page animate-fade-in-up">
-      <header className="feeds-hero ink-card">
-        <div className="feeds-hero__copy">
-          <p className="feeds-page__eyebrow">Calendar integrations</p>
-          <h1 className="text-hero">Connect Parva without dealing with raw calendar plumbing first.</h1>
-          <p className="feeds-hero__sub">
-            Choose a guided calendar setup first, then drop into manual setup only when you really need the direct link.
-          </p>
-        </div>
-        <div className="feeds-hero__controls">
-          <label className="ink-input">
-            <span>Years</span>
-            <select value={years} onChange={(event) => setYears(Number(event.target.value))}>
-              {[1, 2, 3, 4, 5].map((value) => (
-                <option key={value} value={value}>{value}</option>
-              ))}
-            </select>
-          </label>
-          <label className="ink-input">
-            <span>Language</span>
-            <select value={lang} onChange={(event) => setLang(event.target.value)}>
-              <option value="en">English</option>
-              <option value="ne">Nepali</option>
-            </select>
-          </label>
-        </div>
-      </header>
+    <section className="feeds-page utility-page animate-fade-in-up">
+      <UtilityPageHeader
+        eyebrow="Calendar integrations"
+        title="Connect Parva without dealing with raw calendar plumbing first."
+        body="Choose a guided calendar setup first, then drop into manual setup only when you really need the direct link."
+        links={[
+          { label: 'Saved', to: '/#saved' },
+          { label: 'Profile', to: '/profile' },
+          { label: 'Methodology', to: '/methodology' },
+        ]}
+        aside={(
+          <div className="feeds-hero__controls">
+            <label className="ink-input">
+              <span>Years</span>
+              <select value={years} onChange={(event) => setYears(Number(event.target.value))}>
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <option key={value} value={value}>{value}</option>
+                ))}
+              </select>
+            </label>
+            <label className="ink-input">
+              <span>Language</span>
+              <select value={lang} onChange={(event) => setLang(event.target.value)}>
+                <option value="en">English</option>
+                <option value="ne">Nepali</option>
+              </select>
+            </label>
+          </div>
+        )}
+      />
 
       <section className="feeds-grid stagger-children">
         {feedCards.map((item) => (
@@ -160,7 +164,7 @@ export function FeedSubscriptionsPage() {
         ))}
       </section>
 
-      <section className="ink-card feeds-custom">
+      <section className="ink-card feeds-custom utility-page__panel">
         <div className="feeds-custom__header">
           <div>
             <p className="feeds-page__eyebrow">Build your own</p>

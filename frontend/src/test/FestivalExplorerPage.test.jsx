@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { FestivalExplorerPage } from '../pages/FestivalExplorerPage';
 import { TemporalProvider } from '../context/TemporalContext';
+import { MemberProvider } from '../context/MemberContext';
 
 function response(payload) {
   return {
@@ -17,6 +18,7 @@ function response(payload) {
 
 describe('FestivalExplorerPage', () => {
   beforeEach(() => {
+    window.innerWidth = 390;
     vi.stubGlobal(
       'fetch',
       vi.fn(async (input) => {
@@ -79,15 +81,22 @@ describe('FestivalExplorerPage', () => {
     render(
       <MemoryRouter>
         <TemporalProvider>
-          <FestivalExplorerPage />
+          <MemberProvider>
+            <FestivalExplorerPage />
+          </MemberProvider>
         </TemporalProvider>
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /See what is coming up across Nepal/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', {
+        name: /Seasonal observance ribbon/i,
+      }),
+    ).toBeInTheDocument();
     expect((await screen.findAllByText('Dashain')).length).toBeGreaterThan(0);
+    expect(screen.getByRole('heading', { name: /Seasonal observance ribbon/i })).toBeInTheDocument();
 
-    await userEvent.selectOptions(screen.getByLabelText('Category'), 'hindu');
+    await userEvent.click(screen.getByRole('button', { name: 'Hindu' }));
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
@@ -97,5 +106,32 @@ describe('FestivalExplorerPage', () => {
     });
 
     expect((await screen.findAllByText('Maha Shivaratri')).length).toBeGreaterThan(0);
+  }, 15000);
+
+  it('closes the filters dialog on Escape', async () => {
+    render(
+      <MemoryRouter>
+        <TemporalProvider>
+          <MemberProvider>
+            <FestivalExplorerPage />
+          </MemberProvider>
+        </TemporalProvider>
+      </MemoryRouter>,
+    );
+
+    expect(
+      await screen.findByRole('heading', {
+        name: /Seasonal observance ribbon/i,
+      }),
+    ).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: /More filters/i }));
+    expect(screen.getByRole('dialog', { name: /Refine the observance view/i })).toBeInTheDocument();
+
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog', { name: /Refine the observance view/i })).not.toBeInTheDocument();
+    });
   }, 15000);
 });

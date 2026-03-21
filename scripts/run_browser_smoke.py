@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import socket
@@ -12,11 +13,13 @@ import sys
 import time
 import urllib.error
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FRONTEND_DIST = PROJECT_ROOT / "frontend" / "dist"
 FRONTEND_ROOT = PROJECT_ROOT / "frontend"
+DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "release" / "browser_smoke.json"
 
 
 def _find_free_port() -> int:
@@ -101,17 +104,73 @@ def _start_backend_server(host: str, port: int) -> subprocess.Popen[str]:
     )
 
 
+def _write_report(
+    report_path: Path | None,
+    *,
+    status: str,
+    base_url: str | None,
+    timeout_seconds: int,
+    used_existing_base_url: bool,
+    output_dir: Path,
+    error: str | None = None,
+) -> None:
+    if report_path is None:
+        return
+
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "status": status,
+        "base_url": base_url,
+        "timeout_seconds": timeout_seconds,
+        "used_existing_base_url": used_existing_base_url,
+        "runner": "playwright-chromium",
+        "artifacts_dir": str(output_dir),
+    }
+    if error:
+        payload["error"] = error
+
+    report_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run browser smoke against the Parva app.")
     parser.add_argument("--base-url", help="Use an already running app instead of starting a local server.")
     parser.add_argument("--timeout-seconds", type=int, default=30)
+    parser.add_argument(
+        "--report-path",
+        default=str(DEFAULT_REPORT_PATH),
+        help="Optional JSON report path for smoke-run status and artifact location.",
+    )
     args = parser.parse_args()
+    report_path = Path(args.report_path) if args.report_path else None
+    output_dir = PROJECT_ROOT / "output" / "playwright"
 
     if args.base_url:
-        return _run_playwright_smoke(args.base_url.rstrip("/"))
+        base_url = args.base_url.rstrip("/")
+        result = _run_playwright_smoke(base_url)
+        _write_report(
+            report_path,
+            status="passed" if result == 0 else "failed",
+            base_url=base_url,
+            timeout_seconds=args.timeout_seconds,
+            used_existing_base_url=True,
+            output_dir=output_dir,
+            error=None if result == 0 else "Browser smoke command returned a non-zero exit code.",
+        )
+        return result
 
     if not (FRONTEND_DIST / "index.html").exists():
         print("Built frontend not found. Run `npm --prefix frontend run build` first.")
+        _write_report(
+            report_path,
+            status="failed",
+            base_url=None,
+            timeout_seconds=args.timeout_seconds,
+            used_existing_base_url=False,
+            output_dir=output_dir,
+            error="Built frontend not found.",
+        )
         return 2
 
     host = "127.0.0.1"
@@ -121,7 +180,28 @@ def main() -> int:
 
     try:
         _wait_for_http(f"{base_url}/health/live", process, args.timeout_seconds)
-        return _run_playwright_smoke(base_url)
+        result = _run_playwright_smoke(base_url)
+        _write_report(
+            report_path,
+            status="passed" if result == 0 else "failed",
+            base_url=base_url,
+            timeout_seconds=args.timeout_seconds,
+            used_existing_base_url=False,
+            output_dir=output_dir,
+            error=None if result == 0 else "Browser smoke command returned a non-zero exit code.",
+        )
+        return result
+    except Exception as exc:
+        _write_report(
+            report_path,
+            status="failed",
+            base_url=base_url,
+            timeout_seconds=args.timeout_seconds,
+            used_existing_base_url=False,
+            output_dir=output_dir,
+            error=str(exc),
+        )
+        raise
     finally:
         process.terminate()
         try:

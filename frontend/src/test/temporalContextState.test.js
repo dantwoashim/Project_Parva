@@ -29,7 +29,7 @@ describe('temporal context state', () => {
       timezone: 'Asia/Kathmandu',
       location: { latitude: 27.7172, longitude: 85.324 },
       language: 'en',
-      theme: 'nocturne-ink',
+      theme: 'warm-paper',
     });
   });
 });

@@ -1,7 +1,12 @@
-import { createInitialMemberState, reducer, serializeMemberState } from '../context/memberContextState';
+import {
+  createGuestPersistence,
+  createInitialMemberState,
+  reducer,
+  serializeMemberState,
+} from '../context/memberContextState';
 
 describe('member context state', () => {
-  it('saves festivals directly in local guest-first mode', () => {
+  it('saves festivals in guest device-cache mode', () => {
     const nextState = reducer(createInitialMemberState(), {
       type: 'saveFestival',
       payload: { id: 'dashain', name: 'Dashain' },
@@ -82,18 +87,37 @@ describe('member context state', () => {
       reminderLeadTime: '1_week',
     });
     expect(imported.notice).toMatchObject({
-      title: 'Local data imported',
+      title: 'Device cache imported',
     });
   });
 
-  it('serializes and clears local device state', () => {
-    const populated = reducer(createInitialMemberState(), {
+  it('serializes guest account metadata and clears only cached data', () => {
+    const populated = reducer({
+      ...createInitialMemberState(),
+      account: {
+        mode: 'account',
+        accountId: 'member-123',
+      },
+      persistence: {
+        ...createGuestPersistence(),
+        revision: 4,
+      },
+    }, {
       type: 'savePlace',
       payload: { id: 'ktm', label: 'Kathmandu', timezone: 'Asia/Kathmandu' },
     });
 
     const serialized = serializeMemberState(populated);
     expect(serialized).toMatchObject({
+      account: {
+        mode: 'account',
+        accountId: 'member-123',
+      },
+      persistence: {
+        store: 'guest_local',
+        scope: 'device_cache',
+        revision: 4,
+      },
       savedPlaces: [{ id: 'ktm', label: 'Kathmandu', timezone: 'Asia/Kathmandu' }],
       preferences: {
         reminderChannel: 'in_app',
@@ -105,8 +129,51 @@ describe('member context state', () => {
     expect(cleared.savedPlaces).toEqual([]);
     expect(cleared.reminders).toEqual([]);
     expect(cleared.integrations).toEqual([]);
+    expect(cleared.account).toEqual({
+      mode: 'account',
+      accountId: 'member-123',
+    });
+    expect(cleared.persistence).toMatchObject({
+      revision: 4,
+      scope: 'device_cache',
+    });
     expect(cleared.notice).toMatchObject({
-      title: 'Local data cleared',
+      title: 'Device cache cleared',
+    });
+  });
+
+  it('imports cache data without replacing the active account or persistence metadata', () => {
+    const currentState = {
+      ...createInitialMemberState(),
+      account: {
+        mode: 'account',
+        accountId: 'member-123',
+      },
+      persistence: {
+        ...createGuestPersistence(),
+        revision: 7,
+        lastPersistedAt: '2026-03-20T10:00:00.000Z',
+      },
+    };
+
+    const imported = reducer(currentState, {
+      type: 'importLocalState',
+      payload: {
+        account: {
+          mode: 'guest',
+        },
+        persistence: {
+          revision: 1,
+        },
+        reminders: [{ id: 'festival:holi', title: 'Holi' }],
+      },
+    });
+
+    expect(imported.account).toEqual(currentState.account);
+    expect(imported.persistence).toEqual(currentState.persistence);
+    expect(imported.reminders).toEqual([{ id: 'festival:holi', title: 'Holi' }]);
+    expect(imported.notice).toMatchObject({
+      title: 'Device cache imported',
     });
   });
 });

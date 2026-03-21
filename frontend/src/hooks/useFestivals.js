@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { festivalAPI } from '../services/api';
+import { describeSupportError } from '../services/errorFormatting';
 
 /**
  * Hook to fetch and manage festivals list.
@@ -43,7 +44,7 @@ export function useFestivals({ category, search, qualityBand = "computed", algor
             setTotal(data.total || 0);
             setScoreboard(scoreboardPayload || null);
         } catch (err) {
-            setError(err.message || 'Failed to load festivals');
+            setError(describeSupportError(err, 'Failed to load festivals'));
             setFestivals([]);
             setScoreboard(null);
         } finally {
@@ -85,7 +86,7 @@ export function useUpcomingFestivals(days = 90, qualityBand = "computed") {
                 const data = await festivalAPI.getUpcoming(days, qualityBand);
                 setFestivals(data.festivals || []);
             } catch (err) {
-                setError(err.message || 'Failed to load upcoming festivals');
+                setError(describeSupportError(err, 'Failed to load upcoming festivals'));
                 setFestivals([]);
             } finally {
                 setLoading(false);
@@ -109,6 +110,7 @@ export function useFestivalDetail(festivalId, year = null) {
     const [festival, setFestival] = useState(null);
     const [dates, setDates] = useState(null);
     const [nearbyFestivals, setNearbyFestivals] = useState([]);
+    const [completeness, setCompleteness] = useState(null);
     const [meta, setMeta] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -118,6 +120,7 @@ export function useFestivalDetail(festivalId, year = null) {
             setFestival(null);
             setDates(null);
             setNearbyFestivals([]);
+            setCompleteness(null);
             setMeta(null);
             return;
         }
@@ -132,12 +135,14 @@ export function useFestivalDetail(festivalId, year = null) {
                 setFestival(data.festival);
                 setDates(data.dates || null);
                 setNearbyFestivals(data.nearby_festivals || []);
+                setCompleteness(data.completeness || null);
                 setMeta(envelope.meta || null);
             } catch (err) {
-                setError(err.message || 'Failed to load festival details');
+                setError(describeSupportError(err, 'Failed to load festival details'));
                 setFestival(null);
                 setDates(null);
                 setNearbyFestivals([]);
+                setCompleteness(null);
                 setMeta(null);
             } finally {
                 setLoading(false);
@@ -147,7 +152,7 @@ export function useFestivalDetail(festivalId, year = null) {
         fetchDetail();
     }, [festivalId, year]);
 
-    return { festival, dates, nearbyFestivals, meta, loading, error };
+    return { festival, dates, nearbyFestivals, completeness, meta, loading, error };
 }
 
 /**
@@ -176,7 +181,7 @@ export function useFestivalDates(festivalId, years = 3) {
                 const data = await festivalAPI.getDates(festivalId, years);
                 setDates(Array.isArray(data) ? data : (data.dates || []));
             } catch (err) {
-                setError(err.message || 'Failed to load festival dates');
+                setError(describeSupportError(err, 'Failed to load festival dates'));
                 setDates([]);
             } finally {
                 setLoading(false);

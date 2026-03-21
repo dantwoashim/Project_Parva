@@ -31,6 +31,16 @@
         "snapshot_id": { "type": ["string", "null"] },
         "dataset_hash": { "type": ["string", "null"] },
         "rules_hash": { "type": ["string", "null"] },
+        "attestation": {
+          "type": ["object", "null"],
+          "properties": {
+            "mode": { "type": "string" },
+            "algorithm": { "type": ["string", "null"] },
+            "key_id": { "type": ["string", "null"] },
+            "value": { "type": ["string", "null"] }
+          },
+          "additionalProperties": true
+        },
         "signature": { "type": ["string", "null"] }
       },
       "additionalProperties": true

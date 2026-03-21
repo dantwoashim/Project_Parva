@@ -1,5 +1,6 @@
 """Provenance module for cryptographic verification."""
 
+from .attestation import build_attestation, canonical_json, verify_attestation
 from .snapshot import (
     SnapshotRecord,
     create_snapshot,
@@ -24,6 +25,8 @@ from .transparency import (
 
 __all__ = [
     "SnapshotRecord",
+    "build_attestation",
+    "canonical_json",
     "create_snapshot",
     "get_latest_snapshot",
     "get_latest_snapshot_id",
@@ -40,4 +43,5 @@ __all__ = [
     "prepare_anchor_payload",
     "record_anchor",
     "list_anchors",
+    "verify_attestation",
 ]

@@ -207,12 +207,30 @@ class FestivalListResponse(BaseModel):
     provenance: Optional[ProvenanceMeta] = None
 
 
+class FestivalDetailCompletenessSection(BaseModel):
+    """Availability state for one festival-detail section."""
+
+    status: str = Field(..., pattern=r"^(available|partial|missing)$")
+    note: str
+
+
+class FestivalDetailCompleteness(BaseModel):
+    """Truthful completeness signals for the festival detail experience."""
+
+    overall: str = Field(..., pattern=r"^(complete|partial|minimal)$")
+    narrative: FestivalDetailCompletenessSection
+    ritual_sequence: FestivalDetailCompletenessSection
+    dates: FestivalDetailCompletenessSection
+    related_observances: FestivalDetailCompletenessSection
+
+
 class FestivalDetailResponse(BaseModel):
     """API response for single festival detail."""
 
     festival: Festival
     dates: Optional[FestivalDates] = None
     nearby_festivals: Optional[List[FestivalSummary]] = None
+    completeness: Optional[FestivalDetailCompleteness] = None
     provenance: Optional[ProvenanceMeta] = None
 
 

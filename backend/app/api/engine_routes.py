@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from app.calendar.ephemeris.swiss_eph import get_ephemeris_info
 from app.engine.ephemeris_config import get_ephemeris_config
+from app.engine.manifest import build_engine_manifest
 from app.engine.plugins import get_plugin_registry
 from app.engine.plugins.validation import PluginValidationSuite
 from app.rules.plugins import (
@@ -135,12 +136,21 @@ def _plugin_quality_rows() -> list[dict]:
 async def get_engine_config():
     """Return current runtime engine configuration."""
     cfg = get_ephemeris_config()
+    manifest = build_engine_manifest()
     return {
         "ayanamsa": cfg.ayanamsa,
         "coordinate_system": cfg.coordinate_system,
         "ephemeris_mode": cfg.ephemeris_mode,
         "header": cfg.header_value,
+        "canonical_engine_id": manifest["canonical_engine_id"],
+        "manifest_version": manifest["manifest_version"],
     }
+
+
+@router.get("/manifest")
+async def get_engine_manifest():
+    """Return the authoritative engine manifest for public route families."""
+    return build_engine_manifest()
 
 
 @router.get("/health")

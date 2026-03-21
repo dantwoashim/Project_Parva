@@ -16,9 +16,21 @@ def test_personal_panchanga_v3_fields():
     assert "vaara" in body
     assert "calculation_trace_id" in body
     assert body["method_profile"] == "personal_panchanga_v2_udaya"
-    assert body["quality_band"] in {"validated", "gold"}
+    assert body["quality_band"] in {"validated", "gold", "provisional"}
     assert body["assumption_set_id"]
     assert body["advisory_scope"] == "ritual_planning"
+    assert body["degraded"]["active"] is True
+    assert sorted(body["degraded"]["defaults_applied"]) == ["latitude", "longitude", "timezone"]
+    for field in ["sunrise", "local_sunrise"]:
+        value = body[field]
+        assert isinstance(value, dict)
+        assert set(["local", "utc", "local_time"]).issubset(value)
+        assert value["local"]
+        assert value["utc"]
+        assert value["local_time"]
+    if body["local_sunset"] is not None:
+        assert isinstance(body["local_sunset"], dict)
+        assert set(["local", "utc", "local_time"]).issubset(body["local_sunset"])
 
 
 def test_personal_panchanga_post_hides_inputs_from_url_and_disables_caching():
@@ -37,10 +49,31 @@ def test_personal_panchanga_post_accepts_numeric_coordinates():
         json={"date": "2026-02-15", "lat": 27.7172, "lon": 85.3240},
     )
     assert resp.status_code == 200
-    assert resp.json()["location"] == {
-        "latitude": 27.7172,
-        "longitude": 85.324,
-        "timezone": "Asia/Kathmandu",
+    location = resp.json()["location"]
+    assert location["latitude"] == 27.7172
+    assert location["longitude"] == 85.324
+    assert location["timezone"] == "Asia/Kathmandu"
+    assert location["input_sources"] == {
+        "latitude": "user_input",
+        "longitude": "user_input",
+        "timezone": "default_kathmandu",
+    }
+
+
+def test_personal_panchanga_explicit_timezone_remains_high_authority():
+    resp = client.post(
+        "/v3/api/personal/panchanga",
+        json={"date": "2026-02-15", "lat": 27.7172, "lon": 85.3240, "tz": "Asia/Kathmandu"},
+    )
+
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["quality_band"] == "gold"
+    assert body["degraded"] == {"active": False, "reasons": [], "defaults_applied": []}
+    assert body["location"]["input_sources"] == {
+        "latitude": "user_input",
+        "longitude": "user_input",
+        "timezone": "user_input",
     }
 
 

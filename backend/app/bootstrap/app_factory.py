@@ -10,18 +10,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 
 from app.bootstrap.middleware import (
+    ExperimentalEnvelopeMiddleware,
+    RequestSizeGuardMiddleware,
     build_access_control_guard,
     build_engine_headers,
-    build_envelope_adapter,
     build_experimental_version_gate,
     build_rate_limit_guard,
     build_request_context,
-    build_request_size_guard,
 )
+from app.bootstrap.rate_limit import create_rate_limiter_backend
 from app.bootstrap.router_registry import register_routers
 from app.bootstrap.settings import load_settings, validate_settings
 from app.cache.precomputed import get_cache_stats
 from app.engine.ephemeris_config import get_ephemeris_config
+from app.festivals.repository import validate_festival_catalog
 
 PRODUCT_VERSION = "3.0.0"
 DEFAULT_CORS_ORIGINS = [
@@ -66,8 +68,23 @@ def _is_reserved_frontend_path(path: str) -> bool:
 def _build_startup_checks(settings) -> dict[str, object]:
     cache_stats = get_cache_stats()
     frontend_index = settings.frontend_dist / "index.html"
+    try:
+        festival_catalog = validate_festival_catalog()
+        festival_catalog_check = {
+            "required": True,
+            "ok": True,
+            "detail": festival_catalog,
+        }
+    except Exception as exc:
+        festival_catalog_check = {
+            "required": True,
+            "ok": False,
+            "detail": str(exc),
+        }
+
     checks = {
         "config": {"required": True, "ok": True, "detail": "validated"},
+        "festival_catalog": festival_catalog_check,
         "source_code": {
             "required": settings.environment.lower() == "production",
             "ok": bool(settings.source_url),
@@ -104,6 +121,14 @@ def create_app() -> FastAPI:
     validation_errors = validate_settings(settings)
     if validation_errors:
         raise RuntimeError("Startup validation failed: " + " ".join(validation_errors))
+    startup_checks = _build_startup_checks(settings)
+    if not startup_checks["checks"]["festival_catalog"]["ok"]:
+        detail = startup_checks["checks"]["festival_catalog"]["detail"]
+        raise RuntimeError(f"Startup validation failed: {detail}")
+    rate_limit_backend = create_rate_limiter_backend(
+        backend_name=settings.rate_limit_backend,
+        redis_url=settings.redis_url,
+    )
 
     app = FastAPI(
         title="Project Parva API",
@@ -116,9 +141,10 @@ def create_app() -> FastAPI:
     app.state.environment = settings.environment
     app.state.license_mode = settings.license_mode
     app.state.serve_frontend = settings.serve_frontend
+    app.state.rate_limit_backend = settings.rate_limit_backend
     app.state.source_url = settings.source_url
     app.state.settings = settings
-    app.state.startup_checks = _build_startup_checks(settings)
+    app.state.startup_checks = startup_checks
 
     app.add_middleware(
         CORSMiddleware,
@@ -136,19 +162,21 @@ def create_app() -> FastAPI:
             enable_experimental_api=settings.enable_experimental_api,
         )
     )
-    app.middleware("http")(
-        build_envelope_adapter(enable_experimental_api=settings.enable_experimental_api)
+    app.add_middleware(
+        ExperimentalEnvelopeMiddleware,
+        enable_experimental_api=settings.enable_experimental_api,
     )
-    app.middleware("http")(build_rate_limit_guard(settings=settings))
+    app.middleware("http")(
+        build_rate_limit_guard(settings=settings, backend=rate_limit_backend)
+    )
     app.middleware("http")(build_access_control_guard(settings=settings))
     app.middleware("http")(
         build_experimental_version_gate(enable_experimental_api=settings.enable_experimental_api)
     )
-    app.middleware("http")(
-        build_request_size_guard(
-            max_query_length=settings.max_query_length,
-            max_request_bytes=settings.max_request_bytes,
-        )
+    app.add_middleware(
+        RequestSizeGuardMiddleware,
+        max_query_length=settings.max_query_length,
+        max_request_bytes=settings.max_request_bytes,
     )
     app.middleware("http")(
         build_request_context(product_version=PRODUCT_VERSION, settings=settings)

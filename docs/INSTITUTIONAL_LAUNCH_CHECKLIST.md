@@ -39,7 +39,11 @@ py -3.11 scripts/release/generate_public_beta_artifacts.py --target 300 --comput
 npm --prefix frontend run lint
 npm --prefix frontend test -- --run
 npm --prefix frontend run build
+py -3.11 scripts/release/check_frontend_bundle_budget.py
+py -3.11 scripts/security/run_audit.py
 py -3.11 scripts/run_browser_smoke.py
+py -3.11 scripts/run_golden_journeys.py
+py -3.11 scripts/governance/verify_approval.py docs/LAUNCH_SIGNOFF.md --require-reviewer Engineering --require-reviewer QA --require-reviewer Design --require-reviewer Product
 ```
 
 Review the generated artifacts:
@@ -48,6 +52,10 @@ Review the generated artifacts:
 - `reports/authority_dashboard.json` (generated artifact)
 - `reports/accuracy/annual_accuracy_2082.json` (generated artifact)
 - `reports/release/month9_dossier.json` (generated artifact)
+- `reports/release/frontend_bundle_budget.json` (generated artifact)
+- `reports/release/golden_journeys.json` (generated artifact)
+- `reports/security_audit.json` (generated artifact)
+- `docs/LAUNCH_SIGNOFF.md`
 
 ## Integration choices
 
@@ -95,3 +103,4 @@ Retain these fields wherever decisions or displays depend on Parva results:
 - give content owners the public-beta wording and known-limits language
 - give developers the hosted onboarding guide and embed guide
 - give operators `docs/PARTNER_ACCESS.md` if evidence-backed access will be exposed
+- give beta operators `docs/CLOSED_BETA_OPERATIONS.md`

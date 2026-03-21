@@ -43,8 +43,9 @@ const routes = [
     path: '/',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.getByText("Understand Nepal's sacred time", { exact: false }).waitFor({ timeout: readyTimeout });
-      await page.getByText('Why trust this?', { exact: false }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Upcoming Festivals/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Embrace the Divine Rhythm/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Daily Glimpse/i }).waitFor({ timeout: readyTimeout });
     },
     forbidden: consumerForbidden,
   },
@@ -61,35 +62,35 @@ const routes = [
     path: '/today',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.getByRole('heading', { name: /What today means in/i }).waitFor({ timeout: readyTimeout });
-      await page.getByRole('heading', { name: "Today's lunar context" }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Today in Kathmandu/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /The rest of today in one compact pass/i }).waitFor({ timeout: readyTimeout });
     },
     forbidden: [...consumerForbidden, /Could not build today's view/i],
   },
   {
-    path: '/personal',
+    path: '/my-place',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.getByText('See how the day shifts for your place').waitFor({ timeout: readyTimeout });
-      await page.getByText('Sunrise shift', { exact: false }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Keep the place that changes your day in view/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Adjust the place only when the answer needs to change/i }).waitFor({ timeout: readyTimeout });
     },
     forbidden: [...consumerForbidden, /Unable to load/i, /Failed to load personal panchanga/i],
   },
   {
-    path: '/muhurta',
+    path: '/best-time',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.getByText("Find the day's clearest opening", { exact: false }).waitFor({ timeout: readyTimeout });
-      await page.getByText('Tap a window to see why it ranked there.', { exact: false }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Muhurta Explorer/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Recommended Windows/i }).waitFor({ timeout: readyTimeout });
     },
     forbidden: [...consumerForbidden, /Unable to load muhurta heatmap/i],
   },
   {
-    path: '/kundali',
+    path: '/birth-reading',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.getByRole('heading', { name: /Start with the reading, not the wiring/i }).waitFor({ timeout: readyTimeout });
-      await page.getByRole('tab', { name: 'Summary' }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Janma Kundali/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /The reading in plain language/i }).waitFor({ timeout: readyTimeout });
     },
     forbidden: [...consumerForbidden, /Unable to load kundali/i],
   },
@@ -97,8 +98,8 @@ const routes = [
     path: '/festivals',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.getByText('Browse the wider calendar').waitFor({ timeout: readyTimeout });
-      await page.getByLabel('Festival timeline').waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Festival\s*Explorer/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('button', { name: /National/i }).waitFor({ timeout: readyTimeout });
     },
     forbidden: [...consumerForbidden, /Could not load timeline/i],
   },
@@ -107,16 +108,16 @@ const routes = [
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
       await page.getByRole('heading', { name: 'Dashain' }).waitFor({ timeout: readyTimeout });
-      await page.getByRole('heading', { name: 'How it is practiced' }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /The Ritual Timeline/i }).waitFor({ timeout: readyTimeout });
     },
     forbidden: [...consumerForbidden, /Festival not found/i, /Could not load trace data/i],
   },
   {
-    path: '/feeds',
+    path: '/integrations',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.getByRole('heading', { name: /Subscribe without dealing with raw calendar plumbing first/i }).waitFor({ timeout: readyTimeout });
-      await page.getByRole('heading', { name: /Make a smaller feed for the festivals you follow closely/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Connect Parva without dealing with raw calendar plumbing first/i }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Make a smaller calendar for the observances you follow closely/i }).waitFor({ timeout: readyTimeout });
     },
     forbidden: [...consumerForbidden, /\.ics/i],
   },

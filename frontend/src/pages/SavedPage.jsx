@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { SavedSection } from '../consumer/ConsumerSections';
 import { useMemberContext } from '../context/useMemberContext';
 import './SavedPage.css';
 
@@ -29,32 +30,15 @@ export function SavedPage() {
     removeIntegration,
   } = useMemberContext();
 
-  const summaryItems = [
-    { label: 'Places', value: state.savedPlaces.length },
-    { label: 'Observances', value: state.savedFestivals.length },
-    { label: 'Reminders', value: state.reminders.length },
-    { label: 'Readings', value: state.savedReadings.length },
-    { label: 'Integrations', value: state.integrations.length },
-  ];
-
   return (
-    <section className="saved-page animate-fade-in-up">
-      <header className="saved-hero editorial-card">
-        <p className="landing-eyebrow">Saved</p>
-        <h1>Keep places, observances, reminders, and readings close at hand.</h1>
-        <p>
-          Parva stays guest-first, and saved state now lives locally in this browser. Use Profile when you want to back it up or clear it deliberately.
-        </p>
-      </header>
-
-      <section className="saved-summary">
-        {summaryItems.map((item) => (
-          <article key={item.label} className="ink-card saved-summary-card">
-            <span>{item.label}</span>
-            <strong>{item.value}</strong>
-          </article>
-        ))}
-      </section>
+    <section className="saved-page animate-fade-in-up consumer-route">
+      <SavedSection
+        id={undefined}
+        memberState={state}
+        action={<Link className="btn btn-secondary btn-sm" to="/#saved">Jump to home section</Link>}
+        title="Keep places, observances, reminders, and readings close at hand."
+        body="Parva stays guest-first, and saved state now lives locally in this browser. Use Profile when you want to back it up or clear it deliberately."
+      />
 
       <div className="saved-grid">
         <section className="saved-column">

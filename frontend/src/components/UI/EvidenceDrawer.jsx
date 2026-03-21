@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDialogA11y } from '../../hooks/useDialogA11y';
 import { AuthorityInspector } from './AuthorityInspector';
 import { trackEvent } from '../../services/analytics';
 import './EvidenceDrawer.css';
@@ -17,6 +18,7 @@ export function EvidenceDrawer({
   traceFallbackId,
 }) {
   const [open, setOpen] = useState(false);
+  const { dialogRef } = useDialogA11y(open, () => setOpen(false));
 
   function handleOpen() {
     trackEvent('methodology_opened', { source: 'drawer', title });
@@ -32,19 +34,25 @@ export function EvidenceDrawer({
       {open ? (
         <div className="evidence-drawer__overlay" role="presentation" onClick={() => setOpen(false)}>
           <aside
+            ref={dialogRef}
             className="evidence-drawer"
             role="dialog"
             aria-modal="true"
-            aria-label={title}
+            aria-labelledby="evidence-drawer-title"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="evidence-drawer__header">
               <div>
                 <p className="evidence-drawer__eyebrow">Method available</p>
-                <h2>{title}</h2>
+                <h2 id="evidence-drawer-title">{title}</h2>
                 <p className="evidence-drawer__intro">{intro}</p>
               </div>
-              <button type="button" className="evidence-drawer__close" onClick={() => setOpen(false)}>
+              <button
+                type="button"
+                className="evidence-drawer__close"
+                data-dialog-initial-focus="true"
+                onClick={() => setOpen(false)}
+              >
                 Close
               </button>
             </div>

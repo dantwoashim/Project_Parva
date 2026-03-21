@@ -24,6 +24,7 @@ async def festivals_timeline(
     region: Optional[str] = Query(None),
     search: Optional[str] = Query(None, description="Search by festival name/description"),
     lang: str = Query("en", description="en|ne"),
+    sort: str = Query("chronological", description="chronological|recommended|popular|upcoming"),
 ):
     try:
         timeline = build_festival_timeline(
@@ -34,6 +35,7 @@ async def festivals_timeline(
             region=region,
             search=search,
             lang=lang,
+            sort=sort,
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
@@ -49,14 +51,20 @@ async def festivals_timeline(
             "region": region,
             "search": search,
             "lang": lang,
+            "sort": sort,
         },
-        outputs={"groups": len(timeline.get("groups", [])), "items": timeline.get("total", 0)},
+        outputs={
+            "groups": len(timeline.get("groups", [])),
+            "items": timeline.get("total", 0),
+            "facets": bool(timeline.get("facets")),
+        },
         steps=[
             {
                 "step": "resolve_window",
                 "detail": "Loaded computed upcoming festivals in the selected date window.",
             },
             {"step": "filter", "detail": "Applied quality/category/region constraints."},
+            {"step": "facet_counting", "detail": "Computed category, month, and region facet counts for desktop browse controls."},
             {"step": "group", "detail": "Grouped items by month for ribbon rendering."},
         ],
     )

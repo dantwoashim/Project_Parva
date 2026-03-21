@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hmac
 from dataclasses import dataclass
 
 from fastapi import Request
@@ -65,8 +66,43 @@ class Principal:
 @dataclass(frozen=True)
 class AccessRequirement:
     required: bool
+    policy_name: str
     scope: str | None = None
     admin_only: bool = False
+
+
+@dataclass(frozen=True)
+class RoutePolicy:
+    name: str
+    path: str
+    requirement: AccessRequirement
+    match: str = "prefix"
+    methods: frozenset[str] = frozenset({"*"})
+
+    def matches(self, path: str, method: str) -> bool:
+        normalized_method = method.upper()
+        if "*" not in self.methods and normalized_method not in self.methods:
+            return False
+        if self.match == "exact":
+            return path == self.path
+        return path.startswith(self.path)
+
+
+def route_policy(
+    *,
+    name: str,
+    path: str,
+    requirement: AccessRequirement,
+    match: str = "prefix",
+    methods: tuple[str, ...] = ("*",),
+) -> RoutePolicy:
+    return RoutePolicy(
+        name=name,
+        path=path,
+        requirement=requirement,
+        match=match,
+        methods=frozenset(method.upper() for method in methods),
+    )
 
 
 def _is_public_path(path: str) -> bool:
@@ -77,38 +113,135 @@ def _is_public_path(path: str) -> bool:
     return False
 
 
+ROUTE_POLICY_REGISTRY: tuple[RoutePolicy, ...] = (
+    route_policy(
+        name="reliability_read",
+        path="/api/reliability",
+        requirement=AccessRequirement(required=True, policy_name="reliability_read", scope="commercial.read"),
+    ),
+    route_policy(
+        name="reliability_read_v3",
+        path="/v3/api/reliability",
+        requirement=AccessRequirement(required=True, policy_name="reliability_read", scope="commercial.read"),
+    ),
+    route_policy(
+        name="spec_read",
+        path="/api/spec",
+        requirement=AccessRequirement(required=True, policy_name="spec_read", scope="commercial.read"),
+    ),
+    route_policy(
+        name="spec_read_v3",
+        path="/v3/api/spec",
+        requirement=AccessRequirement(required=True, policy_name="spec_read", scope="commercial.read"),
+    ),
+    route_policy(
+        name="public_artifacts_read",
+        path="/api/public",
+        requirement=AccessRequirement(required=True, policy_name="public_artifacts_read", scope="commercial.read"),
+    ),
+    route_policy(
+        name="public_artifacts_read_v3",
+        path="/v3/api/public",
+        requirement=AccessRequirement(required=True, policy_name="public_artifacts_read", scope="commercial.read"),
+    ),
+    route_policy(
+        name="webhook_admin_write",
+        path="/api/webhooks",
+        requirement=AccessRequirement(required=True, policy_name="webhook_admin_write", admin_only=True),
+        methods=("POST", "PUT", "PATCH", "DELETE"),
+    ),
+    route_policy(
+        name="webhook_admin_write_v3",
+        path="/v3/api/webhooks",
+        requirement=AccessRequirement(required=True, policy_name="webhook_admin_write", admin_only=True),
+        methods=("POST", "PUT", "PATCH", "DELETE"),
+    ),
+    route_policy(
+        name="webhook_admin_dispatch",
+        path="/api/webhooks/dispatch",
+        requirement=AccessRequirement(required=True, policy_name="webhook_admin_dispatch", admin_only=True),
+        match="exact",
+    ),
+    route_policy(
+        name="webhook_admin_dispatch_v3",
+        path="/v3/api/webhooks/dispatch",
+        requirement=AccessRequirement(required=True, policy_name="webhook_admin_dispatch", admin_only=True),
+        match="exact",
+    ),
+    route_policy(
+        name="webhook_manage",
+        path="/api/webhooks",
+        requirement=AccessRequirement(required=True, policy_name="webhook_manage", scope="webhook.manage"),
+    ),
+    route_policy(
+        name="webhook_manage_v3",
+        path="/v3/api/webhooks",
+        requirement=AccessRequirement(required=True, policy_name="webhook_manage", scope="webhook.manage"),
+    ),
+    route_policy(
+        name="experimental_read_v2",
+        path="/v2/",
+        requirement=AccessRequirement(required=True, policy_name="experimental_read", scope="commercial.read"),
+        methods=("GET",),
+    ),
+    route_policy(
+        name="experimental_read_v4",
+        path="/v4/",
+        requirement=AccessRequirement(required=True, policy_name="experimental_read", scope="commercial.read"),
+        methods=("GET",),
+    ),
+    route_policy(
+        name="experimental_read_v5",
+        path="/v5/",
+        requirement=AccessRequirement(required=True, policy_name="experimental_read", scope="commercial.read"),
+        methods=("GET",),
+    ),
+    route_policy(
+        name="experimental_write_v2",
+        path="/v2/",
+        requirement=AccessRequirement(required=True, policy_name="experimental_write", admin_only=True),
+        methods=("POST", "PUT", "PATCH", "DELETE"),
+    ),
+    route_policy(
+        name="experimental_write_v4",
+        path="/v4/",
+        requirement=AccessRequirement(required=True, policy_name="experimental_write", admin_only=True),
+        methods=("POST", "PUT", "PATCH", "DELETE"),
+    ),
+    route_policy(
+        name="experimental_write_v5",
+        path="/v5/",
+        requirement=AccessRequirement(required=True, policy_name="experimental_write", admin_only=True),
+        methods=("POST", "PUT", "PATCH", "DELETE"),
+    ),
+)
+
+
 def classify_request(path: str, method: str) -> AccessRequirement:
     if _is_public_path(path):
-        return AccessRequirement(required=False)
-
-    if path.startswith(TRUST_PREFIXES):
-        return AccessRequirement(required=True, scope="commercial.read")
-
-    if path.startswith(WEBHOOK_PREFIXES):
-        if path.endswith("/dispatch") or method.upper() != "GET":
-            return AccessRequirement(required=True, admin_only=True)
-        return AccessRequirement(required=True, scope="webhook.manage")
-
-    if path.startswith(EXPERIMENTAL_PREFIXES):
-        if method.upper() == "GET":
-            return AccessRequirement(required=True, scope="commercial.read")
-        return AccessRequirement(required=True, admin_only=True)
+        return AccessRequirement(required=False, policy_name="public")
 
     if path.startswith(PROVENANCE_PREFIXES):
         if method.upper() != "GET":
-            return AccessRequirement(required=True, admin_only=True)
+            return AccessRequirement(required=True, policy_name="provenance_admin", admin_only=True)
         if any(path.startswith(prefix) for prefix in PROVENANCE_READ_PREFIXES):
-            return AccessRequirement(required=True, scope="commercial.read")
-        return AccessRequirement(required=True, admin_only=True)
+            return AccessRequirement(
+                required=True, policy_name="provenance_read", scope="commercial.read"
+            )
+        return AccessRequirement(required=True, policy_name="provenance_admin", admin_only=True)
 
-    return AccessRequirement(required=False)
+    for policy in ROUTE_POLICY_REGISTRY:
+        if policy.matches(path, method):
+            return policy.requirement
+
+    return AccessRequirement(required=False, policy_name="public")
 
 
 def authenticate_request(request: Request, settings: AppSettings) -> Principal | None:
     auth_header = request.headers.get("authorization", "").strip()
     if auth_header.startswith("Bearer ") and settings.admin_token:
         candidate = auth_header.removeprefix("Bearer ").strip()
-        if candidate and candidate == settings.admin_token:
+        if candidate and hmac.compare_digest(candidate, settings.admin_token):
             return Principal(
                 principal_type="admin",
                 principal_id="admin",
@@ -120,7 +253,7 @@ def authenticate_request(request: Request, settings: AppSettings) -> Principal |
         return None
 
     for record in settings.api_keys.values():
-        if api_key == record.secret:
+        if hmac.compare_digest(api_key, record.secret):
             return Principal(
                 principal_type="api_key",
                 principal_id=record.key_id,

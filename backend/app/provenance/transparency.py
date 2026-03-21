@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from .attestation import build_attestation, verify_attestation
+
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRANSPARENCY_DIR = PROJECT_ROOT / "data" / "transparency"
 TRANSPARENCY_LOG = TRANSPARENCY_DIR / "log.jsonl"
@@ -23,7 +25,7 @@ class TransparencyEntry:
     payload: Dict[str, Any]
     prev_hash: str
     entry_hash: str
-    signature: str
+    attestation: Dict[str, Any]
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -33,7 +35,7 @@ class TransparencyEntry:
             "payload": self.payload,
             "prev_hash": self.prev_hash,
             "entry_hash": self.entry_hash,
-            "signature": self.signature,
+            "attestation": self.attestation,
         }
 
 
@@ -106,7 +108,7 @@ def append_entry(event_type: str, payload: Dict[str, Any]) -> TransparencyEntry:
         prev_hash=prev_hash,
     )
     entry_hash = _sha256_hex(_canonical(body))
-    signature = f"sha256:{entry_hash}"
+    attestation = build_attestation({**body, "entry_hash": entry_hash})
 
     entry = TransparencyEntry(
         entry_id=entry_id,
@@ -115,7 +117,7 @@ def append_entry(event_type: str, payload: Dict[str, Any]) -> TransparencyEntry:
         payload=payload,
         prev_hash=prev_hash,
         entry_hash=entry_hash,
-        signature=signature,
+        attestation=attestation,
     )
 
     with TRANSPARENCY_LOG.open("a", encoding="utf-8") as f:
@@ -153,11 +155,22 @@ def verify_log_integrity() -> Dict[str, Any]:
             prev_hash=str(row.get("prev_hash")),
         )
         expected_hash = _sha256_hex(_canonical(body))
+        attestation = row.get("attestation")
 
         hash_ok = expected_hash == str(row.get("entry_hash"))
         chain_ok = str(row.get("prev_hash")) == prev_hash
-        sig_ok = str(row.get("signature")) == f"sha256:{row.get('entry_hash')}"
-        row_ok = hash_ok and chain_ok and sig_ok
+        if isinstance(attestation, dict):
+            attestation_ok = verify_attestation(
+                {**body, "entry_hash": str(row.get("entry_hash"))},
+                attestation,
+            )
+            attestation_mode = str(attestation.get("mode") or "unknown")
+        else:
+            legacy_signature = str(row.get("signature") or "")
+            attestation_ok = legacy_signature == f"sha256:{row.get('entry_hash')}"
+            attestation_mode = "legacy-unverified" if legacy_signature else "missing"
+
+        row_ok = hash_ok and chain_ok and attestation_ok
         if not row_ok:
             valid = False
 
@@ -167,7 +180,8 @@ def verify_log_integrity() -> Dict[str, Any]:
                 "entry_id": row.get("entry_id"),
                 "hash_ok": hash_ok,
                 "chain_ok": chain_ok,
-                "signature_ok": sig_ok,
+                "attestation_ok": attestation_ok,
+                "attestation_mode": attestation_mode,
             }
         )
 

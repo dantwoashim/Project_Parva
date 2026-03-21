@@ -1,0 +1,134 @@
+{
+  "generated_at": "2026-03-21T11:05:17.591699+00:00",
+  "release_track": "public-beta-v3",
+  "request_health": {
+    "sampled_endpoints": 6,
+    "available_endpoints": 6,
+    "availability_pct": 100.0,
+    "meets_availability_budget": true,
+    "critical_endpoints": [
+      {
+        "id": "health_ready",
+        "method": "GET",
+        "path": "/health/ready",
+        "status_code": 200,
+        "latency_ms": 14.45,
+        "within_latency_budget": true,
+        "available": true,
+        "degraded_active": false,
+        "defaults_applied": [],
+        "degraded_reasons": [],
+        "snapshot_id": null,
+        "provenance_verified": false,
+        "attestation_mode": "missing"
+      },
+      {
+        "id": "calendar_today",
+        "method": "GET",
+        "path": "/v3/api/calendar/today",
+        "status_code": 200,
+        "latency_ms": 9.34,
+        "within_latency_budget": true,
+        "available": true,
+        "degraded_active": false,
+        "defaults_applied": [],
+        "degraded_reasons": [],
+        "snapshot_id": "snap_20260321T090258Z",
+        "provenance_verified": true,
+        "attestation_mode": "hmac-sha256"
+      },
+      {
+        "id": "festivals_timeline",
+        "method": "GET",
+        "path": "/v3/api/festivals/timeline?from=2026-02-15&to=2026-08-15&quality_band=computed&lang=en",
+        "status_code": 200,
+        "latency_ms": 1369.56,
+        "within_latency_budget": false,
+        "available": true,
+        "degraded_active": false,
+        "defaults_applied": [],
+        "degraded_reasons": [],
+        "snapshot_id": "snap_20260321T090258Z",
+        "provenance_verified": true,
+        "attestation_mode": "hmac-sha256"
+      },
+      {
+        "id": "personal_panchanga",
+        "method": "POST",
+        "path": "/v3/api/personal/panchanga",
+        "status_code": 200,
+        "latency_ms": 13.37,
+        "within_latency_budget": true,
+        "available": true,
+        "degraded_active": false,
+        "defaults_applied": [],
+        "degraded_reasons": [],
+        "snapshot_id": "snap_20260321T090258Z",
+        "provenance_verified": true,
+        "attestation_mode": "hmac-sha256"
+      },
+      {
+        "id": "muhurta_heatmap",
+        "method": "POST",
+        "path": "/v3/api/muhurta/heatmap",
+        "status_code": 200,
+        "latency_ms": 14.46,
+        "within_latency_budget": true,
+        "available": true,
+        "degraded_active": false,
+        "defaults_applied": [],
+        "degraded_reasons": [],
+        "snapshot_id": "snap_20260321T090258Z",
+        "provenance_verified": true,
+        "attestation_mode": "hmac-sha256"
+      },
+      {
+        "id": "kundali",
+        "method": "POST",
+        "path": "/v3/api/kundali",
+        "status_code": 200,
+        "latency_ms": 11.71,
+        "within_latency_budget": true,
+        "available": true,
+        "degraded_active": false,
+        "defaults_applied": [],
+        "degraded_reasons": [],
+        "snapshot_id": "snap_20260321T090258Z",
+        "provenance_verified": true,
+        "attestation_mode": "hmac-sha256"
+      }
+    ]
+  },
+  "degraded_mode": {
+    "sampled_responses": 6,
+    "degraded_responses": 0,
+    "degraded_rate_pct": 0.0,
+    "defaults_applied": {},
+    "reasons": {}
+  },
+  "provenance_verification": {
+    "latest_snapshot_id": "snap_20260321T090258Z",
+    "latest_snapshot_valid": true,
+    "sampled_responses_with_snapshot": 5,
+    "verified_sampled_responses": 5,
+    "verification_rate_pct": 100.0,
+    "attestation_modes": {
+      "missing": 1,
+      "hmac-sha256": 5
+    },
+    "transparency_log_valid": true
+  },
+  "latency_error_budgets": {
+    "latency_budget_ms": 1000.0,
+    "availability_budget_pct": 99.0,
+    "median_latency_ms": 13.91,
+    "p95_latency_ms": 1369.56,
+    "max_latency_ms": 1369.56,
+    "within_latency_budget_count": 5,
+    "error_budget_burn_pct": 0.0
+  },
+  "context": {
+    "authority_conformance_pass_rate": 100.0,
+    "authority_catalog_coverage_pct": 151.0
+  }
+}

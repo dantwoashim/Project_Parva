@@ -11,6 +11,26 @@ Practical integration guides:
 - `docs/API_QUICKSTART.md`
 - `docs/EMBED_GUIDE.md`
 
+Launch-critical routes also support an additive authoritative envelope mode.
+Send header `X-Parva-Envelope: data-meta` to receive:
+
+```json
+{
+  "data": { "...": "route payload" },
+  "meta": {
+    "confidence": "computed",
+    "method": "ephemeris_udaya",
+    "provenance": {},
+    "uncertainty": {},
+    "trace_id": "trace_...",
+    "policy": {},
+    "degraded": { "active": false, "reasons": [], "defaults_applied": [] }
+  }
+}
+```
+
+Without that header, the public v3 response shape remains unchanged.
+
 ## Temporal Cartography Endpoints
 - `POST /temporal/compass` with JSON body `{ "date", "lat", "lon", "tz", "quality_band" }`
 - `GET /festivals/timeline?from=YYYY-MM-DD&to=YYYY-MM-DD&quality_band=&category=&region=&lang=en|ne`
@@ -54,9 +74,21 @@ Practical integration guides:
 }
 ```
 
+Festival detail also includes additive `completeness` signals so clients can show
+truthful section-level status for narrative depth, ritual sequence coverage,
+date resolution, and related observances.
+
 ## Personal Stack
 - `POST /personal/panchanga` with JSON body `{ "date", "lat", "lon", "tz" }`
-  - includes `local_sunrise`, `local_sunset`, `timezone_source`, `method_profile`, `assumption_set_id`, `quality_band`.
+  - includes `sunrise`, `local_sunrise`, `local_sunset`, `timezone_source`, `method_profile`, `assumption_set_id`, `quality_band`.
+  - sunrise fields use the canonical time-reference object shape:
+  ```json
+  {
+    "local": "2026-02-15T06:44:00+05:45",
+    "utc": "2026-02-15T00:59:00Z",
+    "local_time": "06:44 AM"
+  }
+  ```
 - `POST /muhurta` with JSON body `{ "date", "lat", "lon", "tz", "birth_nakshatra" }`
 - `POST /muhurta/auspicious` with JSON body `{ "date", "type", "lat", "lon", "tz", "birth_nakshatra", "assumption_set" }`
   - includes `reason_codes[]`, `rank_explanation`, `confidence_score`.
@@ -73,6 +105,8 @@ Practical integration guides:
 
 ## Engine Quality
 - `GET /engine/calendars`
+- `GET /engine/config`
+- `GET /engine/manifest`
 - `GET /engine/convert?date=YYYY-MM-DD&calendar=bs|ns|tibetan|islamic|hebrew|chinese|julian`
 - `GET /engine/plugins/quality`
 
@@ -93,6 +127,8 @@ Critical routes carry authority metadata fields needed by Authority Mode:
 - `advisory_scope`
 - `policy`
 - `provenance`
+
+`provenance` now includes explicit `attestation` metadata. When no signing key is configured, Parva returns `attestation.mode = "unsigned"` instead of presenting a plain hash as a signature.
 
 ## Experimental API Tracks
 `/v2`, `/v4`, `/v5` are disabled by default.

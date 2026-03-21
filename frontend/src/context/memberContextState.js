@@ -1,4 +1,51 @@
-export const MEMBER_STORAGE_KEY = 'parva.member_context.v1';
+export const MEMBER_STATE_SCHEMA_VERSION = 2;
+
+export function createGuestAccount() {
+  return {
+    mode: 'guest',
+    accountId: null,
+    syncEnabled: false,
+    profileVersion: 1,
+    encryptionProfile: 'guest_cache',
+    lastSyncedAt: null,
+  };
+}
+
+export function createGuestPersistence() {
+  return {
+    store: 'guest_local',
+    scope: 'device_cache',
+    syncStatus: 'guest_cached',
+    revision: 0,
+    lastLoadedAt: null,
+    lastPersistedAt: null,
+    migratedFrom: null,
+  };
+}
+
+function normalizeAccount(account, fallback = createGuestAccount()) {
+  const next = {
+    ...fallback,
+    ...(account && typeof account === 'object' ? account : {}),
+  };
+  if (next.mode !== 'account') {
+    next.mode = 'guest';
+    next.accountId = null;
+    next.syncEnabled = false;
+  } else {
+    next.syncEnabled = true;
+  }
+  return next;
+}
+
+function normalizePersistence(persistence, fallback = createGuestPersistence()) {
+  const next = {
+    ...fallback,
+    ...(persistence && typeof persistence === 'object' ? persistence : {}),
+  };
+  next.revision = Number.isFinite(Number(next.revision)) ? Number(next.revision) : fallback.revision;
+  return next;
+}
 
 function placeKey(place = {}) {
   if (place.id) return place.id;
@@ -44,71 +91,10 @@ function normalizePreferences(preferences, fallback) {
   return next;
 }
 
-export function serializeMemberState(state) {
-  return {
-    savedPlaces: Array.isArray(state?.savedPlaces) ? state.savedPlaces : [],
-    savedFestivals: Array.isArray(state?.savedFestivals) ? state.savedFestivals : [],
-    savedReadings: Array.isArray(state?.savedReadings) ? state.savedReadings : [],
-    reminders: Array.isArray(state?.reminders) ? state.reminders : [],
-    integrations: Array.isArray(state?.integrations) ? state.integrations : [],
-    preferences: normalizePreferences(state?.preferences, createInitialMemberState().preferences),
-  };
-}
-
-function buildNotice(kind, payload, options = {}) {
-  switch (kind) {
-    case 'savePlace':
-      return {
-        title: 'Place saved',
-        body: `${payload?.label || 'Your place'} is now part of your saved places.`,
-      };
-    case 'saveFestival':
-      return {
-        title: 'Observance saved',
-        body: `${payload?.name || 'This observance'} is now waiting in Saved.`,
-      };
-    case 'saveReading':
-      return {
-        title: 'Reading saved',
-        body: `${payload?.title || 'This birth reading'} is ready to revisit later.`,
-      };
-    case 'toggleReminder':
-      return options.isActive
-        ? {
-            title: 'Reminder added',
-            body: `${payload?.title || 'This reminder'} is now part of your local reminder list on this device.`,
-          }
-        : {
-            title: 'Reminder removed',
-            body: `${payload?.title || 'This reminder'} has been removed from your saved reminders.`,
-          };
-    case 'startIntegration':
-      return {
-        title: 'Integration saved',
-        body: `${payload?.title || 'This calendar integration'} is now kept in your local saved state.`,
-      };
-    case 'preferences':
-      return {
-        title: 'Preferences updated',
-        body: 'Reminder preferences were updated for this local profile.',
-      };
-    case 'importLocalState':
-      return {
-        title: 'Local data imported',
-        body: 'Saved places, reminders, readings, and integrations were restored on this device.',
-      };
-    case 'clearLocalState':
-      return {
-        title: 'Local data cleared',
-        body: 'Saved items, reminders, integrations, and reminder preferences were cleared from this device.',
-      };
-    default:
-      return null;
-  }
-}
-
 export function createInitialMemberState() {
   return {
+    account: createGuestAccount(),
+    persistence: createGuestPersistence(),
     notice: null,
     savedPlaces: [],
     savedFestivals: [],
@@ -118,37 +104,101 @@ export function createInitialMemberState() {
     preferences: {
       reminderChannel: 'in_app',
       reminderLeadTime: '1_day',
+      festivalAlerts: true,
+      bestTimeAlerts: true,
+      activityFocus: 'meditation',
+      notificationStyle: 'balanced',
     },
   };
 }
 
-export function loadInitialMemberState() {
+export function serializeMemberState(state) {
   const baseState = createInitialMemberState();
+  return {
+    account: normalizeAccount(state?.account, baseState.account),
+    persistence: normalizePersistence(state?.persistence, baseState.persistence),
+    savedPlaces: Array.isArray(state?.savedPlaces) ? state.savedPlaces : [],
+    savedFestivals: Array.isArray(state?.savedFestivals) ? state.savedFestivals : [],
+    savedReadings: Array.isArray(state?.savedReadings) ? state.savedReadings : [],
+    reminders: Array.isArray(state?.reminders) ? state.reminders : [],
+    integrations: Array.isArray(state?.integrations) ? state.integrations : [],
+    preferences: normalizePreferences(state?.preferences, baseState.preferences),
+  };
+}
 
-  if (
-    typeof localStorage === 'undefined'
-    || typeof localStorage.getItem !== 'function'
-  ) {
-    return baseState;
+function buildNotice(kind, payload, options = {}) {
+  switch (kind) {
+    case 'savePlace':
+      return {
+        title: 'Place saved',
+        body: `${payload?.label || 'Your place'} is now part of your guest-saved places on this device.`,
+      };
+    case 'saveFestival':
+      return {
+        title: 'Observance saved',
+        body: `${payload?.name || 'This observance'} is now part of your guest-saved list on this device.`,
+      };
+    case 'saveReading':
+      return {
+        title: 'Reading saved',
+        body: `${payload?.title || 'This birth reading'} is ready to revisit from your guest cache later.`,
+      };
+    case 'toggleReminder':
+      return options.isActive
+        ? {
+            title: 'Reminder added',
+            body: `${payload?.title || 'This reminder'} is now part of your guest reminder cache on this device.`,
+          }
+        : {
+            title: 'Reminder removed',
+            body: `${payload?.title || 'This reminder'} has been removed from your guest reminder cache.`,
+          };
+    case 'startIntegration':
+      return {
+        title: 'Integration saved',
+        body: `${payload?.title || 'This calendar integration'} is now stored in your guest device cache.`,
+      };
+    case 'preferences':
+      return {
+        title: 'Preferences updated',
+        body: 'Reminder preferences were updated for this guest device cache.',
+      };
+    case 'importLocalState':
+      return {
+        title: 'Device cache imported',
+        body: 'Saved places, reminders, readings, and integrations were restored into this guest device cache.',
+      };
+    case 'clearLocalState':
+      return {
+        title: 'Device cache cleared',
+        body: 'Saved items, reminders, integrations, and reminder preferences were cleared from this guest device cache.',
+      };
+    default:
+      return null;
   }
+}
 
-  try {
-    const raw = localStorage.getItem(MEMBER_STORAGE_KEY);
-    if (!raw) return baseState;
-    const parsed = JSON.parse(raw);
-    return reducer(baseState, { type: 'hydrate', payload: parsed });
-  } catch {
-    return baseState;
-  }
+export function buildPersistenceFailureNotice() {
+  return {
+    title: 'Device cache unavailable',
+    body: 'Parva could not update the guest device cache on this browser, so the latest change was not saved.',
+  };
+}
+
+export function buildAccountSyncFailureNotice() {
+  return {
+    title: 'Account sync unavailable',
+    body: 'Parva could not refresh the account-backed member state, so the last synced profile was kept in place.',
+  };
 }
 
 export function reducer(state, action) {
   switch (action.type) {
     case 'hydrate':
       return {
-        ...state,
+        ...createInitialMemberState(),
         ...serializeMemberState(action.payload),
-        notice: null,
+        notice: action.payload?.notice ?? null,
       };
     case 'savePlace':
       return {
@@ -214,16 +264,26 @@ export function reducer(state, action) {
         notice: buildNotice('preferences'),
       };
     case 'importLocalState':
-      return {
-        ...state,
-        ...serializeMemberState(action.payload),
-        notice: buildNotice('importLocalState'),
-      };
+      {
+        const imported = serializeMemberState(action.payload);
+        return {
+          ...state,
+          savedPlaces: imported.savedPlaces,
+          savedFestivals: imported.savedFestivals,
+          savedReadings: imported.savedReadings,
+          reminders: imported.reminders,
+          integrations: imported.integrations,
+          preferences: imported.preferences,
+          notice: buildNotice('importLocalState'),
+        };
+      }
     case 'clearLocalState': {
       const reset = createInitialMemberState();
       return {
         ...state,
         ...reset,
+        account: state.account,
+        persistence: state.persistence,
         notice: buildNotice('clearLocalState'),
       };
     }

@@ -1,38 +1,48 @@
 .personal-page {
   display: grid;
-  gap: 1.45rem;
+  gap: 1.35rem;
+}
+
+.personal-page__route-card,
+.personal-page__controls,
+.personal-summary-card,
+.personal-page__story-grid,
+.personal-page__accordion-body {
+  display: grid;
 }
 
 .personal-page__hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-  gap: 1rem;
-  padding: 1.35rem;
-}
-
-.personal-page__hero-copy,
-.personal-page__controls,
-.personal-summary-card {
-  display: grid;
-}
-
-.personal-page__hero-copy {
-  gap: 0.8rem;
-  align-content: center;
+  min-height: 300px;
 }
 
 .personal-page__intro,
 .personal-page__status,
 .personal-summary-card p,
-.personal-page .panchanga-card__meta {
+.personal-page .panchanga-card__meta,
+.personal-context-card p,
+.personal-reminders,
+.personal-reminders li,
+.personal-reminders span,
+.personal-page__mini-facts dd {
   margin: 0;
   color: var(--text-secondary);
   line-height: 1.7;
 }
 
+.personal-page__route-card {
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.personal-page__route-header h2 {
+  margin: 0.2rem 0 0;
+  font-size: 1.2rem;
+}
+
 .personal-page__controls {
+  grid-template-columns: minmax(220px, 260px) minmax(220px, 260px) auto;
   gap: 0.85rem;
-  align-content: start;
+  align-items: end;
 }
 
 .personal-summary-grid {
@@ -50,6 +60,11 @@
   font-size: 1.1rem;
 }
 
+.personal-page__story-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: 1rem;
+}
+
 .personal-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -63,6 +78,51 @@
 
 .personal-page .panchanga-card__value {
   margin: 0.28rem 0;
+}
+
+.personal-context-card {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem;
+}
+
+.personal-context-card--primary {
+  background:
+    radial-gradient(circle at top right, rgba(214, 170, 103, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+}
+
+.personal-context-card strong {
+  font-size: 1.15rem;
+}
+
+.personal-page__mini-facts {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding-top: 0.35rem;
+}
+
+.personal-page__mini-facts div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.personal-page__mini-facts dt {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.personal-reminders {
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.personal-reminders strong {
+  color: var(--text-primary);
 }
 
 .personal-festivals {
@@ -80,6 +140,21 @@
   gap: 0.75rem;
 }
 
+.personal-page__accordion {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.95rem;
+}
+
+.personal-page__accordion summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.personal-page__accordion-body {
+  gap: 1rem;
+  padding-top: 0.95rem;
+}
+
 .personal-error {
   padding: 1.25rem;
 }
@@ -90,8 +165,9 @@
 }
 
 @media (max-width: 1080px) {
-  .personal-page__hero,
+  .personal-page__controls,
   .personal-summary-grid,
+  .personal-page__story-grid,
   .personal-cards-grid {
     grid-template-columns: 1fr;
   }

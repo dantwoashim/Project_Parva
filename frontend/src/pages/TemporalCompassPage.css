@@ -1,27 +1,6 @@
 .today-page {
   display: grid;
-  gap: 1.5rem;
-}
-
-.today-page__hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-  gap: 1.15rem;
-  padding: 1.45rem;
-}
-
-.today-page__hero-copy,
-.today-page__hero-side,
-.today-page__hero-grid,
-.today-page__loading,
-.today-page__panel,
-.today-page__rhythm {
-  display: grid;
-}
-
-.today-page__hero-copy {
-  align-content: center;
-  gap: 0.9rem;
+  gap: 1.35rem;
 }
 
 .today-page__eyebrow {
@@ -34,72 +13,37 @@
 
 .today-page__summary,
 .today-page__subsummary,
-.today-page__hero-context,
-.today-page__notice {
-  margin: 0;
-}
-
-.today-page__summary {
-  color: var(--text-primary);
-  font-size: 1.08rem;
-}
-
-.today-page__subsummary,
-.today-page__hero-context,
 .today-page__notice,
-.today-page__rhythm-caption,
 .today-page__timing-notes dd,
-.today-page__progress p {
+.today-page__accordion-body p,
+.today-page__timeline-segment p {
+  margin: 0;
   color: var(--text-secondary);
   line-height: 1.7;
 }
 
-.today-page__hero-grid {
-  gap: 0.85rem;
+.today-page__route-card,
+.today-page__route-meta,
+.today-page__timeline-grid,
+.today-page__insights-grid,
+.today-page__loading,
+.today-page__panel {
+  display: grid;
 }
 
-.today-page__hero-panel,
-.today-page__rhythm-segment,
+.today-page__route-card,
+.today-page__panel {
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.today-page__meta-card,
+.today-page__timeline-segment,
 .today-page__festival-item,
 .today-page__signal-grid div {
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 1.2rem;
   background: rgba(255, 255, 255, 0.03);
-}
-
-.today-page__hero-panel {
-  padding: 1rem 1.05rem;
-  gap: 0.25rem;
-}
-
-.today-page__hero-panel strong {
-  font-size: 1.08rem;
-}
-
-.today-page__hero-panel p {
-  margin: 0;
-  color: var(--text-secondary);
-}
-
-.today-page__hero-panel--accent {
-  border-color: rgba(214, 170, 103, 0.22);
-  background:
-    radial-gradient(circle at top right, rgba(214, 170, 103, 0.1), transparent 42%),
-    rgba(255, 255, 255, 0.03);
-}
-
-.today-page__hero-panel--sun {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
-}
-
-.today-page__utility-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  gap: 0.75rem;
-  padding: 1rem 1.05rem;
 }
 
 .today-page__date-field {
@@ -113,68 +57,102 @@
   text-transform: uppercase;
 }
 
+.today-page__route-meta {
+  grid-template-columns: minmax(220px, 260px) repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  align-items: stretch;
+}
+
+.today-page__meta-card {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.95rem 1rem;
+}
+
+.today-page__meta-card strong {
+  font-size: 1.05rem;
+}
+
+.today-page__meta-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.2rem;
+  padding: 0 0.9rem;
+  border-radius: 999px;
+  background: rgba(200, 162, 103, 0.14);
+  border: 1px solid rgba(200, 162, 103, 0.24);
+  color: var(--editorial-accent);
+  font-weight: 600;
+}
+
 .today-page__loading {
   gap: 1rem;
 }
 
-.today-page__rhythm,
-.today-page__panel {
-  padding: 1.1rem;
-  gap: 1rem;
+.today-page__hero {
+  min-height: 300px;
 }
 
-.today-page__rhythm-track {
-  display: grid;
+.today-page__timeline-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.8rem;
 }
 
-.today-page__rhythm-segment {
+.today-page__timeline-segment {
   padding: 0.95rem;
   display: grid;
   gap: 0.25rem;
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out);
 }
 
-.today-page__rhythm-segment strong {
+.today-page__timeline-segment:hover {
+  transform: translateY(-2px);
+  border-color: rgba(214, 170, 103, 0.22);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.18);
+}
+
+.today-page__timeline-segment strong {
   font-size: 0.98rem;
 }
 
-.today-page__rhythm-segment p {
-  margin: 0;
-}
-
-.today-page__rhythm-segment--strong {
+.today-page__timeline-segment--strong {
   border-color: rgba(76, 134, 104, 0.48);
   background: rgba(76, 134, 104, 0.12);
 }
 
-.today-page__rhythm-segment--good {
+.today-page__timeline-segment--good {
   border-color: rgba(214, 170, 103, 0.3);
   background: rgba(214, 170, 103, 0.08);
 }
 
-.today-page__rhythm-segment--mixed {
+.today-page__timeline-segment--mixed {
   border-color: rgba(106, 116, 177, 0.24);
   background: rgba(106, 116, 177, 0.07);
 }
 
-.today-page__rhythm-segment--avoid {
+.today-page__timeline-segment--avoid {
   border-color: rgba(181, 82, 64, 0.34);
   background: rgba(181, 82, 64, 0.09);
 }
 
-.today-page__grid {
+.today-page__accordion {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.95rem;
+}
+
+.today-page__accordion summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.today-page__accordion-body {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.today-page__panel {
-  grid-column: span 4;
-}
-
-.today-page__panel--wide {
-  grid-column: span 8;
+  gap: 0.9rem;
+  padding-top: 0.95rem;
 }
 
 .today-page__panel-header {
@@ -195,6 +173,11 @@
   font-size: 1.2rem;
 }
 
+.today-page__insights-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 1rem;
+}
+
 .today-page__festival-list {
   display: grid;
   gap: 0.65rem;
@@ -206,6 +189,16 @@
   display: grid;
   gap: 0.2rem;
   color: var(--text-primary);
+  transition:
+    transform 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out);
+}
+
+.today-page__festival-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(214, 170, 103, 0.22);
+  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.18);
 }
 
 .today-page__festival-item span {
@@ -233,25 +226,6 @@
   text-transform: uppercase;
 }
 
-.today-page__progress {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.today-page__progress-bar {
-  height: 0.62rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  overflow: hidden;
-}
-
-.today-page__progress-bar span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--gold-soft), var(--gold-bright));
-}
-
 .today-page__timing-notes {
   display: grid;
   gap: 0.8rem;
@@ -268,31 +242,19 @@
 }
 
 @media (max-width: 1160px) {
-  .today-page__hero,
-  .today-page__rhythm-track,
-  .today-page__grid {
+  .today-page__route-meta,
+  .today-page__timeline-grid,
+  .today-page__insights-grid {
     grid-template-columns: 1fr;
-  }
-
-  .today-page__panel,
-  .today-page__panel--wide {
-    grid-column: auto;
   }
 }
 
 @media (max-width: 720px) {
-  .today-page__hero,
-  .today-page__utility-bar,
-  .today-page__hero-panel--sun,
   .today-page__signal-grid {
     grid-template-columns: 1fr;
   }
 
   .today-page__panel-header {
     flex-direction: column;
-  }
-
-  .today-page__utility-bar {
-    display: grid;
   }
 }
