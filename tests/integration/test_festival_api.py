@@ -29,6 +29,8 @@ class TestFestivalListEndpoint:
         data = response.json()
         assert data["total"] >= 25
         assert len(data["festivals"]) >= 25
+        assert all("date_status" in festival for festival in data["festivals"])
+        assert all("date_status_note" in festival for festival in data["festivals"])
 
     def test_list_festivals_by_category(self):
         """Filter festivals by category."""
@@ -73,12 +75,26 @@ class TestFestivalDetailEndpoint:
         assert "dates" in data
         assert data["dates"]["start_date"] == "2026-10-10"
         assert data["dates"]["end_date"] == "2026-10-24"
+        assert data["date_availability"]["status"] == "available"
+        assert data["date_availability"]["resolved_year"] == 2026
         assert data["completeness"]["overall"] in {"complete", "partial", "minimal"}
         assert data["completeness"]["ritual_sequence"]["status"] in {
             "available",
             "partial",
             "missing",
         }
+
+    def test_get_festival_detail_reports_missing_rule_truthfully(self):
+        """Inventory-style festivals should explain why dates are absent."""
+        response = client.get("/api/festivals/lhosar?year=2026")
+        assert response.status_code == 200
+
+        data = response.json()
+        assert data["festival"]["id"] == "lhosar"
+        assert data["dates"] is None
+        assert data["date_availability"]["status"] == "missing_rule"
+        assert "No computed rule is published" in data["date_availability"]["note"]
+        assert data["completeness"]["dates"]["status"] == "missing"
 
     def test_get_nonexistent_festival(self):
         """Nonexistent festival returns 404."""
@@ -155,6 +171,7 @@ class TestUpcomingFestivals:
         for festival in data["festivals"]:
             assert "days_until" in festival
             assert festival["days_until"] >= 0
+            assert festival["date_status"] == "available"
 
 
 class TestCalendarAccuracy:

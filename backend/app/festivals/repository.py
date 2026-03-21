@@ -19,6 +19,7 @@ from ..calendar import (
 from ..rules import get_rule_service
 from .models import (
     Festival,
+    FestivalDateAvailability,
     FestivalDates,
     FestivalSummary,
 )
@@ -463,13 +464,28 @@ class FestivalRepository:
 
     def get_dates(self, festival_id: str, year: int) -> Optional[FestivalDates]:
         """Get calculated dates for a festival in a specific year."""
+        result, _availability = self.get_dates_with_availability(festival_id, year)
+        return result
+
+    def get_dates_with_availability(
+        self, festival_id: str, year: int
+    ) -> tuple[Optional[FestivalDates], FestivalDateAvailability]:
+        """Get calculated dates plus truthful resolution metadata."""
         if festival_id not in self._rule_service.list_ids():
-            return None
+            return None, FestivalDateAvailability(
+                status="missing_rule",
+                note="No computed rule is published for this festival yet, so live dates cannot be resolved.",
+                requested_year=year,
+            )
 
         try:
             result = self._rule_service.calculate(festival_id, year)
             if result is None:
-                return None
+                return None, FestivalDateAvailability(
+                    status="unresolved",
+                    note="A rule exists for this festival, but the calendar engine did not resolve a date for the requested year.",
+                    requested_year=year,
+                )
 
             bs_start = _to_bs_struct(result.start_date)
             bs_end = _to_bs_struct(result.end_date)
@@ -484,17 +500,37 @@ class FestivalRepository:
                 bs_start=bs_start,
                 bs_end=bs_end,
                 days_until=days_until if days_until >= 0 else None,
+            ), FestivalDateAvailability(
+                status="available",
+                note="Resolved calendar dates are available for this festival and year.",
+                requested_year=year,
+                resolved_year=year,
             )
         except Exception:
-            return None
+            return None, FestivalDateAvailability(
+                status="calculation_error",
+                note="The calendar engine encountered an internal error while resolving this festival year.",
+                requested_year=year,
+            )
 
     def to_summary(self, festival: Festival) -> FestivalSummary:
         """Convert a Festival to FestivalSummary."""
         # Try to get next occurrence
-        dates = self.get_dates(festival.id, date.today().year)
+        requested_year = date.today().year
+        dates, availability = self.get_dates_with_availability(festival.id, requested_year)
         if dates and dates.start_date < date.today():
             # Try next year
-            dates = self.get_dates(festival.id, date.today().year + 1)
+            next_year = requested_year + 1
+            dates, next_availability = self.get_dates_with_availability(festival.id, next_year)
+            if next_availability.status == "available":
+                availability = FestivalDateAvailability(
+                    status="available",
+                    note="The current year's occurrence has passed, so the next resolved occurrence is shown instead.",
+                    requested_year=requested_year,
+                    resolved_year=next_year,
+                )
+            else:
+                availability = next_availability
 
         return FestivalSummary(
             id=festival.id,
@@ -509,6 +545,8 @@ class FestivalRepository:
             next_start=dates.start_date if dates else None,
             next_end=dates.end_date if dates else None,
             days_until=dates.days_until if dates else None,
+            date_status=availability.status if availability else None,
+            date_status_note=availability.note if availability else None,
         )
 
 

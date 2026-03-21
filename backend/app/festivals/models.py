@@ -101,6 +101,15 @@ class FestivalDates(BaseModel):
     provenance: Optional[ProvenanceMeta] = None
 
 
+class FestivalDateAvailability(BaseModel):
+    """Truthful date-resolution status for a requested festival/year."""
+
+    status: str = Field(..., pattern=r"^(available|missing_rule|unresolved|calculation_error)$")
+    note: str
+    requested_year: int
+    resolved_year: Optional[int] = None
+
+
 class Festival(BaseModel):
     """Complete festival data model."""
 
@@ -195,6 +204,8 @@ class FestivalSummary(BaseModel):
     next_start: Optional[date] = None
     next_end: Optional[date] = None
     days_until: Optional[int] = None
+    date_status: Optional[str] = None
+    date_status_note: Optional[str] = None
 
 
 class FestivalListResponse(BaseModel):
@@ -229,6 +240,7 @@ class FestivalDetailResponse(BaseModel):
 
     festival: Festival
     dates: Optional[FestivalDates] = None
+    date_availability: Optional[FestivalDateAvailability] = None
     nearby_festivals: Optional[List[FestivalSummary]] = None
     completeness: Optional[FestivalDetailCompleteness] = None
     provenance: Optional[ProvenanceMeta] = None
@@ -268,6 +280,8 @@ class UpcomingFestival(BaseModel):
     rule_family: Optional[str] = None
     validation_band: Optional[str] = None
     source_evidence_ids: List[str] = Field(default_factory=list)
+    date_status: Optional[str] = None
+    date_status_note: Optional[str] = None
 
 
 class UpcomingFestivalsResponse(BaseModel):
