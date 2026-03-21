@@ -73,6 +73,7 @@ class RedisRateLimiterBackend:
             raise ValueError("Redis rate limiting requires PARVA_REDIS_URL.")
         self._redis_url = redis_url.strip()
         self._client = None
+        self._get_client()
 
     def _get_client(self):
         if self._client is not None:

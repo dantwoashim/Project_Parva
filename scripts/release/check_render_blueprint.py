@@ -42,6 +42,7 @@ def main() -> int:
         "PARVA_ALLOW_EXPERIMENTAL_IN_PROD": "false",
         "PARVA_ENV": "production",
         "PARVA_RATE_LIMIT_ENABLED": "true",
+        "PARVA_RATE_LIMIT_BACKEND": "redis",
         "PARVA_SERVE_FRONTEND": "true",
     }
 
@@ -55,10 +56,18 @@ def main() -> int:
         failures.append("PARVA_SOURCE_URL is missing from render.yaml.")
     else:
         source_value = source_url.get("value", "")
-        source_sync = source_url.get("sync", "")
-        if not source_value and source_sync.lower() != "false":
+        if not source_value:
+            failures.append("PARVA_SOURCE_URL must define a public repository or source archive URL in render.yaml.")
+
+    redis_url = envs.get("PARVA_REDIS_URL")
+    if not redis_url:
+        failures.append("PARVA_REDIS_URL is missing from render.yaml.")
+    else:
+        redis_sync = redis_url.get("sync", "")
+        redis_value = redis_url.get("value", "")
+        if not redis_value and redis_sync.lower() != "false":
             failures.append(
-                "PARVA_SOURCE_URL must either define a value or use sync: false for operator-supplied configuration."
+                "PARVA_REDIS_URL must either define a value or use sync: false for operator-supplied configuration."
             )
 
     admin_token = envs.get("PARVA_ADMIN_TOKEN", {}).get("value", "")

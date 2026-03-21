@@ -15,6 +15,7 @@ dependencies = [
     "pydantic>=2.0.0",
     "pyswisseph>=2.10.0",
     "numpy>=1.26.0",
+    "redis>=5.2.0",
     "tzdata>=2024.1",
 ]
 

@@ -13,9 +13,13 @@ services:
         value: production
       - key: PARVA_RATE_LIMIT_ENABLED
         value: "true"
+      - key: PARVA_RATE_LIMIT_BACKEND
+        value: redis
+      - key: PARVA_REDIS_URL
+        sync: false
       - key: PARVA_SERVE_FRONTEND
         value: "true"
       - key: PARVA_SOURCE_URL
-        sync: false
+        value: https://github.com/dantwoashim/Project_Parva
       - key: CORS_ALLOW_ORIGINS
         value: https://project-parva.onrender.com
