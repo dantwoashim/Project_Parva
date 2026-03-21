@@ -7,7 +7,12 @@ function readViewportWidth() {
     return DEFAULT_VIEWPORT_WIDTH;
   }
 
-  return window.innerWidth || document.documentElement?.clientWidth || DEFAULT_VIEWPORT_WIDTH;
+  return (
+    window.visualViewport?.width
+    || window.innerWidth
+    || document.documentElement?.clientWidth
+    || DEFAULT_VIEWPORT_WIDTH
+  );
 }
 
 export function useViewportWidth() {
@@ -23,8 +28,14 @@ export function useViewportWidth() {
     }
 
     window.addEventListener('resize', handleResize);
+    window.visualViewport?.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    handleResize();
+
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.visualViewport?.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
     };
   }, []);
 

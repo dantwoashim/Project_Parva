@@ -147,6 +147,7 @@ For hosted deployments:
 - keep the project and your deployment changes under AGPL-compatible terms
 - publish a public source repository or source archive for the exact deployed build
 - set `PARVA_SOURCE_URL` to that public source location
+- set `PARVA_RATE_LIMIT_BACKEND=redis` and provide `PARVA_REDIS_URL`
 - keep `/source` reachable in production
 
 ## Documentation
