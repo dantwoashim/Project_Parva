@@ -99,6 +99,14 @@ artifacts.
 py -3.11 scripts/release/package_source_archive.py
 ```
 
+For a lean academic/demo handoff bundle, use the submission packager instead.
+It keeps only the runtime-oriented files and drops docs, tests, CI metadata,
+raw source PDFs, and other dev-only material.
+
+```bash
+py -3.11 scripts/release/package_submission_bundle.py
+```
+
 ## Validation
 
 ```bash

@@ -22,7 +22,7 @@
 - Rules hash:
 - Dependency lock hash:
 - Attestation mode:
-- Attestation key id:
+- Attestation key id: redacted for public dossier
 
 ## Release Gates
 

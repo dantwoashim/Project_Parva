@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create a clean source archive for release distribution."""
+"""Create a lean submission bundle for demos or academic review."""
 
 from __future__ import annotations
 
@@ -9,8 +9,8 @@ import sys
 import zipfile
 from pathlib import Path
 
-if sys.version_info < (3, 11):  # pragma: no cover - script is pinned to 3.11 in docs
-    raise SystemExit("package_source_archive.py requires Python 3.11+")
+if sys.version_info < (3, 11):  # pragma: no cover
+    raise SystemExit("package_submission_bundle.py requires Python 3.11+")
 
 import tomllib
 
@@ -18,6 +18,17 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 PYPROJECT_PATH = PROJECT_ROOT / "pyproject.toml"
 DIST_DIR = PROJECT_ROOT / "dist"
 
+INCLUDED_TOP_LEVEL_NAMES = {
+    "backend",
+    "frontend",
+    "data",
+    "requirements",
+    "pyproject.toml",
+    "README.md",
+    "LICENSE",
+    "Dockerfile",
+    "render.yaml",
+}
 EXCLUDED_DIR_NAMES = {
     ".git",
     ".venv",
@@ -33,28 +44,15 @@ EXCLUDED_DIR_NAMES = {
     "output",
     "reports",
 }
-EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".zip"}
 EXCLUDED_RELATIVE_PREFIXES = {
-    Path("benchmark/results"),
     Path("backend/data/snapshots"),
     Path("backend/data/traces"),
     Path("backend/project_parva.egg-info"),
 }
 EXCLUDED_RELATIVE_PATHS = {
-    Path("SKILL.md"),
-    Path("docs/PARVA_UI_UX_TRUST_RESEARCH_2026-03-14.md"),
-    Path("docs/PROJECT_AUDIT_2026-03-13.md"),
-    Path("docs/PROJECT_DEEP_AUDIT_2026-03-14.md"),
-    Path("docs/public_beta/release_candidate_dossier.md"),
+    Path("backend/data/webhooks/subscriptions.json"),
 }
-ALLOWED_GENERATED_DIRTY_PATHS = {
-    Path("docs/public_beta/authority_dashboard.json"),
-    Path("docs/public_beta/authority_dashboard.md"),
-    Path("docs/public_beta/dashboard_metrics.json"),
-    Path("docs/public_beta/dashboard_metrics.md"),
-    Path("docs/public_beta/month9_release_dossier.md"),
-    Path("docs/public_beta/release_candidate_dossier.md"),
-}
+EXCLUDED_SUFFIXES = {".pdf", ".pyc", ".pyo", ".zip"}
 
 
 def _project_version() -> str:
@@ -62,8 +60,17 @@ def _project_version() -> str:
     return str(payload["project"]["version"])
 
 
+def _is_included(relative: Path) -> bool:
+    if not relative.parts:
+        return False
+    return relative.parts[0] in INCLUDED_TOP_LEVEL_NAMES
+
+
 def _should_skip(path: Path) -> bool:
     relative = path.relative_to(PROJECT_ROOT)
+
+    if not _is_included(relative):
+        return True
 
     if any(part in EXCLUDED_DIR_NAMES for part in relative.parts):
         return True
@@ -77,7 +84,7 @@ def _should_skip(path: Path) -> bool:
     if relative in EXCLUDED_RELATIVE_PATHS:
         return True
 
-    if path.suffix in EXCLUDED_SUFFIXES:
+    if path.suffix.lower() in EXCLUDED_SUFFIXES:
         return True
 
     return False
@@ -113,7 +120,7 @@ def _working_tree_is_clean() -> bool:
         return True
     if not dirty_paths:
         return True
-    return all(path in ALLOWED_GENERATED_DIRTY_PATHS for path in dirty_paths)
+    return all(not _is_included(path) or _should_skip(PROJECT_ROOT / path) for path in dirty_paths)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -121,19 +128,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--allow-dirty",
         action="store_true",
-        help="Allow archiving from a dirty worktree. Intended for local debugging only.",
+        help="Allow bundling from a dirty worktree. Intended for local debugging only.",
     )
     args = parser.parse_args(argv)
 
     if not args.allow_dirty and not _working_tree_is_clean():
         raise SystemExit(
-            "Refusing to package from a dirty worktree. Commit or stash changes, or rerun with --allow-dirty for local debugging."
+            "Refusing to package from a dirty worktree for included submission files. Commit or stash changes, or rerun with --allow-dirty for local debugging."
         )
 
     version = _project_version()
     archive_root = f"project-parva-{version}"
+    archive_path = DIST_DIR / f"{archive_root}-submission.zip"
     DIST_DIR.mkdir(parents=True, exist_ok=True)
-    archive_path = DIST_DIR / f"{archive_root}-source.zip"
 
     files_written = 0
     with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
