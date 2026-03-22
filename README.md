@@ -20,7 +20,6 @@ Public stable profile:
 
 Disabled by default:
 
-- webhook subscription management and dispatch (not shipped in this build)
 - experimental version tracks (`/v2`, `/v4`, `/v5`)
 - admin and provenance mutation routes
 

@@ -113,7 +113,7 @@ async def observance_stream(
     calendars: Optional[str] = Query(None),
 ):
     """
-    Poll-style stream endpoint for clients that do periodic syncs instead of webhooks.
+    Poll-style stream endpoint for clients that do periodic syncs instead of push delivery.
     """
     begin = start or date.today()
     pref_list = _parse_csv(preferences)

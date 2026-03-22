@@ -33,10 +33,6 @@ npm --prefix frontend run dev
 - `PARVA_API_KEYS` (optional scoped API keys for non-public reads)
 - `PARVA_TRUSTED_PROXY_IPS` (comma-separated proxy source IPs allowed to supply forwarded headers)
 
-## Removed from launch build
-- `PARVA_ENABLE_WEBHOOKS` is intentionally unsupported in this build.
-- Startup fails fast if it is set to `true`.
-
 ## Recommended Zero-Dollar Deploy (Single Place)
 This is the best practical zero-budget setup for the current stack:
 

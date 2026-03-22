@@ -9,11 +9,6 @@ import os
 from pathlib import Path
 from typing import Any
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_LOCAL_ATTESTATION_DIR = PROJECT_ROOT / ".verify" / "release"
-DEFAULT_LOCAL_ATTESTATION_KEY_PATH = DEFAULT_LOCAL_ATTESTATION_DIR / "provenance_attestation.key"
-DEFAULT_LOCAL_ATTESTATION_KEY_ID_PATH = DEFAULT_LOCAL_ATTESTATION_DIR / "provenance_attestation.key_id"
-
 
 def canonical_json(payload: dict[str, Any]) -> str:
     return json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
@@ -31,8 +26,6 @@ def _attestation_key_path() -> Path | None:
     if configured:
         path = Path(configured)
         return path if path.exists() else None
-    if DEFAULT_LOCAL_ATTESTATION_KEY_PATH.exists():
-        return DEFAULT_LOCAL_ATTESTATION_KEY_PATH
     return None
 
 
@@ -60,7 +53,7 @@ def _attestation_key_id() -> str | None:
     if configured:
         return _read_text_file(Path(configured))
 
-    return _read_text_file(DEFAULT_LOCAL_ATTESTATION_KEY_ID_PATH)
+    return None
 
 
 def build_attestation(payload: dict[str, Any]) -> dict[str, Any]:

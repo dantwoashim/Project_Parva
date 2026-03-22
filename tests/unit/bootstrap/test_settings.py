@@ -1,15 +1,7 @@
 """Settings validation tests."""
 
 import pytest
-from app.bootstrap.app_factory import create_app
 from app.bootstrap.settings import load_settings
-
-
-def test_create_app_rejects_webhook_enablement(monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("PARVA_ENABLE_WEBHOOKS", "true")
-
-    with pytest.raises(RuntimeError, match="Webhook routes are not part of the v3 launch build"):
-        create_app()
 
 
 def test_load_settings_parses_trusted_proxy_ips(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -42,6 +34,8 @@ def test_load_settings_exposes_test_only_credentials_under_pytest(
 
 
 def test_create_app_requires_source_url_in_production(monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.bootstrap.app_factory import create_app
+
     monkeypatch.setenv("PARVA_ENV", "production")
     monkeypatch.delenv("PARVA_SOURCE_URL", raising=False)
 
@@ -52,6 +46,8 @@ def test_create_app_requires_source_url_in_production(monkeypatch: pytest.Monkey
 def test_create_app_requires_distributed_rate_limiting_in_production(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    from app.bootstrap.app_factory import create_app
+
     monkeypatch.setenv("PARVA_ENV", "production")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
     monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "memory")
