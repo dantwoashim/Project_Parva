@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
+import sys
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 SELF_PATH = Path(__file__).resolve()
@@ -16,19 +18,52 @@ SKIP_DIRS = {
     "build",
     "__pycache__",
 }
-PATTERNS = (
+STRING_PATTERNS = (
     "/Users/",
     "C:\\Users\\",
     "/home/",
 )
+REGEX_PATTERNS = (
+    re.compile(r"(?<![A-Za-z0-9+.-])[A-Za-z]:\\\\"),
+    re.compile(r"(?<![A-Za-z0-9+.-])[A-Za-z]:/"),
+)
+BINARY_SUFFIXES = {
+    ".7z",
+    ".dll",
+    ".eot",
+    ".gif",
+    ".gz",
+    ".ico",
+    ".jpeg",
+    ".jpg",
+    ".otf",
+    ".pdf",
+    ".png",
+    ".tar",
+    ".ttf",
+    ".woff",
+    ".woff2",
+    ".zip",
+}
 
 
 def _is_binary(path: Path) -> bool:
+    if path.suffix.lower() in BINARY_SUFFIXES:
+        return True
     try:
         chunk = path.read_bytes()[:4096]
     except Exception:
         return True
     return b"\x00" in chunk
+
+
+def _print_line(text: str) -> None:
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+        sys.stdout.buffer.write((text + "\n").encode(encoding, errors="backslashreplace"))
+        sys.stdout.flush()
 
 
 def main() -> int:
@@ -50,7 +85,9 @@ def main() -> int:
             continue
 
         for line_number, line in enumerate(lines, start=1):
-            if any(pattern in line for pattern in PATTERNS):
+            if any(pattern in line for pattern in STRING_PATTERNS) or any(
+                regex.search(line) for regex in REGEX_PATTERNS
+            ):
                 matches.append((path.relative_to(PROJECT_ROOT), line_number, line.strip()))
 
     if not matches:
@@ -58,7 +95,7 @@ def main() -> int:
         return 0
 
     for rel_path, line_number, line in matches:
-        print(f"{rel_path}:{line_number}: {line}")
+        _print_line(f"{rel_path}:{line_number}: {line}")
     return 1
 
 

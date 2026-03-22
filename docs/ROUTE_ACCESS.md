@@ -38,7 +38,7 @@ explicit tier messaging.
 - Support/public beta: feeds, glossary, health endpoints, methodology/about
   content, and institutional/public-artifact read surfaces
 - Experimental/deferred: `/v2/*`, `/v4/*`, `/v5/*`, mutable provenance routes,
-  and webhook management
+  and other non-launch admin/developer surfaces
 
 ## Authenticated read
 
@@ -59,13 +59,11 @@ Routes:
 ## Owner-scoped write
 
 - No owner-scoped write routes are part of the launch profile.
-- Webhook management is not shipped in this build.
 
 ## Admin only
 
 - Provenance mutation routes
 - Experimental write routes
-- No webhook routes are available in the shipped launch profile
 
 ## Test-only credentials
 

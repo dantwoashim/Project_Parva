@@ -20,6 +20,6 @@ services:
       - key: PARVA_SERVE_FRONTEND
         value: "true"
       - key: PARVA_SOURCE_URL
-        value: https://github.com/dantwoashim/Project_Parva
+        sync: false
       - key: CORS_ALLOW_ORIGINS
         value: https://project-parva.onrender.com

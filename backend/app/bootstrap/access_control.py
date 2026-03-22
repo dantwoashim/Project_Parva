@@ -28,7 +28,6 @@ TRUST_PREFIXES = (
     "/api/public",
     "/v3/api/public",
 )
-WEBHOOK_PREFIXES = ("/api/webhooks", "/v3/api/webhooks")
 EXPERIMENTAL_PREFIXES = ("/v2/", "/v4/", "/v5/")
 PROVENANCE_READ_PREFIXES = (
     "/api/provenance/root",
@@ -143,40 +142,6 @@ ROUTE_POLICY_REGISTRY: tuple[RoutePolicy, ...] = (
         name="public_artifacts_read_v3",
         path="/v3/api/public",
         requirement=AccessRequirement(required=True, policy_name="public_artifacts_read", scope="commercial.read"),
-    ),
-    route_policy(
-        name="webhook_admin_write",
-        path="/api/webhooks",
-        requirement=AccessRequirement(required=True, policy_name="webhook_admin_write", admin_only=True),
-        methods=("POST", "PUT", "PATCH", "DELETE"),
-    ),
-    route_policy(
-        name="webhook_admin_write_v3",
-        path="/v3/api/webhooks",
-        requirement=AccessRequirement(required=True, policy_name="webhook_admin_write", admin_only=True),
-        methods=("POST", "PUT", "PATCH", "DELETE"),
-    ),
-    route_policy(
-        name="webhook_admin_dispatch",
-        path="/api/webhooks/dispatch",
-        requirement=AccessRequirement(required=True, policy_name="webhook_admin_dispatch", admin_only=True),
-        match="exact",
-    ),
-    route_policy(
-        name="webhook_admin_dispatch_v3",
-        path="/v3/api/webhooks/dispatch",
-        requirement=AccessRequirement(required=True, policy_name="webhook_admin_dispatch", admin_only=True),
-        match="exact",
-    ),
-    route_policy(
-        name="webhook_manage",
-        path="/api/webhooks",
-        requirement=AccessRequirement(required=True, policy_name="webhook_manage", scope="webhook.manage"),
-    ),
-    route_policy(
-        name="webhook_manage_v3",
-        path="/v3/api/webhooks",
-        requirement=AccessRequirement(required=True, policy_name="webhook_manage", scope="webhook.manage"),
     ),
     route_policy(
         name="experimental_read_v2",

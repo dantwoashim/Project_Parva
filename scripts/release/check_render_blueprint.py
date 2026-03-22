@@ -56,8 +56,11 @@ def main() -> int:
         failures.append("PARVA_SOURCE_URL is missing from render.yaml.")
     else:
         source_value = source_url.get("value", "")
-        if not source_value:
-            failures.append("PARVA_SOURCE_URL must define a public repository or source archive URL in render.yaml.")
+        source_sync = source_url.get("sync", "")
+        if not source_value and source_sync.lower() != "false":
+            failures.append(
+                "PARVA_SOURCE_URL must either define a public repository/source archive URL or use sync: false for operator-supplied configuration."
+            )
 
     redis_url = envs.get("PARVA_REDIS_URL")
     if not redis_url:

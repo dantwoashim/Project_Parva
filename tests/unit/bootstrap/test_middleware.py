@@ -12,7 +12,6 @@ def _settings(*, trusted_proxy_ips=frozenset()):
         source_url=None,
         enable_experimental_api=False,
         allow_experimental_in_prod=False,
-        enable_webhooks=False,
         serve_frontend=False,
         frontend_dist=Path("."),
         max_request_bytes=1024,

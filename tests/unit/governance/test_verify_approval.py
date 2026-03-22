@@ -37,7 +37,7 @@ def test_verify_approval_passes_when_required_reviewers_are_present(tmp_path: Pa
                 "Source text",
                 "Reviewed-by: Engineering / automated_release_candidate_gates",
                 "Reviewed-by: QA / golden_journeys_suite",
-                "Signed-off-by: Release preparation / codex",
+                "Signed-off-by: Release preparation / release_coordinator",
             ]
         ),
         encoding="utf-8",
@@ -67,7 +67,7 @@ def test_verify_approval_fails_when_required_reviewer_is_missing(tmp_path: Path)
                 "## Sources",
                 "Source text",
                 "Reviewed-by: Engineering / automated_release_candidate_gates",
-                "Signed-off-by: Release preparation / codex",
+                "Signed-off-by: Release preparation / release_coordinator",
             ]
         ),
         encoding="utf-8",

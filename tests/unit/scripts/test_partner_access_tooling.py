@@ -46,3 +46,17 @@ services:
 
     assert envs["PARVA_ENV"]["value"] == "production"
     assert envs["PARVA_SOURCE_URL"]["sync"] == "false"
+
+
+def test_render_blueprint_parser_keeps_explicit_source_url_values():
+    payload = """
+services:
+  - type: web
+    envVars:
+      - key: PARVA_SOURCE_URL
+        value: https://example.com/source.zip
+""".strip()
+
+    envs = _parse_env_vars(payload)
+
+    assert envs["PARVA_SOURCE_URL"]["value"] == "https://example.com/source.zip"

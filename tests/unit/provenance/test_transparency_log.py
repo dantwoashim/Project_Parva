@@ -14,16 +14,6 @@ def test_transparency_log_append_and_verify(tmp_path: Path, monkeypatch):
     monkeypatch.delenv("PARVA_PROVENANCE_ATTESTATION_KEY_FILE", raising=False)
     monkeypatch.delenv("PARVA_PROVENANCE_ATTESTATION_KEY_ID", raising=False)
     monkeypatch.delenv("PARVA_PROVENANCE_ATTESTATION_KEY_ID_FILE", raising=False)
-    monkeypatch.setattr(
-        attestation,
-        "DEFAULT_LOCAL_ATTESTATION_KEY_PATH",
-        tmp_path / "no-local-attestation.key",
-    )
-    monkeypatch.setattr(
-        attestation,
-        "DEFAULT_LOCAL_ATTESTATION_KEY_ID_PATH",
-        tmp_path / "no-local-attestation.key_id",
-    )
 
     entry1 = transparency.append_entry("manual_event", {"k": "v"})
     entry2 = transparency.append_snapshot_event("snap_x", "dhash", "rhash")

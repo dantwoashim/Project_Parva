@@ -6,7 +6,6 @@
 | --- | --- | --- |
 | `v3` | public stable | only launch-supported public contract |
 | `v2`, `v4`, `v5` | experimental | disabled by default |
-| webhook management | not shipped | startup rejects enablement in this build |
 | provenance and ops mutations | admin only | not part of public stable profile |
 
 ## Reporting a vulnerability
@@ -31,7 +30,6 @@
 - Non-public routes must be called with either a scoped `X-API-Key` or an
   admin bearer token.
 - Provenance mutation routes are admin-only.
-- Webhook routes are not part of the production launch build.
 
 The detailed route matrix is documented in `docs/ROUTE_ACCESS.md`.
 

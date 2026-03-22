@@ -35,7 +35,6 @@ class AppSettings:
     source_url: str | None
     enable_experimental_api: bool
     allow_experimental_in_prod: bool
-    enable_webhooks: bool
     serve_frontend: bool
     frontend_dist: Path
     max_request_bytes: int
@@ -124,7 +123,6 @@ def load_settings() -> AppSettings:
         allow_experimental_in_prod=_parse_bool(
             os.getenv("PARVA_ALLOW_EXPERIMENTAL_IN_PROD"), default=False
         ),
-        enable_webhooks=_parse_bool(os.getenv("PARVA_ENABLE_WEBHOOKS"), default=False),
         serve_frontend=_parse_bool(os.getenv("PARVA_SERVE_FRONTEND"), default=False),
         frontend_dist=_frontend_dist_from_env(),
         max_request_bytes=int(os.getenv("PARVA_MAX_REQUEST_BYTES", "1048576")),
@@ -167,11 +165,6 @@ def validate_settings(settings: AppSettings) -> list[str]:
 
     if settings.enable_experimental_api and not settings.admin_token:
         errors.append("Experimental routes require PARVA_ADMIN_TOKEN.")
-
-    if settings.enable_webhooks:
-        errors.append(
-            "Webhook routes are not part of the v3 launch build. Keep PARVA_ENABLE_WEBHOOKS=false."
-        )
 
     if settings.rate_limit_enabled:
         backend = settings.rate_limit_backend.strip().lower()

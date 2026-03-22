@@ -1,5 +1,6 @@
 .venv export-ignore
 .venv311 export-ignore
+.playwright-cli export-ignore
 .verify_311_clean export-ignore
 .pytest_cache export-ignore
 .mypy_cache export-ignore
@@ -8,6 +9,12 @@ frontend/node_modules export-ignore
 frontend/dist export-ignore
 output export-ignore
 reports export-ignore
+backend/data/snapshots export-ignore
+backend/data/traces export-ignore
 backend/project_parva.egg-info export-ignore
+docs/PARVA_UI_UX_TRUST_RESEARCH_2026-03-14.md export-ignore
+docs/PROJECT_AUDIT_2026-03-13.md export-ignore
+docs/PROJECT_DEEP_AUDIT_2026-03-14.md export-ignore
+SKILL.md export-ignore
 **/__pycache__ export-ignore
 *.pyc export-ignore

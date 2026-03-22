@@ -73,7 +73,7 @@ Avoid selling these as if they already exist in a finished form:
 - strict uptime SLAs enforced by code
 - enterprise multi-tenant billing
 - final scholarly authority over all regional rule variants
-- production-grade webhook ecosystem
+- production-grade push integration ecosystem
 - hard guarantees beyond the current evidence artifacts
 
 ## Practical zero-budget monetization path

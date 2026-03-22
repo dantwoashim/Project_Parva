@@ -18,7 +18,7 @@ announcement.
   degraded-state confusion.
 - `frontend-regression`: broken navigation, rendering, dialog, accessibility,
   mobile shell, or save-state behavior.
-- `integration`: calendar feed, embed, webhook, or export behavior.
+- `integration`: calendar feed, embed, or export behavior.
 - `operations`: release packaging, provenance, signing, deployment, or artifact
   drift.
 

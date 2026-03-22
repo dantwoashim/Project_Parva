@@ -36,10 +36,15 @@ EXCLUDED_DIR_NAMES = {
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".zip"}
 EXCLUDED_RELATIVE_PREFIXES = {
     Path("benchmark/results"),
+    Path("backend/data/snapshots"),
+    Path("backend/data/traces"),
     Path("backend/project_parva.egg-info"),
 }
 EXCLUDED_RELATIVE_PATHS = {
-    Path("backend/data/webhooks/subscriptions.json"),
+    Path("SKILL.md"),
+    Path("docs/PARVA_UI_UX_TRUST_RESEARCH_2026-03-14.md"),
+    Path("docs/PROJECT_AUDIT_2026-03-13.md"),
+    Path("docs/PROJECT_DEEP_AUDIT_2026-03-14.md"),
 }
 ALLOWED_GENERATED_DIRTY_PATHS = {
     Path("docs/public_beta/authority_dashboard.json"),

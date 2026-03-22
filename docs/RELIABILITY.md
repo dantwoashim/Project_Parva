@@ -14,7 +14,6 @@ backing configuration.
 Current checks:
 
 - experimental routes in production require `PARVA_ALLOW_EXPERIMENTAL_IN_PROD=true`
-- webhook enablement is rejected because webhooks are not shipped in this build
 - frontend serving in production requires the configured frontend dist directory to contain `index.html`
 
 ## Incident playbooks

@@ -130,6 +130,18 @@ def _existing_paths(paths: list[Path]) -> list[Path]:
     return sorted([p for p in paths if p.exists()], key=lambda p: str(p))
 
 
+def _display_path(path: Path) -> str:
+    try:
+        rel = path.relative_to(PROJECT_ROOT)
+        return rel.as_posix()
+    except ValueError:
+        try:
+            rel = path.resolve().relative_to(PROJECT_ROOT.resolve())
+            return rel.as_posix()
+        except ValueError:
+            return path.name
+
+
 def _hash_file_set(paths: list[Path], context: dict[str, Any]) -> str:
     h = hashlib.sha256()
     h.update(json.dumps(context, sort_keys=True, separators=(",", ":")).encode("utf-8"))
@@ -208,14 +220,14 @@ def create_snapshot(snapshot_id: Optional[str] = None) -> SnapshotRecord:
     dataset_hash = hash_dataset()
     rules_hash = hash_rules()
 
-    dataset_files = [str(p) for p in _existing_paths(DEFAULT_DATASET_FILES)]
-    rule_files = [str(p) for p in _existing_paths(DEFAULT_RULE_FILES)]
+    dataset_files = [_display_path(p) for p in _existing_paths(DEFAULT_DATASET_FILES)]
+    rule_files = [_display_path(p) for p in _existing_paths(DEFAULT_RULE_FILES)]
 
     festival_snapshot_copy: Optional[str] = None
     if LEGACY_FESTIVAL_SNAPSHOT.exists():
         copied = SNAPSHOT_DIR / f"{sid}.festival_snapshot.json"
         shutil.copyfile(LEGACY_FESTIVAL_SNAPSHOT, copied)
-        festival_snapshot_copy = str(copied)
+        festival_snapshot_copy = _display_path(copied)
 
     record = SnapshotRecord(
         snapshot_id=sid,

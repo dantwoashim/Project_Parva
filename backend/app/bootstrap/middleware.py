@@ -14,7 +14,7 @@ from fastapi.responses import JSONResponse, Response
 from starlette.datastructures import Headers, QueryParams
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from app.bootstrap.access_control import WEBHOOK_PREFIXES, authenticate_request, classify_request
+from app.bootstrap.access_control import authenticate_request, classify_request
 from app.bootstrap.rate_limit import RateLimiterBackend, RatePolicy
 from app.bootstrap.settings import AppSettings
 from app.core.meta_envelope import extract_meta, merge_meta_defaults
@@ -266,21 +266,6 @@ def _log_security_event(
 
 def build_access_control_guard(*, settings: AppSettings):
     async def access_control(request: Request, call_next):
-        if request.url.path.startswith(WEBHOOK_PREFIXES) and not settings.enable_webhooks:
-            _log_security_event(
-                event="auth.blocked",
-                request=request,
-                requirement_name="webhook_launch_gate",
-                reason="webhooks_disabled",
-            )
-            return JSONResponse(
-                status_code=404,
-                content={
-                    "detail": "Not Found",
-                    "request_id": getattr(request.state, "request_id", None),
-                },
-            )
-
         requirement = classify_request(request.url.path, request.method)
         if not requirement.required:
             request.state.principal = None
@@ -359,9 +344,6 @@ def build_access_control_guard(*, settings: AppSettings):
 
 
 def _rate_policy_for_request(path: str, principal_type: str | None) -> tuple[str, RatePolicy]:
-    if path.startswith(("/api/webhooks", "/v3/api/webhooks")):
-        return "webhooks", RatePolicy(limit=20, window_seconds=60)
-
     if path.startswith(
         (
             "/api/reliability",

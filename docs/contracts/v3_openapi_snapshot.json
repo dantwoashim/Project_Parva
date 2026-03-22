@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-21T11:02:50.421189+00:00",
+  "generated_at": "2026-03-22T15:43:22.995153+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -2149,7 +2149,7 @@
             "observances"
           ],
           "summary": "Observance Stream",
-          "description": "Poll-style stream endpoint for clients that do periodic syncs instead of webhooks.",
+          "description": "Poll-style stream endpoint for clients that do periodic syncs instead of push delivery.",
           "operationId": "observance_stream_v3_api_observances_stream_get",
           "parameters": [
             {
@@ -2264,6 +2264,64 @@
               "content": {
                 "application/json": {
                   "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/places/search": {
+        "get": {
+          "tags": [
+            "places"
+          ],
+          "summary": "Place Search",
+          "operationId": "place_search_v3_api_places_search_get",
+          "parameters": [
+            {
+              "name": "q",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 120,
+                "description": "Place search query",
+                "title": "Q"
+              },
+              "description": "Place search query"
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 8,
+                "minimum": 1,
+                "description": "Maximum number of place candidates",
+                "default": 5,
+                "title": "Limit"
+              },
+              "description": "Maximum number of place candidates"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
                 }
               }
             }
@@ -4355,6 +4413,138 @@
               }
             }
           },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/muhurta/calendar": {
+        "get": {
+          "tags": [
+            "muhurta"
+          ],
+          "summary": "Muhurta Calendar",
+          "operationId": "muhurta_calendar_v3_api_muhurta_calendar_get",
+          "parameters": [
+            {
+              "name": "from",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "description": "Start date YYYY-MM-DD",
+                "title": "From"
+              },
+              "description": "Start date YYYY-MM-DD"
+            },
+            {
+              "name": "to",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date",
+                "description": "End date YYYY-MM-DD",
+                "title": "To"
+              },
+              "description": "End date YYYY-MM-DD"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            },
+            {
+              "name": "type",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general",
+                "default": "general",
+                "title": "Type"
+              },
+              "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general"
+            },
+            {
+              "name": "assumption_set",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "np-mainstream-v2",
+                "title": "Assumption Set"
+              }
+            }
+          ],
           "responses": {
             "200": {
               "description": "Successful Response",
@@ -6880,6 +7070,42 @@
           "title": "FestivalCalendarResponse",
           "description": "API response for calendar view."
         },
+        "FestivalDateAvailability": {
+          "properties": {
+            "status": {
+              "type": "string",
+              "pattern": "^(available|missing_rule|unresolved|calculation_error)$",
+              "title": "Status"
+            },
+            "note": {
+              "type": "string",
+              "title": "Note"
+            },
+            "requested_year": {
+              "type": "integer",
+              "title": "Requested Year"
+            },
+            "resolved_year": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Resolved Year"
+            }
+          },
+          "type": "object",
+          "required": [
+            "status",
+            "note",
+            "requested_year"
+          ],
+          "title": "FestivalDateAvailability",
+          "description": "Truthful date-resolution status for a requested festival/year."
+        },
         "FestivalDates": {
           "properties": {
             "gregorian_year": {
@@ -7017,6 +7243,16 @@
               "anyOf": [
                 {
                   "$ref": "#/components/schemas/FestivalDates"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "date_availability": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/FestivalDateAvailability"
                 },
                 {
                   "type": "null"
@@ -7312,6 +7548,28 @@
                 }
               ],
               "title": "Days Until"
+            },
+            "date_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date Status"
+            },
+            "date_status_note": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date Status Note"
             }
           },
           "type": "object",
@@ -8701,6 +8959,28 @@
               },
               "type": "array",
               "title": "Source Evidence Ids"
+            },
+            "date_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date Status"
+            },
+            "date_status_note": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date Status Note"
             }
           },
           "type": "object",

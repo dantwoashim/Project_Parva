@@ -21,6 +21,7 @@ frontend/dist/
 # Local env
 .env
 .env.*
+SKILL.md
 
 # OS/editor
 .DS_Store
@@ -34,10 +35,11 @@ benchmark/results/
 *.zip
 
 # Runtime data
-backend/data/webhooks/subscriptions.json
 data/transparency/*.jsonl
 
 # Generated provenance artifacts
+backend/data/snapshots/
+backend/data/traces/
 backend/data/traces/tr_*.json
 backend/data/snapshots/snap_*.json
 backend/data/snapshots/snap_*.festival_snapshot.json

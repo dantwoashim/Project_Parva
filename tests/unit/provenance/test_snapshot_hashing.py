@@ -41,16 +41,6 @@ def test_snapshot_verify_detects_tamper(tmp_path: Path, monkeypatch):
     monkeypatch.delenv("PARVA_PROVENANCE_ATTESTATION_KEY_FILE", raising=False)
     monkeypatch.delenv("PARVA_PROVENANCE_ATTESTATION_KEY_ID", raising=False)
     monkeypatch.delenv("PARVA_PROVENANCE_ATTESTATION_KEY_ID_FILE", raising=False)
-    monkeypatch.setattr(
-        attestation,
-        "DEFAULT_LOCAL_ATTESTATION_KEY_PATH",
-        tmp_path / "no-local-attestation.key",
-    )
-    monkeypatch.setattr(
-        attestation,
-        "DEFAULT_LOCAL_ATTESTATION_KEY_ID_PATH",
-        tmp_path / "no-local-attestation.key_id",
-    )
 
     record = snap.create_snapshot("snap_test")
     assert record.attestation["mode"] == "unsigned"

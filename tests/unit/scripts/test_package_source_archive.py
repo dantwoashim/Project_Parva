@@ -52,3 +52,25 @@ def test_dirty_paths_handles_git_renames(monkeypatch):
     monkeypatch.setattr(package_source_archive.subprocess, "run", fake_run)
 
     assert package_source_archive._dirty_paths() == [Path("docs/public_beta/dashboard_metrics.md")]
+
+
+def test_should_skip_generated_provenance_artifacts():
+    assert package_source_archive._should_skip(
+        package_source_archive.PROJECT_ROOT / "backend" / "data" / "snapshots" / "snap.json"
+    )
+    assert package_source_archive._should_skip(
+        package_source_archive.PROJECT_ROOT / "backend" / "data" / "traces" / "trace.json"
+    )
+
+
+def test_should_skip_prompt_artifacts():
+    assert package_source_archive._should_skip(package_source_archive.PROJECT_ROOT / "SKILL.md")
+
+
+def test_should_skip_internal_review_docs():
+    assert package_source_archive._should_skip(
+        package_source_archive.PROJECT_ROOT / "docs" / "PROJECT_AUDIT_2026-03-13.md"
+    )
+    assert package_source_archive._should_skip(
+        package_source_archive.PROJECT_ROOT / "docs" / "PROJECT_DEEP_AUDIT_2026-03-14.md"
+    )

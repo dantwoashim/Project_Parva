@@ -23,7 +23,7 @@ Reviewed-by: Engineering / automated_release_candidate_gates
 Reviewed-by: QA / golden_journeys_suite
 Reviewed-by: Design / stitch parity review
 Reviewed-by: Product / launch-critical surface review
-Signed-off-by: Release preparation / codex
+Signed-off-by: Release preparation / release_coordinator
 
 ## Acceptance Notes
 

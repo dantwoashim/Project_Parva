@@ -13,14 +13,22 @@ from app.core.request_context import DEFAULT_TZ
 
 from .runtime_cache import cached
 
+
+def _default_user_agent() -> str:
+    source_url = os.getenv("PARVA_SOURCE_URL", "").strip()
+    if source_url:
+        return f"ProjectParva/3.0 (+{source_url})"
+    return "ProjectParva/3.0 (self-hosted instance)"
+
+
 _NOMINATIM_ENDPOINT = os.getenv(
     "PARVA_PLACE_SEARCH_ENDPOINT",
     "https://nominatim.openstreetmap.org/search",
 ).strip() or "https://nominatim.openstreetmap.org/search"
 _USER_AGENT = os.getenv(
     "PARVA_PLACE_SEARCH_USER_AGENT",
-    "ProjectParva/3.0 (+https://github.com/dantwoashim/Project_Parva)",
-).strip() or "ProjectParva/3.0 (+https://github.com/dantwoashim/Project_Parva)"
+    _default_user_agent(),
+).strip() or _default_user_agent()
 _REQUEST_TIMEOUT_SECONDS = float(os.getenv("PARVA_PLACE_SEARCH_TIMEOUT_SECONDS", "5.0"))
 _ATTRIBUTION = "Search results use OpenStreetMap Nominatim data."
 _TIMEZONE_FINDER = None
