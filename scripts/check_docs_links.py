@@ -26,8 +26,6 @@ def main() -> int:
             for raw in PATH_PATTERN.findall(line):
                 rel_path = _normalize(raw)
                 if rel_path.startswith("reports/"):
-                    if doc.name == "GENERATED_ARTIFACTS.md":
-                        continue
                     if "generated artifact" not in line.lower():
                         failures.append(
                             f"{doc.relative_to(PROJECT_ROOT)}:{line_number}: "

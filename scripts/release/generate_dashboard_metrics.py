@@ -23,9 +23,11 @@ from app.provenance.snapshot import get_latest_snapshot, verify_snapshot  # noqa
 from app.provenance.transparency import verify_log_integrity  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
-DOCS_DIR = PROJECT_ROOT / "docs" / "public_beta"
-OUT_JSON = DOCS_DIR / "dashboard_metrics.json"
-OUT_MD = DOCS_DIR / "dashboard_metrics.md"
+REPORTS_RELEASE_DIR = PROJECT_ROOT / "reports" / "release"
+PUBLIC_ARTIFACTS_DIR = PROJECT_ROOT / "backend" / "data" / "public_artifacts"
+OUT_JSON = REPORTS_RELEASE_DIR / "dashboard_metrics.json"
+OUT_RUNTIME_JSON = PUBLIC_ARTIFACTS_DIR / "dashboard_metrics.json"
+OUT_MD = REPORTS_RELEASE_DIR / "dashboard_metrics.md"
 AUTHORITY_DASHBOARD = PROJECT_ROOT / "reports" / "authority_dashboard.json"
 
 LATENCY_BUDGET_MS = 1000.0
@@ -290,11 +292,14 @@ def main() -> int:
         print(f"[FAIL] {exc}")
         return 1
 
-    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    REPORTS_RELEASE_DIR.mkdir(parents=True, exist_ok=True)
+    PUBLIC_ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    OUT_RUNTIME_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     OUT_MD.write_text(_build_markdown(payload), encoding="utf-8")
     print(json.dumps(payload, indent=2, ensure_ascii=False))
     print(f"Wrote {OUT_JSON}")
+    print(f"Wrote {OUT_RUNTIME_JSON}")
     print(f"Wrote {OUT_MD}")
     return 0
 

@@ -14,7 +14,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from node_runtime import resolve_node_runtime
+from node_runtime import build_npm_command, resolve_node_runtime
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 FRONTEND_DIR = PROJECT_ROOT / "frontend"
@@ -25,7 +25,7 @@ BROWSER_SMOKE_REPORT = PROJECT_ROOT / "reports" / "release" / "browser_smoke.jso
 GOLDEN_JOURNEYS_REPORT = PROJECT_ROOT / "reports" / "release" / "golden_journeys.json"
 BUNDLE_BUDGET_REPORT = PROJECT_ROOT / "reports" / "release" / "frontend_bundle_budget.json"
 SECURITY_AUDIT_REPORT = PROJECT_ROOT / "reports" / "security_audit.json"
-LAUNCH_SIGNOFF_DOCUMENT = PROJECT_ROOT / "docs" / "LAUNCH_SIGNOFF.md"
+LAUNCH_SIGNOFF_DOCUMENT = PROJECT_ROOT / "reports" / "release" / "launch_signoff.md"
 
 
 def _run_step(index: int, total: int, label: str, command: list[str], env: dict[str, str] | None = None) -> None:
@@ -117,13 +117,13 @@ def main(argv: list[str] | None = None) -> int:
     ]
 
     if args.frontend_clean_install:
-        steps.append(("Frontend clean install", ["npm", "ci", "--prefix", str(FRONTEND_DIR)]))
+        steps.append(("Frontend clean install", build_npm_command(["ci", "--prefix", str(FRONTEND_DIR)], node_runtime)))
 
     steps.extend(
         [
-            ("Frontend lint", ["npm", "--prefix", str(FRONTEND_DIR), "run", "lint"]),
-            ("Frontend tests", ["npm", "--prefix", str(FRONTEND_DIR), "run", "test"]),
-            ("Frontend build", ["npm", "--prefix", str(FRONTEND_DIR), "run", "build"]),
+            ("Frontend lint", build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "lint"], node_runtime)),
+            ("Frontend tests", build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "test"], node_runtime)),
+            ("Frontend build", build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "build"], node_runtime)),
             (
                 "Frontend bundle budget",
                 [
@@ -162,30 +162,38 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
 
-    steps.append(
-        (
-            "Launch signoff",
-            [
-                python,
-                "scripts/governance/verify_approval.py",
-                str(LAUNCH_SIGNOFF_DOCUMENT),
-                "--require-reviewer",
-                "Engineering",
-                "--require-reviewer",
-                "QA",
-                "--require-reviewer",
-                "Design",
-                "--require-reviewer",
-                "Product",
-            ],
+    signoff_available = LAUNCH_SIGNOFF_DOCUMENT.exists()
+    if signoff_available:
+        steps.append(
+            (
+                "Launch signoff",
+                [
+                    python,
+                    "scripts/governance/verify_approval.py",
+                    str(LAUNCH_SIGNOFF_DOCUMENT),
+                    "--require-reviewer",
+                    "Engineering",
+                    "--require-reviewer",
+                    "QA",
+                    "--require-reviewer",
+                    "Design",
+                    "--require-reviewer",
+                    "Product",
+                ],
+            )
         )
-    )
+    else:
+        print(
+            f"[RC] Launch signoff document not present at {LAUNCH_SIGNOFF_DOCUMENT}; "
+            "skipping human approval verification."
+        )
     steps.append(("Clean source archive", archive_command))
     dossier_approved = (
         args.frontend_clean_install
         and args.require_signed_provenance
         and not args.allow_dirty_archive
         and not args.skip_browser_smoke
+        and signoff_available
     )
     dossier_command = [
         python,

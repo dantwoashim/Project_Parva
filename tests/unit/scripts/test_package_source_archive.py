@@ -6,17 +6,16 @@ from pathlib import Path
 from scripts.release import package_source_archive
 
 
-def test_working_tree_is_clean_accepts_generated_public_beta_artifacts(monkeypatch):
+def test_working_tree_is_clean_accepts_generated_runtime_artifacts(monkeypatch):
     def fake_run(*_args, **_kwargs):
         return subprocess.CompletedProcess(
             args=[],
             returncode=0,
             stdout=(
-                " M docs/public_beta/authority_dashboard.json\n"
-                " M docs/public_beta/authority_dashboard.md\n"
-                " M docs/public_beta/dashboard_metrics.json\n"
-                " M docs/public_beta/dashboard_metrics.md\n"
-                " M docs/public_beta/month9_release_dossier.md\n"
+                " M reports/authority_dashboard.json\n"
+                " M reports/release/dashboard_metrics.md\n"
+                " M backend/data/public_artifacts/authority_dashboard.json\n"
+                " M backend/data/public_artifacts/dashboard_metrics.json\n"
             ),
             stderr="",
         )
@@ -31,7 +30,7 @@ def test_working_tree_is_clean_rejects_unexpected_dirty_paths(monkeypatch):
         return subprocess.CompletedProcess(
             args=[],
             returncode=0,
-            stdout=" M README.md\n M docs/public_beta/dashboard_metrics.md\n",
+            stdout=" M README.md\n M reports/release/dashboard_metrics.md\n",
             stderr="",
         )
 
@@ -45,13 +44,15 @@ def test_dirty_paths_handles_git_renames(monkeypatch):
         return subprocess.CompletedProcess(
             args=[],
             returncode=0,
-            stdout="R  docs/old.md -> docs/public_beta/dashboard_metrics.md\n",
+            stdout="R  docs/old.md -> backend/data/public_artifacts/dashboard_metrics.json\n",
             stderr="",
         )
 
     monkeypatch.setattr(package_source_archive.subprocess, "run", fake_run)
 
-    assert package_source_archive._dirty_paths() == [Path("docs/public_beta/dashboard_metrics.md")]
+    assert package_source_archive._dirty_paths() == [
+        Path("backend/data/public_artifacts/dashboard_metrics.json")
+    ]
 
 
 def test_should_skip_generated_provenance_artifacts():

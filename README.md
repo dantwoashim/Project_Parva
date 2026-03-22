@@ -23,8 +23,8 @@ Disabled by default:
 - experimental version tracks (`/v2`, `/v4`, `/v5`)
 - admin and provenance mutation routes
 
-See `docs/AS_BUILT.md`, `docs/ROUTE_ACCESS.md`, and `SECURITY.md` for the
-current shipped contract.
+See `docs/API_REFERENCE_V3.md`, `docs/DEPLOYMENT.md`, and `SECURITY.md` for the
+current shipped contract and deployment posture.
 
 ## Quick start
 
@@ -50,8 +50,17 @@ npm --prefix frontend install
 npm --prefix frontend run dev
 ```
 
+If your global `node` is newer than `20.x`, use the managed fallback instead:
+
+```bash
+npx -y -p node@20 -p npm@10 npm --prefix frontend install
+npx -y -p node@20 -p npm@10 npm --prefix frontend run dev
+```
+
 Frontend: `http://localhost:5173`
 API: `http://localhost:8000/v3/api`
+The Vite dev server now proxies `/v3/api` and `/api` to `http://127.0.0.1:8000` by default.
+Override that target with `PARVA_DEV_API_TARGET`, or set `VITE_API_BASE` when the frontend is talking to a non-local API.
 
 ### Python SDK
 
@@ -82,12 +91,12 @@ See `sdk/python/README.md` for the current SDK surface.
 ### API and embeds
 
 - API quickstart: `docs/API_QUICKSTART.md`
-- Hosted API onboarding: `docs/HOSTED_API_ONBOARDING.md`
+- API reference: `docs/API_REFERENCE_V3.md`
+- Deployment guide: `docs/DEPLOYMENT.md`
 - Institutional embed guide: `docs/EMBED_GUIDE.md`
-- Partner access: `docs/PARTNER_ACCESS.md`
-- Render zero-budget runbook: `docs/RENDER_ZERO_BUDGET_RUNBOOK.md`
-- Usage tiers: `docs/USAGE_TIERS.md`
-- Institutional launch checklist: `docs/INSTITUTIONAL_LAUNCH_CHECKLIST.md`
+- Engine architecture: `docs/ENGINE_ARCHITECTURE.md`
+- Accuracy method: `docs/ACCURACY_METHOD.md`
+- Known limits: `docs/KNOWN_LIMITS.md`
 
 ## Release packaging
 
@@ -132,8 +141,8 @@ py -3.11 scripts/run_browser_smoke.py
 
 ## Generated artifacts
 
-Files under `reports/` are generated artifacts, not required committed files.
-The policy is documented in `docs/GENERATED_ARTIFACTS.md`.
+Files under `reports/` are generated artifacts produced during validation and
+release preparation. They are not required hand-maintained source inputs.
 
 ## Supported runtime matrix
 
@@ -161,22 +170,13 @@ For hosted deployments:
 
 - `docs/API_REFERENCE_V3.md`
 - `docs/API_QUICKSTART.md`
-- `docs/HOSTED_API_ONBOARDING.md`
-- `docs/PROJECT_BIBLE.md`
-- `docs/ROUTE_ACCESS.md`
 - `docs/DEPLOYMENT.md`
 - `docs/EMBED_GUIDE.md`
-- `docs/PARTNER_ACCESS.md`
-- `docs/RENDER_ZERO_BUDGET_RUNBOOK.md`
-- `docs/USAGE_TIERS.md`
-- `docs/INSTITUTIONAL_LAUNCH_CHECKLIST.md`
-- `docs/GENERATED_ARTIFACTS.md`
-- `docs/EVALUATOR_GUIDE.md`
 - `docs/ENGINE_ARCHITECTURE.md`
 - `docs/ACCURACY_METHOD.md`
 - `docs/KNOWN_LIMITS.md`
 - `docs/spec/PARVA_TEMPORAL_SPEC_V1.md`
-- `docs/public_beta/month9_release_dossier.md`
+- `docs/contracts/`
 
 ## License
 

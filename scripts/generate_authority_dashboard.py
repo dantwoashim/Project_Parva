@@ -19,10 +19,11 @@ from app.main import app  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 
 REPORTS_DIR = PROJECT_ROOT / "reports"
-DOCS_DIR = PROJECT_ROOT / "docs" / "public_beta"
+REPORTS_RELEASE_DIR = REPORTS_DIR / "release"
+PUBLIC_ARTIFACTS_DIR = PROJECT_ROOT / "backend" / "data" / "public_artifacts"
 OUT_JSON = REPORTS_DIR / "authority_dashboard.json"
-OUT_DOC_JSON = DOCS_DIR / "authority_dashboard.json"
-OUT_MD = DOCS_DIR / "authority_dashboard.md"
+OUT_RUNTIME_JSON = PUBLIC_ARTIFACTS_DIR / "authority_dashboard.json"
+OUT_MD = REPORTS_RELEASE_DIR / "authority_dashboard.md"
 
 
 class ArtifactError(RuntimeError):
@@ -269,15 +270,16 @@ def main() -> int:
         return 1
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    DOCS_DIR.mkdir(parents=True, exist_ok=True)
+    REPORTS_RELEASE_DIR.mkdir(parents=True, exist_ok=True)
+    PUBLIC_ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
 
     OUT_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-    OUT_DOC_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    OUT_RUNTIME_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     OUT_MD.write_text(_build_markdown(payload), encoding="utf-8")
 
     print(json.dumps(payload, indent=2, ensure_ascii=False))
     print(f"Wrote {OUT_JSON}")
-    print(f"Wrote {OUT_DOC_JSON}")
+    print(f"Wrote {OUT_RUNTIME_JSON}")
     print(f"Wrote {OUT_MD}")
     return 0
 

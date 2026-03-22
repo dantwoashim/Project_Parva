@@ -40,7 +40,9 @@ from app.provenance.transparency import (
 
 router = APIRouter(prefix="/api/provenance", tags=["provenance"])
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-PUBLIC_BETA_DASHBOARD = PROJECT_ROOT / "docs" / "public_beta" / "dashboard_metrics.json"
+PUBLIC_ARTIFACTS_DASHBOARD = (
+    PROJECT_ROOT / "backend" / "data" / "public_artifacts" / "dashboard_metrics.json"
+)
 
 
 class ProofResponse(BaseModel):
@@ -396,11 +398,11 @@ async def get_public_beta_dashboard() -> Dict[str, Any]:
     """
     Return public beta dashboard metrics (generated artifact).
     """
-    if not PUBLIC_BETA_DASHBOARD.exists():
+    if not PUBLIC_ARTIFACTS_DASHBOARD.exists():
         raise HTTPException(
             status_code=404,
             detail="Dashboard metrics not generated yet. Run scripts/release/generate_dashboard_metrics.py",
         )
     import json
 
-    return json.loads(PUBLIC_BETA_DASHBOARD.read_text(encoding="utf-8"))
+    return json.loads(PUBLIC_ARTIFACTS_DASHBOARD.read_text(encoding="utf-8"))

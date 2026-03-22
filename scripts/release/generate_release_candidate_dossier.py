@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the Week 12 release-candidate technical dossier."""
+"""Generate the release-candidate technical dossier."""
 
 from __future__ import annotations
 
@@ -21,12 +21,16 @@ from node_runtime import resolve_node_runtime  # noqa: E402
 
 REPORTS_RELEASE_DIR = PROJECT_ROOT / "reports" / "release"
 REPORTS_DOSSIER_JSON = REPORTS_RELEASE_DIR / "release_candidate_dossier.json"
-DOCS_DOSSIER_MD = PROJECT_ROOT / "docs" / "public_beta" / "release_candidate_dossier.md"
-MONTH9_DOSSIER_MD = PROJECT_ROOT / "docs" / "public_beta" / "month9_release_dossier.md"
-AUTHORITY_DASHBOARD_MD = PROJECT_ROOT / "docs" / "public_beta" / "authority_dashboard.md"
-DASHBOARD_METRICS_MD = PROJECT_ROOT / "docs" / "public_beta" / "dashboard_metrics.md"
-AUTHORITY_DASHBOARD_JSON = PROJECT_ROOT / "docs" / "public_beta" / "authority_dashboard.json"
-DASHBOARD_METRICS_JSON = PROJECT_ROOT / "docs" / "public_beta" / "dashboard_metrics.json"
+REPORTS_DOSSIER_MD = REPORTS_RELEASE_DIR / "release_candidate_dossier.md"
+MONTH9_DOSSIER_MD = REPORTS_RELEASE_DIR / "month9_release_dossier.md"
+AUTHORITY_DASHBOARD_MD = REPORTS_RELEASE_DIR / "authority_dashboard.md"
+DASHBOARD_METRICS_MD = REPORTS_RELEASE_DIR / "dashboard_metrics.md"
+AUTHORITY_DASHBOARD_JSON = (
+    PROJECT_ROOT / "backend" / "data" / "public_artifacts" / "authority_dashboard.json"
+)
+DASHBOARD_METRICS_JSON = (
+    PROJECT_ROOT / "backend" / "data" / "public_artifacts" / "dashboard_metrics.json"
+)
 CONFORMANCE_REPORT_JSON = PROJECT_ROOT / "reports" / "conformance_report.json"
 SMOKE_REPORT_JSON = REPORTS_RELEASE_DIR / "browser_smoke.json"
 GOLDEN_JOURNEYS_REPORT_JSON = REPORTS_RELEASE_DIR / "golden_journeys.json"
@@ -35,7 +39,7 @@ SECURITY_AUDIT_REPORT_JSON = PROJECT_ROOT / "reports" / "security_audit.json"
 DIST_DIR = PROJECT_ROOT / "dist"
 SNAPSHOT_POINTER = PROJECT_ROOT / "backend" / "data" / "snapshots" / "latest.json"
 SNAPSHOT_DIR = PROJECT_ROOT / "backend" / "data" / "snapshots"
-SIGNOFF_DOCUMENT = PROJECT_ROOT / "docs" / "LAUNCH_SIGNOFF.md"
+SIGNOFF_DOCUMENT = REPORTS_RELEASE_DIR / "launch_signoff.md"
 
 
 class DossierError(RuntimeError):
@@ -386,7 +390,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--signoff-document",
-        help="Optional launch signoff document path. Defaults to docs/LAUNCH_SIGNOFF.md.",
+        help="Optional launch signoff document path. Defaults to reports/release/launch_signoff.md.",
     )
     parser.add_argument("--source-archive", help="Optional source archive path override.")
     parser.add_argument("--approved", choices=["yes", "no"], default="no")
@@ -405,14 +409,14 @@ def main(argv: list[str] | None = None) -> int:
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    DOCS_DOSSIER_MD.parent.mkdir(parents=True, exist_ok=True)
-    DOCS_DOSSIER_MD.write_text(_render_markdown(payload), encoding="utf-8")
+    REPORTS_DOSSIER_MD.parent.mkdir(parents=True, exist_ok=True)
+    REPORTS_DOSSIER_MD.write_text(_render_markdown(payload), encoding="utf-8")
 
     print(
         json.dumps(
             {
                 "dossier_json": str(REPORTS_DOSSIER_JSON),
-                "dossier_md": str(DOCS_DOSSIER_MD),
+                "dossier_md": str(REPORTS_DOSSIER_MD),
                 "candidate_sha": payload["candidate_identity"]["candidate_sha"],
                 "approved": payload["decision"]["release_candidate_approved"],
             },

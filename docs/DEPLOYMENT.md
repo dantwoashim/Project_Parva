@@ -14,8 +14,6 @@ npm --prefix frontend run dev
 
 ## Current build path
 - Parva's supported build and deploy path uses `backend/` and `frontend/`.
-- The old root `viral-sync` workspace residue has been removed.
-- CI now includes a repo-hygiene guard to prevent that residue from coming back unnoticed.
 
 ## Environment variables
 - `CORS_ALLOW_ORIGINS` (comma-separated)
@@ -118,11 +116,8 @@ sh scripts/release/run_month9_release_gates.sh
 ## Embed surfaces
 - Static institutional widgets are published from `frontend/public/embed/`.
 - Copy-paste usage is documented in `docs/EMBED_GUIDE.md`.
-- Hosted API rollout guidance is in `docs/HOSTED_API_ONBOARDING.md`.
-- Partner access and key provisioning are in `docs/PARTNER_ACCESS.md`.
-- Render-specific bring-up is in `docs/RENDER_ZERO_BUDGET_RUNBOOK.md`.
-- Commercial packaging guidance is in `docs/USAGE_TIERS.md`.
-- Institution-facing launch gates are in `docs/INSTITUTIONAL_LAUNCH_CHECKLIST.md`.
+- API request examples are documented in `docs/API_QUICKSTART.md`.
+- Product-facing constraints and caveats are documented in `docs/KNOWN_LIMITS.md`.
 
 ## Clean source archive
 ```bash
