@@ -45,15 +45,10 @@ EXCLUDED_RELATIVE_PATHS = {
     Path("docs/PARVA_UI_UX_TRUST_RESEARCH_2026-03-14.md"),
     Path("docs/PROJECT_AUDIT_2026-03-13.md"),
     Path("docs/PROJECT_DEEP_AUDIT_2026-03-14.md"),
-    Path("docs/public_beta/release_candidate_dossier.md"),
 }
 ALLOWED_GENERATED_DIRTY_PATHS = {
-    Path("docs/public_beta/authority_dashboard.json"),
-    Path("docs/public_beta/authority_dashboard.md"),
-    Path("docs/public_beta/dashboard_metrics.json"),
-    Path("docs/public_beta/dashboard_metrics.md"),
-    Path("docs/public_beta/month9_release_dossier.md"),
-    Path("docs/public_beta/release_candidate_dossier.md"),
+    Path("backend/data/public_artifacts/authority_dashboard.json"),
+    Path("backend/data/public_artifacts/dashboard_metrics.json"),
 }
 
 
@@ -113,7 +108,10 @@ def _working_tree_is_clean() -> bool:
         return True
     if not dirty_paths:
         return True
-    return all(path in ALLOWED_GENERATED_DIRTY_PATHS for path in dirty_paths)
+    return all(
+        path in ALLOWED_GENERATED_DIRTY_PATHS or _should_skip(PROJECT_ROOT / path)
+        for path in dirty_paths
+    )
 
 
 def main(argv: list[str] | None = None) -> int:

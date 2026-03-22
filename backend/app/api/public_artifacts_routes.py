@@ -12,7 +12,7 @@ from fastapi.responses import FileResponse
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 PRECOMPUTED_DIR = PROJECT_ROOT / "output" / "precomputed"
 REPORTS_DIR = PROJECT_ROOT / "reports"
-DOCS_PUBLIC_BETA = PROJECT_ROOT / "docs" / "public_beta"
+PUBLIC_ARTIFACTS_DIR = PROJECT_ROOT / "backend" / "data" / "public_artifacts"
 
 router = APIRouter(prefix="/api/public", tags=["public-artifacts"])
 
@@ -32,9 +32,9 @@ def _iter_precomputed_candidates() -> List[Path]:
     candidates = sorted(PRECOMPUTED_DIR.glob("*.json"))
     if candidates:
         return candidates
-    # In clean CI clones, output/ is gitignored. Fall back to checked-in
-    # public-beta JSON artifacts so manifest remains useful and deterministic.
-    return sorted(DOCS_PUBLIC_BETA.glob("*.json"))
+    # In clean clones, output/ is gitignored. Fall back to checked-in
+    # runtime artifact JSON so the manifest remains useful and deterministic.
+    return sorted(PUBLIC_ARTIFACTS_DIR.glob("*.json"))
 
 
 @router.get("/artifacts/manifest")
@@ -56,7 +56,7 @@ async def get_artifacts_manifest() -> Dict[str, object]:
     if conformance.exists():
         files.append(_artifact_row(conformance, "conformance"))
 
-    published_dashboard = DOCS_PUBLIC_BETA / "authority_dashboard.json"
+    published_dashboard = PUBLIC_ARTIFACTS_DIR / "authority_dashboard.json"
     if published_dashboard.exists():
         files.append(_artifact_row(published_dashboard, "published-dashboard"))
 
@@ -87,7 +87,7 @@ async def get_precomputed_artifact(filename: str):
 async def get_authority_dashboard_artifact():
     path = REPORTS_DIR / "authority_dashboard.json"
     if not path.exists():
-        path = DOCS_PUBLIC_BETA / "authority_dashboard.json"
+        path = PUBLIC_ARTIFACTS_DIR / "authority_dashboard.json"
     if not path.exists():
         raise HTTPException(status_code=404, detail="Dashboard artifact not generated yet")
     return FileResponse(path, media_type="application/json", filename=path.name)

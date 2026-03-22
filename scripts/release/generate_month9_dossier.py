@@ -20,7 +20,7 @@ from fastapi.testclient import TestClient  # noqa: E402
 
 REPORTS_RELEASE_DIR = PROJECT_ROOT / "reports" / "release"
 REPORTS_RELEASE_JSON = REPORTS_RELEASE_DIR / "month9_dossier.json"
-DOCS_RELEASE_MD = PROJECT_ROOT / "docs" / "public_beta" / "month9_release_dossier.md"
+REPORTS_RELEASE_MD = REPORTS_RELEASE_DIR / "month9_release_dossier.md"
 
 
 class ArtifactError(RuntimeError):
@@ -306,14 +306,14 @@ def main() -> int:
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
 
-    DOCS_RELEASE_MD.parent.mkdir(parents=True, exist_ok=True)
-    DOCS_RELEASE_MD.write_text(_render_markdown(payload), encoding="utf-8")
+    REPORTS_RELEASE_MD.parent.mkdir(parents=True, exist_ok=True)
+    REPORTS_RELEASE_MD.write_text(_render_markdown(payload), encoding="utf-8")
 
     print(
         json.dumps(
             {
                 "dossier_json": str(REPORTS_RELEASE_JSON),
-                "dossier_md": str(DOCS_RELEASE_MD),
+                "dossier_md": str(REPORTS_RELEASE_MD),
                 "computed_rules": payload.get("coverage_scoreboard", {})
                 .get("computed", {})
                 .get("count"),

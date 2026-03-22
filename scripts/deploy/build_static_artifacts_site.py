@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a GitHub Pages static site for Parva public artifacts."""
+"""Build a static site for Parva public artifacts."""
 
 from __future__ import annotations
 
@@ -13,7 +13,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SITE_DIR = PROJECT_ROOT / "output" / "deploy" / "site"
 PRECOMPUTED_DIR = PROJECT_ROOT / "output" / "precomputed"
 REPORTS_DIR = PROJECT_ROOT / "reports"
-DOCS_PUBLIC_BETA = PROJECT_ROOT / "docs" / "public_beta"
+REPORTS_RELEASE_DIR = REPORTS_DIR / "release"
+PUBLIC_ARTIFACTS_DIR = PROJECT_ROOT / "backend" / "data" / "public_artifacts"
 CONTRACTS_DIR = PROJECT_ROOT / "docs" / "contracts"
 
 
@@ -125,16 +126,19 @@ def main() -> int:
     reports = []
     report_map = [
         ("authority_dashboard.json", REPORTS_DIR / "authority_dashboard.json"),
+        ("dashboard_metrics.json", PUBLIC_ARTIFACTS_DIR / "dashboard_metrics.json"),
         ("conformance_report.json", REPORTS_DIR / "conformance_report.json"),
         ("rule_ingestion_summary.json", REPORTS_DIR / "rule_ingestion_summary.json"),
         ("month9_dossier.json", REPORTS_DIR / "release" / "month9_dossier.json"),
         ("annual_accuracy_2082.json", REPORTS_DIR / "accuracy" / "annual_accuracy_2082.json"),
-        ("authority_dashboard.md", DOCS_PUBLIC_BETA / "authority_dashboard.md"),
-        ("month9_release_dossier.md", DOCS_PUBLIC_BETA / "month9_release_dossier.md"),
+        ("authority_dashboard.md", REPORTS_RELEASE_DIR / "authority_dashboard.md"),
+        ("dashboard_metrics.md", REPORTS_RELEASE_DIR / "dashboard_metrics.md"),
+        ("month9_release_dossier.md", REPORTS_RELEASE_DIR / "month9_release_dossier.md"),
+        ("release_candidate_dossier.md", REPORTS_RELEASE_DIR / "release_candidate_dossier.md"),
     ]
     for label, src in report_map:
-        if _copy_if_exists(src, SITE_DIR / "reports" / src.name):
-            reports.append({"label": label, "href": f"reports/{src.name}"})
+        if _copy_if_exists(src, SITE_DIR / "reports" / label):
+            reports.append({"label": label, "href": f"reports/{label}"})
 
     contracts = []
     for src in _list_files(CONTRACTS_DIR):
