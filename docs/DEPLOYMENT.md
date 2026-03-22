@@ -128,3 +128,11 @@ sh scripts/release/run_month9_release_gates.sh
 ```bash
 py -3.11 scripts/release/package_source_archive.py
 ```
+
+## Lean submission bundle
+For academic/demo handoff where docs, tests, CI metadata, and raw source PDFs
+are not needed:
+
+```bash
+py -3.11 scripts/release/package_submission_bundle.py
+```

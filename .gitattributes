@@ -15,6 +15,7 @@ backend/project_parva.egg-info export-ignore
 docs/PARVA_UI_UX_TRUST_RESEARCH_2026-03-14.md export-ignore
 docs/PROJECT_AUDIT_2026-03-13.md export-ignore
 docs/PROJECT_DEEP_AUDIT_2026-03-14.md export-ignore
+docs/public_beta/release_candidate_dossier.md export-ignore
 SKILL.md export-ignore
 **/__pycache__ export-ignore
 *.pyc export-ignore

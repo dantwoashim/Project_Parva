@@ -137,6 +137,13 @@ def _bool_label(value: bool) -> str:
     return "yes" if value else "no"
 
 
+def _public_attestation_key_id(attestation: dict) -> str | None:
+    key_id = str((attestation.get("key_id") or "")).strip()
+    if not key_id:
+        return None
+    return "redacted for public dossier"
+
+
 def _build_payload(args: argparse.Namespace) -> dict:
     authority = _read_json(AUTHORITY_DASHBOARD_JSON, required=True)
     dashboard_metrics = _read_json(DASHBOARD_METRICS_JSON, required=True)
@@ -188,7 +195,7 @@ def _build_payload(args: argparse.Namespace) -> dict:
             "rules_hash": snapshot.get("rules_hash"),
             "dependency_lock_hash": snapshot.get("dependency_lock_hash"),
             "attestation_mode": snapshot.get("attestation", {}).get("mode"),
-            "attestation_key_id": snapshot.get("attestation", {}).get("key_id"),
+            "attestation_key_id": _public_attestation_key_id(snapshot.get("attestation", {})),
             "verification_timestamp": dashboard_metrics.get("generated_at"),
         },
         "release_gates": {

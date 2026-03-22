@@ -24,7 +24,7 @@ Generated at: `2026-03-21T11:07:05.999834+00:00`
 - Rules hash: f55fabcb335f106d934bed214c5541c1d275eff2a0b6ba9f9db5e6a87c3dffa9
 - Dependency lock hash: 4ca433f7f02478aac7a36d6932eb5faea0c3db1eba225d5dc5611b9407585e48
 - Attestation mode: hmac-sha256
-- Attestation key id: local-release-ashim-20260320
+- Attestation key id: redacted for public dossier
 - Verification timestamp: 2026-03-21T11:05:17.591699+00:00
 
 ## Release Gates
