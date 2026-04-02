@@ -1,5 +1,7 @@
 # Project Parva
+Frontend is still rough around the edges but the API itself is solid. You can test it without any setup here: https://project-parva-uzy1.onrender.com/docs
 
+App: https://project-parva-uzy1.onrender.com
 Project Parva is an ephemeris-backed Nepali temporal engine and festival
 platform. The launch-safe public contract is the stable `v3` read-only
 profile under `/v3/api/*`, with `/api/*` kept as a compatibility alias.
