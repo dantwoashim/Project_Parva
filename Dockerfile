@@ -27,11 +27,17 @@ RUN python -m venv /opt/venv
 COPY LICENSE README.md pyproject.toml /app/
 COPY requirements/constraints.txt /app/requirements/constraints.txt
 COPY backend /app/backend
+COPY scripts /app/scripts
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
     && pip install --no-cache-dir -c requirements/constraints.txt -e .
 
 COPY data /app/data
-RUN mkdir -p /app/output/precomputed
+RUN mkdir -p /app/output/precomputed \
+    && START_YEAR="$(date -u +%Y)" \
+    && END_YEAR="$((START_YEAR + 2))" \
+    && python /app/scripts/precompute/precompute_all.py \
+        --start-year "${START_YEAR}" \
+        --end-year "${END_YEAR}"
 COPY --from=frontend-builder /frontend/dist /app/frontend/dist
 
 RUN useradd --create-home --shell /usr/sbin/nologin parva \
