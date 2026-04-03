@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "name": "Digital Calendar Providers",
+    "last_updated": "2026-04-03",
+    "notes": "Machine-readable calendar providers archived as secondary cross-validation pools. These are not official government holiday publications."
+  },
+  "providers": [
+    {
+      "provider_name": "ratopati_calendar",
+      "homepage_url": "https://calendar.ratopati.com/ad",
+      "api_base_url": "https://calapp.ratopati.com/api",
+      "source_type": "secondary_digital_provider",
+      "supported_bs_year_range": [
+        1990,
+        2100
+      ],
+      "supported_ad_year_range": [
+        1944,
+        2039
+      ],
+      "payload_encoding": "aes_256_ecb_with_public_client_key",
+      "public_endpoints": [
+        "/calendar/{bs_year}/{bs_month}",
+        "/calendar/ad/{ad_year}/{ad_month}",
+        "/calendar/today-date",
+        "/calendar/upcoming-events",
+        "/calendar/holidays/{bs_year}/{bs_month}",
+        "/convert-date"
+      ],
+      "harvested_range_bs": [
+        2000,
+        2100
+      ],
+      "artifacts": [
+        "data/source_inventory/ratopati_month_coverage_2000_2100.json",
+        "data/source_archive/ratopati/event_days_2000_2100.json"
+      ],
+      "notes": "Provider range was recovered from the public frontend year option lists and verified against live decoded month responses."
+    }
+  ]
+}

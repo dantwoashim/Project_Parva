@@ -1,34 +1,119 @@
 # Project Parva
-Frontend is still rough around the edges but the API itself is solid. You can test it without any setup here: https://project-parva-uzy1.onrender.com/docs
 
-App: https://project-parva-uzy1.onrender.com
-Project Parva is an ephemeris-backed Nepali temporal engine and festival
-platform. The launch-safe public contract is the stable `v3` read-only
-profile under `/v3/api/*`, with `/api/*` kept as a compatibility alias.
-The supported runtime target for this build is Python 3.11.
-The supported frontend runtime target is Node 20.
-If your global `node` is newer, `scripts/verify_environment.py` and the release-candidate gate runner can fall back to a managed `node@20` runtime resolved through `npx`.
+Project Parva is a Nepal-focused temporal platform. It provides BS/AD conversion, panchanga, festival dates, muhurta windows, kundali endpoints, feeds, and embeddable widgets through a public API and reference app.
 
-## Launch profile
+The project mixes methods on purpose. BS/AD conversion in the supported official range uses overlap data from official calendars. Panchanga, tithi, muhurta, and other calendrical calculations use Swiss Ephemeris (`pyswisseph`) rather than static festival date tables.
 
-Public stable profile:
+Use `/v3/api/*` for new integrations. `/api/*` still exists as a deprecated compatibility alias on the current hosted deployment.
 
-- BS and AD conversion
-- calendar and panchanga endpoints
-- festival explorer APIs
-- stateless personal compute endpoints
-- feeds
-- frontend app and docs
+## Live links
+
+- App: [https://project-parva-uzy1.onrender.com/](https://project-parva-uzy1.onrender.com/)
+- API docs: [https://project-parva-uzy1.onrender.com/docs](https://project-parva-uzy1.onrender.com/docs)
+- Developer portal: [https://project-parva-uzy1.onrender.com/developers/index.html](https://project-parva-uzy1.onrender.com/developers/index.html)
+- Embed examples: [https://project-parva-uzy1.onrender.com/embed/index.html](https://project-parva-uzy1.onrender.com/embed/index.html)
+
+## Who this is for
+
+- Developers building Nepal-focused products
+- Media, community, tourism, and institutional websites
+- Dashboards and internal tools that need machine-readable Nepali calendar data
+- Teams that want embeds without adopting the full app
+
+## What it includes
+
+- BS and AD date conversion
+- Calendar, tithi, and panchanga endpoints
+- Festival explorer, festival detail, and timeline endpoints
+- Personal compute endpoints for location-aware panchanga, muhurta, and kundali
+- iCal feeds
+- Embed widgets
+- Python SDK
 
 Disabled by default:
 
-- experimental version tracks (`/v2`, `/v4`, `/v5`)
-- admin and provenance mutation routes
+- Experimental version tracks such as `/v2`, `/v4`, and `/v5`
+- Admin and provenance mutation routes
 
-See `docs/API_REFERENCE_V3.md`, `docs/DEPLOYMENT.md`, and `SECURITY.md` for the
-current shipped contract and deployment posture.
+These require `PARVA_ENABLE_EXPERIMENTAL_API=true`.
 
-## Quick start
+## Start in 60 seconds
+
+Base URL:
+
+```text
+https://project-parva-uzy1.onrender.com/v3/api
+```
+
+Check connectivity:
+
+```bash
+curl https://project-parva-uzy1.onrender.com/v3/api/calendar/today
+```
+
+Convert Gregorian to BS:
+
+```bash
+curl "https://project-parva-uzy1.onrender.com/v3/api/calendar/convert?date=2026-10-21"
+```
+
+Get upcoming festivals:
+
+```bash
+curl "https://project-parva-uzy1.onrender.com/v3/api/festivals/upcoming?days=30&quality_band=computed"
+```
+
+For location-sensitive requests, use POST JSON:
+
+```bash
+curl -X POST https://project-parva-uzy1.onrender.com/v3/api/personal/panchanga \
+  -H "Content-Type: application/json" \
+  -H "X-Parva-Envelope: data-meta" \
+  -d '{"date":"2026-10-21","lat":"27.7172","lon":"85.3240","tz":"Asia/Kathmandu"}'
+```
+
+JavaScript example:
+
+```js
+const response = await fetch(
+  "https://project-parva-uzy1.onrender.com/v3/api/calendar/convert?date=2026-10-21"
+);
+
+const payload = await response.json();
+console.log(payload.bikram_sambat.formatted);
+```
+
+Python SDK example:
+
+```python
+from parva_sdk import ParvaClient
+
+client = ParvaClient("https://project-parva-uzy1.onrender.com/v3/api")
+
+today = client.today()
+personal = client.personal_panchanga(
+    "2026-10-21",
+    latitude=27.7172,
+    longitude=85.3240,
+    tz="Asia/Kathmandu",
+)
+
+print(today.data["gregorian"] if hasattr(today, "data") else today["gregorian"])
+print(personal.data["tithi"]["name"])
+```
+
+## Integration notes
+
+- Use `/v3/api/*` for all new clients.
+- Treat `/api/*` as legacy compatibility only.
+- Send `X-Parva-Envelope: data-meta` when you want a stable `data` plus `meta` response shape.
+- Preserve `calculation_trace_id`, `method`, `method_profile`, `quality_band`, `assumption_set_id`, `provenance`, and `policy` if you store or forward results.
+- Personal compute routes return `Cache-Control: no-store`.
+- This is still a public beta. Keep known limitations visible if you present results as authoritative.
+
+## Running locally
+
+Backend requires Python 3.11. Frontend requires Node 20.
 
 ### Backend
 
@@ -38,85 +123,47 @@ py -3.11 -m pip install -e .[test,dev]
 uvicorn app.main:app --app-dir backend --reload --port 8000
 ```
 
-Tested target:
-
-```bash
-py -3.11 --version
-```
-
 ### Frontend
 
 ```bash
-npm --version
 npm --prefix frontend install
 npm --prefix frontend run dev
 ```
 
-If your global `node` is newer than `20.x`, use the managed fallback instead:
+If your Node version is newer than 20.x:
 
 ```bash
 npx -y -p node@20 -p npm@10 npm --prefix frontend install
 npx -y -p node@20 -p npm@10 npm --prefix frontend run dev
 ```
 
-Frontend: `http://localhost:5173`
-API: `http://localhost:8000/v3/api`
-The Vite dev server now proxies `/v3/api` and `/api` to `http://127.0.0.1:8000` by default.
-Override that target with `PARVA_DEV_API_TARGET`, or set `VITE_API_BASE` when the frontend is talking to a non-local API.
+Frontend runs at `http://localhost:5173`. The Vite dev server proxies `/v3/api` and `/api` to `http://127.0.0.1:8000` automatically. Override with `PARVA_DEV_API_TARGET` if you need to point elsewhere.
 
-### Python SDK
+## Python SDK
+
+Install:
 
 ```bash
 py -3.11 -m pip install -e sdk/python
 ```
 
+Import:
+
 ```python
 from parva_sdk import ParvaClient
-
-client = ParvaClient("http://localhost:8000/v3/api")
-
-today = client.today()
-personal = client.personal_panchanga(
-    "2026-10-21",
-    latitude=27.7172,
-    longitude=85.3240,
-)
-kundali = client.kundali(
-    "2026-02-15T06:30:00+05:45",
-    latitude=27.7172,
-    longitude=85.3240,
-)
 ```
 
-See `sdk/python/README.md` for the current SDK surface.
+SDK details live in [sdk/python/README.md](/Users/rohanbasnet14/Documents/Project_Parva-main/sdk/python/README.md).
 
-### API and embeds
+## Docs
 
-- API quickstart: `docs/API_QUICKSTART.md`
-- API reference: `docs/API_REFERENCE_V3.md`
-- Deployment guide: `docs/DEPLOYMENT.md`
-- Institutional embed guide: `docs/EMBED_GUIDE.md`
-- Engine architecture: `docs/ENGINE_ARCHITECTURE.md`
-- Accuracy method: `docs/ACCURACY_METHOD.md`
-- Known limits: `docs/KNOWN_LIMITS.md`
-
-## Release packaging
-
-Use the release packager instead of zipping the working directory. It excludes
-virtualenvs, caches, `node_modules`, generated reports, and other local-only
-artifacts.
-
-```bash
-py -3.11 scripts/release/package_source_archive.py
-```
-
-For a lean academic/demo handoff bundle, use the submission packager instead.
-It keeps only the runtime-oriented files and drops docs, tests, CI metadata,
-raw source PDFs, and other dev-only material.
-
-```bash
-py -3.11 scripts/release/package_submission_bundle.py
-```
+- [docs/API_QUICKSTART.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/API_QUICKSTART.md)
+- [docs/API_REFERENCE_V3.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/API_REFERENCE_V3.md)
+- [docs/DEPLOYMENT.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/DEPLOYMENT.md)
+- [docs/EMBED_GUIDE.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/EMBED_GUIDE.md)
+- [docs/ENGINE_ARCHITECTURE.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/ENGINE_ARCHITECTURE.md)
+- [docs/ACCURACY_METHOD.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/ACCURACY_METHOD.md)
+- [docs/KNOWN_LIMITS.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/KNOWN_LIMITS.md)
 
 ## Validation
 
@@ -141,52 +188,28 @@ py -3.11 scripts/release/generate_public_beta_artifacts.py --target 300 --comput
 py -3.11 scripts/run_browser_smoke.py
 ```
 
-## Generated artifacts
+## Release packaging
 
-Files under `reports/` are generated artifacts produced during validation and
-release preparation. They are not required hand-maintained source inputs.
+Do not zip the working directory directly. Use the release packager so virtualenvs, caches, `node_modules`, and generated reports stay out of the archive.
 
-## Supported runtime matrix
+Source archive:
 
-- Python `3.11.x`
-- Node `20.x`
-- Release archives must be produced from a clean checkout via
-  `py -3.11 scripts/release/package_source_archive.py`
+```bash
+py -3.11 scripts/release/package_source_archive.py
+```
 
-## Open-source commercial use
+Lean submission bundle:
 
-Project Parva now follows the zero-budget AGPL path required by its Swiss
-Ephemeris dependency stack. You can still charge for hosting, support,
-integration, customization, and white-label operations, but network users must
-be able to access the corresponding source for the deployed service.
+```bash
+py -3.11 scripts/release/package_submission_bundle.py
+```
 
-For hosted deployments:
-
-- keep the project and your deployment changes under AGPL-compatible terms
-- publish a public source repository or source archive for the exact deployed build
-- set `PARVA_SOURCE_URL` to that public source location
-- set `PARVA_RATE_LIMIT_BACKEND=redis` and provide `PARVA_REDIS_URL`
-- keep `/source` reachable in production
-
-## Documentation
-
-- `docs/API_REFERENCE_V3.md`
-- `docs/API_QUICKSTART.md`
-- `docs/DEPLOYMENT.md`
-- `docs/EMBED_GUIDE.md`
-- `docs/ENGINE_ARCHITECTURE.md`
-- `docs/ACCURACY_METHOD.md`
-- `docs/KNOWN_LIMITS.md`
-- `docs/spec/PARVA_TEMPORAL_SPEC_V1.md`
-- `docs/contracts/`
+Files under `reports/` are generated during validation runs and do not need manual editing.
 
 ## License
 
-This repository's first-party code is released under the GNU Affero General
-Public License v3.0 or later. See `LICENSE`.
+Project Parva is licensed under AGPL-3.0-or-later. See `LICENSE`.
 
-This is the zero-dollar commercial path for deployments that rely on Swiss
-Ephemeris / `pyswisseph`: you may sell services around the software, but
-deployed network users must be able to obtain the corresponding source code for
-the running service. Review `docs/DEPLOYMENT.md`, `docs/KNOWN_LIMITS.md`, and
-`THIRD_PARTY_NOTICES.md` before launch.
+This deployment path uses Swiss Ephemeris through `pyswisseph`. You can charge for hosting, support, or customization, but anyone using the software over a network must be able to get the corresponding source for what you shipped. Set `PARVA_SOURCE_URL` to a public repo or source archive for the exact deployed build and keep `/source` reachable.
+
+Read [docs/DEPLOYMENT.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/DEPLOYMENT.md), [docs/KNOWN_LIMITS.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/KNOWN_LIMITS.md), and `THIRD_PARTY_NOTICES.md` before going public.

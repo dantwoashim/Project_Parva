@@ -16,8 +16,10 @@ from ..calendar import (
     get_bs_month_name,
     gregorian_to_bs,
 )
+from ..calendar.overrides import get_festival_override_info
 from ..rules import get_rule_service
 from .models import (
+    AuthorityCandidate,
     Festival,
     FestivalDateAvailability,
     FestivalDates,
@@ -38,6 +40,60 @@ def _to_bs_struct(g_date: date) -> dict:
         "day": bs_day,
         "month_name": month_name,
         "formatted": f"{bs_year} {month_name} {bs_day}",
+    }
+
+
+def _authority_context(festival_id: str, year: int, method: str) -> dict[str, Any]:
+    if method != "override":
+        return {
+            "authority_conflict": False,
+            "authority_candidate_count": None,
+            "authority_note": None,
+            "authority_alternates": [],
+            "authority_suggested_profile_id": None,
+            "authority_suggested_start_date": None,
+            "authority_suggested_reason": None,
+        }
+
+    info = get_festival_override_info(festival_id, year)
+    if not info:
+        return {
+            "authority_conflict": False,
+            "authority_candidate_count": 1,
+            "authority_note": None,
+            "authority_alternates": [],
+            "authority_suggested_profile_id": None,
+            "authority_suggested_start_date": None,
+            "authority_suggested_reason": None,
+        }
+
+    alternates = [
+        AuthorityCandidate(
+            start=alt["start"],
+            source=alt.get("source"),
+            confidence=alt.get("confidence"),
+            notes=alt.get("notes"),
+        )
+        for alt in info.get("alternates", [])
+    ]
+    candidate_count = int(info.get("candidate_count") or (1 + len(alternates)))
+    authority_conflict = candidate_count > 1
+    chosen_source = info.get("source") or "override source"
+    authority_note = None
+    if authority_conflict:
+        authority_note = (
+            f"Multiple authority candidates exist for this festival-year. "
+            f"The current default selects {info['start'].isoformat()} from {chosen_source}."
+        )
+
+    return {
+        "authority_conflict": authority_conflict,
+        "authority_candidate_count": candidate_count,
+        "authority_note": authority_note,
+        "authority_alternates": alternates,
+        "authority_suggested_profile_id": info.get("suggested_profile_id"),
+        "authority_suggested_start_date": info.get("suggested_start"),
+        "authority_suggested_reason": info.get("suggested_reason"),
     }
 
 
@@ -490,6 +546,7 @@ class FestivalRepository:
             bs_start = _to_bs_struct(result.start_date)
             bs_end = _to_bs_struct(result.end_date)
             days_until = (result.start_date - date.today()).days
+            authority = _authority_context(festival_id, year, result.method)
 
             return FestivalDates(
                 gregorian_year=year,
@@ -500,9 +557,17 @@ class FestivalRepository:
                 bs_start=bs_start,
                 bs_end=bs_end,
                 days_until=days_until if days_until >= 0 else None,
+                authority_conflict=authority["authority_conflict"],
+                authority_candidate_count=authority["authority_candidate_count"],
+                authority_note=authority["authority_note"],
+                authority_alternates=authority["authority_alternates"],
+                authority_suggested_profile_id=authority["authority_suggested_profile_id"],
+                authority_suggested_start_date=authority["authority_suggested_start_date"],
+                authority_suggested_reason=authority["authority_suggested_reason"],
             ), FestivalDateAvailability(
                 status="available",
-                note="Resolved calendar dates are available for this festival and year.",
+                note=authority["authority_note"]
+                or "Resolved calendar dates are available for this festival and year.",
                 requested_year=year,
                 resolved_year=year,
             )

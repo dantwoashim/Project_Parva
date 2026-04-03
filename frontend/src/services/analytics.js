@@ -18,9 +18,6 @@ export function trackEvent(event, properties = {}) {
     // Ignore analytics dispatch issues in non-browser test environments.
   }
 
-  if (import.meta.env.DEV) {
-    console.debug('[parva analytics]', payload);
-  }
 }
 
 export function getAnalyticsEventTarget() {

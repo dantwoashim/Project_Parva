@@ -1,0 +1,99 @@
+{
+  "_meta": {
+    "name": "Historical Secondary Holiday Sources",
+    "last_updated": "2026-04-03",
+    "notes": "Archived older-year holiday sources used to extend Project Parva's source pool before official MoHA PDFs become consistently available online."
+  },
+  "sources": [
+    {
+      "bs_year": 2068,
+      "source_name": "koirala_2068_holiday_list",
+      "source_type": "secondary_archive_blog",
+      "url": "https://koirala.com.np/content/11051.html",
+      "local_path": "data/source_archive/secondary/2068_koirala_holiday_list.html",
+      "confidence": "secondary",
+      "coverage": "annual_full_list",
+      "notes": "Archived post titled '२०६८ मा नेपालका सार्वजनिक बिदाहरु' listing yearly public, festival, Dashain, Tihar, and office-time holidays."
+    },
+    {
+      "bs_year": 2069,
+      "source_name": "koirala_2069_holiday_list",
+      "source_type": "secondary_archive_blog",
+      "url": "https://koirala.com.np/content/11768.html",
+      "local_path": "data/source_archive/secondary/2069_koirala_holiday_list.html",
+      "confidence": "secondary",
+      "coverage": "annual_full_list",
+      "notes": "Archived post titled '२०६९ सालका लागि सरकारले तोकेका बिदाहरू' reproducing the annual government holiday list."
+    },
+    {
+      "bs_year": 2070,
+      "source_name": "koirala_2070_holiday_list",
+      "source_type": "secondary_archive_blog",
+      "url": "https://koirala.com.np/content/12007.html",
+      "local_path": "data/source_archive/secondary/2070_koirala_holiday_list.html",
+      "confidence": "secondary",
+      "coverage": "annual_full_list",
+      "notes": "Archived post titled '२०७० सालका सबै सार्वजनिक बिदा' summarizing the annual public holiday decision."
+    },
+    {
+      "bs_year": 2071,
+      "source_name": "koirala_2071_holiday_list",
+      "source_type": "secondary_archive_blog",
+      "url": "https://koirala.com.np/content/12295.html",
+      "local_path": "data/source_archive/secondary/2071_koirala_holiday_list.html",
+      "confidence": "secondary",
+      "coverage": "annual_full_list",
+      "notes": "Archived post reproducing the annual public, festival, and office-time holiday list and explicitly attributes the source to the Ministry of Home Affairs."
+    },
+    {
+      "bs_year": 2072,
+      "source_name": "onlinekhabar_2072_holiday_summary",
+      "source_type": "secondary_contemporary_news",
+      "url": "https://www.onlinekhabar.com/2015/02/246383",
+      "local_path": "data/source_archive/secondary/2072_onlinekhabar_holiday_summary.html",
+      "confidence": "secondary",
+      "coverage": "annual_summary",
+      "notes": "Contemporaneous summary stating total public holiday count for 2072 and highlighting major observance timing such as Dashain and Tihar."
+    },
+    {
+      "bs_year": 2073,
+      "source_name": "onlinekhabar_2073_holiday_list",
+      "source_type": "secondary_contemporary_news",
+      "url": "https://www.onlinekhabar.com/2016/04/409326",
+      "local_path": "data/source_archive/secondary/2073_onlinekhabar_holiday_list.html",
+      "confidence": "secondary",
+      "coverage": "annual_full_list",
+      "notes": "Contemporaneous article titled 'यस्ता छन् २०७३ सालका सार्वजनिक विदा (सूचीसहित)' and positioned as the published annual holiday list."
+    },
+    {
+      "bs_year": 2074,
+      "source_name": "dnewsnepal_2074_holiday_list",
+      "source_type": "secondary_contemporary_news",
+      "url": "https://dnewsnepal.com/archives/28500",
+      "local_path": "data/source_archive/secondary/2074_dnewsnepal_holiday_list.html",
+      "confidence": "secondary",
+      "coverage": "annual_full_list",
+      "notes": "Contemporaneous report stating the government determined the 2074 annual public holiday list from Baisakh through Chaitra."
+    },
+    {
+      "bs_year": 2074,
+      "source_name": "corporatenepal_2074_holiday_list",
+      "source_type": "secondary_contemporary_news",
+      "url": "https://www.corporatenepal.com/story/8033",
+      "local_path": "data/source_archive/secondary/2074_corporatenepal_holiday_list.html",
+      "confidence": "secondary",
+      "coverage": "annual_full_list",
+      "notes": "Backup 2074 source describing Rajpatra-backed additions to the annual holiday list, including Prithvi Jayanti."
+    },
+    {
+      "bs_year": 2075,
+      "source_name": "kharibot_2075_holiday_list",
+      "source_type": "secondary_contemporary_news",
+      "url": "https://www.kharibot.com/news-details/12511/kharibot",
+      "local_path": "data/source_archive/secondary/2075_kharibot_holiday_list.html",
+      "confidence": "secondary",
+      "coverage": "annual_full_list",
+      "notes": "Contemporaneous article summarizing the 2075 approved public holiday list and explicitly comparing changes against 2074."
+    }
+  ]
+}

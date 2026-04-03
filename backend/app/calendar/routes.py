@@ -135,55 +135,36 @@ def _bs_struct(gregorian_date: date) -> dict:
     }
 
 
-@router.get("/convert", response_model=ConversionResult)
-async def convert_date(
-    date_str: str = Query(
-        ...,
-        alias="date",
-        description="Gregorian date in YYYY-MM-DD format",
-        examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
-    )
-):
-    """
-    Convert a Gregorian date to Bikram Sambat, Nepal Sambat, and get tithi.
-    
-    Returns complete calendar information for the given date.
-    """
-    gregorian_date = _parse_iso_date(date_str)
-    
-    # Convert to BS
+def _build_bs_date(gregorian_date: date) -> BSDate:
     bs_year, bs_month, bs_day = gregorian_to_bs(gregorian_date)
-    bs_date = BSDate(
+    confidence = get_bs_confidence(gregorian_date)
+    estimated_error_days = get_bs_estimated_error_days(gregorian_date)
+    return BSDate(
         year=bs_year,
         month=bs_month,
         day=bs_day,
         month_name=get_bs_month_name(bs_month),
-        confidence=get_bs_confidence(gregorian_date),
+        confidence=confidence,
         source_range=get_bs_source_range(gregorian_date),
-        estimated_error_days=get_bs_estimated_error_days(gregorian_date),
-        uncertainty=build_bs_uncertainty(
-            get_bs_confidence(gregorian_date),
-            get_bs_estimated_error_days(gregorian_date),
-        ),
+        estimated_error_days=estimated_error_days,
+        uncertainty=build_bs_uncertainty(confidence, estimated_error_days),
     )
-    
-    # Convert to NS
+
+
+def _build_ns_date(gregorian_date: date) -> Optional[NSDate]:
     try:
         ns_year = get_current_ns_year(gregorian_date)
-        ns_date = NSDate(
-            year=ns_year,
-            formatted=format_ns_date(gregorian_date)
-        )
+        return NSDate(year=ns_year, formatted=format_ns_date(gregorian_date))
     except Exception:
-        ns_date = None
-    
-    # Calculate tithi using UDAYA method (official tithi at sunrise)
-    # This avoids the "off by one day" issue near tithi boundaries
+        return None
+
+
+def _build_tithi_info(gregorian_date: date) -> TithiInfo:
     try:
         udaya = get_udaya_tithi(gregorian_date)
         sunrise_utc = calculate_sunrise(gregorian_date)
-        tithi_info = TithiInfo(
-            tithi=udaya["tithi"],  # display number 1-15
+        return TithiInfo(
+            tithi=udaya["tithi"],
             paksha=udaya["paksha"],
             tithi_name=udaya["name"],
             moon_phase=get_moon_phase_name(to_nepal_time(sunrise_utc)),
@@ -198,9 +179,8 @@ async def convert_date(
             ),
         )
     except Exception:
-        # Fallback to instantaneous if sunrise calc fails
         tithi_data = calculate_tithi(gregorian_date)
-        tithi_info = TithiInfo(
+        return TithiInfo(
             tithi=tithi_data["display_number"],
             paksha=tithi_data["paksha"],
             tithi_name=tithi_data["name"],
@@ -214,8 +194,13 @@ async def convert_date(
                 progress=tithi_data.get("progress"),
             ),
         )
-    
-    result = {
+
+
+def _build_conversion_payload(gregorian_date: date) -> dict:
+    bs_date = _build_bs_date(gregorian_date)
+    ns_date = _build_ns_date(gregorian_date)
+    tithi_info = _build_tithi_info(gregorian_date)
+    return {
         "gregorian": gregorian_date.isoformat(),
         "bikram_sambat": {
             "year": bs_date.year,
@@ -243,7 +228,24 @@ async def convert_date(
         "provenance": _build_provenance(),
         "policy": get_policy_metadata(),
     }
-    return result
+
+
+@router.get("/convert", response_model=ConversionResult)
+async def convert_date(
+    date_str: str = Query(
+        ...,
+        alias="date",
+        description="Gregorian date in YYYY-MM-DD format",
+        examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
+    )
+):
+    """
+    Convert a Gregorian date to Bikram Sambat, Nepal Sambat, and get tithi.
+    
+    Returns complete calendar information for the given date.
+    """
+    gregorian_date = _parse_iso_date(date_str)
+    return _build_conversion_payload(gregorian_date)
 
 
 @router.get("/convert/compare")

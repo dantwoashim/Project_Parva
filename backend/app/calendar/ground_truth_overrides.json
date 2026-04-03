@@ -108,7 +108,10 @@
       "confidence": "secondary"
     },
     "bs-new-year": {
-      "start": "2026-04-14"
+      "start": "2026-04-14",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-01-01 (वैशाख १) (क) नव वर्ष [ocr_confidence=high]"
     },
     "shivaratri": {
       "start": "2026-02-14",
@@ -122,25 +125,46 @@
       "confidence": "secondary"
     },
     "buddha-jayanti": {
-      "start": "2026-05-12"
+      "start": "2026-05-01",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-01-18 (वैशाख १८) (क) बुद्ध जयंती [ocr_confidence=high]"
     },
     "janai-purnima": {
-      "start": "2026-08-11"
+      "start": "2026-08-28",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-05-12 (भदौ १२) (ग) रक्षाबन्धन [ocr_confidence=high]"
     },
     "teej": {
-      "start": "2026-08-30"
+      "start": "2026-09-14",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-05-29 (भदौ २९) (क) हरितालिका (तीज) व्रत [ocr_confidence=high]"
     },
     "indra-jatra": {
-      "start": "2026-09-08"
+      "start": "2026-09-25",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-06-09 (असोज ९) (ख) इन्द्रजात्रा [ocr_confidence=high]"
     },
     "dashain": {
-      "start": "2026-10-10"
+      "start": "2026-10-11",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-06-25 (असोज २५) (ङ) घटस्थापना [ocr_confidence=high]"
     },
     "tihar": {
-      "start": "2026-11-07"
+      "start": "2026-11-08",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-07-22 (कात्तिक २२) (छ) तिहार बिदा [ocr_confidence=high]"
     },
     "gai-jatra": {
-      "start": "2026-08-12"
+      "start": "2026-08-29",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-05-13 (भदौ १३) (क) गाईजात्रा [ocr_confidence=high]"
     },
     "yomari-punhi": {
       "start": "2026-12-25"
@@ -149,7 +173,10 @@
       "start": "2026-11-11"
     },
     "chhath": {
-      "start": "2026-11-12"
+      "start": "2026-11-15",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-07-29 (कात्तिक २९) (ज) छठ पर्व [ocr_confidence=high]"
     },
     "ghode-jatra": {
       "start": "2026-03-17",
@@ -158,7 +185,10 @@
       "notes": "BS 2082-12-04 (चैत ४) (घ) घोडेजात्रा"
     },
     "krishna-janmashtami": {
-      "start": "2026-08-19"
+      "start": "2026-09-04",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-05-19 (भदौ १९) (घ) श्रीकृष्ण जन्माष्टमी [ocr_confidence=high]"
     },
     "nag-panchami": {
       "start": "2026-07-27"
@@ -192,6 +222,12 @@
       "source": "moha_pdf_2082",
       "confidence": "official",
       "notes": "BS 2082-12-13 (चैत १३) (ध) रामनवमी"
+    },
+    "tamu-lhosar": {
+      "start": "2026-12-30",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-09-15 (पुस १५) (ट) तमू ल्होसार [ocr_confidence=high]"
     }
   },
   "2027": {
@@ -199,10 +235,37 @@
       "start": "2027-01-14"
     },
     "shivaratri": {
-      "start": "2027-03-05"
+      "start": "2027-03-06",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-11-22 (फागुन २२) (ढ) महाशिवरात्री [ocr_confidence=high]"
     },
     "holi": {
       "start": "2027-03-22"
+    },
+    "gyalpo-lhosar": {
+      "start": "2027-03-09",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-11-25 (फागुन २५) (ण) ग्याल्पो - ल्होसार [ocr_confidence=high]"
+    },
+    "saraswati-puja": {
+      "start": "2027-02-11",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-10-28 (माघ २८) वसन्त पञ्चमी [ocr_confidence=high]"
+    },
+    "ghode-jatra": {
+      "start": "2027-04-06",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-12-23 (चैत २३) (घ) घोडेजात्रा [ocr_confidence=high]"
+    },
+    "sonam-lhosar": {
+      "start": "2027-02-07",
+      "source": "moha_pdf_2083",
+      "confidence": "official",
+      "notes": "BS 2083-10-24 (माघ २४) (ड) सोनम ल्होछार [ocr_confidence=high]"
     }
   },
   "2023": {
@@ -259,6 +322,18 @@
       "source": "moha_pdf_2080",
       "confidence": "official",
       "notes": "BS 2080-01-22 (वैशाख २२) (क) बुद्ध जयन्ती"
+    },
+    "shivaratri": {
+      "start": "2023-02-18",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-11-06 (फागुन ६) (ठ) महाशिवरात्री [ocr_confidence=high]"
+    },
+    "ghode-jatra": {
+      "start": "2023-03-20",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-12-07 (चैत ७) (घ) घोडेजात्रा [ocr_confidence=high]"
     }
   },
   "2024": {
@@ -357,6 +432,136 @@
       "source": "moha_pdf_2081",
       "confidence": "official",
       "notes": "BS 2081-02-10 (जेठ १०) (क) बुद्ध जयन्ती"
+    }
+  },
+  "2021": {
+    "bs-new-year": {
+      "start": "2021-04-13",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-01-01 (वैशाख १) (क) नव वर्ष [ocr_confidence=high]"
+    },
+    "janai-purnima": {
+      "start": "2021-08-22",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-05-06 (भदौ ६) (ख) रक्षाबन्धन [ocr_confidence=high]"
+    },
+    "dashain": {
+      "start": "2021-10-07",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-06-21 (असोज २१) (ग) घटस्थापना [ocr_confidence=high]"
+    },
+    "chhath": {
+      "start": "2021-11-09",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-07-24 (कात्तिक २४) (घ) छठ पर्व [ocr_confidence=high]"
+    },
+    "tamu-lhosar": {
+      "start": "2021-12-30",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-09-15 (पुस १५) (छ) तमू ल्होसार [ocr_confidence=high]"
+    },
+    "teej": {
+      "start": "2021-09-09",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-05-24 (भदौ २४) (क) हरितालिका (तीज) व्रत [ocr_confidence=high]"
+    },
+    "gai-jatra": {
+      "start": "2021-08-23",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-05-07 (भदौ ७) (क) गाईजात्रा [ocr_confidence=high]"
+    },
+    "indra-jatra": {
+      "start": "2021-09-19",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-06-03 (असोज ३) (ख) इन्द्रजात्रा [ocr_confidence=high]"
+    },
+    "buddha-jayanti": {
+      "start": "2021-05-25",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-02-12 (जेठ १२) बुद्ध जयंती [ocr_confidence=high]"
+    }
+  },
+  "2022": {
+    "shivaratri": {
+      "start": "2022-02-28",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-11-17 (फागुन १७) (च) महाशिवरात्री [ocr_confidence=high]"
+    },
+    "sonam-lhosar": {
+      "start": "2022-02-01",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-10-19 (माघ १९) (ज) सोनम ल्होसार [ocr_confidence=high]"
+    },
+    "ghode-jatra": {
+      "start": "2022-03-31",
+      "source": "moha_pdf_2078",
+      "confidence": "official",
+      "notes": "BS 2078-12-18 (चैत १८) (घ) घोडेजात्रा [ocr_confidence=high]"
+    },
+    "bs-new-year": {
+      "start": "2022-04-13",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-01-01 (वैशाख १) (क) नव वर्ष [ocr_confidence=high]"
+    },
+    "janai-purnima": {
+      "start": "2022-08-11",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-04-27 (साउन २७) (ग) रक्षाबन्धन [ocr_confidence=high]"
+    },
+    "dashain": {
+      "start": "2022-09-26",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-06-10 (असोज १०) (ङ) घटस्थापना [ocr_confidence=high]"
+    },
+    "chhath": {
+      "start": "2022-10-29",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-07-13 (कात्तिक १३) (च) छठ पर्व [ocr_confidence=high]"
+    },
+    "tamu-lhosar": {
+      "start": "2022-12-30",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-09-15 (पुस १५) (झ) तमु ल्होसार [ocr_confidence=high]"
+    },
+    "gai-jatra": {
+      "start": "2022-08-11",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-04-27 (साउन २७) (क) गाईजात्रा [ocr_confidence=high]"
+    },
+    "teej": {
+      "start": "2022-08-30",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-05-14 (भदौ १४) (क) हरितालिका(तीज) व्रत [ocr_confidence=high]"
+    },
+    "indra-jatra": {
+      "start": "2022-09-09",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-05-24 (भदौ २४) (ख) इन्द्रजात्रा [ocr_confidence=high]"
+    },
+    "buddha-jayanti": {
+      "start": "2022-05-15",
+      "source": "moha_pdf_2079",
+      "confidence": "official",
+      "notes": "BS 2079-02-02 (जेठ २) बुद्ध जयंती [ocr_confidence=high]"
     }
   }
 }

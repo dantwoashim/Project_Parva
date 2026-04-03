@@ -460,22 +460,83 @@ class ExperimentalEnvelopeMiddleware:
         self.app = app
         self.enable_experimental_api = enable_experimental_api
 
-    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        if scope["type"] != "http":
-            await self.app(scope, receive, send)
-            return
-
-        path = scope.get("path", "")
-        wants_v3_envelope = _wants_data_meta_envelope(scope)
+    def _envelope_track(self, path: str, wants_v3_envelope: bool) -> str | None:
         is_v3 = path.startswith("/v3/api/") or path.startswith("/api/")
         is_v4 = path.startswith("/v4/api/")
         is_v5 = path.startswith("/v5/api/")
         if wants_v3_envelope and is_v3:
-            track = "v3"
-        elif self.enable_experimental_api and (is_v4 or is_v5):
-            track = "v5" if is_v5 else "v4"
-        else:
-            await self.app(scope, receive, send)
+            return "v3"
+        if self.enable_experimental_api and (is_v4 or is_v5):
+            return "v5" if is_v5 else "v4"
+        return None
+
+    async def _forward_unmodified(self, scope: Scope, receive: Receive, send: Send) -> None:
+        await self.app(scope, receive, send)
+
+    def _build_envelope(self, payload: Any, *, track: str) -> dict[str, Any]:
+        if isinstance(payload, dict) and "data" in payload and "meta" in payload:
+            existing_meta = payload.get("meta")
+            if not isinstance(existing_meta, dict):
+                existing_meta = {}
+            default_meta = extract_meta(payload.get("data"), track=track)
+            return {
+                "data": payload.get("data"),
+                "meta": merge_meta_defaults(default_meta, existing_meta),
+            }
+        return {"data": payload, "meta": extract_meta(payload, track=track)}
+
+    async def _send_wrapped_response(
+        self,
+        *,
+        scope: Scope,
+        receive: Receive,
+        send: Send,
+        response_start: Message,
+        body: bytes,
+        track: str,
+    ) -> None:
+        raw_headers = response_start.get("headers", [])
+        headers = _headers_without_content_length(list(raw_headers))
+        if track == "v3":
+            _append_vary_header(headers, _ENVELOPE_PREFERENCE_HEADER)
+            headers[_ENVELOPE_PREFERENCE_HEADER] = _ENVELOPE_PREFERENCE_VALUE
+        media_type = Headers(raw=raw_headers).get("content-type")
+
+        if not body:
+            await Response(
+                content=body,
+                status_code=response_start["status"],
+                media_type=media_type,
+                headers=headers,
+            )(scope, receive, send)
+            return
+
+        try:
+            payload: Any = json.loads(body)
+        except Exception:
+            await Response(
+                content=body,
+                status_code=response_start["status"],
+                media_type=media_type,
+                headers=headers,
+            )(scope, receive, send)
+            return
+
+        await JSONResponse(
+            status_code=response_start["status"],
+            content=self._build_envelope(payload, track=track),
+            headers=headers,
+        )(scope, receive, send)
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self._forward_unmodified(scope, receive, send)
+            return
+
+        path = scope.get("path", "")
+        track = self._envelope_track(path, _wants_data_meta_envelope(scope))
+        if track is None:
+            await self._forward_unmodified(scope, receive, send)
             return
 
         response_start: Message | None = None
@@ -499,54 +560,29 @@ class ExperimentalEnvelopeMiddleware:
                 if message.get("more_body", False):
                     return
 
-                raw_headers = response_start.get("headers", [])
-                headers = _headers_without_content_length(list(raw_headers))
-                if track == "v3":
-                    _append_vary_header(headers, _ENVELOPE_PREFERENCE_HEADER)
-                    headers[_ENVELOPE_PREFERENCE_HEADER] = _ENVELOPE_PREFERENCE_VALUE
-                body = bytes(body_buffer)
-                media_type = Headers(raw=raw_headers).get("content-type")
-
-                if not body:
-                    await Response(
-                        content=body,
-                        status_code=response_start["status"],
-                        media_type=media_type,
-                        headers=headers,
-                    )(scope, receive, send)
-                    return
-
-                try:
-                    payload: Any = json.loads(body)
-                except Exception:
-                    await Response(
-                        content=body,
-                        status_code=response_start["status"],
-                        media_type=media_type,
-                        headers=headers,
-                    )(scope, receive, send)
-                    return
-
-                if isinstance(payload, dict) and "data" in payload and "meta" in payload:
-                    existing_meta = payload.get("meta")
-                    if not isinstance(existing_meta, dict):
-                        existing_meta = {}
-                    default_meta = extract_meta(payload.get("data"), track=track)
-                    merged_meta = merge_meta_defaults(default_meta, existing_meta)
-                    envelope = {"data": payload.get("data"), "meta": merged_meta}
-                else:
-                    envelope = {"data": payload, "meta": extract_meta(payload, track=track)}
-
-                await JSONResponse(
-                    status_code=response_start["status"],
-                    content=envelope,
-                    headers=headers,
-                )(scope, receive, send)
+                await self._send_wrapped_response(
+                    scope=scope,
+                    receive=receive,
+                    send=send,
+                    response_start=response_start,
+                    body=bytes(body_buffer),
+                    track=track,
+                )
                 return
 
             await send(message)
 
         await self.app(scope, receive, send_wrapper)
+
+
+def _engine_track_for_path(path: str) -> str:
+    if path.startswith("/v2/"):
+        return "v2"
+    if path.startswith("/v4/"):
+        return "v4"
+    if path.startswith("/v5/"):
+        return "v5"
+    return "v3"
 
 
 def build_engine_headers(
@@ -560,17 +596,7 @@ def build_engine_headers(
         response = await call_next(request)
         response.headers["X-Parva-Ephemeris"] = ephemeris_header_value()
         response.headers["X-Parva-License"] = license_mode
-
-        if request.url.path.startswith("/v3/") or request.url.path.startswith("/api/"):
-            response.headers["X-Parva-Engine"] = "v3"
-        elif request.url.path.startswith("/v2/"):
-            response.headers["X-Parva-Engine"] = "v2"
-        elif request.url.path.startswith("/v4/"):
-            response.headers["X-Parva-Engine"] = "v4"
-        elif request.url.path.startswith("/v5/"):
-            response.headers["X-Parva-Engine"] = "v5"
-        else:
-            response.headers["X-Parva-Engine"] = "v3"
+        response.headers["X-Parva-Engine"] = _engine_track_for_path(request.url.path)
 
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
