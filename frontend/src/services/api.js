@@ -151,7 +151,7 @@ function createRequestSignal({ timeoutMs, signal: upstreamSignal } = {}) {
 }
 
 export function ensureJsonPayload(payload, endpoint) {
-  if (payload !== null && payload !== undefined && typeof payload === 'object') {
+  if (payload != null && typeof payload === 'object') {
     return payload;
   }
   throw new ParvaApiError(`Unexpected response shape for ${endpoint}`, {
@@ -436,8 +436,8 @@ export const muhurtaAPI = {
       type,
       assumption_set: assumptionSet,
     });
-    if (lat !== undefined && lat !== null) params.set('lat', normalizeCoordinateField(lat));
-    if (lon !== undefined && lon !== null) params.set('lon', normalizeCoordinateField(lon));
+    if (lat != null) params.set('lat', normalizeCoordinateField(lat));
+    if (lon != null) params.set('lon', normalizeCoordinateField(lon));
     if (tz) params.set('tz', tz);
     return fetchAPI(`/muhurta/calendar?${params.toString()}`).then(normalizeMuhurtaCalendarPayload);
   },

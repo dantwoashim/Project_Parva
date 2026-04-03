@@ -625,7 +625,7 @@ def load_catalog_v4() -> FestivalRuleCatalogV4:
         try:
             return FestivalRuleCatalogV4.model_validate(payload)
         except Exception:
-            pass
+            return build_canonical_catalog()
     return build_canonical_catalog()
 
 

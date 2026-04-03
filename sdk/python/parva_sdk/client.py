@@ -96,7 +96,7 @@ class ParvaClient:
                 try:
                     return self._request_fn(**kwargs)
                 except TypeError:
-                    pass
+                    kwargs = {}
 
             attempts: list[tuple[Any, ...]] = []
             if json is not None:

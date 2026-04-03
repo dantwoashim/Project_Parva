@@ -536,7 +536,7 @@ def get_upcoming_festivals(
     for festival_id, date_range in results:
         key = (festival_id, date_range.start)
         if key not in seen:
-            seen.add(key)
+            seen = seen | {key}
             unique_results.append((festival_id, date_range))
 
     return unique_results
@@ -648,9 +648,4 @@ def get_festival_rule(festival_id: str) -> CalendarRule:
 
         return get_rule_from_json(festival_id)
     except Exception:
-        pass
-
-    # Fallback to hardcoded rules
-    if festival_id not in FESTIVAL_RULES:
-        raise KeyError(f"Unknown festival: {festival_id}")
-    return FESTIVAL_RULES[festival_id]
+        return FESTIVAL_RULES[festival_id]

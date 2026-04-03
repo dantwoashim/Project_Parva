@@ -1,0 +1,105 @@
+{
+  "_meta": {
+    "name": "MoHA Official Holiday Source Inventory",
+    "last_updated": "2026-04-03",
+    "notes": "Tracks official Ministry of Home Affairs or DAO-mirror holiday source documents acquired for Project Parva."
+  },
+  "sources": [
+    {
+      "bs_year": 2076,
+      "status": "archived_raw_pdf",
+      "source_type": "official_moha_pdf",
+      "url": "https://daorasuwa.moha.gov.np/upload/83de7447cbf5bb21fe9e77a0c4e0ab83/files/%E0%A4%B8%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A4%9C%E0%A4%A8%E0%A4%BF%E0%A4%95_%E0%A4%B5%E0%A4%BF%E0%A4%A6%E0%A4%BE_%E0%A5%A8%E0%A5%A6%E0%A5%AD%E0%A5%AC.pdf",
+      "local_path": "data/source_archive/moha/2076_public_holidays.pdf",
+      "structured_artifacts": [],
+      "notes": "Verified official PDF archived locally. Current OCR pipeline did not extract usable structured rows."
+    },
+    {
+      "bs_year": 2077,
+      "status": "archived_raw_pdf",
+      "source_type": "official_moha_pdf",
+      "url": "https://moha.gov.np/upload/e66443e81e8cc9c4fa5c099a1fb1bb87/files/%E0%A5%A8%E0%A5%A6%E0%A5%AD%E0%A5%AD_%E0%A4%B8%E0%A4%BE%E0%A4%B2%E0%A4%95%E0%A5%8B_%E0%A4%B8%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A4%9C%E0%A4%A8%E0%A4%BF%E0%A4%95_%E0%A4%AC%E0%A4%BF%E0%A4%A6%E0%A4%BE.pdf",
+      "local_path": "data/source_archive/moha/2077_public_holidays.pdf",
+      "structured_artifacts": [],
+      "notes": "Verified official PDF archived locally. Current OCR pipeline did not recover usable holiday lines from the PDF form."
+    },
+    {
+      "bs_year": 2078,
+      "status": "structured_official",
+      "source_type": "official_moha_pdf",
+      "url": "https://daokathmandu.moha.gov.np/upload/1402a3666bab255e6a3f07937faf522f/files/%E0%A4%B8%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A4%9C%E0%A4%A8%E0%A4%BF%E0%A4%95_%E0%A4%B5%E0%A4%BF%E0%A4%A6%E0%A4%BE_Public_Holiday_2078.pdf",
+      "local_path": "data/source_archive/moha/2078_public_holidays.pdf",
+      "structured_artifacts": [
+        "data/ingest_reports/holidays_2078_parsed.csv",
+        "data/ingest_reports/holidays_2078_matched.csv",
+        "data/ground_truth/baseline_2078_2079.json"
+      ],
+      "notes": "Structured rows extracted and merged into ground-truth overrides."
+    },
+    {
+      "bs_year": 2079,
+      "status": "structured_official",
+      "source_type": "official_moha_pdf",
+      "url": "https://moha.gov.np/upload/bc441f2bbe8d06be484be0281788ca03/files/%E0%A4%B8%E0%A4%AE%E0%A5%8D%E0%A4%B5%E0%A4%A4_%E0%A5%A8%E0%A5%A6%E0%A5%AD%E0%A5%AF_%E0%A4%B8%E0%A4%BE%E0%A4%B2%E0%A4%95%E0%A5%8B_%E0%A4%B8%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A4%9C%E0%A4%A8%E0%A4%BF%E0%A4%95_%E0%A4%B5%E0%A4%BF%E0%A4%A6%E0%A4%BE_%E0%A4%B8%E0%A4%AE%E0%A5%8D%E0%A4%AC%E0%A4%A8%E0%A5%8D%E0%A4%A7%E0%A5%80_%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%281%29.pdf",
+      "local_path": "data/source_archive/moha/2079_public_holidays.pdf",
+      "structured_artifacts": [
+        "data/ingest_reports/holidays_2079_parsed.csv",
+        "data/ingest_reports/holidays_2079_matched.csv",
+        "data/ground_truth/baseline_2078_2079.json"
+      ],
+      "notes": "Structured rows extracted and merged into ground-truth overrides."
+    },
+    {
+      "bs_year": 2080,
+      "status": "structured_official",
+      "source_type": "official_moha_pdf",
+      "url": null,
+      "local_path": "data/२०८०_साल_भरिको_सार्वजनिक_विदा_संम्वन्धी_(६५)(1).pdf",
+      "structured_artifacts": [
+        "data/ingest_reports/holidays_2080_parsed.csv",
+        "data/ingest_reports/holidays_2080_matched.csv",
+        "data/ground_truth/baseline_2080_2082.json"
+      ],
+      "notes": "Existing structured official source in the repository."
+    },
+    {
+      "bs_year": 2081,
+      "status": "structured_official",
+      "source_type": "official_moha_pdf",
+      "url": null,
+      "local_path": "data/२०८१_सालको_सरकारी_तथा_सार्वजनिक_विदा_(५४_१०_२९)(1).pdf",
+      "structured_artifacts": [
+        "data/ingest_reports/holidays_2081_parsed.csv",
+        "data/ingest_reports/holidays_2081_matched.csv",
+        "data/ground_truth/baseline_2080_2082.json"
+      ],
+      "notes": "Existing structured official source in the repository."
+    },
+    {
+      "bs_year": 2082,
+      "status": "structured_official",
+      "source_type": "official_moha_pdf",
+      "url": null,
+      "local_path": "data/२०८२_सालको_सार्वजनिक_बिदा_सम्बन्धी.pdf",
+      "structured_artifacts": [
+        "data/ingest_reports/holidays_2082_parsed.csv",
+        "data/ingest_reports/holidays_2082_matched.csv",
+        "data/ground_truth/baseline_2080_2082.json"
+      ],
+      "notes": "Existing structured official source in the repository."
+    },
+    {
+      "bs_year": 2083,
+      "status": "structured_official",
+      "source_type": "official_moha_pdf",
+      "url": "https://www.moha.gov.np/upload/e66443e81e8cc9c4fa5c099a1fb1bb87/files/%E0%A5%A8%E0%A5%A6%E0%A5%AE%E0%A5%A9_%E0%A4%B8%E0%A4%BE%E0%A4%B2%E0%A4%95%E0%A5%8B_%E0%A4%B8%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A4%9C%E0%A4%A8%E0%A4%BF%E0%A4%95_%E0%A4%B5%E0%A4%BF%E0%A4%A6%E0%A4%BE_%2867_11_18%29.pdf",
+      "local_path": "data/२०८३_सालको_सार्वजनिक_विदा_(67_11_18).pdf",
+      "structured_artifacts": [
+        "data/ingest_reports/holidays_2083_parsed.csv",
+        "data/ingest_reports/holidays_2083_matched.csv",
+        "data/ground_truth/baseline_2083.json"
+      ],
+      "notes": "Structured rows extracted and merged into ground-truth overrides."
+    }
+  ]
+}

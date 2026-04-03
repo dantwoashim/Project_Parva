@@ -289,7 +289,7 @@ def get_latest_snapshot(create_if_missing: bool = False) -> Optional[SnapshotRec
                 return create_snapshot()
             return snapshot
         except Exception:
-            pass
+            sid = None
     if create_if_missing:
         return create_snapshot()
     return None

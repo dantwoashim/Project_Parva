@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "name": "Institutional Archive Targets",
+    "last_updated": "2026-04-03",
+    "notes": "Catalog and archive endpoints that are likely to help extend Project Parva's historical holiday source pool toward 2000 BS."
+  },
+  "sources": [
+    {
+      "source_name": "national_archives_portal",
+      "source_type": "institutional_archive",
+      "url": "https://narchives.gov.np/Archival.aspx",
+      "notes": "Primary National Archives portal for archival discovery and document requests. Direct curl access was unstable during the 2026-04-03 harvest pass."
+    },
+    {
+      "source_name": "national_archives_repository",
+      "source_type": "institutional_repository",
+      "url": "https://repository.narchives.gov.np/",
+      "notes": "Digital repository with digitized archival and government publications. The site exposes a tokenized DSpace REST API namespace and searchable collection endpoints."
+    },
+    {
+      "source_name": "national_archives_repository_api",
+      "source_type": "institutional_repository_api",
+      "url": "https://repository.narchives.gov.np/M6NXQ9IDFZ95T8J7VFSQ5A83AG8C42K4/api/discover/search/objects",
+      "notes": "Tokenized DSpace discover endpoint confirmed live during harvesting. Useful for scoped metadata search across collections."
+    },
+    {
+      "source_name": "national_archives_publications_collection",
+      "source_type": "institutional_collection",
+      "url": "https://repository.narchives.gov.np/M6NXQ9IDFZ95T8J7VFSQ5A83AG8C42K4/api/core/collections/8e7b7763-390b-4b40-beee-10f11e0373bd",
+      "notes": "National Archives Publications collection named 'अभिलेख (Abhilekha)'. Candidate place to search for Rajpatra-like publications."
+    },
+    {
+      "source_name": "national_archives_nepali_collection",
+      "source_type": "institutional_collection",
+      "url": "https://repository.narchives.gov.np/M6NXQ9IDFZ95T8J7VFSQ5A83AG8C42K4/api/core/collections/dc7534bc-79f4-49f1-9d01-d488d5e43054",
+      "notes": "Nepali Language Collections endpoint. Candidate place to search for Nepali calendar and Panchang material."
+    },
+    {
+      "source_name": "nepal_national_library_catalog",
+      "source_type": "institutional_catalog",
+      "url": "https://archive.nnl.gov.np/",
+      "notes": "National library catalog that may surface Rashtriya Panchang and related historical publications. HTTPS certificate mismatch was encountered during automated harvesting; browser/manual verification may be needed."
+    },
+    {
+      "source_name": "madan_puraskar_pustakalaya_catalog",
+      "source_type": "institutional_catalog",
+      "url": "https://madanpuraskar.org/search/monographslist.php?start=43801",
+      "notes": "MPP monograph catalog indexed by search engines and observed to contain Nepali 'पात्रो' records. Direct bulk curl access triggered ModSecurity during harvesting, so targeted browser or indexed-page retrieval may work better."
+    }
+  ]
+}

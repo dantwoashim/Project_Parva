@@ -1,0 +1,50 @@
+{
+  "_meta": {
+    "name": "Koirala Archive Holiday Discovery",
+    "archive_pages": [
+      "https://koirala.com.np/content/date/2011/04",
+      "https://koirala.com.np/content/date/2012/04",
+      "https://koirala.com.np/content/date/2013/02",
+      "https://koirala.com.np/content/date/2014/03"
+    ],
+    "result_count": 6
+  },
+  "results": [
+    {
+      "archive_page": "2011-04",
+      "title": "२०६८ सालको जगदम्बाको नेपाली पात्रो (क्यालेन्डर)",
+      "url": "https://koirala.com.np/content/11054.html",
+      "bs_year_hint": "२०६८"
+    },
+    {
+      "archive_page": "2011-04",
+      "title": "२०६८ मा नेपालका सार्वजनिक बिदाहरु",
+      "url": "https://koirala.com.np/content/11051.html",
+      "bs_year_hint": "२०६८"
+    },
+    {
+      "archive_page": "2012-04",
+      "title": "२०६९ सालका लागि सरकारले तोकेका बिदाहरू",
+      "url": "https://koirala.com.np/content/11768.html",
+      "bs_year_hint": "२०६९"
+    },
+    {
+      "archive_page": "2012-04",
+      "title": "२०६९ सालको जगदम्बा क्यालेन्डर",
+      "url": "https://koirala.com.np/content/11769.html",
+      "bs_year_hint": "२०६९"
+    },
+    {
+      "archive_page": "2013-02",
+      "title": "२०७० सालका सबै सार्वजनिक बिदा",
+      "url": "https://koirala.com.np/content/12007.html",
+      "bs_year_hint": "२०७०"
+    },
+    {
+      "archive_page": "2014-03",
+      "title": "२०७१ सालका चाड-पर्व र बिदा कहिले-कहिले ?",
+      "url": "https://koirala.com.np/content/12295.html",
+      "bs_year_hint": "२०७१"
+    }
+  ]
+}

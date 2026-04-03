@@ -460,15 +460,17 @@ def get_lunar_month_index(name: str) -> int:
 
 
 def print_lunar_year(year: int):
-    """Print a lunar year for debugging."""
+    """Return a formatted lunar year summary for debugging."""
     ly = get_lunar_year(year)
-    print(f"\nLunar Year for {year} (BS {ly.bs_year})")
-    print(f"Has Adhik: {ly.has_adhik} ({ly.adhik_month_name or 'N/A'})")
-    print("-" * 60)
-
+    lines = [
+        f"Lunar Year for {year} (BS {ly.bs_year})",
+        f"Has Adhik: {ly.has_adhik} ({ly.adhik_month_name or 'N/A'})",
+        "-" * 60,
+    ]
     for i, m in enumerate(ly.months):
         adhik_mark = " [ADHIK]" if m.is_adhik else ""
         sankranti_info = f", Sankranti: {m.sankranti_date.date()}" if m.sankranti_date else ""
-        print(
-            f"{i+1:2}. {m.full_name:15} | {m.start_amavasya.date()} to {m.end_amavasya.date()}{adhik_mark}{sankranti_info}"
+        lines.append(
+            f"{i + 1:2}. {m.full_name:15} | {m.start_amavasya.date()} to {m.end_amavasya.date()}{adhik_mark}{sankranti_info}"
         )
+    return "\n".join(lines)

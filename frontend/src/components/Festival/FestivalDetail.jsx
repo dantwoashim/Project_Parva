@@ -279,7 +279,7 @@ export function FestivalDetail({
                             festival={festival}
                             allFestivals={allFestivals}
                             onFestivalClick={onFestivalClick}
-                            onDeityClick={(deity) => console.log('Deity clicked:', deity)}
+                            onDeityClick={() => {}}
                         />
                     </div>
                 )}

@@ -73,8 +73,8 @@ class TestFestivalDetailEndpoint:
 
         data = response.json()
         assert "dates" in data
-        assert data["dates"]["start_date"] == "2026-10-10"
-        assert data["dates"]["end_date"] == "2026-10-24"
+        assert data["dates"]["start_date"] == "2026-10-11"
+        assert data["dates"]["end_date"] == "2026-10-25"
         assert data["date_availability"]["status"] == "available"
         assert data["date_availability"]["resolved_year"] == 2026
         assert data["completeness"]["overall"] in {"complete", "partial", "minimal"}
@@ -115,7 +115,7 @@ class TestFestivalDatesEndpoint:
 
         # 2026 dates
         assert data[0]["gregorian_year"] == 2026
-        assert data[0]["start_date"] == "2026-10-10"
+        assert data[0]["start_date"] == "2026-10-11"
 
     def test_tihar_2026_dates(self):
         """Verify Tihar 2026 dates match official calendar."""
@@ -123,8 +123,8 @@ class TestFestivalDatesEndpoint:
         assert response.status_code == 200
 
         data = response.json()
-        assert data[0]["start_date"] == "2026-11-07"  # Kaag Tihar
-        assert data[0]["end_date"] == "2026-11-11"  # Bhai Tika
+        assert data[0]["start_date"] == "2026-11-08"  # Kaag Tihar
+        assert data[0]["end_date"] == "2026-11-12"  # Bhai Tika
 
     def test_multi_year_lunar_dates_do_not_fall_back_to_prior_gregorian_year(self):
         """Autumn/spring lunar observances should not regress to prior-year dates."""
@@ -183,17 +183,17 @@ class TestCalendarAccuracy:
         data = response.json()
 
         # Official: Ghatasthapana = Ashwin 25 = October 11, 2026
-        assert data[0]["start_date"] == "2026-10-10", "Ghatasthapana should be Oct 10"
+        assert data[0]["start_date"] == "2026-10-11", "Ghatasthapana should be Oct 11"
 
     def test_tihar_2083_official(self):
         """Tihar 2083 matches official Nepal govt calendar."""
         response = client.get("/api/festivals/tihar/dates?years=1&start_year=2026")
         data = response.json()
 
-        # Official: Kaag Tihar = Kartik 21 = November 7, 2026
-        assert data[0]["start_date"] == "2026-11-07", "Kaag Tihar should be Nov 7"
-        # Official: Bhai Tika = Kartik 25 = November 11, 2026
-        assert data[0]["end_date"] == "2026-11-11", "Bhai Tika should be Nov 11"
+        # Official: Kaag Tihar = Kartik 22 = November 8, 2026
+        assert data[0]["start_date"] == "2026-11-08", "Kaag Tihar should be Nov 8"
+        # Official: Bhai Tika = Kartik 26 = November 12, 2026
+        assert data[0]["end_date"] == "2026-11-12", "Bhai Tika should be Nov 12"
 
     def test_bs_new_year_2083(self):
         """BS New Year 2083 is April 14, 2026."""

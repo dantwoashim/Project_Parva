@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import json
 from datetime import date, datetime, timedelta
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, NamedTuple, Optional, Tuple
 
@@ -385,6 +386,47 @@ def _estimated_bs_year_range() -> tuple[int, int]:
     return (BS_MIN_YEAR - past, BS_MAX_YEAR + future)
 
 
+def _future_calibrated_bs_year_range() -> tuple[int, int]:
+    """
+    Return the near-future BS range that uses calibrated month-length extrapolation.
+
+    The official lookup tail settles into a stable 3-year month-pattern cycle from
+    2086 onward. We reuse that observed cycle for a conservative window just beyond
+    the official table instead of relying only on raw sankranti month boundaries.
+    """
+    calibrated_years = 15
+    return (BS_MAX_YEAR + 1, BS_MAX_YEAR + calibrated_years)
+
+
+@lru_cache(maxsize=None)
+def _get_future_calibrated_bs_year_data(bs_year: int) -> tuple[list[int], date] | None:
+    """
+    Return calibrated future BS month lengths and start date when the year is in the
+    near-future extrapolation window, otherwise ``None``.
+    """
+    min_year, max_year = _future_calibrated_bs_year_range()
+    if bs_year < min_year or bs_year > max_year:
+        return None
+
+    # Tail of the official table repeats in a stable 3-year cycle:
+    # 2093, 2094, 2095 -> then continue again from 2096.
+    cycle_templates = [
+        list(BS_CALENDAR_DATA[BS_MAX_YEAR - 2][0]),
+        list(BS_CALENDAR_DATA[BS_MAX_YEAR - 1][0]),
+        list(BS_CALENDAR_DATA[BS_MAX_YEAR][0]),
+    ]
+    anchor_lengths, anchor_start = BS_CALENDAR_DATA[BS_MAX_YEAR]
+    current_start = anchor_start + timedelta(days=sum(anchor_lengths))
+
+    for year in range(BS_MAX_YEAR + 1, bs_year + 1):
+        template = cycle_templates[(year - (BS_MAX_YEAR + 1)) % len(cycle_templates)]
+        if year == bs_year:
+            return (template, current_start)
+        current_start += timedelta(days=sum(template))
+
+    return None
+
+
 def _bs_to_gregorian_estimated(year: int, month: int, day: int) -> date:
     """
     Internal estimated BS->Gregorian conversion using sankranti boundaries.
@@ -396,6 +438,20 @@ def _bs_to_gregorian_estimated(year: int, month: int, day: int) -> date:
         raise ValueError(f"Invalid month: {month}. Must be 1-12.")
     if day < 1 or day > 32:
         raise ValueError(f"Invalid day: {day}. Must be 1-32.")
+
+    calibrated = _get_future_calibrated_bs_year_data(year)
+    if calibrated is not None:
+        month_lengths, year_start = calibrated
+        month_length = month_lengths[month - 1]
+        if day > month_length:
+            raise ValueError(
+                f"Invalid day {day} for calibrated BS month {year}-{month:02d} "
+                f"(max {month_length})"
+            )
+        days_from_year_start = day - 1
+        for m in range(month - 1):
+            days_from_year_start += month_lengths[m]
+        return year_start + timedelta(days=days_from_year_start)
 
     month_starts = _get_bs_month_starts_estimated(year)
     start_date = None
@@ -525,6 +581,26 @@ def _gregorian_to_bs_estimated(gregorian_date: date) -> tuple[int, int, int]:
     """
     Estimate BS conversion using sankranti boundaries (200-year window).
     """
+    calibrated_min_year, calibrated_max_year = _future_calibrated_bs_year_range()
+    first_calibrated = _get_future_calibrated_bs_year_data(calibrated_min_year)
+    last_calibrated = _get_future_calibrated_bs_year_data(calibrated_max_year)
+    if first_calibrated and last_calibrated:
+        first_start = first_calibrated[1]
+        last_end = last_calibrated[1] + timedelta(days=sum(last_calibrated[0]))
+        if first_start <= gregorian_date < last_end:
+            for bs_year in range(calibrated_min_year, calibrated_max_year + 1):
+                calibrated = _get_future_calibrated_bs_year_data(bs_year)
+                if calibrated is None:
+                    continue
+                month_lengths, year_start = calibrated
+                year_end = year_start + timedelta(days=sum(month_lengths))
+                if year_start <= gregorian_date < year_end:
+                    remaining_days = (gregorian_date - year_start).days
+                    for month_idx, month_len in enumerate(month_lengths):
+                        if remaining_days < month_len:
+                            return (bs_year, month_idx + 1, remaining_days + 1)
+                        remaining_days -= month_len
+
     # Determine BS year based on Mesh Sankranti date
     mesh_this = _get_mesh_sankranti_date(gregorian_date.year)
     if gregorian_date >= mesh_this:

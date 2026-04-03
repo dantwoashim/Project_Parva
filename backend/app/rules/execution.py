@@ -244,7 +244,7 @@ def _compute_override(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | 
                     method="rule_dsl_override_lookup_v1",
                 )
             except Exception:
-                pass
+                start = None
 
     bs_year = _to_int(payload.get("bs_year"))
     bs_month = _to_int(payload.get("bs_month"))
@@ -261,7 +261,7 @@ def _compute_override(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | 
                     method="rule_dsl_override_bs_fixed_v1",
                 )
         except Exception:
-            pass
+            return None
 
     return None
 

@@ -7,7 +7,7 @@ FastAPI routes for festival discovery endpoints.
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, timedelta
 from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
@@ -17,6 +17,7 @@ from ..calendar import (
     get_bs_month_name,
     gregorian_to_bs,
 )
+from ..calendar.overrides import get_festival_override_info
 from ..explainability import create_reason_trace
 from ..provenance import get_latest_snapshot_id, get_provenance_payload
 from ..rules import get_rule_service
@@ -30,6 +31,7 @@ from ..rules.catalog_v4 import (
 from ..rules.variants import calculate_with_variants, filter_variants_by_profile, list_profiles
 from ..services.ritual_normalization import normalize_ritual_sequence
 from .models import (
+    BSDateLite,
     CalendarDayFestivals,
     FestivalCalendarResponse,
     FestivalDateAvailability,
@@ -95,6 +97,156 @@ def _build_provenance(
             f"/v3/api/provenance/proof?festival={festival_id}&year={year}&snapshot={snapshot_id}"
         )
     return ProvenanceMeta(**get_provenance_payload(verify_url=verify_url, create_if_missing=True))
+
+
+def _resolved_date_note(festival_id: str, year: int, method: str, default_note: str) -> str:
+    if method != "override":
+        return default_note
+    info = get_festival_override_info(festival_id, year)
+    if not info or int(info.get("candidate_count") or 1) <= 1:
+        return default_note
+    source = info.get("source") or "override source"
+    return (
+        f"{default_note} Multiple authority candidates exist for this festival-year; "
+        f"the current default keeps {info['start'].isoformat()} from {source}."
+    )
+
+
+def _profile_map() -> dict[str, dict]:
+    return {
+        str(profile.get("profile_id")): profile
+        for profile in list_profiles()
+        if profile.get("profile_id")
+    }
+
+
+def _validate_profile(profile_id: Optional[str]) -> Optional[dict]:
+    if not profile_id:
+        return None
+    profile = _profile_map().get(profile_id)
+    if profile is None:
+        raise HTTPException(status_code=400, detail=f"Unknown profile '{profile_id}'")
+    return profile
+
+
+def _to_bs_lite(target: date) -> BSDateLite:
+    bs_year, bs_month, bs_day = gregorian_to_bs(target)
+    month_name = get_bs_month_name(bs_month)
+    return BSDateLite(
+        year=bs_year,
+        month=bs_month,
+        day=bs_day,
+        month_name=month_name,
+        formatted=f"{bs_year} {month_name} {bs_day}",
+    )
+
+
+def _apply_profile_variant_to_dates(
+    festival_id: str,
+    year: int,
+    dates: Optional[FestivalDates],
+    profile_id: Optional[str],
+) -> tuple[Optional[FestivalDates], Optional[str]]:
+    profile = _validate_profile(profile_id)
+    if dates is None or profile is None:
+        return dates, None
+
+    variants = filter_variants_by_profile(calculate_with_variants(festival_id, year), profile_id)
+    if not variants:
+        note = (
+            f"No dedicated {profile_id} variant is published for this festival-year, "
+            f"so the default date is shown."
+        )
+        return (
+            dates.model_copy(
+                update={
+                    "profile_id": profile_id,
+                    "profile_tradition": profile.get("tradition"),
+                    "profile_region": profile.get("region"),
+                    "profile_note": note,
+                }
+            ),
+            note,
+        )
+
+    variant = variants[0]
+    start = date.fromisoformat(variant["date"])
+    end = date.fromisoformat(variant["end_date"])
+    if start == dates.start_date and end == dates.end_date:
+        note = variant.get("notes") or f"{profile_id} aligns with the default festival date."
+    else:
+        note = variant.get("notes") or f"{profile_id} applies a documented regional/tradition shift."
+
+    updated = dates.model_copy(
+        update={
+            "start_date": start,
+            "end_date": end,
+            "duration_days": (end - start).days + 1,
+            "bs_start": _to_bs_lite(start),
+            "bs_end": _to_bs_lite(end),
+            "days_until": (start - date.today()).days if (start - date.today()).days >= 0 else None,
+            "profile_id": profile_id,
+            "profile_tradition": profile.get("tradition"),
+            "profile_region": profile.get("region"),
+            "profile_note": note,
+        }
+    )
+    return updated, note
+
+
+def _collect_profile_occurrences(
+    repo,
+    start: date,
+    end: date,
+    profile_id: Optional[str],
+) -> list[tuple[Festival, FestivalDates, Optional[str], FestivalDateAvailability]]:
+    _validate_profile(profile_id)
+    year_start = start.year - 1
+    year_end = end.year + 1
+    seen: set[tuple[str, date, date]] = set()
+    occurrences: list[tuple[Festival, FestivalDates, Optional[str], FestivalDateAvailability]] = []
+
+    for festival in repo.get_all():
+        for year in range(year_start, year_end + 1):
+            dates, availability = repo.get_dates_with_availability(festival.id, year)
+            if not dates:
+                continue
+
+            adjusted_dates, profile_note = _apply_profile_variant_to_dates(
+                festival.id, year, dates, profile_id
+            )
+            if adjusted_dates is None:
+                continue
+            if adjusted_dates.end_date < start or adjusted_dates.start_date > end:
+                continue
+
+            key = (festival.id, adjusted_dates.start_date, adjusted_dates.end_date)
+            if key in seen:
+                continue
+            seen = seen | {key}
+            occurrences.append((festival, adjusted_dates, profile_note, availability))
+
+    occurrences.sort(key=lambda item: (item[1].start_date, item[0].id))
+    return occurrences
+
+
+def _summary_for_occurrence(
+    repo,
+    festival: Festival,
+    dates: FestivalDates,
+    profile_id: Optional[str],
+    profile_note: Optional[str],
+    default_note: str,
+) -> FestivalSummary:
+    summary = repo.to_summary(festival)
+    summary.next_start = dates.start_date
+    summary.next_end = dates.end_date
+    summary.days_until = (dates.start_date - date.today()).days
+    summary.date_status = "available"
+    summary.date_status_note = profile_note or default_note
+    summary.profile_id = profile_id
+    summary.profile_note = profile_note
+    return summary
 
 
 def _completeness_section(status: str, note: str) -> dict[str, str]:
@@ -347,6 +499,7 @@ async def get_upcoming(
     days: int = Query(30, ge=1, le=365, description="Number of days to look ahead"),
     from_date: Optional[date] = Query(None, description="Start date (defaults to today)"),
     quality_band: str = Query("computed", description="computed|provisional|inventory|all"),
+    profile: Optional[str] = Query(None, description="Variant profile id"),
 ):
     """
     Get festivals occurring in the next N days.
@@ -360,17 +513,14 @@ async def get_upcoming(
     if quality_band not in QUALITY_BAND_CHOICES:
         raise HTTPException(status_code=400, detail=f"Invalid quality_band '{quality_band}'")
 
-    # Get upcoming from calendar engine
-    upcoming = rule_service.upcoming(start, days=days)
-
     results = []
-    for festival_id, dates in upcoming:
-        meta = _rule_meta(festival_id)
-        if quality_band != "all" and meta["quality_band"] != quality_band:
-            continue
-
-        festival = repo.get_by_id(festival_id)
-        if festival:
+    window_end = start + timedelta(days=days)
+    if profile:
+        occurrences = _collect_profile_occurrences(repo, start, window_end, profile)
+        for festival, dates, profile_note, _availability in occurrences:
+            meta = _rule_meta(festival.id)
+            if quality_band != "all" and meta["quality_band"] != quality_band:
+                continue
             results.append(
                 UpcomingFestival(
                     id=festival.id,
@@ -388,23 +538,61 @@ async def get_upcoming(
                     validation_band=meta["validation_band"],
                     source_evidence_ids=meta["source_evidence_ids"],
                     date_status="available",
-                    date_status_note="Resolved calendar dates are available for this upcoming occurrence.",
+                    date_status_note=profile_note
+                    or "Resolved calendar dates are available for this upcoming occurrence.",
+                    profile_id=profile,
+                    profile_note=profile_note,
                 )
             )
+    else:
+        upcoming = rule_service.upcoming(start, days=days)
+        for festival_id, dates in upcoming:
+            meta = _rule_meta(festival_id)
+            if quality_band != "all" and meta["quality_band"] != quality_band:
+                continue
 
-    from datetime import timedelta
+            festival = repo.get_by_id(festival_id)
+            if festival:
+                results.append(
+                    UpcomingFestival(
+                        id=festival.id,
+                        name=festival.name,
+                        name_nepali=festival.name_nepali,
+                        tagline=festival.tagline,
+                        category=festival.category,
+                        start_date=dates.start_date,
+                        end_date=dates.end_date,
+                        days_until=(dates.start_date - start).days,
+                        duration_days=dates.duration_days,
+                        primary_color=festival.primary_color,
+                        rule_status=meta["rule_status"],
+                        rule_family=meta["rule_family"],
+                        validation_band=meta["validation_band"],
+                        source_evidence_ids=meta["source_evidence_ids"],
+                        date_status="available",
+                        date_status_note=_resolved_date_note(
+                            festival_id,
+                            dates.year,
+                            dates.method,
+                            "Resolved calendar dates are available for this upcoming occurrence.",
+                        ),
+                    )
+                )
 
     return UpcomingFestivalsResponse(
         festivals=results,
         from_date=start,
-        to_date=start + timedelta(days=days),
+        to_date=window_end,
         total=len(results),
         provenance=_build_provenance(),
     )
 
 
 @router.get("/on-date/{target_date}", response_model=List[FestivalSummary])
-async def festivals_on_date(target_date: date):
+async def festivals_on_date(
+    target_date: date,
+    profile: Optional[str] = Query(None, description="Variant profile id"),
+):
     """
     Get all festivals occurring on a specific date.
 
@@ -412,24 +600,46 @@ async def festivals_on_date(target_date: date):
     """
     repo = get_repository()
 
-    festivals_data = rule_service.on_date(target_date)
-
     results = []
-    for festival_id, dates in festivals_data:
-        festival = repo.get_by_id(festival_id)
-        if festival:
-            summary = repo.to_summary(festival)
-            summary.next_start = dates.start_date
-            summary.next_end = dates.end_date
-            summary.date_status = "available"
-            summary.date_status_note = "Resolved calendar dates are available for this day."
-            results.append(summary)
+    if profile:
+        occurrences = _collect_profile_occurrences(repo, target_date, target_date, profile)
+        for festival, dates, profile_note, _availability in occurrences:
+            results.append(
+                _summary_for_occurrence(
+                    repo,
+                    festival,
+                    dates,
+                    profile,
+                    profile_note,
+                    "Resolved calendar dates are available for this day.",
+                )
+            )
+    else:
+        festivals_data = rule_service.on_date(target_date)
+        for festival_id, dates in festivals_data:
+            festival = repo.get_by_id(festival_id)
+            if festival:
+                summary = repo.to_summary(festival)
+                summary.next_start = dates.start_date
+                summary.next_end = dates.end_date
+                summary.date_status = "available"
+                summary.date_status_note = _resolved_date_note(
+                    festival_id,
+                    dates.year,
+                    dates.method,
+                    "Resolved calendar dates are available for this day.",
+                )
+                results.append(summary)
 
     return results
 
 
 @router.get("/calendar/{year}/{month}", response_model=FestivalCalendarResponse)
-async def get_calendar_month(year: int, month: int):
+async def get_calendar_month(
+    year: int,
+    month: int,
+    profile: Optional[str] = Query(None, description="Variant profile id"),
+):
     """
     Get festivals for a calendar month view.
 
@@ -449,17 +659,39 @@ async def get_calendar_month(year: int, month: int):
     first_day = date(year, month, 1)
     last_day = next_month - __import__("datetime").timedelta(days=1)
 
+    occurrence_map: dict[date, list[FestivalSummary]] = {}
+    if profile:
+        for festival, dates, profile_note, _availability in _collect_profile_occurrences(
+            repo, first_day, last_day, profile
+        ):
+            cursor = max(dates.start_date, first_day)
+            cursor_end = min(dates.end_date, last_day)
+            while cursor <= cursor_end:
+                occurrence_map.setdefault(cursor, []).append(
+                    _summary_for_occurrence(
+                        repo,
+                        festival,
+                        dates,
+                        profile,
+                        profile_note,
+                        "Resolved calendar dates are available for this day.",
+                    )
+                )
+                cursor += timedelta(days=1)
+
     days = []
     current = first_day
 
     while current <= last_day:
         # Get festivals on this day
-        festivals_data = rule_service.on_date(current)
-        summaries = []
-        for festival_id, dates in festivals_data:
-            festival = repo.get_by_id(festival_id)
-            if festival:
-                summaries.append(repo.to_summary(festival))
+        summaries = occurrence_map.get(current, [])
+        if not profile:
+            festivals_data = rule_service.on_date(current)
+            summaries = []
+            for festival_id, dates in festivals_data:
+                festival = repo.get_by_id(festival_id)
+                if festival:
+                    summaries.append(repo.to_summary(festival))
 
         # Get tithi info
         try:
@@ -497,6 +729,7 @@ async def get_calendar_month(year: int, month: int):
 async def get_festival(
     festival_id: str,
     year: Optional[int] = Query(None, description="Year for date calculation"),
+    profile: Optional[str] = Query(None, description="Variant profile id"),
 ):
     """
     Get detailed information about a specific festival.
@@ -529,6 +762,10 @@ async def get_festival(
             )
         else:
             date_availability = fallback_availability
+
+    dates, profile_note = _apply_profile_variant_to_dates(festival_id, target_year, dates, profile)
+    if profile_note and date_availability and date_availability.status == "available":
+        date_availability = date_availability.model_copy(update={"note": profile_note})
 
     if not dates:
         # No dates available - don't fake it, let frontend handle gracefully
@@ -572,6 +809,7 @@ async def get_festival(
 async def explain_festival_date(
     festival_id: str,
     year: Optional[int] = Query(None, description="Gregorian year for explanation"),
+    profile: Optional[str] = Query(None, description="Variant profile id"),
 ):
     """
     Explain why a festival resolves to a specific date in the selected year.
@@ -582,6 +820,7 @@ async def explain_festival_date(
         raise HTTPException(status_code=404, detail=f"Festival '{festival_id}' not found")
 
     target_year = year or date.today().year
+    selected_profile = _validate_profile(profile)
     date_result = rule_service.calculate(festival_id, target_year)
     if not date_result:
         raise HTTPException(
@@ -694,6 +933,69 @@ async def explain_festival_date(
             }
         ]
 
+    override_info = get_festival_override_info(festival_id, target_year)
+    if date_result.method == "override" and override_info and override_info.get("candidate_count", 1) > 1:
+        candidate_count = int(override_info["candidate_count"])
+        steps.append(
+            f"Authority review found {candidate_count} candidate date entries for this festival-year; "
+            f"the current default keeps {override_info['start'].isoformat()}."
+        )
+        structured_steps.append(
+            {
+                "step_type": "authority_conflict",
+                "input": {"candidate_count": candidate_count},
+                "output": {
+                    "selected_start_date": override_info["start"].isoformat(),
+                },
+                "rule_id": festival_id,
+                "source": "ground_truth_overrides+ground_truth",
+                "math_expression": None,
+            }
+        )
+        explanation += (
+            f" Multiple authority candidates exist for this festival-year, and the current "
+            f"default override keeps {override_info['start'].isoformat()}."
+        )
+        if override_info.get("suggested_profile_id") and override_info.get("suggested_start"):
+            suggested_profile_id = str(override_info["suggested_profile_id"])
+            suggested_start = override_info["suggested_start"].isoformat()
+            suggested_reason = override_info.get("suggested_reason") or (
+                f"Use {suggested_profile_id} to inspect the alternate authority-backed date."
+            )
+            steps.append(
+                f"An alternate authority-backed path is available via profile "
+                f"{suggested_profile_id}, which resolves to {suggested_start}."
+            )
+            explanation += f" {suggested_reason}"
+
+    profile_note = None
+    if selected_profile is not None:
+        variants = filter_variants_by_profile(calculate_with_variants(festival_id, target_year), profile)
+        if variants:
+            variant = variants[0]
+            date_result.start_date = date.fromisoformat(variant["date"])
+            date_result.end_date = date.fromisoformat(variant["end_date"])
+            profile_note = variant.get("notes") or f"{profile} applies a documented profile variant."
+            steps.append(
+                f"Apply profile variant for {profile}, resolving the observance to {date_result.start_date.isoformat()}."
+            )
+            structured_steps.append(
+                {
+                    "step_type": "profile_variant",
+                    "input": {"profile_id": profile},
+                    "output": {"start_date": date_result.start_date.isoformat()},
+                    "rule_id": festival_id,
+                    "source": "regional_map.json",
+                    "math_expression": None,
+                }
+            )
+            explanation += f" Under the {profile} profile, the observance resolves to {date_result.start_date.isoformat()}."
+        else:
+            profile_note = (
+                f"No dedicated {profile} variant is published for this festival-year, so the default date is shown."
+            )
+            explanation += f" {profile_note}"
+
     trace = create_reason_trace(
         trace_type="festival_date_explain",
         subject={"festival_id": festival_id, "festival_name": festival.name},
@@ -721,6 +1023,15 @@ async def explain_festival_date(
         explanation=explanation,
         steps=steps,
         calculation_trace_id=trace_id,
+        profile_id=profile,
+        profile_note=profile_note,
+        authority_suggested_profile_id=override_info.get("suggested_profile_id")
+        if override_info
+        else None,
+        authority_suggested_start_date=override_info.get("suggested_start")
+        if override_info
+        else None,
+        authority_suggested_reason=override_info.get("suggested_reason") if override_info else None,
         provenance=_build_provenance(festival_id=festival_id, year=target_year),
     )
 
@@ -730,6 +1041,7 @@ async def get_festival_dates(
     festival_id: str,
     years: int = Query(3, ge=1, le=10, description="Number of years to return"),
     start_year: Optional[int] = Query(None, description="Starting year"),
+    profile: Optional[str] = Query(None, description="Variant profile id"),
 ):
     """
     Get calculated dates for a festival across multiple years.
@@ -743,11 +1055,13 @@ async def get_festival_dates(
         raise HTTPException(status_code=404, detail=f"Festival '{festival_id}' not found")
 
     start = start_year or date.today().year
+    _validate_profile(profile)
     results = []
 
     for year in range(start, start + years):
         dates, availability = repo.get_dates_with_availability(festival_id, year)
         if dates:
+            dates, _profile_note = _apply_profile_variant_to_dates(festival_id, year, dates, profile)
             dates.provenance = _build_provenance(festival_id=festival_id, year=year)
             results.append(dates)
 

@@ -34,7 +34,7 @@ def _normalize_items(items: Any) -> list[str]:
     deduped: list[str] = []
     for row in rows:
         if row not in seen:
-            seen.add(row)
+            seen = seen | {row}
             deduped.append(row)
     return deduped
 

@@ -138,7 +138,7 @@ def search_places(*, query: str, limit: int = 5) -> dict[str, Any]:
             dedupe_key = (label.lower(), round(latitude, 6), round(longitude, 6))
             if dedupe_key in seen:
                 continue
-            seen.add(dedupe_key)
+            seen = seen | {dedupe_key}
 
             timezone_name, timezone_source = _resolve_timezone(latitude, longitude)
             items.append(

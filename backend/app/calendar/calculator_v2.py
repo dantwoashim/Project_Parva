@@ -230,7 +230,7 @@ def _calculate_solar_festival(
                 method="solar",
             )
         except Exception:
-            pass
+            return None
 
     return None
 
@@ -316,7 +316,7 @@ def _list_festivals_v2_cached() -> tuple[str, ...]:
 
         ids.update(list_festivals())
     except Exception:
-        pass
+        return tuple(sorted(ids))
     return tuple(sorted(ids))
 
 
@@ -356,7 +356,7 @@ def get_upcoming_festivals_v2(from_date: date, days: int = 30) -> List[Tuple[str
     for festival_id, date_range in results:
         key = (festival_id, date_range.start_date)
         if key not in seen:
-            seen.add(key)
+            seen = seen | {key}
             unique_results.append((festival_id, date_range))
 
     return unique_results

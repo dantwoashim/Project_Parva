@@ -26,8 +26,8 @@ class TestCalculateFestivalDate:
     def test_dashain_2026_official(self):
         """Dashain 2026 matches official Nepal government dates."""
         result = calculate_festival_date("dashain", 2026)
-        assert result.start == date(2026, 10, 10), "Ghatasthapana should be Oct 10"
-        assert result.end == date(2026, 10, 24)
+        assert result.start == date(2026, 10, 11), "Ghatasthapana should be Oct 11"
+        assert result.end == date(2026, 10, 25)
         assert result.duration_days == 15
 
     def test_dashain_2027(self):
@@ -46,8 +46,8 @@ class TestCalculateFestivalDate:
     def test_tihar_2026_official(self):
         """Tihar 2026 matches official Nepal government dates."""
         result = calculate_festival_date("tihar", 2026)
-        assert result.start == date(2026, 11, 7), "Kaag Tihar should be Nov 7"
-        assert result.end == date(2026, 11, 11), "Bhai Tika should be Nov 11"
+        assert result.start == date(2026, 11, 8), "Kaag Tihar should be Nov 8"
+        assert result.end == date(2026, 11, 12), "Bhai Tika should be Nov 12"
         assert result.duration_days == 5
 
     def test_tihar_2027(self):
@@ -155,7 +155,7 @@ class TestDateRange:
     def test_date_range_from_calculation(self):
         """DateRange returned from festival calculation."""
         dr = calculate_festival_date("dashain", 2026)
-        assert dr.start == date(2026, 10, 10)
+        assert dr.start == date(2026, 10, 11)
         assert dr.duration_days == 15
 
     def test_date_range_has_required_fields(self):

@@ -242,7 +242,7 @@ def _timezone(tz_name: str | None) -> ZoneInfo:
         try:
             return ZoneInfo(tz_name)
         except Exception:
-            pass
+            return ZoneInfo("Asia/Kathmandu")
     return ZoneInfo("Asia/Kathmandu")
 
 
@@ -574,6 +574,120 @@ def get_rahu_kalam(
     }
 
 
+def _resolve_muhurta_profile(
+    ceremony_type: str | None, assumption_set_id: str
+) -> tuple[str, dict[str, Any], dict[str, Any], str]:
+    ceremony_key = (ceremony_type or "").strip().lower() or "general"
+    profile = CEREMONY_PROFILES.get(ceremony_key, CEREMONY_PROFILES["general"])
+    resolved_assumption_set_id = (
+        assumption_set_id if assumption_set_id in ASSUMPTION_SETS else "np-mainstream-v2"
+    )
+    assumption_set = ASSUMPTION_SETS[resolved_assumption_set_id]
+    return ceremony_key, profile, assumption_set, resolved_assumption_set_id
+
+
+def _score_muhurta_window(
+    *,
+    window: dict[str, Any],
+    muhurta_data: dict[str, Any],
+    kalam_data: dict[str, Any],
+    profile: dict[str, Any],
+    assumption_set: dict[str, Any],
+    tara_quality: str,
+    tara_available: bool,
+) -> dict[str, Any]:
+    midpoint = _window_midpoint(window)
+    hora = _find_window_for_time(midpoint, muhurta_data["hora"]["day"])
+    chaughadia = _find_window_for_time(midpoint, muhurta_data["chaughadia"]["day"])
+    overlaps_avoidance = any(
+        _overlaps(window, kalam_data[key]) for key in ("rahu_kalam", "yamaganda", "gulika")
+    )
+
+    breakdown = {
+        "base_quality": assumption_set["quality_weights"][window["quality"]],
+        "hora": 0,
+        "chaughadia": 0,
+        "tara_bala": 0,
+        "avoidance": 0,
+    }
+    if hora:
+        if hora["lord"] in profile["preferred_hora_lords"]:
+            breakdown["hora"] += assumption_set["hora_preferred_bonus"]
+        if hora["lord"] in profile["avoid_hora_lords"]:
+            breakdown["hora"] += assumption_set["hora_avoid_penalty"]
+    if chaughadia:
+        if chaughadia["name"] in profile["preferred_chaughadia"]:
+            breakdown["chaughadia"] += assumption_set["chaughadia_preferred_bonus"]
+        if chaughadia["name"] in profile["avoid_chaughadia"]:
+            breakdown["chaughadia"] += assumption_set["chaughadia_avoid_penalty"]
+    if tara_available:
+        if tara_quality == "auspicious":
+            breakdown["tara_bala"] += assumption_set["tara_favorable_bonus"]
+        elif tara_quality == "inauspicious":
+            breakdown["tara_bala"] += assumption_set["tara_unfavorable_penalty"]
+    if overlaps_avoidance:
+        breakdown["avoidance"] += assumption_set["avoidance_overlap_penalty"]
+
+    score = sum(breakdown.values())
+    return {
+        **window,
+        "score": score,
+        "score_breakdown": breakdown,
+        "hora": hora,
+        "chaughadia": chaughadia,
+        "overlaps_avoidance": overlaps_avoidance,
+    }
+
+
+def _fallback_best_window(muhurta_data: dict[str, Any], kalam_data: dict[str, Any]) -> dict[str, Any]:
+    abhijit = muhurta_data["abhijit_muhurta"]
+    return {
+        **abhijit,
+        "score": 0,
+        "score_breakdown": {
+            "base_quality": 0,
+            "hora": 0,
+            "chaughadia": 0,
+            "tara_bala": 0,
+            "avoidance": 0,
+        },
+        "hora": _find_window_for_time(_window_midpoint(abhijit), muhurta_data["hora"]["day"]),
+        "chaughadia": _find_window_for_time(
+            _window_midpoint(abhijit), muhurta_data["chaughadia"]["day"]
+        ),
+        "overlaps_avoidance": any(
+            _overlaps(abhijit, kalam_data[key]) for key in ("rahu_kalam", "yamaganda", "gulika")
+        ),
+        "fallback_reason": "No ranked window met minimum score; using Abhijit Muhurta fallback.",
+    }
+
+
+def _rank_muhurta_windows(
+    *,
+    muhurta_data: dict[str, Any],
+    kalam_data: dict[str, Any],
+    profile: dict[str, Any],
+    assumption_set: dict[str, Any],
+) -> list[dict[str, Any]]:
+    tara_bala = muhurta_data["tara_bala"]
+    tara_quality = tara_bala.get("quality", "unknown")
+    tara_available = tara_bala.get("available", False)
+    ranked_windows = [
+        _score_muhurta_window(
+            window=window,
+            muhurta_data=muhurta_data,
+            kalam_data=kalam_data,
+            profile=profile,
+            assumption_set=assumption_set,
+            tara_quality=tara_quality,
+            tara_available=tara_available,
+        )
+        for window in muhurta_data["day_muhurtas"]
+    ]
+    ranked_windows.sort(key=lambda row: (row["score"], row["start"]), reverse=True)
+    return ranked_windows
+
+
 def get_auspicious_windows(
     target_date: date,
     *,
@@ -592,107 +706,23 @@ def get_auspicious_windows(
         birth_nakshatra=birth_nakshatra,
     )
     kalam_data = get_rahu_kalam(target_date, lat=lat, lon=lon, tz_name=tz_name)
-
-    ceremony_key = (ceremony_type or "").strip().lower() or "general"
-    profile = CEREMONY_PROFILES.get(ceremony_key, CEREMONY_PROFILES["general"])
-    assumption_set = ASSUMPTION_SETS.get(assumption_set_id, ASSUMPTION_SETS["np-mainstream-v2"])
-
-    tara_bala = muhurta_data["tara_bala"]
-    tara_quality = tara_bala.get("quality", "unknown")
-
-    ranked_windows: list[dict[str, Any]] = []
-    for window in muhurta_data["day_muhurtas"]:
-        midpoint = _window_midpoint(window)
-        hora = _find_window_for_time(midpoint, muhurta_data["hora"]["day"])
-        chaughadia = _find_window_for_time(midpoint, muhurta_data["chaughadia"]["day"])
-
-        overlaps_avoidance = any(
-            _overlaps(window, kalam_data[key]) for key in ("rahu_kalam", "yamaganda", "gulika")
-        )
-
-        score = assumption_set["quality_weights"][window["quality"]]
-        breakdown = {
-            "base_quality": assumption_set["quality_weights"][window["quality"]],
-            "hora": 0,
-            "chaughadia": 0,
-            "tara_bala": 0,
-            "avoidance": 0,
-        }
-
-        if hora:
-            if hora["lord"] in profile["preferred_hora_lords"]:
-                breakdown["hora"] += assumption_set["hora_preferred_bonus"]
-            if hora["lord"] in profile["avoid_hora_lords"]:
-                breakdown["hora"] += assumption_set["hora_avoid_penalty"]
-
-        if chaughadia:
-            if chaughadia["name"] in profile["preferred_chaughadia"]:
-                breakdown["chaughadia"] += assumption_set["chaughadia_preferred_bonus"]
-            if chaughadia["name"] in profile["avoid_chaughadia"]:
-                breakdown["chaughadia"] += assumption_set["chaughadia_avoid_penalty"]
-
-        if tara_bala.get("available"):
-            if tara_quality == "auspicious":
-                breakdown["tara_bala"] += assumption_set["tara_favorable_bonus"]
-            elif tara_quality == "inauspicious":
-                breakdown["tara_bala"] += assumption_set["tara_unfavorable_penalty"]
-
-        if overlaps_avoidance:
-            breakdown["avoidance"] += assumption_set["avoidance_overlap_penalty"]
-
-        score += breakdown["hora"]
-        score += breakdown["chaughadia"]
-        score += breakdown["tara_bala"]
-        score += breakdown["avoidance"]
-
-        ranked_windows.append(
-            {
-                **window,
-                "score": score,
-                "score_breakdown": breakdown,
-                "hora": hora,
-                "chaughadia": chaughadia,
-                "overlaps_avoidance": overlaps_avoidance,
-            }
-        )
-
-    ranked_windows.sort(key=lambda row: (row["score"], row["start"]), reverse=True)
-
+    ceremony_key, profile, assumption_set, resolved_assumption_set_id = _resolve_muhurta_profile(
+        ceremony_type, assumption_set_id
+    )
+    ranked_windows = _rank_muhurta_windows(
+        muhurta_data=muhurta_data,
+        kalam_data=kalam_data,
+        profile=profile,
+        assumption_set=assumption_set,
+    )
     minimum_score = profile["minimum_score"]
     selected = [row for row in ranked_windows if row["score"] >= minimum_score]
-
-    if selected:
-        best_window = selected[0]
-    else:
-        best_window = {
-            **muhurta_data["abhijit_muhurta"],
-            "score": 0,
-            "score_breakdown": {
-                "base_quality": 0,
-                "hora": 0,
-                "chaughadia": 0,
-                "tara_bala": 0,
-                "avoidance": 0,
-            },
-            "hora": _find_window_for_time(
-                _window_midpoint(muhurta_data["abhijit_muhurta"]), muhurta_data["hora"]["day"]
-            ),
-            "chaughadia": _find_window_for_time(
-                _window_midpoint(muhurta_data["abhijit_muhurta"]), muhurta_data["chaughadia"]["day"]
-            ),
-            "overlaps_avoidance": any(
-                _overlaps(muhurta_data["abhijit_muhurta"], kalam_data[key])
-                for key in ("rahu_kalam", "yamaganda", "gulika")
-            ),
-            "fallback_reason": "No ranked window met minimum score; using Abhijit Muhurta fallback.",
-        }
+    best_window = selected[0] if selected else _fallback_best_window(muhurta_data, kalam_data)
 
     return {
         "date": target_date.isoformat(),
         "ceremony_type": ceremony_key,
-        "assumption_set_id": assumption_set_id
-        if assumption_set_id in ASSUMPTION_SETS
-        else "np-mainstream-v2",
+        "assumption_set_id": resolved_assumption_set_id,
         "ranking_profile": {
             "preferred_hora_lords": sorted(profile["preferred_hora_lords"]),
             "avoid_hora_lords": sorted(profile["avoid_hora_lords"]),
@@ -700,7 +730,7 @@ def get_auspicious_windows(
             "avoid_chaughadia": sorted(profile["avoid_chaughadia"]),
             "minimum_score": minimum_score,
         },
-        "tara_bala": tara_bala,
+        "tara_bala": muhurta_data["tara_bala"],
         "auspicious_muhurtas": selected,
         "ranked_muhurtas": ranked_windows,
         "best_window": best_window,

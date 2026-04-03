@@ -116,26 +116,24 @@ def _service_metadata(settings) -> dict[str, object]:
     }
 
 
-def create_app() -> FastAPI:
-    settings = load_settings()
+def _validate_startup(settings) -> tuple[dict[str, object], object]:
     validation_errors = validate_settings(settings)
     if validation_errors:
         raise RuntimeError("Startup validation failed: " + " ".join(validation_errors))
+
     startup_checks = _build_startup_checks(settings)
     if not startup_checks["checks"]["festival_catalog"]["ok"]:
         detail = startup_checks["checks"]["festival_catalog"]["detail"]
         raise RuntimeError(f"Startup validation failed: {detail}")
+
     rate_limit_backend = create_rate_limiter_backend(
         backend_name=settings.rate_limit_backend,
         redis_url=settings.redis_url,
     )
+    return startup_checks, rate_limit_backend
 
-    app = FastAPI(
-        title="Project Parva API",
-        description="Nepal Festival Discovery System",
-        version=PRODUCT_VERSION,
-    )
 
+def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, object]) -> None:
     app.state.started_at = datetime.now(timezone.utc)
     app.state.enable_experimental_api = settings.enable_experimental_api
     app.state.environment = settings.environment
@@ -146,6 +144,8 @@ def create_app() -> FastAPI:
     app.state.settings = settings
     app.state.startup_checks = startup_checks
 
+
+def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=_cors_origins_from_env(),
@@ -182,6 +182,8 @@ def create_app() -> FastAPI:
         build_request_context(product_version=PRODUCT_VERSION, settings=settings)
     )
 
+
+def _register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(HTTPException)
     async def http_exception_handler(request, exc: HTTPException):
         return JSONResponse(
@@ -217,15 +219,8 @@ def create_app() -> FastAPI:
             },
         )
 
-    register_routers(
-        app,
-        enable_experimental_api=settings.enable_experimental_api,
-        environment=settings.environment,
-    )
 
-    frontend_dist = settings.frontend_dist if settings.serve_frontend else None
-    frontend_index = (frontend_dist / "index.html") if frontend_dist else None
-
+def _register_version_docs_routes(app: FastAPI, *, enable_experimental_api: bool) -> None:
     @app.get("/v3/openapi.json")
     async def v3_openapi():
         return app.openapi()
@@ -234,6 +229,35 @@ def create_app() -> FastAPI:
     async def v3_docs():
         return RedirectResponse(url="/docs")
 
+    if not enable_experimental_api:
+        return
+
+    @app.get("/v2/openapi.json")
+    async def v2_openapi():
+        return app.openapi()
+
+    @app.get("/v2/docs", name="v2_docs")
+    async def v2_docs():
+        return RedirectResponse(url="/docs")
+
+    @app.get("/v4/openapi.json")
+    async def v4_openapi():
+        return app.openapi()
+
+    @app.get("/v4/docs", name="v4_docs")
+    async def v4_docs():
+        return RedirectResponse(url="/docs")
+
+    @app.get("/v5/openapi.json")
+    async def v5_openapi():
+        return app.openapi()
+
+    @app.get("/v5/docs", name="v5_docs")
+    async def v5_docs():
+        return RedirectResponse(url="/docs")
+
+
+def _register_source_route(app: FastAPI, settings) -> None:
     @app.get("/source", include_in_schema=False)
     async def source_code():
         if settings.source_url:
@@ -246,31 +270,10 @@ def create_app() -> FastAPI:
             },
         )
 
-    if settings.enable_experimental_api:
 
-        @app.get("/v2/openapi.json")
-        async def v2_openapi():
-            return app.openapi()
-
-        @app.get("/v2/docs", name="v2_docs")
-        async def v2_docs():
-            return RedirectResponse(url="/docs")
-
-        @app.get("/v4/openapi.json")
-        async def v4_openapi():
-            return app.openapi()
-
-        @app.get("/v4/docs", name="v4_docs")
-        async def v4_docs():
-            return RedirectResponse(url="/docs")
-
-        @app.get("/v5/openapi.json")
-        async def v5_openapi():
-            return app.openapi()
-
-        @app.get("/v5/docs", name="v5_docs")
-        async def v5_docs():
-            return RedirectResponse(url="/docs")
+def _register_root_and_health_routes(app: FastAPI, settings) -> None:
+    frontend_dist = settings.frontend_dist if settings.serve_frontend else None
+    frontend_index = (frontend_dist / "index.html") if frontend_dist else None
 
     @app.get("/")
     async def root():
@@ -337,25 +340,47 @@ def create_app() -> FastAPI:
             status_code=200 if app.state.startup_checks.get("ready") else 503, content=payload
         )
 
-    if settings.serve_frontend:
-        frontend_dist = settings.frontend_dist
-        index_file = frontend_dist / "index.html"
 
-        if index_file.exists():
+def _register_frontend_spa_route(app: FastAPI, settings) -> None:
+    if not settings.serve_frontend:
+        return
 
-            @app.get("/{full_path:path}", include_in_schema=False)
-            async def frontend_spa(full_path: str):
-                if _is_reserved_frontend_path(full_path):
-                    raise HTTPException(status_code=404, detail="Not Found")
+    frontend_dist = settings.frontend_dist
+    index_file = frontend_dist / "index.html"
+    if not index_file.exists():
+        return
 
-                candidate = (frontend_dist / full_path).resolve()
-                if (
-                    frontend_dist in candidate.parents
-                    and candidate.exists()
-                    and candidate.is_file()
-                ):
-                    return FileResponse(candidate)
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def frontend_spa(full_path: str):
+        if _is_reserved_frontend_path(full_path):
+            raise HTTPException(status_code=404, detail="Not Found")
 
-                return FileResponse(index_file)
+        candidate = (frontend_dist / full_path).resolve()
+        if frontend_dist in candidate.parents and candidate.exists() and candidate.is_file():
+            return FileResponse(candidate)
 
+        return FileResponse(index_file)
+
+
+def create_app() -> FastAPI:
+    settings = load_settings()
+    startup_checks, rate_limit_backend = _validate_startup(settings)
+
+    app = FastAPI(
+        title="Project Parva API",
+        description="Nepal Festival Discovery System",
+        version=PRODUCT_VERSION,
+    )
+    _initialize_app_state(app, settings, startup_checks)
+    _install_middleware(app, settings, rate_limit_backend)
+    _register_exception_handlers(app)
+    register_routers(
+        app,
+        enable_experimental_api=settings.enable_experimental_api,
+        environment=settings.environment,
+    )
+    _register_version_docs_routes(app, enable_experimental_api=settings.enable_experimental_api)
+    _register_source_route(app, settings)
+    _register_root_and_health_routes(app, settings)
+    _register_frontend_spa_route(app, settings)
     return app

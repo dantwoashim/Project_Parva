@@ -32,5 +32,5 @@ def load_calibration_model(path: Path | None = None) -> Dict[str, Any]:
             if isinstance(payload, dict) and "levels" in payload:
                 return payload
         except Exception:
-            pass
+            return default_calibration()
     return default_calibration()

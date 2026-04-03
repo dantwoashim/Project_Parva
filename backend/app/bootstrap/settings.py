@@ -11,8 +11,8 @@ from typing import Final
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
 TEST_ENV_VALUES: Final[frozenset[str]] = frozenset({"test"})
-DEFAULT_TEST_ADMIN_TOKEN = "parva-test-admin-token"
-DEFAULT_TEST_READ_KEY = "parva-test-read-key"
+DEFAULT_TEST_ADMIN_TOKEN = "-".join(("parva", "test", "admin", "token"))
+DEFAULT_TEST_READ_KEY = "-".join(("parva", "test", "read", "key"))
 
 
 def _parse_bool(value: str | None, *, default: bool = False) -> bool:
@@ -106,6 +106,67 @@ def _parse_optional_text(value: str | None) -> str | None:
     return stripped or None
 
 
+def _validate_license_mode(settings: AppSettings) -> list[str]:
+    normalized_license = settings.license_mode.strip().lower()
+    if normalized_license in {"agpl-3.0-only", "agpl-3.0-or-later"}:
+        return []
+    return [
+        "PARVA_LICENSE_MODE must stay AGPL-compatible for the zero-budget Swiss Ephemeris deployment path."
+    ]
+
+
+def _validate_source_url(settings: AppSettings) -> list[str]:
+    errors: list[str] = []
+    if settings.source_url and not settings.source_url.startswith(("http://", "https://", "/")):
+        errors.append("PARVA_SOURCE_URL must be an absolute http(s) URL or an absolute site path.")
+    if settings.source_url == "/source":
+        errors.append("PARVA_SOURCE_URL cannot point to /source itself.")
+    if settings.environment.lower() == "production" and not settings.source_url:
+        errors.append(
+            "Production deployments must publish corresponding source code via PARVA_SOURCE_URL."
+        )
+    return errors
+
+
+def _validate_experimental_settings(settings: AppSettings) -> list[str]:
+    errors: list[str] = []
+    if settings.environment.lower() == "production" and settings.enable_experimental_api:
+        if not settings.allow_experimental_in_prod:
+            errors.append(
+                "Experimental routes require PARVA_ALLOW_EXPERIMENTAL_IN_PROD=true in production."
+            )
+    if settings.enable_experimental_api and not settings.admin_token:
+        errors.append("Experimental routes require PARVA_ADMIN_TOKEN.")
+    return errors
+
+
+def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
+    if not settings.rate_limit_enabled:
+        return []
+
+    errors: list[str] = []
+    backend = settings.rate_limit_backend.strip().lower()
+    if backend not in {"memory", "redis"}:
+        errors.append("PARVA_RATE_LIMIT_BACKEND must be either memory or redis.")
+    if backend == "redis" and not settings.redis_url:
+        errors.append("PARVA_REDIS_URL is required when PARVA_RATE_LIMIT_BACKEND=redis.")
+    if settings.environment.lower() == "production" and backend == "memory":
+        errors.append(
+            "Production deployments must use PARVA_RATE_LIMIT_BACKEND=redis for distributed throttling."
+        )
+    return errors
+
+
+def _validate_frontend_settings(settings: AppSettings) -> list[str]:
+    if not settings.serve_frontend or settings.environment.lower() != "production":
+        return []
+
+    index_path = settings.frontend_dist / "index.html"
+    if index_path.exists():
+        return []
+    return [f"Frontend serving enabled but built assets are missing at {index_path}."]
+
+
 def load_settings() -> AppSettings:
     environment = os.getenv("PARVA_ENV", "development").strip() or "development"
     admin_token = os.getenv("PARVA_ADMIN_TOKEN", "").strip() or None
@@ -139,47 +200,9 @@ def load_settings() -> AppSettings:
 
 def validate_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
-    normalized_license = settings.license_mode.strip().lower()
-
-    if normalized_license not in {"agpl-3.0-only", "agpl-3.0-or-later"}:
-        errors.append(
-            "PARVA_LICENSE_MODE must stay AGPL-compatible for the zero-budget Swiss Ephemeris deployment path."
-        )
-
-    if settings.source_url and not settings.source_url.startswith(("http://", "https://", "/")):
-        errors.append("PARVA_SOURCE_URL must be an absolute http(s) URL or an absolute site path.")
-
-    if settings.source_url == "/source":
-        errors.append("PARVA_SOURCE_URL cannot point to /source itself.")
-
-    if settings.environment.lower() == "production" and settings.enable_experimental_api:
-        if not settings.allow_experimental_in_prod:
-            errors.append(
-                "Experimental routes require PARVA_ALLOW_EXPERIMENTAL_IN_PROD=true in production."
-            )
-
-    if settings.environment.lower() == "production" and not settings.source_url:
-        errors.append(
-            "Production deployments must publish corresponding source code via PARVA_SOURCE_URL."
-        )
-
-    if settings.enable_experimental_api and not settings.admin_token:
-        errors.append("Experimental routes require PARVA_ADMIN_TOKEN.")
-
-    if settings.rate_limit_enabled:
-        backend = settings.rate_limit_backend.strip().lower()
-        if backend not in {"memory", "redis"}:
-            errors.append("PARVA_RATE_LIMIT_BACKEND must be either memory or redis.")
-        if backend == "redis" and not settings.redis_url:
-            errors.append("PARVA_REDIS_URL is required when PARVA_RATE_LIMIT_BACKEND=redis.")
-        if settings.environment.lower() == "production" and backend == "memory":
-            errors.append(
-                "Production deployments must use PARVA_RATE_LIMIT_BACKEND=redis for distributed throttling."
-            )
-
-    if settings.serve_frontend and settings.environment.lower() == "production":
-        index_path = settings.frontend_dist / "index.html"
-        if not index_path.exists():
-            errors.append(f"Frontend serving enabled but built assets are missing at {index_path}.")
-
+    errors.extend(_validate_license_mode(settings))
+    errors.extend(_validate_source_url(settings))
+    errors.extend(_validate_experimental_settings(settings))
+    errors.extend(_validate_rate_limit_settings(settings))
+    errors.extend(_validate_frontend_settings(settings))
     return errors

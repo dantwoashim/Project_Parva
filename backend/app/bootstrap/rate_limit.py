@@ -118,7 +118,9 @@ class RedisRateLimiterBackend:
         pipe = client.pipeline()
         pipe.zadd(key, {member: now})
         pipe.expire(key, policy.window_seconds)
-        pipe.execute()
+        execution_results = pipe.execute()
+        if len(execution_results) != 2:
+            raise RuntimeError("Redis rate limiter failed to persist state.")
         remaining = max(policy.limit - int(current) - 1, 0)
         return RateLimitDecision(allowed=True, remaining=remaining)
 

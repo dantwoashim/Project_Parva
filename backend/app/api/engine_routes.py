@@ -75,7 +75,7 @@ def _lowest_quality_band(rows: list[dict]) -> str:
     )
 
 
-def _plugin_quality_rows() -> list[dict]:
+def _collect_plugin_validation_stats() -> tuple[dict[str, int], dict[str, int], dict[str, set[str]]]:
     case_totals: dict[str, int] = {}
     pass_totals: dict[str, int] = {}
     case_source_classes: dict[str, set[str]] = {}
@@ -97,39 +97,88 @@ def _plugin_quality_rows() -> list[dict]:
 
             source_class = row.get("source_class")
             if source_class:
-                case_source_classes.setdefault(plugin, set()).add(source_class)
+                if plugin not in case_source_classes:
+                    case_source_classes[plugin] = set()
+                case_source_classes[plugin] = case_source_classes[plugin] | {source_class}
+
+    return case_totals, pass_totals, case_source_classes
+
+
+def _build_plugin_quality_row(
+    plugin_id: str,
+    case_totals: dict[str, int],
+    pass_totals: dict[str, int],
+    case_source_classes: dict[str, set[str]],
+) -> dict:
+    total = case_totals.get(plugin_id, 0)
+    passed = pass_totals.get(plugin_id, 0)
+    pass_rate = round((passed / total) * 100, 2) if total else 0.0
+    profile = PLUGIN_QUALITY_PROFILES.get(plugin_id, {})
+
+    source_classes = set(profile.get("source_classes", ["undocumented"]))
+    source_classes.update(case_source_classes.get(plugin_id, set()))
+
+    error_budget = float(profile.get("error_budget", 0.2))
+    observed_error_rate = round(max(0.0, 100.0 - pass_rate), 2)
+    budget_rate = round(error_budget * 100.0, 2)
+    return {
+        "plugin_id": plugin_id,
+        "validation_cases_total": total,
+        "pass_rate": pass_rate,
+        "source_classes": sorted(source_classes),
+        "error_budget": error_budget,
+        "quality_band": _quality_band_for_pass_rate(pass_rate, total),
+        "confidence_calibration": {
+            "confidence_score": round(pass_rate / 100.0, 3),
+            "observed_error_rate": observed_error_rate,
+            "budget_error_rate": budget_rate,
+            "within_error_budget": observed_error_rate <= budget_rate,
+        },
+    }
+
+
+def _plugin_quality_rows() -> list[dict]:
+    case_totals, pass_totals, case_source_classes = _collect_plugin_validation_stats()
 
     rows: list[dict] = []
     for plugin_id in _registry.list_ids():
-        total = case_totals.get(plugin_id, 0)
-        passed = pass_totals.get(plugin_id, 0)
-        pass_rate = round((passed / total) * 100, 2) if total else 0.0
-        profile = PLUGIN_QUALITY_PROFILES.get(plugin_id, {})
-
-        source_classes = set(profile.get("source_classes", ["undocumented"]))
-        source_classes.update(case_source_classes.get(plugin_id, set()))
-
-        error_budget = float(profile.get("error_budget", 0.2))
-        observed_error_rate = round(max(0.0, 100.0 - pass_rate), 2)
-        budget_rate = round(error_budget * 100.0, 2)
         rows.append(
-            {
-                "plugin_id": plugin_id,
-                "validation_cases_total": total,
-                "pass_rate": pass_rate,
-                "source_classes": sorted(source_classes),
-                "error_budget": error_budget,
-                "quality_band": _quality_band_for_pass_rate(pass_rate, total),
-                "confidence_calibration": {
-                    "confidence_score": round(pass_rate / 100.0, 3),
-                    "observed_error_rate": observed_error_rate,
-                    "budget_error_rate": budget_rate,
-                    "within_error_budget": observed_error_rate <= budget_rate,
-                },
-            }
+            _build_plugin_quality_row(
+                plugin_id=plugin_id,
+                case_totals=case_totals,
+                pass_totals=pass_totals,
+                case_source_classes=case_source_classes,
+            )
         )
 
     return rows
+
+
+def _validation_stage_summary(
+    rows_by_id: dict[str, dict],
+    target_plugins: set[str],
+    validated_bands: set[str],
+) -> dict:
+    stage_rows = [rows_by_id[plugin_id] for plugin_id in sorted(target_plugins) if plugin_id in rows_by_id]
+    validated_plugins = [
+        row["plugin_id"] for row in stage_rows if row["quality_band"] in validated_bands
+    ]
+    all_validated = (
+        all(row["quality_band"] in validated_bands for row in stage_rows) if stage_rows else False
+    )
+    return {
+        "target_plugins": sorted(target_plugins),
+        "validated_plugins": validated_plugins,
+        "all_stage_validated": all_validated,
+    }
+
+
+def _all_plugins_within_error_budget(rows: list[dict]) -> bool:
+    if not rows:
+        return False
+    return all(
+        row.get("confidence_calibration", {}).get("within_error_budget", False) for row in rows
+    )
 
 
 @router.get("/config")
@@ -187,57 +236,22 @@ async def plugin_quality():
     )
     rows_by_id = {row["plugin_id"]: row for row in plugins}
 
-    stage1_rows = [
-        rows_by_id[plugin_id]
-        for plugin_id in sorted(STAGE1_VALIDATION_PLUGINS)
-        if plugin_id in rows_by_id
-    ]
-    stage1_validated = (
-        all(row["quality_band"] in validated_or_better for row in stage1_rows)
-        if stage1_rows
-        else False
-    )
-
-    stage2_rows = [
-        rows_by_id[plugin_id]
-        for plugin_id in sorted(STAGE2_VALIDATION_PLUGINS)
-        if plugin_id in rows_by_id
-    ]
-    stage2_validated = (
-        all(row["quality_band"] in validated_or_better for row in stage2_rows)
-        if stage2_rows
-        else False
-    )
-
-    all_within_error_budget = (
-        all(
-            row.get("confidence_calibration", {}).get("within_error_budget", False)
-            for row in plugins
-        )
-        if plugins
-        else False
-    )
+    stage1 = _validation_stage_summary(rows_by_id, STAGE1_VALIDATION_PLUGINS, validated_or_better)
+    stage2 = _validation_stage_summary(rows_by_id, STAGE2_VALIDATION_PLUGINS, validated_or_better)
+    all_within_error_budget = _all_plugins_within_error_budget(plugins)
 
     return {
         "plugins": plugins,
         "count": len(plugins),
         "stage1": {
-            "target_plugins": sorted(STAGE1_VALIDATION_PLUGINS),
-            "validated_plugins": [
-                row["plugin_id"]
-                for row in stage1_rows
-                if row["quality_band"] in validated_or_better
-            ],
-            "all_stage1_validated": stage1_validated,
+            "target_plugins": stage1["target_plugins"],
+            "validated_plugins": stage1["validated_plugins"],
+            "all_stage1_validated": stage1["all_stage_validated"],
         },
         "stage2": {
-            "target_plugins": sorted(STAGE2_VALIDATION_PLUGINS),
-            "validated_plugins": [
-                row["plugin_id"]
-                for row in stage2_rows
-                if row["quality_band"] in validated_or_better
-            ],
-            "all_stage2_validated": stage2_validated,
+            "target_plugins": stage2["target_plugins"],
+            "validated_plugins": stage2["validated_plugins"],
+            "all_stage2_validated": stage2["all_stage_validated"],
         },
         "global": {
             "all_plugins_validated": all_validated,

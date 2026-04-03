@@ -77,6 +77,15 @@ class ProvenanceMeta(BaseModel):
     verify_url: Optional[str] = None
 
 
+class AuthorityCandidate(BaseModel):
+    """One authority-backed candidate date for a festival-year pair."""
+
+    start: date
+    source: Optional[str] = None
+    confidence: Optional[str] = None
+    notes: Optional[str] = None
+
+
 class BSDateLite(BaseModel):
     """Bikram Sambat date shape for mixed-calendar UI surfaces."""
 
@@ -99,6 +108,17 @@ class FestivalDates(BaseModel):
     bs_end: Optional[BSDateLite] = None
     days_until: Optional[int] = None  # Days from today
     provenance: Optional[ProvenanceMeta] = None
+    authority_conflict: bool = False
+    authority_candidate_count: Optional[int] = None
+    authority_note: Optional[str] = None
+    authority_alternates: List[AuthorityCandidate] = Field(default_factory=list)
+    authority_suggested_profile_id: Optional[str] = None
+    authority_suggested_start_date: Optional[date] = None
+    authority_suggested_reason: Optional[str] = None
+    profile_id: Optional[str] = None
+    profile_tradition: Optional[str] = None
+    profile_region: Optional[str] = None
+    profile_note: Optional[str] = None
 
 
 class FestivalDateAvailability(BaseModel):
@@ -206,6 +226,8 @@ class FestivalSummary(BaseModel):
     days_until: Optional[int] = None
     date_status: Optional[str] = None
     date_status_note: Optional[str] = None
+    profile_id: Optional[str] = None
+    profile_note: Optional[str] = None
 
 
 class FestivalListResponse(BaseModel):
@@ -260,6 +282,11 @@ class FestivalExplainResponse(BaseModel):
     explanation: str
     steps: List[str]
     calculation_trace_id: str
+    profile_id: Optional[str] = None
+    profile_note: Optional[str] = None
+    authority_suggested_profile_id: Optional[str] = None
+    authority_suggested_start_date: Optional[date] = None
+    authority_suggested_reason: Optional[str] = None
     provenance: Optional[ProvenanceMeta] = None
 
 
@@ -282,6 +309,8 @@ class UpcomingFestival(BaseModel):
     source_evidence_ids: List[str] = Field(default_factory=list)
     date_status: Optional[str] = None
     date_status_note: Optional[str] = None
+    profile_id: Optional[str] = None
+    profile_note: Optional[str] = None
 
 
 class UpcomingFestivalsResponse(BaseModel):
