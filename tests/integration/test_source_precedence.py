@@ -1,6 +1,7 @@
 """Source precedence tests (Week 8)."""
 
-from app.calendar.overrides import get_festival_override_info
+from app.calendar.calculator_v2 import calculate_festival_v2
+from app.calendar.overrides import get_festival_override, get_festival_override_info
 from app.sources.loader import DEFAULT_PRIORITY, get_source_loader
 
 
@@ -49,3 +50,44 @@ def test_secondary_digital_provider_enriches_historical_override_years():
     assert info["start"].isoformat() == "1943-04-14"
     assert info["source"] == "ratopati_calendar_digital_provider"
     assert info["confidence"] == "secondary"
+
+
+def test_source_hint_can_select_alternate_authority_candidate():
+    default_info = get_festival_override_info("dashain", 2026)
+    hinted_info = get_festival_override_info("dashain", 2026, source_hint="nepal_gov")
+
+    assert default_info is not None
+    assert hinted_info is not None
+    assert default_info["start"].isoformat() == "2026-10-11"
+    assert hinted_info["start"].isoformat() == "2026-10-10"
+    assert hinted_info["source"] == "nepal_gov"
+
+
+def test_notes_hint_disambiguates_same_source_conflict():
+    default_date = get_festival_override("shivaratri", 2026)
+    hinted_date = get_festival_override(
+        "shivaratri",
+        2026,
+        source_hint="moha_pdf_2082",
+        notes_hint="Falgun 3 (MoHA 2082)",
+    )
+
+    assert default_date is not None
+    assert hinted_date is not None
+    assert default_date.isoformat() == "2026-02-15"
+    assert hinted_date.isoformat() == "2026-02-14"
+
+
+def test_calculator_source_aware_mode_resolves_estimated_track_without_official_override():
+    default_result = calculate_festival_v2("shivaratri", 2027)
+    estimated_result = calculate_festival_v2(
+        "shivaratri",
+        2027,
+        source_hint="estimated",
+        notes_hint="Falgun Krishna 14 2027",
+    )
+
+    assert default_result is not None
+    assert estimated_result is not None
+    assert default_result.start_date.isoformat() == "2027-03-06"
+    assert estimated_result.start_date.isoformat() == "2027-03-05"

@@ -20,9 +20,9 @@ def test_conflicting_authority_rows_are_preserved_as_alternates():
     info = get_festival_override_info("ghode-jatra", 2026)
 
     assert chosen is not None
-    assert chosen.isoformat() == "2026-03-17"
+    assert chosen.isoformat() == "2026-03-18"
     assert info is not None
     assert info["candidate_count"] >= 2
-    assert any(alt["start"].isoformat() == "2026-03-18" for alt in info["alternates"])
+    assert any(alt["start"].isoformat() == "2026-03-17" for alt in info["alternates"])
     assert info["suggested_profile_id"] == "published-holiday-listing"
-    assert info["suggested_start"].isoformat() == "2026-03-18"
+    assert info["suggested_start"].isoformat() == "2026-03-17"

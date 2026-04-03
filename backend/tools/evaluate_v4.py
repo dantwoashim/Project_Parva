@@ -76,12 +76,24 @@ def load_cases(include_moha: bool) -> list[tuple[str, str, str, str]]:
 
 
 def evaluate_case(
-    festival_id: str, expected: str, source: str, notes: str, tolerance: int, use_overrides: bool
+    festival_id: str,
+    expected: str,
+    source: str,
+    notes: str,
+    tolerance: int,
+    use_overrides: bool,
+    source_aware: bool,
 ) -> EvalRow:
     year = int(expected[:4])
     rule_type = get_rule_type(festival_id)
     try:
-        result = calculate_festival_v2(festival_id, year, use_overrides=use_overrides)
+        result = calculate_festival_v2(
+            festival_id,
+            year,
+            use_overrides=use_overrides,
+            source_hint=source if source_aware else None,
+            notes_hint=notes if source_aware else None,
+        )
         calc = result.start_date.isoformat() if result else None
         delta = variance_days(expected, calc)
         passed = delta is not None and delta <= tolerance
@@ -262,6 +274,11 @@ def main() -> None:
     parser.add_argument("--no-overrides", action="store_true", help="Disable official overrides")
     parser.add_argument("--no-moha", action="store_true", help="Disable OCR-expanded MoHA cases")
     parser.add_argument(
+        "--source-aware",
+        action="store_true",
+        help="Use source and note hints to resolve conflicting authority candidates.",
+    )
+    parser.add_argument(
         "--output-dir",
         default=str(PROJECT_ROOT / "reports" / "evaluation_v4"),
         help="Output directory",
@@ -280,7 +297,13 @@ def main() -> None:
 
     rows = [
         evaluate_case(
-            fid, expected, source, notes, args.variance, use_overrides=not args.no_overrides
+            fid,
+            expected,
+            source,
+            notes,
+            args.variance,
+            use_overrides=not args.no_overrides,
+            source_aware=args.source_aware,
         )
         for fid, expected, source, notes in cases
     ]

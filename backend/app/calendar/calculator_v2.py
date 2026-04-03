@@ -11,6 +11,8 @@ Uses the CORRECT lunar month model:
 This fixes the mid-year festival discrepancies caused by Adhik Maas.
 """
 
+from __future__ import annotations
+
 import json
 from dataclasses import dataclass
 from datetime import date, timedelta
@@ -123,7 +125,11 @@ class FestivalDate:
 
 
 def calculate_festival_date_v2(
-    festival_id: str, year: int, use_overrides: bool = True
+    festival_id: str,
+    year: int,
+    use_overrides: bool = True,
+    source_hint: str | None = None,
+    notes_hint: str | None = None,
 ) -> Optional[FestivalDate]:
     """
     Calculate festival date using the CORRECT lunar month model.
@@ -140,7 +146,12 @@ def calculate_festival_date_v2(
         try:
             from .overrides import get_festival_override
 
-            override_date = get_festival_override(festival_id, year)
+            override_date = get_festival_override(
+                festival_id,
+                year,
+                source_hint=source_hint,
+                notes_hint=notes_hint,
+            )
             if override_date:
                 rules = get_festival_rules_v3()
                 rule = rules.get(festival_id)
@@ -282,21 +293,35 @@ def _calculate_lunar_festival(
 
 
 def calculate_festival_v2(
-    festival_id: str, year: int, use_overrides: bool = True
+    festival_id: str,
+    year: int,
+    use_overrides: bool = True,
+    source_hint: str | None = None,
+    notes_hint: str | None = None,
 ) -> Optional[FestivalDate]:
     """
     Public API: Calculate festival date with correct Adhik handling.
 
     This is the V2 calculator that uses lunar_month model.
     """
-    return _calculate_festival_v2_cached(festival_id, year, use_overrides)
+    return _calculate_festival_v2_cached(festival_id, year, use_overrides, source_hint, notes_hint)
 
 
 @lru_cache(maxsize=2048)
 def _calculate_festival_v2_cached(
-    festival_id: str, year: int, use_overrides: bool
+    festival_id: str,
+    year: int,
+    use_overrides: bool,
+    source_hint: str | None,
+    notes_hint: str | None,
 ) -> Optional[FestivalDate]:
-    return calculate_festival_date_v2(festival_id, year, use_overrides=use_overrides)
+    return calculate_festival_date_v2(
+        festival_id,
+        year,
+        use_overrides=use_overrides,
+        source_hint=source_hint,
+        notes_hint=notes_hint,
+    )
 
 
 def list_festivals_v2() -> List[str]:

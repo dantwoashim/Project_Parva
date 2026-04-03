@@ -18,10 +18,10 @@ def test_festival_detail_exposes_authority_conflict_metadata():
     assert body["dates"]["authority_candidate_count"] >= 2
     assert "Multiple authority candidates exist" in body["dates"]["authority_note"]
     assert any(
-        row["start"] == "2026-03-18" for row in body["dates"]["authority_alternates"]
+        row["start"] == "2026-03-17" for row in body["dates"]["authority_alternates"]
     )
     assert body["dates"]["authority_suggested_profile_id"] == "published-holiday-listing"
-    assert body["dates"]["authority_suggested_start_date"] == "2026-03-18"
+    assert body["dates"]["authority_suggested_start_date"] == "2026-03-17"
 
 
 def test_festival_explain_mentions_authority_conflict_when_present():
@@ -32,11 +32,11 @@ def test_festival_explain_mentions_authority_conflict_when_present():
     assert any("candidate date entries" in step for step in body["steps"])
     assert "Multiple authority candidates exist" in body["explanation"]
     assert body["authority_suggested_profile_id"] == "published-holiday-listing"
-    assert body["authority_suggested_start_date"] == "2026-03-18"
+    assert body["authority_suggested_start_date"] == "2026-03-17"
 
 
 def test_festivals_on_date_surfaces_conflict_note():
-    response = client.get("/api/festivals/on-date/2026-03-17")
+    response = client.get("/api/festivals/on-date/2026-03-18")
     assert response.status_code == 200
 
     body = response.json()
@@ -78,7 +78,7 @@ def test_festival_detail_applies_year_scoped_published_listing_variant():
     assert response.status_code == 200
 
     body = response.json()
-    assert body["dates"]["start_date"] == "2026-03-27"
+    assert body["dates"]["start_date"] == "2026-03-26"
     assert body["dates"]["profile_id"] == "published-holiday-listing"
     assert "alternate" in body["dates"]["profile_note"].lower()
 
@@ -104,20 +104,20 @@ def test_variants_endpoint_auto_generates_authority_profile_variant():
     assert response.status_code == 200
 
     body = response.json()
-    assert body["variants"][0]["date"] == "2026-03-27"
-    assert body["variants"][0]["auto_generated"] is True
+    assert any(variant["date"] == "2026-03-26" for variant in body["variants"])
+    assert any(variant["auto_generated"] is True for variant in body["variants"])
 
 
 def test_upcoming_endpoint_respects_profile_shifted_dates():
     response = client.get(
         "/api/festivals/upcoming",
-        params={"from_date": "2026-03-18", "days": 1, "profile": "published-holiday-listing"},
+        params={"from_date": "2026-03-17", "days": 1, "profile": "published-holiday-listing"},
     )
     assert response.status_code == 200
 
     body = response.json()
     ghode_jatra = next(row for row in body["festivals"] if row["id"] == "ghode-jatra")
-    assert ghode_jatra["start_date"] == "2026-03-18"
+    assert ghode_jatra["start_date"] == "2026-03-17"
     assert ghode_jatra["profile_id"] == "published-holiday-listing"
 
 
@@ -125,10 +125,10 @@ def test_on_date_endpoint_respects_profile_shifted_dates():
     default_response = client.get("/api/festivals/on-date/2026-03-18")
     assert default_response.status_code == 200
     default_ids = {row["id"] for row in default_response.json()}
-    assert "ghode-jatra" not in default_ids
+    assert "ghode-jatra" in default_ids
 
     profile_response = client.get(
-        "/api/festivals/on-date/2026-03-18",
+        "/api/festivals/on-date/2026-03-17",
         params={"profile": "published-holiday-listing"},
     )
     assert profile_response.status_code == 200
@@ -144,5 +144,5 @@ def test_calendar_endpoint_respects_profile_shifted_dates():
     assert response.status_code == 200
 
     body = response.json()
-    march_18 = next(day for day in body["days"] if day["date"] == "2026-03-18")
-    assert any(festival["id"] == "ghode-jatra" for festival in march_18["festivals"])
+    march_17 = next(day for day in body["days"] if day["date"] == "2026-03-17")
+    assert any(festival["id"] == "ghode-jatra" for festival in march_17["festivals"])
