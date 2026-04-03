@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException
@@ -26,6 +27,7 @@ from app.engine.ephemeris_config import get_ephemeris_config
 from app.festivals.repository import validate_festival_catalog
 
 PRODUCT_VERSION = "3.0.0"
+logger = logging.getLogger(__name__)
 DEFAULT_CORS_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
@@ -125,6 +127,11 @@ def _validate_startup(settings) -> tuple[dict[str, object], object]:
     if not startup_checks["checks"]["festival_catalog"]["ok"]:
         detail = startup_checks["checks"]["festival_catalog"]["detail"]
         raise RuntimeError(f"Startup validation failed: {detail}")
+    if settings.require_precomputed and not startup_checks["checks"]["precomputed"]["ok"]:
+        raise RuntimeError(
+            "Startup validation failed: production profile requires precomputed artifacts. "
+            "Run the precompute pipeline or set PARVA_REQUIRE_PRECOMPUTED=false explicitly."
+        )
 
     rate_limit_backend = create_rate_limiter_backend(
         backend_name=settings.rate_limit_backend,
@@ -210,6 +217,13 @@ def _register_exception_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(Exception)
     async def unhandled_exception_handler(request, exc: Exception):
+        logger.exception(
+            "Unhandled exception for %s %s request_id=%s",
+            getattr(request, "method", "UNKNOWN"),
+            getattr(getattr(request, "url", None), "path", "unknown"),
+            getattr(request.state, "request_id", None),
+            exc_info=exc,
+        )
         return JSONResponse(
             status_code=500,
             content={

@@ -114,6 +114,7 @@ def test_cache_stats_endpoint_lists_available_years(monkeypatch, tmp_path):
     monkeypatch.setattr(precomputed_module, "PRECOMPUTE_DIR", tmp_path)
     _write_json(tmp_path / "panchanga_2028.json", {"dates": {}})
     _write_json(tmp_path / "festivals_2028.json", {"festivals": []})
+    _write_json(tmp_path / "panchanga_2029.json", {"dates": {}})
 
     client = TestClient(app)
     response = client.get("/api/cache/stats")
@@ -121,3 +122,6 @@ def test_cache_stats_endpoint_lists_available_years(monkeypatch, tmp_path):
     body = response.json()
     assert 2028 in body["years"]["panchanga"]
     assert 2028 in body["years"]["festivals"]
+    assert 2028 in body["coverage"]["shared_years"]
+    assert 2029 in body["coverage"]["panchanga_only_years"]
+    assert "freshness" in body

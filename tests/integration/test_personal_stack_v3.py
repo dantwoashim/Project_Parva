@@ -16,6 +16,13 @@ def test_personal_panchanga_v3_fields():
     assert "vaara" in body
     assert "calculation_trace_id" in body
     assert body["method_profile"] == "personal_panchanga_v2_udaya"
+    assert body["engine_path"] == "ephemeris_udaya"
+    assert body["fallback_used"] is False
+    assert body["calibration_status"] == "unavailable"
+    assert body["risk_mode"] == "standard"
+    assert body["boundary_radar"] in {"stable", "one_day_sensitive", "high_disagreement_risk"}
+    assert isinstance(body["stability_score"], float)
+    assert body["recommended_action"]
     assert body["quality_band"] in {"validated", "gold", "provisional"}
     assert body["assumption_set_id"]
     assert body["advisory_scope"] == "ritual_planning"
@@ -74,6 +81,7 @@ def test_personal_panchanga_explicit_timezone_remains_high_authority():
     assert resp.status_code == 200
     body = resp.json()
     assert body["quality_band"] == "gold"
+    assert body["risk_mode"] == "standard"
     assert body["degraded"] == {"active": False, "reasons": [], "defaults_applied": []}
     assert body["location"]["input_sources"] == {
         "latitude": "user_input",
@@ -115,6 +123,9 @@ def test_muhurta_returns_named_slots():
     assert len(body["chaughadia"]["night"]) == 8
     assert "tara_bala" in body
     assert body["method_profile"] == "muhurta_v2_hora_chaughadia_tarabala"
+    assert body["engine_path"] == "muhurta_day_night_partition"
+    assert body["fallback_used"] is False
+    assert body["calibration_status"] == "unavailable"
     assert body["quality_band"] in {"beta", "validated", "gold"}
 
 
@@ -196,6 +207,9 @@ def test_kundali_returns_12_houses_and_navagraha():
     assert body["dasha"]["total_major_periods"] == 9
     assert len(body["dasha"]["timeline"][0]["antar_dasha"]) == 9
     assert body["method_profile"] == "kundali_v2_aspects_dasha"
+    assert body["engine_path"] == "swiss_ephemeris_sidereal"
+    assert body["fallback_used"] is False
+    assert body["calibration_status"] == "unavailable"
     assert body["assumption_set_id"] == "np-kundali-v2"
     assert body["quality_band"] in {"validated", "gold"}
     assert body["advisory_scope"] == "astrology_assist"

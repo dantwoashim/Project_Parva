@@ -28,6 +28,7 @@ from .ephemeris.swiss_eph import (
     LAT_KATHMANDU,
     LON_KATHMANDU,
     calculate_sunrise,
+    calculate_sunset,
     get_ephemeris_info,
 )
 from .ephemeris.time_utils import (
@@ -78,6 +79,8 @@ def get_panchanga(
     # Calculate sunrise
     sunrise_utc = calculate_sunrise(date_val, latitude, longitude)
     sunrise_nepal = to_nepal_time(sunrise_utc)
+    sunset_utc = calculate_sunset(date_val, latitude, longitude)
+    sunset_nepal = to_nepal_time(sunset_utc)
 
     # Get tithi at sunrise (udaya tithi)
     tithi_info = calculate_tithi(sunrise_utc)
@@ -108,6 +111,11 @@ def get_panchanga(
             "utc": sunrise_utc.isoformat(),
             "local": sunrise_nepal.isoformat(),
             "local_time": sunrise_nepal.strftime("%H:%M:%S"),
+        },
+        "sunset": {
+            "utc": sunset_utc.isoformat(),
+            "local": sunset_nepal.isoformat(),
+            "local_time": sunset_nepal.strftime("%H:%M:%S"),
         },
         "tithi": {
             "number": tithi_info["number"],

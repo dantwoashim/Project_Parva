@@ -33,6 +33,28 @@ def test_load_settings_exposes_test_only_credentials_under_pytest(
     assert settings.api_keys["local-read"].secret == "parva-test-read-key"
 
 
+def test_load_settings_requires_precomputed_by_default_in_production(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("PARVA_ENV", "production")
+    monkeypatch.delenv("PARVA_REQUIRE_PRECOMPUTED", raising=False)
+
+    settings = load_settings()
+
+    assert settings.require_precomputed is True
+
+
+def test_load_settings_allows_explicit_precomputed_override_in_production(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("PARVA_ENV", "production")
+    monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
+
+    settings = load_settings()
+
+    assert settings.require_precomputed is False
+
+
 def test_create_app_requires_source_url_in_production(monkeypatch: pytest.MonkeyPatch) -> None:
     from app.bootstrap.app_factory import create_app
 
@@ -54,3 +76,23 @@ def test_create_app_requires_distributed_rate_limiting_in_production(
 
     with pytest.raises(RuntimeError, match="PARVA_RATE_LIMIT_BACKEND=redis"):
         create_app()
+
+
+def test_create_app_requires_precomputed_artifacts_in_production_by_default(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import app.bootstrap.app_factory as app_factory
+
+    monkeypatch.setenv("PARVA_ENV", "production")
+    monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
+    monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
+    monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
+    monkeypatch.delenv("PARVA_REQUIRE_PRECOMPUTED", raising=False)
+    monkeypatch.setattr(
+        app_factory,
+        "get_cache_stats",
+        lambda: {"file_count": 0, "total_bytes": 0, "files": [], "freshness": {}},
+    )
+
+    with pytest.raises(RuntimeError, match="requires precomputed artifacts"):
+        app_factory.create_app()

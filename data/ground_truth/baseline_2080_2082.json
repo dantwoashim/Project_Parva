@@ -7,8 +7,8 @@
       2082
     ],
     "generated_from": "data/ingest_reports/holidays_{year}_matched.csv",
-    "total_records": 47,
-    "usable_records": 45,
+    "total_records": 46,
+    "usable_records": 44,
     "ambiguous_records": 2,
     "invalid_records": 0
   },
@@ -563,30 +563,6 @@
         "source": "moha_pdf_2081",
         "confidence": "official",
         "notes": "BS 2081-11-14 (फागुन १४) (ण) महाशिवरात्री"
-      }
-    },
-    {
-      "bs_year": 2081,
-      "festival_id": "gai-jatra",
-      "festival_name_raw": "(क) गाईजात्रा",
-      "bs_month_raw": "भदौ",
-      "bs_month": 5,
-      "bs_day_raw": "४",
-      "bs_day": 4,
-      "gregorian_date": "2024-08-21",
-      "source_file": "holidays_2081_matched.csv",
-      "source_line": "(क) गाईजात्रा - भदौ ४ गते मङ्गलबार (देशभरका नेवार",
-      "source_citation": "MoHA Public Holidays 2081 BS (OCR matched)",
-      "extraction_confidence": 0.93,
-      "extraction_confidence_label": "high",
-      "status": "usable",
-      "notes": "OK",
-      "override_match": false,
-      "override_date": {
-        "start": "2024-08-21",
-        "source": "moha_pdf_2081",
-        "confidence": "official",
-        "notes": "BS 2081-05-04 (भदौ ४) (क) गाईजात्रा"
       }
     },
     {

@@ -15,6 +15,13 @@ def test_temporal_compass_post_supported_for_private_inputs():
     body = response.json()
     assert "primary_readout" in body
     assert body["method_profile"] == "temporal_compass_v1"
+    assert body["engine_path"] == "ephemeris_udaya"
+    assert body["fallback_used"] is False
+    assert body["calibration_status"] == "unavailable"
+    assert body["risk_mode"] == "standard"
+    assert body["boundary_radar"] in {"stable", "one_day_sensitive", "high_disagreement_risk"}
+    assert isinstance(body["stability_score"], float)
+    assert body["recommended_action"]
 
 
 def test_temporal_compass_post_accepts_numeric_coordinates():

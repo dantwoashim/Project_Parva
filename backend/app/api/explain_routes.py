@@ -22,8 +22,9 @@ async def get_trace(trace_id: str):
 @router.get("")
 @router.get("/")
 async def list_traces(limit: int = Query(20, ge=1, le=200)):
+    traces = list_recent_traces(limit=limit)
     return {
-        "count": limit,
-        "traces": list_recent_traces(limit=limit),
+        "count": len(traces),
+        "traces": traces,
         "policy": get_policy_metadata(),
     }

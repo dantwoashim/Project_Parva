@@ -10,6 +10,28 @@ import {
   sunriseShiftLabel,
 } from './shared';
 
+function startCaseTruth(value) {
+  return String(value || 'unknown')
+    .split(/[_-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function truthTone(value) {
+  const normalized = String(value || '').toLowerCase();
+  if (normalized.includes('gold') || normalized.includes('validated') || normalized.includes('high')) {
+    return 'authoritative';
+  }
+  if (normalized.includes('provisional') || normalized.includes('computed')) {
+    return 'computed';
+  }
+  if (normalized.includes('default') || normalized.includes('degraded')) {
+    return 'fallback';
+  }
+  return 'default';
+}
+
 function normalizeCompletenessItem(item, fallback) {
   if (item && typeof item === 'object' && !Array.isArray(item)) {
     return {
@@ -294,12 +316,39 @@ export function buildConsumerMyPlaceViewModel({
   activePreset,
   panchanga,
   contextPayload,
+  contextMeta,
   festivals = [],
   meta,
 }) {
   const primaryPlace = memberState.savedPlaces[0] || null;
   const placeLabel = primaryPlace?.label || activePreset?.label || contextPayload?.place_title || 'My place';
   const reminders = [...memberState.reminders, ...(contextPayload?.upcoming_reminders || [])].slice(0, 3);
+  const truthSources = [
+    meta
+      ? {
+          label: 'Personal panchanga',
+          qualityBand: meta.quality_band || null,
+          method: meta.method || null,
+          confidence: meta.confidence?.level || null,
+          degraded: Boolean(meta.degraded?.active),
+          boundaryRadar: panchanga?.boundary_radar || meta.boundary_radar || null,
+          stabilityScore: panchanga?.stability_score ?? meta.stability_score ?? null,
+          recommendedAction: panchanga?.recommended_action || meta.recommended_action || null,
+        }
+      : null,
+    contextMeta
+      ? {
+          label: 'Place context',
+          qualityBand: contextMeta.quality_band || null,
+          method: contextMeta.method || null,
+          confidence: contextMeta.confidence?.level || null,
+          degraded: Boolean(contextMeta.degraded?.active),
+          boundaryRadar: contextPayload?.boundary_radar || contextMeta.boundary_radar || null,
+          stabilityScore: contextPayload?.stability_score ?? contextMeta.stability_score ?? null,
+          recommendedAction: contextPayload?.recommended_action || contextMeta.recommended_action || null,
+        }
+      : null,
+  ].filter(Boolean);
 
   return {
     title: 'My Place',
@@ -311,7 +360,9 @@ export function buildConsumerMyPlaceViewModel({
     sunriseShift: sunriseShiftLabel(panchanga),
     localSunrise: formatTime(panchanga?.local_sunrise, temporalState) || 'Pending',
     localSunset: formatTime(resolveSunsetReferenceValue(panchanga), temporalState) || 'Pending',
-    savedStatus: contextPayload?.visit_note || 'Saved place details remain local-first on this device.',
+    savedStatus: memberState.persistence?.localSaveEnabled
+      ? (contextPayload?.visit_note || 'Saved place details stay on this device only until you purge them.')
+      : 'Local saving is off until you enable it on this device.',
     reminders: reminders.map((item, index) => ({
       id: item.id || `reminder_${index}`,
       title: item.title || 'Saved reminder',
@@ -320,7 +371,49 @@ export function buildConsumerMyPlaceViewModel({
     festivals: festivals.slice(0, 4).map((festival) => ({
       id: festival.id,
       title: festival.name || festival.display_name,
+      truthNote: festival.support_tier
+        ? `${startCaseTruth(festival.support_tier)} via ${festival.selection_policy || 'public_default'}`
+        : null,
     })),
+    truthSurface: {
+      chips: truthSources.flatMap((item) => {
+        const chips = [];
+        if (item.qualityBand) {
+          chips.push({
+            label: `${item.label}: ${startCaseTruth(item.qualityBand)}`,
+            tone: truthTone(item.qualityBand),
+          });
+        } else if (item.confidence) {
+          chips.push({
+            label: `${item.label}: ${startCaseTruth(item.confidence)}`,
+            tone: truthTone(item.confidence),
+          });
+        }
+        if (item.degraded) {
+          chips.push({
+            label: `${item.label}: Defaults Applied`,
+            tone: 'fallback',
+          });
+        }
+        if (item.boundaryRadar) {
+          chips.push({
+            label: `${item.label}: ${startCaseTruth(item.boundaryRadar)}`,
+            tone: item.boundaryRadar === 'stable' ? 'computed' : 'fallback',
+          });
+        }
+        return chips;
+      }),
+      sources: truthSources.map((item) => ({
+        label: item.label,
+        qualityBand: startCaseTruth(item.qualityBand || 'unknown'),
+        method: startCaseTruth(item.method || 'unknown'),
+        confidence: startCaseTruth(item.confidence || 'unknown'),
+        degraded: item.degraded,
+        boundaryRadar: item.boundaryRadar ? startCaseTruth(item.boundaryRadar) : null,
+        stabilityScore: item.stabilityScore,
+        recommendedAction: item.recommendedAction || null,
+      })),
+    },
     cards: [
       {
         label: 'What changes here',

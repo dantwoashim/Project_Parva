@@ -23,3 +23,9 @@ def test_public_dashboard_artifact_is_accessible():
     response = client.get("/v3/api/public/artifacts/dashboard", headers=TRUST_HEADERS)
     assert response.status_code == 200
     assert "application/json" in response.headers.get("content-type", "")
+
+
+def test_public_artifact_manifest_is_publicly_readable():
+    response = client.get("/v3/api/public/artifacts/manifest")
+    assert response.status_code == 200
+    assert "files" in response.json()

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 from collections import defaultdict
 from dataclasses import asdict, dataclass
@@ -13,6 +14,8 @@ from pathlib import Path
 from typing import Iterable
 
 from app.calendar.calculator_v2 import calculate_festival_v2, get_festival_rules_v3
+from app.engine.manifest import build_engine_manifest
+from app.sources.loader import JsonSourceLoader
 
 try:
     from evaluate import TEST_CASES_2026, load_moha_matched_tests
@@ -20,6 +23,7 @@ except ModuleNotFoundError:  # pragma: no cover - import path fallback
     from backend.tools.evaluate import TEST_CASES_2026, load_moha_matched_tests
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "reports" / "evaluation_v4"
 
 
 @dataclass
@@ -160,6 +164,75 @@ def summarize(rows: Iterable[EvalRow]) -> dict:
     }
 
 
+def _sha256_file(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _sha256_jsonable(payload: object) -> str:
+    return hashlib.sha256(
+        json.dumps(payload, ensure_ascii=False, sort_keys=True, default=str).encode("utf-8")
+    ).hexdigest()
+
+
+def build_run_metadata(args: argparse.Namespace, cases: list[tuple[str, str, str, str]]) -> dict:
+    output_dir = Path(args.output_dir)
+    try:
+        output_dir_str = str(output_dir.resolve().relative_to(PROJECT_ROOT.resolve()))
+    except Exception:
+        output_dir_str = str(output_dir)
+    engine_manifest = build_engine_manifest()
+    source_loader = JsonSourceLoader(root=PROJECT_ROOT)
+    ground_truth_validation = (
+        source_loader.load_ground_truth().get("_meta", {}).get("validation", {})
+    )
+    track = args.track or (
+        "raw_algorithm" if args.no_overrides else "override_assisted_practical"
+    )
+    return {
+        "generated_at": datetime.utcnow().isoformat() + "Z",
+        "output_dir": output_dir_str,
+        "evaluation_track": track,
+        "conflict_policy": "source_hint_match" if args.source_aware else "public_default_precedence",
+        "abstention_policy": "no_abstention",
+        "filters": {
+            "year_from": args.year_from,
+            "year_to": args.year_to,
+            "festival_ids": list(args.festival),
+        },
+        "options": {
+            "variance_days": args.variance,
+            "use_overrides": not args.no_overrides,
+            "include_moha": not args.no_moha,
+            "source_aware": args.source_aware,
+        },
+        "run_flags": {
+            "track": track,
+            "variance": args.variance,
+            "no_overrides": args.no_overrides,
+            "no_moha": args.no_moha,
+            "source_aware": args.source_aware,
+        },
+        "case_count": len(cases),
+        "benchmark_pack_hash": _sha256_jsonable(cases),
+        "engine_manifest_hash": _sha256_jsonable(engine_manifest),
+        "engine_manifest": engine_manifest,
+        "ground_truth_validation": ground_truth_validation,
+        "source_hashes": {
+            "scorecard_2080_2082": _sha256_file(
+                PROJECT_ROOT / "data" / "ground_truth" / "scorecard_2080_2082.json"
+            ),
+            "baseline_2080_2082": _sha256_file(
+                PROJECT_ROOT / "data" / "ground_truth" / "baseline_2080_2082.json"
+            ),
+            "evaluation_week3": _sha256_file(
+                PROJECT_ROOT / "data" / "ground_truth" / "evaluation_week3.csv"
+            ),
+        },
+    }
+
+
 def write_csv(rows: list[EvalRow], out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", newline="", encoding="utf-8") as f:
@@ -185,12 +258,13 @@ def write_csv(rows: list[EvalRow], out_path: Path) -> None:
             writer.writerow(asdict(row))
 
 
-def write_json(rows: list[EvalRow], summary: dict, out_path: Path) -> None:
+def write_json(rows: list[EvalRow], summary: dict, metadata: dict, out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(
         json.dumps(
             {
-                "generated_at": datetime.utcnow().isoformat() + "Z",
+                "generated_at": metadata["generated_at"],
+                "run": metadata,
                 "summary": summary,
                 "rows": [asdict(r) for r in rows],
             },
@@ -201,10 +275,20 @@ def write_json(rows: list[EvalRow], summary: dict, out_path: Path) -> None:
     )
 
 
-def write_markdown(rows: list[EvalRow], summary: dict, out_path: Path) -> None:
+def write_markdown(rows: list[EvalRow], summary: dict, metadata: dict, out_path: Path) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
         "# Evaluation V4 Report",
+        "",
+        f"- Generated: **{metadata['generated_at']}**",
+        f"- Evaluation track: **{metadata['evaluation_track']}**",
+        f"- Variance tolerance: **{metadata['options']['variance_days']} day(s)**",
+        f"- Source-aware mode: **{metadata['options']['source_aware']}**",
+        f"- Overrides enabled: **{metadata['options']['use_overrides']}**",
+        f"- MoHA-expanded cases enabled: **{metadata['options']['include_moha']}**",
+        f"- Conflict policy: **{metadata['conflict_policy']}**",
+        f"- Abstention policy: **{metadata['abstention_policy']}**",
+        f"- Case count: **{metadata['case_count']}**",
         "",
         f"- Total: **{summary['total']}**",
         f"- Passed: **{summary['passed']}**",
@@ -271,6 +355,12 @@ def main() -> None:
         "--festival", action="append", default=[], help="Festival id filter (repeatable)"
     )
     parser.add_argument("--variance", type=int, default=1, help="Allowed variance in days")
+    parser.add_argument(
+        "--track",
+        choices=["raw_algorithm", "override_assisted_practical", "blind_holdout"],
+        default=None,
+        help="Label the evaluation artifact with the intended track.",
+    )
     parser.add_argument("--no-overrides", action="store_true", help="Disable official overrides")
     parser.add_argument("--no-moha", action="store_true", help="Disable OCR-expanded MoHA cases")
     parser.add_argument(
@@ -280,7 +370,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--output-dir",
-        default=str(PROJECT_ROOT / "reports" / "evaluation_v4"),
+        default=str(DEFAULT_OUTPUT_DIR),
         help="Output directory",
     )
     args = parser.parse_args()
@@ -309,13 +399,14 @@ def main() -> None:
     ]
 
     summary = summarize(rows)
+    metadata = build_run_metadata(args, cases)
 
     out_dir = Path(args.output_dir)
     write_csv(rows, out_dir / "evaluation_v4.csv")
-    write_json(rows, summary, out_dir / "evaluation_v4.json")
-    write_markdown(rows, summary, out_dir / "evaluation_v4.md")
+    write_json(rows, summary, metadata, out_dir / "evaluation_v4.json")
+    write_markdown(rows, summary, metadata, out_dir / "evaluation_v4.md")
 
-    print(json.dumps(summary, ensure_ascii=False, indent=2))
+    print(json.dumps({"run": metadata, "summary": summary}, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

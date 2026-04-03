@@ -62,7 +62,24 @@ describe('FestivalDetailPage', () => {
                   ],
                 },
               },
-              dates: { start_date: '2026-10-20', end_date: '2026-10-30' },
+              dates: {
+                start_date: '2026-10-20',
+                end_date: '2026-10-30',
+                support_tier: 'conflicted',
+                source_family: 'moha_pdf_2083',
+                selection_policy: 'authority_compare',
+                engine_path: 'override',
+                calibration_status: 'not_applicable',
+                authority_conflict: true,
+                authority_note: 'Multiple authority candidates exist for this festival-year.',
+                alternate_candidates: [
+                  {
+                    start: '2026-10-19',
+                    source_family: 'published_holiday_listing',
+                    notes: 'Alternate published listing.',
+                  },
+                ],
+              },
               completeness: {
                 overall: 'complete',
                 narrative: {
@@ -127,6 +144,9 @@ describe('FestivalDetailPage', () => {
     expect(
       await screen.findByRole('heading', { name: /The Ritual Timeline/i }),
     ).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Truth Surface/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Authority ledger/i)).toBeInTheDocument();
+    expect(await screen.findByText(/moha pdf 2083/i)).toBeInTheDocument();
     expect(await screen.findByText(/Kalash Sthapana/i)).toBeInTheDocument();
     expect(await screen.findByText(/Editorial origin, meaning, and contextual notes are published/i)).toBeInTheDocument();
   }, 15000);

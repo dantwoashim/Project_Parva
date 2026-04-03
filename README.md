@@ -107,7 +107,7 @@ print(personal.data["tithi"]["name"])
 - Use `/v3/api/*` for all new clients.
 - Treat `/api/*` as legacy compatibility only.
 - Send `X-Parva-Envelope: data-meta` when you want a stable `data` plus `meta` response shape.
-- Preserve `calculation_trace_id`, `method`, `method_profile`, `quality_band`, `assumption_set_id`, `provenance`, and `policy` if you store or forward results.
+- Preserve `calculation_trace_id`, `method`, `method_profile`, `engine_path`, `support_tier`, `fallback_used`, `calibration_status`, `quality_band`, `assumption_set_id`, `provenance`, and `policy` if you store or forward results.
 - Personal compute routes return `Cache-Control: no-store`.
 - This is still a public beta. Keep known limitations visible if you present results as authoritative.
 
@@ -153,17 +153,18 @@ Import:
 from parva_sdk import ParvaClient
 ```
 
-SDK details live in [sdk/python/README.md](/Users/rohanbasnet14/Documents/Project_Parva-main/sdk/python/README.md).
+SDK details live in [sdk/python/README.md](sdk/python/README.md).
 
 ## Docs
 
-- [docs/API_QUICKSTART.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/API_QUICKSTART.md)
-- [docs/API_REFERENCE_V3.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/API_REFERENCE_V3.md)
-- [docs/DEPLOYMENT.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/DEPLOYMENT.md)
-- [docs/EMBED_GUIDE.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/EMBED_GUIDE.md)
-- [docs/ENGINE_ARCHITECTURE.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/ENGINE_ARCHITECTURE.md)
-- [docs/ACCURACY_METHOD.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/ACCURACY_METHOD.md)
-- [docs/KNOWN_LIMITS.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/KNOWN_LIMITS.md)
+- [docs/API_QUICKSTART.md](docs/API_QUICKSTART.md)
+- [docs/API_REFERENCE_V3.md](docs/API_REFERENCE_V3.md)
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+- [docs/EMBED_GUIDE.md](docs/EMBED_GUIDE.md)
+- [docs/ENGINE_ARCHITECTURE.md](docs/ENGINE_ARCHITECTURE.md)
+- [docs/SUPPORT_MATRIX.md](docs/SUPPORT_MATRIX.md)
+- [docs/ACCURACY_METHOD.md](docs/ACCURACY_METHOD.md)
+- [docs/KNOWN_LIMITS.md](docs/KNOWN_LIMITS.md)
 
 ## Validation
 
@@ -212,4 +213,4 @@ Project Parva is licensed under AGPL-3.0-or-later. See `LICENSE`.
 
 This deployment path uses Swiss Ephemeris through `pyswisseph`. You can charge for hosting, support, or customization, but anyone using the software over a network must be able to get the corresponding source for what you shipped. Set `PARVA_SOURCE_URL` to a public repo or source archive for the exact deployed build and keep `/source` reachable.
 
-Read [docs/DEPLOYMENT.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/DEPLOYMENT.md), [docs/KNOWN_LIMITS.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/KNOWN_LIMITS.md), and `THIRD_PARTY_NOTICES.md` before going public.
+Read [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md), [docs/KNOWN_LIMITS.md](docs/KNOWN_LIMITS.md), and `THIRD_PARTY_NOTICES.md` before going public.

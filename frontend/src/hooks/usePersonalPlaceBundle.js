@@ -14,6 +14,7 @@ export function usePersonalPlaceBundle({
   const [payload, setPayload] = useState(null);
   const [contextPayload, setContextPayload] = useState(null);
   const [meta, setMeta] = useState(null);
+  const [contextMeta, setContextMeta] = useState(null);
   const [festivals, setFestivals] = useState([]);
 
   useEffect(() => {
@@ -58,10 +59,16 @@ export function usePersonalPlaceBundle({
             ? contextResult.value.data || null
             : null,
         );
+        setContextMeta(
+          contextResult.status === 'fulfilled'
+            ? contextResult.value.meta || null
+            : null,
+        );
       } catch (reason) {
         setPayload(null);
         setContextPayload(null);
         setMeta(null);
+        setContextMeta(null);
         setFestivals([]);
         setError(describeSupportError(reason, fallbackErrorMessage));
       } finally {
@@ -81,6 +88,7 @@ export function usePersonalPlaceBundle({
     payload,
     contextPayload,
     meta,
+    contextMeta,
     festivals,
   };
 }

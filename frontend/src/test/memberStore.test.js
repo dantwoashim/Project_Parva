@@ -46,6 +46,7 @@ describe('memberStore', () => {
       store: 'guest_local',
       scope: 'device_cache',
       syncStatus: 'storage_unavailable',
+      localSaveEnabled: false,
       lastLoadedAt: '2026-03-20T09:00:00.000Z',
     });
   });
@@ -72,6 +73,7 @@ describe('memberStore', () => {
       migratedFrom: legacyKey,
       lastLoadedAt: '2026-03-20T09:15:00.000Z',
       scope: 'device_cache',
+      localSaveEnabled: true,
     });
   });
 
@@ -94,6 +96,7 @@ describe('memberStore', () => {
       },
       reminders: [{ id: 'festival:dashain', title: 'Dashain' }],
       persistence: {
+        localSaveEnabled: true,
         revision: 2,
         lastLoadedAt: '2026-03-20T09:10:00.000Z',
         migratedFrom: legacyKey,
@@ -118,6 +121,7 @@ describe('memberStore', () => {
       data: {
         reminders: [{ id: 'festival:dashain', title: 'Dashain' }],
         persistence: {
+          localSaveEnabled: true,
           revision: 3,
           lastPersistedAt: '2026-03-20T09:30:00.000Z',
         },
@@ -125,6 +129,33 @@ describe('memberStore', () => {
     });
     expect(record.data.notice).toBeUndefined();
     expect(storage.removeItem).toHaveBeenCalledWith(legacyKey);
+  });
+
+  it('does not write to browser storage when local save is disabled', async () => {
+    const storage = createMemoryStorage({
+      [MEMBER_STORE_STORAGE_KEY]: JSON.stringify({ schema: MEMBER_STORE_SCHEMA, version: 2, storedAt: '2026-03-20T09:00:00.000Z', data: createInitialMemberState() }),
+    });
+
+    const store = createLocalGuestMemberStore({
+      storage,
+      now: () => '2026-03-20T09:45:00.000Z',
+    });
+
+    const saved = await store.save({
+      ...createInitialMemberState(),
+      reminders: [{ id: 'festival:dashain', title: 'Dashain' }],
+      persistence: {
+        localSaveEnabled: false,
+        revision: 1,
+      },
+    });
+
+    expect(saved.persistence).toMatchObject({
+      localSaveEnabled: false,
+      syncStatus: 'guest_ephemeral',
+      revision: 2,
+    });
+    expect(storage.dump()[MEMBER_STORE_STORAGE_KEY]).toBeUndefined();
   });
 
   it('supports an account-backed remote member store contract', async () => {

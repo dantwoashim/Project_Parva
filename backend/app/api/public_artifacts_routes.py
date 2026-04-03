@@ -60,6 +60,18 @@ async def get_artifacts_manifest() -> Dict[str, object]:
     if published_dashboard.exists():
         files.append(_artifact_row(published_dashboard, "published-dashboard"))
 
+    source_review_queue = PUBLIC_ARTIFACTS_DIR / "source_review_queue.json"
+    if source_review_queue.exists():
+        files.append(_artifact_row(source_review_queue, "review-queue"))
+
+    boundary_suite = PUBLIC_ARTIFACTS_DIR / "boundary_suite.json"
+    if boundary_suite.exists():
+        files.append(_artifact_row(boundary_suite, "boundary-suite"))
+
+    differential = PROJECT_ROOT / "data" / "differential" / "disagreements.json"
+    if differential.exists():
+        files.append(_artifact_row(differential, "differential"))
+
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "total_files": len(files),
@@ -90,4 +102,28 @@ async def get_authority_dashboard_artifact():
         path = PUBLIC_ARTIFACTS_DIR / "authority_dashboard.json"
     if not path.exists():
         raise HTTPException(status_code=404, detail="Dashboard artifact not generated yet")
+    return FileResponse(path, media_type="application/json", filename=path.name)
+
+
+@router.get("/artifacts/source-review-queue")
+async def get_source_review_queue_artifact():
+    path = PUBLIC_ARTIFACTS_DIR / "source_review_queue.json"
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="Source review queue artifact not generated yet")
+    return FileResponse(path, media_type="application/json", filename=path.name)
+
+
+@router.get("/artifacts/boundary-suite")
+async def get_boundary_suite_artifact():
+    path = PUBLIC_ARTIFACTS_DIR / "boundary_suite.json"
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="Boundary suite artifact not generated yet")
+    return FileResponse(path, media_type="application/json", filename=path.name)
+
+
+@router.get("/artifacts/differential")
+async def get_differential_artifact():
+    path = PROJECT_ROOT / "data" / "differential" / "disagreements.json"
+    if not path.exists():
+        raise HTTPException(status_code=404, detail="Differential artifact not generated yet")
     return FileResponse(path, media_type="application/json", filename=path.name)

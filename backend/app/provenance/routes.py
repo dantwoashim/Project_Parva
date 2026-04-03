@@ -216,7 +216,7 @@ async def verify_trace(trace_id: str) -> TraceVerifyResponse:
     - required fields present
     - trace_id matches deterministic hash of canonical payload
     """
-    trace = get_reason_trace(trace_id)
+    trace = get_reason_trace(trace_id, include_private=True)
     if not trace:
         raise HTTPException(status_code=404, detail=f"Trace '{trace_id}' not found")
 
@@ -236,7 +236,8 @@ async def verify_trace(trace_id: str) -> TraceVerifyResponse:
     )
     digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
     expected_trace_id = f"tr_{digest[:20]}"
-    deterministic_id_match = trace_id == expected_trace_id
+    is_private_trace = trace.get("visibility") == "private"
+    deterministic_id_match = trace_id == expected_trace_id if not is_private_trace else trace_id.startswith("tr_")
 
     checks = {
         "exists": True,

@@ -6,7 +6,7 @@
   "cases": [
     {
       "id": "islamic-convert-2026-02-15",
-      "endpoint": "/v2/api/engine/convert",
+      "endpoint": "/v3/api/engine/convert",
       "params": {"date": "2026-02-15", "calendar": "islamic"},
       "assertions": {
         "result.year": 1447,
@@ -18,7 +18,7 @@
     },
     {
       "id": "hebrew-convert-2026-02-15",
-      "endpoint": "/v2/api/engine/convert",
+      "endpoint": "/v3/api/engine/convert",
       "params": {"date": "2026-02-15", "calendar": "hebrew"},
       "assertions": {
         "result.year": 5786,
@@ -30,7 +30,7 @@
     },
     {
       "id": "chinese-convert-2026-02-20",
-      "endpoint": "/v2/api/engine/convert",
+      "endpoint": "/v3/api/engine/convert",
       "params": {"date": "2026-02-20", "calendar": "chinese"},
       "assertions": {
         "result.year": 2026,
@@ -42,7 +42,7 @@
     },
     {
       "id": "tibetan-convert-2026-02-15",
-      "endpoint": "/v2/api/engine/convert",
+      "endpoint": "/v3/api/engine/convert",
       "params": {"date": "2026-02-15", "calendar": "tibetan"},
       "assertions": {
         "result.year": 2153,

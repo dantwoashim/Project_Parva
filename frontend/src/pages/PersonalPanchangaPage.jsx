@@ -13,8 +13,9 @@ import './PersonalPanchangaPage.css';
 
 export function PersonalPanchangaPage() {
   const { state, setDate, setLocation, setTimezone } = useTemporalContext();
-  const { state: memberState, savePlace } = useMemberContext();
+  const { state: memberState, savePlace, setLocalSaveConsent, clearLocalState } = useMemberContext();
   const [deviceStatus, setDeviceStatus] = useState('');
+  const localSaveEnabled = Boolean(memberState.persistence?.localSaveEnabled);
 
   const activePreset = useMemo(() => findPresetByLocation(state.location), [state.location]);
   const {
@@ -23,6 +24,7 @@ export function PersonalPanchangaPage() {
     payload,
     contextPayload,
     meta,
+    contextMeta,
     festivals,
   } = usePersonalPlaceBundle({
     date: state.date,
@@ -73,10 +75,11 @@ export function PersonalPanchangaPage() {
       activePreset,
       panchanga: payload,
       contextPayload,
+      contextMeta,
       festivals,
       meta,
     }),
-    [state, memberState, activePreset, payload, contextPayload, festivals, meta],
+    [state, memberState, activePreset, payload, contextPayload, contextMeta, festivals, meta],
   );
 
   const preferencesSummary = [
@@ -129,6 +132,12 @@ export function PersonalPanchangaPage() {
           latitude: state.location?.latitude,
           longitude: state.location?.longitude,
           timezone: state.timezone,
+        }).then((saved) => {
+          if (!localSaveEnabled) {
+            setDeviceStatus('Enable local save first if you want this browser to remember the place later.');
+          } else {
+            setDeviceStatus(saved ? 'Place saved to this browser only.' : 'This browser could not save the place.');
+          }
         })}
         onCyclePlace={() => {
           const currentIndex = LOCATION_PRESETS.findIndex((item) => item.id === activePreset?.id);
@@ -167,6 +176,54 @@ export function PersonalPanchangaPage() {
         </form>
 
         {deviceStatus ? <p className="personal-page__status">{deviceStatus}</p> : null}
+      </section>
+
+      <section className="ink-card personal-page__route-card">
+        <div className="personal-page__route-header">
+          <div>
+            <p className="today-page__eyebrow">Privacy</p>
+            <h2>Local saving is explicit, local-only, and reversible.</h2>
+          </div>
+        </div>
+        <p className="personal-page__privacy-copy">
+          Personal place details, saved reminders, and readings stay on this browser only. Turn local save on only if you want this device to remember them later.
+        </p>
+        <div className="personal-page__privacy-actions">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={async () => {
+              const nextEnabled = !localSaveEnabled;
+              const ok = await setLocalSaveConsent(nextEnabled);
+              setDeviceStatus(
+                ok
+                  ? (nextEnabled ? 'Local save is now enabled for this browser.' : 'Local save is paused and future writes will stay in-memory only.')
+                  : 'This browser could not update the local-save setting.',
+              );
+            }}
+          >
+            {localSaveEnabled ? 'Pause local save' : 'Enable local save'}
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={async () => {
+              const ok = await clearLocalState();
+              setDeviceStatus(
+                ok
+                  ? 'Saved local data was purged from this browser.'
+                  : 'This browser could not purge the saved local data.',
+              );
+            }}
+          >
+            Purge local data
+          </button>
+        </div>
+        <p className="personal-page__privacy-state">
+          {localSaveEnabled
+            ? 'Status: local save enabled on this browser only.'
+            : 'Status: local save is off by default until you explicitly enable it.'}
+        </p>
       </section>
 
       <section className="personal-summary-grid">
@@ -208,6 +265,17 @@ export function PersonalPanchangaPage() {
                   </Link>
                 ))}
               </div>
+              {viewModel.festivals.some((festival) => festival.truthNote) ? (
+                <div className="personal-page__truth-list">
+                  {viewModel.festivals
+                    .filter((festival) => festival.truthNote)
+                    .map((festival) => (
+                      <p key={`${festival.id}-truth`} className="personal-page__truth-note">
+                        {festival.title}: {festival.truthNote}
+                      </p>
+                    ))}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </article>
@@ -242,8 +310,65 @@ export function PersonalPanchangaPage() {
               <dd>{viewModel.savedStatus}</dd>
             </div>
           </dl>
+
+          {viewModel.truthSurface?.sources?.length ? (
+            <div className="today-page__truth-sources">
+              {viewModel.truthSurface.sources.map((source) => (
+                <article key={source.label} className="today-page__truth-card">
+                  <span className="today-page__label">{source.label}</span>
+                  <strong>{source.qualityBand}</strong>
+                  <p className="today-page__subsummary">
+                    Method {source.method}. Confidence {source.confidence}.
+                    {source.degraded ? ' Defaults were applied.' : ' No defaults were applied.'}
+                  </p>
+                  {source.boundaryRadar ? (
+                    <p className="today-page__subsummary">
+                      Boundary radar {source.boundaryRadar}
+                      {typeof source.stabilityScore === 'number' ? `. Stability ${source.stabilityScore}.` : '.'}
+                    </p>
+                  ) : null}
+                  {source.recommendedAction ? (
+                    <p className="today-page__subsummary">{source.recommendedAction}</p>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+          ) : null}
         </article>
       </section>
+
+      {viewModel.truthSurface?.chips?.length ? (
+        <section className="ink-card personal-page__truth-card">
+          <div className="personal-page__route-header">
+            <div>
+              <p className="today-page__eyebrow">Truth surface</p>
+              <h2>Place-aware method and fallback state</h2>
+            </div>
+          </div>
+          <div className="personal-page__truth-strip">
+            {viewModel.truthSurface.chips.map((chip) => (
+              <span
+                key={`${chip.tone}-${chip.label}`}
+                className={`personal-page__truth-chip personal-page__truth-chip--${chip.tone}`.trim()}
+              >
+                {chip.label}
+              </span>
+            ))}
+          </div>
+          <div className="personal-page__truth-grid">
+            {viewModel.truthSurface.sources.map((source) => (
+              <article key={source.label} className="personal-page__truth-source">
+                <span className="today-page__eyebrow">{source.label}</span>
+                <strong>{source.qualityBand}</strong>
+                <p>
+                  Method {source.method}. Confidence {source.confidence}.
+                  {source.degraded ? ' Defaults were applied.' : ' No defaults were applied.'}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <details className="personal-page__accordion">
         <summary>Place signals and method</summary>

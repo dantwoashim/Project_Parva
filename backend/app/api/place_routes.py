@@ -24,16 +24,52 @@ async def place_search(
     except RuntimeError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
 
+    payload.setdefault("source_mode", "remote_geocoder")
+    payload.setdefault(
+        "privacy_notice",
+        "Place queries are sent to the configured geocoding provider for resolution.",
+    )
+    payload.setdefault(
+        "service_notice",
+        "For privacy-sensitive or high-volume deployments, prefer an offline gazetteer over the public upstream service.",
+    )
+    source_mode = payload.get("source_mode") or "remote_geocoder"
+    method = (
+        "offline_nepal_gazetteer_search"
+        if source_mode == "offline_gazetteer"
+        else "nominatim_place_search"
+    )
+    trace_steps = []
+    if source_mode == "offline_gazetteer":
+        trace_steps.append(
+            {
+                "step": "local_search",
+                "detail": "Resolved place candidates from the bundled offline Nepal gazetteer.",
+            }
+        )
+        trace_steps.append(
+            {
+                "step": "normalize",
+                "detail": "Returned local place labels, coordinates, and timezone for privacy-preserving form use.",
+            }
+        )
+    else:
+        trace_steps.append(
+            {"step": "geocoding", "detail": "Resolved place candidates via OpenStreetMap Nominatim."}
+        )
+        trace_steps.append(
+            {"step": "timezone", "detail": "Attached timezone per candidate from coordinate lookup."}
+        )
+        trace_steps.append(
+            {"step": "normalize", "detail": "Returned normalized place labels and coordinates for form use."}
+        )
+
     trace = create_reason_trace(
         trace_type="place_search",
         subject={"query": query},
         inputs={"q": query, "limit": limit},
         outputs={"count": payload.get("total", 0)},
-        steps=[
-            {"step": "geocoding", "detail": "Resolved place candidates via OpenStreetMap Nominatim."},
-            {"step": "timezone", "detail": "Attached timezone per candidate from coordinate lookup."},
-            {"step": "normalize", "detail": "Returned normalized place labels and coordinates for form use."},
-        ],
+        steps=trace_steps,
     )
 
     return {
@@ -41,7 +77,7 @@ async def place_search(
         **base_meta_payload(
             trace_id=trace["trace_id"],
             confidence="computed",
-            method="nominatim_place_search",
+            method=method,
             method_profile="place_search_v1",
             quality_band="validated",
             assumption_set_id="global-place-search-v1",

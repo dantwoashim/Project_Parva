@@ -6,35 +6,35 @@
   "cases": [
     {
       "id": "festival-dashain-2026",
-      "endpoint": "/v2/api/festivals/dashain",
+      "endpoint": "/v3/api/festivals/dashain",
       "params": {"year": 2026},
       "assertions": {
-        "dates.start_date": "2026-10-10",
-        "dates.end_date": "2026-10-24"
+        "dates.start_date": "2026-10-11",
+        "dates.end_date": "2026-10-25"
       },
       "tolerance": 0,
-      "source": "Parva V2 rule engine baseline"
+      "source": "Parva v3 canonical public authority policy"
     },
     {
       "id": "festival-tihar-2026",
-      "endpoint": "/v2/api/festivals/tihar",
+      "endpoint": "/v3/api/festivals/tihar",
       "params": {"year": 2026},
       "assertions": {
-        "dates.start_date": "2026-11-07",
-        "dates.end_date": "2026-11-11"
+        "dates.start_date": "2026-11-08",
+        "dates.end_date": "2026-11-12"
       },
       "tolerance": 0,
-      "source": "Parva V2 rule engine baseline"
+      "source": "Parva v3 canonical public authority policy"
     },
     {
       "id": "festival-shivaratri-2026",
-      "endpoint": "/v2/api/festivals/shivaratri",
+      "endpoint": "/v3/api/festivals/shivaratri",
       "params": {"year": 2026},
       "assertions": {
-        "dates.start_date": "2026-02-14"
+        "dates.start_date": "2026-02-15"
       },
       "tolerance": 0,
-      "source": "Parva V2 rule engine baseline"
+      "source": "Parva v3 canonical public authority policy"
     }
   ]
 }

@@ -169,6 +169,40 @@ def build_input_degraded_state(
     )
 
 
+def derive_support_tier(
+    *,
+    confidence: str,
+    quality_band: str,
+    degraded: Optional[DegradedState] = None,
+) -> str:
+    normalized_confidence = (confidence or "unknown").strip().lower()
+    normalized_band = (quality_band or "").strip().lower()
+    degraded_state = degraded or DegradedState(active=False, reasons=tuple(), defaults_applied=tuple())
+
+    if normalized_confidence == "official":
+        return "authoritative"
+    if normalized_confidence == "estimated":
+        return "estimated"
+    if degraded_state.active:
+        return "heuristic"
+    if normalized_band in {"beta", "research", "inventory", "provisional"}:
+        return "heuristic"
+    return "computed"
+
+
+def _fallback_used(method: str) -> bool:
+    normalized = str(method or "").strip().lower()
+    return "fallback" in normalized or "legacy" in normalized
+
+
+def _calibration_status(*, confidence: str, method: str) -> str:
+    normalized_confidence = (confidence or "").strip().lower()
+    normalized_method = (method or "").strip().lower()
+    if normalized_confidence == "official" or normalized_method == "override":
+        return "not_applicable"
+    return "unavailable"
+
+
 def base_meta_payload(
     *,
     trace_id: str,
@@ -179,14 +213,29 @@ def base_meta_payload(
     assumption_set_id: str = "np-mainstream-v1",
     advisory_scope: str = "informational",
     degraded: Optional[DegradedState] = None,
+    engine_path: Optional[str] = None,
+    fallback_used: Optional[bool] = None,
+    calibration_status: Optional[str] = None,
 ) -> Dict[str, Any]:
     degraded_state = degraded or DegradedState(active=False, reasons=tuple(), defaults_applied=tuple())
     return {
         "engine_version": "v3",
         "calculation_trace_id": trace_id,
         "confidence": confidence,
+        "support_tier": derive_support_tier(
+            confidence=confidence,
+            quality_band=quality_band,
+            degraded=degraded_state,
+        ),
         "method": method,
         "method_profile": method_profile or method,
+        "engine_path": engine_path or method,
+        "fallback_used": _fallback_used(method) if fallback_used is None else fallback_used,
+        "calibration_status": (
+            _calibration_status(confidence=confidence, method=method)
+            if calibration_status is None
+            else calibration_status
+        ),
         "quality_band": quality_band,
         "assumption_set_id": assumption_set_id,
         "advisory_scope": advisory_scope,
@@ -206,6 +255,7 @@ __all__ = [
     "DegradedState",
     "base_meta_payload",
     "build_input_degraded_state",
+    "derive_support_tier",
     "normalize_coordinates",
     "normalize_timezone",
     "parse_date",

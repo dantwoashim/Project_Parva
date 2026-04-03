@@ -282,6 +282,29 @@ export function getApiBase() {
   return API_BASE;
 }
 
+function toAbsoluteApiUrl(value) {
+  if (!value) return '';
+  try {
+    return new URL(value, window.location.origin).toString();
+  } catch {
+    return value;
+  }
+}
+
+function toWebcalUrl(value) {
+  const absolute = toAbsoluteApiUrl(value);
+  if (absolute.startsWith('https://')) return `webcal://${absolute.slice('https://'.length)}`;
+  if (absolute.startsWith('http://')) return `webcal://${absolute.slice('http://'.length)}`;
+  return absolute;
+}
+
+function appendQueryParam(url, key, value) {
+  const absolute = toAbsoluteApiUrl(url);
+  const next = new URL(absolute);
+  next.searchParams.set(key, value);
+  return next.toString();
+}
+
 export const temporalAPI = {
   getCompass: ({ date, lat, lon, tz, qualityBand = 'computed' } = {}) =>
     fetchAPI('/temporal/compass', createPrivateJsonOptions({
@@ -302,6 +325,15 @@ export const temporalAPI = {
       }),
       preferEnvelope: true,
     }).then(normalizeTemporalCompassEnvelope),
+  getCompassProofCapsule: ({ date, lat, lon, tz, qualityBand = 'computed', riskMode = 'strict' } = {}) =>
+    fetchAPI('/temporal/compass/proof-capsule', createPrivateJsonOptions({
+      date,
+      lat,
+      lon,
+      tz,
+      quality_band: qualityBand,
+      risk_mode: riskMode,
+    })),
 };
 
 export const glossaryAPI = {
@@ -331,34 +363,88 @@ export const festivalAPI = {
     if (sort) params.set('sort', sort);
     return fetchAPIEnvelope(`/festivals/timeline?${params.toString()}`, { preferEnvelope: true }).then(normalizeFestivalTimelineEnvelope);
   },
-  getById: (id, year) => {
-    const query = year ? `?year=${year}` : '';
-    return fetchAPI(`/festivals/${id}${query}`);
+  getById: (id, year, authorityMode) => {
+    const params = new URLSearchParams();
+    if (year) params.set('year', year);
+    if (authorityMode) params.set('authority_mode', authorityMode);
+    const query = params.toString();
+    return fetchAPI(`/festivals/${id}${query ? `?${query}` : ''}`);
   },
-  getByIdEnvelope: (id, year) => {
-    const query = year ? `?year=${year}` : '';
-    return fetchAPIEnvelope(`/festivals/${id}${query}`, { preferEnvelope: true }).then(normalizeFestivalDetailEnvelope);
+  getByIdEnvelope: (id, year, authorityMode) => {
+    const params = new URLSearchParams();
+    if (year) params.set('year', year);
+    if (authorityMode) params.set('authority_mode', authorityMode);
+    const query = params.toString();
+    return fetchAPIEnvelope(`/festivals/${id}${query ? `?${query}` : ''}`, { preferEnvelope: true }).then(normalizeFestivalDetailEnvelope);
   },
-  getExplain: (id, year) => {
-    const query = year ? `?year=${year}` : '';
-    return fetchAPI(`/festivals/${id}/explain${query}`);
+  getExplain: (id, year, authorityMode) => {
+    const params = new URLSearchParams();
+    if (year) params.set('year', year);
+    if (authorityMode) params.set('authority_mode', authorityMode);
+    const query = params.toString();
+    return fetchAPI(`/festivals/${id}/explain${query ? `?${query}` : ''}`);
+  },
+  getDisputeAtlas: (year, limit = 18) => fetchAPI(`/festivals/disputes?year=${year}&limit=${limit}`),
+  getProofCapsule: (id, year, authorityMode = 'authority_compare', riskMode = 'strict') => {
+    const params = new URLSearchParams({ year, authority_mode: authorityMode, risk_mode: riskMode });
+    return fetchAPI(`/festivals/${id}/proof-capsule?${params.toString()}`);
   },
   getTrace: (traceId) => fetchAPI(`/explain/${traceId}`),
   getDates: (id, years = 3) => fetchAPI(`/festivals/${id}/dates?years=${years}`),
   getOnDate: (date) => fetchAPI(`/festivals/on-date/${date}`),
 };
 
+export const reliabilityAPI = {
+  getBenchmarkManifest: () => fetchAPI('/reliability/benchmark-manifest'),
+  getSourceReviewQueue: () => fetchAPI('/reliability/source-review-queue'),
+  getBoundarySuite: () => fetchAPI('/reliability/boundary-suite'),
+  getDifferentialManifest: () => fetchAPI('/reliability/differential-manifest'),
+};
+
 export const calendarAPI = {
   getMonth: (year, month) => fetchAPI(`/festivals/calendar/${year}/${month}`),
   getDualMonth: (year, month) => fetchAPI(`/calendar/dual-month?year=${year}&month=${month}`),
-  getToday: async () => normalizeCalendarTodayPayload(await fetchAPI('/calendar/today')),
-  getPanchanga: (date) => fetchAPI(`/calendar/panchanga?date=${date}`),
-  getPanchangaEnvelope: (date) => fetchAPIEnvelope(`/calendar/panchanga?date=${date}`),
-  getTithi: (date, latitude, longitude) => {
+  getToday: async (riskMode) => {
+    const query = riskMode ? `?risk_mode=${encodeURIComponent(riskMode)}` : '';
+    return normalizeCalendarTodayPayload(await fetchAPI(`/calendar/today${query}`));
+  },
+  getTodayProofCapsule: (riskMode = 'strict') =>
+    fetchAPI(`/calendar/today/proof-capsule?risk_mode=${encodeURIComponent(riskMode)}`),
+  convertGregorian: (date) => fetchAPI(`/calendar/convert?date=${encodeURIComponent(date)}`),
+  compareGregorian: (date) => fetchAPI(`/calendar/convert/compare?date=${encodeURIComponent(date)}`),
+  convertBsToGregorian: ({ year, month, day }) => fetchAPI('/calendar/bs-to-gregorian', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ year, month, day }),
+  }),
+  getPanchanga: (date, riskMode) => {
+    const params = new URLSearchParams({ date });
+    if (riskMode) params.set('risk_mode', riskMode);
+    return fetchAPI(`/calendar/panchanga?${params.toString()}`);
+  },
+  getPanchangaEnvelope: (date, riskMode) => {
+    const params = new URLSearchParams({ date });
+    if (riskMode) params.set('risk_mode', riskMode);
+    return fetchAPIEnvelope(`/calendar/panchanga?${params.toString()}`);
+  },
+  getPanchangaProofCapsule: (date, riskMode = 'strict') => {
+    const params = new URLSearchParams({ date, risk_mode: riskMode });
+    return fetchAPI(`/calendar/panchanga/proof-capsule?${params.toString()}`);
+  },
+  getTithi: (date, latitude, longitude, riskMode) => {
     const params = new URLSearchParams({ date });
     if (latitude !== undefined) params.set('latitude', latitude);
     if (longitude !== undefined) params.set('longitude', longitude);
+    if (riskMode) params.set('risk_mode', riskMode);
     return fetchAPI(`/calendar/tithi?${params.toString()}`);
+  },
+  getTithiProofCapsule: (date, latitude, longitude, riskMode = 'strict') => {
+    const params = new URLSearchParams({ date, risk_mode: riskMode });
+    if (latitude !== undefined) params.set('latitude', latitude);
+    if (longitude !== undefined) params.set('longitude', longitude);
+    return fetchAPI(`/calendar/tithi/proof-capsule?${params.toString()}`);
   },
   getResolveEnvelope: (date, options = {}) => {
     const params = new URLSearchParams({ date });
@@ -385,6 +471,22 @@ export const personalAPI = {
       ...createPrivateJsonOptions({ date, lat, lon, tz }),
       preferEnvelope: true,
     }).then(normalizePersonalContextEnvelope),
+  getPanchangaProofCapsule: ({ date, lat, lon, tz, riskMode = 'strict' } = {}) =>
+    fetchAPI('/personal/panchanga/proof-capsule', createPrivateJsonOptions({
+      date,
+      lat,
+      lon,
+      tz,
+      risk_mode: riskMode,
+    })),
+  getContextProofCapsule: ({ date, lat, lon, tz, riskMode = 'strict' } = {}) =>
+    fetchAPI('/personal/context/proof-capsule', createPrivateJsonOptions({
+      date,
+      lat,
+      lon,
+      tz,
+      risk_mode: riskMode,
+    })),
 };
 
 export const muhurtaAPI = {
@@ -471,6 +573,23 @@ export const feedAPI = {
   getCustomLink: (festivalIds = [], years = 2, lang = 'en') => {
     const festivals = encodeURIComponent(festivalIds.join(','));
     return `${API_BASE}/feeds/custom.ics?festivals=${festivals}&years=${years}&lang=${lang}`;
+  },
+  getDownloadLink: (url) => appendQueryParam(url, 'download', '1'),
+  getAppleSubscribeLink: (url) => toWebcalUrl(url),
+  getGoogleSetupUrl: () => 'https://calendar.google.com/calendar/u/0/r/settings/addbyurl',
+  getCatalog: ({ years = 2, startYear, lang = 'en' } = {}) => {
+    const params = new URLSearchParams({ years: String(years), lang });
+    if (startYear) params.set('start_year', String(startYear));
+    return fetchAPI(`/feeds/integrations/catalog?${params.toString()}`);
+  },
+  getCustomPlan: ({ festivalIds = [], years = 2, startYear, lang = 'en' } = {}) => {
+    const params = new URLSearchParams({
+      festivals: festivalIds.join(','),
+      years: String(years),
+      lang,
+    });
+    if (startYear) params.set('start_year', String(startYear));
+    return fetchAPI(`/feeds/integrations/custom-plan?${params.toString()}`);
   },
   getPreview: (days = 30, lang = 'en') => fetchAPI(`/feeds/next?days=${days}&lang=${lang}`),
 };

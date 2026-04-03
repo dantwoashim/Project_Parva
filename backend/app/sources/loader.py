@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .interface import SourceInterface
+from .validation import validate_ground_truth_payload
 
 DEFAULT_PRIORITY = [
     "ground_truth_overrides",
@@ -63,7 +64,7 @@ class JsonSourceLoader(SourceInterface):
             ambiguous_records += int(meta.get("ambiguous_records", 0) or 0)
             invalid_records += int(meta.get("invalid_records", 0) or 0)
 
-        return {
+        merged_payload = {
             "_meta": {
                 "name": "Project Parva MoHA Ground Truth Baseline",
                 "source_files": [path.name for path in sorted(ground_truth_dir.glob("baseline_*.json"))],
@@ -75,6 +76,8 @@ class JsonSourceLoader(SourceInterface):
             },
             "records": merged_records,
         }
+        merged_payload["_meta"]["validation"] = validate_ground_truth_payload(merged_payload)
+        return merged_payload
 
     def load_festival_rules(self) -> dict[str, Any]:
         return self._read_json(self.calendar_dir / "festival_rules_v3.json", {"festivals": {}})

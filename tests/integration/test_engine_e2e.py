@@ -12,6 +12,10 @@ def test_e2e_calendar_today_pipeline_has_metadata_and_npt_sunrise():
     assert response.headers["X-Parva-License"] == "AGPL-3.0-or-later"
 
     data = response.json()
+    assert data["support_tier"] in {"computed", "estimated", "heuristic"}
+    assert data["engine_path"] in {"ephemeris_udaya", "instantaneous"}
+    assert isinstance(data["fallback_used"], bool)
+    assert data["calibration_status"] == "unavailable"
     tithi = data["tithi"]
 
     assert tithi["method"] in {"ephemeris_udaya", "instantaneous"}
@@ -27,6 +31,10 @@ def test_e2e_calendar_tithi_endpoint_pipeline():
 
     data = response.json()
     assert data["engine_version"] == "v3"
+    assert data["support_tier"] in {"computed", "heuristic"}
+    assert data["engine_path"] in {"ephemeris_udaya", "instantaneous"}
+    assert isinstance(data["fallback_used"], bool)
+    assert data["calibration_status"] == "unavailable"
     assert "location" in data
     assert "tithi" in data
 

@@ -42,6 +42,9 @@ def test_ground_truth_loader_merges_supplemental_baseline_files():
         row.get("festival_id") == "dashain" and row.get("gregorian_date") == "2021-10-07"
         for row in payload.get("records", [])
     )
+    validation = payload.get("_meta", {}).get("validation", {})
+    assert validation.get("status") in {"ok", "warning"}
+    assert validation.get("authority_mismatch_count", 0) >= 1
 
 
 def test_secondary_digital_provider_enriches_historical_override_years():

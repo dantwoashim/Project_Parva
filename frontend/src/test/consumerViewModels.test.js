@@ -67,6 +67,8 @@ describe('consumer view models', () => {
     expect(model.bestWindow.value).toMatch(/10:30 AM/i);
     expect(model.evidence.methodRef).toBe('best-time profile');
     expect(model.timeline).toHaveLength(1);
+    expect(model.truthSurface.chips.length).toBeGreaterThan(0);
+    expect(model.truthSurface.sources[0].method).toMatch(/best time profile/i);
   });
 
   it('builds best-time guidance with a primary window, alternates, and a timeline', () => {
@@ -170,6 +172,57 @@ describe('consumer view models', () => {
     expect(model.allFestivalCards[0].saved).toBe(true);
     expect(model.facets.categories[0].label).toBe('National');
     expect(model.chapters[0].lead.title).toBe('Dashain');
+  });
+
+  it('builds the my place model with truth-surface metadata', () => {
+    const model = buildConsumerMyPlaceViewModel({
+      temporalState,
+      memberState: {
+        reminders: [],
+        savedPlaces: [{ label: 'Kathmandu Home' }],
+        preferences: { notificationStyle: 'gentle' },
+      },
+      activePreset: { label: 'Kathmandu' },
+      panchanga: {
+        tithi: { name: 'Chaturdashi', paksha: 'krishna' },
+        nakshatra: { name: 'Shravana', number: 22 },
+        yoga: { name: 'Shubha' },
+        vaara: { name_english: 'Sunday' },
+        local_sunrise: { local: '2026-02-15T06:44:00+05:45' },
+        sunrise: { local: '2026-02-15T06:42:00+05:45' },
+        local_sunset: { local: '2026-02-15T17:53:00+05:45' },
+      },
+      contextPayload: {
+        context_summary: 'Quiet morning at your saved place.',
+        context_title: 'Morning Calm',
+        daily_inspiration: 'Hold the quiet before the day opens.',
+        upcoming_reminders: [],
+      },
+      festivals: [
+        {
+          id: 'dashain',
+          name: 'Dashain',
+          support_tier: 'authoritative',
+          selection_policy: 'public_default',
+        },
+      ],
+      meta: {
+        method: 'ephemeris_udaya',
+        quality_band: 'gold',
+        confidence: { level: 'high' },
+        degraded: { active: false },
+      },
+      contextMeta: {
+        method: 'personal_context_synthesis',
+        quality_band: 'gold',
+        confidence: { level: 'high' },
+        degraded: { active: true },
+      },
+    });
+
+    expect(model.truthSurface.chips.length).toBeGreaterThan(0);
+    expect(model.festivals[0].truthNote).toMatch(/Authoritative/i);
+    expect(model.truthSurface.sources[1].degraded).toBe(true);
   });
 
   it('builds the festival detail model with rituals, occurrences, and related observances', () => {

@@ -77,9 +77,9 @@ class TestCalculateFestivalDate:
         assert result.duration_days == 2
 
     def test_shivaratri_2026(self):
-        """Shivaratri 2026 calculation."""
+        """Shivaratri 2026 follows the canonical public authority policy."""
         result = calculate_festival_date("shivaratri", 2026)
-        assert result.start == date(2026, 2, 14)
+        assert result.start == date(2026, 2, 15)
         assert result.duration_days == 1
 
     def test_indra_jatra_2026(self):

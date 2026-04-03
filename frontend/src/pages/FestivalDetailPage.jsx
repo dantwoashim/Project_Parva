@@ -22,6 +22,18 @@ function artTone(value) {
   return `festival-detail__art festival-detail__art--${value || 'lamp'}`.trim();
 }
 
+function startCaseTruth(value) {
+  return String(value || 'unknown')
+    .split(/[_-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function truthTone(value) {
+  return `festival-detail__truth-chip festival-detail__truth-chip--${value || 'default'}`.trim();
+}
+
 export function FestivalDetailPage() {
   const navigate = useNavigate();
   const { festivalId } = useParams();
@@ -58,6 +70,14 @@ export function FestivalDetailPage() {
   );
 
   const isSaved = memberState.savedFestivals.some((item) => item.id === festivalId);
+  const alternateCandidates = dates?.alternate_candidates || dates?.authority_alternates || [];
+  const truthChips = [
+    dates?.support_tier ? { label: startCaseTruth(dates.support_tier), tone: dates.support_tier } : null,
+    dates?.source_family ? { label: startCaseTruth(dates.source_family), tone: 'source' } : null,
+    dates?.selection_policy ? { label: startCaseTruth(dates.selection_policy), tone: 'policy' } : null,
+    dates?.fallback_used ? { label: 'Fallback Used', tone: 'fallback' } : null,
+    dates?.calibration_status ? { label: startCaseTruth(dates.calibration_status), tone: 'calibration' } : null,
+  ].filter(Boolean);
   const calendarLink = useMemo(
     () => feedAPI.getCustomLink(festivalId ? [festivalId] : [], 3, 'en'),
     [festivalId],
@@ -93,7 +113,7 @@ export function FestivalDetailPage() {
 
     setTraceLoading(true);
     try {
-      const explain = await festivalAPI.getExplain(festivalId, year || undefined);
+      const explain = await festivalAPI.getExplain(festivalId, year || undefined, 'authority_compare');
       if (explain?.calculation_trace_id) {
         setTrace(await festivalAPI.getTrace(explain.calculation_trace_id));
       } else {
@@ -260,6 +280,67 @@ export function FestivalDetailPage() {
           ))}
         </div>
       </section>
+
+      {dates ? (
+        <section className="festival-detail__truth">
+          <div className="festival-detail__section-head">
+            <h2>Truth Surface</h2>
+            <p>Authority selection, fallback state, and alternate candidates stay visible instead of disappearing behind one confidence badge.</p>
+          </div>
+          <div className="festival-detail__truth-grid">
+            <article className="festival-detail__truth-panel">
+              <p className="festival-detail__eyebrow">Resolution contract</p>
+              <div className="festival-detail__truth-chip-row">
+                {truthChips.map((chip) => (
+                  <span key={`${chip.tone}-${chip.label}`} className={truthTone(chip.tone)}>
+                    {chip.label}
+                  </span>
+                ))}
+              </div>
+              <div className="festival-detail__truth-copy">
+                <p><strong>Engine path:</strong> {dates.engine_path || 'Unavailable'}</p>
+                <p><strong>Source family:</strong> {dates.source_family || 'Computed rule profile'}</p>
+                <p><strong>Selection policy:</strong> {startCaseTruth(dates.selection_policy || 'public_default')}</p>
+                <p><strong>Authority conflict:</strong> {dates.authority_conflict ? 'Present' : 'No conflict published'}</p>
+                {dates.authority_note ? (
+                  <p className="festival-detail__truth-note">{dates.authority_note}</p>
+                ) : null}
+              </div>
+            </article>
+
+            <article className="festival-detail__truth-panel festival-detail__truth-panel--ledger">
+              <p className="festival-detail__eyebrow">Authority ledger</p>
+              {alternateCandidates.length ? (
+                <div className="festival-detail__truth-ledger">
+                  <div className="festival-detail__truth-ledger-item is-primary">
+                    <span className="festival-detail__truth-ledger-date">{dates.start_date}</span>
+                    <div>
+                      <strong>Public default</strong>
+                      <p>{dates.source_family || 'Current authority precedence'}</p>
+                    </div>
+                  </div>
+                  {alternateCandidates.map((candidate) => (
+                    <div
+                      key={`${candidate.start}-${candidate.source || candidate.source_family || 'candidate'}`}
+                      className="festival-detail__truth-ledger-item"
+                    >
+                      <span className="festival-detail__truth-ledger-date">{candidate.start}</span>
+                      <div>
+                        <strong>{candidate.source_family || candidate.source || 'Alternate authority'}</strong>
+                        <p>{candidate.notes || 'Published as an alternate authority-backed candidate.'}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="festival-detail__truth-note">
+                  No alternate authority-backed candidates are published for this festival-year.
+                </p>
+              )}
+            </article>
+          </div>
+        </section>
+      ) : null}
 
       <section className="festival-detail__technical">
         <div className="festival-detail__technical-copy">

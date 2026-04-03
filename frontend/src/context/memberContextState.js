@@ -15,7 +15,8 @@ export function createGuestPersistence() {
   return {
     store: 'guest_local',
     scope: 'device_cache',
-    syncStatus: 'guest_cached',
+    syncStatus: 'guest_ephemeral',
+    localSaveEnabled: false,
     revision: 0,
     lastLoadedAt: null,
     lastPersistedAt: null,
@@ -44,6 +45,7 @@ function normalizePersistence(persistence, fallback = createGuestPersistence()) 
     ...(persistence && typeof persistence === 'object' ? persistence : {}),
   };
   next.revision = Number.isFinite(Number(next.revision)) ? Number(next.revision) : fallback.revision;
+  next.localSaveEnabled = Boolean(next.localSaveEnabled);
   return next;
 }
 
@@ -57,6 +59,11 @@ function upsertBy(list = [], item, keyField = 'id') {
   if (!keyValue) return [...list, item];
   const next = list.filter((entry) => entry?.[keyField] !== keyValue);
   return [item, ...next];
+}
+
+function integrationKey(integration = {}) {
+  if (integration.id) return integration.id;
+  return integration.platform || integration.title || `integration:${Date.now()}`;
 }
 
 function upsertPlace(list = [], item) {
@@ -173,6 +180,16 @@ function buildNotice(kind, payload, options = {}) {
         title: 'Device cache cleared',
         body: 'Saved items, reminders, integrations, and reminder preferences were cleared from this guest device cache.',
       };
+    case 'setLocalSaveConsent':
+      return payload?.enabled
+        ? {
+            title: 'Local save enabled',
+            body: 'Saved places, reminders, and readings can now stay on this browser only until you purge them.',
+          }
+        : {
+            title: 'Local save paused',
+            body: 'Parva will stop writing personal data into this browser cache until you enable it again.',
+          };
     default:
       return null;
   }
@@ -249,13 +266,16 @@ export function reducer(state, action) {
     case 'startIntegration':
       return {
         ...state,
-        integrations: upsertBy(state.integrations, action.payload, 'platform'),
+        integrations: upsertBy(state.integrations, action.payload, 'id'),
         notice: buildNotice('startIntegration', action.payload),
       };
     case 'removeIntegration':
       return {
         ...state,
-        integrations: state.integrations.filter((entry) => entry?.platform !== action.payload),
+        integrations: state.integrations.filter((entry) => {
+          const key = integrationKey(entry);
+          return key !== action.payload && entry?.platform !== action.payload;
+        }),
       };
     case 'updatePreferences':
       return {
@@ -283,10 +303,24 @@ export function reducer(state, action) {
         ...state,
         ...reset,
         account: state.account,
-        persistence: state.persistence,
+        persistence: {
+          ...state.persistence,
+          localSaveEnabled: false,
+          syncStatus: 'guest_ephemeral',
+        },
         notice: buildNotice('clearLocalState'),
       };
     }
+    case 'setLocalSaveConsent':
+      return {
+        ...state,
+        persistence: {
+          ...state.persistence,
+          localSaveEnabled: Boolean(action.payload?.enabled),
+          syncStatus: action.payload?.enabled ? 'guest_cached' : 'guest_ephemeral',
+        },
+        notice: buildNotice('setLocalSaveConsent', action.payload),
+      };
     case 'clearNotice':
       return {
         ...state,

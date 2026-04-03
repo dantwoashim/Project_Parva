@@ -67,6 +67,34 @@ describe('member context state', () => {
     });
   });
 
+  it('updates local-save consent and sync posture explicitly', () => {
+    const enabled = reducer(createInitialMemberState(), {
+      type: 'setLocalSaveConsent',
+      payload: { enabled: true },
+    });
+
+    expect(enabled.persistence).toMatchObject({
+      localSaveEnabled: true,
+      syncStatus: 'guest_cached',
+    });
+    expect(enabled.notice).toMatchObject({
+      title: 'Local save enabled',
+    });
+
+    const disabled = reducer(enabled, {
+      type: 'setLocalSaveConsent',
+      payload: { enabled: false },
+    });
+
+    expect(disabled.persistence).toMatchObject({
+      localSaveEnabled: false,
+      syncStatus: 'guest_ephemeral',
+    });
+    expect(disabled.notice).toMatchObject({
+      title: 'Local save paused',
+    });
+  });
+
   it('imports local device data and normalizes older reminder channels', () => {
     const imported = reducer(createInitialMemberState(), {
       type: 'importLocalState',
@@ -116,6 +144,7 @@ describe('member context state', () => {
       persistence: {
         store: 'guest_local',
         scope: 'device_cache',
+        localSaveEnabled: false,
         revision: 4,
       },
       savedPlaces: [{ id: 'ktm', label: 'Kathmandu', timezone: 'Asia/Kathmandu' }],
@@ -134,6 +163,7 @@ describe('member context state', () => {
       accountId: 'member-123',
     });
     expect(cleared.persistence).toMatchObject({
+      localSaveEnabled: false,
       revision: 4,
       scope: 'device_cache',
     });
@@ -174,6 +204,38 @@ describe('member context state', () => {
     expect(imported.reminders).toEqual([{ id: 'festival:holi', title: 'Holi' }]);
     expect(imported.notice).toMatchObject({
       title: 'Device cache imported',
+    });
+  });
+
+  it('keeps multiple integrations when they have distinct ids and removes by id cleanly', () => {
+    const withGooglePreset = reducer(createInitialMemberState(), {
+      type: 'startIntegration',
+      payload: {
+        id: 'google-all',
+        platform: 'google',
+        title: 'All Festivals for Google Calendar',
+      },
+    });
+
+    const withGoogleCustom = reducer(withGooglePreset, {
+      type: 'startIntegration',
+      payload: {
+        id: 'google-custom-dashain',
+        platform: 'google-custom',
+        title: 'Dashain for Google Calendar',
+      },
+    });
+
+    expect(withGoogleCustom.integrations).toHaveLength(2);
+
+    const removed = reducer(withGoogleCustom, {
+      type: 'removeIntegration',
+      payload: 'google-all',
+    });
+
+    expect(removed.integrations).toHaveLength(1);
+    expect(removed.integrations[0]).toMatchObject({
+      id: 'google-custom-dashain',
     });
   });
 });

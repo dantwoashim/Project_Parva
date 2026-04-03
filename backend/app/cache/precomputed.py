@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
@@ -41,14 +41,21 @@ def load_precomputed_festival_year(year: int) -> Optional[dict[str, Any]]:
     return payload
 
 
-def load_precomputed_festivals_between(start_date: date, end_date: date) -> Optional[list[dict[str, Any]]]:
+def load_precomputed_festivals_between_report(
+    start_date: date,
+    end_date: date,
+) -> dict[str, Any]:
     rows: list[dict[str, Any]] = []
+    loaded_years: list[int] = []
+    missing_years: list[int] = []
 
     for year in range(start_date.year, end_date.year + 1):
         payload = load_precomputed_festival_year(year)
         if not payload or not isinstance(payload.get("festivals"), list):
-            return None
+            missing_years.append(year)
+            continue
 
+        loaded_years.append(year)
         for row in payload["festivals"]:
             try:
                 festival_start = date.fromisoformat(str(row["start"]))
@@ -71,17 +78,52 @@ def load_precomputed_festivals_between(start_date: date, end_date: date) -> Opti
                 }
             )
 
-    return rows
+    return {
+        "rows": rows,
+        "loaded_years": loaded_years,
+        "missing_years": missing_years,
+        "partial_hit": bool(loaded_years) and bool(missing_years),
+        "full_hit": bool(loaded_years) and not missing_years,
+    }
+
+
+def load_precomputed_festivals_between(start_date: date, end_date: date) -> Optional[list[dict[str, Any]]]:
+    report = load_precomputed_festivals_between_report(start_date, end_date)
+    if report["missing_years"]:
+        return None
+    return report["rows"]
 
 
 def get_cache_stats() -> dict[str, Any]:
     PRECOMPUTE_DIR.mkdir(parents=True, exist_ok=True)
     files = sorted(PRECOMPUTE_DIR.glob("*.json"))
     total_bytes = sum(f.stat().st_size for f in files)
+    modified_times = [f.stat().st_mtime for f in files]
+    now_ts = datetime.now(timezone.utc).timestamp()
+    newest_modified = max(modified_times) if modified_times else None
+    oldest_modified = min(modified_times) if modified_times else None
+    panchanga_files = [f for f in files if f.name.startswith("panchanga_")]
+    festival_files = [f for f in files if f.name.startswith("festivals_")]
     return {
         "directory": str(PRECOMPUTE_DIR),
         "file_count": len(files),
         "total_bytes": total_bytes,
+        "freshness": {
+            "newest_modified": newest_modified,
+            "oldest_modified": oldest_modified,
+            "newest_age_seconds": round(now_ts - newest_modified, 3) if newest_modified else None,
+            "oldest_age_seconds": round(now_ts - oldest_modified, 3) if oldest_modified else None,
+        },
+        "artifact_classes": {
+            "panchanga": {
+                "file_count": len(panchanga_files),
+                "available": bool(panchanga_files),
+            },
+            "festivals": {
+                "file_count": len(festival_files),
+                "available": bool(festival_files),
+            },
+        },
         "files": [
             {
                 "name": f.name,

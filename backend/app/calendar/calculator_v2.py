@@ -17,10 +17,12 @@ import json
 from dataclasses import dataclass
 from datetime import date, timedelta
 from functools import lru_cache
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Dict, List, Literal, Optional, Tuple
 
 from .bikram_sambat import bs_to_gregorian
+from .bs_year import bs_solar_year_for_gregorian_year
 from .lunar_calendar import (
     find_festival_in_lunar_month,
     get_lunar_year,
@@ -165,7 +167,7 @@ def calculate_festival_date_v2(
                     lunar_month=rule.lunar_month if rule else None,
                     is_adhik_year=get_lunar_year(year).has_adhik,
                 )
-        except Exception:
+        except (ImportError, OSError, JSONDecodeError, TypeError, ValueError, KeyError):
             # Fall back to algorithmic calculation
             pass
 
@@ -174,7 +176,10 @@ def calculate_festival_date_v2(
     if festival_id not in rules:
         # Fallback to legacy rule set (bs_month-based) if available
         try:
-            from .calculator import calculate_festival_date as calculate_festival_date_v1
+            from .calculator import (
+                FestivalCalculationError,
+                calculate_festival_date as calculate_festival_date_v1,
+            )
 
             dr = calculate_festival_date_v1(festival_id, year, use_overrides=use_overrides)
             return FestivalDate(
@@ -186,7 +191,14 @@ def calculate_festival_date_v2(
                 lunar_month=None,
                 is_adhik_year=get_lunar_year(year).has_adhik,
             )
-        except Exception:
+        except (
+            ImportError,
+            FestivalCalculationError,
+            OSError,
+            TypeError,
+            ValueError,
+            KeyError,
+        ):
             return None
 
     rule = rules[festival_id]
@@ -230,7 +242,7 @@ def _calculate_solar_festival(
 
     # Generic solar festival using BS calendar
     if rule.bs_month and rule.solar_day:
-        bs_year = year + 56 if year > 1943 else year + 57
+        bs_year = bs_solar_year_for_gregorian_year(year, rule.bs_month)
         try:
             start_date = bs_to_gregorian(bs_year, rule.bs_month, rule.solar_day)
             return FestivalDate(
@@ -240,7 +252,7 @@ def _calculate_solar_festival(
                 year=year,
                 method="solar",
             )
-        except Exception:
+        except (TypeError, ValueError):
             return None
 
     return None
@@ -340,7 +352,7 @@ def _list_festivals_v2_cached() -> tuple[str, ...]:
         from .festival_rules_loader import list_festivals
 
         ids.update(list_festivals())
-    except Exception:
+    except (ImportError, OSError, TypeError, ValueError):
         return tuple(sorted(ids))
     return tuple(sorted(ids))
 
@@ -370,7 +382,7 @@ def get_upcoming_festivals_v2(from_date: date, days: int = 30) -> List[Tuple[str
                     and date_range.start_date <= end_date
                 ):
                     results.append((festival_id, date_range))
-            except Exception:
+            except (TypeError, ValueError, KeyError):
                 continue
 
     results.sort(key=lambda x: x[1].start_date)
@@ -381,7 +393,7 @@ def get_upcoming_festivals_v2(from_date: date, days: int = 30) -> List[Tuple[str
     for festival_id, date_range in results:
         key = (festival_id, date_range.start_date)
         if key not in seen:
-            seen = seen | {key}
+            seen.add(key)
             unique_results.append((festival_id, date_range))
 
     return unique_results
@@ -398,7 +410,7 @@ def get_festivals_on_date_v2(target_date: date) -> List[Tuple[str, FestivalDate]
             date_range = calculate_festival_v2(festival_id, target_date.year)
             if date_range and date_range.overlaps(target_date):
                 results.append((festival_id, date_range))
-        except Exception:
+        except (TypeError, ValueError, KeyError):
             continue
 
     return results
@@ -420,6 +432,6 @@ def get_next_occurrence_v2(
                 return date_range
             if date_range and date_range.overlaps(after_date):
                 return date_range
-        except Exception:
+        except (TypeError, ValueError, KeyError):
             continue
     return None

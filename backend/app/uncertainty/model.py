@@ -31,9 +31,17 @@ def build_uncertainty(
         "probability": round(float(params.get("probability", 0.75)), 4),
         "interval_hours": interval,
         "calibration_data_size": int(model.get("data_points", 0)),
+        "calibration_mode": str(model.get("calibration_mode", "unavailable")),
+        "calibrated": int(model.get("data_points", 0)) > 0,
         "methodology": methodology,
     }
-    if notes:
+    if not out["calibrated"]:
+        out["notes"] = (
+            f"{notes}. Empirical calibration artifact unavailable."
+            if notes
+            else "Empirical calibration artifact unavailable."
+        )
+    elif notes:
         out["notes"] = notes
     if boundary_proximity_minutes is not None:
         out["boundary_proximity_minutes"] = round(float(boundary_proximity_minutes), 2)

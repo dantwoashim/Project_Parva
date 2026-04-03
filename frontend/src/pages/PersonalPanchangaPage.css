@@ -7,6 +7,7 @@
 .personal-page__controls,
 .personal-summary-card,
 .personal-page__story-grid,
+.personal-page__truth-grid,
 .personal-page__accordion-body {
   display: grid;
 }
@@ -17,6 +18,8 @@
 
 .personal-page__intro,
 .personal-page__status,
+.personal-page__privacy-copy,
+.personal-page__privacy-state,
 .personal-summary-card p,
 .personal-page .panchanga-card__meta,
 .personal-context-card p,
@@ -30,6 +33,18 @@
 }
 
 .personal-page__route-card {
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.personal-page__privacy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.personal-page__truth-card {
+  display: grid;
   gap: 1rem;
   padding: 1.15rem;
 }
@@ -103,6 +118,72 @@
   padding-top: 0.35rem;
 }
 
+.personal-page__truth-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.personal-page__truth-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.personal-page__truth-chip--authoritative {
+  background: rgba(76, 134, 104, 0.16);
+  border-color: rgba(76, 134, 104, 0.34);
+}
+
+.personal-page__truth-chip--computed {
+  background: rgba(214, 170, 103, 0.12);
+  border-color: rgba(214, 170, 103, 0.28);
+}
+
+.personal-page__truth-chip--fallback {
+  background: rgba(181, 82, 64, 0.12);
+  border-color: rgba(181, 82, 64, 0.24);
+}
+
+.personal-page__truth-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.personal-page__truth-source {
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.95rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.personal-page__truth-source p,
+.personal-page__truth-note {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.personal-page__truth-list {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.personal-page__truth-note {
+  color: var(--editorial-accent);
+  font-size: 0.84rem;
+}
+
 .personal-page__mini-facts div {
   display: grid;
   gap: 0.2rem;
@@ -168,7 +249,8 @@
   .personal-page__controls,
   .personal-summary-grid,
   .personal-page__story-grid,
-  .personal-cards-grid {
+  .personal-cards-grid,
+  .personal-page__truth-grid {
     grid-template-columns: 1fr;
   }
 }
