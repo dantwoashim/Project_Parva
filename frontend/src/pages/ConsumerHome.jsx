@@ -1,9 +1,11 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { buildConsumerTodayViewModel } from '../consumer/consumerViewModels';
+import HoverGlossaryTerm from '../components/UI/HoverGlossaryTerm';
 import { findPresetByLocation } from '../data/locationPresets';
 import { useTemporalContext } from '../context/useTemporalContext';
 import { useTodayBundle } from '../hooks/useTodayBundle';
+import { countdownLabel } from '../consumer/viewModels/shared';
 import { formatProductDate } from '../utils/productDateTime';
 import './ConsumerHome.css';
 
@@ -116,8 +118,8 @@ export function ConsumerHome() {
           <div className="almanac-home__signal-grid">
             {todayViewModel.signals.slice(0, 4).map((signal) => (
               <article key={signal.label}>
-                <p>{signal.label}</p>
-                <strong>{signal.value}</strong>
+                <p><HoverGlossaryTerm term={signal.label} label={signal.label} /></p>
+                <strong><HoverGlossaryTerm term={signal.value} label={signal.value} /></strong>
               </article>
             ))}
           </div>
@@ -173,6 +175,7 @@ export function ConsumerHome() {
             <Link key={festival.id} to={`/festivals/${festival.id}`} className="almanac-home__festival-card">
               <span>{formatProductDate(festival.start_date || festival.start, { month: 'short', day: 'numeric' }, state)}</span>
               <h3>{festival.display_name || festival.name}</h3>
+              <small>{countdownLabel(festival.start_date || festival.start)}</small>
               <p>{formatFestivalSummary(festival)}</p>
             </Link>
           )) : (

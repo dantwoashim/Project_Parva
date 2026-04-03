@@ -183,6 +183,13 @@
   align-items: start;
 }
 
+.time-lab-console__actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 0.75rem;
+}
+
 .time-lab-console__head h2,
 .time-lab-stage__headline h2,
 .time-lab-result-card h3,
@@ -356,6 +363,13 @@
   transform: translateY(-1px);
   border-color: rgba(156, 63, 0, 0.24);
   background: rgba(255, 255, 255, 0.72);
+}
+
+.time-lab-presets__button.is-live-today {
+  border-color: rgba(196, 81, 0, 0.18);
+  background:
+    radial-gradient(circle at top right, rgba(214, 170, 103, 0.16), transparent 46%),
+    rgba(255, 249, 240, 0.92);
 }
 
 .time-lab-presets__button strong {

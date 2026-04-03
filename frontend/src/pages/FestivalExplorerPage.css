@@ -12,6 +12,12 @@
   gap: 1.25rem;
 }
 
+.explorer-sheet__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 .explorer-hero,
 .explorer-section-head,
 .explorer-ribbon__head {
@@ -66,8 +72,21 @@
 .explorer-hero__actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: end;
   justify-content: end;
   gap: 0.65rem;
+}
+
+.explorer-search {
+  min-width: min(100%, 22rem);
+}
+
+.explorer-search input {
+  min-width: 15rem;
+}
+
+.explorer-reset {
+  white-space: nowrap;
 }
 
 .explorer-pill {

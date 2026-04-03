@@ -1,0 +1,99 @@
+.hover-glossary-term {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.hover-glossary-term--inline {
+  display: inline-flex;
+}
+
+.hover-glossary-term__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+}
+
+.hover-glossary-term__trigger--passive {
+  cursor: help;
+}
+
+.hover-glossary-term__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: rgba(184, 130, 60, 0.14);
+  color: var(--editorial-accent);
+  font-size: 0.68rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.hover-glossary-term__card {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 0.65rem);
+  z-index: 10;
+  display: grid;
+  gap: 0.4rem;
+  width: min(18rem, 70vw);
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(115, 92, 0, 0.14);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at top right, rgba(214, 170, 103, 0.16), transparent 42%),
+    rgba(255, 249, 241, 0.98);
+  box-shadow: 0 18px 38px rgba(87, 65, 49, 0.18);
+  color: var(--text-primary);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.hover-glossary-term__card strong {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+}
+
+.hover-glossary-term__card span {
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.hover-glossary-term__why {
+  color: var(--text-primary) !important;
+}
+
+.hover-glossary-term:hover .hover-glossary-term__card,
+.hover-glossary-term:focus-within .hover-glossary-term__card,
+.hover-glossary-term.is-open .hover-glossary-term__card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+@media (max-width: 760px) {
+  .hover-glossary-term__card {
+    left: 50%;
+    width: min(20rem, calc(100vw - 2rem));
+    transform: translate(-50%, 4px);
+  }
+
+  .hover-glossary-term:hover .hover-glossary-term__card,
+  .hover-glossary-term:focus-within .hover-glossary-term__card,
+  .hover-glossary-term.is-open .hover-glossary-term__card {
+    transform: translate(-50%, 0);
+  }
+}

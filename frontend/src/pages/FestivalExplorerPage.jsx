@@ -26,11 +26,12 @@ function FestivalCard({ item, emphasis = 'default', source = 'festival_card' }) 
         <span>{item.title}</span>
       </div>
       <div className="explorer-card__copy">
-        {item.badges?.length ? (
+        {(item.badges?.length || item.countdown) ? (
           <div className="explorer-card__badges">
-            {item.badges.map((badge) => (
+            {(item.badges || []).map((badge) => (
               <span key={`${item.id}-${badge}`}>{badge}</span>
             ))}
+            {item.countdown ? <span key={`${item.id}-countdown`}>{item.countdown}</span> : null}
           </div>
         ) : null}
         <h3>{item.title}</h3>
@@ -67,6 +68,15 @@ export function FestivalExplorerPage() {
     allFestivalsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const hasActiveFilters = Boolean(search.trim() || category || region || sort !== 'chronological');
+
+  const resetFilters = () => {
+    setSearch('');
+    setCategory('');
+    setRegion('');
+    setSort('chronological');
+  };
+
   if (loading) {
     return (
       <section className="explorer-page animate-fade-in-up consumer-route consumer-route--explorer">
@@ -99,6 +109,15 @@ export function FestivalExplorerPage() {
         </div>
 
         <div className="explorer-hero__actions">
+          <label className="ink-input explorer-search">
+            <span>Search observances</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Bisket Jatra, Buddha Jayanti, Indra..."
+            />
+          </label>
           {CONSUMER_FESTIVAL_FILTERS.map((option) => (
             <button
               key={option.value || 'all'}
@@ -115,6 +134,11 @@ export function FestivalExplorerPage() {
               {option.label}
             </button>
           ))}
+          {hasActiveFilters ? (
+            <button type="button" className="btn btn-secondary explorer-reset" onClick={resetFilters}>
+              Clear filters
+            </button>
+          ) : null}
         </div>
       </header>
 
@@ -228,14 +252,21 @@ export function FestivalExplorerPage() {
                 <p className="explorer-eyebrow">{copy('festivalExplorer.filters.eyebrow')}</p>
                 <h2 id="festival-explorer-filters-title">{copy('festivalExplorer.filters.title')}</h2>
               </div>
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dialog-initial-focus="true"
-                onClick={() => setFiltersOpen(false)}
-              >
-                {copy('festivalExplorer.filters.close')}
-              </button>
+              <div className="explorer-sheet__actions">
+                {hasActiveFilters ? (
+                  <button type="button" className="btn btn-secondary" onClick={resetFilters}>
+                    Clear filters
+                  </button>
+                ) : null}
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dialog-initial-focus="true"
+                  onClick={() => setFiltersOpen(false)}
+                >
+                  {copy('festivalExplorer.filters.close')}
+                </button>
+              </div>
             </div>
 
             <div className="explorer-filters">

@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
+import HoverGlossaryTerm from '../components/UI/HoverGlossaryTerm';
 import { buildConsumerTodayViewModel } from '../consumer/consumerViewModels';
 import { TodaySection } from '../consumer/ConsumerSections';
 import { useTemporalContext } from '../context/useTemporalContext';
@@ -130,7 +131,9 @@ export function TemporalCompassPage() {
 
           <article className="today-page__meta-card">
             <span className="today-page__label">Day tone</span>
-            <strong>{viewModel.dayTone.value}</strong>
+            <strong>
+              <HoverGlossaryTerm term={viewModel.dayTone.value} label={viewModel.dayTone.value} />
+            </strong>
             <p className="today-page__subsummary">{viewModel.dayTone.note}</p>
           </article>
         </div>
@@ -142,7 +145,9 @@ export function TemporalCompassPage() {
                 key={segment.id}
                 className={`today-page__timeline-segment today-page__timeline-segment--${segment.tone}`.trim()}
               >
-                <span className="today-page__label">{segment.title}</span>
+                <span className="today-page__label">
+                  <HoverGlossaryTerm term={segment.title} label={segment.title} />
+                </span>
                 <strong>{segment.time}</strong>
                 <p>{segment.note}</p>
               </article>
@@ -156,8 +161,12 @@ export function TemporalCompassPage() {
             <div className="today-page__signal-grid">
               {viewModel.signals.map((item) => (
                 <div key={item.label}>
-                  <span>{item.label}</span>
-                  <strong>{item.value}</strong>
+                  <span>
+                    <HoverGlossaryTerm term={item.label} label={item.label} />
+                  </span>
+                  <strong>
+                    <HoverGlossaryTerm term={item.value} label={item.value} />
+                  </strong>
                   <p className="today-page__subsummary">{item.note}</p>
                 </div>
               ))}

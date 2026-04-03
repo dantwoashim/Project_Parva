@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
+import HoverGlossaryTerm from '../components/UI/HoverGlossaryTerm';
 import { KnowledgePanel } from '../components/UI/KnowledgePanel';
 import { MyPlaceSection } from '../consumer/ConsumerSections';
 import { buildConsumerMyPlaceViewModel } from '../consumer/consumerViewModels';
@@ -376,8 +377,12 @@ export function PersonalPanchangaPage() {
           <section className="personal-cards-grid stagger-children">
             {viewModel.cards.map((card) => (
               <article key={card.label} className="ink-card panchanga-card">
-                <h3>{card.label}</h3>
-                <p className="panchanga-card__value">{card.value}</p>
+                <h3>
+                  <HoverGlossaryTerm term={card.label} label={card.label} />
+                </h3>
+                <p className="panchanga-card__value">
+                  <HoverGlossaryTerm term={card.value} label={card.value} />
+                </p>
                 <p className="panchanga-card__meta">{card.note}</p>
               </article>
             ))}

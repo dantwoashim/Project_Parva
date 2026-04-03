@@ -1,6 +1,7 @@
 import { useDeferredValue, useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
 import { useTemporalContext } from '../context/useTemporalContext';
+import { todayIso } from '../context/temporalContextState';
 import {
   BS_MONTHS,
   GREGORIAN_MONTHS,
@@ -240,7 +241,8 @@ function supportPosture(horizon) {
 
 export function TimeLabPage() {
   const { state } = useTemporalContext();
-  const initialQuery = useMemo(() => buildDefaultQuery(state.date), [state.date]);
+  const todayQuery = useMemo(() => buildDefaultQuery(todayIso(state.timezone)), [state.timezone]);
+  const initialQuery = todayQuery;
   const [draft, setDraft] = useState(initialQuery);
   const [activeQuery, setActiveQuery] = useState(initialQuery);
   const [isPresetPending, startPresetTransition] = useTransition();
@@ -318,6 +320,11 @@ export function TimeLabPage() {
     });
   }
 
+  function resetToToday() {
+    setError(null);
+    applyPreset(todayQuery);
+  }
+
   const primaryResult = result?.anchored?.output || result?.experimental?.output || null;
   const primaryEngine = result?.anchored ? engineLabel(result.anchored.confidence) : 'Experimental horizon engine';
   const comparisonLabel = result?.anchored
@@ -363,9 +370,14 @@ export function TimeLabPage() {
               <p className="time-lab-page__eyebrow">Origin system</p>
               <h2>Switch the input calendar, then throw it through the lab.</h2>
             </div>
-            <button type="submit" className="btn btn-primary">
-              {loading ? 'Locking conversion...' : 'Run conversion'}
-            </button>
+            <div className="time-lab-console__actions">
+              <button type="button" className="btn btn-secondary" onClick={resetToToday}>
+                Reset to today
+              </button>
+              <button type="submit" className="btn btn-primary">
+                {loading ? 'Locking conversion...' : 'Run conversion'}
+              </button>
+            </div>
           </div>
 
           <div className="time-lab-toggle">
@@ -495,7 +507,7 @@ export function TimeLabPage() {
                 <button
                   key={preset.id}
                   type="button"
-                  className="time-lab-presets__button"
+                  className={`time-lab-presets__button ${preset.id === 'today' ? 'is-live-today' : ''}`.trim()}
                   onClick={() => applyPreset(preset.query)}
                 >
                   <strong>{preset.label}</strong>

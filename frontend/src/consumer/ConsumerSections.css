@@ -439,6 +439,14 @@
   gap: 1rem;
 }
 
+.consumer-home__festival-countdown {
+  color: var(--editorial-accent) !important;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .consumer-home__art-slot {
   position: relative;
   min-height: 210px;

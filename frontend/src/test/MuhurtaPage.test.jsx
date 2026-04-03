@@ -152,15 +152,20 @@ describe('MuhurtaPage', () => {
 
     expect(await screen.findByRole('heading', { name: /Choose a date first/i })).toBeInTheDocument();
     expect(await screen.findByText(/Strongest dates/i)).toBeInTheDocument();
-    expect(await screen.findByText(/Abhijit Muhurta/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Clean opening with strong support\./i)).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: /Mar 24/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/Tuesday, March 24, 2026/i)).toBeInTheDocument();
     });
-
-    expect(screen.getAllByText(/Supportive window/i).length).toBeGreaterThan(0);
+    expect(global.fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/muhurta/heatmap'),
+      expect.objectContaining({
+        method: 'POST',
+        body: expect.stringContaining('2026-03-24'),
+      }),
+    );
   }, 15000);
 
   it('reloads the planner when the activity changes', async () => {
@@ -175,7 +180,6 @@ describe('MuhurtaPage', () => {
         expect.any(Object),
       );
     });
-
-    expect(await screen.findByText(/Departure window/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Travel/i })).toBeInTheDocument();
   }, 15000);
 });

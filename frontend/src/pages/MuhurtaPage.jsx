@@ -1,3 +1,4 @@
+import HoverGlossaryTerm from '../components/UI/HoverGlossaryTerm';
 import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
 import { CONSUMER_BEST_TIME_OPTIONS } from '../consumer/consumerViewModels';
 import { useTemporalContext } from '../context/useTemporalContext';
@@ -81,7 +82,13 @@ export function MuhurtaPage() {
               onClick={() => setSelectedDate(cell.date)}
             >
               <span className="muhurta-page__day-number">{cell.day}</span>
-              <strong>{summary?.best_window?.name || (summary?.has_viable_window ? 'Good date' : 'No strong pick')}</strong>
+              <strong>
+                <HoverGlossaryTerm
+                  passive
+                  term={summary?.best_window?.name || (summary?.has_viable_window ? 'Good date' : 'No strong pick')}
+                  label={summary?.best_window?.name || (summary?.has_viable_window ? 'Good date' : 'No strong pick')}
+                />
+              </strong>
               <small>
                 {summary?.best_window?.start && summary?.best_window?.end
                   ? windowRangeLabel(summary.best_window, state)
@@ -211,7 +218,9 @@ export function MuhurtaPage() {
                   }}
                 >
                   <strong>{item.time}</strong>
-                  <span>{item.title}</span>
+                  <span>
+                    <HoverGlossaryTerm passive term={item.title} label={item.title} />
+                  </span>
                   <small>{item.note}</small>
                 </button>
               )) : (
