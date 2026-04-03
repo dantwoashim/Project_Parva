@@ -82,6 +82,7 @@ class AuthorityCandidate(BaseModel):
 
     start: date
     source: Optional[str] = None
+    source_family: Optional[str] = None
     confidence: Optional[str] = None
     notes: Optional[str] = None
 
@@ -112,9 +113,21 @@ class FestivalDates(BaseModel):
     authority_candidate_count: Optional[int] = None
     authority_note: Optional[str] = None
     authority_alternates: List[AuthorityCandidate] = Field(default_factory=list)
+    alternate_candidates: List[AuthorityCandidate] = Field(default_factory=list)
     authority_suggested_profile_id: Optional[str] = None
     authority_suggested_start_date: Optional[date] = None
     authority_suggested_reason: Optional[str] = None
+    support_tier: Optional[str] = None
+    selection_policy: Optional[str] = None
+    source_family: Optional[str] = None
+    engine_path: Optional[str] = None
+    fallback_used: bool = False
+    calibration_status: Optional[str] = None
+    boundary_radar: Optional[str] = None
+    stability_score: Optional[float] = None
+    risk_mode: Optional[str] = None
+    abstained: bool = False
+    recommended_action: Optional[str] = None
     profile_id: Optional[str] = None
     profile_tradition: Optional[str] = None
     profile_region: Optional[str] = None
@@ -284,10 +297,66 @@ class FestivalExplainResponse(BaseModel):
     calculation_trace_id: str
     profile_id: Optional[str] = None
     profile_note: Optional[str] = None
+    authority_conflict: bool = False
+    source_family: Optional[str] = None
+    alternate_candidates: List[AuthorityCandidate] = Field(default_factory=list)
     authority_suggested_profile_id: Optional[str] = None
     authority_suggested_start_date: Optional[date] = None
     authority_suggested_reason: Optional[str] = None
+    support_tier: Optional[str] = None
+    selection_policy: Optional[str] = None
+    engine_path: Optional[str] = None
+    fallback_used: bool = False
+    calibration_status: Optional[str] = None
+    boundary_radar: Optional[str] = None
+    stability_score: Optional[float] = None
+    risk_mode: Optional[str] = None
+    abstained: bool = False
+    recommended_action: Optional[str] = None
     provenance: Optional[ProvenanceMeta] = None
+
+
+class FestivalDisputeRecord(BaseModel):
+    """One live dispute/risk item for the dispute atlas."""
+
+    festival_id: str
+    festival_name: str
+    year: int
+    start_date: date
+    support_tier: str
+    source_family: Optional[str] = None
+    selection_policy: str
+    authority_conflict: bool = False
+    alternate_candidates: List[AuthorityCandidate] = Field(default_factory=list)
+    boundary_radar: str
+    stability_score: float
+    recommended_action: str
+    engine_path: Optional[str] = None
+    fallback_used: bool = False
+
+
+class FestivalDisputeAtlasResponse(BaseModel):
+    """API response for late-phase truth/dispute surfaces."""
+
+    year: int
+    total_items: int
+    truth_ladder: List[Dict[str, str]]
+    disputes: List[FestivalDisputeRecord]
+    provenance: Optional[ProvenanceMeta] = None
+
+
+class FestivalProofCapsuleResponse(BaseModel):
+    """Portable proof capsule for one festival-year resolution."""
+
+    festival_id: str
+    festival_name: str
+    year: int
+    request: Dict[str, Any]
+    selection: Dict[str, Any]
+    source_lineage: Dict[str, Any]
+    risk: Dict[str, Any]
+    provenance: Optional[ProvenanceMeta] = None
+    calculation_trace_id: Optional[str] = None
 
 
 class UpcomingFestival(BaseModel):
@@ -309,6 +378,11 @@ class UpcomingFestival(BaseModel):
     source_evidence_ids: List[str] = Field(default_factory=list)
     date_status: Optional[str] = None
     date_status_note: Optional[str] = None
+    support_tier: Optional[str] = None
+    selection_policy: Optional[str] = None
+    source_family: Optional[str] = None
+    fallback_used: bool = False
+    calibration_status: Optional[str] = None
     profile_id: Optional[str] = None
     profile_note: Optional[str] = None
 

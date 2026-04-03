@@ -16,6 +16,10 @@ def test_festival_explain_endpoint_returns_human_readable_payload():
     assert isinstance(body["steps"], list)
     assert len(body["steps"]) >= 3
     assert "calculation_trace_id" in body
+    assert body["support_tier"] in {"authoritative", "computed", "conflicted"}
+    assert body["selection_policy"] == "public_default"
+    assert body["engine_path"]
+    assert body["calibration_status"] in {"not_applicable", "unavailable"}
 
 
 def test_festival_explain_endpoint_available_on_v2_alias():

@@ -10,6 +10,36 @@ import {
   uniqueFestivals,
 } from './shared';
 
+function startCaseTruth(value) {
+  return String(value || 'unknown')
+    .split(/[_-]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function truthTone(value) {
+  const normalized = String(value || '').toLowerCase();
+  if (normalized.includes('gold') || normalized.includes('validated') || normalized.includes('high')) {
+    return 'authoritative';
+  }
+  if (normalized.includes('provisional') || normalized.includes('computed')) {
+    return 'computed';
+  }
+  if (normalized.includes('default') || normalized.includes('degraded')) {
+    return 'fallback';
+  }
+  return 'default';
+}
+
+function riskTone(value) {
+  const normalized = String(value || '').toLowerCase();
+  if (normalized === 'stable') return 'computed';
+  if (normalized === 'one_day_sensitive') return 'fallback';
+  if (normalized === 'high_disagreement_risk') return 'fallback';
+  return 'default';
+}
+
 export function buildConsumerTodayViewModel({
   state,
   placeLabel,
@@ -23,6 +53,59 @@ export function buildConsumerTodayViewModel({
   const bestWindow = muhurta?.best_window || sortedBlocks(muhurta)[0] || null;
   const avoidWindow = muhurta?.rahu_kalam || sortedBlocks(muhurta).find((item) => toneFromBlock(item) === 'avoid') || null;
   const observances = uniqueFestivals(onDateFestivals, upcomingFestivals).slice(0, 4);
+  const truthSources = [
+    muhurtaMeta
+      ? {
+          label: 'Best time',
+          qualityBand: muhurtaMeta.quality_band || null,
+          method: muhurtaMeta.method || null,
+          confidence: muhurtaMeta.confidence?.level || null,
+          degraded: Boolean(muhurtaMeta.degraded?.active),
+          boundaryRadar: muhurta?.boundary_radar || muhurtaMeta.boundary_radar || null,
+          stabilityScore: muhurta?.stability_score ?? muhurtaMeta.stability_score ?? null,
+          recommendedAction: muhurta?.recommended_action || muhurtaMeta.recommended_action || null,
+        }
+      : null,
+    compassMeta
+      ? {
+          label: 'Temporal compass',
+          qualityBand: compassMeta.quality_band || null,
+          method: compassMeta.method || null,
+          confidence: compassMeta.confidence?.level || null,
+          degraded: Boolean(compassMeta.degraded?.active),
+          boundaryRadar: compass?.boundary_radar || compassMeta.boundary_radar || null,
+          stabilityScore: compass?.stability_score ?? compassMeta.stability_score ?? null,
+          recommendedAction: compass?.recommended_action || compassMeta.recommended_action || null,
+        }
+      : null,
+  ].filter(Boolean);
+  const truthChips = truthSources.flatMap((item) => {
+    const chips = [];
+    if (item.qualityBand) {
+      chips.push({
+        label: `${item.label}: ${startCaseTruth(item.qualityBand)}`,
+        tone: truthTone(item.qualityBand),
+      });
+    } else if (item.confidence) {
+      chips.push({
+        label: `${item.label}: ${startCaseTruth(item.confidence)}`,
+        tone: truthTone(item.confidence),
+      });
+    }
+    if (item.degraded) {
+      chips.push({
+        label: `${item.label}: Defaults Applied`,
+        tone: 'fallback',
+      });
+    }
+    if (item.boundaryRadar) {
+      chips.push({
+        label: `${item.label}: ${startCaseTruth(item.boundaryRadar)}`,
+        tone: riskTone(item.boundaryRadar),
+      });
+    }
+    return chips;
+  });
   const signals = [
     {
       label: 'Tithi',
@@ -98,7 +181,23 @@ export function buildConsumerTodayViewModel({
         festival.summary || festival.description || festival.tagline,
         'Open the observance for the story, timing, and practice notes.',
       ),
+      truthNote: festival.support_tier
+        ? `${startCaseTruth(festival.support_tier)} via ${festival.selection_policy || 'public_default'}`
+        : null,
     })),
+    truthSurface: {
+      chips: truthChips,
+      sources: truthSources.map((item) => ({
+        label: item.label,
+        qualityBand: startCaseTruth(item.qualityBand || 'unknown'),
+        method: startCaseTruth(item.method || 'unknown'),
+        confidence: startCaseTruth(item.confidence || 'unknown'),
+        degraded: item.degraded,
+        boundaryRadar: item.boundaryRadar ? startCaseTruth(item.boundaryRadar) : null,
+        stabilityScore: item.stabilityScore,
+        recommendedAction: item.recommendedAction || null,
+      })),
+    },
     signals,
     evidence: {
       title: 'Today',

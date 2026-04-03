@@ -1,0 +1,24 @@
+{
+  "places": [
+    {"label": "Kathmandu, Bagmati Province, Nepal", "aliases": ["kathmandu", "ktm"], "latitude": 27.7172, "longitude": 85.3240, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Bagmati Province"},
+    {"label": "Lalitpur, Bagmati Province, Nepal", "aliases": ["lalitpur", "patan"], "latitude": 27.6644, "longitude": 85.3188, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Bagmati Province"},
+    {"label": "Bhaktapur, Bagmati Province, Nepal", "aliases": ["bhaktapur", "bhadgaon"], "latitude": 27.6720, "longitude": 85.4298, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Bagmati Province"},
+    {"label": "Pokhara, Gandaki Province, Nepal", "aliases": ["pokhara"], "latitude": 28.2096, "longitude": 83.9856, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Gandaki Province"},
+    {"label": "Biratnagar, Koshi Province, Nepal", "aliases": ["biratnagar"], "latitude": 26.4525, "longitude": 87.2718, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Koshi Province"},
+    {"label": "Birgunj, Madhesh Province, Nepal", "aliases": ["birgunj"], "latitude": 27.0104, "longitude": 84.8774, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Madhesh Province"},
+    {"label": "Janakpur, Madhesh Province, Nepal", "aliases": ["janakpur", "janakpurdham"], "latitude": 26.7288, "longitude": 85.9250, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Madhesh Province"},
+    {"label": "Butwal, Lumbini Province, Nepal", "aliases": ["butwal"], "latitude": 27.6866, "longitude": 83.4323, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Lumbini Province"},
+    {"label": "Nepalgunj, Lumbini Province, Nepal", "aliases": ["nepalgunj"], "latitude": 28.0500, "longitude": 81.6167, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Lumbini Province"},
+    {"label": "Dharan, Koshi Province, Nepal", "aliases": ["dharan"], "latitude": 26.8121, "longitude": 87.2834, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Koshi Province"},
+    {"label": "Hetauda, Bagmati Province, Nepal", "aliases": ["hetauda"], "latitude": 27.4284, "longitude": 85.0322, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Bagmati Province"},
+    {"label": "Chitwan, Bagmati Province, Nepal", "aliases": ["chitwan", "bharatpur"], "latitude": 27.6766, "longitude": 84.4356, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Bagmati Province"},
+    {"label": "Lumbini, Lumbini Province, Nepal", "aliases": ["lumbini"], "latitude": 27.4833, "longitude": 83.2767, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Lumbini Province"},
+    {"label": "Gorkha, Gandaki Province, Nepal", "aliases": ["gorkha"], "latitude": 28.0000, "longitude": 84.6333, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Gandaki Province"},
+    {"label": "Tansen, Lumbini Province, Nepal", "aliases": ["tansen", "palpa"], "latitude": 27.8686, "longitude": 83.5467, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Lumbini Province"},
+    {"label": "Dhangadhi, Sudurpashchim Province, Nepal", "aliases": ["dhangadhi"], "latitude": 28.6958, "longitude": 80.6000, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Sudurpashchim Province"},
+    {"label": "Mahendranagar, Sudurpashchim Province, Nepal", "aliases": ["mahendranagar", "bhimdattanagar"], "latitude": 28.9630, "longitude": 80.1771, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Sudurpashchim Province"},
+    {"label": "Surkhet, Karnali Province, Nepal", "aliases": ["surkhet", "birendranagar"], "latitude": 28.6019, "longitude": 81.6339, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Karnali Province"},
+    {"label": "Jomsom, Gandaki Province, Nepal", "aliases": ["jomsom", "mustang"], "latitude": 28.7810, "longitude": 83.7240, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Gandaki Province"},
+    {"label": "Namche Bazaar, Koshi Province, Nepal", "aliases": ["namche", "namche bazaar"], "latitude": 27.8056, "longitude": 86.7133, "timezone": "Asia/Kathmandu", "country": "Nepal", "province": "Koshi Province"}
+  ]
+}

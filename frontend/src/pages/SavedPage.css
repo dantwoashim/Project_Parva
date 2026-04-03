@@ -98,3 +98,27 @@
   flex-wrap: wrap;
   gap: 0.6rem;
 }
+
+.saved-integration {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.saved-integration__meta,
+.saved-integration__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.saved-integration__meta span,
+.saved-integration__chips span {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.36rem 0.62rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+}

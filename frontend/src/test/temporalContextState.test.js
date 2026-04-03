@@ -1,4 +1,4 @@
-import { createInitialState, todayIso } from '../context/temporalContextState';
+import { createInitialState, reducer, todayIso } from '../context/temporalContextState';
 
 describe('temporal context state', () => {
   beforeEach(() => {
@@ -31,5 +31,15 @@ describe('temporal context state', () => {
       language: 'en',
       theme: 'warm-paper',
     });
+  });
+
+  it('preserves dawn-paper as a distinct theme', () => {
+    const state = reducer(createInitialState(), { type: 'setTheme', payload: 'dawn-paper' });
+    expect(state.theme).toBe('dawn-paper');
+  });
+
+  it('allows supported language changes instead of forcing english', () => {
+    const state = reducer(createInitialState(), { type: 'setLanguage', payload: 'ne' });
+    expect(state.language).toBe('ne');
   });
 });

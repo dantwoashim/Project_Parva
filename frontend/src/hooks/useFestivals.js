@@ -130,7 +130,11 @@ export function useFestivalDetail(festivalId, year = null) {
             setError(null);
 
             try {
-                const envelope = await festivalAPI.getByIdEnvelope(festivalId, year || undefined);
+                const envelope = await festivalAPI.getByIdEnvelope(
+                    festivalId,
+                    year || undefined,
+                    'authority_compare',
+                );
                 const data = envelope.data || {};
                 setFestival(data.festival);
                 setDates(data.dates || null);

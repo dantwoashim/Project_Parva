@@ -13,6 +13,7 @@ from datetime import date, datetime, timedelta, timezone
 from typing import Any, Optional
 
 from app.calendar.bikram_sambat import bs_to_gregorian, gregorian_to_bs
+from app.calendar.bs_year import bs_solar_year_for_gregorian_year
 from app.calendar.calculator_v2 import calculate_festival_v2
 from app.calendar.lunar_calendar import find_festival_in_lunar_month
 from app.calendar.sankranti import find_makara_sankranti, find_mesh_sankranti
@@ -55,13 +56,12 @@ def _duration(rule: FestivalRuleV4) -> int:
     raw = (rule.rule or {}).get("duration_days", 1)
     try:
         return max(int(raw), 1)
-    except Exception:
+    except (TypeError, ValueError):
         return 1
 
 
 def _bs_year_for_month(gregorian_year: int, bs_month: int) -> int:
-    # BS months 10-12 usually fall in Jan-Mar of AD year.
-    return gregorian_year + (56 if bs_month >= 10 else 57)
+    return bs_solar_year_for_gregorian_year(gregorian_year, bs_month)
 
 
 def _normalize_lunar_month(value: Any) -> Optional[str]:
@@ -78,7 +78,7 @@ def _to_int(value: Any) -> Optional[int]:
         if value is None or value == "":
             return None
         return int(value)
-    except Exception:
+    except (TypeError, ValueError):
         return None
 
 
@@ -119,7 +119,7 @@ def _compute_lunar(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | Non
         try:
             month_start = bs_to_gregorian(candidate_year, bs_month, 1)
             break
-        except Exception:
+        except (TypeError, ValueError):
             continue
     if month_start is None:
         return None
@@ -141,7 +141,7 @@ def _compute_lunar(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | Non
         candidate = found_dt.date()
         try:
             _, candidate_month, _ = gregorian_to_bs(candidate)
-        except Exception:
+        except (TypeError, ValueError):
             candidate_month = None
 
         if candidate_month == bs_month:
@@ -204,7 +204,7 @@ def _compute_solar(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | Non
                     end_date=start + timedelta(days=duration - 1),
                     method="rule_dsl_solar_month_start_v1",
                 )
-            except Exception:
+            except (TypeError, ValueError):
                 continue
 
     solar_day = _to_int(payload.get("solar_day"))
@@ -220,7 +220,7 @@ def _compute_solar(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | Non
                     end_date=start + timedelta(days=duration - 1),
                     method="rule_dsl_solar_fixed_v1",
                 )
-            except Exception:
+            except (TypeError, ValueError):
                 continue
 
     return None
@@ -243,7 +243,7 @@ def _compute_override(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | 
                     end_date=start + timedelta(days=duration - 1),
                     method="rule_dsl_override_lookup_v1",
                 )
-            except Exception:
+            except (TypeError, ValueError):
                 start = None
 
     bs_year = _to_int(payload.get("bs_year"))
@@ -260,7 +260,7 @@ def _compute_override(rule: FestivalRuleV4, year: int) -> RuleExecutionResult | 
                     end_date=start + timedelta(days=duration - 1),
                     method="rule_dsl_override_bs_fixed_v1",
                 )
-        except Exception:
+        except (TypeError, ValueError):
             return None
 
     return None
@@ -287,7 +287,7 @@ def calculate_rule_occurrence_with_fallback(
 
     try:
         from_v2 = calculate_festival_v2(rule.festival_id, year)
-    except Exception:
+    except (ImportError, OSError, TypeError, ValueError, KeyError):
         from_v2 = None
     if from_v2 is None:
         return None

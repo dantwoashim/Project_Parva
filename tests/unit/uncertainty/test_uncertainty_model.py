@@ -13,6 +13,8 @@ def test_bs_uncertainty_official_and_estimated_levels():
 
     assert official["level"] == "exact"
     assert estimated["level"] == "estimated"
+    assert official["calibration_mode"] in {"empirical", "unavailable"}
+    assert official["probability"] <= 0.6
 
 
 def test_tithi_uncertainty_boundary_case_widens_interval():
@@ -27,3 +29,10 @@ def test_boundary_proximity_helper():
     value = estimate_boundary_proximity_minutes(0.5)
     assert value is not None
     assert value > 600
+
+
+def test_fallback_uncertainty_is_marked_uncalibrated():
+    official = build_bs_uncertainty("official")
+    assert official["calibrated"] is False
+    assert official["calibration_mode"] == "unavailable"
+    assert "calibration artifact unavailable" in official["notes"].lower()

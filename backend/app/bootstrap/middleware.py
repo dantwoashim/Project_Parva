@@ -513,7 +513,7 @@ class ExperimentalEnvelopeMiddleware:
 
         try:
             payload: Any = json.loads(body)
-        except Exception:
+        except (json.JSONDecodeError, UnicodeDecodeError, TypeError, ValueError):
             await Response(
                 content=body,
                 status_code=response_start["status"],

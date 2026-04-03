@@ -6,7 +6,7 @@ DEFAULT_POLICY = {
     "usage": "informational",
     "advisory": "For religious observance, consult local authorities/panchang.",
     "version": "2028.1",
-    "disclaimer_url": "/docs/POLICY.md",
+    "disclaimer_url": "/v3/api/policy",
 }
 
 

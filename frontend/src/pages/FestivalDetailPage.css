@@ -193,6 +193,7 @@
 .festival-detail__timeline,
 .festival-detail__presence,
 .festival-detail__offerings,
+.festival-detail__truth,
 .festival-detail__technical,
 .festival-detail__error {
   display: grid;
@@ -337,6 +338,113 @@
   background: rgba(255, 242, 226, 0.8);
 }
 
+.festival-detail__truth-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 1.2rem;
+}
+
+.festival-detail__truth-panel {
+  display: grid;
+  gap: 1rem;
+  padding: 1.4rem;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 243, 0.96), rgba(248, 238, 227, 0.9)),
+    radial-gradient(circle at top right, rgba(255, 209, 126, 0.2), transparent 32%);
+  box-shadow: var(--shadow-card);
+}
+
+.festival-detail__truth-panel--ledger {
+  background:
+    linear-gradient(180deg, rgba(249, 241, 232, 0.98), rgba(238, 228, 215, 0.92)),
+    radial-gradient(circle at top right, rgba(115, 92, 0, 0.12), transparent 34%);
+}
+
+.festival-detail__truth-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.festival-detail__truth-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgba(115, 92, 0, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--text-primary);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.festival-detail__truth-chip--authoritative,
+.festival-detail__truth-chip--source {
+  background: rgba(255, 243, 214, 0.88);
+}
+
+.festival-detail__truth-chip--conflicted,
+.festival-detail__truth-chip--fallback {
+  background: rgba(255, 228, 222, 0.92);
+}
+
+.festival-detail__truth-chip--estimated,
+.festival-detail__truth-chip--calibration {
+  background: rgba(230, 237, 247, 0.88);
+}
+
+.festival-detail__truth-chip--policy {
+  background: rgba(239, 232, 220, 0.88);
+}
+
+.festival-detail__truth-copy,
+.festival-detail__truth-ledger {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.festival-detail__truth-copy p,
+.festival-detail__truth-ledger-item p,
+.festival-detail__truth-note {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.festival-detail__truth-note {
+  padding: 0.9rem 1rem;
+  background: rgba(255, 248, 243, 0.76);
+  border-left: 3px solid rgba(115, 92, 0, 0.38);
+}
+
+.festival-detail__truth-ledger-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+  padding: 0.95rem 1rem;
+  background: rgba(255, 248, 243, 0.78);
+}
+
+.festival-detail__truth-ledger-item.is-primary {
+  background: rgba(255, 239, 204, 0.82);
+}
+
+.festival-detail__truth-ledger-item strong {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.festival-detail__truth-ledger-date {
+  color: var(--editorial-accent);
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
 .festival-detail__eyebrow {
   margin: 0;
   color: #735c00;
@@ -371,7 +479,8 @@
 
 @media (max-width: 1080px) {
   .festival-detail__origin,
-  .festival-detail__presence-grid {
+  .festival-detail__presence-grid,
+  .festival-detail__truth-grid {
     grid-template-columns: 1fr;
   }
 

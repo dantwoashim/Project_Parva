@@ -31,4 +31,4 @@
 
 ## Artifacts
 
-- Normalized data: `/Users/rohanbasnet14/Documents/Project_Parva-main/data/normalized_sources.json`
+- Normalized data: `data/normalized_sources.json`

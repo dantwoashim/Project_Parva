@@ -139,7 +139,10 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
         or "unknown"
     )
 
-    verify_url = "/v5/api/provenance/root" if track == "v5" else "/v4/api/provenance/root"
+    if track == "v5":
+        verify_url = "/v5/api/provenance/root"
+    else:
+        verify_url = "/v3/api/provenance/root"
     fallback_provenance = get_provenance_payload(verify_url=verify_url, create_if_missing=True)
     raw_provenance = (
         payload.get("provenance") if isinstance(payload.get("provenance"), dict) else {}

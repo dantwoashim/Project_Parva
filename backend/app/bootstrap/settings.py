@@ -21,6 +21,17 @@ def _parse_bool(value: str | None, *, default: bool = False) -> bool:
     return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _parse_optional_bool(value: str | None) -> bool | None:
+    if value is None:
+        return None
+    normalized = value.strip().lower()
+    if normalized in {"1", "true", "yes", "on"}:
+        return True
+    if normalized in {"0", "false", "no", "off"}:
+        return False
+    return None
+
+
 @dataclass(frozen=True)
 class APIKeyRecord:
     key_id: str
@@ -45,6 +56,7 @@ class AppSettings:
     rate_limit_backend: str = "memory"
     redis_url: str | None = None
     require_precomputed: bool = False
+    precomputed_stale_hours: int = 24 * 30
     trusted_proxy_ips: frozenset[str] = field(default_factory=frozenset)
 
     @property
@@ -172,6 +184,12 @@ def load_settings() -> AppSettings:
     admin_token = os.getenv("PARVA_ADMIN_TOKEN", "").strip() or None
     if admin_token is None and _allow_test_only_credentials(environment):
         admin_token = DEFAULT_TEST_ADMIN_TOKEN
+    require_precomputed_override = _parse_optional_bool(os.getenv("PARVA_REQUIRE_PRECOMPUTED"))
+    require_precomputed = (
+        require_precomputed_override
+        if require_precomputed_override is not None
+        else environment.strip().lower() == "production"
+    )
 
     return AppSettings(
         environment=environment,
@@ -193,7 +211,8 @@ def load_settings() -> AppSettings:
         rate_limit_enabled=_parse_bool(os.getenv("PARVA_RATE_LIMIT_ENABLED"), default=True),
         rate_limit_backend=(os.getenv("PARVA_RATE_LIMIT_BACKEND", "memory").strip() or "memory"),
         redis_url=_parse_optional_text(os.getenv("PARVA_REDIS_URL")),
-        require_precomputed=_parse_bool(os.getenv("PARVA_REQUIRE_PRECOMPUTED"), default=False),
+        require_precomputed=require_precomputed,
+        precomputed_stale_hours=int(os.getenv("PARVA_PRECOMPUTED_STALE_HOURS", str(24 * 30))),
         trusted_proxy_ips=_parse_csv_set(os.getenv("PARVA_TRUSTED_PROXY_IPS", "")),
     )
 

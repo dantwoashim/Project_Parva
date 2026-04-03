@@ -9,6 +9,10 @@ from pydantic import BaseModel, Field
 
 from app.explainability import create_reason_trace
 from app.services import build_temporal_compass
+from app.services.trust_surface_service import (
+    build_portable_proof_capsule,
+    build_temporal_risk_payload,
+)
 
 from ._personal_utils import (
     CoordinateInput,
@@ -27,6 +31,7 @@ class TemporalCompassRequest(BaseModel):
     lon: CoordinateInput = Field(None, description="Longitude")
     tz: Optional[str] = Field("Asia/Kathmandu", description="IANA timezone")
     quality_band: str = Field("computed", description="computed|provisional|inventory|all")
+    risk_mode: str = Field("standard", description="standard|strict")
 
 
 def _build_temporal_compass_response(
@@ -36,6 +41,7 @@ def _build_temporal_compass_response(
     lon: CoordinateInput,
     tz: Optional[str],
     quality_band: str,
+    risk_mode: str,
 ):
     target_date = parse_date(date_str)
     latitude, longitude, coord_warnings = normalize_coordinates(lat, lon)
@@ -70,19 +76,46 @@ def _build_temporal_compass_response(
         ],
     )
 
+    meta = base_meta_payload(
+        trace_id=trace["trace_id"],
+        confidence="computed",
+        method="ephemeris_udaya",
+        method_profile="temporal_compass_v1",
+        quality_band="validated",
+        assumption_set_id="np-mainstream-v2",
+        advisory_scope="informational",
+    )
+    risk = build_temporal_risk_payload(
+        progress=(payload.get("primary_readout") or {}).get("phase_progress"),
+        support_tier=str(meta["support_tier"]),
+        fallback_used=bool(meta["fallback_used"]),
+        method=str(meta["engine_path"]),
+        risk_mode=risk_mode,
+    )
+
     return {
         **payload,
         "warnings": coord_warnings + tz_warnings,
-        **base_meta_payload(
-            trace_id=trace["trace_id"],
-            confidence="computed",
-            method="ephemeris_udaya",
-            method_profile="temporal_compass_v1",
-            quality_band="validated",
-            assumption_set_id="np-mainstream-v2",
-            advisory_scope="informational",
-        ),
+        **meta,
+        **risk,
     }
+
+
+def _build_temporal_compass_proof_capsule(
+    *,
+    payload: dict,
+    request: dict,
+) -> dict:
+    return build_portable_proof_capsule(
+        surface="temporal_compass",
+        payload=payload,
+        request=request,
+        source_lineage={
+            "quality_band_filter": payload.get("quality_band_filter"),
+            "warnings": payload.get("warnings"),
+            "ephemeris": payload.get("engine"),
+        },
+    )
 
 
 @router.get("/compass")
@@ -92,6 +125,7 @@ async def temporal_compass(
     lon: Optional[str] = Query(None, description="Longitude"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
     quality_band: str = Query("computed", description="computed|provisional|inventory|all"),
+    risk_mode: str = Query("standard", description="standard|strict"),
 ):
     return _build_temporal_compass_response(
         date_str=date_str,
@@ -99,6 +133,7 @@ async def temporal_compass(
         lon=lon,
         tz=tz,
         quality_band=quality_band,
+        risk_mode=risk_mode,
     )
 
 
@@ -110,4 +145,58 @@ async def temporal_compass_post(payload: TemporalCompassRequest):
         lon=payload.lon,
         tz=payload.tz,
         quality_band=payload.quality_band,
+        risk_mode=payload.risk_mode,
+    )
+
+
+@router.get("/compass/proof-capsule")
+async def temporal_compass_proof_capsule(
+    date_str: str = Query(..., alias="date", description="Gregorian date in YYYY-MM-DD format"),
+    lat: Optional[str] = Query(None, description="Latitude"),
+    lon: Optional[str] = Query(None, description="Longitude"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+    quality_band: str = Query("computed", description="computed|provisional|inventory|all"),
+    risk_mode: str = Query("strict", description="standard|strict"),
+):
+    payload = _build_temporal_compass_response(
+        date_str=date_str,
+        lat=lat,
+        lon=lon,
+        tz=tz,
+        quality_band=quality_band,
+        risk_mode=risk_mode,
+    )
+    return _build_temporal_compass_proof_capsule(
+        payload=payload,
+        request={
+            "date": date_str,
+            "lat": lat,
+            "lon": lon,
+            "tz": tz,
+            "quality_band": quality_band,
+            "risk_mode": risk_mode,
+        },
+    )
+
+
+@router.post("/compass/proof-capsule")
+async def temporal_compass_proof_capsule_post(payload: TemporalCompassRequest):
+    response_payload = _build_temporal_compass_response(
+        date_str=payload.date,
+        lat=payload.lat,
+        lon=payload.lon,
+        tz=payload.tz,
+        quality_band=payload.quality_band,
+        risk_mode=payload.risk_mode,
+    )
+    return _build_temporal_compass_proof_capsule(
+        payload=response_payload,
+        request={
+            "date": payload.date,
+            "lat": payload.lat,
+            "lon": payload.lon,
+            "tz": payload.tz,
+            "quality_band": payload.quality_band,
+            "risk_mode": payload.risk_mode,
+        },
     )

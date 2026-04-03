@@ -22,6 +22,7 @@ Usage:
 from __future__ import annotations
 
 from datetime import date, timedelta, timezone
+from json import JSONDecodeError
 from typing import Dict, List, Literal, NamedTuple, Optional, Tuple
 
 from pydantic import BaseModel, ConfigDict
@@ -355,11 +356,11 @@ def calculate_festival_date(
                 try:
                     rule = get_festival_rule(festival_id)
                     duration = rule.duration
-                except Exception:
+                except KeyError:
                     duration = 1
                 end_date = override_date + timedelta(days=duration - 1)
                 return DateRange(start=override_date, end=end_date, year=gregorian_year)
-        except Exception:
+        except (ImportError, OSError, JSONDecodeError, TypeError, ValueError, KeyError):
             # If overrides aren't available, fall back to calculations
             pass
 
@@ -372,7 +373,7 @@ def calculate_festival_date(
             return _calculate_lunar_festival(festival_id, gregorian_year, rule)
         else:
             raise FestivalCalculationError(f"Unsupported calendar type: {rule.calendar_type}")
-    except Exception as e:
+    except (FestivalCalculationError, TypeError, ValueError, KeyError) as e:
         raise FestivalCalculationError(
             f"Failed to calculate {festival_id} for {gregorian_year}: {e}"
         )
@@ -536,7 +537,7 @@ def get_upcoming_festivals(
     for festival_id, date_range in results:
         key = (festival_id, date_range.start)
         if key not in seen:
-            seen = seen | {key}
+            seen.add(key)
             unique_results.append((festival_id, date_range))
 
     return unique_results
@@ -618,7 +619,7 @@ def list_all_festivals() -> List[str]:
         from .festival_rules_loader import list_festivals
 
         return list_festivals()
-    except Exception:
+    except (ImportError, OSError, ValueError, TypeError, KeyError):
         return list(FESTIVAL_RULES.keys())
 
 
@@ -647,5 +648,5 @@ def get_festival_rule(festival_id: str) -> CalendarRule:
         from .festival_rules_loader import get_festival_rule as get_rule_from_json
 
         return get_rule_from_json(festival_id)
-    except Exception:
+    except (ImportError, OSError, ValueError, TypeError, KeyError):
         return FESTIVAL_RULES[festival_id]

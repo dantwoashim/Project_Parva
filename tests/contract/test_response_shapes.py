@@ -17,6 +17,10 @@ def test_convert_contract_fields():
     body = response.json()
     assert "bikram_sambat" in body
     assert "tithi" in body
+    assert body["support_tier"] in {"computed", "estimated", "heuristic"}
+    assert body["engine_path"] in {"ephemeris_udaya", "instantaneous"}
+    assert isinstance(body["fallback_used"], bool)
+    assert body["calibration_status"] == "unavailable"
     assert "engine_version" in body
     assert body["engine_version"] in {"v2", "v3"}
 
@@ -31,6 +35,14 @@ def test_today_contract_fields():
     assert "gregorian" in body
     assert "bikram_sambat" in body
     assert "tithi" in body
+    assert body["support_tier"] in {"computed", "estimated", "heuristic"}
+    assert body["engine_path"] in {"ephemeris_udaya", "instantaneous"}
+    assert isinstance(body["fallback_used"], bool)
+    assert body["calibration_status"] == "unavailable"
+    assert body["boundary_radar"] in {"stable", "one_day_sensitive", "high_disagreement_risk"}
+    assert body["risk_mode"] == "standard"
+    assert isinstance(body["stability_score"], float)
+    assert body["recommended_action"]
 
 
 def test_panchanga_contract_fields():
@@ -42,6 +54,14 @@ def test_panchanga_contract_fields():
     body = response.json()
     assert "panchanga" in body
     assert "ephemeris" in body
+    assert body["support_tier"] in {"computed", "heuristic"}
+    assert body["engine_path"] == "ephemeris_udaya"
+    assert body["fallback_used"] is False
+    assert body["calibration_status"] == "unavailable"
+    assert body["boundary_radar"] in {"stable", "one_day_sensitive", "high_disagreement_risk"}
+    assert body["risk_mode"] == "standard"
+    assert isinstance(body["stability_score"], float)
+    assert body["recommended_action"]
     assert body["panchanga"]["tithi"]["method"] in {"ephemeris_udaya", "instantaneous"}
 
 
@@ -83,6 +103,10 @@ def test_convert_compare_contract_fields():
     assert "official" in body
     assert "estimated" in body
     assert "match" in body
+    assert body["support_tier"] in {"computed", "estimated"}
+    assert body["engine_path"] == "bs_compare_official_vs_estimated"
+    assert isinstance(body["fallback_used"], bool)
+    assert body["calibration_status"] == "unavailable"
 
 
 def test_festival_timeline_accepts_upcoming_sort_alias():

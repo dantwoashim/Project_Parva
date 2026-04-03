@@ -18,7 +18,21 @@
 ## Reporting artifacts
 - `reports/authority_dashboard.json` (generated artifact)
 - `reports/conformance_report.json` (generated artifact)
+- `reports/evaluation_v4/evaluation_v4.json` (track-aware evaluation artifact)
 - `data/ground_truth/*`
+
+## Reproducibility contract
+
+- Runtime benchmark summary: `GET /api/reliability/benchmark-manifest`
+- Public truth/dispute surface: `GET /api/festivals/disputes`
+- Proof capsule: `GET /api/festivals/{festival_id}/proof-capsule`
+- The public benchmark story should always preserve:
+  - evaluation track
+  - conflict policy
+  - abstention policy
+  - report hash
+  - engine manifest hash
+  - source snapshot hashes
 
 ## Confidence policy
 - `official`: lookup-backed official range

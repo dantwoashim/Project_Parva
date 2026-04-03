@@ -65,6 +65,7 @@ function normalizePersistedState(state, overrides = {}) {
 function buildStorageEnvelope(state, storedAt) {
   const persistedState = normalizePersistedState(state, {
     syncStatus: 'guest_cached',
+    localSaveEnabled: true,
     revision: Number(state?.persistence?.revision || 0) + 1,
     lastLoadedAt: state?.persistence?.lastLoadedAt || storedAt,
     lastPersistedAt: storedAt,
@@ -133,18 +134,39 @@ export function createLocalGuestMemberStore(options = {}) {
       const loadedRecord = loadEnvelopeFromStorage(storage);
       if (!loadedRecord?.data) {
         return normalizePersistedState(createInitialMemberState(), {
-          syncStatus: 'guest_cached',
+          syncStatus: 'guest_ephemeral',
+          localSaveEnabled: false,
           lastLoadedAt: loadedAt,
         });
       }
 
       return normalizePersistedState(loadedRecord.data, {
         syncStatus: 'guest_cached',
+        localSaveEnabled: loadedRecord.data?.persistence?.localSaveEnabled ?? true,
         lastLoadedAt: loadedAt,
         migratedFrom: loadedRecord.key === MEMBER_STORE_STORAGE_KEY ? null : loadedRecord.key,
       });
     },
     async save(state) {
+      const localSaveEnabled = Boolean(state?.persistence?.localSaveEnabled);
+
+      if (!localSaveEnabled) {
+        if (storage && typeof storage.removeItem === 'function') {
+          storage.removeItem(MEMBER_STORE_STORAGE_KEY);
+          for (const legacyKey of MEMBER_LEGACY_STORAGE_KEYS) {
+            storage.removeItem(legacyKey);
+          }
+        }
+        return normalizePersistedState(state, {
+          syncStatus: 'guest_ephemeral',
+          localSaveEnabled: false,
+          revision: Number(state?.persistence?.revision || 0) + 1,
+          lastLoadedAt: state?.persistence?.lastLoadedAt || nowIso(now),
+          lastPersistedAt: null,
+          migratedFrom: state?.persistence?.migratedFrom || null,
+        });
+      }
+
       if (!storage || typeof storage.setItem !== 'function') {
         throw new Error('Guest device cache storage is unavailable.');
       }

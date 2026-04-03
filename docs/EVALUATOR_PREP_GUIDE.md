@@ -163,7 +163,7 @@ This contains static public surfaces such as:
 
 ## 7. High-Level System Architecture
 
-The architecture is explicitly described in [docs/ENGINE_ARCHITECTURE.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/ENGINE_ARCHITECTURE.md).
+The architecture is explicitly described in [docs/ENGINE_ARCHITECTURE.md](docs/ENGINE_ARCHITECTURE.md).
 
 The runtime layers are:
 
@@ -196,13 +196,13 @@ The backend is a FastAPI application built through an application factory.
 
 ### Main backend entry
 
-- [backend/app/main.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/main.py)
+- [backend/app/main.py](backend/app/main.py)
 
 This is intentionally small. It simply imports `create_app()` from bootstrap and creates the FastAPI app instance.
 
 ### App startup and assembly
 
-- [backend/app/bootstrap/app_factory.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/bootstrap/app_factory.py)
+- [backend/app/bootstrap/app_factory.py](backend/app/bootstrap/app_factory.py)
 
 This is one of the most important files in the project.
 
@@ -218,7 +218,7 @@ It does these jobs:
 
 ### Settings and environment validation
 
-- [backend/app/bootstrap/settings.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/bootstrap/settings.py)
+- [backend/app/bootstrap/settings.py](backend/app/bootstrap/settings.py)
 
 This file defines:
 
@@ -234,7 +234,7 @@ This is why the project behaves like a real deployable product, not just a local
 
 ### Route registration
 
-- [backend/app/bootstrap/router_registry.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/bootstrap/router_registry.py)
+- [backend/app/bootstrap/router_registry.py](backend/app/bootstrap/router_registry.py)
 
 This file registers:
 
@@ -251,7 +251,7 @@ That means the public stable profile is version 3, while other versions are expe
 
 ### Middleware
 
-- [backend/app/bootstrap/middleware.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/bootstrap/middleware.py)
+- [backend/app/bootstrap/middleware.py](backend/app/bootstrap/middleware.py)
 
 This file handles:
 
@@ -278,7 +278,7 @@ That is a major evaluator talking point.
 
 ### Access control
 
-- [backend/app/bootstrap/access_control.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/bootstrap/access_control.py)
+- [backend/app/bootstrap/access_control.py](backend/app/bootstrap/access_control.py)
 
 This file decides what is public and what needs authentication.
 
@@ -297,10 +297,10 @@ This matters because some public-facing docs still describe some of these routes
 
 Main files:
 
-- [backend/app/calendar/bikram_sambat.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/bikram_sambat.py)
-- [backend/app/calendar/panchanga.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/panchanga.py)
-- [backend/app/calendar/routes.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/routes.py)
-- [backend/app/calendar/calculator_v2.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/calculator_v2.py)
+- [backend/app/calendar/bikram_sambat.py](backend/app/calendar/bikram_sambat.py)
+- [backend/app/calendar/panchanga.py](backend/app/calendar/panchanga.py)
+- [backend/app/calendar/routes.py](backend/app/calendar/routes.py)
+- [backend/app/calendar/calculator_v2.py](backend/app/calendar/calculator_v2.py)
 
 What this subsystem does:
 
@@ -313,7 +313,7 @@ What this subsystem does:
 
 #### BS conversion
 
-The file [backend/app/calendar/bikram_sambat.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/bikram_sambat.py) is one of the mathematical foundations of the project.
+The file [backend/app/calendar/bikram_sambat.py](backend/app/calendar/bikram_sambat.py) is one of the mathematical foundations of the project.
 
 Important points:
 
@@ -328,7 +328,7 @@ This is a good evaluator point:
 
 #### Panchanga
 
-The file [backend/app/calendar/panchanga.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/panchanga.py) calculates the five classical elements:
+The file [backend/app/calendar/panchanga.py](backend/app/calendar/panchanga.py) calculates the five classical elements:
 
 - tithi
 - nakshatra
@@ -357,10 +357,10 @@ This gives the outputs more credibility and explainability.
 
 Main files:
 
-- [backend/app/rules/service.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/rules/service.py)
-- [backend/app/calendar/calculator_v2.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/calculator_v2.py)
-- [backend/app/festivals/routes.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/festivals/routes.py)
-- [backend/app/rules/catalog_v4.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/rules/catalog_v4.py)
+- [backend/app/rules/service.py](backend/app/rules/service.py)
+- [backend/app/calendar/calculator_v2.py](backend/app/calendar/calculator_v2.py)
+- [backend/app/festivals/routes.py](backend/app/festivals/routes.py)
+- [backend/app/rules/catalog_v4.py](backend/app/rules/catalog_v4.py)
 
 What this subsystem does:
 
@@ -398,7 +398,7 @@ That separation is a very mature design choice.
 
 Main file:
 
-- [backend/app/services/__init__.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/services/__init__.py)
+- [backend/app/services/__init__.py](backend/app/services/__init__.py)
 
 This layer aggregates backend logic into product-facing responses.
 
@@ -416,7 +416,7 @@ Instead, it composes low-level calendar outputs into product-facing payloads.
 
 #### Example: Temporal Compass
 
-- [backend/app/services/compass_service.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/services/compass_service.py)
+- [backend/app/services/compass_service.py](backend/app/services/compass_service.py)
 
 This service combines:
 
@@ -430,7 +430,7 @@ It is a product aggregation layer, not just a raw calendar function.
 
 #### Example: Personal Panchanga
 
-- [backend/app/services/personal_surface_service.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/services/personal_surface_service.py)
+- [backend/app/services/personal_surface_service.py](backend/app/services/personal_surface_service.py)
 
 This service:
 
@@ -449,9 +449,9 @@ input normalization -> computation -> metadata -> traceability.
 
 Main files:
 
-- [backend/app/provenance/routes.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/provenance/routes.py)
-- [backend/app/explainability/store.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/explainability/store.py)
-- [backend/app/engine/manifest.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/engine/manifest.py)
+- [backend/app/provenance/routes.py](backend/app/provenance/routes.py)
+- [backend/app/explainability/store.py](backend/app/explainability/store.py)
+- [backend/app/engine/manifest.py](backend/app/engine/manifest.py)
 
 This subsystem is a standout strength of the project.
 
@@ -473,7 +473,7 @@ That is a very strong academic and systems-design point.
 
 Main aggregator:
 
-- [backend/app/api/__init__.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/api/__init__.py)
+- [backend/app/api/__init__.py](backend/app/api/__init__.py)
 
 Route families include:
 
@@ -509,10 +509,10 @@ The frontend is a React application built with Vite.
 
 Main files:
 
-- [frontend/src/main.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/main.jsx)
-- [frontend/src/App.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/App.jsx)
-- [frontend/src/services/api.js](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/services/api.js)
-- [frontend/src/navigation/routeManifest.js](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/navigation/routeManifest.js)
+- [frontend/src/main.jsx](frontend/src/main.jsx)
+- [frontend/src/App.jsx](frontend/src/App.jsx)
+- [frontend/src/services/api.js](frontend/src/services/api.js)
+- [frontend/src/navigation/routeManifest.js](frontend/src/navigation/routeManifest.js)
 
 ### Frontend stack
 
@@ -540,7 +540,7 @@ It includes:
 
 ### Entry and route shell
 
-[frontend/src/App.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/App.jsx) is the main route shell.
+[frontend/src/App.jsx](frontend/src/App.jsx) is the main route shell.
 
 It does these things:
 
@@ -577,7 +577,7 @@ Deferred route:
 
 ### Why the route manifest matters
 
-- [frontend/src/navigation/routeManifest.js](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/navigation/routeManifest.js)
+- [frontend/src/navigation/routeManifest.js](frontend/src/navigation/routeManifest.js)
 
 This file centrally defines:
 
@@ -594,8 +594,8 @@ That is good architecture because the route system is not scattered everywhere.
 
 There are two main contexts:
 
-- [frontend/src/context/TemporalContext.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/context/TemporalContext.jsx)
-- [frontend/src/context/MemberContext.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/context/MemberContext.jsx)
+- [frontend/src/context/TemporalContext.jsx](frontend/src/context/TemporalContext.jsx)
+- [frontend/src/context/MemberContext.jsx](frontend/src/context/MemberContext.jsx)
 
 #### TemporalContext
 
@@ -623,7 +623,7 @@ This gives the frontend a lightweight product-state layer without needing a larg
 
 ### Frontend API service layer
 
-- [frontend/src/services/api.js](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/services/api.js)
+- [frontend/src/services/api.js](frontend/src/services/api.js)
 
 This file is very important.
 
@@ -653,7 +653,7 @@ Examples:
 
 Example:
 
-[frontend/src/hooks/useTodayBundle.js](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/hooks/useTodayBundle.js)
+[frontend/src/hooks/useTodayBundle.js](frontend/src/hooks/useTodayBundle.js)
 
 This hook combines multiple API calls:
 
@@ -668,12 +668,12 @@ So again, the project is aggregation-first, not endpoint-first.
 
 Representative page files:
 
-- [frontend/src/pages/ConsumerHome.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/pages/ConsumerHome.jsx)
-- [frontend/src/pages/TemporalCompassPage.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/pages/TemporalCompassPage.jsx)
-- [frontend/src/pages/FestivalExplorerPage.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/pages/FestivalExplorerPage.jsx)
-- [frontend/src/pages/PersonalPanchangaPage.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/pages/PersonalPanchangaPage.jsx)
-- [frontend/src/pages/MuhurtaPage.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/pages/MuhurtaPage.jsx)
-- [frontend/src/pages/KundaliPage.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/pages/KundaliPage.jsx)
+- [frontend/src/pages/ConsumerHome.jsx](frontend/src/pages/ConsumerHome.jsx)
+- [frontend/src/pages/TemporalCompassPage.jsx](frontend/src/pages/TemporalCompassPage.jsx)
+- [frontend/src/pages/FestivalExplorerPage.jsx](frontend/src/pages/FestivalExplorerPage.jsx)
+- [frontend/src/pages/PersonalPanchangaPage.jsx](frontend/src/pages/PersonalPanchangaPage.jsx)
+- [frontend/src/pages/MuhurtaPage.jsx](frontend/src/pages/MuhurtaPage.jsx)
+- [frontend/src/pages/KundaliPage.jsx](frontend/src/pages/KundaliPage.jsx)
 
 These pages are consumer presentation layers that sit on top of the shared hooks and service APIs.
 
@@ -698,12 +698,12 @@ The frontend also includes public static portals in `frontend/public/`.
 
 Important files:
 
-- [frontend/public/developers/index.html](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/public/developers/index.html)
-- [frontend/public/institutions/index.html](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/public/institutions/index.html)
-- [frontend/public/access/index.html](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/public/access/index.html)
-- [frontend/public/embed/temporal-compass.html](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/public/embed/temporal-compass.html)
-- [frontend/public/embed/upcoming-festivals.html](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/public/embed/upcoming-festivals.html)
-- [frontend/public/embed/parva-embed.js](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/public/embed/parva-embed.js)
+- [frontend/public/developers/index.html](frontend/public/developers/index.html)
+- [frontend/public/institutions/index.html](frontend/public/institutions/index.html)
+- [frontend/public/access/index.html](frontend/public/access/index.html)
+- [frontend/public/embed/temporal-compass.html](frontend/public/embed/temporal-compass.html)
+- [frontend/public/embed/upcoming-festivals.html](frontend/public/embed/upcoming-festivals.html)
+- [frontend/public/embed/parva-embed.js](frontend/public/embed/parva-embed.js)
 
 This is a very important evaluator talking point:
 
@@ -748,9 +748,9 @@ That is academically strong and evaluator-friendly.
 
 Important files:
 
-- [data/ground_truth/evaluation_week3.csv](/Users/rohanbasnet14/Documents/Project_Parva-main/data/ground_truth/evaluation_week3.csv)
-- [data/ground_truth/scorecard_2080_2082.json](/Users/rohanbasnet14/Documents/Project_Parva-main/data/ground_truth/scorecard_2080_2082.json)
-- [data/ground_truth/discrepancies.json](/Users/rohanbasnet14/Documents/Project_Parva-main/data/ground_truth/discrepancies.json)
+- [data/ground_truth/evaluation_week3.csv](data/ground_truth/evaluation_week3.csv)
+- [data/ground_truth/scorecard_2080_2082.json](data/ground_truth/scorecard_2080_2082.json)
+- [data/ground_truth/discrepancies.json](data/ground_truth/discrepancies.json)
 
 These files are used to compare calculated dates against reference dates.
 
@@ -770,8 +770,8 @@ This is the main contract developers are meant to use.
 
 Important docs:
 
-- [docs/API_REFERENCE_V3.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/API_REFERENCE_V3.md)
-- [docs/API_QUICKSTART.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/API_QUICKSTART.md)
+- [docs/API_REFERENCE_V3.md](docs/API_REFERENCE_V3.md)
+- [docs/API_QUICKSTART.md](docs/API_QUICKSTART.md)
 
 ### Core API families
 
@@ -878,8 +878,8 @@ This project has an explicit accuracy posture.
 
 Read:
 
-- [docs/ACCURACY_METHOD.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/ACCURACY_METHOD.md)
-- [docs/KNOWN_LIMITS.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/KNOWN_LIMITS.md)
+- [docs/ACCURACY_METHOD.md](docs/ACCURACY_METHOD.md)
+- [docs/KNOWN_LIMITS.md](docs/KNOWN_LIMITS.md)
 
 ### Accuracy model
 
@@ -993,9 +993,9 @@ This is important because it shows software-engineering maturity beyond just wri
 
 Important files:
 
-- [Dockerfile](/Users/rohanbasnet14/Documents/Project_Parva-main/Dockerfile)
-- [render.yaml](/Users/rohanbasnet14/Documents/Project_Parva-main/render.yaml)
-- [docs/DEPLOYMENT.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/DEPLOYMENT.md)
+- [Dockerfile](Dockerfile)
+- [render.yaml](render.yaml)
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
 ### Supported runtimes
 
@@ -1074,8 +1074,8 @@ These scripts tell an evaluator that the project was actively maintained as a pr
 
 The Python SDK lives in:
 
-- [sdk/python/README.md](/Users/rohanbasnet14/Documents/Project_Parva-main/sdk/python/README.md)
-- [sdk/python/parva_sdk/client.py](/Users/rohanbasnet14/Documents/Project_Parva-main/sdk/python/parva_sdk/client.py)
+- [sdk/python/README.md](sdk/python/README.md)
+- [sdk/python/parva_sdk/client.py](sdk/python/parva_sdk/client.py)
 
 This is a strong feature because it means external developers do not need to manually build all requests themselves.
 
@@ -1353,9 +1353,9 @@ Goal:
 Study:
 
 - this document sections 1 to 12
-- [README.md](/Users/rohanbasnet14/Documents/Project_Parva-main/README.md)
-- [docs/ENGINE_ARCHITECTURE.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/ENGINE_ARCHITECTURE.md)
-- [docs/API_REFERENCE_V3.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/API_REFERENCE_V3.md)
+- [README.md](README.md)
+- [docs/ENGINE_ARCHITECTURE.md](docs/ENGINE_ARCHITECTURE.md)
+- [docs/API_REFERENCE_V3.md](docs/API_REFERENCE_V3.md)
 
 Practice saying:
 
@@ -1373,11 +1373,11 @@ Goal:
 Study:
 
 - sections 8 to 16 of this document
-- [backend/app/bootstrap/app_factory.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/bootstrap/app_factory.py)
-- [backend/app/calendar/bikram_sambat.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/bikram_sambat.py)
-- [backend/app/calendar/panchanga.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/panchanga.py)
-- [backend/app/calendar/calculator_v2.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/calendar/calculator_v2.py)
-- [backend/app/festivals/routes.py](/Users/rohanbasnet14/Documents/Project_Parva-main/backend/app/festivals/routes.py)
+- [backend/app/bootstrap/app_factory.py](backend/app/bootstrap/app_factory.py)
+- [backend/app/calendar/bikram_sambat.py](backend/app/calendar/bikram_sambat.py)
+- [backend/app/calendar/panchanga.py](backend/app/calendar/panchanga.py)
+- [backend/app/calendar/calculator_v2.py](backend/app/calendar/calculator_v2.py)
+- [backend/app/festivals/routes.py](backend/app/festivals/routes.py)
 
 Practice saying:
 
@@ -1395,11 +1395,11 @@ Goal:
 Study:
 
 - sections 10, 11, 17, 18, 19
-- [frontend/src/App.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/App.jsx)
-- [frontend/src/services/api.js](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/services/api.js)
-- [frontend/src/pages/ConsumerHome.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/pages/ConsumerHome.jsx)
-- [frontend/src/pages/TemporalCompassPage.jsx](/Users/rohanbasnet14/Documents/Project_Parva-main/frontend/src/pages/TemporalCompassPage.jsx)
-- [docs/DEPLOYMENT.md](/Users/rohanbasnet14/Documents/Project_Parva-main/docs/DEPLOYMENT.md)
+- [frontend/src/App.jsx](frontend/src/App.jsx)
+- [frontend/src/services/api.js](frontend/src/services/api.js)
+- [frontend/src/pages/ConsumerHome.jsx](frontend/src/pages/ConsumerHome.jsx)
+- [frontend/src/pages/TemporalCompassPage.jsx](frontend/src/pages/TemporalCompassPage.jsx)
+- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
 Practice saying:
 

@@ -18,7 +18,6 @@ import {
   getBottomNavItems,
   getFooterGroups,
   getPrimaryNavItems,
-  getSideRailItems,
   getSupportNavItems,
   getSurfaceDescriptor,
 } from './navigation/routeManifest';
@@ -39,9 +38,11 @@ const FeedSubscriptionsPage = lazy(() => import('./pages/FeedSubscriptionsPage')
 const PersonalPanchangaPage = lazy(() => import('./pages/PersonalPanchangaPage').then((m) => ({ default: m.PersonalPanchangaPage })));
 const MuhurtaPage = lazy(() => import('./pages/MuhurtaPage').then((m) => ({ default: m.MuhurtaPage })));
 const KundaliPage = lazy(() => import('./pages/KundaliPage').then((m) => ({ default: m.KundaliPage })));
+const TimeLabPage = lazy(() => import('./pages/TimeLabPage').then((m) => ({ default: m.TimeLabPage })));
 const SavedPage = lazy(() => import('./pages/SavedPage').then((m) => ({ default: m.SavedPage })));
 const ProfilePage = lazy(() => import('./pages/ProfilePage').then((m) => ({ default: m.ProfilePage })));
 const MethodologyPage = lazy(() => import('./pages/MethodologyPage').then((m) => ({ default: m.MethodologyPage })));
+const TruthLabPage = lazy(() => import('./pages/TruthLabPage').then((m) => ({ default: m.TruthLabPage })));
 
 function ShellNavigation({ links, activeSectionId, onNavigate, initialFocusIndex = -1 }) {
   return (
@@ -157,37 +158,6 @@ function TopNav({
   );
 }
 
-function SideRail({ activeSectionId }) {
-  const { copy } = useCopy();
-  const items = useMemo(() => getSideRailItems(copy), [copy]);
-  return (
-    <aside className="app-shell__side-rail" aria-label="Editorial quick links">
-      <div className="app-shell__side-head">
-        <div className="app-shell__side-avatar">
-          <span className="material-symbols-outlined">spa</span>
-        </div>
-        <div className="app-shell__side-copy">
-          <span className="app-shell__side-label">{copy('shell.quickPaths')}</span>
-          <strong>Parva</strong>
-        </div>
-      </div>
-      <nav className="app-shell__side-nav">
-        {items.map((item) => (
-          <NavLink
-            key={item.id}
-            to={item.to}
-            className={({ isActive }) => `app-shell__side-link ${(isActive || activeSectionId === item.id) ? 'active' : ''}`.trim()}
-            aria-label={item.label}
-          >
-            <span className="material-symbols-outlined app-shell__side-link-icon">{item.icon}</span>
-            <span className="app-shell__side-link-label">{item.label}</span>
-          </NavLink>
-        ))}
-      </nav>
-    </aside>
-  );
-}
-
 function BottomNav({ activeSectionId }) {
   const { copy } = useCopy();
   const items = useMemo(() => getBottomNavItems(copy), [copy]);
@@ -243,10 +213,12 @@ function AppRoutes() {
         <Route path="/festivals/:festivalId" element={<FestivalDetailPage />} />
         <Route path="/my-place" element={<PersonalPanchangaPage />} />
         <Route path="/birth-reading" element={<KundaliPage />} />
+        <Route path="/time-lab" element={<TimeLabPage />} />
         <Route path="/saved" element={<SavedPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/integrations" element={<FeedSubscriptionsPage />} />
         <Route path="/methodology" element={<MethodologyPage />} />
+        <Route path="/truth-lab" element={<TruthLabPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/panchanga" element={<PanchangaPage />} />
         <Route path="/muhurta" element={<Navigate to="/best-time" replace />} />
@@ -273,7 +245,6 @@ function AppFrame() {
   const footerGroups = useMemo(() => getFooterGroups(copy), [copy]);
   const compactHeader = viewportWidth <= 1180;
   const showBottomNav = viewportWidth <= 760;
-  const showSideRail = viewportWidth > 1180;
   const activeSectionId = getActiveLaunchSection(location.pathname);
   const surfaceDescriptor = useMemo(
     () => getSurfaceDescriptor(location.pathname, copy),
@@ -306,7 +277,7 @@ function AppFrame() {
 
   return (
     <div
-      className={`app-shell app-shell--consumer ${showSideRail ? 'app-shell--with-rail' : ''}`.trim()}
+      className="app-shell app-shell--consumer"
       data-theme={state.theme || 'warm-paper'}
     >
       <TopNav
@@ -318,7 +289,6 @@ function AppFrame() {
         onOpenSettings={() => setSettingsOpen(true)}
         onCloseNav={() => setNavOpen(false)}
       />
-      {showSideRail ? <SideRail activeSectionId={activeSectionId} /> : null}
       <MemberNoticeBar notice={memberState.notice} onDismiss={clearNotice} />
       <main className="app-shell__content">
         <SurfaceTierBanner surface={surfaceDescriptor} />

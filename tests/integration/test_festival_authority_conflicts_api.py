@@ -20,8 +20,15 @@ def test_festival_detail_exposes_authority_conflict_metadata():
     assert any(
         row["start"] == "2026-03-17" for row in body["dates"]["authority_alternates"]
     )
+    assert any(
+        row["start"] == "2026-03-17" for row in body["dates"]["alternate_candidates"]
+    )
     assert body["dates"]["authority_suggested_profile_id"] == "published-holiday-listing"
     assert body["dates"]["authority_suggested_start_date"] == "2026-03-17"
+    assert body["dates"]["selection_policy"] == "public_default"
+    assert body["dates"]["source_family"]
+    assert body["dates"]["engine_path"]
+    assert body["dates"]["calibration_status"] in {"not_applicable", "unavailable"}
 
 
 def test_festival_explain_mentions_authority_conflict_when_present():
@@ -31,8 +38,39 @@ def test_festival_explain_mentions_authority_conflict_when_present():
     body = response.json()
     assert any("candidate date entries" in step for step in body["steps"])
     assert "Multiple authority candidates exist" in body["explanation"]
+    assert body["authority_conflict"] is True
+    assert body["selection_policy"] == "public_default"
+    assert body["source_family"]
+    assert len(body["alternate_candidates"]) >= 1
     assert body["authority_suggested_profile_id"] == "published-holiday-listing"
     assert body["authority_suggested_start_date"] == "2026-03-17"
+
+
+def test_festival_detail_supports_authority_compare_mode():
+    response = client.get(
+        "/api/festivals/ghode-jatra",
+        params={"year": 2026, "authority_mode": "authority_compare"},
+    )
+    assert response.status_code == 200
+
+    body = response.json()
+    assert body["dates"]["selection_policy"] == "authority_compare"
+    assert body["dates"]["authority_conflict"] is True
+    assert "compare mode" in body["dates"]["authority_note"].lower()
+
+
+def test_festival_explain_supports_all_candidates_mode():
+    response = client.get(
+        "/api/festivals/ghode-jatra/explain",
+        params={"year": 2026, "authority_mode": "all_candidates"},
+    )
+    assert response.status_code == 200
+
+    body = response.json()
+    assert body["selection_policy"] == "all_candidates"
+    assert body["authority_conflict"] is True
+    assert len(body["alternate_candidates"]) >= 1
+    assert any("all published candidates are surfaced" in step.lower() for step in body["steps"])
 
 
 def test_festivals_on_date_surfaces_conflict_note():

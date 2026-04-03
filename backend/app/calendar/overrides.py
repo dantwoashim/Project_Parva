@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 
 _overrides_cache: Optional[Dict[str, Any]] = None
+AUTHORITY_MODE_CHOICES = frozenset({"public_default", "authority_compare", "all_candidates"})
 _PROJECT_ROOT = Path(__file__).resolve().parents[3]
 _GROUND_TRUTH_DIR = _PROJECT_ROOT / "data" / "ground_truth"
 _SECONDARY_PROVIDER_ARCHIVE = (
@@ -405,11 +406,21 @@ def _select_override_candidate(
     return best
 
 
+def _candidate_identity(candidate: Dict[str, Any]) -> tuple[str | None, str | None, str | None, str | None]:
+    return (
+        candidate.get("start"),
+        candidate.get("source"),
+        candidate.get("source_family"),
+        candidate.get("notes"),
+    )
+
+
 def get_festival_override(
     festival_id: str,
     year: int,
     source_hint: str | None = None,
     notes_hint: str | None = None,
+    authority_mode: str = "public_default",
 ) -> Optional[date]:
     """
     Return an authoritative override date if present.
@@ -438,6 +449,7 @@ def get_festival_override_info(
     year: int,
     source_hint: str | None = None,
     notes_hint: str | None = None,
+    authority_mode: str = "public_default",
 ) -> Optional[Dict[str, Any]]:
     """
     Return override metadata if present.
@@ -460,7 +472,19 @@ def get_festival_override_info(
             "source_family": None,
             "confidence": None,
             "alternates": [],
+            "alternate_candidates": [],
+            "all_candidates": [
+                {
+                    "start": date.fromisoformat(fest),
+                    "source": None,
+                    "source_family": None,
+                    "confidence": None,
+                    "notes": None,
+                }
+            ],
             "candidate_count": 1,
+            "selection_policy": authority_mode,
+            "authority_note": None,
         }
     selected = _select_override_candidate(fest, source_hint=source_hint, notes_hint=notes_hint)
     if not selected:
@@ -472,16 +496,22 @@ def get_festival_override_info(
     if not start:
         return None
     all_candidates = _candidate_rows(fest)
-    alternates = [
+    selected_identity = _candidate_identity(selected)
+    normalized_candidates = [
         {
-            "start": date.fromisoformat(alt["start"]),
-            "source": alt.get("source"),
-            "source_family": alt.get("source_family"),
-            "confidence": alt.get("confidence"),
-            "notes": alt.get("notes"),
+            "start": date.fromisoformat(candidate["start"]),
+            "source": candidate.get("source"),
+            "source_family": candidate.get("source_family"),
+            "confidence": candidate.get("confidence"),
+            "notes": candidate.get("notes"),
         }
-        for alt in all_candidates
-        if alt.get("start") and alt.get("start") != selected_start
+        for candidate in all_candidates
+        if candidate.get("start")
+    ]
+    alternates = [
+        candidate
+        for candidate, raw in zip(normalized_candidates, all_candidates)
+        if _candidate_identity(raw) != selected_identity
     ]
     suggested_profile_id = None
     suggested_start = None
@@ -494,6 +524,26 @@ def get_festival_override_info(
         suggested_reason = (
             f"An alternate published listing date is available from {suggested_source}."
         )
+    authority_note = None
+    candidate_count = 1 + len(alternates)
+    if candidate_count > 1:
+        if authority_mode == "authority_compare":
+            authority_note = (
+                "Multiple authority candidates exist for this festival-year. "
+                "Compare mode keeps the public default in the main date fields and surfaces "
+                "alternate authority-backed candidates alongside it."
+            )
+        elif authority_mode == "all_candidates":
+            authority_note = (
+                "Multiple authority candidates exist for this festival-year. "
+                "All published candidates are surfaced alongside the current public default."
+            )
+        else:
+            chosen_source = selected.get("source") or "authority source"
+            authority_note = (
+                f"Multiple authority candidates exist for this festival-year. "
+                f"The current public default selects {selected_start} from {chosen_source}."
+            )
     return {
         "start": date.fromisoformat(start),
         "source": selected.get("source"),
@@ -501,8 +551,12 @@ def get_festival_override_info(
         "confidence": selected.get("confidence"),
         "notes": selected.get("notes"),
         "alternates": alternates,
-        "candidate_count": 1 + len(alternates),
+        "alternate_candidates": alternates,
+        "all_candidates": normalized_candidates,
+        "candidate_count": candidate_count,
         "suggested_profile_id": suggested_profile_id,
         "suggested_start": suggested_start,
         "suggested_reason": suggested_reason,
+        "selection_policy": authority_mode,
+        "authority_note": authority_note,
     }

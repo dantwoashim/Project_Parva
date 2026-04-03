@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-04-03T15:57:13.145098+00:00",
+  "suite_count": 3,
+  "total_samples": 85,
+  "total_passed": 83,
+  "total_failed": 2,
+  "pass_rate": 0.9765,
+  "suites": [
+    {
+      "suite_id": "tithi_boundaries_30",
+      "category": "sunrise_flips",
+      "fixture_path": "tests/fixtures/tithi_boundaries_30.json",
+      "samples": 30,
+      "passed": 30,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "boundary_radar_counts": {
+        "stable": 8,
+        "one_day_sensitive": 13,
+        "high_disagreement_risk": 9
+      },
+      "mismatches": []
+    },
+    {
+      "suite_id": "sankranti_24",
+      "category": "sankranti_boundaries",
+      "fixture_path": "tests/fixtures/sankranti_24.json",
+      "samples": 24,
+      "years": [
+        2026,
+        2027
+      ],
+      "passed": 24,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "mismatches": []
+    },
+    {
+      "suite_id": "adhik_maas_reference",
+      "category": "lunar_month_transitions",
+      "fixture_path": "tests/fixtures/adhik_maas_reference.json",
+      "samples": 31,
+      "range_bs": "2000-2030",
+      "passed": 29,
+      "failed": 2,
+      "pass_rate": 0.9355,
+      "mismatches": [
+        {
+          "bs_year": 2001,
+          "gregorian_year": 1944,
+          "expected_has_adhik": true,
+          "actual_has_adhik": false,
+          "expected_adhik_months": [
+            "Adhik Chaitra"
+          ],
+          "actual_adhik_months": []
+        },
+        {
+          "bs_year": 2020,
+          "gregorian_year": 1963,
+          "expected_has_adhik": true,
+          "actual_has_adhik": true,
+          "expected_adhik_months": [
+            "Adhik Chaitra",
+            "Adhik Kartik"
+          ],
+          "actual_adhik_months": [
+            "Adhik Kartik"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -30,6 +30,13 @@ async def cache_stats():
         "panchanga": panchanga_years,
         "festivals": festival_years,
     }
+    stats["coverage"] = {
+        "panchanga_year_count": len(panchanga_years),
+        "festival_year_count": len(festival_years),
+        "shared_years": sorted(set(panchanga_years) & set(festival_years)),
+        "panchanga_only_years": sorted(set(panchanga_years) - set(festival_years)),
+        "festival_only_years": sorted(set(festival_years) - set(panchanga_years)),
+    }
     return stats
 
 

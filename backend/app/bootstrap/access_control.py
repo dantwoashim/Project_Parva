@@ -20,14 +20,6 @@ PUBLIC_HEALTH_PATHS = {
     "/v3/docs",
     "/v3/openapi.json",
 }
-TRUST_PREFIXES = (
-    "/api/reliability",
-    "/v3/api/reliability",
-    "/api/spec",
-    "/v3/api/spec",
-    "/api/public",
-    "/v3/api/public",
-)
 EXPERIMENTAL_PREFIXES = ("/v2/", "/v4/", "/v5/")
 PROVENANCE_READ_PREFIXES = (
     "/api/provenance/root",
@@ -116,32 +108,32 @@ ROUTE_POLICY_REGISTRY: tuple[RoutePolicy, ...] = (
     route_policy(
         name="reliability_read",
         path="/api/reliability",
-        requirement=AccessRequirement(required=True, policy_name="reliability_read", scope="commercial.read"),
+        requirement=AccessRequirement(required=False, policy_name="reliability_read"),
     ),
     route_policy(
         name="reliability_read_v3",
         path="/v3/api/reliability",
-        requirement=AccessRequirement(required=True, policy_name="reliability_read", scope="commercial.read"),
+        requirement=AccessRequirement(required=False, policy_name="reliability_read"),
     ),
     route_policy(
         name="spec_read",
         path="/api/spec",
-        requirement=AccessRequirement(required=True, policy_name="spec_read", scope="commercial.read"),
+        requirement=AccessRequirement(required=False, policy_name="spec_read"),
     ),
     route_policy(
         name="spec_read_v3",
         path="/v3/api/spec",
-        requirement=AccessRequirement(required=True, policy_name="spec_read", scope="commercial.read"),
+        requirement=AccessRequirement(required=False, policy_name="spec_read"),
     ),
     route_policy(
         name="public_artifacts_read",
         path="/api/public",
-        requirement=AccessRequirement(required=True, policy_name="public_artifacts_read", scope="commercial.read"),
+        requirement=AccessRequirement(required=False, policy_name="public_artifacts_read"),
     ),
     route_policy(
         name="public_artifacts_read_v3",
         path="/v3/api/public",
-        requirement=AccessRequirement(required=True, policy_name="public_artifacts_read", scope="commercial.read"),
+        requirement=AccessRequirement(required=False, policy_name="public_artifacts_read"),
     ),
     route_policy(
         name="experimental_read_v2",
@@ -190,9 +182,7 @@ def classify_request(path: str, method: str) -> AccessRequirement:
         if method.upper() != "GET":
             return AccessRequirement(required=True, policy_name="provenance_admin", admin_only=True)
         if any(path.startswith(prefix) for prefix in PROVENANCE_READ_PREFIXES):
-            return AccessRequirement(
-                required=True, policy_name="provenance_read", scope="commercial.read"
-            )
+            return AccessRequirement(required=False, policy_name="provenance_read")
         return AccessRequirement(required=True, policy_name="provenance_admin", admin_only=True)
 
     for policy in ROUTE_POLICY_REGISTRY:

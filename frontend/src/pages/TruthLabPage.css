@@ -1,0 +1,124 @@
+.truth-lab {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.truth-lab__controls {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.truth-lab__controls label {
+  display: grid;
+  gap: 0.45rem;
+  font-weight: 600;
+}
+
+.truth-lab__controls input {
+  width: 9rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(32, 47, 58, 0.18);
+  background: rgba(255, 250, 244, 0.9);
+}
+
+.truth-lab__ladder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+}
+
+.truth-lab__benchmark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.truth-lab__benchmark-card {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.truth-lab__benchmark-card p {
+  margin: 0;
+}
+
+.truth-lab__benchmark-card code {
+  font-size: 0.88rem;
+}
+
+.truth-lab__limit-list {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.truth-lab__ladder-card {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem;
+}
+
+.truth-lab__ladder-tier {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  color: rgba(89, 63, 29, 0.8);
+}
+
+.truth-lab__atlas {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 1rem;
+}
+
+.truth-lab__dispute-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.truth-lab__dispute-card {
+  text-align: left;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(126, 86, 33, 0.16);
+  background: rgba(255, 249, 240, 0.85);
+  display: grid;
+  gap: 0.45rem;
+}
+
+.truth-lab__dispute-card.is-active {
+  border-color: rgba(126, 86, 33, 0.5);
+  box-shadow: 0 18px 40px rgba(126, 86, 33, 0.14);
+}
+
+.truth-lab__dispute-card p,
+.truth-lab__capsule p {
+  margin: 0;
+}
+
+.truth-lab__dispute-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.truth-lab__capsule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.truth-lab__capsule-lineage {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem;
+}
+
+@media (max-width: 900px) {
+  .truth-lab__atlas {
+    grid-template-columns: 1fr;
+  }
+}

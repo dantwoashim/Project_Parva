@@ -27,6 +27,7 @@ from app.explainability import create_reason_trace
 from app.festivals.repository import get_repository
 from app.rules import get_rule_service
 from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
+from .trust_surface_service import build_portable_proof_capsule, build_temporal_risk_payload
 
 
 @dataclass(frozen=True)
@@ -151,6 +152,7 @@ def build_personal_panchanga_response(
     lat: CoordinateInput,
     lon: CoordinateInput,
     tz: Optional[str],
+    risk_mode: str = "standard",
 ) -> dict:
     context = _resolve_personal_request_context(date_str=date_str, lat=lat, lon=lon, tz=tz)
     panchanga = get_panchanga(
@@ -233,18 +235,28 @@ def build_personal_panchanga_response(
         ],
     )
 
+    meta = base_meta_payload(
+        trace_id=trace["trace_id"],
+        confidence="computed",
+        method="ephemeris_udaya",
+        method_profile="personal_panchanga_v2_udaya",
+        quality_band="provisional" if context.degraded.active else "gold",
+        assumption_set_id="np-personal-panchanga-v2",
+        advisory_scope="ritual_planning",
+        degraded=context.degraded,
+    )
+    risk = build_temporal_risk_payload(
+        progress=panchanga["tithi"].get("progress"),
+        support_tier=str(meta["support_tier"]),
+        fallback_used=bool(meta["fallback_used"]),
+        method=str(meta["engine_path"]),
+        risk_mode=risk_mode,
+    )
+
     return {
         **payload,
-        **base_meta_payload(
-            trace_id=trace["trace_id"],
-            confidence="computed",
-            method="ephemeris_udaya",
-            method_profile="personal_panchanga_v2_udaya",
-            quality_band="provisional" if context.degraded.active else "gold",
-            assumption_set_id="np-personal-panchanga-v2",
-            advisory_scope="ritual_planning",
-            degraded=context.degraded,
-        ),
+        **meta,
+        **risk,
     }
 
 
@@ -254,6 +266,7 @@ def build_personal_context_response(
     lat: CoordinateInput,
     lon: CoordinateInput,
     tz: Optional[str],
+    risk_mode: str = "standard",
 ) -> dict:
     context = _resolve_personal_request_context(date_str=date_str, lat=lat, lon=lon, tz=tz)
     panchanga = get_panchanga(
@@ -310,22 +323,54 @@ def build_personal_context_response(
         ],
     )
 
+    meta = base_meta_payload(
+        trace_id=trace["trace_id"],
+        confidence="computed",
+        method="personal_context_synthesis",
+        method_profile="personal_context_v1",
+        quality_band="provisional" if context.degraded.active else "gold",
+        assumption_set_id="np-my-place-desktop-v1",
+        advisory_scope="personal_guidance",
+        degraded=context.degraded,
+    )
+    risk = build_temporal_risk_payload(
+        progress=((panchanga.get("tithi") or {}).get("progress")),
+        support_tier=str(meta["support_tier"]),
+        fallback_used=bool(meta["fallback_used"]),
+        method=str(meta["engine_path"]),
+        risk_mode=risk_mode,
+    )
+
     return {
         **payload,
-        **base_meta_payload(
-            trace_id=trace["trace_id"],
-            confidence="computed",
-            method="personal_context_synthesis",
-            method_profile="personal_context_v1",
-            quality_band="provisional" if context.degraded.active else "gold",
-            assumption_set_id="np-my-place-desktop-v1",
-            advisory_scope="personal_guidance",
-            degraded=context.degraded,
-        ),
+        **meta,
+        **risk,
     }
+
+
+def build_personal_proof_capsule(
+    *,
+    surface: str,
+    payload: dict,
+    request: dict,
+) -> dict:
+    location = payload.get("location") or {}
+    return build_portable_proof_capsule(
+        surface=surface,
+        payload=payload,
+        request=request,
+        source_lineage={
+            "timezone_source": payload.get("timezone_source"),
+            "input_sources": location.get("input_sources"),
+            "ephemeris": payload.get("ephemeris"),
+            "warnings": payload.get("warnings"),
+            "upcoming_reminder_count": len(payload.get("upcoming_reminders") or []),
+        },
+    )
 
 
 __all__ = [
     "build_personal_context_response",
     "build_personal_panchanga_response",
+    "build_personal_proof_capsule",
 ]

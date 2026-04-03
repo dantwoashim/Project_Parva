@@ -6,7 +6,7 @@
   "cases": [
     {
       "id": "bs-2026-02-15",
-      "endpoint": "/v2/api/calendar/convert",
+      "endpoint": "/v3/api/calendar/convert",
       "params": {"date": "2026-02-15"},
       "assertions": {
         "bikram_sambat.year": 2082,
@@ -18,7 +18,7 @@
     },
     {
       "id": "bs-2026-02-07",
-      "endpoint": "/v2/api/calendar/convert",
+      "endpoint": "/v3/api/calendar/convert",
       "params": {"date": "2026-02-07"},
       "assertions": {
         "bikram_sambat.year": 2082,
@@ -30,7 +30,7 @@
     },
     {
       "id": "bs-2025-02-15",
-      "endpoint": "/v2/api/calendar/convert",
+      "endpoint": "/v3/api/calendar/convert",
       "params": {"date": "2025-02-15"},
       "assertions": {
         "bikram_sambat.year": 2081,

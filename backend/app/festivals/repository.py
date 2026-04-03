@@ -27,6 +27,25 @@ from .models import (
 )
 from .validation import validate_festival_catalog_rows
 
+
+def _festival_support_tier(method: str, authority_conflict: bool) -> str:
+    if authority_conflict:
+        return "conflicted"
+    if method == "override":
+        return "authoritative"
+    if method == "estimated":
+        return "estimated"
+    return "computed"
+
+
+def _fallback_used(method: str) -> bool:
+    normalized = str(method or "").lower()
+    return "fallback" in normalized or "legacy" in normalized
+
+
+def _calibration_status(method: str) -> str:
+    return "not_applicable" if method == "override" else "unavailable"
+
 # Path to festival data files
 DATA_DIR = Path(__file__).parent.parent.parent.parent / "data" / "festivals"
 
@@ -43,57 +62,67 @@ def _to_bs_struct(g_date: date) -> dict:
     }
 
 
-def _authority_context(festival_id: str, year: int, method: str) -> dict[str, Any]:
+def _authority_context(
+    festival_id: str,
+    year: int,
+    method: str,
+    *,
+    authority_mode: str = "public_default",
+    rule_source_family: str | None = None,
+) -> dict[str, Any]:
     if method != "override":
         return {
             "authority_conflict": False,
             "authority_candidate_count": None,
             "authority_note": None,
             "authority_alternates": [],
+            "alternate_candidates": [],
             "authority_suggested_profile_id": None,
             "authority_suggested_start_date": None,
             "authority_suggested_reason": None,
+            "selection_policy": authority_mode,
+            "source_family": rule_source_family,
         }
 
-    info = get_festival_override_info(festival_id, year)
+    info = get_festival_override_info(festival_id, year, authority_mode=authority_mode)
     if not info:
         return {
             "authority_conflict": False,
             "authority_candidate_count": 1,
             "authority_note": None,
             "authority_alternates": [],
+            "alternate_candidates": [],
             "authority_suggested_profile_id": None,
             "authority_suggested_start_date": None,
             "authority_suggested_reason": None,
+            "selection_policy": authority_mode,
+            "source_family": None,
         }
 
     alternates = [
         AuthorityCandidate(
             start=alt["start"],
             source=alt.get("source"),
+            source_family=alt.get("source_family"),
             confidence=alt.get("confidence"),
             notes=alt.get("notes"),
         )
-        for alt in info.get("alternates", [])
+        for alt in info.get("alternate_candidates", [])
     ]
     candidate_count = int(info.get("candidate_count") or (1 + len(alternates)))
     authority_conflict = candidate_count > 1
-    chosen_source = info.get("source") or "override source"
-    authority_note = None
-    if authority_conflict:
-        authority_note = (
-            f"Multiple authority candidates exist for this festival-year. "
-            f"The current default selects {info['start'].isoformat()} from {chosen_source}."
-        )
 
     return {
         "authority_conflict": authority_conflict,
         "authority_candidate_count": candidate_count,
-        "authority_note": authority_note,
+        "authority_note": info.get("authority_note"),
         "authority_alternates": alternates,
+        "alternate_candidates": alternates,
         "authority_suggested_profile_id": info.get("suggested_profile_id"),
         "authority_suggested_start_date": info.get("suggested_start"),
         "authority_suggested_reason": info.get("suggested_reason"),
+        "selection_policy": info.get("selection_policy") or authority_mode,
+        "source_family": info.get("source_family"),
     }
 
 
@@ -524,7 +553,11 @@ class FestivalRepository:
         return result
 
     def get_dates_with_availability(
-        self, festival_id: str, year: int
+        self,
+        festival_id: str,
+        year: int,
+        *,
+        authority_mode: str = "public_default",
     ) -> tuple[Optional[FestivalDates], FestivalDateAvailability]:
         """Get calculated dates plus truthful resolution metadata."""
         if festival_id not in self._rule_service.list_ids():
@@ -546,7 +579,14 @@ class FestivalRepository:
             bs_start = _to_bs_struct(result.start_date)
             bs_end = _to_bs_struct(result.end_date)
             days_until = (result.start_date - date.today()).days
-            authority = _authority_context(festival_id, year, result.method)
+            rule = self._rule_service.info(festival_id)
+            authority = _authority_context(
+                festival_id,
+                year,
+                result.method,
+                authority_mode=authority_mode,
+                rule_source_family=getattr(rule, "source", None),
+            )
 
             return FestivalDates(
                 gregorian_year=year,
@@ -561,9 +601,16 @@ class FestivalRepository:
                 authority_candidate_count=authority["authority_candidate_count"],
                 authority_note=authority["authority_note"],
                 authority_alternates=authority["authority_alternates"],
+                alternate_candidates=authority["alternate_candidates"],
                 authority_suggested_profile_id=authority["authority_suggested_profile_id"],
                 authority_suggested_start_date=authority["authority_suggested_start_date"],
                 authority_suggested_reason=authority["authority_suggested_reason"],
+                support_tier=_festival_support_tier(result.method, authority["authority_conflict"]),
+                selection_policy=authority["selection_policy"],
+                source_family=authority["source_family"],
+                engine_path=result.method,
+                fallback_used=_fallback_used(result.method),
+                calibration_status=_calibration_status(result.method),
             ), FestivalDateAvailability(
                 status="available",
                 note=authority["authority_note"]
@@ -571,7 +618,7 @@ class FestivalRepository:
                 requested_year=year,
                 resolved_year=year,
             )
-        except Exception:
+        except (AttributeError, KeyError, TypeError, ValueError):
             return None, FestivalDateAvailability(
                 status="calculation_error",
                 note="The calendar engine encountered an internal error while resolving this festival year.",

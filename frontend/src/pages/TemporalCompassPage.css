@@ -85,6 +85,59 @@
   font-weight: 600;
 }
 
+.today-page__truth-strip,
+.today-page__truth-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.today-page__truth-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.today-page__truth-chip--authoritative {
+  background: rgba(76, 134, 104, 0.16);
+  border-color: rgba(76, 134, 104, 0.34);
+}
+
+.today-page__truth-chip--computed {
+  background: rgba(214, 170, 103, 0.12);
+  border-color: rgba(214, 170, 103, 0.28);
+}
+
+.today-page__truth-chip--fallback {
+  background: rgba(181, 82, 64, 0.12);
+  border-color: rgba(181, 82, 64, 0.24);
+}
+
+.today-page__truth-card {
+  min-width: 14rem;
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.today-page__truth-note {
+  margin: 0;
+  color: var(--editorial-accent);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
 .today-page__loading {
   gap: 1rem;
 }

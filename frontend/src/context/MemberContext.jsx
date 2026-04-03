@@ -241,6 +241,14 @@ export function MemberProvider({ children, store }) {
       'clear_device_cache',
       { type: 'clearLocalState' },
     ),
+    setLocalSaveConsent: (enabled) => queueMemberAction(
+      stateRef,
+      writeChainRef,
+      dispatch,
+      memberStore,
+      enabled ? 'enable_local_save' : 'disable_local_save',
+      { type: 'setLocalSaveConsent', payload: { enabled: Boolean(enabled) } },
+    ),
     clearNotice: () => {
       startTransition(() => {
         dispatch({ type: 'clearNotice' });

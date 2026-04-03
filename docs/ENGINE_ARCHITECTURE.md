@@ -1,5 +1,21 @@
 # Engine Architecture
 
+```mermaid
+flowchart TD
+    A["Public UI / SDK / API client"] --> B["FastAPI bootstrap + middleware"]
+    B --> C["Public route families"]
+    C --> D["Calendar core"]
+    C --> E["Festival rule services"]
+    C --> F["Personal timing surfaces"]
+    D --> G["BS conversion + tithi + panchanga"]
+    E --> H["Rule catalog + overrides + variants"]
+    F --> I["Muhurta + kundali + temporal context"]
+    G --> J["Trust + provenance + uncertainty"]
+    H --> J
+    I --> J
+    J --> K["Response contract / proof capsule / dispute surfaces"]
+```
+
 ## Runtime layers
 1. `calendar/*`
    - BS conversion
@@ -48,6 +64,18 @@ Legacy calculators remain available only as compatibility components behind the 
 4. Router resolves the request to the public v3 surface (`/v3/api/*` or `/api/*` alias).
 5. Canonical engine modules compute the result.
 6. Response metadata adds policy, provenance, degraded-state details, and engine headers.
+
+## Late-phase trust surfaces
+- `GET /api/festivals/disputes`
+  - dispute atlas, truth ladder, and boundary-risk rows
+- `GET /api/festivals/{festival_id}/proof-capsule`
+  - request normalization, selection policy, source lineage, risk notes, and provenance
+- `GET /api/reliability/benchmark-manifest`
+  - reproducibility summary for evaluation artifacts, hashes, and benchmark policy
+- `GET /api/reliability/source-review-queue`
+  - review-driven ingestion queue built from official-source inventory and artifact availability
+- `GET /api/reliability/boundary-suite`
+  - fixture-backed sunrise, sankranti, and adhik-month boundary regression summary
 
 ## Provenance model
 - Snapshot manifests describe the actual runtime inputs used to produce public results.

@@ -51,6 +51,8 @@ def _event_lines(event: FeedEvent, *, now_utc: datetime) -> list[str]:
         f"SUMMARY;LANGUAGE={event.language}:{_escape_ics(event.summary)}",
         f"DESCRIPTION;LANGUAGE={event.language}:{_escape_ics(event.description)}",
         f"CATEGORIES:{_escape_ics(event.categories)}",
+        "STATUS:CONFIRMED",
+        "TRANSP:TRANSPARENT",
     ]
     if event.location:
         lines.append(f"LOCATION;LANGUAGE={event.language}:{_escape_ics(event.location)}")
@@ -128,6 +130,9 @@ def build_ical_feed(
     calendar_name: str,
     events: Iterable[FeedEvent],
     description: str = "Project Parva Festival Feed",
+    source_url: str | None = None,
+    timezone_name: str = "Asia/Kathmandu",
+    refresh_interval: str = "PT12H",
 ) -> str:
     """Build iCal (.ics) string from event objects."""
     now_utc = datetime.now(timezone.utc)
@@ -138,9 +143,16 @@ def build_ical_feed(
         "CALSCALE:GREGORIAN",
         "METHOD:PUBLISH",
         "PRODID:-//Project Parva//Festival Feed//EN",
+        f"NAME:{_escape_ics(calendar_name)}",
         f"X-WR-CALNAME:{_escape_ics(calendar_name)}",
         f"X-WR-CALDESC:{_escape_ics(description)}",
+        f"X-WR-TIMEZONE:{_escape_ics(timezone_name)}",
+        "COLOR:#B7791F",
+        f"REFRESH-INTERVAL;VALUE=DURATION:{_escape_ics(refresh_interval)}",
+        f"X-PUBLISHED-TTL:{_escape_ics(refresh_interval)}",
     ]
+    if source_url:
+        lines.append(f"URL:{_escape_ics(source_url)}")
 
     for event in events:
         lines.extend(_event_lines(event, now_utc=now_utc))

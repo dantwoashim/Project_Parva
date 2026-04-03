@@ -5,39 +5,26 @@ Calendar API Routes
 Endpoints for calendar conversion and tithi information.
 """
 
-from datetime import date, timedelta
+from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
 
-from app.cache import load_precomputed_festival_year, load_precomputed_panchanga
-from app.calendar.bikram_sambat import (
-    bs_to_gregorian,
-    get_bs_confidence,
-    get_bs_estimated_error_days,
-    get_bs_month_name,
-    get_bs_source_range,
-    get_bs_year_confidence,
-    gregorian_to_bs,
-    gregorian_to_bs_estimated,
-    gregorian_to_bs_official,
-)
-from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR
-from app.calendar.ephemeris.swiss_eph import calculate_sunrise
-from app.calendar.ephemeris.time_utils import to_nepal_time
-from app.calendar.nepal_sambat import format_ns_date, get_current_ns_year
-from app.calendar.tithi import (
-    calculate_tithi,
-    get_moon_phase_name,
-    get_udaya_tithi,  # Official (sunrise-based) tithi
-)
-from app.policy import get_policy_metadata
-from app.provenance import get_latest_snapshot_id, get_provenance_payload
-from app.uncertainty import (
-    build_bs_uncertainty,
-    build_panchanga_uncertainty,
-    build_tithi_uncertainty,
+from app.calendar.bikram_sambat import get_bs_month_name
+from app.services.calendar_surface_service import (
+    build_bs_to_gregorian_payload,
+    build_calendar_proof_capsule,
+    build_compare_conversion_payload,
+    build_conversion_payload,
+    build_dual_month_payload,
+    build_panchanga_payload,
+    build_panchanga_range_payload,
+    build_provenance,
+    build_tithi_detail_payload,
+    build_today_payload,
+    build_upcoming_festivals_payload,
+    parse_iso_date as service_parse_iso_date,
 )
 
 router = APIRouter(prefix="/api/calendar", tags=["calendar"])
@@ -80,6 +67,10 @@ class ConversionResult(BaseModel):
     bikram_sambat: BSDate
     nepal_sambat: Optional[NSDate]
     tithi: TithiInfo
+    support_tier: str
+    engine_path: str
+    fallback_used: bool = False
+    calibration_status: str
     engine_version: str = "v3"
     provenance: Optional[dict] = None
     policy: Optional[dict] = None
@@ -103,131 +94,12 @@ class BSCompareResult(BaseModel):
     estimated_error_days: Optional[str] = None
 
 
-def _build_provenance(festival_id: Optional[str] = None, year: Optional[int] = None) -> dict:
-    snapshot_id = get_latest_snapshot_id()
-    verify_url = "/v3/api/provenance/root"
-    if festival_id and year and snapshot_id:
-        verify_url = (
-            f"/v3/api/provenance/proof?festival={festival_id}&year={year}&snapshot={snapshot_id}"
-        )
-    return get_provenance_payload(verify_url=verify_url, create_if_missing=True)
-
-
 def _parse_iso_date(date_str: str) -> date:
-    try:
-        parts = date_str.split("-")
-        return date(int(parts[0]), int(parts[1]), int(parts[2]))
-    except (ValueError, IndexError) as exc:
-        from fastapi import HTTPException
-
-        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD") from exc
-
-
-def _bs_struct(gregorian_date: date) -> dict:
-    bs_year, bs_month, bs_day = gregorian_to_bs(gregorian_date)
-    month_name = get_bs_month_name(bs_month)
-    return {
-        "year": bs_year,
-        "month": bs_month,
-        "day": bs_day,
-        "month_name": month_name,
-        "formatted": f"{bs_year} {month_name} {bs_day}",
-    }
-
-
-def _build_bs_date(gregorian_date: date) -> BSDate:
-    bs_year, bs_month, bs_day = gregorian_to_bs(gregorian_date)
-    confidence = get_bs_confidence(gregorian_date)
-    estimated_error_days = get_bs_estimated_error_days(gregorian_date)
-    return BSDate(
-        year=bs_year,
-        month=bs_month,
-        day=bs_day,
-        month_name=get_bs_month_name(bs_month),
-        confidence=confidence,
-        source_range=get_bs_source_range(gregorian_date),
-        estimated_error_days=estimated_error_days,
-        uncertainty=build_bs_uncertainty(confidence, estimated_error_days),
-    )
-
-
-def _build_ns_date(gregorian_date: date) -> Optional[NSDate]:
-    try:
-        ns_year = get_current_ns_year(gregorian_date)
-        return NSDate(year=ns_year, formatted=format_ns_date(gregorian_date))
-    except Exception:
-        return None
-
-
-def _build_tithi_info(gregorian_date: date) -> TithiInfo:
-    try:
-        udaya = get_udaya_tithi(gregorian_date)
-        sunrise_utc = calculate_sunrise(gregorian_date)
-        return TithiInfo(
-            tithi=udaya["tithi"],
-            paksha=udaya["paksha"],
-            tithi_name=udaya["name"],
-            moon_phase=get_moon_phase_name(to_nepal_time(sunrise_utc)),
-            method="ephemeris_udaya",
-            confidence="exact",
-            reference_time="sunrise",
-            sunrise_used=to_nepal_time(sunrise_utc).isoformat(),
-            uncertainty=build_tithi_uncertainty(
-                method="ephemeris_udaya",
-                confidence="exact",
-                progress=udaya.get("progress"),
-            ),
-        )
-    except Exception:
-        tithi_data = calculate_tithi(gregorian_date)
-        return TithiInfo(
-            tithi=tithi_data["display_number"],
-            paksha=tithi_data["paksha"],
-            tithi_name=tithi_data["name"],
-            moon_phase=get_moon_phase_name(gregorian_date),
-            method="instantaneous",
-            confidence="computed",
-            reference_time="instantaneous",
-            uncertainty=build_tithi_uncertainty(
-                method="instantaneous",
-                confidence="computed",
-                progress=tithi_data.get("progress"),
-            ),
-        )
+    return service_parse_iso_date(date_str)
 
 
 def _build_conversion_payload(gregorian_date: date) -> dict:
-    bs_date = _build_bs_date(gregorian_date)
-    ns_date = _build_ns_date(gregorian_date)
-    tithi_info = _build_tithi_info(gregorian_date)
-    return {
-        "gregorian": gregorian_date.isoformat(),
-        "bikram_sambat": {
-            "year": bs_date.year,
-            "month": bs_date.month,
-            "day": bs_date.day,
-            "month_name": bs_date.month_name,
-            "confidence": bs_date.confidence,
-            "source_range": bs_date.source_range,
-            "estimated_error_days": bs_date.estimated_error_days,
-            "uncertainty": bs_date.uncertainty,
-        },
-        "nepal_sambat": ns_date.model_dump() if ns_date else None,
-        "tithi": {
-            "tithi": tithi_info.tithi,
-            "paksha": tithi_info.paksha,
-            "tithi_name": tithi_info.tithi_name,
-            "moon_phase": tithi_info.moon_phase,
-            "method": tithi_info.method,
-            "confidence": tithi_info.confidence,
-            "reference_time": tithi_info.reference_time,
-            "sunrise_used": tithi_info.sunrise_used,
-            "uncertainty": tithi_info.uncertainty,
-        },
-        "engine_version": "v3",
-        "provenance": _build_provenance(),
-        "policy": get_policy_metadata(),
-    }
+    return build_conversion_payload(gregorian_date)
 
 
 @router.get("/convert", response_model=ConversionResult)
@@ -263,56 +135,7 @@ async def compare_convert(
     Returns both conversions when available.
     """
     gregorian_date = _parse_iso_date(date_str)
-    
-    official = None
-    try:
-        o_year, o_month, o_day = gregorian_to_bs_official(gregorian_date)
-        official = {
-            "year": o_year,
-            "month": o_month,
-            "day": o_day,
-            "month_name": get_bs_month_name(o_month),
-            "confidence": "official",
-            "source_range": f"{BS_MIN_YEAR}-{BS_MAX_YEAR}",
-            "estimated_error_days": None,
-            "uncertainty": build_bs_uncertainty("official", None),
-        }
-    except Exception:
-        official = None
-    
-    try:
-        e_year, e_month, e_day = gregorian_to_bs_estimated(gregorian_date)
-        estimated = {
-            "year": e_year,
-            "month": e_month,
-            "day": e_day,
-            "month_name": get_bs_month_name(e_month),
-            "confidence": "estimated",
-            "source_range": None,
-            "estimated_error_days": "0-1",
-            "uncertainty": build_bs_uncertainty("estimated", "0-1"),
-        }
-    except Exception as e:
-        from fastapi import HTTPException
-        raise HTTPException(status_code=400, detail=str(e))
-    
-    match = None
-    if official:
-        match = (
-            official["year"] == estimated["year"]
-            and official["month"] == estimated["month"]
-            and official["day"] == estimated["day"]
-        )
-    
-    return {
-        "gregorian": gregorian_date.isoformat(),
-        "official": official,
-        "estimated": estimated,
-        "match": match,
-        "engine_version": "v3",
-        "provenance": _build_provenance(),
-        "policy": get_policy_metadata(),
-    }
+    return build_compare_conversion_payload(gregorian_date)
 
 
 @router.get("/dual-month")
@@ -325,53 +148,7 @@ async def get_dual_month(
 
     Supports a dynamic ±200 year browsing window around the current Gregorian year.
     """
-    current_year = date.today().year
-    min_year = current_year - 200
-    max_year = current_year + 200
-    if year < min_year or year > max_year:
-        from fastapi import HTTPException
-
-        raise HTTPException(
-            status_code=400,
-            detail=f"Year must be between {min_year} and {max_year} for the ±200 year calendar explorer",
-        )
-
-    month_start = date(year, month, 1)
-    if month == 12:
-        next_month = date(year + 1, 1, 1)
-    else:
-        next_month = date(year, month + 1, 1)
-
-    rows = []
-    cursor = month_start
-    while cursor < next_month:
-        rows.append(
-            {
-                "gregorian": {
-                    "iso": cursor.isoformat(),
-                    "year": cursor.year,
-                    "month": cursor.month,
-                    "day": cursor.day,
-                    "weekday": cursor.strftime("%A"),
-                },
-                "bikram_sambat": _bs_struct(cursor),
-            }
-        )
-        cursor += timedelta(days=1)
-
-    return {
-        "year": year,
-        "month": month,
-        "month_label": month_start.strftime("%B %Y"),
-        "supported_range": {
-            "gregorian_min_year": min_year,
-            "gregorian_max_year": max_year,
-        },
-        "days": rows,
-        "engine_version": "v3",
-        "provenance": _build_provenance(),
-        "policy": get_policy_metadata(),
-    }
+    return build_dual_month_payload(year, month)
 
 
 @router.post("/bs-to-gregorian")
@@ -380,101 +157,33 @@ async def bs_to_gregorian_convert(request: BSConversionRequest):
     Convert a Bikram Sambat date to Gregorian.
     """
     try:
-        gregorian_date = bs_to_gregorian(request.year, request.month, request.day)
-        return {
-            "bs": {
-                "year": request.year,
-                "month": request.month,
-                "day": request.day,
-                "month_name": get_bs_month_name(request.month),
-                "confidence": get_bs_year_confidence(request.year),
-                "source_range": f"{BS_MIN_YEAR}-{BS_MAX_YEAR}" if get_bs_year_confidence(request.year) == "official" else None,
-                "estimated_error_days": "0-1" if get_bs_year_confidence(request.year) == "estimated" else None,
-                "uncertainty": build_bs_uncertainty(
-                    get_bs_year_confidence(request.year),
-                    "0-1" if get_bs_year_confidence(request.year) == "estimated" else None,
-                ),
-            },
-            "gregorian": gregorian_date.isoformat(),
-            "engine_version": "v3",
-            "provenance": _build_provenance(),
-            "policy": get_policy_metadata(),
-        }
-    except Exception as e:
+        return build_bs_to_gregorian_payload(request.year, request.month, request.day)
+    except ValueError as e:
         from fastapi import HTTPException
         raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.get("/today")
-async def get_today():
+async def get_today(
+    risk_mode: str = Query("standard", description="standard|strict"),
+):
     """
     Get calendar information for today.
     Uses udaya tithi (official sunrise-based) for accuracy.
     """
-    today = date.today()
-    
-    # Convert to BS
-    bs_year, bs_month, bs_day = gregorian_to_bs(today)
-    
-    # Calculate tithi using UDAYA method (official sunrise-based)
-    try:
-        udaya = get_udaya_tithi(today)
-        sunrise_utc = calculate_sunrise(today)
-        tithi_response = {
-            "tithi": udaya["tithi"],  # display number 1-15
-            "paksha": udaya["paksha"],
-            "tithi_name": udaya["name"],
-            "moon_phase": get_moon_phase_name(to_nepal_time(sunrise_utc)),
-            "method": "ephemeris_udaya",
-            "confidence": "exact",
-            "reference_time": "sunrise",
-            "sunrise_used": to_nepal_time(sunrise_utc).isoformat(),
-            "uncertainty": build_tithi_uncertainty(
-                method="ephemeris_udaya",
-                confidence="exact",
-                progress=udaya.get("progress"),
-            ),
-        }
-    except Exception:
-        # Fallback to instantaneous
-        tithi_data = calculate_tithi(today)
-        tithi_response = {
-            "tithi": tithi_data["display_number"],
-            "paksha": tithi_data["paksha"],
-            "tithi_name": tithi_data["name"],
-            "moon_phase": get_moon_phase_name(today),
-            "method": "instantaneous",
-            "confidence": "computed",
-            "reference_time": "instantaneous",
-            "sunrise_used": None,
-            "uncertainty": build_tithi_uncertainty(
-                method="instantaneous",
-                confidence="computed",
-                progress=tithi_data.get("progress"),
-            ),
-        }
-    
-    return {
-        "gregorian": today.isoformat(),
-        "bikram_sambat": {
-            "year": bs_year,
-            "month": bs_month,
-            "day": bs_day,
-            "month_name": get_bs_month_name(bs_month),
-            "formatted": f"{bs_year} {get_bs_month_name(bs_month)} {bs_day}",
-            "confidence": get_bs_confidence(today),
-            "source_range": get_bs_source_range(today),
-            "estimated_error_days": get_bs_estimated_error_days(today),
-            "uncertainty": build_bs_uncertainty(
-                get_bs_confidence(today),
-                get_bs_estimated_error_days(today),
-            ),
-        },
-        "tithi": tithi_response,
-        "engine_version": "v3",
-        "provenance": _build_provenance(),
-        "policy": get_policy_metadata(),
-    }
+    return build_today_payload(risk_mode=risk_mode)
+
+
+@router.get("/today/proof-capsule")
+async def get_today_proof_capsule(
+    risk_mode: str = Query("strict", description="standard|strict"),
+):
+    payload = build_today_payload(risk_mode=risk_mode)
+    return build_calendar_proof_capsule(
+        surface="today",
+        payload=payload,
+        request={"risk_mode": risk_mode},
+    )
 
 
 @router.get("/tithi")
@@ -487,77 +196,48 @@ async def get_tithi_endpoint(
     ),
     latitude: float = Query(27.7172, ge=-90.0, le=90.0, description="Latitude"),
     longitude: float = Query(85.3240, ge=-180.0, le=180.0, description="Longitude"),
+    risk_mode: str = Query("standard", description="standard|strict"),
 ):
     """
     Get tithi details for a date/location with method metadata.
     """
-    from app.calendar.tithi.tithi_udaya import detect_ksheepana, detect_vriddhi
+    target_date = _parse_iso_date(date_str)
+    return build_tithi_detail_payload(
+        target_date,
+        latitude=latitude,
+        longitude=longitude,
+        risk_mode=risk_mode,
+    )
 
-    try:
-        parts = date_str.split("-")
-        target_date = date(int(parts[0]), int(parts[1]), int(parts[2]))
-    except (ValueError, IndexError):
-        from fastapi import HTTPException
-        raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
 
-    try:
-        udaya = get_udaya_tithi(target_date, latitude=latitude, longitude=longitude)
-        sunrise_npt = udaya["sunrise_local"]
-        return {
+@router.get("/tithi/proof-capsule")
+async def get_tithi_proof_capsule(
+    date_str: str = Query(
+        ...,
+        alias="date",
+        description="Gregorian date in YYYY-MM-DD format",
+    ),
+    latitude: float = Query(27.7172, ge=-90.0, le=90.0, description="Latitude"),
+    longitude: float = Query(85.3240, ge=-180.0, le=180.0, description="Longitude"),
+    risk_mode: str = Query("strict", description="standard|strict"),
+):
+    target_date = _parse_iso_date(date_str)
+    payload = build_tithi_detail_payload(
+        target_date,
+        latitude=latitude,
+        longitude=longitude,
+        risk_mode=risk_mode,
+    )
+    return build_calendar_proof_capsule(
+        surface="tithi",
+        payload=payload,
+        request={
             "date": target_date.isoformat(),
-            "location": {"latitude": latitude, "longitude": longitude},
-            "tithi": {
-                "number": udaya["tithi_absolute"],
-                "display_number": udaya["tithi"],
-                "paksha": udaya["paksha"],
-                "name": udaya["name"],
-                "progress": udaya["progress"],
-                "moon_phase": get_moon_phase_name(sunrise_npt),
-                "method": "ephemeris_udaya",
-                "confidence": "exact",
-                "reference_time": "sunrise",
-                "sunrise_used": sunrise_npt.isoformat(),
-                "vriddhi": detect_vriddhi(target_date, latitude=latitude, longitude=longitude),
-                "ksheepana": detect_ksheepana(target_date, latitude=latitude, longitude=longitude),
-                "uncertainty": build_tithi_uncertainty(
-                    method="ephemeris_udaya",
-                    confidence="exact",
-                    progress=udaya.get("progress"),
-                ),
-            },
-            "engine_version": "v3",
-            "provenance": _build_provenance(),
-            "policy": get_policy_metadata(),
-        }
-    except Exception:
-        # Explicit fallback path for resilience.
-        tithi_data = calculate_tithi(target_date)
-        return {
-            "date": target_date.isoformat(),
-            "location": {"latitude": latitude, "longitude": longitude},
-            "tithi": {
-                "number": tithi_data["number"],
-                "display_number": tithi_data["display_number"],
-                "paksha": tithi_data["paksha"],
-                "name": tithi_data["name"],
-                "progress": tithi_data["progress"],
-                "moon_phase": get_moon_phase_name(target_date),
-                "method": "instantaneous",
-                "confidence": "computed",
-                "reference_time": "instantaneous",
-                "sunrise_used": None,
-                "vriddhi": False,
-                "ksheepana": False,
-                "uncertainty": build_tithi_uncertainty(
-                    method="instantaneous",
-                    confidence="computed",
-                    progress=tithi_data.get("progress"),
-                ),
-            },
-            "engine_version": "v3",
-            "provenance": _build_provenance(),
-            "policy": get_policy_metadata(),
-        }
+            "latitude": latitude,
+            "longitude": longitude,
+            "risk_mode": risk_mode,
+        },
+    )
 
 
 # =============================================================================
@@ -571,7 +251,8 @@ async def get_panchanga_endpoint(
         alias="date",
         description="Gregorian date in YYYY-MM-DD format",
         examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
-    )
+    ),
+    risk_mode: str = Query("standard", description="standard|strict"),
 ):
     """
     Get complete panchanga (5-element Hindu calendar) for a date.
@@ -579,103 +260,26 @@ async def get_panchanga_endpoint(
     Uses Swiss Ephemeris for accurate astronomical calculations.
     Includes: Tithi, Nakshatra, Yoga, Karana, Vaara (weekday).
     """
-    from app.calendar.panchanga import get_panchanga
-    
     target_date = _parse_iso_date(date_str)
-    
-    cached_payload = load_precomputed_panchanga(target_date)
-    if cached_payload:
-        # Keep precomputed payload authoritative for heavy fields and attach live metadata.
-        response = dict(cached_payload)
-        response["date"] = target_date.isoformat()
-        response["engine_version"] = "v2"
-        response["provenance"] = _build_provenance()
-        response["policy"] = get_policy_metadata()
-        response["service_status"] = "degraded_cached" if response.get("cache", {}).get("stale") else "healthy"
-        response["cache"] = {
-            "hit": True,
-            "source": "precomputed",
-        }
-        return response
+    return build_panchanga_payload(target_date, risk_mode=risk_mode)
 
-    # Get full panchanga from ephemeris
-    try:
-        panchanga = get_panchanga(target_date)
-    except Exception:
-        # Degraded mode: ephemeris compute unavailable and no precomputed artifact found.
-        from fastapi import HTTPException
 
-        raise HTTPException(
-            status_code=503,
-            detail=(
-                "Panchanga engine unavailable and no precomputed artifact found for "
-                f"{target_date.isoformat()}. Run precompute pipeline or retry."
-            ),
-        )
-    
-    # Convert to BS
-    bs_year, bs_month, bs_day = gregorian_to_bs(target_date)
-    
-    return {
-        "date": target_date.isoformat(),
-        "bikram_sambat": {
-            "year": bs_year,
-            "month": bs_month,
-            "day": bs_day,
-            "month_name": get_bs_month_name(bs_month),
-            "confidence": get_bs_confidence(target_date),
-            "source_range": get_bs_source_range(target_date),
-            "estimated_error_days": get_bs_estimated_error_days(target_date),
-            "uncertainty": build_bs_uncertainty(
-                get_bs_confidence(target_date),
-                get_bs_estimated_error_days(target_date),
-            ),
-        },
-        "panchanga": {
-            "confidence": "astronomical",
-            "uncertainty": build_panchanga_uncertainty(),
-            "tithi": {
-                "number": panchanga["tithi"]["number"],
-                "name": panchanga["tithi"]["name"],
-                "paksha": panchanga["tithi"]["paksha"],
-                "progress": panchanga["tithi"]["progress"],
-                "method": "ephemeris_udaya",
-                "confidence": "exact",
-                "reference_time": "sunrise",
-                "sunrise_used": panchanga["sunrise"]["local"],
-            },
-            "nakshatra": {
-                "number": panchanga["nakshatra"]["number"],
-                "name": panchanga["nakshatra"]["name"],
-                "pada": panchanga["nakshatra"].get("pada", 1),
-            },
-            "yoga": {
-                "number": panchanga["yoga"]["number"],
-                "name": panchanga["yoga"]["name"],
-            },
-            "karana": {
-                "number": panchanga["karana"]["number"],
-                "name": panchanga["karana"]["name"],
-            },
-            "vaara": {
-                "name_sanskrit": panchanga["vaara"]["name_sanskrit"],
-                "name_english": panchanga["vaara"]["name_english"],
-            },
-        },
-        "ephemeris": {
-            "mode": panchanga.get("mode", "swiss_moshier"),
-            "accuracy": panchanga.get("accuracy", "arcsecond"),
-            "library": panchanga.get("library", "pyswisseph"),
-        },
-        "cache": {
-            "hit": False,
-            "source": "computed",
-        },
-        "service_status": "healthy",
-        "engine_version": "v3",
-        "provenance": _build_provenance(),
-        "policy": get_policy_metadata(),
-    }
+@router.get("/panchanga/proof-capsule")
+async def get_panchanga_proof_capsule(
+    date_str: str = Query(
+        ...,
+        alias="date",
+        description="Gregorian date in YYYY-MM-DD format",
+    ),
+    risk_mode: str = Query("strict", description="standard|strict"),
+):
+    target_date = _parse_iso_date(date_str)
+    payload = build_panchanga_payload(target_date, risk_mode=risk_mode)
+    return build_calendar_proof_capsule(
+        surface="panchanga",
+        payload=payload,
+        request={"date": target_date.isoformat(), "risk_mode": risk_mode},
+    )
 
 
 @router.get("/panchanga/range")
@@ -686,52 +290,8 @@ async def get_panchanga_range_endpoint(
     """
     Get panchanga for a range of dates.
     """
-    from app.calendar.panchanga import get_panchanga
-    
     start = _parse_iso_date(start_date)
-    
-    results = []
-    cache_hits = 0
-    cache_misses = 0
-    for offset in range(days):
-        d = start + timedelta(days=offset)
-        cached = load_precomputed_panchanga(d)
-        if cached:
-            p = {
-                "date": d.isoformat(),
-                "tithi": cached["panchanga"]["tithi"]["name"],
-                "nakshatra": cached["panchanga"]["nakshatra"]["name"],
-                "yoga": cached["panchanga"]["yoga"]["name"],
-                "vaara": cached["panchanga"]["vaara"]["name_english"],
-            }
-            cache_hits += 1
-            results.append(p)
-            continue
-
-        # Fallback to live compute.
-        p = get_panchanga(d)
-        results.append({
-            "date": p["date"].isoformat() if hasattr(p["date"], "isoformat") else str(p["date"]),
-            "tithi": p["tithi"]["name"],
-            "nakshatra": p["nakshatra"]["name"],
-            "yoga": p["yoga"]["name"],
-            "vaara": p["vaara"]["name_english"],
-        })
-        cache_misses += 1
-    
-    return {
-        "start": start.isoformat(),
-        "days": days,
-        "panchangas": results,
-        "cache": {
-            "hits": cache_hits,
-            "misses": cache_misses,
-            "hit_ratio": round(cache_hits / days, 4) if days else 0.0,
-        },
-        "engine_version": "v3",
-        "provenance": _build_provenance(),
-        "policy": get_policy_metadata(),
-    }
+    return build_panchanga_range_payload(start, days)
 
 
 # =============================================================================
@@ -776,7 +336,7 @@ async def calculate_festival_endpoint(
         "lunar_month": result.lunar_month,
         "is_adhik_year": result.is_adhik_year,
         "engine_version": "v3",
-        "provenance": _build_provenance(festival_id=festival_id, year=year),
+        "provenance": build_provenance(festival_id=festival_id, year=year),
         "policy": get_policy_metadata(),
     }
 
@@ -789,87 +349,7 @@ async def get_upcoming_festivals_endpoint(
     Get all festivals occurring within the next N days.
     Uses V2 calculator with correct lunar month model.
     """
-    from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
-    
-    today = date.today()
-    end_date = today + timedelta(days=days)
-    
-    upcoming = []
-    cache_years_loaded: list[int] = []
-
-    # Fast path: use precomputed yearly artifacts if present.
-    for year in [today.year, today.year + 1]:
-        payload = load_precomputed_festival_year(year)
-        if not payload or not isinstance(payload.get("festivals"), list):
-            continue
-        cache_years_loaded.append(year)
-        for row in payload["festivals"]:
-            try:
-                start_dt = date.fromisoformat(str(row["start"]))
-                end_dt = date.fromisoformat(str(row["end"]))
-            except Exception:
-                continue
-            if start_dt < today or start_dt > end_date:
-                continue
-            upcoming.append({
-                "festival_id": row["festival_id"],
-                "start": start_dt.isoformat(),
-                "end": end_dt.isoformat(),
-                "days_until": (start_dt - today).days,
-            })
-
-    if cache_years_loaded:
-        upcoming.sort(key=lambda x: x["start"])
-        return {
-            "from_date": today.isoformat(),
-            "days": days,
-            "festivals": upcoming,
-            "cache": {
-                "hit": True,
-                "years_loaded": sorted(set(cache_years_loaded)),
-                "source": "precomputed",
-            },
-            "engine_version": "v3",
-            "provenance": _build_provenance(),
-            "policy": get_policy_metadata(),
-        }
-
-    for fid in list_festivals_v2():
-        result = calculate_festival_v2(fid, today.year)
-        if result and result.start_date >= today and result.start_date <= end_date:
-            upcoming.append({
-                "festival_id": fid,
-                "start": result.start_date.isoformat(),
-                "end": result.end_date.isoformat(),
-                "days_until": (result.start_date - today).days,
-            })
-        # Also check next year for early-year festivals
-        elif result and result.start_date < today:
-            result_next = calculate_festival_v2(fid, today.year + 1)
-            if result_next and result_next.start_date <= end_date:
-                upcoming.append({
-                    "festival_id": fid,
-                    "start": result_next.start_date.isoformat(),
-                    "end": result_next.end_date.isoformat(),
-                    "days_until": (result_next.start_date - today).days,
-                })
-    
-    # Sort by start date
-    upcoming.sort(key=lambda x: x["start"])
-    
-    return {
-        "from_date": today.isoformat(),
-        "days": days,
-        "festivals": upcoming,
-        "cache": {
-            "hit": False,
-            "years_loaded": [],
-            "source": "computed",
-        },
-        "engine_version": "v3",
-        "provenance": _build_provenance(),
-        "policy": get_policy_metadata(),
-    }
+    return build_upcoming_festivals_payload(days, today=date.today())
 
 
 @router.get("/sankranti/{year}")
@@ -892,6 +372,6 @@ async def get_sankrantis_endpoint(year: int):
             for s in sankrantis
         ],
         "engine_version": "v3",
-        "provenance": _build_provenance(),
+        "provenance": build_provenance(),
         "policy": get_policy_metadata(),
     }

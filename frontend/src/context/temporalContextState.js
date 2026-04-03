@@ -1,9 +1,15 @@
 export const STORAGE_KEY = 'parva.temporal_context.v2';
 export const DEFAULT_LOCATION = { latitude: 27.7172, longitude: 85.324 };
+const SUPPORTED_THEMES = new Set(['warm-paper', 'dawn-paper', 'ink-black']);
+const SUPPORTED_LANGUAGES = new Set(['en', 'ne']);
 
 function normalizeTheme(theme, fallback = 'warm-paper') {
-  if (theme === 'warm-paper' || theme === 'dawn-paper') return 'warm-paper';
-  if (theme === 'ink-black') return 'ink-black';
+  if (SUPPORTED_THEMES.has(theme)) return theme;
+  return fallback;
+}
+
+function normalizeLanguage(language, fallback = 'en') {
+  if (SUPPORTED_LANGUAGES.has(language)) return language;
   return fallback;
 }
 
@@ -67,7 +73,7 @@ export function reducer(state, action) {
       return {
         ...state,
         ...rest,
-        language: 'en',
+        language: normalizeLanguage(action.payload?.language, state.language),
         theme: normalizeTheme(action.payload?.theme, state.theme),
         location: {
           ...state.location,
@@ -82,7 +88,9 @@ export function reducer(state, action) {
     case 'setTimezone':
       return { ...state, timezone: action.payload || 'Asia/Kathmandu' };
     case 'setLanguage':
-      return state.language === 'en' ? state : { ...state, language: 'en' };
+      return state.language === normalizeLanguage(action.payload, state.language)
+        ? state
+        : { ...state, language: normalizeLanguage(action.payload, state.language) };
     case 'setTheme':
       return state.theme === normalizeTheme(action.payload, state.theme)
         ? state

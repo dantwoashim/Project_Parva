@@ -11,6 +11,15 @@ def test_calendar_tithi_endpoint_contract():
 
     body = response.json()
     assert body["engine_version"] == "v3"
+    assert body["support_tier"] in {"computed", "heuristic"}
+    assert body["engine_path"] in {"ephemeris_udaya", "instantaneous"}
+    assert isinstance(body["fallback_used"], bool)
+    assert body["calibration_status"] == "unavailable"
+    assert body["boundary_radar"] in {"stable", "one_day_sensitive", "high_disagreement_risk"}
+    assert body["risk_mode"] == "standard"
+    assert isinstance(body["stability_score"], float)
+    assert isinstance(body["abstained"], bool)
+    assert body["recommended_action"]
     assert "tithi" in body
     t = body["tithi"]
 
@@ -26,7 +35,18 @@ def test_calendar_today_has_udaya_metadata_fields():
     response = client.get("/api/calendar/today")
     assert response.status_code == 200
 
-    t = response.json()["tithi"]
+    body = response.json()
+    assert body["support_tier"] in {"computed", "estimated", "heuristic"}
+    assert body["engine_path"] in {"ephemeris_udaya", "instantaneous"}
+    assert isinstance(body["fallback_used"], bool)
+    assert body["calibration_status"] == "unavailable"
+    assert body["boundary_radar"] in {"stable", "one_day_sensitive", "high_disagreement_risk"}
+    assert body["risk_mode"] == "standard"
+    assert isinstance(body["stability_score"], float)
+    assert isinstance(body["abstained"], bool)
+    assert body["recommended_action"]
+
+    t = body["tithi"]
     assert "method" in t
     assert "confidence" in t
     assert "reference_time" in t
@@ -38,7 +58,18 @@ def test_calendar_panchanga_has_tithi_method_metadata():
     response = client.get("/api/calendar/panchanga", params={"date": "2026-02-15"})
     assert response.status_code == 200
 
-    t = response.json()["panchanga"]["tithi"]
+    body = response.json()
+    assert body["support_tier"] in {"computed", "heuristic"}
+    assert body["engine_path"] == "ephemeris_udaya"
+    assert body["fallback_used"] is False
+    assert body["calibration_status"] == "unavailable"
+    assert body["boundary_radar"] in {"stable", "one_day_sensitive", "high_disagreement_risk"}
+    assert body["risk_mode"] == "standard"
+    assert isinstance(body["stability_score"], float)
+    assert isinstance(body["abstained"], bool)
+    assert body["recommended_action"]
+
+    t = body["panchanga"]["tithi"]
     assert t["method"] == "ephemeris_udaya"
     assert t["reference_time"] == "sunrise"
     assert t["confidence"] == "exact"

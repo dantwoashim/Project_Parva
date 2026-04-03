@@ -7,7 +7,6 @@ from datetime import date, datetime, timezone
 from fastapi import APIRouter, HTTPException, Query
 
 from app.api.v5_types import ResolveResult
-from app.calendar import calculate_festival_v2, list_festivals_v2
 from app.calendar.bikram_sambat import (
     get_bs_confidence,
     get_bs_estimated_error_days,
@@ -72,36 +71,7 @@ def _build_panchanga_payload(target_date: date) -> dict:
     }
 
 
-def _build_observances_payload(
-    target_date: date,
-    *,
-    source_hint: str | None = None,
-    notes_hint: str | None = None,
-    authority_mode: str = "canonical",
-) -> list[dict]:
-    if authority_mode == "source-aware" and (source_hint or notes_hint):
-        observances = []
-        for festival_id in list_festivals_v2():
-            result = calculate_festival_v2(
-                festival_id,
-                target_date.year,
-                source_hint=source_hint,
-                notes_hint=notes_hint,
-            )
-            if result and result.overlaps(target_date):
-                observances.append(
-                    {
-                        "festival_id": festival_id,
-                        "start_date": result.start_date.isoformat(),
-                        "end_date": result.end_date.isoformat(),
-                        "method": result.method,
-                        "authority_mode": authority_mode,
-                        "source_hint": source_hint,
-                    }
-                )
-        observances.sort(key=lambda row: (row["start_date"], row["festival_id"]))
-        return observances
-
+def _build_observances_payload(target_date: date) -> list[dict]:
     observances = []
     rule_service = get_rule_service()
     for festival_id, window in rule_service.on_date(target_date):
@@ -111,7 +81,6 @@ def _build_observances_payload(
                 "start_date": window.start_date.isoformat(),
                 "end_date": window.end_date.isoformat(),
                 "method": window.method,
-                "authority_mode": authority_mode,
             }
         )
     return observances
@@ -126,23 +95,14 @@ def _build_trace_payload(
     bs: dict,
     tithi: dict,
     observances: list[dict],
-    authority_mode: str,
-    source_hint: str | None,
-    notes_hint: str | None,
 ) -> dict:
     trace_payload = create_reason_trace(
         trace_type="resolve_context",
-        subject={
-            "date": target_date.isoformat(),
-            "profile": profile,
-            "authority_mode": authority_mode,
-        },
+        subject={"date": target_date.isoformat(), "profile": profile},
         inputs={
             "latitude": latitude,
             "longitude": longitude,
             "timezone": "Asia/Kathmandu",
-            "source_hint": source_hint,
-            "notes_hint": notes_hint,
         },
         outputs={
             "bs": bs,
@@ -193,13 +153,6 @@ async def resolve_temporal_context(
     latitude: float = Query(27.7172, ge=-90.0, le=90.0),
     longitude: float = Query(85.3240, ge=-180.0, le=180.0),
     include_trace: bool = Query(True),
-    authority_mode: str = Query(
-        "canonical",
-        description="Festival authority resolution mode: canonical or source-aware",
-        pattern="^(canonical|source-aware)$",
-    ),
-    source_hint: str | None = Query(None, description="Preferred source family when authority_mode=source-aware"),
-    notes_hint: str | None = Query(None, description="Optional note hint for same-source disambiguation"),
 ):
     """
     Resolve date context into BS + panchanga + observances in one request.
@@ -211,12 +164,7 @@ async def resolve_temporal_context(
     bs = _build_bs_payload(target_date)
     tithi = _build_tithi_payload(target_date, latitude, longitude)
     panchanga = _build_panchanga_payload(target_date)
-    observances = _build_observances_payload(
-        target_date,
-        source_hint=source_hint,
-        notes_hint=notes_hint,
-        authority_mode=authority_mode,
-    )
+    observances = _build_observances_payload(target_date)
     trace = (
         _build_trace_payload(
             target_date=target_date,
@@ -226,9 +174,6 @@ async def resolve_temporal_context(
             bs=bs,
             tithi=tithi,
             observances=observances,
-            authority_mode=authority_mode,
-            source_hint=source_hint,
-            notes_hint=notes_hint,
         )
         if include_trace
         else None

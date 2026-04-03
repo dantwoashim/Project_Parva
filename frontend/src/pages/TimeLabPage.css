@@ -1,0 +1,576 @@
+.time-lab-page {
+  position: relative;
+  gap: var(--layout-section-gap-xl);
+  padding-bottom: var(--sp-10);
+}
+
+.time-lab-page::before {
+  content: '';
+  position: absolute;
+  inset: -4rem 0 auto;
+  height: 24rem;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(196, 81, 0, 0.16), transparent 24%),
+    radial-gradient(circle at 82% 12%, rgba(115, 92, 0, 0.18), transparent 26%),
+    linear-gradient(135deg, rgba(32, 24, 18, 0.06), transparent 56%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.time-lab-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.time-lab-page__eyebrow {
+  margin: 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.time-lab-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 1.5rem;
+  align-items: stretch;
+  min-height: 32rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 2rem;
+  overflow: hidden;
+  background:
+    linear-gradient(140deg, rgba(255, 248, 243, 0.94), rgba(246, 234, 219, 0.88)),
+    linear-gradient(180deg, rgba(34, 26, 15, 0.04), transparent);
+  border: 1px solid rgba(115, 92, 0, 0.16);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.time-lab-hero__copy {
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  max-width: 42rem;
+}
+
+.time-lab-hero__summary {
+  margin: 0;
+  max-width: 38rem;
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  line-height: 1.72;
+}
+
+.time-lab-hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.time-lab-hero__chips span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.9rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(115, 92, 0, 0.14);
+  background: rgba(255, 255, 255, 0.54);
+  backdrop-filter: blur(16px);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.time-lab-hero__visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 24rem;
+  overflow: hidden;
+  border-radius: 1.8rem;
+  background:
+    linear-gradient(180deg, rgba(28, 20, 15, 0.92), rgba(55, 39, 28, 0.88)),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent);
+}
+
+.time-lab-hero__visual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 3.2rem 3.2rem;
+  opacity: 0.24;
+}
+
+.time-lab-hero__ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 232, 204, 0.22);
+  box-shadow: inset 0 0 40px rgba(255, 208, 154, 0.08);
+}
+
+.time-lab-hero__ring--outer {
+  width: 25rem;
+  height: 25rem;
+  animation: time-lab-spin 26s linear infinite;
+}
+
+.time-lab-hero__ring--middle {
+  width: 18rem;
+  height: 18rem;
+  border-style: dashed;
+  animation: time-lab-spin-reverse 20s linear infinite;
+}
+
+.time-lab-hero__ring--inner {
+  width: 11rem;
+  height: 11rem;
+  animation: time-lab-pulse 5s ease-in-out infinite;
+}
+
+.time-lab-hero__core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: center;
+  width: min(100%, 17rem);
+  padding: 1.5rem;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 223, 175, 0.2), transparent 60%),
+    rgba(9, 7, 6, 0.48);
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(20px);
+}
+
+.time-lab-hero__core strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+  line-height: 1.04;
+  color: #fff5e6;
+}
+
+.time-lab-hero__core span {
+  font-size: 0.84rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 235, 211, 0.72);
+}
+
+.time-lab-console {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 1.25rem;
+}
+
+.time-lab-console__panel,
+.time-lab-console__rail {
+  padding: 1.35rem;
+}
+
+.time-lab-console__panel {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.time-lab-console__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.time-lab-console__head h2,
+.time-lab-stage__headline h2,
+.time-lab-result-card h3,
+.time-lab-note h3,
+.time-lab-status h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  line-height: 1.04;
+}
+
+.time-lab-console__head h2 {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  max-width: 34rem;
+}
+
+.time-lab-toggle,
+.time-lab-mini-toggle {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 0.45rem;
+  padding: 0.35rem;
+  border-radius: var(--radius-full);
+  background: rgba(115, 92, 0, 0.07);
+  width: fit-content;
+}
+
+.time-lab-toggle__button,
+.time-lab-mini-toggle__button,
+.time-lab-presets__button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.time-lab-toggle__button,
+.time-lab-mini-toggle__button {
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: var(--radius-full);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.time-lab-toggle__button.is-active,
+.time-lab-mini-toggle__button.is-active {
+  background: linear-gradient(180deg, rgba(156, 63, 0, 0.92), rgba(115, 92, 0, 0.88));
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+.time-lab-console__grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr;
+  gap: 0.85rem;
+  align-items: end;
+}
+
+.time-lab-console__cluster {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  gap: 0.85rem;
+}
+
+.time-lab-console__meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  padding-top: 0.2rem;
+}
+
+.time-lab-console__meta div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.time-lab-console__meta-label,
+.time-lab-stage__facts span,
+.time-lab-result-card dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.time-lab-console__rail {
+  display: grid;
+  gap: 1rem;
+}
+
+.time-lab-rail,
+.time-lab-presets,
+.time-lab-status,
+.time-lab-result-card,
+.time-lab-note {
+  padding: 1.2rem;
+}
+
+.time-lab-rail {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.time-lab-rail__track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.time-lab-rail__segment {
+  display: block;
+  min-height: 0.8rem;
+  border-radius: var(--radius-full);
+  background: rgba(115, 92, 0, 0.1);
+  border: 1px solid rgba(115, 92, 0, 0.08);
+}
+
+.time-lab-rail__segment.is-active {
+  background: linear-gradient(90deg, rgba(196, 81, 0, 0.9), rgba(115, 92, 0, 0.9));
+}
+
+.time-lab-rail__labels {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.time-lab-presets {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.time-lab-presets__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.time-lab-presets__head span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.time-lab-presets__grid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.time-lab-presets__button {
+  display: grid;
+  gap: 0.18rem;
+  padding: 0.95rem 1rem;
+  text-align: left;
+  border-radius: 1rem;
+  border: 1px solid rgba(115, 92, 0, 0.12);
+  background: rgba(255, 255, 255, 0.5);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background-color var(--duration-fast) var(--ease-out);
+}
+
+.time-lab-presets__button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(156, 63, 0, 0.24);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.time-lab-presets__button strong {
+  font-size: 0.96rem;
+}
+
+.time-lab-presets__button span {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.time-lab-status {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.time-lab-results {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.time-lab-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.4rem;
+  border-radius: 2rem;
+  color: #fff6eb;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 186, 120, 0.18), transparent 22%),
+    linear-gradient(145deg, rgba(18, 13, 10, 0.96), rgba(52, 35, 24, 0.96));
+  box-shadow: 0 32px 70px rgba(20, 12, 8, 0.34);
+}
+
+.time-lab-stage__headline {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.time-lab-stage__headline h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.time-lab-stage__headline p:last-child {
+  margin: 0;
+  max-width: 38rem;
+  color: rgba(255, 240, 220, 0.72);
+}
+
+.time-lab-stage__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.time-lab-stage__facts div {
+  display: grid;
+  gap: 0.22rem;
+  padding: 0.95rem;
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 224, 189, 0.12);
+}
+
+.time-lab-results__grid,
+.time-lab-notes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.time-lab-result-card,
+.time-lab-note {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.time-lab-result-card--anchored {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(247, 236, 221, 0.98)),
+    linear-gradient(180deg, rgba(34, 26, 15, 0.03), transparent);
+}
+
+.time-lab-result-card--projected {
+  background:
+    linear-gradient(180deg, rgba(255, 244, 230, 0.98), rgba(239, 225, 208, 0.98)),
+    linear-gradient(180deg, rgba(115, 92, 0, 0.04), transparent);
+}
+
+.time-lab-result-card--empty {
+  background:
+    linear-gradient(180deg, rgba(255, 248, 243, 0.94), rgba(244, 233, 219, 0.92));
+}
+
+.time-lab-result-card--ledger {
+  background:
+    linear-gradient(180deg, rgba(255, 250, 244, 0.98), rgba(241, 232, 219, 0.98)),
+    linear-gradient(180deg, rgba(156, 63, 0, 0.03), transparent);
+}
+
+.time-lab-result-card h3,
+.time-lab-note h3 {
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+}
+
+.time-lab-result-card p,
+.time-lab-note p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.time-lab-result-card dl {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+}
+
+.time-lab-result-card dl div {
+  display: grid;
+  gap: 0.2rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.time-lab-result-card dd {
+  margin: 0;
+  font-size: 0.96rem;
+}
+
+.time-lab-note .btn {
+  justify-self: start;
+  padding-left: 0;
+}
+
+@keyframes time-lab-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes time-lab-spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes time-lab-pulse {
+  0%,
+  100% {
+    transform: scale(0.96);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@media (max-width: 1180px) {
+  .time-lab-hero,
+  .time-lab-console,
+  .time-lab-stage,
+  .time-lab-results__grid,
+  .time-lab-notes {
+    grid-template-columns: 1fr;
+  }
+
+  .time-lab-console__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .time-lab-hero {
+    min-height: auto;
+    padding: 1.2rem;
+  }
+
+  .time-lab-console__head,
+  .time-lab-presets__head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .time-lab-console__grid,
+  .time-lab-console__cluster,
+  .time-lab-console__meta,
+  .time-lab-stage__facts {
+    grid-template-columns: 1fr;
+  }
+
+  .time-lab-hero__visual {
+    min-height: 18rem;
+  }
+
+  .time-lab-hero__ring--outer {
+    width: 18rem;
+    height: 18rem;
+  }
+
+  .time-lab-hero__ring--middle {
+    width: 13rem;
+    height: 13rem;
+  }
+
+  .time-lab-hero__ring--inner {
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .time-lab-rail__labels {
+    font-size: 0.64rem;
+  }
+}

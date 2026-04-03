@@ -5,6 +5,7 @@ from .precomputed import (
     get_cache_stats,
     load_precomputed_festival_year,
     load_precomputed_festivals_between,
+    load_precomputed_festivals_between_report,
     load_precomputed_panchanga,
 )
 
@@ -13,5 +14,6 @@ __all__ = [
     "load_precomputed_panchanga",
     "load_precomputed_festival_year",
     "load_precomputed_festivals_between",
+    "load_precomputed_festivals_between_report",
     "get_cache_stats",
 ]

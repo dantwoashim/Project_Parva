@@ -1,5 +1,7 @@
 """Unit tests for canonical v4 rule catalog."""
 
+import json
+
 from app.rules.catalog_v4 import (
     get_rule_v4,
     get_rules_coverage,
@@ -42,6 +44,24 @@ def test_reload_catalog_is_idempotent():
     first = reload_catalog_v4()
     second = reload_catalog_v4()
     assert first.total_rules == second.total_rules
+
+
+def test_invalid_catalog_payload_falls_back_to_canonical_catalog(monkeypatch, tmp_path):
+    import app.rules.catalog_v4 as catalog_v4
+
+    invalid_catalog = tmp_path / "festival_rules_v4.json"
+    invalid_catalog.write_text(json.dumps({"version": 4, "festivals": ["bad-row"]}), encoding="utf-8")
+
+    monkeypatch.setattr(catalog_v4, "CATALOG_V4_PATH", invalid_catalog)
+    catalog_v4.load_catalog_v4.cache_clear()
+    try:
+        catalog = catalog_v4.load_catalog_v4()
+    finally:
+        catalog_v4.load_catalog_v4.cache_clear()
+
+    assert catalog.version == 4
+    assert catalog.total_rules >= 300
+    assert catalog.festivals
 
 
 def test_scoreboard_uses_computed_as_headline():

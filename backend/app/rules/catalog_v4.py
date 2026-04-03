@@ -10,6 +10,8 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from pydantic import ValidationError
+
 from app.rules.schema_v4 import FestivalRuleCatalogV4, FestivalRuleV4
 
 from .dsl import is_rule_executable
@@ -135,7 +137,7 @@ def _safe_int(value: object) -> Optional[int]:
         return None
     try:
         return int(str(value).strip())
-    except Exception:
+    except (TypeError, ValueError):
         return None
 
 
@@ -624,7 +626,7 @@ def load_catalog_v4() -> FestivalRuleCatalogV4:
         payload = _load_json(CATALOG_V4_PATH)
         try:
             return FestivalRuleCatalogV4.model_validate(payload)
-        except Exception:
+        except ValidationError:
             return build_canonical_catalog()
     return build_canonical_catalog()
 

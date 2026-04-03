@@ -4,6 +4,7 @@ from app.rules import get_rule_v4
 from app.rules.catalog_v4 import get_rules_scoreboard
 from app.rules.dsl import rule_to_dsl_document
 from app.rules.execution import calculate_rule_occurrence_with_fallback, validation_cases_for_rule
+from app.rules.schema_v4 import FestivalRuleV4
 
 
 def test_scoreboard_reaches_computed_baseline():
@@ -44,3 +45,23 @@ def test_legacy_rule_executes_via_fallback_or_direct_path():
     result = calculate_rule_occurrence_with_fallback(rule, 2026)
     assert result is not None
     assert result.start_date.year in {2026, 2027}
+
+
+def test_override_rule_with_invalid_payload_degrades_cleanly():
+    rule = FestivalRuleV4(
+        festival_id="test-invalid-override",
+        name_en="Invalid Override",
+        rule_type="override",
+        source="test",
+        engine="test",
+        rule={
+            "duration_days": "not-a-number",
+            "dates": {"2026": "not-a-date"},
+            "bs_year": "bad",
+            "bs_month": "still-bad",
+            "bs_day": "nope",
+        },
+    )
+
+    result = calculate_rule_occurrence_with_fallback(rule, 2026)
+    assert result is None

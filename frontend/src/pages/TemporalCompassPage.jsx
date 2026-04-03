@@ -103,6 +103,19 @@ export function TemporalCompassPage() {
           </div>
         </div>
 
+        {viewModel.truthSurface?.chips?.length ? (
+          <div className="today-page__truth-strip">
+            {viewModel.truthSurface.chips.map((chip) => (
+              <span
+                key={`${chip.tone}-${chip.label}`}
+                className={`today-page__truth-chip today-page__truth-chip--${chip.tone}`.trim()}
+              >
+                {chip.label}
+              </span>
+            ))}
+          </div>
+        ) : null}
+
         <div className="today-page__route-meta">
           <label className="ink-input today-page__date-field">
             <span>Date</span>
@@ -168,6 +181,7 @@ export function TemporalCompassPage() {
                 <strong>{item.title}</strong>
                 <span>{item.dateLabel}</span>
                 <p className="today-page__subsummary">{item.summary}</p>
+                {item.truthNote ? <p className="today-page__truth-note">{item.truthNote}</p> : null}
               </Link>
             )) : (
               <article className="today-page__festival-item">
@@ -199,6 +213,29 @@ export function TemporalCompassPage() {
               <dd>{viewModel.placeLabel} is the current place basis for today&apos;s answer.</dd>
             </div>
           </dl>
+          {viewModel.truthSurface?.sources?.length ? (
+            <div className="today-page__truth-sources">
+              {viewModel.truthSurface.sources.map((source) => (
+                <article key={source.label} className="today-page__truth-card">
+                  <span className="today-page__label">{source.label}</span>
+                  <strong>{source.qualityBand}</strong>
+                  <p className="today-page__subsummary">
+                    Method {source.method}. Confidence {source.confidence}.
+                    {source.degraded ? ' Defaults were applied.' : ' No defaults were applied.'}
+                  </p>
+                  {source.boundaryRadar ? (
+                    <p className="today-page__subsummary">
+                      Boundary radar {source.boundaryRadar}
+                      {typeof source.stabilityScore === 'number' ? `. Stability ${source.stabilityScore}.` : '.'}
+                    </p>
+                  ) : null}
+                  {source.recommendedAction ? (
+                    <p className="today-page__subsummary">{source.recommendedAction}</p>
+                  ) : null}
+                </article>
+              ))}
+            </div>
+          ) : null}
         </section>
       </div>
     </section>

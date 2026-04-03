@@ -32,6 +32,12 @@ def test_spec_conformance_endpoint_returns_report():
     assert "case_pack" in body
 
 
+def test_spec_conformance_endpoint_is_public():
+    resp = client.get("/v3/api/spec/conformance")
+    assert resp.status_code == 200
+    assert resp.json()["spec"]["version"] == "1.0"
+
+
 def test_trace_verify_endpoint_validates_generated_trace():
     resolve_resp = client.get(
         "/v3/api/resolve", params={"date": "2026-10-16", "include_trace": True}
