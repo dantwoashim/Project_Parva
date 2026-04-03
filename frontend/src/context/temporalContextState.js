@@ -60,7 +60,11 @@ export function loadInitialState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return baseState;
     const parsed = JSON.parse(raw);
-    return reducer(baseState, { type: 'hydrate', payload: parsed });
+    const hydrated = reducer(baseState, { type: 'hydrate', payload: parsed });
+    return {
+      ...hydrated,
+      date: todayIso(hydrated.timezone || baseState.timezone),
+    };
   } catch {
     return baseState;
   }

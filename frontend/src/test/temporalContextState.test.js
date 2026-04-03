@@ -1,4 +1,10 @@
-import { createInitialState, reducer, todayIso } from '../context/temporalContextState';
+import {
+  STORAGE_KEY,
+  createInitialState,
+  loadInitialState,
+  reducer,
+  todayIso,
+} from '../context/temporalContextState';
 
 describe('temporal context state', () => {
   beforeEach(() => {
@@ -31,6 +37,28 @@ describe('temporal context state', () => {
       language: 'en',
       theme: 'warm-paper',
     });
+  });
+
+  it('hydrates timezone and location but resets the stored date back to today on refresh', () => {
+    vi.setSystemTime(new Date('2026-02-15T02:30:00.000Z'));
+    const memoryStorage = {
+      getItem: vi.fn(() => JSON.stringify({
+        date: '2026-01-01',
+        timezone: 'America/New_York',
+        location: { latitude: 40.7128, longitude: -74.006 },
+      })),
+    };
+    Object.defineProperty(window, 'localStorage', {
+      value: memoryStorage,
+      configurable: true,
+    });
+
+    const state = loadInitialState();
+
+    expect(memoryStorage.getItem).toHaveBeenCalledWith(STORAGE_KEY);
+    expect(state.timezone).toBe('America/New_York');
+    expect(state.location).toMatchObject({ latitude: 40.7128, longitude: -74.006 });
+    expect(state.date).toBe('2026-02-14');
   });
 
   it('preserves dawn-paper as a distinct theme', () => {

@@ -44,7 +44,13 @@ function renderPage() {
 }
 
 describe('TimeLabPage', () => {
+  let nowSpy;
+  let user;
+
   beforeEach(() => {
+    nowSpy = vi.spyOn(Date, 'now').mockReturnValue(new Date('2026-04-14T05:45:00.000Z').valueOf());
+    user = userEvent.setup();
+
     Object.defineProperty(window, 'localStorage', {
       value: createMemoryStorage(),
       configurable: true,
@@ -103,6 +109,7 @@ describe('TimeLabPage', () => {
   });
 
   afterEach(() => {
+    nowSpy?.mockRestore();
     vi.unstubAllGlobals();
   });
 
@@ -111,7 +118,7 @@ describe('TimeLabPage', () => {
 
     expect(await screen.findByRole('heading', { name: /Infinite Conversion Lab/i })).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: /2083 BS/i }));
+    await user.click(screen.getByRole('button', { name: /2083 BS/i }));
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
@@ -131,11 +138,27 @@ describe('TimeLabPage', () => {
 
     expect(await screen.findByRole('heading', { name: /Infinite Conversion Lab/i })).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: /10,000 BC/i }));
+    await user.click(screen.getByRole('button', { name: /10,000 BC/i }));
 
     expect(await screen.findByText(/Live engine unavailable/i)).toBeInTheDocument();
     expect(screen.getByText(/Projected mirror only/i)).toBeInTheDocument();
     expect(screen.getByText(/Projected deep-time mode/i)).toBeInTheDocument();
     expect(screen.getAllByText(/10,000 BC/i).length).toBeGreaterThan(0);
+  });
+
+  it('offers a one-click reset back to the live today anchor', async () => {
+    renderPage();
+
+    await screen.findByRole('heading', { name: /Infinite Conversion Lab/i });
+    await user.click(screen.getByRole('button', { name: /10,000 BC/i }));
+    expect(await screen.findByText(/Projected deep-time mode/i)).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /Reset to today/i }));
+
+    await waitFor(() => {
+      expect(screen.getByDisplayValue('2026')).toBeInTheDocument();
+    });
+    expect(screen.getByDisplayValue('14')).toBeInTheDocument();
+    expect(screen.getAllByText(/April 14, .*AD/i).length).toBeGreaterThan(0);
   });
 });

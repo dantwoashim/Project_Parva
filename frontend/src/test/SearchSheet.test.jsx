@@ -1,61 +1,147 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import { SearchSheet } from '../components/UI/SearchSheet';
 import { MemberContext } from '../context/memberContextShared';
+import { TemporalContext } from '../context/temporalContextShared';
+
+function response(payload) {
+  return {
+    ok: true,
+    status: 200,
+    statusText: 'OK',
+    headers: { get: () => 'application/json' },
+    json: async () => payload,
+    text: async () => JSON.stringify(payload),
+  };
+}
 
 function LocationProbe() {
   const location = useLocation();
   return <p data-testid="location-probe">{location.pathname}</p>;
 }
 
-function renderSearch(memberState, onClose = vi.fn()) {
-  return render(
-    <MemberContext.Provider value={{ state: memberState }}>
-      <MemoryRouter initialEntries={['/']}>
-        <SearchSheet open onClose={onClose} />
-        <LocationProbe />
-      </MemoryRouter>
-    </MemberContext.Provider>,
+function renderSearch({
+  memberState,
+  temporalState = {
+    date: '2026-04-14',
+    timezone: 'Asia/Kathmandu',
+    language: 'en',
+    location: { latitude: 27.7172, longitude: 85.324 },
+  },
+  onClose = vi.fn(),
+} = {}) {
+  const setLocation = vi.fn();
+  const setTimezone = vi.fn();
+
+  const view = render(
+    <TemporalContext.Provider value={{ state: temporalState, setLocation, setTimezone }}>
+      <MemberContext.Provider value={{ state: memberState }}>
+        <MemoryRouter initialEntries={['/']}>
+          <SearchSheet open onClose={onClose} />
+          <LocationProbe />
+        </MemoryRouter>
+      </MemberContext.Provider>
+    </TemporalContext.Provider>,
   );
+
+  return { ...view, setLocation, setTimezone, onClose };
 }
 
 describe('SearchSheet', () => {
-  it('surfaces saved member items alongside page commands', async () => {
-    const onClose = vi.fn();
+  beforeEach(() => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input) => {
+        const url = String(input);
 
+        if (url.includes('/festivals/timeline')) {
+          return response({
+            data: {
+              groups: [
+                {
+                  month_key: '2026-10',
+                  month_label: 'October 2026',
+                  items: [
+                    {
+                      id: 'dashain',
+                      name: 'Dashain',
+                      display_name: 'Dashain',
+                      category: 'national',
+                      start_date: '2026-10-20',
+                      end_date: '2026-10-20',
+                      summary: 'Nepal’s major autumn festival.',
+                    },
+                  ],
+                },
+              ],
+            },
+            meta: {
+              confidence: { level: 'computed' },
+              method: 'festival_timeline',
+              provenance: {},
+              uncertainty: { boundary_risk: 'low', interval_hours: null },
+              degraded: { active: false, reasons: [], defaults_applied: [] },
+            },
+          });
+        }
+
+        if (url.includes('/places/search')) {
+          return response({
+            items: [
+              {
+                label: 'Kathmandu',
+                latitude: 27.7172,
+                longitude: 85.324,
+                timezone: 'Asia/Kathmandu',
+                source: 'offline_nepal_gazetteer_search',
+              },
+            ],
+          });
+        }
+
+        throw new Error(`Unhandled request in SearchSheet test: ${url}`);
+      }),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('surfaces glossary meanings alongside pages and saved items', async () => {
     renderSearch({
-      savedPlaces: [{ id: 'ktm', label: 'Kathmandu', timezone: 'Asia/Kathmandu' }],
-      savedFestivals: [{ id: 'dashain', name: 'Dashain', category: 'national' }],
-      savedReadings: [],
-      reminders: [],
-      integrations: [{ platform: 'google', title: 'Google Calendar' }],
-    }, onClose);
+      memberState: {
+        savedPlaces: [],
+        savedFestivals: [],
+        savedReadings: [],
+        reminders: [],
+        integrations: [],
+      },
+    });
 
-    await userEvent.type(screen.getByRole('searchbox', { name: /Find a page or saved item/i }), 'dash');
+    fireEvent.change(screen.getByRole('searchbox', { name: /Find a page, place, festival, or meaning/i }), {
+      target: { value: 'panchami' },
+    });
 
-    expect(screen.getByText('Saved observance')).toBeInTheDocument();
-    const result = screen.getByRole('listitem');
-    expect(result).toHaveTextContent('Dashain');
-
-    await userEvent.click(result);
-
-    expect(screen.getByTestId('location-probe')).toHaveTextContent('/festivals/dashain');
-    expect(onClose).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(screen.getByText('Glossary term')).toBeInTheDocument();
+      expect(screen.getByText('Panchami')).toBeInTheDocument();
+    });
   });
 
   it('moves focus into the dialog and closes on Escape', async () => {
-    const onClose = vi.fn();
+    const { onClose } = renderSearch({
+      memberState: {
+        savedPlaces: [],
+        savedFestivals: [],
+        savedReadings: [],
+        reminders: [],
+        integrations: [],
+      },
+    });
 
-    renderSearch({
-      savedPlaces: [],
-      savedFestivals: [],
-      savedReadings: [],
-      reminders: [],
-      integrations: [],
-    }, onClose);
-
-    const searchbox = await screen.findByRole('searchbox', { name: /Find a page or saved item/i });
+    const searchbox = await screen.findByRole('searchbox', { name: /Find a page, place, festival, or meaning/i });
     expect(searchbox).toHaveFocus();
 
     await userEvent.keyboard('{Escape}');
@@ -65,19 +151,25 @@ describe('SearchSheet', () => {
 
   it('keeps support surfaces out of the default command list until they are searched for', async () => {
     renderSearch({
-      savedPlaces: [],
-      savedFestivals: [],
-      savedReadings: [],
-      reminders: [],
-      integrations: [],
+      memberState: {
+        savedPlaces: [],
+        savedFestivals: [],
+        savedReadings: [],
+        reminders: [],
+        integrations: [],
+      },
     });
 
     expect(screen.getByText('Today')).toBeInTheDocument();
     expect(screen.queryByText('Integrations')).not.toBeInTheDocument();
 
-    await userEvent.type(screen.getByRole('searchbox', { name: /Find a page or saved item/i }), 'integ');
+    fireEvent.change(screen.getByRole('searchbox', { name: /Find a page, place, festival, or meaning/i }), {
+      target: { value: 'integ' },
+    });
 
-    expect(screen.getByText('Integrations')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('Integrations')).toBeInTheDocument();
+    });
     expect(screen.getByText('Beta page')).toBeInTheDocument();
   });
 });

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { EvidenceDrawer } from '../../components/UI/EvidenceDrawer';
+import HoverGlossaryTerm from '../../components/UI/HoverGlossaryTerm';
 import { CONSUMER_BEST_TIME_OPTIONS, CONSUMER_FESTIVAL_FILTERS } from '../consumerViewModels';
 import { CompactEmpty, ConsumerSectionHeader, ConsumerSectionShell } from './shared';
 
@@ -26,7 +27,7 @@ export function TodaySection({
           {viewModel?.sunrise ? <strong>Sunrise: {viewModel.sunrise}</strong> : null}
           {viewModel?.sunset ? <strong>Sunset: {viewModel.sunset}</strong> : null}
         </div>
-        <p>{viewModel?.dayTone?.value || 'Balanced'}</p>
+        <p><HoverGlossaryTerm term={viewModel?.dayTone?.value || 'Balanced'} label={viewModel?.dayTone?.value || 'Balanced'} /></p>
       </article>,
     );
   }
@@ -35,7 +36,7 @@ export function TodaySection({
     supportCards.push(
       <article key="highlights" className="consumer-home__surface consumer-home__support-card">
         <span className="consumer-home__kicker">Highlights</span>
-        <strong>{viewModel?.dayTone?.value || 'Balanced day tone'}</strong>
+        <strong><HoverGlossaryTerm term={viewModel?.dayTone?.value || 'Balanced day tone'} label={viewModel?.dayTone?.value || 'Balanced day tone'} /></strong>
         <p>{viewModel?.supporting || 'Live timing highlights will appear here when available.'}</p>
       </article>,
     );
@@ -146,12 +147,12 @@ export function BestTimeSection({
         <div className="consumer-home__best-grid">
           <article className="consumer-home__surface consumer-home__surface--best">
             <span className="consumer-home__kicker">Primary window</span>
-            <h3>{viewModel?.best?.title || 'Window pending'}</h3>
+            <h3><HoverGlossaryTerm term={viewModel?.best?.title || 'Window pending'} label={viewModel?.best?.title || 'Window pending'} /></h3>
             <p>{viewModel?.best?.note || 'The clearest timing answer will appear here.'}</p>
             {viewModel?.avoid?.title ? (
               <div className="consumer-home__warning-row">
                 <strong>Keep light:</strong>
-                <span>{viewModel.avoid.title}</span>
+                <span><HoverGlossaryTerm term={viewModel.avoid.title} label={viewModel.avoid.title} /></span>
               </div>
             ) : null}
           </article>
@@ -162,7 +163,7 @@ export function BestTimeSection({
               {alternateCards.length ? (
                 alternateCards.map((item) => (
                   <div key={item.id} className="consumer-home__mini-card">
-                    <strong>{item.title}</strong>
+                    <strong><HoverGlossaryTerm term={item.title} label={item.title} /></strong>
                     <p>{item.note}</p>
                   </div>
                 ))
@@ -195,7 +196,9 @@ export function BestTimeSection({
                   }}
                 >
                   <strong>{item.time}</strong>
-                  <span className="consumer-home__timeline-label">{item.title}</span>
+                  <span className="consumer-home__timeline-label">
+                    <HoverGlossaryTerm passive term={item.title} label={item.title} />
+                  </span>
                   <span className="consumer-home__timeline-tone">
                     {item.tone === 'strong'
                       ? 'Recommended'
@@ -308,6 +311,7 @@ export function FestivalsSection({
                     <div>
                       <span className="consumer-home__kicker">{item.dateLabel}</span>
                       <h3>{item.title}</h3>
+                      {item.countdown ? <p className="consumer-home__festival-countdown">{item.countdown}</p> : null}
                       <p>{item.summary}</p>
                       <Link className="consumer-home__text-link" to={item.href}>Open</Link>
                     </div>

@@ -618,7 +618,7 @@ describe('App routing', () => {
     );
 
     await waitFor(() => {
-      expect(document.documentElement.lang).toBe('en');
+      expect(document.documentElement.lang).toBe('ne');
     });
   }, 30000);
 

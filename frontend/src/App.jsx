@@ -100,9 +100,16 @@ function TopNav({
       </div>
 
       <div className="app-shell__actions">
-        {!compactHeader ? <button type="button" className="app-shell__search-chip" onClick={onOpenSearch}>{copy('common.search')}</button> : null}
         {!compactHeader ? (
           <>
+            <button type="button" className="app-shell__search-chip" onClick={onOpenSearch}>
+              <span className="material-symbols-outlined">search</span>
+              <span className="app-shell__search-chip-copy">
+                <strong>Search Parva</strong>
+                <small>Festivals, places, meanings, pages</small>
+              </span>
+              <span className="app-shell__search-shortcut">Ctrl/Cmd K</span>
+            </button>
             <button type="button" className="app-shell__icon-btn" onClick={onOpenSettings} aria-label={copy('shell.place')}>
               <span className="material-symbols-outlined">location_on</span>
             </button>
@@ -115,14 +122,24 @@ function TopNav({
             </div>
           </>
         ) : (
-          <button
-            type="button"
-            className="app-shell__menu-btn"
-            style={{ display: 'inline-flex' }}
-            onClick={onToggleNav}
-          >
-            {navDialogOpen ? copy('common.close') : copy('shell.menu')}
-          </button>
+          <>
+            <button
+              type="button"
+              className="app-shell__icon-btn"
+              onClick={onOpenSearch}
+              aria-label="Search Parva"
+            >
+              <span className="material-symbols-outlined">search</span>
+            </button>
+            <button
+              type="button"
+              className="app-shell__menu-btn"
+              style={{ display: 'inline-flex' }}
+              onClick={onToggleNav}
+            >
+              {navDialogOpen ? copy('common.close') : copy('shell.menu')}
+            </button>
+          </>
         )}
       </div>
 
@@ -253,7 +270,37 @@ function AppFrame() {
 
   const handleOpenSearch = () => {
     setSearchOpen(true);
+    setSettingsOpen(false);
+    setNavOpen(false);
   };
+
+  useEffect(() => {
+    function isTypingTarget(target) {
+      if (!(target instanceof HTMLElement)) return false;
+      if (target.isContentEditable) return true;
+      const tag = target.tagName;
+      return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+    }
+
+    function handleShortcut(event) {
+      if (event.defaultPrevented) return;
+
+      const normalizedKey = String(event.key || '').toLowerCase();
+      const keyboardShortcut = (event.metaKey || event.ctrlKey) && normalizedKey === 'k';
+      const slashShortcut = !event.metaKey && !event.ctrlKey && !event.altKey && normalizedKey === '/';
+
+      if (!keyboardShortcut && !slashShortcut) return;
+      if (isTypingTarget(event.target)) return;
+
+      event.preventDefault();
+      setSearchOpen(true);
+      setSettingsOpen(false);
+      setNavOpen(false);
+    }
+
+    window.addEventListener('keydown', handleShortcut);
+    return () => window.removeEventListener('keydown', handleShortcut);
+  }, []);
 
   useEffect(() => {
     const activeTheme = state.theme || 'warm-paper';

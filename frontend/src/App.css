@@ -170,10 +170,49 @@
 }
 
 .app-shell__search-chip {
-  min-width: clamp(10rem, 18vw, 15rem);
-  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: clamp(14rem, 24vw, 20rem);
+  padding: 0 1rem 0 0.9rem;
   border-radius: 999px;
   text-align: left;
+}
+
+.app-shell__search-chip .material-symbols-outlined {
+  color: var(--editorial-accent);
+}
+
+.app-shell__search-chip-copy {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.app-shell__search-chip-copy strong,
+.app-shell__search-chip-copy small,
+.app-shell__search-shortcut {
+  display: block;
+}
+
+.app-shell__search-chip-copy strong {
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.app-shell__search-chip-copy small,
+.app-shell__search-shortcut {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.app-shell__search-shortcut {
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(184, 130, 60, 0.11);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .app-shell__icon-btn,
