@@ -33,6 +33,7 @@ output/
 reports/
 benchmark/results/
 *.zip
+stitch/
 
 # Runtime data
 data/transparency/*.jsonl
