@@ -21,21 +21,28 @@ from app.calendar.bikram_sambat import (
 )
 from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR
 from app.calendar.nepal_sambat import format_ns_date, get_current_ns_year
-from app.core.request_context import derive_support_tier
-from app.festivals.risk_service import truth_ladder
+from app.domain.temporal_context import CalendarContext, LocationContext
 from app.policy import get_policy_metadata
-from app.provenance import get_latest_snapshot_id, get_provenance_payload
 from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
+from app.services.trust_surface_service import (
+    build_portable_proof_capsule,
+    build_surface_meta,
+    build_surface_provenance,
+    build_temporal_risk_payload,
+)
 
-
-def build_provenance(*, festival_id: Optional[str] = None, year: Optional[int] = None) -> dict[str, Any]:
-    snapshot_id = get_latest_snapshot_id()
-    verify_url = "/v3/api/provenance/root"
-    if festival_id and year and snapshot_id:
-        verify_url = (
-            f"/v3/api/provenance/proof?festival={festival_id}&year={year}&snapshot={snapshot_id}"
-        )
-    return get_provenance_payload(verify_url=verify_url, create_if_missing=True)
+def build_provenance(
+    *,
+    festival_id: Optional[str] = None,
+    year: Optional[int] = None,
+    calendar_context: CalendarContext | None = None,
+) -> dict[str, Any]:
+    return build_surface_provenance(
+        festival_id=festival_id,
+        year=year,
+        calendar_context=calendar_context,
+        create_if_missing=True,
+    )
 
 
 def parse_iso_date(date_str: str) -> date:
@@ -46,16 +53,36 @@ def parse_iso_date(date_str: str) -> date:
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD") from exc
 
 
-def _fallback_used(method: str) -> bool:
-    normalized = str(method or "").strip().lower()
-    return "fallback" in normalized or "legacy" in normalized or "instantaneous" in normalized
+def _calendar_context(
+    target_date: date,
+    *,
+    surface: str,
+    risk_mode: str = "standard",
+    support_tier: str | None = None,
+    snapshot_id: str | None = None,
+) -> CalendarContext:
+    return CalendarContext(
+        target_date=target_date,
+        surface=surface,
+        risk_mode=risk_mode,
+        support_tier=support_tier,
+        snapshot_id=snapshot_id,
+    )
 
 
-def _calibration_status_from_uncertainty(uncertainty: dict[str, Any] | None) -> str:
-    if not isinstance(uncertainty, dict):
-        return "unavailable"
-    mode = str(uncertainty.get("calibration_mode") or "unavailable").strip().lower()
-    return "empirical" if mode == "empirical" else "unavailable"
+def _location_context(
+    *,
+    latitude: float | None = None,
+    longitude: float | None = None,
+    timezone_name: str | None = None,
+    source: str = "runtime",
+) -> LocationContext:
+    return LocationContext(
+        latitude=latitude,
+        longitude=longitude,
+        timezone_name=timezone_name,
+        source=source,
+    )
 
 
 def _calendar_meta(
@@ -66,15 +93,13 @@ def _calendar_meta(
     uncertainty: dict[str, Any] | None = None,
     fallback_used: bool | None = None,
 ) -> dict[str, Any]:
-    return {
-        "support_tier": derive_support_tier(
-            confidence=confidence,
-            quality_band=quality_band,
-        ),
-        "engine_path": engine_path,
-        "fallback_used": _fallback_used(engine_path) if fallback_used is None else fallback_used,
-        "calibration_status": _calibration_status_from_uncertainty(uncertainty),
-    }
+    return build_surface_meta(
+        engine_path=engine_path,
+        confidence=confidence,
+        quality_band=quality_band,
+        uncertainty=uncertainty,
+        fallback_used=fallback_used,
+    )
 
 
 def _bs_support_meta(
@@ -94,76 +119,6 @@ def _bs_support_meta(
     )
 
 
-def _normalize_progress(progress: Any) -> float | None:
-    try:
-        value = float(progress)
-    except (TypeError, ValueError):
-        return None
-    if 0.0 <= value <= 1.0:
-        return value
-    if 0.0 <= value <= 100.0:
-        return value / 100.0
-    return None
-
-
-def _calendar_boundary_radar(
-    *,
-    progress: Any,
-    fallback_used: bool,
-    support_tier: str,
-    method: str,
-) -> str:
-    normalized_method = str(method or "").strip().lower()
-    normalized_tier = str(support_tier or "").strip().lower()
-    progress_value = _normalize_progress(progress)
-
-    if progress_value is not None:
-        distance = min(progress_value, 1.0 - progress_value)
-        if distance <= 0.08:
-            return "high_disagreement_risk"
-        if distance <= 0.18:
-            return "one_day_sensitive"
-
-    if normalized_method == "instantaneous":
-        return "one_day_sensitive"
-    if fallback_used or normalized_tier in {"heuristic", "estimated", "conflicted"}:
-        return "one_day_sensitive"
-    return "stable"
-
-
-def _calendar_stability_score(
-    *,
-    progress: Any,
-    fallback_used: bool,
-    support_tier: str,
-    method: str,
-) -> float:
-    normalized_method = str(method or "").strip().lower()
-    normalized_tier = str(support_tier or "").strip().lower()
-    progress_value = _normalize_progress(progress)
-
-    score = {
-        "authoritative": 0.97,
-        "computed": 0.86,
-        "heuristic": 0.62,
-        "estimated": 0.5,
-        "conflicted": 0.48,
-    }.get(normalized_tier, 0.7)
-
-    if normalized_method == "instantaneous":
-        score -= 0.12
-    if fallback_used:
-        score -= 0.1
-    if progress_value is not None:
-        distance = min(progress_value, 1.0 - progress_value)
-        if distance <= 0.08:
-            score -= 0.28
-        elif distance <= 0.18:
-            score -= 0.14
-
-    return round(min(max(score, 0.05), 0.99), 2)
-
-
 def _calendar_risk_payload(
     *,
     progress: Any,
@@ -172,39 +127,13 @@ def _calendar_risk_payload(
     method: str,
     risk_mode: str = "standard",
 ) -> dict[str, Any]:
-    boundary_radar = _calendar_boundary_radar(
+    return build_temporal_risk_payload(
         progress=progress,
-        fallback_used=fallback_used,
         support_tier=support_tier,
-        method=method,
-    )
-    stability_score = _calendar_stability_score(
-        progress=progress,
         fallback_used=fallback_used,
-        support_tier=support_tier,
         method=method,
+        risk_mode=risk_mode,
     )
-    normalized_mode = str(risk_mode or "standard").strip().lower()
-    abstained = normalized_mode == "strict" and boundary_radar == "high_disagreement_risk"
-
-    if abstained:
-        recommended_action = (
-            "Strict mode withheld a single-answer promotion because this calculation sits close to a boundary."
-        )
-    elif boundary_radar == "one_day_sensitive":
-        recommended_action = (
-            "Inspect method, provenance, and nearby boundary conditions before using this result operationally."
-        )
-    else:
-        recommended_action = "This result is stable enough for normal consumer use."
-
-    return {
-        "risk_mode": normalized_mode,
-        "boundary_radar": boundary_radar,
-        "stability_score": stability_score,
-        "abstained": abstained,
-        "recommended_action": recommended_action,
-    }
 
 
 def bs_struct(gregorian_date: date) -> dict[str, Any]:
@@ -294,21 +223,27 @@ def build_conversion_payload(gregorian_date: date) -> dict[str, Any]:
     bs_payload = build_bs_date_payload(gregorian_date)
     tithi_payload = build_tithi_payload(gregorian_date)
     uncertainty = tithi_payload.get("uncertainty")
+    meta = _calendar_meta(
+        engine_path=str(tithi_payload.get("method") or "calendar_conversion_v3"),
+        confidence="estimated"
+        if bs_payload.get("confidence") == "estimated"
+        else str(tithi_payload.get("confidence") or "computed"),
+        quality_band="validated",
+        uncertainty=uncertainty,
+    )
+    context = _calendar_context(
+        gregorian_date,
+        surface="conversion",
+        support_tier=str(meta["support_tier"]),
+    )
     return {
         "gregorian": gregorian_date.isoformat(),
         "bikram_sambat": bs_payload,
         "nepal_sambat": build_ns_date_payload(gregorian_date),
         "tithi": tithi_payload,
-        **_calendar_meta(
-            engine_path=str(tithi_payload.get("method") or "calendar_conversion_v3"),
-            confidence="estimated"
-            if bs_payload.get("confidence") == "estimated"
-            else str(tithi_payload.get("confidence") or "computed"),
-            quality_band="validated",
-            uncertainty=uncertainty,
-        ),
+        **meta,
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(calendar_context=context),
         "policy": get_policy_metadata(),
     }
 
@@ -353,20 +288,26 @@ def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
             and official["day"] == estimated["day"]
         )
 
+    meta = _calendar_meta(
+        engine_path="bs_compare_official_vs_estimated",
+        confidence="estimated" if official is None or match is False else "computed",
+        quality_band="validated",
+        uncertainty=(estimated or {}).get("uncertainty"),
+        fallback_used=official is None,
+    )
+    context = _calendar_context(
+        gregorian_date,
+        surface="conversion_compare",
+        support_tier=str(meta["support_tier"]),
+    )
     return {
         "gregorian": gregorian_date.isoformat(),
         "official": official,
         "estimated": estimated,
         "match": match,
-        **_calendar_meta(
-            engine_path="bs_compare_official_vs_estimated",
-            confidence="estimated" if official is None or match is False else "computed",
-            quality_band="validated",
-            uncertainty=(estimated or {}).get("uncertainty"),
-            fallback_used=official is None,
-        ),
+        **meta,
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(calendar_context=context),
         "policy": get_policy_metadata(),
     }
 
@@ -388,6 +329,12 @@ def build_today_payload(*, risk_mode: str = "standard") -> dict[str, Any]:
         method=str(tithi_payload.get("method") or "calendar_today_v3"),
         risk_mode=risk_mode,
     )
+    context = _calendar_context(
+        today,
+        surface="today",
+        risk_mode=risk_mode,
+        support_tier=str(meta["support_tier"]),
+    )
     return {
         "gregorian": today.isoformat(),
         "bikram_sambat": bs_payload,
@@ -395,7 +342,7 @@ def build_today_payload(*, risk_mode: str = "standard") -> dict[str, Any]:
         **meta,
         **risk,
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(calendar_context=context),
         "policy": get_policy_metadata(),
     }
 
@@ -408,7 +355,6 @@ def build_panchanga_payload(target_date: date, *, risk_mode: str = "standard") -
         response = dict(cached_payload)
         response["date"] = target_date.isoformat()
         response["engine_version"] = "v2"
-        response["provenance"] = build_provenance()
         response["policy"] = get_policy_metadata()
         response["service_status"] = (
             "degraded_cached" if response.get("cache", {}).get("stale") else "healthy"
@@ -436,6 +382,14 @@ def build_panchanga_payload(target_date: date, *, risk_mode: str = "standard") -
         )
         response.update(meta)
         response.update(risk)
+        response["provenance"] = build_provenance(
+            calendar_context=_calendar_context(
+                target_date,
+                surface="panchanga",
+                risk_mode=risk_mode,
+                support_tier=str(meta["support_tier"]),
+            )
+        )
         return response
 
     try:
@@ -524,7 +478,14 @@ def build_panchanga_payload(target_date: date, *, risk_mode: str = "standard") -
         **meta,
         **risk,
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(
+            calendar_context=_calendar_context(
+                target_date,
+                surface="panchanga",
+                risk_mode=risk_mode,
+                support_tier=str(meta["support_tier"]),
+            )
+        ),
         "policy": get_policy_metadata(),
     }
 
@@ -588,7 +549,9 @@ def build_panchanga_range_payload(start: date, days: int) -> dict[str, Any]:
             fallback_used=False,
         ),
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(
+            calendar_context=_calendar_context(start, surface="panchanga_range")
+        ),
         "policy": get_policy_metadata(),
     }
 
@@ -643,7 +606,9 @@ def build_dual_month_payload(year: int, month: int) -> dict[str, Any]:
             fallback_used=month_confidence == "estimated",
         ),
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(
+            calendar_context=_calendar_context(month_start, surface="dual_month")
+        ),
         "policy": get_policy_metadata(),
     }
 
@@ -672,7 +637,9 @@ def build_bs_to_gregorian_payload(year: int, month: int, day: int) -> dict[str, 
             fallback_used=confidence == "estimated",
         ),
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(
+            calendar_context=_calendar_context(gregorian_date, surface="bs_to_gregorian")
+        ),
         "policy": get_policy_metadata(),
     }
 
@@ -751,11 +718,23 @@ def build_tithi_detail_payload(
     return {
         "date": target_date.isoformat(),
         "location": {"latitude": latitude, "longitude": longitude},
+        "location_context": _location_context(
+            latitude=latitude,
+            longitude=longitude,
+            source="query",
+        ).as_dict(),
         "tithi": tithi_payload,
         **meta,
         **risk,
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(
+            calendar_context=_calendar_context(
+                target_date,
+                surface="tithi",
+                risk_mode=risk_mode,
+                support_tier=str(meta["support_tier"]),
+            )
+        ),
         "policy": get_policy_metadata(),
     }
 
@@ -808,7 +787,9 @@ def build_upcoming_festivals_payload(days: int, *, today: Optional[date] = None)
                 fallback_used=False,
             ),
             "engine_version": "v3",
-            "provenance": build_provenance(),
+            "provenance": build_provenance(
+                calendar_context=_calendar_context(today, surface="upcoming_festivals")
+            ),
             "policy": get_policy_metadata(),
         }
 
@@ -852,7 +833,9 @@ def build_upcoming_festivals_payload(days: int, *, today: Optional[date] = None)
             fallback_used=False,
         ),
         "engine_version": "v3",
-        "provenance": build_provenance(),
+        "provenance": build_provenance(
+            calendar_context=_calendar_context(today, surface="upcoming_festivals")
+        ),
         "policy": get_policy_metadata(),
     }
 
@@ -863,34 +846,34 @@ def build_calendar_proof_capsule(
     payload: dict[str, Any],
     request: dict[str, Any],
 ) -> dict[str, Any]:
-    tithi = payload.get("tithi") or ((payload.get("panchanga") or {}).get("tithi") or {})
-    return {
-        "surface": surface,
-        "request": request,
-        "selection": {
-            "date": payload.get("date") or payload.get("gregorian"),
-            "support_tier": payload.get("support_tier"),
-            "engine_path": payload.get("engine_path"),
-            "fallback_used": payload.get("fallback_used"),
-            "calibration_status": payload.get("calibration_status"),
-            "abstained": payload.get("abstained", False),
-        },
-        "source_lineage": {
-            "method": payload.get("method") or tithi.get("method"),
-            "confidence": payload.get("confidence") or tithi.get("confidence"),
-            "reference_time": tithi.get("reference_time"),
-            "sunrise_used": tithi.get("sunrise_used"),
-            "service_status": payload.get("service_status"),
-            "cache": payload.get("cache"),
-        },
-        "risk": {
-            "boundary_radar": payload.get("boundary_radar"),
-            "stability_score": payload.get("stability_score"),
-            "risk_mode": payload.get("risk_mode"),
-            "recommended_action": payload.get("recommended_action"),
-            "truth_ladder": truth_ladder(),
-        },
-        "provenance": payload.get("provenance"),
-        "policy": payload.get("policy"),
-        "calculation_trace_id": payload.get("calculation_trace_id"),
-    }
+    target_date = payload.get("date") or payload.get("gregorian")
+    calendar_context = None
+    if isinstance(target_date, str):
+        try:
+            calendar_context = _calendar_context(
+                date.fromisoformat(target_date),
+                surface=surface,
+                risk_mode=str(payload.get("risk_mode") or "standard"),
+                support_tier=str(payload.get("support_tier") or ""),
+                snapshot_id=((payload.get("provenance") or {}).get("snapshot_id")),
+            )
+        except ValueError:
+            calendar_context = None
+
+    location_context = None
+    location_payload = payload.get("location_context") or payload.get("location")
+    if isinstance(location_payload, dict):
+        location_context = _location_context(
+            latitude=location_payload.get("latitude"),
+            longitude=location_payload.get("longitude"),
+            timezone_name=location_payload.get("timezone"),
+            source=location_payload.get("source", "runtime"),
+        )
+
+    return build_portable_proof_capsule(
+        surface=surface,
+        payload=payload,
+        request=request,
+        calendar_context=calendar_context,
+        location_context=location_context,
+    )

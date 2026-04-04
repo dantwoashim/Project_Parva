@@ -112,8 +112,18 @@ date resolution, and related observances.
 
 ## Reliability + Provenance (public read)
 - `GET /reliability/status`
+- `GET /reliability/metrics`
+- `GET /reliability/metrics.prom`
+- `GET /reliability/boundary-suite`
+- `GET /reliability/benchmark-manifest`
+- `GET /reliability/differential-manifest`
+- `GET /reliability/source-review-queue`
 - `GET /provenance/root`
+- `GET /provenance/proof`
+- `GET /public-artifacts/manifest`
 - `GET /explain/{trace_id}`
+
+These trust-facing read routes are part of the public v3 profile and are present in runtime, docs, and the frozen OpenAPI contract. Mutating provenance routes remain admin-only.
 
 ## Metadata Expectations
 Critical routes carry authority metadata fields needed by Authority Mode:

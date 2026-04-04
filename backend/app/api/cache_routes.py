@@ -8,6 +8,7 @@ from app.cache import (
     get_cache_stats,
     load_precomputed_festival_year,
     load_precomputed_panchanga,
+    measure_hotset_latency,
 )
 
 router = APIRouter(prefix="/api/cache", tags=["cache"])
@@ -37,6 +38,7 @@ async def cache_stats():
         "panchanga_only_years": sorted(set(panchanga_years) - set(festival_years)),
         "festival_only_years": sorted(set(festival_years) - set(panchanga_years)),
     }
+    stats["hotset_latency"] = measure_hotset_latency()
     return stats
 
 

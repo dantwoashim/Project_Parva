@@ -44,6 +44,9 @@ def test_snapshot_verify_detects_tamper(tmp_path: Path, monkeypatch):
 
     record = snap.create_snapshot("snap_test")
     assert record.attestation["mode"] == "unsigned"
+    assert record.artifact_id == f"sha256:{record.manifest_hash}"
+    assert record.artifact_root is not None
+    assert "snapshot" in record.artifact_paths
     ok = snap.verify_snapshot(record.snapshot_id)
     assert ok["valid"] is True
     assert ok["checks"]["attestation_valid"] is True
@@ -78,10 +81,37 @@ def test_snapshot_builds_hmac_attestation_when_key_configured(tmp_path: Path, mo
     record = snap.create_snapshot("snap_hmac")
     assert record.attestation["mode"] == "hmac-sha256"
     assert record.attestation["key_id"] == "pytest-key"
+    assert record.artifact_paths["snapshot"].endswith("/snapshot.json")
 
     verification = snap.verify_snapshot(record.snapshot_id)
     assert verification["valid"] is True
     assert verification["checks"]["attestation_valid"] is True
+
+
+def test_get_provenance_payload_exposes_immutable_artifact_identity(tmp_path: Path, monkeypatch):
+    dataset = tmp_path / "dataset.json"
+    dataset.write_text(json.dumps({"hello": "world"}), encoding="utf-8")
+    rules = tmp_path / "rules.json"
+    rules.write_text(json.dumps({"rule": 1}), encoding="utf-8")
+
+    backend_data = tmp_path / "backend_data"
+    snapshots_dir = backend_data / "snapshots"
+    backend_data.mkdir(parents=True, exist_ok=True)
+
+    monkeypatch.setattr(snap, "BACKEND_DATA_DIR", backend_data)
+    monkeypatch.setattr(snap, "SNAPSHOT_DIR", snapshots_dir)
+    monkeypatch.setattr(snap, "ARTIFACT_DIR", snapshots_dir / "artifacts")
+    monkeypatch.setattr(snap, "LATEST_POINTER", snapshots_dir / "latest.json")
+    monkeypatch.setattr(snap, "LEGACY_FESTIVAL_SNAPSHOT", backend_data / "snapshot.json")
+    monkeypatch.setattr(snap, "DEFAULT_DATASET_FILES", [dataset])
+    monkeypatch.setattr(snap, "DEFAULT_RULE_FILES", [rules])
+
+    record = snap.create_snapshot("snap_artifact_identity")
+    payload = snap.get_provenance_payload(verify_url="/v3/api/provenance/root")
+
+    assert payload["artifact_id"] == f"sha256:{record.manifest_hash}"
+    assert payload["artifact_root"] == record.artifact_root
+    assert payload["artifact_paths"]["snapshot"] == record.artifact_paths["snapshot"]
 
 
 def test_get_latest_snapshot_refreshes_stale_manifest_records(tmp_path: Path, monkeypatch):

@@ -4,7 +4,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from app.festivals.risk_service import truth_ladder
+from app.core.request_context import derive_support_tier
+from app.domain.temporal_context import CalendarContext, LocationContext
+from app.policy import get_policy_metadata
+from app.provenance import get_latest_snapshot, get_provenance_payload
 
 
 def _normalize_progress(progress: Any) -> float | None:
@@ -97,13 +100,113 @@ def build_temporal_risk_payload(
     }
 
 
+def build_surface_meta(
+    *,
+    engine_path: str,
+    confidence: str,
+    quality_band: str,
+    uncertainty: dict[str, Any] | None = None,
+    fallback_used: bool | None = None,
+) -> dict[str, Any]:
+    calibration_mode = None
+    if isinstance(uncertainty, dict):
+        calibration_mode = str(uncertainty.get("calibration_mode") or "").strip().lower()
+    return {
+        "support_tier": derive_support_tier(
+            confidence=confidence,
+            quality_band=quality_band,
+        ),
+        "engine_path": engine_path,
+        "fallback_used": (
+            ("fallback" in engine_path.lower()) or ("legacy" in engine_path.lower())
+            if fallback_used is None
+            else fallback_used
+        ),
+        "calibration_status": "empirical" if calibration_mode == "empirical" else "unavailable",
+    }
+
+
+def build_surface_provenance(
+    *,
+    festival_id: str | None = None,
+    year: int | None = None,
+    calendar_context: CalendarContext | None = None,
+    create_if_missing: bool = True,
+) -> dict[str, Any]:
+    snapshot = get_latest_snapshot(create_if_missing=create_if_missing)
+    snapshot_id = snapshot.snapshot_id if snapshot else None
+    verify_url = "/v3/api/provenance/root"
+    if festival_id and year and snapshot_id:
+        verify_url = (
+            f"/v3/api/provenance/proof?festival={festival_id}&year={year}&snapshot={snapshot_id}"
+        )
+    payload = get_provenance_payload(verify_url=verify_url, create_if_missing=create_if_missing)
+    if calendar_context is not None:
+        payload["calendar_context"] = calendar_context.as_dict()
+    return payload
+
+
+def build_surface_presentation(
+    *,
+    engine_path: str,
+    confidence: str,
+    quality_band: str,
+    uncertainty: dict[str, Any] | None = None,
+    progress: Any = None,
+    method: str | None = None,
+    risk_mode: str = "standard",
+    fallback_used: bool | None = None,
+    calendar_context: CalendarContext | None = None,
+    festival_id: str | None = None,
+    year: int | None = None,
+) -> dict[str, Any]:
+    meta = build_surface_meta(
+        engine_path=engine_path,
+        confidence=confidence,
+        quality_band=quality_band,
+        uncertainty=uncertainty,
+        fallback_used=fallback_used,
+    )
+    if calendar_context is not None:
+        calendar_context = CalendarContext(
+            target_date=calendar_context.target_date,
+            surface=calendar_context.surface,
+            risk_mode=calendar_context.risk_mode,
+            snapshot_id=calendar_context.snapshot_id,
+            support_tier=str(meta["support_tier"]),
+            calendar_system=calendar_context.calendar_system,
+        )
+    risk = build_temporal_risk_payload(
+        progress=progress,
+        support_tier=str(meta["support_tier"]),
+        fallback_used=bool(meta["fallback_used"]),
+        method=method or engine_path,
+        risk_mode=risk_mode,
+    )
+    return {
+        **meta,
+        **risk,
+        "provenance": build_surface_provenance(
+            festival_id=festival_id,
+            year=year,
+            calendar_context=calendar_context,
+            create_if_missing=True,
+        ),
+        "policy": get_policy_metadata(),
+    }
+
+
 def build_portable_proof_capsule(
     *,
     surface: str,
     payload: dict[str, Any],
     request: dict[str, Any],
     source_lineage: dict[str, Any] | None = None,
+    calendar_context: CalendarContext | None = None,
+    location_context: LocationContext | None = None,
 ) -> dict[str, Any]:
+    from app.festivals.risk_service import truth_ladder
+
     tithi = payload.get("tithi") or ((payload.get("panchanga") or {}).get("tithi") or {})
     lineage = {
         "method": payload.get("method") or tithi.get("method"),
@@ -118,6 +221,16 @@ def build_portable_proof_capsule(
     return {
         "surface": surface,
         "request": request,
+        "calendar_context": (
+            calendar_context.as_dict()
+            if calendar_context is not None
+            else (payload.get("provenance") or {}).get("calendar_context")
+        ),
+        "location_context": (
+            location_context.as_dict()
+            if location_context is not None
+            else payload.get("location_context")
+        ),
         "selection": {
             "date": payload.get("date") or payload.get("gregorian"),
             "support_tier": payload.get("support_tier"),
@@ -138,4 +251,3 @@ def build_portable_proof_capsule(
         "policy": payload.get("policy"),
         "calculation_trace_id": payload.get("calculation_trace_id"),
     }
-

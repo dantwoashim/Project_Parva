@@ -19,10 +19,11 @@ from app.bootstrap.middleware import (
     build_rate_limit_guard,
     build_request_context,
 )
+from app.bootstrap.access_control import find_unclassified_api_routes
 from app.bootstrap.rate_limit import create_rate_limiter_backend
 from app.bootstrap.router_registry import register_routers
 from app.bootstrap.settings import load_settings, validate_settings
-from app.cache.precomputed import get_cache_stats
+from app.cache.precomputed import get_cache_stats, prewarm_hot_set
 from app.engine.ephemeris_config import get_ephemeris_config
 from app.festivals.repository import validate_festival_catalog
 
@@ -150,6 +151,7 @@ def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, obje
     app.state.source_url = settings.source_url
     app.state.settings = settings
     app.state.startup_checks = startup_checks
+    app.state.prewarm = None
 
 
 def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
@@ -328,6 +330,7 @@ def _register_root_and_health_routes(app: FastAPI, settings) -> None:
             "environment": settings.environment,
             "serve_frontend": settings.serve_frontend,
             "startup": app.state.startup_checks,
+            "prewarm": app.state.prewarm,
         }
 
     @app.get("/health/live")
@@ -349,6 +352,7 @@ def _register_root_and_health_routes(app: FastAPI, settings) -> None:
             "version": PRODUCT_VERSION,
             **_service_metadata(settings),
             "checks": app.state.startup_checks.get("checks", {}),
+            "prewarm": app.state.prewarm,
         }
         return JSONResponse(
             status_code=200 if app.state.startup_checks.get("ready") else 503, content=payload
@@ -376,6 +380,16 @@ def _register_frontend_spa_route(app: FastAPI, settings) -> None:
         return FileResponse(index_file)
 
 
+def _prewarm_runtime_hotset(app: FastAPI, settings) -> None:
+    if not settings.prewarm_hotset:
+        return
+    try:
+        app.state.prewarm = prewarm_hot_set()
+    except Exception as exc:
+        logger.warning("Hot-set prewarm failed: %s", exc)
+        app.state.prewarm = {"status": "failed", "detail": str(exc)}
+
+
 def create_app() -> FastAPI:
     settings = load_settings()
     startup_checks, rate_limit_backend = _validate_startup(settings)
@@ -393,8 +407,17 @@ def create_app() -> FastAPI:
         enable_experimental_api=settings.enable_experimental_api,
         environment=settings.environment,
     )
+    unclassified_routes = find_unclassified_api_routes(app.routes)
+    if unclassified_routes:
+        rendered = ", ".join(unclassified_routes[:10])
+        suffix = " ..." if len(unclassified_routes) > 10 else ""
+        raise RuntimeError(
+            "Startup validation failed: unclassified API routes detected: "
+            f"{rendered}{suffix}"
+        )
     _register_version_docs_routes(app, enable_experimental_api=settings.enable_experimental_api)
     _register_source_route(app, settings)
     _register_root_and_health_routes(app, settings)
     _register_frontend_spa_route(app, settings)
+    _prewarm_runtime_hotset(app, settings)
     return app

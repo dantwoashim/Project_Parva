@@ -360,16 +360,14 @@ export function FeedSubscriptionsPage() {
   );
 
   const [activePreset, setActivePreset] = useState('all');
-
-  useEffect(() => {
-    if (!presets.some((item) => item.key === activePreset) && presets[0]?.key) {
-      setActivePreset(presets[0].key);
-    }
-  }, [activePreset, presets]);
+  const effectiveActivePreset = useMemo(
+    () => (presets.some((item) => item.key === activePreset) ? activePreset : (presets[0]?.key || 'all')),
+    [activePreset, presets],
+  );
 
   const selectedPreset = useMemo(
-    () => presets.find((item) => item.key === activePreset) || presets[0],
-    [activePreset, presets],
+    () => presets.find((item) => item.key === effectiveActivePreset) || presets[0],
+    [effectiveActivePreset, presets],
   );
   const recommendedPlatform = deviceProfile.platform;
   const orderedPlatforms = useMemo(() => {
@@ -399,7 +397,6 @@ export function FeedSubscriptionsPage() {
 
   useEffect(() => {
     if (!selectedIds.length) {
-      setCustomPlan(null);
       return undefined;
     }
 
@@ -610,7 +607,7 @@ export function FeedSubscriptionsPage() {
           feedKey: selectedPreset.key,
           feedTitle: selectedPreset.title,
           feedUrl: selectedPreset.feed_url,
-          downloadUrl,
+          downloadUrl: downloadLink,
           years,
           lang,
           recommendedPlatform,
@@ -635,7 +632,7 @@ export function FeedSubscriptionsPage() {
         feedKey: selectedPreset.key,
         feedTitle: selectedPreset.title,
         feedUrl: selectedPreset.feed_url,
-        downloadUrl,
+        downloadUrl: downloadLink,
         years,
         lang,
         recommendedPlatform,
@@ -758,7 +755,7 @@ export function FeedSubscriptionsPage() {
 
         <div className="feeds-presets" role="tablist" aria-label="Calendar feed presets">
           {presets.map((item) => (
-            <FeedPresetCard key={item.key} item={item} isActive={item.key === activePreset} onSelect={setActivePreset} />
+            <FeedPresetCard key={item.key} item={item} isActive={item.key === effectiveActivePreset} onSelect={setActivePreset} />
           ))}
         </div>
 

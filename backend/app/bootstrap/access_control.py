@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import hmac
 from dataclasses import dataclass
+from typing import Iterable
 
 from fastapi import Request
 
+from .router_registry import iter_route_policy_specs
 from .settings import AppSettings
 
 PUBLIC_HEALTH_PATHS = {
@@ -42,8 +44,7 @@ PROVENANCE_READ_PREFIXES = (
     "/v3/api/provenance/dashboard",
 )
 PROVENANCE_PREFIXES = ("/api/provenance", "/v3/api/provenance")
-
-
+API_PREFIXES = ("/api/", "/v2/api/", "/v3/api/", "/v4/api/", "/v5/api/")
 @dataclass(frozen=True)
 class Principal:
     principal_type: str
@@ -104,37 +105,28 @@ def _is_public_path(path: str) -> bool:
     return False
 
 
+def _is_api_path(path: str) -> bool:
+    return any(path.startswith(prefix) for prefix in API_PREFIXES)
+
+
+def _registered_route_policies() -> tuple[RoutePolicy, ...]:
+    policies: list[RoutePolicy] = []
+    for spec in iter_route_policy_specs():
+        policy_name = spec["policy_name"]
+        if policy_name == "provenance":
+            continue
+        policies.append(
+            route_policy(
+                name=spec["registration_name"],
+                path=spec["path"],
+                requirement=AccessRequirement(required=False, policy_name=policy_name),
+            )
+        )
+    return tuple(policies)
+
+
 ROUTE_POLICY_REGISTRY: tuple[RoutePolicy, ...] = (
-    route_policy(
-        name="reliability_read",
-        path="/api/reliability",
-        requirement=AccessRequirement(required=False, policy_name="reliability_read"),
-    ),
-    route_policy(
-        name="reliability_read_v3",
-        path="/v3/api/reliability",
-        requirement=AccessRequirement(required=False, policy_name="reliability_read"),
-    ),
-    route_policy(
-        name="spec_read",
-        path="/api/spec",
-        requirement=AccessRequirement(required=False, policy_name="spec_read"),
-    ),
-    route_policy(
-        name="spec_read_v3",
-        path="/v3/api/spec",
-        requirement=AccessRequirement(required=False, policy_name="spec_read"),
-    ),
-    route_policy(
-        name="public_artifacts_read",
-        path="/api/public",
-        requirement=AccessRequirement(required=False, policy_name="public_artifacts_read"),
-    ),
-    route_policy(
-        name="public_artifacts_read_v3",
-        path="/v3/api/public",
-        requirement=AccessRequirement(required=False, policy_name="public_artifacts_read"),
-    ),
+    *_registered_route_policies(),
     route_policy(
         name="experimental_read_v2",
         path="/v2/",
@@ -189,7 +181,26 @@ def classify_request(path: str, method: str) -> AccessRequirement:
         if policy.matches(path, method):
             return policy.requirement
 
+    if _is_api_path(path):
+        return AccessRequirement(required=True, policy_name="unclassified_api", admin_only=True)
+
     return AccessRequirement(required=False, policy_name="public")
+
+
+def find_unclassified_api_routes(routes: Iterable[object]) -> list[str]:
+    missing: list[str] = []
+    for route in routes:
+        path = getattr(route, "path", None)
+        methods = getattr(route, "methods", None)
+        if not isinstance(path, str) or not _is_api_path(path):
+            continue
+        for method in methods or ():
+            if method in {"HEAD", "OPTIONS"}:
+                continue
+            requirement = classify_request(path, method)
+            if requirement.policy_name == "unclassified_api":
+                missing.append(f"{method} {path}")
+    return sorted(set(missing))
 
 
 def authenticate_request(request: Request, settings: AppSettings) -> Principal | None:
