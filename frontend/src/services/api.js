@@ -17,11 +17,19 @@ import {
   normalizePersonalPanchangaEnvelope,
   normalizeTemporalCompassEnvelope,
 } from './apiContracts';
+import { todayIso } from '../context/temporalContextState';
 
 const API_BASE = import.meta.env.VITE_API_BASE || '/v3/api';
 const DEFAULT_REQUEST_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS || 10000);
 const ENVELOPE_HEADER_NAME = 'X-Parva-Envelope';
 const ENVELOPE_HEADER_VALUE = 'data-meta';
+
+function normalizeCalendarDate(date) {
+  if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date.trim())) {
+    return date.trim();
+  }
+  return todayIso('Asia/Kathmandu');
+}
 
 export class ParvaApiError extends Error {
   constructor(message, { status, statusText, detail, requestId, errors, payload } = {}) {
@@ -420,17 +428,17 @@ export const calendarAPI = {
     body: JSON.stringify({ year, month, day }),
   }),
   getPanchanga: (date, riskMode) => {
-    const params = new URLSearchParams({ date });
+    const params = new URLSearchParams({ date: normalizeCalendarDate(date) });
     if (riskMode) params.set('risk_mode', riskMode);
     return fetchAPI(`/calendar/panchanga?${params.toString()}`);
   },
   getPanchangaEnvelope: (date, riskMode) => {
-    const params = new URLSearchParams({ date });
+    const params = new URLSearchParams({ date: normalizeCalendarDate(date) });
     if (riskMode) params.set('risk_mode', riskMode);
     return fetchAPIEnvelope(`/calendar/panchanga?${params.toString()}`);
   },
   getPanchangaProofCapsule: (date, riskMode = 'strict') => {
-    const params = new URLSearchParams({ date, risk_mode: riskMode });
+    const params = new URLSearchParams({ date: normalizeCalendarDate(date), risk_mode: riskMode });
     return fetchAPI(`/calendar/panchanga/proof-capsule?${params.toString()}`);
   },
   getTithi: (date, latitude, longitude, riskMode) => {

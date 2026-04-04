@@ -5,6 +5,7 @@ import { EvidenceDrawer } from '../components/UI/EvidenceDrawer';
 import { PANCHANGA_GLOSSARY } from '../data/temporalGlossary';
 import { calendarAPI, festivalAPI, glossaryAPI } from '../services/api';
 import { useTemporalContext } from '../context/useTemporalContext';
+import { todayIso } from '../context/temporalContextState';
 import './PanchangaPage.css';
 
 function toKnowledge(content, fallback) {
@@ -73,6 +74,7 @@ function formatDisplayDate(value, timeZone) {
 export function PanchangaPage() {
   const navigate = useNavigate();
   const { state, setDate } = useTemporalContext();
+  const effectiveDate = state.date || todayIso(state.timezone);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [payload, setPayload] = useState(null);
@@ -88,9 +90,9 @@ export function PanchangaPage() {
       setError(null);
       try {
         const [panchangaEnvelope, resolveEnvelope, festivalsData, glossary] = await Promise.all([
-          calendarAPI.getPanchangaEnvelope(state.date),
-          calendarAPI.getResolveEnvelope(state.date, { include_trace: 'true' }),
-          festivalAPI.getOnDate(state.date).catch(() => []),
+          calendarAPI.getPanchangaEnvelope(effectiveDate),
+          calendarAPI.getResolveEnvelope(effectiveDate, { include_trace: 'true' }),
+          festivalAPI.getOnDate(effectiveDate).catch(() => []),
           glossaryAPI.get({ domain: 'panchanga', lang: state.language }).catch(() => null),
         ]);
 
@@ -114,7 +116,7 @@ export function PanchangaPage() {
 
     load();
     return () => { cancelled = true; };
-  }, [state.date, state.language]);
+  }, [effectiveDate, state.language]);
 
   const tithi = payload?.panchanga?.tithi;
   const nakshatra = payload?.panchanga?.nakshatra;
@@ -130,7 +132,7 @@ export function PanchangaPage() {
 
     return `${tithi?.name || 'Today'} sets the lunar tone${tithi?.paksha ? ` in the ${tithi.paksha} half` : ''}, while ${vaara?.name_english || 'the weekday'} holds the civic rhythm.`;
   }, [tithi, vaara]);
-  const displayDate = useMemo(() => formatDisplayDate(state.date, state.timezone), [state.date, state.timezone]);
+  const displayDate = useMemo(() => formatDisplayDate(effectiveDate, state.timezone), [effectiveDate, state.timezone]);
 
   return (
     <section className="panchanga-page animate-fade-in-up">
@@ -145,7 +147,7 @@ export function PanchangaPage() {
         <div className="panchanga-hero__side">
           <label className="panchanga-hero__picker ink-input">
             <span>Date</span>
-            <input id="panchanga-date" type="date" value={state.date} onChange={(event) => setDate(event.target.value)} />
+            <input id="panchanga-date" type="date" value={effectiveDate} onChange={(event) => setDate(event.target.value || todayIso(state.timezone))} />
           </label>
           {tithi ? <MoonPhase tithi={tithi} /> : null}
         </div>
@@ -244,7 +246,7 @@ export function PanchangaPage() {
                 methodRef={tithi?.method || meta?.method || 'Panchanga daily profile'}
                 confidenceNote={confidence}
                 placeUsed={state.timezone}
-                computedForDate={state.date}
+                computedForDate={effectiveDate}
                 availability={[
                   { label: 'Daily panchanga', available: Boolean(payload?.panchanga), note: 'The summary cards only appear when the daily reading is present.' },
                   { label: 'Festival context', available: Boolean(festivals?.length), note: 'Festival chips only appear when the on-date service returns observances.' },
