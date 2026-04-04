@@ -1,5 +1,5 @@
 {
-  "version": "muhurta_v2_regression_1",
+  "version": "muhurta_v2_regression_2",
   "cases": [
     {
       "id": "ktm_spring_vivah",
@@ -11,15 +11,15 @@
       "birth_nakshatra": "7",
       "assumption_set": "np-mainstream-v2",
       "expect": {
-        "daylight_minutes": 725.5,
-        "night_minutes": 713.4,
+        "daylight_minutes": 727.9,
+        "night_minutes": 710.9,
         "hora_day_first_lord": "saturn",
         "chaughadia_day_first": "kal",
         "rahu_segment": 3,
         "best_window_name": "Vidhi",
         "best_window_score": 77,
         "tara_quality": "auspicious",
-        "auspicious_count_min": 1
+        "auspicious_count_min": 2
       }
     },
     {
@@ -32,8 +32,8 @@
       "birth_nakshatra": "12",
       "assumption_set": "np-mainstream-v2",
       "expect": {
-        "daylight_minutes": 820.2,
-        "night_minutes": 620.3,
+        "daylight_minutes": 822.8,
+        "night_minutes": 617.7,
         "hora_day_first_lord": "mercury",
         "chaughadia_day_first": "labh",
         "rahu_segment": 5,
@@ -53,8 +53,8 @@
       "birth_nakshatra": "3",
       "assumption_set": "diaspora-practical-v2",
       "expect": {
-        "daylight_minutes": 552.5,
-        "night_minutes": 888.2,
+        "daylight_minutes": 555.9,
+        "night_minutes": 884.8,
         "hora_day_first_lord": "mars",
         "chaughadia_day_first": "rog",
         "rahu_segment": 7,
@@ -74,8 +74,8 @@
       "birth_nakshatra": "21",
       "assumption_set": "diaspora-practical-v2",
       "expect": {
-        "daylight_minutes": 680.0,
-        "night_minutes": 760.7,
+        "daylight_minutes": 682.6,
+        "night_minutes": 758.1,
         "hora_day_first_lord": "venus",
         "chaughadia_day_first": "char",
         "rahu_segment": 4,
