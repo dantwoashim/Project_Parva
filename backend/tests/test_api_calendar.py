@@ -143,6 +143,15 @@ class TestPanchangaEndpoints:
         response = client.get("/api/calendar/panchanga?date=not-a-date")
         assert response.status_code == 400
 
+    def test_panchanga_missing_date_defaults_to_today(self, client):
+        """Test missing date falls back to today's panchanga instead of 422 validation."""
+        response = client.get("/api/calendar/panchanga")
+        assert response.status_code == 200
+        data = response.json()
+
+        assert "date" in data
+        assert "panchanga" in data
+
 
 # =============================================================================
 # FESTIVAL CALCULATION ENDPOINTS

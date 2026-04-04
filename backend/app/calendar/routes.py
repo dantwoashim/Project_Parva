@@ -5,7 +5,7 @@ Calendar API Routes
 Endpoints for calendar conversion and tithi information.
 """
 
-from datetime import date
+from datetime import date, datetime
 from typing import Optional
 
 from fastapi import APIRouter, Query
@@ -246,8 +246,8 @@ async def get_tithi_proof_capsule(
 
 @router.get("/panchanga")
 async def get_panchanga_endpoint(
-    date_str: str = Query(
-        ...,
+    date_str: Optional[str] = Query(
+        None,
         alias="date",
         description="Gregorian date in YYYY-MM-DD format",
         examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
@@ -260,7 +260,7 @@ async def get_panchanga_endpoint(
     Uses Swiss Ephemeris for accurate astronomical calculations.
     Includes: Tithi, Nakshatra, Yoga, Karana, Vaara (weekday).
     """
-    target_date = _parse_iso_date(date_str)
+    target_date = _parse_iso_date(date_str) if date_str else datetime.now().date()
     return build_panchanga_payload(target_date, risk_mode=risk_mode)
 
 

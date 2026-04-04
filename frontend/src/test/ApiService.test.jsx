@@ -450,6 +450,34 @@ describe('API service', () => {
     });
   });
 
+  it('defaults calendar panchanga requests to today when the caller does not provide a date', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-04-04T06:00:00+05:45'));
+    const fetchMock = vi.fn(async () => jsonResponse({
+      data: {
+        date: '2026-04-04',
+        panchanga: {
+          tithi: { number: 2, name: 'Dwitiya', paksha: 'shukla' },
+          nakshatra: { number: 1, name: 'Ashwini', pada: 1 },
+          yoga: { number: 1, name: 'Vishkambha' },
+          karana: { number: 1, name: 'Bava' },
+          vaara: { name_english: 'Saturday', name_sanskrit: 'Shanivara' },
+        },
+        bikram_sambat: { year: 2082, month: 1, day: 22, month_name: 'Baisakh' },
+        ephemeris: { mode: 'swiss_moshier', accuracy: 'arcsecond', library: 'pyswisseph' },
+      },
+      meta: {},
+    }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await calendarAPI.getPanchangaEnvelope('');
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining('/calendar/panchanga?date=2026-04-04'),
+      expect.any(Object),
+    );
+  });
+
   it('surfaces contract drift for festival timeline envelopes', async () => {
     vi.stubGlobal('fetch', async () => ({
       ok: true,
