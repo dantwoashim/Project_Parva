@@ -68,6 +68,30 @@ class InMemoryRateLimiterBackend:
 class RedisRateLimiterBackend:
     """Redis-backed limiter for multi-instance deployments."""
 
+    _ATOMIC_CHECK_SCRIPT = """
+local key = KEYS[1]
+local cutoff = tonumber(ARGV[1])
+local limit = tonumber(ARGV[2])
+local now_score = tonumber(ARGV[3])
+local member = ARGV[4]
+local ttl = tonumber(ARGV[5])
+
+redis.call('ZREMRANGEBYSCORE', key, '-inf', cutoff)
+local current = redis.call('ZCARD', key)
+
+if current >= limit then
+  local oldest = redis.call('ZRANGE', key, 0, 0, 'WITHSCORES')
+  if oldest[2] then
+    return {0, current, oldest[2]}
+  end
+  return {0, current, 0}
+end
+
+redis.call('ZADD', key, now_score, member)
+redis.call('EXPIRE', key, ttl)
+return {1, current + 1, 0}
+"""
+
     def __init__(self, redis_url: str) -> None:
         if not redis_url.strip():
             raise ValueError("Redis rate limiting requires PARVA_REDIS_URL.")
@@ -89,6 +113,28 @@ class RedisRateLimiterBackend:
         self._client = Redis.from_url(self._redis_url, decode_responses=False)
         return self._client
 
+    def _eval_atomic_check(
+        self,
+        *,
+        key: str,
+        cutoff: float,
+        limit: int,
+        now_score: float,
+        member: str,
+        ttl: int,
+    ):
+        client = self._get_client()
+        return client.eval(
+            self._ATOMIC_CHECK_SCRIPT,
+            1,
+            key,
+            cutoff,
+            limit,
+            now_score,
+            member,
+            ttl,
+        )
+
     def check(
         self,
         *,
@@ -97,32 +143,33 @@ class RedisRateLimiterBackend:
         policy: RatePolicy,
         now: float,
     ) -> RateLimitDecision:
-        client = self._get_client()
         key = f"parva:ratelimit:{bucket}:{identifier}"
         cutoff = now - policy.window_seconds
-        member = f"{now:.6f}:{time.monotonic_ns()}".encode("utf-8")
+        member = f"{now:.6f}:{time.monotonic_ns()}"
+        execution_results = self._eval_atomic_check(
+            key=key,
+            cutoff=cutoff,
+            limit=policy.limit,
+            now_score=now,
+            member=member,
+            ttl=policy.window_seconds,
+        )
 
-        pipe = client.pipeline()
-        pipe.zremrangebyscore(key, 0, cutoff)
-        pipe.zcard(key)
-        removed, current = pipe.execute()
-        del removed  # Only retained for readability when debugging.
+        if not isinstance(execution_results, (list, tuple)) or len(execution_results) != 3:
+            raise RuntimeError("Redis rate limiter returned an unexpected result.")
 
-        if int(current) >= policy.limit:
-            oldest = client.zrange(key, 0, 0, withscores=True)
-            retry_after = policy.window_seconds
-            if oldest:
-                retry_after = max(1, int(policy.window_seconds - (now - float(oldest[0][1]))))
-            return RateLimitDecision(allowed=False, remaining=0, retry_after=retry_after)
+        allowed_flag, current_count, oldest_score = execution_results
+        allowed = bool(int(allowed_flag))
+        current = int(current_count)
 
-        pipe = client.pipeline()
-        pipe.zadd(key, {member: now})
-        pipe.expire(key, policy.window_seconds)
-        execution_results = pipe.execute()
-        if len(execution_results) != 2:
-            raise RuntimeError("Redis rate limiter failed to persist state.")
-        remaining = max(policy.limit - int(current) - 1, 0)
-        return RateLimitDecision(allowed=True, remaining=remaining)
+        if allowed:
+            remaining = max(policy.limit - current, 0)
+            return RateLimitDecision(allowed=True, remaining=remaining)
+
+        retry_after = policy.window_seconds
+        if oldest_score:
+            retry_after = max(1, int(policy.window_seconds - (now - float(oldest_score))))
+        return RateLimitDecision(allowed=False, remaining=0, retry_after=retry_after)
 
 
 def create_rate_limiter_backend(

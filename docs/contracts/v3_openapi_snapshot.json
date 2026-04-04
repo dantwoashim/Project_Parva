@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-22T15:43:22.995153+00:00",
+  "generated_at": "2026-04-04T14:19:42.882175+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -413,6 +413,67 @@
           }
         }
       },
+      "/v3/api/festivals/disputes": {
+        "get": {
+          "tags": [
+            "festivals"
+          ],
+          "summary": "Get Dispute Atlas",
+          "description": "Return authority conflicts and risk-ranked festival-year rows for truth/dispute surfaces.",
+          "operationId": "get_dispute_atlas_v3_api_festivals_disputes_get",
+          "parameters": [
+            {
+              "name": "year",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "maximum": 2200,
+                "minimum": 2000,
+                "description": "Gregorian year",
+                "title": "Year"
+              },
+              "description": "Gregorian year"
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 100,
+                "minimum": 1,
+                "description": "Maximum number of dispute/risk rows",
+                "default": 18,
+                "title": "Limit"
+              },
+              "description": "Maximum number of dispute/risk rows"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/FestivalDisputeAtlasResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/festivals/upcoming": {
         "get": {
           "tags": [
@@ -466,6 +527,24 @@
                 "title": "Quality Band"
               },
               "description": "computed|provisional|inventory|all"
+            },
+            {
+              "name": "profile",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Variant profile id",
+                "title": "Profile"
+              },
+              "description": "Variant profile id"
             }
           ],
           "responses": {
@@ -510,6 +589,24 @@
                 "format": "date",
                 "title": "Target Date"
               }
+            },
+            {
+              "name": "profile",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Variant profile id",
+                "title": "Profile"
+              },
+              "description": "Variant profile id"
             }
           ],
           "responses": {
@@ -566,6 +663,24 @@
                 "type": "integer",
                 "title": "Month"
               }
+            },
+            {
+              "name": "profile",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Variant profile id",
+                "title": "Profile"
+              },
+              "description": "Variant profile id"
             }
           ],
           "responses": {
@@ -627,6 +742,48 @@
                 "title": "Year"
               },
               "description": "Year for date calculation"
+            },
+            {
+              "name": "profile",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Variant profile id",
+                "title": "Profile"
+              },
+              "description": "Variant profile id"
+            },
+            {
+              "name": "authority_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "public_default|authority_compare|all_candidates",
+                "default": "public_default",
+                "title": "Authority Mode"
+              },
+              "description": "public_default|authority_compare|all_candidates"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "standard",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
             }
           ],
           "responses": {
@@ -688,6 +845,48 @@
                 "title": "Year"
               },
               "description": "Gregorian year for explanation"
+            },
+            {
+              "name": "profile",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Variant profile id",
+                "title": "Profile"
+              },
+              "description": "Variant profile id"
+            },
+            {
+              "name": "authority_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "public_default|authority_compare|all_candidates",
+                "default": "public_default",
+                "title": "Authority Mode"
+              },
+              "description": "public_default|authority_compare|all_candidates"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "standard",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
             }
           ],
           "responses": {
@@ -697,6 +896,86 @@
                 "application/json": {
                   "schema": {
                     "$ref": "#/components/schemas/FestivalExplainResponse"
+                  }
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/festivals/{festival_id}/proof-capsule": {
+        "get": {
+          "tags": [
+            "festivals"
+          ],
+          "summary": "Get Festival Proof Capsule",
+          "description": "Return a portable proof capsule for one festival-year resolution.",
+          "operationId": "get_festival_proof_capsule_v3_api_festivals__festival_id__proof_capsule_get",
+          "parameters": [
+            {
+              "name": "festival_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Festival Id"
+              }
+            },
+            {
+              "name": "year",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "maximum": 2200,
+                "minimum": 2000,
+                "description": "Gregorian year",
+                "title": "Year"
+              },
+              "description": "Gregorian year"
+            },
+            {
+              "name": "authority_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "public_default|authority_compare|all_candidates",
+                "default": "authority_compare",
+                "title": "Authority Mode"
+              },
+              "description": "public_default|authority_compare|all_candidates"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "strict",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/FestivalProofCapsuleResponse"
                   }
                 }
               }
@@ -763,6 +1042,24 @@
                 "title": "Start Year"
               },
               "description": "Starting year"
+            },
+            {
+              "name": "profile",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Variant profile id",
+                "title": "Profile"
+              },
+              "description": "Variant profile id"
             }
           ],
           "responses": {
@@ -1071,12 +1368,79 @@
           "summary": "Get Today",
           "description": "Get calendar information for today.\nUses udaya tithi (official sunrise-based) for accuracy.",
           "operationId": "get_today_v3_api_calendar_today_get",
+          "parameters": [
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "standard",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
+            }
+          ],
           "responses": {
             "200": {
               "description": "Successful Response",
               "content": {
                 "application/json": {
                   "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/calendar/today/proof-capsule": {
+        "get": {
+          "tags": [
+            "calendar"
+          ],
+          "summary": "Get Today Proof Capsule",
+          "operationId": "get_today_proof_capsule_v3_api_calendar_today_proof_capsule_get",
+          "parameters": [
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "strict",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
                 }
               }
             }
@@ -1136,6 +1500,100 @@
                 "title": "Longitude"
               },
               "description": "Longitude"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "standard",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/calendar/tithi/proof-capsule": {
+        "get": {
+          "tags": [
+            "calendar"
+          ],
+          "summary": "Get Tithi Proof Capsule",
+          "operationId": "get_tithi_proof_capsule_v3_api_calendar_tithi_proof_capsule_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "latitude",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "number",
+                "maximum": 90.0,
+                "minimum": -90.0,
+                "description": "Latitude",
+                "default": 27.7172,
+                "title": "Latitude"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "longitude",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "number",
+                "maximum": 180.0,
+                "minimum": -180.0,
+                "description": "Longitude",
+                "default": 85.324,
+                "title": "Longitude"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "strict",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
             }
           ],
           "responses": {
@@ -1172,9 +1630,16 @@
             {
               "name": "date",
               "in": "query",
-              "required": true,
+              "required": false,
               "schema": {
-                "type": "string",
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
                 "description": "Gregorian date in YYYY-MM-DD format",
                 "examples": {
                   "default": {
@@ -1185,6 +1650,72 @@
                 "title": "Date"
               },
               "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "standard",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/calendar/panchanga/proof-capsule": {
+        "get": {
+          "tags": [
+            "calendar"
+          ],
+          "summary": "Get Panchanga Proof Capsule",
+          "operationId": "get_panchanga_proof_capsule_v3_api_calendar_panchanga_proof_capsule_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "strict",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
             }
           ],
           "responses": {
@@ -2366,6 +2897,159 @@
           }
         }
       },
+      "/v3/api/feeds/integrations/catalog": {
+        "get": {
+          "tags": [
+            "feeds"
+          ],
+          "summary": "Feed Integrations Catalog",
+          "operationId": "feed_integrations_catalog_v3_api_feeds_integrations_catalog_get",
+          "parameters": [
+            {
+              "name": "years",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 10,
+                "minimum": 1,
+                "default": 2,
+                "title": "Years"
+              }
+            },
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "maximum": 2300,
+                    "minimum": 1900
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/feeds/integrations/custom-plan": {
+        "get": {
+          "tags": [
+            "feeds"
+          ],
+          "summary": "Feed Integrations Custom Plan",
+          "operationId": "feed_integrations_custom_plan_v3_api_feeds_integrations_custom_plan_get",
+          "parameters": [
+            {
+              "name": "festivals",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Comma-separated festival ids",
+                "title": "Festivals"
+              },
+              "description": "Comma-separated festival ids"
+            },
+            {
+              "name": "years",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 10,
+                "minimum": 1,
+                "default": 2,
+                "title": "Years"
+              }
+            },
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "maximum": 2300,
+                    "minimum": 1900
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/feeds/ical": {
         "get": {
           "tags": [
@@ -2451,6 +3135,16 @@
                 "title": "Lang"
               },
               "description": "en or ne"
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
+              }
             }
           ],
           "responses": {
@@ -2521,6 +3215,16 @@
                 "type": "string",
                 "default": "en",
                 "title": "Lang"
+              }
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
               }
             }
           ],
@@ -2593,6 +3297,16 @@
                 "default": "en",
                 "title": "Lang"
               }
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
+              }
             }
           ],
           "responses": {
@@ -2663,6 +3377,16 @@
                 "type": "string",
                 "default": "en",
                 "title": "Lang"
+              }
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
               }
             }
           ],
@@ -2745,6 +3469,16 @@
                 "type": "string",
                 "default": "en",
                 "title": "Lang"
+              }
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
               }
             }
           ],
@@ -3359,6 +4093,159 @@
           }
         }
       },
+      "/v3/api/integrations/feeds/catalog": {
+        "get": {
+          "tags": [
+            "integrations"
+          ],
+          "summary": "Integration Feed Catalog",
+          "operationId": "integration_feed_catalog_v3_api_integrations_feeds_catalog_get",
+          "parameters": [
+            {
+              "name": "years",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 10,
+                "minimum": 1,
+                "default": 2,
+                "title": "Years"
+              }
+            },
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "maximum": 2300,
+                    "minimum": 1900
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/integrations/feeds/custom-plan": {
+        "get": {
+          "tags": [
+            "integrations"
+          ],
+          "summary": "Integration Custom Feed Catalog",
+          "operationId": "integration_custom_feed_catalog_v3_api_integrations_feeds_custom_plan_get",
+          "parameters": [
+            {
+              "name": "festivals",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Comma-separated festival ids",
+                "title": "Festivals"
+              },
+              "description": "Comma-separated festival ids"
+            },
+            {
+              "name": "years",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "maximum": 10,
+                "minimum": 1,
+                "default": 2,
+                "title": "Years"
+              }
+            },
+            {
+              "name": "start_year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "maximum": 2300,
+                    "minimum": 1900
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Start Year"
+              }
+            },
+            {
+              "name": "lang",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "en",
+                "title": "Lang"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/integrations/feeds/all.ics": {
         "get": {
           "tags": [
@@ -3405,6 +4292,16 @@
                 "type": "string",
                 "default": "en",
                 "title": "Lang"
+              }
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
               }
             }
           ],
@@ -3477,6 +4374,16 @@
                 "default": "en",
                 "title": "Lang"
               }
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
+              }
             }
           ],
           "responses": {
@@ -3547,6 +4454,16 @@
                 "type": "string",
                 "default": "en",
                 "title": "Lang"
+              }
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
               }
             }
           ],
@@ -3629,6 +4546,16 @@
                 "type": "string",
                 "default": "en",
                 "title": "Lang"
+              }
+            },
+            {
+              "name": "download",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "boolean",
+                "default": false,
+                "title": "Download"
               }
             }
           ],
@@ -3779,6 +4706,18 @@
                 "title": "Tz"
               },
               "description": "IANA timezone, e.g. Asia/Kathmandu"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "standard",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
             }
           ],
           "responses": {
@@ -3808,6 +4747,151 @@
           ],
           "summary": "Personal Panchanga Post",
           "operationId": "personal_panchanga_post_v3_api_personal_panchanga_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPanchangaRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/personal/panchanga/proof-capsule": {
+        "get": {
+          "tags": [
+            "personal"
+          ],
+          "summary": "Personal Panchanga Proof Capsule",
+          "operationId": "personal_panchanga_proof_capsule_v3_api_personal_panchanga_proof_capsule_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone, e.g. Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone, e.g. Asia/Kathmandu"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "strict",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "personal"
+          ],
+          "summary": "Personal Panchanga Proof Capsule Post",
+          "operationId": "personal_panchanga_proof_capsule_post_v3_api_personal_panchanga_proof_capsule_post",
           "requestBody": {
             "required": true,
             "content": {
@@ -3912,6 +4996,18 @@
                 "title": "Tz"
               },
               "description": "IANA timezone, e.g. Asia/Kathmandu"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "standard",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
             }
           ],
           "responses": {
@@ -3941,6 +5037,151 @@
           ],
           "summary": "Personal Context Post",
           "operationId": "personal_context_post_v3_api_personal_context_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonalPanchangaRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/personal/context/proof-capsule": {
+        "get": {
+          "tags": [
+            "personal"
+          ],
+          "summary": "Personal Context Proof Capsule",
+          "operationId": "personal_context_proof_capsule_v3_api_personal_context_proof_capsule_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone, e.g. Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone, e.g. Asia/Kathmandu"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "strict",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "personal"
+          ],
+          "summary": "Personal Context Proof Capsule Post",
+          "operationId": "personal_context_proof_capsule_post_v3_api_personal_context_proof_capsule_post",
           "requestBody": {
             "required": true,
             "content": {
@@ -4920,6 +6161,18 @@
                 "title": "Quality Band"
               },
               "description": "computed|provisional|inventory|all"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "standard",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
             }
           ],
           "responses": {
@@ -4949,6 +6202,164 @@
           ],
           "summary": "Temporal Compass Post",
           "operationId": "temporal_compass_post_v3_api_temporal_compass_post",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemporalCompassRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/temporal/compass/proof-capsule": {
+        "get": {
+          "tags": [
+            "temporal"
+          ],
+          "summary": "Temporal Compass Proof Capsule",
+          "operationId": "temporal_compass_proof_capsule_v3_api_temporal_compass_proof_capsule_get",
+          "parameters": [
+            {
+              "name": "date",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "description": "Gregorian date in YYYY-MM-DD format",
+                "title": "Date"
+              },
+              "description": "Gregorian date in YYYY-MM-DD format"
+            },
+            {
+              "name": "lat",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Latitude",
+                "title": "Lat"
+              },
+              "description": "Latitude"
+            },
+            {
+              "name": "lon",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Longitude",
+                "title": "Lon"
+              },
+              "description": "Longitude"
+            },
+            {
+              "name": "tz",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "IANA timezone",
+                "default": "Asia/Kathmandu",
+                "title": "Tz"
+              },
+              "description": "IANA timezone"
+            },
+            {
+              "name": "quality_band",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "computed|provisional|inventory|all",
+                "default": "computed",
+                "title": "Quality Band"
+              },
+              "description": "computed|provisional|inventory|all"
+            },
+            {
+              "name": "risk_mode",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "description": "standard|strict",
+                "default": "strict",
+                "title": "Risk Mode"
+              },
+              "description": "standard|strict"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "temporal"
+          ],
+          "summary": "Temporal Compass Proof Capsule Post",
+          "operationId": "temporal_compass_proof_capsule_post_v3_api_temporal_compass_proof_capsule_post",
           "requestBody": {
             "required": true,
             "content": {
@@ -5361,6 +6772,7 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Create Provenance Snapshot V3 Api Provenance Snapshot Create Post"
                   }
@@ -5663,6 +7075,7 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
+                    "additionalProperties": true,
                     "title": "Response Batch Verify V3 Api Provenance Batch Verify Get"
                   }
                 }
@@ -5710,6 +7123,7 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
+                    "additionalProperties": true,
                     "title": "Response Get Transparency Log V3 Api Provenance Transparency Log Get"
                   }
                 }
@@ -5742,6 +7156,7 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Audit Transparency Log V3 Api Provenance Transparency Audit Get"
                   }
@@ -5765,6 +7180,7 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Transparency Replay V3 Api Provenance Transparency Replay Get"
                   }
@@ -5820,6 +7236,7 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
+                    "additionalProperties": true,
                     "title": "Response Append Transparency Event V3 Api Provenance Transparency Append Post"
                   }
                 }
@@ -5871,6 +7288,7 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
+                    "additionalProperties": true,
                     "title": "Response Prepare Anchor V3 Api Provenance Transparency Anchor Prepare Get"
                   }
                 }
@@ -5928,6 +7346,7 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
+                    "additionalProperties": true,
                     "title": "Response Save Anchor Record V3 Api Provenance Transparency Anchor Record Post"
                   }
                 }
@@ -5975,6 +7394,7 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
+                    "additionalProperties": true,
                     "title": "Response Get Anchor Records V3 Api Provenance Transparency Anchors Get"
                   }
                 }
@@ -6007,6 +7427,7 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Get Public Beta Dashboard V3 Api Provenance Dashboard Get"
                   }
@@ -6092,6 +7513,103 @@
           }
         }
       },
+      "/v3/api/reliability/metrics.prom": {
+        "get": {
+          "tags": [
+            "reliability"
+          ],
+          "summary": "Reliability Metrics Prometheus",
+          "operationId": "reliability_metrics_prometheus_v3_api_reliability_metrics_prom_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/reliability/benchmark-manifest": {
+        "get": {
+          "tags": [
+            "reliability"
+          ],
+          "summary": "Reliability Benchmark Manifest",
+          "operationId": "reliability_benchmark_manifest_v3_api_reliability_benchmark_manifest_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/reliability/source-review-queue": {
+        "get": {
+          "tags": [
+            "reliability"
+          ],
+          "summary": "Reliability Source Review Queue",
+          "operationId": "reliability_source_review_queue_v3_api_reliability_source_review_queue_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/reliability/boundary-suite": {
+        "get": {
+          "tags": [
+            "reliability"
+          ],
+          "summary": "Reliability Boundary Suite",
+          "operationId": "reliability_boundary_suite_v3_api_reliability_boundary_suite_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/reliability/differential-manifest": {
+        "get": {
+          "tags": [
+            "reliability"
+          ],
+          "summary": "Reliability Differential Manifest",
+          "operationId": "reliability_differential_manifest_v3_api_reliability_differential_manifest_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
       "/v3/api/spec/conformance": {
         "get": {
           "tags": [
@@ -6126,6 +7644,7 @@
               "content": {
                 "application/json": {
                   "schema": {
+                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Get Artifacts Manifest V3 Api Public Artifacts Manifest Get"
                   }
@@ -6183,6 +7702,63 @@
           ],
           "summary": "Get Authority Dashboard Artifact",
           "operationId": "get_authority_dashboard_artifact_v3_api_public_artifacts_dashboard_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/public/artifacts/source-review-queue": {
+        "get": {
+          "tags": [
+            "public-artifacts"
+          ],
+          "summary": "Get Source Review Queue Artifact",
+          "operationId": "get_source_review_queue_artifact_v3_api_public_artifacts_source_review_queue_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/public/artifacts/boundary-suite": {
+        "get": {
+          "tags": [
+            "public-artifacts"
+          ],
+          "summary": "Get Boundary Suite Artifact",
+          "operationId": "get_boundary_suite_artifact_v3_api_public_artifacts_boundary_suite_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/public/artifacts/differential": {
+        "get": {
+          "tags": [
+            "public-artifacts"
+          ],
+          "summary": "Get Differential Artifact",
+          "operationId": "get_differential_artifact_v3_api_public_artifacts_differential_get",
           "responses": {
             "200": {
               "description": "Successful Response",
@@ -6317,6 +7893,65 @@
           ],
           "title": "AuspiciousMuhurtaRequest"
         },
+        "AuthorityCandidate": {
+          "properties": {
+            "start": {
+              "type": "string",
+              "format": "date",
+              "title": "Start"
+            },
+            "source": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source"
+            },
+            "source_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source Family"
+            },
+            "confidence": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Confidence"
+            },
+            "notes": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Notes"
+            }
+          },
+          "type": "object",
+          "required": [
+            "start"
+          ],
+          "title": "AuthorityCandidate",
+          "description": "One authority-backed candidate date for a festival-year pair."
+        },
         "BSConversionRequest": {
           "properties": {
             "year": {
@@ -6388,6 +8023,7 @@
             "uncertainty": {
               "anyOf": [
                 {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -6453,25 +8089,30 @@
               "title": "Trace Type"
             },
             "subject": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Subject"
             },
             "inputs": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Inputs"
             },
             "outputs": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Outputs"
             },
             "steps": {
               "items": {
+                "additionalProperties": true,
                 "type": "object"
               },
               "type": "array",
               "title": "Steps"
             },
             "provenance": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Provenance"
             }
@@ -6572,6 +8213,23 @@
             "tithi": {
               "$ref": "#/components/schemas/TithiInfo"
             },
+            "support_tier": {
+              "type": "string",
+              "title": "Support Tier"
+            },
+            "engine_path": {
+              "type": "string",
+              "title": "Engine Path"
+            },
+            "fallback_used": {
+              "type": "boolean",
+              "title": "Fallback Used",
+              "default": false
+            },
+            "calibration_status": {
+              "type": "string",
+              "title": "Calibration Status"
+            },
             "engine_version": {
               "type": "string",
               "title": "Engine Version",
@@ -6580,6 +8238,7 @@
             "provenance": {
               "anyOf": [
                 {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -6591,6 +8250,7 @@
             "policy": {
               "anyOf": [
                 {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -6605,7 +8265,10 @@
             "gregorian",
             "bikram_sambat",
             "nepal_sambat",
-            "tithi"
+            "tithi",
+            "support_tier",
+            "engine_path",
+            "calibration_status"
           ],
           "title": "ConversionResult",
           "description": "Full calendar conversion result."
@@ -6845,6 +8508,7 @@
             "ritual_sequence": {
               "anyOf": [
                 {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -7170,6 +8834,234 @@
                   "type": "null"
                 }
               ]
+            },
+            "authority_conflict": {
+              "type": "boolean",
+              "title": "Authority Conflict",
+              "default": false
+            },
+            "authority_candidate_count": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authority Candidate Count"
+            },
+            "authority_note": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authority Note"
+            },
+            "authority_alternates": {
+              "items": {
+                "$ref": "#/components/schemas/AuthorityCandidate"
+              },
+              "type": "array",
+              "title": "Authority Alternates"
+            },
+            "alternate_candidates": {
+              "items": {
+                "$ref": "#/components/schemas/AuthorityCandidate"
+              },
+              "type": "array",
+              "title": "Alternate Candidates"
+            },
+            "authority_suggested_profile_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authority Suggested Profile Id"
+            },
+            "authority_suggested_start_date": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authority Suggested Start Date"
+            },
+            "authority_suggested_reason": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authority Suggested Reason"
+            },
+            "support_tier": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Support Tier"
+            },
+            "selection_policy": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Selection Policy"
+            },
+            "source_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source Family"
+            },
+            "engine_path": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Engine Path"
+            },
+            "fallback_used": {
+              "type": "boolean",
+              "title": "Fallback Used",
+              "default": false
+            },
+            "calibration_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Calibration Status"
+            },
+            "boundary_radar": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Boundary Radar"
+            },
+            "stability_score": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Stability Score"
+            },
+            "risk_mode": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Risk Mode"
+            },
+            "abstained": {
+              "type": "boolean",
+              "title": "Abstained",
+              "default": false
+            },
+            "recommended_action": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Recommended Action"
+            },
+            "profile_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Id"
+            },
+            "profile_tradition": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Tradition"
+            },
+            "profile_region": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Region"
+            },
+            "profile_note": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Note"
             }
           },
           "type": "object",
@@ -7301,6 +9193,148 @@
           "title": "FestivalDetailResponse",
           "description": "API response for single festival detail."
         },
+        "FestivalDisputeAtlasResponse": {
+          "properties": {
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "total_items": {
+              "type": "integer",
+              "title": "Total Items"
+            },
+            "truth_ladder": {
+              "items": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              "type": "array",
+              "title": "Truth Ladder"
+            },
+            "disputes": {
+              "items": {
+                "$ref": "#/components/schemas/FestivalDisputeRecord"
+              },
+              "type": "array",
+              "title": "Disputes"
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProvenanceMeta"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "type": "object",
+          "required": [
+            "year",
+            "total_items",
+            "truth_ladder",
+            "disputes"
+          ],
+          "title": "FestivalDisputeAtlasResponse",
+          "description": "API response for late-phase truth/dispute surfaces."
+        },
+        "FestivalDisputeRecord": {
+          "properties": {
+            "festival_id": {
+              "type": "string",
+              "title": "Festival Id"
+            },
+            "festival_name": {
+              "type": "string",
+              "title": "Festival Name"
+            },
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "start_date": {
+              "type": "string",
+              "format": "date",
+              "title": "Start Date"
+            },
+            "support_tier": {
+              "type": "string",
+              "title": "Support Tier"
+            },
+            "source_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source Family"
+            },
+            "selection_policy": {
+              "type": "string",
+              "title": "Selection Policy"
+            },
+            "authority_conflict": {
+              "type": "boolean",
+              "title": "Authority Conflict",
+              "default": false
+            },
+            "alternate_candidates": {
+              "items": {
+                "$ref": "#/components/schemas/AuthorityCandidate"
+              },
+              "type": "array",
+              "title": "Alternate Candidates"
+            },
+            "boundary_radar": {
+              "type": "string",
+              "title": "Boundary Radar"
+            },
+            "stability_score": {
+              "type": "number",
+              "title": "Stability Score"
+            },
+            "recommended_action": {
+              "type": "string",
+              "title": "Recommended Action"
+            },
+            "engine_path": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Engine Path"
+            },
+            "fallback_used": {
+              "type": "boolean",
+              "title": "Fallback Used",
+              "default": false
+            }
+          },
+          "type": "object",
+          "required": [
+            "festival_id",
+            "festival_name",
+            "year",
+            "start_date",
+            "support_tier",
+            "selection_policy",
+            "boundary_radar",
+            "stability_score",
+            "recommended_action"
+          ],
+          "title": "FestivalDisputeRecord",
+          "description": "One live dispute/risk item for the dispute atlas."
+        },
         "FestivalExplainResponse": {
           "properties": {
             "festival_id": {
@@ -7351,6 +9385,183 @@
             "calculation_trace_id": {
               "type": "string",
               "title": "Calculation Trace Id"
+            },
+            "profile_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Id"
+            },
+            "profile_note": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Note"
+            },
+            "authority_conflict": {
+              "type": "boolean",
+              "title": "Authority Conflict",
+              "default": false
+            },
+            "source_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source Family"
+            },
+            "alternate_candidates": {
+              "items": {
+                "$ref": "#/components/schemas/AuthorityCandidate"
+              },
+              "type": "array",
+              "title": "Alternate Candidates"
+            },
+            "authority_suggested_profile_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authority Suggested Profile Id"
+            },
+            "authority_suggested_start_date": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authority Suggested Start Date"
+            },
+            "authority_suggested_reason": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authority Suggested Reason"
+            },
+            "support_tier": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Support Tier"
+            },
+            "selection_policy": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Selection Policy"
+            },
+            "engine_path": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Engine Path"
+            },
+            "fallback_used": {
+              "type": "boolean",
+              "title": "Fallback Used",
+              "default": false
+            },
+            "calibration_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Calibration Status"
+            },
+            "boundary_radar": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Boundary Radar"
+            },
+            "stability_score": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Stability Score"
+            },
+            "risk_mode": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Risk Mode"
+            },
+            "abstained": {
+              "type": "boolean",
+              "title": "Abstained",
+              "default": false
+            },
+            "recommended_action": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Recommended Action"
             },
             "provenance": {
               "anyOf": [
@@ -7421,6 +9632,75 @@
           ],
           "title": "FestivalListResponse",
           "description": "API response for festival list."
+        },
+        "FestivalProofCapsuleResponse": {
+          "properties": {
+            "festival_id": {
+              "type": "string",
+              "title": "Festival Id"
+            },
+            "festival_name": {
+              "type": "string",
+              "title": "Festival Name"
+            },
+            "year": {
+              "type": "integer",
+              "title": "Year"
+            },
+            "request": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Request"
+            },
+            "selection": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Selection"
+            },
+            "source_lineage": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Source Lineage"
+            },
+            "risk": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Risk"
+            },
+            "provenance": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ProvenanceMeta"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "calculation_trace_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Calculation Trace Id"
+            }
+          },
+          "type": "object",
+          "required": [
+            "festival_id",
+            "festival_name",
+            "year",
+            "request",
+            "selection",
+            "source_lineage",
+            "risk"
+          ],
+          "title": "FestivalProofCapsuleResponse",
+          "description": "Portable proof capsule for one festival-year resolution."
         },
         "FestivalSummary": {
           "properties": {
@@ -7570,6 +9850,28 @@
                 }
               ],
               "title": "Date Status Note"
+            },
+            "profile_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Id"
+            },
+            "profile_note": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Note"
             }
           },
           "type": "object",
@@ -8076,6 +10378,12 @@
               ],
               "title": "Tz",
               "description": "IANA timezone"
+            },
+            "risk_mode": {
+              "type": "string",
+              "title": "Risk Mode",
+              "description": "standard|strict",
+              "default": "standard"
             }
           },
           "type": "object",
@@ -8254,23 +10562,28 @@
               "title": "Profile"
             },
             "location": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Location"
             },
             "bikram_sambat": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Bikram Sambat"
             },
             "tithi": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Tithi"
             },
             "panchanga": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Panchanga"
             },
             "observances": {
               "items": {
+                "additionalProperties": true,
                 "type": "object"
               },
               "type": "array",
@@ -8756,6 +11069,12 @@
               "title": "Quality Band",
               "description": "computed|provisional|inventory|all",
               "default": "computed"
+            },
+            "risk_mode": {
+              "type": "string",
+              "title": "Risk Mode",
+              "description": "standard|strict",
+              "default": "standard"
             }
           },
           "type": "object",
@@ -8811,6 +11130,7 @@
             "uncertainty": {
               "anyOf": [
                 {
+                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -8848,6 +11168,7 @@
               "title": "Checks"
             },
             "detail": {
+              "additionalProperties": true,
               "type": "object",
               "title": "Detail"
             }
@@ -8981,6 +11302,77 @@
                 }
               ],
               "title": "Date Status Note"
+            },
+            "support_tier": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Support Tier"
+            },
+            "selection_policy": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Selection Policy"
+            },
+            "source_family": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Source Family"
+            },
+            "fallback_used": {
+              "type": "boolean",
+              "title": "Fallback Used",
+              "default": false
+            },
+            "calibration_status": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Calibration Status"
+            },
+            "profile_id": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Id"
+            },
+            "profile_note": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Profile Note"
             }
           },
           "type": "object",
@@ -9064,13 +11456,6 @@
             "type": {
               "type": "string",
               "title": "Error Type"
-            },
-            "input": {
-              "title": "Input"
-            },
-            "ctx": {
-              "type": "object",
-              "title": "Context"
             }
           },
           "type": "object",

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.services import get_glossary
+from app.services.glossary_service import get_glossary
 
 router = APIRouter(prefix="/api/glossary", tags=["glossary"])
 

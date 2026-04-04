@@ -13,6 +13,13 @@ import { trackEvent } from '../../services/analytics';
 import { addIsoDays } from '../../utils/isoDate';
 import './SearchSheet.css';
 
+const EMPTY_REMOTE_RESULTS = {
+  festivals: [],
+  places: [],
+  loading: false,
+  error: null,
+};
+
 function reminderRoute(reminder) {
   if (reminder?.kind === 'festival' && reminder.id?.startsWith('festival:')) {
     return `/festivals/${reminder.id.split(':')[1]}`;
@@ -124,14 +131,22 @@ export function SearchSheet({ open, onClose }) {
   const { copy } = useCopy();
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
-  const [remoteResults, setRemoteResults] = useState({
-    festivals: [],
-    places: [],
-    loading: false,
-    error: null,
-  });
+  const [remoteResults, setRemoteResults] = useState(EMPTY_REMOTE_RESULTS);
   const deferredQuery = useDeferredValue(query);
-  const { dialogRef } = useDialogA11y(open, onClose);
+  const normalizedQuery = deferredQuery.trim();
+
+  function resetSearchState() {
+    setQuery('');
+    setActiveIndex(0);
+    setRemoteResults(EMPTY_REMOTE_RESULTS);
+  }
+
+  function handleClose() {
+    resetSearchState();
+    onClose();
+  }
+
+  const { dialogRef } = useDialogA11y(open, handleClose);
 
   const localResults = useMemo(() => {
     const normalized = deferredQuery.trim();
@@ -168,39 +183,28 @@ export function SearchSheet({ open, onClose }) {
   }, [copy, deferredQuery, memberState]);
 
   useEffect(() => {
-    if (!open) {
-      setQuery('');
-      setActiveIndex(0);
-      setRemoteResults({ festivals: [], places: [], loading: false, error: null });
-      return;
-    }
-
-    const normalized = deferredQuery.trim();
-    if (normalized.length < 2) {
-      setRemoteResults({ festivals: [], places: [], loading: false, error: null });
-      return;
-    }
+    if (!open || normalizedQuery.length < 2) return;
 
     let cancelled = false;
     const anchorDate = todayIso(temporalState.timezone);
 
-    setRemoteResults((current) => ({
-      ...current,
-      loading: true,
-      error: null,
-    }));
-
     async function loadRemote() {
+      setRemoteResults((current) => ({
+        ...current,
+        loading: true,
+        error: null,
+      }));
+
       const [festivalResponse, placeResponse] = await Promise.allSettled([
         festivalAPI.getTimelineEnvelope({
           from: anchorDate,
           to: addIsoDays(anchorDate, 365),
           qualityBand: 'all',
-          search: normalized,
+          search: normalizedQuery,
           sort: 'upcoming',
           lang: temporalState.language || 'en',
         }),
-        placesAPI.search({ query: normalized, limit: 6 }),
+        placesAPI.search({ query: normalizedQuery, limit: 6 }),
       ]);
 
       if (cancelled) return;
@@ -247,29 +251,30 @@ export function SearchSheet({ open, onClose }) {
     return () => {
       cancelled = true;
     };
-  }, [deferredQuery, open, temporalState.language, temporalState.timezone]);
+  }, [normalizedQuery, open, temporalState.language, temporalState.timezone]);
+
+  useEffect(() => {
+    if (open) return undefined;
+    const timeoutId = window.setTimeout(() => {
+      resetSearchState();
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [open]);
+
+  const visibleRemoteResults = normalizedQuery.length >= 2 ? remoteResults : EMPTY_REMOTE_RESULTS;
 
   const sections = useMemo(
-    () => groupResults([...localResults, ...remoteResults.festivals, ...remoteResults.places]),
-    [localResults, remoteResults.festivals, remoteResults.places],
+    () => groupResults([...localResults, ...visibleRemoteResults.festivals, ...visibleRemoteResults.places]),
+    [localResults, visibleRemoteResults.festivals, visibleRemoteResults.places],
   );
 
   const flatResults = useMemo(
     () => sections.flatMap((section) => section.items),
     [sections],
   );
-
-  useEffect(() => {
-    if (activeIndex >= flatResults.length) {
-      setActiveIndex(flatResults.length ? 0 : -1);
-    } else if (flatResults.length && activeIndex < 0) {
-      setActiveIndex(0);
-    }
-  }, [activeIndex, flatResults.length]);
-
-  useEffect(() => {
-    setActiveIndex(0);
-  }, [deferredQuery]);
+  const highlightedIndex = flatResults.length
+    ? (activeIndex >= 0 && activeIndex < flatResults.length ? activeIndex : 0)
+    : -1;
 
   async function handleSelect(item) {
     if (item.place) {
@@ -287,15 +292,13 @@ export function SearchSheet({ open, onClose }) {
       section: item.section,
     });
     navigate(item.to);
-    onClose();
+    handleClose();
   }
 
   if (!open) return null;
 
-  const normalizedQuery = deferredQuery.trim();
-
   return (
-    <div className="search-sheet__overlay" role="presentation" onClick={onClose}>
+    <div className="search-sheet__overlay" role="presentation" onClick={handleClose}>
       <aside
         ref={dialogRef}
         className="search-sheet"
@@ -312,7 +315,7 @@ export function SearchSheet({ open, onClose }) {
               Jump to pages, places, festivals, and quick meanings without leaving the current view.
             </p>
           </div>
-          <button type="button" className="search-sheet__close" onClick={onClose}>
+          <button type="button" className="search-sheet__close" onClick={handleClose}>
             {copy('common.close')}
           </button>
         </div>
@@ -327,7 +330,10 @@ export function SearchSheet({ open, onClose }) {
               data-dialog-initial-focus="true"
               placeholder={copy('search.placeholder')}
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setActiveIndex(0);
+              }}
               onKeyDown={(event) => {
                 if (!flatResults.length) return;
                 if (event.key === 'ArrowDown') {
@@ -336,14 +342,14 @@ export function SearchSheet({ open, onClose }) {
                 } else if (event.key === 'ArrowUp') {
                   event.preventDefault();
                   setActiveIndex((current) => (current <= 0 ? flatResults.length - 1 : current - 1));
-                } else if (event.key === 'Enter' && activeIndex >= 0) {
+                } else if (event.key === 'Enter' && highlightedIndex >= 0) {
                   event.preventDefault();
-                  void handleSelect(flatResults[activeIndex]);
+                  void handleSelect(flatResults[highlightedIndex]);
                 }
               }}
             />
             {query ? (
-              <button type="button" className="search-sheet__clear" onClick={() => setQuery('')}>
+              <button type="button" className="search-sheet__clear" onClick={resetSearchState}>
                 Clear
               </button>
             ) : null}
@@ -353,7 +359,7 @@ export function SearchSheet({ open, onClose }) {
         <div className="search-sheet__status-row">
           <span className="search-sheet__hint">Ctrl/Cmd + K or /</span>
           <span className="search-sheet__hint">
-            {remoteResults.loading
+            {visibleRemoteResults.loading
               ? 'Searching live festivals and places…'
               : normalizedQuery
                 ? `${flatResults.length} result${flatResults.length === 1 ? '' : 's'}`
@@ -375,7 +381,7 @@ export function SearchSheet({ open, onClose }) {
                     <button
                       key={item.id}
                       type="button"
-                      className={`search-sheet__result ${flattenedIndex === activeIndex ? 'is-active' : ''}`.trim()}
+                      className={`search-sheet__result ${flattenedIndex === highlightedIndex ? 'is-active' : ''}`.trim()}
                       role="listitem"
                       onMouseEnter={() => setActiveIndex(flattenedIndex)}
                       onClick={() => {
@@ -403,10 +409,10 @@ export function SearchSheet({ open, onClose }) {
               </div>
             </section>
           ))}
-          {!sections.length && !remoteResults.loading ? (
+          {!sections.length && !visibleRemoteResults.loading ? (
             <p className="search-sheet__empty">{copy('search.empty')}</p>
           ) : null}
-          {remoteResults.error ? <p className="search-sheet__empty">{remoteResults.error}</p> : null}
+          {visibleRemoteResults.error ? <p className="search-sheet__empty">{visibleRemoteResults.error}</p> : null}
         </div>
       </aside>
     </div>

@@ -8,7 +8,7 @@ from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
 from app.core.request_context import CoordinateInput
-from app.services import (
+from app.services.muhurta_surface_service import (
     build_auspicious_muhurta_response,
     build_muhurta_for_day_response,
     build_rahu_kalam_response,

@@ -5,7 +5,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
 
 from app.explainability import create_reason_trace
-from app.services import search_places
+from app.services.place_search_service import search_places
 
 from ._personal_utils import base_meta_payload
 
