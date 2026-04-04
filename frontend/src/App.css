@@ -173,8 +173,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.8rem;
-  min-width: clamp(14rem, 24vw, 20rem);
-  padding: 0 1rem 0 0.9rem;
+  min-width: clamp(11rem, 17vw, 14rem);
+  padding: 0 0.9rem 0 0.85rem;
   border-radius: 999px;
   text-align: left;
 }
@@ -183,31 +183,21 @@
   color: var(--editorial-accent);
 }
 
-.app-shell__search-chip-copy {
-  display: grid;
-  flex: 1;
-  min-width: 0;
-}
-
-.app-shell__search-chip-copy strong,
-.app-shell__search-chip-copy small,
+.app-shell__search-chip-label,
 .app-shell__search-shortcut {
   display: block;
 }
 
-.app-shell__search-chip-copy strong {
+.app-shell__search-chip-label {
+  flex: 1;
   color: var(--text-primary);
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   font-weight: 600;
 }
 
-.app-shell__search-chip-copy small,
 .app-shell__search-shortcut {
   color: var(--text-muted);
   font-size: 0.72rem;
-}
-
-.app-shell__search-shortcut {
   padding: 0.2rem 0.45rem;
   border-radius: 999px;
   background: rgba(184, 130, 60, 0.11);

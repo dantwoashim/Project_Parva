@@ -155,16 +155,15 @@ export function SearchSheet({ open, onClose }) {
 
     if (!normalized) {
       return [
-        ...commandResults.slice(0, 6),
-        ...savedResults.slice(0, 4),
-        ...glossaryResults.slice(0, 3),
+        ...commandResults.slice(0, 5),
+        ...savedResults.slice(0, 3),
       ];
     }
 
     return [
       ...sortScored(commandResults, normalized),
       ...sortScored(savedResults, normalized),
-      ...sortScored(glossaryResults, normalized),
+      ...sortScored(glossaryResults, normalized).slice(0, 4),
     ];
   }, [copy, deferredQuery, memberState]);
 
@@ -207,7 +206,7 @@ export function SearchSheet({ open, onClose }) {
       if (cancelled) return;
 
       const festivals = festivalResponse.status === 'fulfilled'
-        ? ((festivalResponse.value?.data?.groups || []).flatMap((group) => group.items || []).slice(0, 6).map((item) => ({
+        ? ((festivalResponse.value?.data?.groups || []).flatMap((group) => group.items || []).slice(0, 4).map((item) => ({
             id: `festival-${item.id}`,
             to: `/festivals/${item.id}`,
             label: item.display_name || item.name,
@@ -220,7 +219,7 @@ export function SearchSheet({ open, onClose }) {
         : [];
 
       const places = placeResponse.status === 'fulfilled'
-        ? ((placeResponse.value?.items || []).slice(0, 6).map((item, index) => ({
+        ? ((placeResponse.value?.items || []).slice(0, 4).map((item, index) => ({
             id: `place-${item.label}-${index}`,
             to: '/my-place',
             label: item.label,
@@ -293,6 +292,8 @@ export function SearchSheet({ open, onClose }) {
 
   if (!open) return null;
 
+  const normalizedQuery = deferredQuery.trim();
+
   return (
     <div className="search-sheet__overlay" role="presentation" onClick={onClose}>
       <aside
@@ -308,7 +309,7 @@ export function SearchSheet({ open, onClose }) {
             <p className="search-sheet__eyebrow">{copy('common.search')}</p>
             <h2 id="search-sheet-title">{copy('search.title')}</h2>
             <p className="search-sheet__intro">
-              Search pages, saved items, live festivals, places, and glossary terms in one pass.
+              Jump to pages, places, festivals, and quick meanings without leaving the current view.
             </p>
           </div>
           <button type="button" className="search-sheet__close" onClick={onClose}>
@@ -350,11 +351,13 @@ export function SearchSheet({ open, onClose }) {
         </label>
 
         <div className="search-sheet__status-row">
-          <span className="search-sheet__hint">Tip: press Ctrl/Cmd + K or / to open this quickly.</span>
+          <span className="search-sheet__hint">Ctrl/Cmd + K or /</span>
           <span className="search-sheet__hint">
             {remoteResults.loading
               ? 'Searching live festivals and places…'
-              : `${flatResults.length} result${flatResults.length === 1 ? '' : 's'} in view`}
+              : normalizedQuery
+                ? `${flatResults.length} result${flatResults.length === 1 ? '' : 's'}`
+                : 'Start typing to search everything'}
           </span>
         </div>
 
@@ -379,12 +382,21 @@ export function SearchSheet({ open, onClose }) {
                         void handleSelect(item);
                       }}
                     >
-                      <div className="search-sheet__result-top">
-                        <small>{item.kind}</small>
-                        <strong>{item.label}</strong>
+                      <div className="search-sheet__result-main">
+                        <span className="search-sheet__result-kind">{item.kind}</span>
+                        <div className="search-sheet__result-copy">
+                          <div className="search-sheet__result-line">
+                            <strong>{item.label}</strong>
+                            {item.meta ? <small>{item.meta}</small> : null}
+                          </div>
+                          {(normalizedQuery.length >= 2 || item.section === 'terms') && item.description ? (
+                            <p>{item.description}</p>
+                          ) : null}
+                        </div>
+                        <span className="material-symbols-outlined search-sheet__result-arrow" aria-hidden="true">
+                          arrow_outward
+                        </span>
                       </div>
-                      <span>{item.meta || item.keywords}</span>
-                      {item.description ? <p>{item.description}</p> : null}
                     </button>
                   );
                 })}

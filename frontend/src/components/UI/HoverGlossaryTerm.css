@@ -56,6 +56,7 @@
   color: var(--text-primary);
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
   transform: translateY(4px);
   transition:
     opacity var(--duration-fast) var(--ease-out),
@@ -76,11 +77,9 @@
   color: var(--text-primary) !important;
 }
 
-.hover-glossary-term:hover .hover-glossary-term__card,
-.hover-glossary-term:focus-within .hover-glossary-term__card,
 .hover-glossary-term.is-open .hover-glossary-term__card {
   opacity: 1;
-  pointer-events: auto;
+  visibility: visible;
   transform: translateY(0);
 }
 
@@ -91,8 +90,6 @@
     transform: translate(-50%, 4px);
   }
 
-  .hover-glossary-term:hover .hover-glossary-term__card,
-  .hover-glossary-term:focus-within .hover-glossary-term__card,
   .hover-glossary-term.is-open .hover-glossary-term__card {
     transform: translate(-50%, 0);
   }
