@@ -1,0 +1,14 @@
+[
+  {
+    "entry_id": 1,
+    "timestamp": "2026-02-16T08:58:07.976133+00:00",
+    "snapshot_id": "snap_2026Q1",
+    "dataset_hash": "sha256:abc",
+    "rules_hash": "sha256:def",
+    "merkle_root": "merkle123",
+    "festival_count": 303,
+    "calendar_count": 6,
+    "signature": "9ecfe024bb7f14a381e7302f671f33cc9f02a7cd615974b0ad869f9887973c6c",
+    "previous_hash": ""
+  }
+]

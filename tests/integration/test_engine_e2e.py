@@ -1,0 +1,43 @@
+"""End-to-end engine flow checks (Week 12)."""
+
+from app.main import app
+from fastapi.testclient import TestClient
+
+
+def test_e2e_calendar_today_pipeline_has_metadata_and_npt_sunrise():
+    client = TestClient(app)
+    response = client.get("/api/calendar/today")
+    assert response.status_code == 200
+    assert response.headers["X-Parva-Engine"] == "v3"
+    assert response.headers["X-Parva-License"] == "AGPL-3.0-or-later"
+
+    data = response.json()
+    assert data["support_tier"] in {"computed", "estimated", "heuristic"}
+    assert data["engine_path"] in {"ephemeris_udaya", "instantaneous"}
+    assert isinstance(data["fallback_used"], bool)
+    assert data["calibration_status"] == "unavailable"
+    tithi = data["tithi"]
+
+    assert tithi["method"] in {"ephemeris_udaya", "instantaneous"}
+    assert tithi["reference_time"] in {"sunrise", "instantaneous"}
+    if tithi["sunrise_used"]:
+        assert tithi["sunrise_used"].endswith("+05:45")
+
+
+def test_e2e_calendar_tithi_endpoint_pipeline():
+    client = TestClient(app)
+    response = client.get("/api/calendar/tithi", params={"date": "2026-02-15"})
+    assert response.status_code == 200
+
+    data = response.json()
+    assert data["engine_version"] == "v3"
+    assert data["support_tier"] in {"computed", "heuristic"}
+    assert data["engine_path"] in {"ephemeris_udaya", "instantaneous"}
+    assert isinstance(data["fallback_used"], bool)
+    assert data["calibration_status"] == "unavailable"
+    assert "location" in data
+    assert "tithi" in data
+
+    t = data["tithi"]
+    assert 1 <= t["display_number"] <= 15
+    assert t["paksha"] in {"shukla", "krishna"}

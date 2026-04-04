@@ -1,0 +1,6385 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`visual regression harness > best-time page visual baseline on desktop 1`] = `
+<div
+  class="app-shell app-shell--consumer app-shell--with-rail"
+  data-theme="warm-paper"
+>
+  <header
+    class="app-shell__header"
+  >
+    <a
+      class="app-shell__brand"
+      data-discover="true"
+      href="/"
+    >
+      <span
+        class="app-shell__brand-wordmark"
+      >
+        Parva
+      </span>
+    </a>
+    <div
+      class="app-shell__nav-shell"
+    >
+      <nav
+        aria-label="Primary"
+        class="app-shell__nav"
+      >
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/today"
+        >
+          Today
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/my-place"
+        >
+          My Place
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/festivals"
+        >
+          Festivals
+        </a>
+        <a
+          aria-current="page"
+          class="nav-link active"
+          data-discover="true"
+          href="/best-time"
+        >
+          Best Time
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/birth-reading"
+        >
+          Birth Reading
+        </a>
+      </nav>
+    </div>
+    <div
+      class="app-shell__actions"
+    >
+      <button
+        class="app-shell__search-chip"
+        type="button"
+      >
+        Search
+      </button>
+      <button
+        aria-label="Place"
+        class="app-shell__icon-btn"
+        type="button"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          location_on
+        </span>
+      </button>
+      <a
+        aria-label="Profile"
+        class="app-shell__icon-btn"
+        data-discover="true"
+        href="/profile"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          account_circle
+        </span>
+      </a>
+      <div
+        class="app-shell__location-summary"
+      >
+        <span>
+          Place
+        </span>
+        <strong>
+          Kathmandu
+        </strong>
+      </div>
+    </div>
+  </header>
+  <aside
+    aria-label="Editorial quick links"
+    class="app-shell__side-rail"
+  >
+    <div
+      class="app-shell__side-head"
+    >
+      <div
+        class="app-shell__side-avatar"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          spa
+        </span>
+      </div>
+      <div
+        class="app-shell__side-copy"
+      >
+        <span
+          class="app-shell__side-label"
+        >
+          Quick paths
+        </span>
+        <strong>
+          Parva
+        </strong>
+      </div>
+    </div>
+    <nav
+      class="app-shell__side-nav"
+    >
+      <a
+        aria-label="Today"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/today"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          today
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Today
+        </span>
+      </a>
+      <a
+        aria-label="My Place"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/my-place"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          location_on
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          My Place
+        </span>
+      </a>
+      <a
+        aria-label="Festivals"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/festivals"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          explore
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Festivals
+        </span>
+      </a>
+      <a
+        aria-current="page"
+        aria-label="Best Time"
+        class="app-shell__side-link active"
+        data-discover="true"
+        href="/best-time"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          auto_awesome
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Best Time
+        </span>
+      </a>
+      <a
+        aria-label="Birth Reading"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/birth-reading"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          flare
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Birth Reading
+        </span>
+      </a>
+    </nav>
+  </aside>
+  <main
+    class="app-shell__content"
+  >
+    <section
+      class="muhurta-page animate-fade-in-up consumer-route consumer-route--analysis"
+    >
+      <header
+        class="muhurta-page__hero"
+      >
+        <div>
+          <p
+            class="muhurta-page__eyebrow"
+          >
+            Best Time
+          </p>
+          <h1>
+            Choose a date first.
+          </h1>
+          <p
+            class="muhurta-page__intro"
+          >
+            Pick the occasion, scan the stronger dates across the next two months, then open one day for the exact timing.
+          </p>
+        </div>
+        <div
+          class="muhurta-page__hero-meta"
+        >
+          <span>
+            Place
+          </span>
+          <strong>
+            Kathmandu
+          </strong>
+        </div>
+      </header>
+      <section
+        class="muhurta-page__activities"
+      >
+        <button
+          class="muhurta-page__activity-pill is-active"
+          type="button"
+        >
+          Everyday rituals
+        </button>
+        <button
+          class="muhurta-page__activity-pill"
+          type="button"
+        >
+          Focused work
+        </button>
+        <button
+          class="muhurta-page__activity-pill"
+          type="button"
+        >
+          Travel
+        </button>
+        <button
+          class="muhurta-page__activity-pill"
+          type="button"
+        >
+          Wedding
+        </button>
+        <button
+          class="muhurta-page__activity-pill"
+          type="button"
+        >
+          Home blessing
+        </button>
+        <button
+          class="muhurta-page__activity-pill"
+          type="button"
+        >
+          Study rite
+        </button>
+      </section>
+      <section
+        class="muhurta-page__planner"
+      >
+        <div
+          class="muhurta-page__planner-head"
+        >
+          <div>
+            <p
+              class="muhurta-page__eyebrow"
+            >
+              Date planner
+            </p>
+            <h2>
+              Everyday rituals
+            </h2>
+          </div>
+          <div
+            class="muhurta-page__planner-actions"
+          >
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Earlier
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="button"
+            >
+              Later
+            </button>
+          </div>
+        </div>
+        <article
+          class="muhurta-page__error ink-card"
+          role="alert"
+        >
+          <h2>
+            Best-date guidance is temporarily unavailable.
+          </h2>
+          <p>
+            Unexpected response shape for /muhurta/calendar
+          </p>
+        </article>
+      </section>
+      <section
+        class="muhurta-page__detail"
+      >
+        <div
+          class="muhurta-page__detail-head"
+        >
+          <div>
+            <p
+              class="muhurta-page__eyebrow"
+            >
+              Day details
+            </p>
+            <h2>
+              Wednesday, February 25
+            </h2>
+          </div>
+          <button
+            class="btn btn-secondary evidence-drawer__trigger"
+            type="button"
+          >
+            How this was calculated
+          </button>
+        </div>
+        <div
+          class="muhurta-page__window-grid"
+        >
+          <article
+            class="muhurta-page__window-card is-primary"
+          >
+            <span>
+              Best of the day
+            </span>
+            <h3>
+              11:48 AM - 12:36 PM
+            </h3>
+            <p>
+              hora supportive, tara good
+            </p>
+          </article>
+          <article
+            class="muhurta-page__window-card"
+          >
+            <span>
+              Backup
+            </span>
+            <h3>
+              12:36 PM - 1:24 PM
+            </h3>
+            <p>
+              Supportive but not as strong as the lead window.
+            </p>
+          </article>
+        </div>
+        <div
+          class="muhurta-page__timeline-grid"
+        >
+          <button
+            class="muhurta-page__timeline-item muhurta-page__timeline-item--strong is-selected"
+            type="button"
+          >
+            <strong>
+              11:48 AM - 12:36 PM
+            </strong>
+            <span>
+              Best
+            </span>
+            <small>
+              Strong overlap of supportive factors.
+            </small>
+          </button>
+          <button
+            class="muhurta-page__timeline-item muhurta-page__timeline-item--good"
+            type="button"
+          >
+            <strong>
+              12:36 PM - 1:24 PM
+            </strong>
+            <span>
+              Backup
+            </span>
+            <small>
+              Supportive but not as strong as the lead window.
+            </small>
+          </button>
+        </div>
+      </section>
+    </section>
+  </main>
+  <footer
+    class="app-shell__footer"
+  >
+    <div
+      class="app-shell__footer-copy"
+    >
+      <strong>
+        Parva
+      </strong>
+      <span>
+        Sacred Wisdom for the Digital Era.
+      </span>
+    </div>
+    <div
+      class="app-shell__footer-links"
+    >
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Consumer
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/today"
+          >
+            Today
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/my-place"
+          >
+            My Place
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/festivals"
+          >
+            Festivals
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/best-time"
+          >
+            Best Time
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/birth-reading"
+          >
+            Birth Reading
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Utilities
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/saved"
+          >
+            Saved
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/profile"
+          >
+            Profile
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/integrations"
+          >
+            Integrations
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/about"
+          >
+            About
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Support
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            href="mailto:hello@parva.app"
+          >
+            Contact
+          </a>
+          <a
+            href="/developers/index.html"
+          >
+            For developers
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`visual regression harness > best-time page visual baseline on mobile 1`] = `
+<section
+  class="muhurta-page animate-fade-in-up consumer-route consumer-route--analysis"
+>
+  <header
+    class="muhurta-page__hero"
+  >
+    <div>
+      <p
+        class="muhurta-page__eyebrow"
+      >
+        Best Time
+      </p>
+      <h1>
+        Choose a date first.
+      </h1>
+      <p
+        class="muhurta-page__intro"
+      >
+        Pick the occasion, scan the stronger dates across the next two months, then open one day for the exact timing.
+      </p>
+    </div>
+    <div
+      class="muhurta-page__hero-meta"
+    >
+      <span>
+        Place
+      </span>
+      <strong>
+        Kathmandu
+      </strong>
+    </div>
+  </header>
+  <section
+    class="muhurta-page__activities"
+  >
+    <button
+      class="muhurta-page__activity-pill is-active"
+      type="button"
+    >
+      Everyday rituals
+    </button>
+    <button
+      class="muhurta-page__activity-pill"
+      type="button"
+    >
+      Focused work
+    </button>
+    <button
+      class="muhurta-page__activity-pill"
+      type="button"
+    >
+      Travel
+    </button>
+    <button
+      class="muhurta-page__activity-pill"
+      type="button"
+    >
+      Wedding
+    </button>
+    <button
+      class="muhurta-page__activity-pill"
+      type="button"
+    >
+      Home blessing
+    </button>
+    <button
+      class="muhurta-page__activity-pill"
+      type="button"
+    >
+      Study rite
+    </button>
+  </section>
+  <section
+    class="muhurta-page__planner"
+  >
+    <div
+      class="muhurta-page__planner-head"
+    >
+      <div>
+        <p
+          class="muhurta-page__eyebrow"
+        >
+          Date planner
+        </p>
+        <h2>
+          Everyday rituals
+        </h2>
+      </div>
+      <div
+        class="muhurta-page__planner-actions"
+      >
+        <button
+          class="btn btn-secondary"
+          type="button"
+        >
+          Earlier
+        </button>
+        <button
+          class="btn btn-secondary"
+          type="button"
+        >
+          Later
+        </button>
+      </div>
+    </div>
+    <div
+      class="skeleton muhurta-page__calendar-skeleton"
+    />
+  </section>
+  <section
+    class="muhurta-page__detail"
+  >
+    <div
+      class="muhurta-page__detail-head"
+    >
+      <div>
+        <p
+          class="muhurta-page__eyebrow"
+        >
+          Day details
+        </p>
+        <h2>
+          Wednesday, February 25
+        </h2>
+      </div>
+      <button
+        class="btn btn-secondary evidence-drawer__trigger"
+        type="button"
+      >
+        How this was calculated
+      </button>
+    </div>
+    <div
+      class="skeleton muhurta-page__detail-skeleton"
+    />
+  </section>
+</section>
+`;
+
+exports[`visual regression harness > consumer home visual baseline 1`] = `
+<section
+  class="almanac-home consumer-route consumer-route--overview animate-fade-in-up"
+>
+  <header
+    class="almanac-home__hero"
+  >
+    <article
+      class="almanac-home__alignment glass-panel"
+    >
+      <div
+        class="almanac-home__alignment-head"
+      >
+        <div>
+          <p
+            class="almanac-home__eyebrow"
+          >
+            Today's Alignment
+          </p>
+          <h1>
+            <span>
+              Pending
+            </span>
+          </h1>
+        </div>
+        <div
+          class="almanac-home__lunar-mark"
+        >
+          <span
+            class="material-symbols-outlined"
+          >
+            brightness_3
+          </span>
+          <p>
+            Tithi
+          </p>
+        </div>
+      </div>
+      <div
+        class="almanac-home__signal-grid"
+      >
+        <article>
+          <p>
+            Tithi
+          </p>
+          <strong>
+            Pending
+          </strong>
+        </article>
+        <article>
+          <p>
+            Nakshatra
+          </p>
+          <strong>
+            Pending
+          </strong>
+        </article>
+        <article>
+          <p>
+            Yoga
+          </p>
+          <strong>
+            Pending
+          </strong>
+        </article>
+        <article>
+          <p>
+            Karana
+          </p>
+          <strong>
+            Pending
+          </strong>
+        </article>
+      </div>
+      <div
+        class="almanac-home__alignment-foot"
+      >
+        <div
+          class="almanac-home__date-mark"
+        >
+          <strong>
+            25
+          </strong>
+          <span>
+            February 2026
+          </span>
+        </div>
+        <div
+          class="almanac-home__calendar-note"
+        >
+          <span>
+            Bikram Sambat date pending
+          </span>
+          <strong>
+            Kathmandu
+          </strong>
+        </div>
+      </div>
+    </article>
+    <aside
+      class="almanac-home__glimpse"
+    >
+      <div
+        class="almanac-home__glimpse-head"
+      >
+        <h2>
+          Daily Glimpse
+        </h2>
+      </div>
+      <div
+        class="almanac-home__glimpse-list"
+      >
+        <div>
+          <span
+            class="almanac-home__glimpse-icon"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="color: rgb(115, 92, 0);"
+            >
+              wb_twilight
+            </span>
+            Sunrise
+          </span>
+          <strong>
+            Unavailable
+          </strong>
+        </div>
+        <div>
+          <span
+            class="almanac-home__glimpse-icon"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="color: rgb(156, 63, 0);"
+            >
+              wb_sunny
+            </span>
+            Sunset
+          </span>
+          <strong>
+            Unavailable
+          </strong>
+        </div>
+        <div
+          class="is-warning"
+        >
+          <span
+            class="almanac-home__glimpse-icon"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="color: rgb(186, 26, 26);"
+            >
+              warning
+            </span>
+            Rahu Kaal
+          </span>
+          <strong>
+            4:12 PM - 5:00 PM
+          </strong>
+        </div>
+        <div>
+          <span
+            class="almanac-home__glimpse-icon"
+          >
+            <span
+              class="material-symbols-outlined"
+              style="color: rgb(89, 95, 102);"
+            >
+              schedule
+            </span>
+            Gulika Kaal
+          </span>
+          <strong>
+            11:48 AM - 12:36 PM
+          </strong>
+        </div>
+      </div>
+      <blockquote
+        class="almanac-home__quote"
+      >
+        <p>
+          A calm reading of today should tell you what matters, what opens cleanly, and what to leave alone.
+        </p>
+        <cite>
+          Parva daily reading
+        </cite>
+      </blockquote>
+    </aside>
+  </header>
+  <section
+    class="almanac-home__festivals"
+  >
+    <div
+      class="almanac-home__section-row"
+    >
+      <h2>
+        Upcoming Festivals
+      </h2>
+      <a
+        data-discover="true"
+        href="/festivals"
+      >
+        View Full Calendar
+      </a>
+    </div>
+    <div
+      class="almanac-home__festival-grid"
+    >
+      <a
+        class="almanac-home__festival-card"
+        data-discover="true"
+        href="/festivals/dashain"
+      >
+        <span>
+          Oct 20
+        </span>
+        <h3>
+          Dashain
+        </h3>
+        <p>
+          Open the observance for the story, timing, and household rhythm.
+        </p>
+      </a>
+      <a
+        class="almanac-home__festival-card"
+        data-discover="true"
+        href="/festivals/tihar"
+      >
+        <span>
+          Nov 7
+        </span>
+        <h3>
+          Tihar
+        </h3>
+        <p>
+          Open the observance for the story, timing, and household rhythm.
+        </p>
+      </a>
+      <a
+        class="almanac-home__festival-card"
+        data-discover="true"
+        href="/festivals/chhath"
+      >
+        <span>
+          Nov 18
+        </span>
+        <h3>
+          Chhath
+        </h3>
+        <p>
+          Open the observance for the story, timing, and household rhythm.
+        </p>
+      </a>
+    </div>
+  </section>
+  <section
+    class="almanac-home__banner"
+  >
+    <div
+      aria-hidden="true"
+      class="almanac-home__banner-art"
+    >
+      <span
+        class="almanac-home__banner-orb almanac-home__banner-orb--sun"
+      />
+      <span
+        class="almanac-home__banner-orb almanac-home__banner-orb--moon"
+      />
+      <span
+        class="almanac-home__banner-ridge almanac-home__banner-ridge--far"
+      />
+      <span
+        class="almanac-home__banner-ridge almanac-home__banner-ridge--mid"
+      />
+      <span
+        class="almanac-home__banner-ridge almanac-home__banner-ridge--near"
+      />
+    </div>
+    <div
+      class="almanac-home__banner-overlay"
+    />
+    <div
+      class="almanac-home__banner-copy"
+    >
+      <p
+        class="almanac-home__eyebrow"
+      >
+        Space for Reflection
+      </p>
+      <h2>
+        Embrace the Divine Rhythm
+      </h2>
+      <p>
+        Let the answer arrive first, then open the deeper method only when you want the full reasoning.
+      </p>
+    </div>
+  </section>
+</section>
+`;
+
+exports[`visual regression harness > festival detail page visual baseline on desktop 1`] = `
+<div
+  class="app-shell app-shell--consumer app-shell--with-rail"
+  data-theme="warm-paper"
+>
+  <header
+    class="app-shell__header"
+  >
+    <a
+      class="app-shell__brand"
+      data-discover="true"
+      href="/"
+    >
+      <span
+        class="app-shell__brand-wordmark"
+      >
+        Parva
+      </span>
+    </a>
+    <div
+      class="app-shell__nav-shell"
+    >
+      <nav
+        aria-label="Primary"
+        class="app-shell__nav"
+      >
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/today"
+        >
+          Today
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/my-place"
+        >
+          My Place
+        </a>
+        <a
+          aria-current="page"
+          class="nav-link active"
+          data-discover="true"
+          href="/festivals"
+        >
+          Festivals
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/best-time"
+        >
+          Best Time
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/birth-reading"
+        >
+          Birth Reading
+        </a>
+      </nav>
+    </div>
+    <div
+      class="app-shell__actions"
+    >
+      <button
+        class="app-shell__search-chip"
+        type="button"
+      >
+        Search
+      </button>
+      <button
+        aria-label="Place"
+        class="app-shell__icon-btn"
+        type="button"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          location_on
+        </span>
+      </button>
+      <a
+        aria-label="Profile"
+        class="app-shell__icon-btn"
+        data-discover="true"
+        href="/profile"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          account_circle
+        </span>
+      </a>
+      <div
+        class="app-shell__location-summary"
+      >
+        <span>
+          Place
+        </span>
+        <strong>
+          Kathmandu
+        </strong>
+      </div>
+    </div>
+  </header>
+  <aside
+    aria-label="Editorial quick links"
+    class="app-shell__side-rail"
+  >
+    <div
+      class="app-shell__side-head"
+    >
+      <div
+        class="app-shell__side-avatar"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          spa
+        </span>
+      </div>
+      <div
+        class="app-shell__side-copy"
+      >
+        <span
+          class="app-shell__side-label"
+        >
+          Quick paths
+        </span>
+        <strong>
+          Parva
+        </strong>
+      </div>
+    </div>
+    <nav
+      class="app-shell__side-nav"
+    >
+      <a
+        aria-label="Today"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/today"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          today
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Today
+        </span>
+      </a>
+      <a
+        aria-label="My Place"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/my-place"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          location_on
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          My Place
+        </span>
+      </a>
+      <a
+        aria-current="page"
+        aria-label="Festivals"
+        class="app-shell__side-link active"
+        data-discover="true"
+        href="/festivals"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          explore
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Festivals
+        </span>
+      </a>
+      <a
+        aria-label="Best Time"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/best-time"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          auto_awesome
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Best Time
+        </span>
+      </a>
+      <a
+        aria-label="Birth Reading"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/birth-reading"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          flare
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Birth Reading
+        </span>
+      </a>
+    </nav>
+  </aside>
+  <main
+    class="app-shell__content"
+  >
+    <section
+      class="festival-detail animate-fade-in-up consumer-route consumer-route--detail"
+    >
+      <header
+        class="festival-detail__hero"
+      >
+        <div
+          aria-hidden="true"
+          class="festival-detail__art festival-detail__art--mountain"
+        />
+        <div
+          class="festival-detail__hero-overlay"
+        >
+          <div
+            class="festival-detail__hero-copy"
+          >
+            <div
+              class="festival-detail__hero-meta"
+            >
+              <span>
+                October 20 - 2026 (day: 30)
+              </span>
+              <span>
+                Dasain
+              </span>
+              <span>
+                Editorial profile minimal
+              </span>
+            </div>
+            <h1>
+              Dashain
+            </h1>
+            <p>
+              Blessing, reunion, and seasonal turning gathered into one long observance.
+            </p>
+            <div
+              class="festival-detail__hero-actions"
+            >
+              <button
+                class="btn btn-primary"
+                type="button"
+              >
+                Add to Calendar
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Share Insight
+              </button>
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                Save observance
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section
+        class="festival-detail__origin"
+      >
+        <div
+          class="festival-detail__origin-side"
+        >
+          <h2>
+            The Celestial Origin
+          </h2>
+          <div
+            class="festival-detail__origin-marker"
+          >
+            <span
+              class="material-symbols-outlined"
+            >
+              flare
+            </span>
+            <span>
+              Sacred heritage
+            </span>
+          </div>
+        </div>
+        <div
+          class="festival-detail__origin-story"
+        >
+          <p
+            class="festival-detail__lead"
+          >
+            The observance is commonly tied to renewal, protection, and blessing.
+          </p>
+          <blockquote>
+            Families mark the season through blessing, homecoming, and ritual continuity across generations.
+          </blockquote>
+          <p
+            class="festival-detail__status-note"
+          >
+            Editorial origin material is still partial for this observance.
+          </p>
+          <p>
+            Blessing, reunion, and seasonal turning gathered into one long observance.
+          </p>
+        </div>
+      </section>
+      <section
+        class="festival-detail__timeline"
+      >
+        <div
+          class="festival-detail__section-head"
+        >
+          <h2>
+            The Ritual Timeline
+          </h2>
+          <p>
+            Vedic ceremonies spanning the living observance rhythm.
+          </p>
+        </div>
+        <div
+          class="festival-detail__timeline-list"
+        >
+          <article
+            class="festival-detail__timeline-item"
+          >
+            <div
+              class="festival-detail__timeline-copy"
+            >
+              <span>
+                First Prahara
+              </span>
+              <h3>
+                Kalash Sthapana
+              </h3>
+              <p>
+                A ritual vessel and barley planting begin the seasonal sequence.
+              </p>
+            </div>
+            <div
+              class="festival-detail__timeline-dot"
+            />
+          </article>
+          <article
+            class="festival-detail__timeline-item is-reverse"
+          >
+            <div
+              class="festival-detail__timeline-copy"
+            >
+              <span>
+                Second Prahara
+              </span>
+              <h3>
+                Durga Puja
+              </h3>
+              <p>
+                Families and temples observe the protecting form of the goddess.
+              </p>
+            </div>
+            <div
+              class="festival-detail__timeline-dot"
+            />
+          </article>
+        </div>
+      </section>
+      <section
+        class="festival-detail__presence"
+      >
+        <div
+          class="festival-detail__section-head"
+        >
+          <h2>
+            Sacred Presence
+          </h2>
+          <p>
+            Related observances and future occurrences that keep the wider ritual context in view.
+          </p>
+        </div>
+        <div
+          class="festival-detail__presence-grid"
+        >
+          <a
+            class="festival-detail__presence-card"
+            data-discover="true"
+            href="/festivals/indra-jatra"
+          >
+            <div
+              class="festival-detail__art festival-detail__art--moon"
+            />
+            <div>
+              <h3>
+                Indra Jatra
+              </h3>
+              <p>
+                Open observance
+              </p>
+            </div>
+          </a>
+          <a
+            class="festival-detail__presence-card is-offset"
+            data-discover="true"
+            href="/festivals/tihar"
+          >
+            <div
+              class="festival-detail__art festival-detail__art--mandala"
+            />
+            <div>
+              <h3>
+                Tihar
+              </h3>
+              <p>
+                Open observance
+              </p>
+            </div>
+          </a>
+        </div>
+      </section>
+      <section
+        class="festival-detail__offerings"
+      >
+        <div
+          class="festival-detail__section-head"
+        >
+          <h2>
+            Essential Offerings
+          </h2>
+          <p>
+            Quick facts, future dates, and method details for this observance.
+          </p>
+        </div>
+        <div
+          class="festival-detail__offerings-row"
+        >
+          <article
+            class="festival-detail__offering-card"
+          >
+            <div
+              class="festival-detail__offering-icon"
+            >
+              <span
+                class="material-symbols-outlined"
+              >
+                temple_hindu
+              </span>
+            </div>
+            <h3>
+              Calendar
+            </h3>
+            <p>
+              Lunisolar profile
+            </p>
+          </article>
+          <article
+            class="festival-detail__offering-card"
+          >
+            <div
+              class="festival-detail__offering-icon"
+            >
+              <span
+                class="material-symbols-outlined"
+              >
+                temple_hindu
+              </span>
+            </div>
+            <h3>
+              Duration
+            </h3>
+            <p>
+              10 days
+            </p>
+          </article>
+          <article
+            class="festival-detail__offering-card"
+          >
+            <div
+              class="festival-detail__offering-icon"
+            >
+              <span
+                class="material-symbols-outlined"
+              >
+                temple_hindu
+              </span>
+            </div>
+            <h3>
+              Category
+            </h3>
+            <p>
+              national
+            </p>
+          </article>
+          <article
+            class="festival-detail__offering-card"
+          >
+            <div
+              class="festival-detail__offering-icon"
+            >
+              <span
+                class="material-symbols-outlined"
+              >
+                temple_hindu
+              </span>
+            </div>
+            <h3>
+              Profile
+            </h3>
+            <p>
+              Editorial profile minimal
+            </p>
+          </article>
+          <article
+            class="festival-detail__offering-card"
+          >
+            <div
+              class="festival-detail__offering-icon"
+            >
+              <span
+                class="material-symbols-outlined"
+              >
+                calendar_month
+              </span>
+            </div>
+            <h3>
+              2026
+            </h3>
+            <p>
+              October 20 - 2026 (day: 30)
+            </p>
+          </article>
+          <article
+            class="festival-detail__offering-card"
+          >
+            <div
+              class="festival-detail__offering-icon"
+            >
+              <span
+                class="material-symbols-outlined"
+              >
+                calendar_month
+              </span>
+            </div>
+            <h3>
+              2027
+            </h3>
+            <p>
+              October 10 - 2027 (day: 20)
+            </p>
+          </article>
+        </div>
+      </section>
+      <section
+        class="festival-detail__technical"
+      >
+        <div
+          class="festival-detail__technical-copy"
+        >
+          <div>
+            <p
+              class="festival-detail__eyebrow"
+            >
+              Method details
+            </p>
+            <h2>
+              Open the evidence only when you want it.
+            </h2>
+          </div>
+          <p>
+            The main page stays editorial. Trace and technical detail remain available without overwhelming the ritual story.
+          </p>
+        </div>
+        <div
+          class="festival-detail__technical-actions"
+        >
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            View technical trace
+          </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Remind me
+          </button>
+          <button
+            class="btn btn-secondary evidence-drawer__trigger"
+            type="button"
+          >
+            How this was calculated
+          </button>
+        </div>
+      </section>
+    </section>
+  </main>
+  <footer
+    class="app-shell__footer"
+  >
+    <div
+      class="app-shell__footer-copy"
+    >
+      <strong>
+        Parva
+      </strong>
+      <span>
+        Sacred Wisdom for the Digital Era.
+      </span>
+    </div>
+    <div
+      class="app-shell__footer-links"
+    >
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Consumer
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/today"
+          >
+            Today
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/my-place"
+          >
+            My Place
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/festivals"
+          >
+            Festivals
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/best-time"
+          >
+            Best Time
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/birth-reading"
+          >
+            Birth Reading
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Utilities
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/saved"
+          >
+            Saved
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/profile"
+          >
+            Profile
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/integrations"
+          >
+            Integrations
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/about"
+          >
+            About
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Support
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            href="mailto:hello@parva.app"
+          >
+            Contact
+          </a>
+          <a
+            href="/developers/index.html"
+          >
+            For developers
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`visual regression harness > festival detail page visual baseline on mobile 1`] = `
+<section
+  class="festival-detail animate-fade-in-up consumer-route consumer-route--detail"
+>
+  <header
+    class="festival-detail__hero"
+  >
+    <div
+      aria-hidden="true"
+      class="festival-detail__art festival-detail__art--mountain"
+    />
+    <div
+      class="festival-detail__hero-overlay"
+    >
+      <div
+        class="festival-detail__hero-copy"
+      >
+        <div
+          class="festival-detail__hero-meta"
+        >
+          <span>
+            October 20 - 2026 (day: 30)
+          </span>
+          <span>
+            Dasain
+          </span>
+          <span>
+            Editorial profile minimal
+          </span>
+        </div>
+        <h1>
+          Dashain
+        </h1>
+        <p>
+          Blessing, reunion, and seasonal turning gathered into one long observance.
+        </p>
+        <div
+          class="festival-detail__hero-actions"
+        >
+          <button
+            class="btn btn-primary"
+            type="button"
+          >
+            Add to Calendar
+          </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Share Insight
+          </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Save observance
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section
+    class="festival-detail__origin"
+  >
+    <div
+      class="festival-detail__origin-side"
+    >
+      <h2>
+        The Celestial Origin
+      </h2>
+      <div
+        class="festival-detail__origin-marker"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          flare
+        </span>
+        <span>
+          Sacred heritage
+        </span>
+      </div>
+    </div>
+    <div
+      class="festival-detail__origin-story"
+    >
+      <p
+        class="festival-detail__lead"
+      >
+        The observance is commonly tied to renewal, protection, and blessing.
+      </p>
+      <blockquote>
+        Families mark the season through blessing, homecoming, and ritual continuity across generations.
+      </blockquote>
+      <p
+        class="festival-detail__status-note"
+      >
+        Editorial origin material is still partial for this observance.
+      </p>
+      <p>
+        Blessing, reunion, and seasonal turning gathered into one long observance.
+      </p>
+    </div>
+  </section>
+  <section
+    class="festival-detail__timeline"
+  >
+    <div
+      class="festival-detail__section-head"
+    >
+      <h2>
+        The Ritual Timeline
+      </h2>
+      <p>
+        Vedic ceremonies spanning the living observance rhythm.
+      </p>
+    </div>
+    <div
+      class="festival-detail__timeline-list"
+    >
+      <article
+        class="festival-detail__timeline-item"
+      >
+        <div
+          class="festival-detail__timeline-copy"
+        >
+          <span>
+            First Prahara
+          </span>
+          <h3>
+            Kalash Sthapana
+          </h3>
+          <p>
+            A ritual vessel and barley planting begin the seasonal sequence.
+          </p>
+        </div>
+        <div
+          class="festival-detail__timeline-dot"
+        />
+      </article>
+      <article
+        class="festival-detail__timeline-item is-reverse"
+      >
+        <div
+          class="festival-detail__timeline-copy"
+        >
+          <span>
+            Second Prahara
+          </span>
+          <h3>
+            Durga Puja
+          </h3>
+          <p>
+            Families and temples observe the protecting form of the goddess.
+          </p>
+        </div>
+        <div
+          class="festival-detail__timeline-dot"
+        />
+      </article>
+    </div>
+  </section>
+  <section
+    class="festival-detail__presence"
+  >
+    <div
+      class="festival-detail__section-head"
+    >
+      <h2>
+        Sacred Presence
+      </h2>
+      <p>
+        Related observances and future occurrences that keep the wider ritual context in view.
+      </p>
+    </div>
+    <div
+      class="festival-detail__presence-grid"
+    >
+      <a
+        class="festival-detail__presence-card"
+        data-discover="true"
+        href="/festivals/indra-jatra"
+      >
+        <div
+          class="festival-detail__art festival-detail__art--moon"
+        />
+        <div>
+          <h3>
+            Indra Jatra
+          </h3>
+          <p>
+            Open observance
+          </p>
+        </div>
+      </a>
+      <a
+        class="festival-detail__presence-card is-offset"
+        data-discover="true"
+        href="/festivals/tihar"
+      >
+        <div
+          class="festival-detail__art festival-detail__art--mandala"
+        />
+        <div>
+          <h3>
+            Tihar
+          </h3>
+          <p>
+            Open observance
+          </p>
+        </div>
+      </a>
+    </div>
+  </section>
+  <section
+    class="festival-detail__offerings"
+  >
+    <div
+      class="festival-detail__section-head"
+    >
+      <h2>
+        Essential Offerings
+      </h2>
+      <p>
+        Quick facts, future dates, and method details for this observance.
+      </p>
+    </div>
+    <div
+      class="festival-detail__offerings-row"
+    >
+      <article
+        class="festival-detail__offering-card"
+      >
+        <div
+          class="festival-detail__offering-icon"
+        >
+          <span
+            class="material-symbols-outlined"
+          >
+            temple_hindu
+          </span>
+        </div>
+        <h3>
+          Calendar
+        </h3>
+        <p>
+          Lunisolar profile
+        </p>
+      </article>
+      <article
+        class="festival-detail__offering-card"
+      >
+        <div
+          class="festival-detail__offering-icon"
+        >
+          <span
+            class="material-symbols-outlined"
+          >
+            temple_hindu
+          </span>
+        </div>
+        <h3>
+          Duration
+        </h3>
+        <p>
+          10 days
+        </p>
+      </article>
+      <article
+        class="festival-detail__offering-card"
+      >
+        <div
+          class="festival-detail__offering-icon"
+        >
+          <span
+            class="material-symbols-outlined"
+          >
+            temple_hindu
+          </span>
+        </div>
+        <h3>
+          Category
+        </h3>
+        <p>
+          national
+        </p>
+      </article>
+      <article
+        class="festival-detail__offering-card"
+      >
+        <div
+          class="festival-detail__offering-icon"
+        >
+          <span
+            class="material-symbols-outlined"
+          >
+            temple_hindu
+          </span>
+        </div>
+        <h3>
+          Profile
+        </h3>
+        <p>
+          Editorial profile minimal
+        </p>
+      </article>
+      <article
+        class="festival-detail__offering-card"
+      >
+        <div
+          class="festival-detail__offering-icon"
+        >
+          <span
+            class="material-symbols-outlined"
+          >
+            calendar_month
+          </span>
+        </div>
+        <h3>
+          2026
+        </h3>
+        <p>
+          October 20 - 2026 (day: 30)
+        </p>
+      </article>
+      <article
+        class="festival-detail__offering-card"
+      >
+        <div
+          class="festival-detail__offering-icon"
+        >
+          <span
+            class="material-symbols-outlined"
+          >
+            calendar_month
+          </span>
+        </div>
+        <h3>
+          2027
+        </h3>
+        <p>
+          October 10 - 2027 (day: 20)
+        </p>
+      </article>
+    </div>
+  </section>
+  <section
+    class="festival-detail__technical"
+  >
+    <div
+      class="festival-detail__technical-copy"
+    >
+      <div>
+        <p
+          class="festival-detail__eyebrow"
+        >
+          Method details
+        </p>
+        <h2>
+          Open the evidence only when you want it.
+        </h2>
+      </div>
+      <p>
+        The main page stays editorial. Trace and technical detail remain available without overwhelming the ritual story.
+      </p>
+    </div>
+    <div
+      class="festival-detail__technical-actions"
+    >
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        View technical trace
+      </button>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Remind me
+      </button>
+      <button
+        class="btn btn-secondary evidence-drawer__trigger"
+        type="button"
+      >
+        How this was calculated
+      </button>
+    </div>
+  </section>
+</section>
+`;
+
+exports[`visual regression harness > festivals page visual baseline on desktop 1`] = `
+<div
+  class="app-shell app-shell--consumer app-shell--with-rail"
+  data-theme="warm-paper"
+>
+  <header
+    class="app-shell__header"
+  >
+    <a
+      class="app-shell__brand"
+      data-discover="true"
+      href="/"
+    >
+      <span
+        class="app-shell__brand-wordmark"
+      >
+        Parva
+      </span>
+    </a>
+    <div
+      class="app-shell__nav-shell"
+    >
+      <nav
+        aria-label="Primary"
+        class="app-shell__nav"
+      >
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/today"
+        >
+          Today
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/my-place"
+        >
+          My Place
+        </a>
+        <a
+          aria-current="page"
+          class="nav-link active"
+          data-discover="true"
+          href="/festivals"
+        >
+          Festivals
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/best-time"
+        >
+          Best Time
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/birth-reading"
+        >
+          Birth Reading
+        </a>
+      </nav>
+    </div>
+    <div
+      class="app-shell__actions"
+    >
+      <button
+        class="app-shell__search-chip"
+        type="button"
+      >
+        Search
+      </button>
+      <button
+        aria-label="Place"
+        class="app-shell__icon-btn"
+        type="button"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          location_on
+        </span>
+      </button>
+      <a
+        aria-label="Profile"
+        class="app-shell__icon-btn"
+        data-discover="true"
+        href="/profile"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          account_circle
+        </span>
+      </a>
+      <div
+        class="app-shell__location-summary"
+      >
+        <span>
+          Place
+        </span>
+        <strong>
+          Kathmandu
+        </strong>
+      </div>
+    </div>
+  </header>
+  <aside
+    aria-label="Editorial quick links"
+    class="app-shell__side-rail"
+  >
+    <div
+      class="app-shell__side-head"
+    >
+      <div
+        class="app-shell__side-avatar"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          spa
+        </span>
+      </div>
+      <div
+        class="app-shell__side-copy"
+      >
+        <span
+          class="app-shell__side-label"
+        >
+          Quick paths
+        </span>
+        <strong>
+          Parva
+        </strong>
+      </div>
+    </div>
+    <nav
+      class="app-shell__side-nav"
+    >
+      <a
+        aria-label="Today"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/today"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          today
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Today
+        </span>
+      </a>
+      <a
+        aria-label="My Place"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/my-place"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          location_on
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          My Place
+        </span>
+      </a>
+      <a
+        aria-current="page"
+        aria-label="Festivals"
+        class="app-shell__side-link active"
+        data-discover="true"
+        href="/festivals"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          explore
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Festivals
+        </span>
+      </a>
+      <a
+        aria-label="Best Time"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/best-time"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          auto_awesome
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Best Time
+        </span>
+      </a>
+      <a
+        aria-label="Birth Reading"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/birth-reading"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          flare
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Birth Reading
+        </span>
+      </a>
+    </nav>
+  </aside>
+  <main
+    class="app-shell__content"
+  >
+    <section
+      class="explorer-page animate-fade-in-up consumer-route consumer-route--explorer"
+    >
+      <header
+        class="explorer-hero"
+      >
+        <div
+          class="explorer-hero__copy"
+        >
+          <p
+            class="explorer-eyebrow"
+          >
+            Festivals
+          </p>
+          <h1>
+            Closest observances first.
+          </h1>
+          <p>
+            See what is happening now, then move outward through the next observances only when you need more calendar depth.
+          </p>
+        </div>
+        <div
+          class="explorer-hero__actions"
+        >
+          <button
+            class="explorer-pill is-active"
+            type="button"
+          >
+            All observances
+          </button>
+          <button
+            class="explorer-pill"
+            type="button"
+          >
+            National
+          </button>
+          <button
+            class="explorer-pill"
+            type="button"
+          >
+            Newari
+          </button>
+          <button
+            class="explorer-pill"
+            type="button"
+          >
+            Hindu
+          </button>
+          <button
+            class="explorer-pill"
+            type="button"
+          >
+            Buddhist
+          </button>
+          <button
+            class="explorer-pill"
+            type="button"
+          >
+            Regional
+          </button>
+        </div>
+      </header>
+      <section
+        class="explorer-closest"
+      >
+        <div
+          class="explorer-section-head"
+        >
+          <div>
+            <p
+              class="explorer-eyebrow"
+            >
+              Closest observances
+            </p>
+            <h2>
+              Start with what is happening now, then what comes next.
+            </h2>
+            <p>
+              1 observance is active today.
+            </p>
+          </div>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            See all festivals
+          </button>
+        </div>
+        <div
+          class="explorer-closest__grid"
+        >
+          <a
+            class="explorer-card explorer-card--lead"
+            data-discover="true"
+            href="/festivals/dashain"
+          >
+            <div
+              class="explorer-poster explorer-poster--mountain"
+            >
+              <span>
+                Dashain
+              </span>
+            </div>
+            <div
+              class="explorer-card__copy"
+            >
+              <div
+                class="explorer-card__badges"
+              >
+                <span>
+                  Happening now
+                </span>
+              </div>
+              <h3>
+                Dashain
+              </h3>
+              <p
+                class="explorer-card__meta"
+              >
+                Date pending
+              </p>
+              <p>
+                Dashain is active in the current observance window.
+              </p>
+            </div>
+          </a>
+          <div
+            class="explorer-closest__stack"
+          >
+            <a
+              class="explorer-card explorer-card--compact"
+              data-discover="true"
+              href="/festivals/tihar"
+            >
+              <div
+                class="explorer-poster explorer-poster--lamp"
+              >
+                <span>
+                  Tihar
+                </span>
+              </div>
+              <div
+                class="explorer-card__copy"
+              >
+                <div
+                  class="explorer-card__badges"
+                >
+                  <span>
+                    national
+                  </span>
+                  <span>
+                    Kathmandu Valley
+                  </span>
+                </div>
+                <h3>
+                  Tihar
+                </h3>
+                <p
+                  class="explorer-card__meta"
+                >
+                  November 7 - 2026 (day: 11)
+                </p>
+                <p>
+                  Festival of lights with layered family and household observance.
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+      <section
+        class="explorer-ribbon"
+      >
+        <div
+          class="explorer-ribbon__head"
+        >
+          <div>
+            <p
+              class="explorer-eyebrow"
+            >
+              All festivals
+            </p>
+            <h2>
+              From today forward, grouped by month.
+            </h2>
+          </div>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            More filters
+          </button>
+        </div>
+        <div
+          class="explorer-months"
+        >
+          <section
+            class="explorer-month"
+          >
+            <div
+              class="explorer-month__head"
+            >
+              <p
+                class="explorer-eyebrow"
+              >
+                Kartik 2083
+              </p>
+            </div>
+            <div
+              class="explorer-month__grid"
+            >
+              <a
+                class="explorer-card explorer-card--feature"
+                data-discover="true"
+                href="/festivals/dashain"
+              >
+                <div
+                  class="explorer-poster explorer-poster--mountain"
+                >
+                  <span>
+                    Dashain
+                  </span>
+                </div>
+                <div
+                  class="explorer-card__copy"
+                >
+                  <h3>
+                    Dashain
+                  </h3>
+                  <p
+                    class="explorer-card__meta"
+                  >
+                    October 20 - 2026 (day: 30)
+                  </p>
+                  <p>
+                    Blessing, reunion, and seasonal turning gathered into one long observance.
+                  </p>
+                </div>
+              </a>
+              <div
+                class="explorer-month__stack"
+              >
+                <a
+                  class="explorer-card explorer-card--compact"
+                  data-discover="true"
+                  href="/festivals/tihar"
+                >
+                  <div
+                    class="explorer-poster explorer-poster--lamp"
+                  >
+                    <span>
+                      Tihar
+                    </span>
+                  </div>
+                  <div
+                    class="explorer-card__copy"
+                  >
+                    <h3>
+                      Tihar
+                    </h3>
+                    <p
+                      class="explorer-card__meta"
+                    >
+                      November 7 - 2026 (day: 11)
+                    </p>
+                    <p>
+                      Festival of lights with layered family and household observance.
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </section>
+  </main>
+  <footer
+    class="app-shell__footer"
+  >
+    <div
+      class="app-shell__footer-copy"
+    >
+      <strong>
+        Parva
+      </strong>
+      <span>
+        Sacred Wisdom for the Digital Era.
+      </span>
+    </div>
+    <div
+      class="app-shell__footer-links"
+    >
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Consumer
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/today"
+          >
+            Today
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/my-place"
+          >
+            My Place
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/festivals"
+          >
+            Festivals
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/best-time"
+          >
+            Best Time
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/birth-reading"
+          >
+            Birth Reading
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Utilities
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/saved"
+          >
+            Saved
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/profile"
+          >
+            Profile
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/integrations"
+          >
+            Integrations
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/about"
+          >
+            About
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Support
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            href="mailto:hello@parva.app"
+          >
+            Contact
+          </a>
+          <a
+            href="/developers/index.html"
+          >
+            For developers
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`visual regression harness > festivals page visual baseline on mobile 1`] = `
+<section
+  class="explorer-page animate-fade-in-up consumer-route consumer-route--explorer"
+>
+  <header
+    class="explorer-hero"
+  >
+    <div
+      class="explorer-hero__copy"
+    >
+      <p
+        class="explorer-eyebrow"
+      >
+        Festivals
+      </p>
+      <h1>
+        Closest observances first.
+      </h1>
+      <p>
+        See what is happening now, then move outward through the next observances only when you need more calendar depth.
+      </p>
+    </div>
+    <div
+      class="explorer-hero__actions"
+    >
+      <button
+        class="explorer-pill is-active"
+        type="button"
+      >
+        All observances
+      </button>
+      <button
+        class="explorer-pill"
+        type="button"
+      >
+        National
+      </button>
+      <button
+        class="explorer-pill"
+        type="button"
+      >
+        Newari
+      </button>
+      <button
+        class="explorer-pill"
+        type="button"
+      >
+        Hindu
+      </button>
+      <button
+        class="explorer-pill"
+        type="button"
+      >
+        Buddhist
+      </button>
+      <button
+        class="explorer-pill"
+        type="button"
+      >
+        Regional
+      </button>
+    </div>
+  </header>
+  <section
+    class="explorer-closest"
+  >
+    <div
+      class="explorer-section-head"
+    >
+      <div>
+        <p
+          class="explorer-eyebrow"
+        >
+          Closest observances
+        </p>
+        <h2>
+          Start with what is happening now, then what comes next.
+        </h2>
+        <p>
+          1 observance is active today.
+        </p>
+      </div>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        See all festivals
+      </button>
+    </div>
+    <div
+      class="explorer-closest__grid"
+    >
+      <a
+        class="explorer-card explorer-card--lead"
+        data-discover="true"
+        href="/festivals/dashain"
+      >
+        <div
+          class="explorer-poster explorer-poster--mountain"
+        >
+          <span>
+            Dashain
+          </span>
+        </div>
+        <div
+          class="explorer-card__copy"
+        >
+          <div
+            class="explorer-card__badges"
+          >
+            <span>
+              Happening now
+            </span>
+          </div>
+          <h3>
+            Dashain
+          </h3>
+          <p
+            class="explorer-card__meta"
+          >
+            Date pending
+          </p>
+          <p>
+            Dashain is active in the current observance window.
+          </p>
+        </div>
+      </a>
+      <div
+        class="explorer-closest__stack"
+      >
+        <a
+          class="explorer-card explorer-card--compact"
+          data-discover="true"
+          href="/festivals/tihar"
+        >
+          <div
+            class="explorer-poster explorer-poster--lamp"
+          >
+            <span>
+              Tihar
+            </span>
+          </div>
+          <div
+            class="explorer-card__copy"
+          >
+            <div
+              class="explorer-card__badges"
+            >
+              <span>
+                national
+              </span>
+              <span>
+                Kathmandu Valley
+              </span>
+            </div>
+            <h3>
+              Tihar
+            </h3>
+            <p
+              class="explorer-card__meta"
+            >
+              November 7 - 2026 (day: 11)
+            </p>
+            <p>
+              Festival of lights with layered family and household observance.
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+  <section
+    class="explorer-ribbon"
+  >
+    <div
+      class="explorer-ribbon__head"
+    >
+      <div>
+        <p
+          class="explorer-eyebrow"
+        >
+          All festivals
+        </p>
+        <h2>
+          From today forward, grouped by month.
+        </h2>
+      </div>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        More filters
+      </button>
+    </div>
+    <div
+      class="explorer-months"
+    >
+      <section
+        class="explorer-month"
+      >
+        <div
+          class="explorer-month__head"
+        >
+          <p
+            class="explorer-eyebrow"
+          >
+            Kartik 2083
+          </p>
+        </div>
+        <div
+          class="explorer-month__grid"
+        >
+          <a
+            class="explorer-card explorer-card--feature"
+            data-discover="true"
+            href="/festivals/dashain"
+          >
+            <div
+              class="explorer-poster explorer-poster--mountain"
+            >
+              <span>
+                Dashain
+              </span>
+            </div>
+            <div
+              class="explorer-card__copy"
+            >
+              <h3>
+                Dashain
+              </h3>
+              <p
+                class="explorer-card__meta"
+              >
+                October 20 - 2026 (day: 30)
+              </p>
+              <p>
+                Blessing, reunion, and seasonal turning gathered into one long observance.
+              </p>
+            </div>
+          </a>
+          <div
+            class="explorer-month__stack"
+          >
+            <a
+              class="explorer-card explorer-card--compact"
+              data-discover="true"
+              href="/festivals/tihar"
+            >
+              <div
+                class="explorer-poster explorer-poster--lamp"
+              >
+                <span>
+                  Tihar
+                </span>
+              </div>
+              <div
+                class="explorer-card__copy"
+              >
+                <h3>
+                  Tihar
+                </h3>
+                <p
+                  class="explorer-card__meta"
+                >
+                  November 7 - 2026 (day: 11)
+                </p>
+                <p>
+                  Festival of lights with layered family and household observance.
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</section>
+`;
+
+exports[`visual regression harness > kundali page visual baseline 1`] = `
+<section
+  class="kundali-reset animate-fade-in-up consumer-route consumer-route--analysis"
+>
+  <header
+    class="kundali-reset__hero"
+  >
+    <div>
+      <p
+        class="kundali-reset__eyebrow"
+      >
+        Birth Reading
+      </p>
+      <h1>
+        Enter the birth details first.
+      </h1>
+      <p
+        class="kundali-reset__intro"
+      >
+        Generate the natal chart from the actual birth date, exact time, and birth place. The reading starts with ascendant, moon placement, and the strongest graha.
+      </p>
+    </div>
+  </header>
+  <div
+    class="kundali-reset__layout"
+  >
+    <form
+      class="kundali-reset__form-card"
+    >
+      <div
+        class="kundali-reset__section-head"
+      >
+        <div>
+          <p
+            class="kundali-reset__eyebrow"
+          >
+            Birth details
+          </p>
+          <h2>
+            Required inputs
+          </h2>
+        </div>
+      </div>
+      <div
+        class="kundali-reset__date-grid"
+      >
+        <label
+          class="ink-input"
+        >
+          <span>
+            Day
+          </span>
+          <input
+            inputmode="numeric"
+            value=""
+          />
+        </label>
+        <label
+          class="ink-input"
+        >
+          <span>
+            Month
+          </span>
+          <input
+            inputmode="numeric"
+            value=""
+          />
+        </label>
+        <label
+          class="ink-input"
+        >
+          <span>
+            Year
+          </span>
+          <input
+            inputmode="numeric"
+            value=""
+          />
+        </label>
+        <label
+          class="ink-input"
+        >
+          <span>
+            Birth time
+          </span>
+          <input
+            type="time"
+            value=""
+          />
+        </label>
+      </div>
+      <div
+        class="kundali-reset__place-block"
+      >
+        <div
+          class="kundali-reset__section-head"
+        >
+          <div>
+            <p
+              class="kundali-reset__eyebrow"
+            >
+              Birth place
+            </p>
+            <h2>
+              Search and select
+            </h2>
+          </div>
+        </div>
+        <div
+          class="kundali-reset__place-search"
+        >
+          <label
+            class="ink-input kundali-reset__place-input"
+          >
+            <span>
+              Place
+            </span>
+            <input
+              placeholder="Kathmandu, Nepal"
+              type="search"
+              value=""
+            />
+          </label>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Search place
+          </button>
+        </div>
+        <button
+          class="kundali-reset__advanced-toggle"
+          type="button"
+        >
+          Show manual coordinates
+        </button>
+      </div>
+      <button
+        class="btn btn-primary"
+        type="submit"
+      >
+        Generate chart
+      </button>
+    </form>
+    <aside
+      class="kundali-reset__anchors"
+    >
+      <article
+        class="kundali-reset__anchor-card"
+      >
+        <p
+          class="kundali-reset__eyebrow"
+        >
+          Reading flow
+        </p>
+        <h2>
+          Three anchors, then detail.
+        </h2>
+        <p>
+          Start with the ascendant, then moon placement, then the strongest graha. After that, open houses or aspects only when you need more structure.
+        </p>
+      </article>
+      <article
+        class="kundali-reset__anchor-card"
+      >
+        <span>
+          Outer style
+        </span>
+        <strong>
+          Lagna pending
+        </strong>
+      </article>
+      <article
+        class="kundali-reset__anchor-card"
+      >
+        <span>
+          Inner weather
+        </span>
+        <strong>
+          Moon placement pending
+        </strong>
+      </article>
+      <article
+        class="kundali-reset__anchor-card"
+      >
+        <span>
+          Strongest pull
+        </span>
+        <strong>
+          Strength signal pending
+        </strong>
+      </article>
+    </aside>
+  </div>
+</section>
+`;
+
+exports[`visual regression harness > my-place page visual baseline on desktop 1`] = `
+<div
+  class="app-shell app-shell--consumer app-shell--with-rail"
+  data-theme="warm-paper"
+>
+  <header
+    class="app-shell__header"
+  >
+    <a
+      class="app-shell__brand"
+      data-discover="true"
+      href="/"
+    >
+      <span
+        class="app-shell__brand-wordmark"
+      >
+        Parva
+      </span>
+    </a>
+    <div
+      class="app-shell__nav-shell"
+    >
+      <nav
+        aria-label="Primary"
+        class="app-shell__nav"
+      >
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/today"
+        >
+          Today
+        </a>
+        <a
+          aria-current="page"
+          class="nav-link active"
+          data-discover="true"
+          href="/my-place"
+        >
+          My Place
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/festivals"
+        >
+          Festivals
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/best-time"
+        >
+          Best Time
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/birth-reading"
+        >
+          Birth Reading
+        </a>
+      </nav>
+    </div>
+    <div
+      class="app-shell__actions"
+    >
+      <button
+        class="app-shell__search-chip"
+        type="button"
+      >
+        Search
+      </button>
+      <button
+        aria-label="Place"
+        class="app-shell__icon-btn"
+        type="button"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          location_on
+        </span>
+      </button>
+      <a
+        aria-label="Profile"
+        class="app-shell__icon-btn"
+        data-discover="true"
+        href="/profile"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          account_circle
+        </span>
+      </a>
+      <div
+        class="app-shell__location-summary"
+      >
+        <span>
+          Place
+        </span>
+        <strong>
+          Kathmandu
+        </strong>
+      </div>
+    </div>
+  </header>
+  <aside
+    aria-label="Editorial quick links"
+    class="app-shell__side-rail"
+  >
+    <div
+      class="app-shell__side-head"
+    >
+      <div
+        class="app-shell__side-avatar"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          spa
+        </span>
+      </div>
+      <div
+        class="app-shell__side-copy"
+      >
+        <span
+          class="app-shell__side-label"
+        >
+          Quick paths
+        </span>
+        <strong>
+          Parva
+        </strong>
+      </div>
+    </div>
+    <nav
+      class="app-shell__side-nav"
+    >
+      <a
+        aria-label="Today"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/today"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          today
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Today
+        </span>
+      </a>
+      <a
+        aria-current="page"
+        aria-label="My Place"
+        class="app-shell__side-link active"
+        data-discover="true"
+        href="/my-place"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          location_on
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          My Place
+        </span>
+      </a>
+      <a
+        aria-label="Festivals"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/festivals"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          explore
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Festivals
+        </span>
+      </a>
+      <a
+        aria-label="Best Time"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/best-time"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          auto_awesome
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Best Time
+        </span>
+      </a>
+      <a
+        aria-label="Birth Reading"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/birth-reading"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          flare
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Birth Reading
+        </span>
+      </a>
+    </nav>
+  </aside>
+  <main
+    class="app-shell__content"
+  >
+    <section
+      class="personal-page animate-fade-in-up consumer-route consumer-route--utility"
+    >
+      <section
+        class="consumer-home__section"
+        id="my-place"
+      >
+        <div
+          class="consumer-home__section-header"
+        >
+          <div
+            class="consumer-home__section-copy"
+          >
+            <span
+              class="consumer-home__eyebrow"
+            >
+              My Place
+            </span>
+            <h2>
+              Keep the place that changes your day in view.
+            </h2>
+            <p>
+              Set the place that shapes your day, then keep only the place-aware changes that matter in view.
+            </p>
+          </div>
+          <div
+            class="consumer-home__section-action"
+          >
+            <a
+              class="btn btn-secondary btn-sm"
+              data-discover="true"
+              href="/#my-place"
+            >
+              Jump to home section
+            </a>
+          </div>
+        </div>
+        <div
+          class="consumer-home__section-shell consumer-home__section-shell--place"
+        >
+          <div
+            class="consumer-home__place-grid"
+          >
+            <article
+              class="consumer-home__surface consumer-home__place-hero"
+            >
+              <div
+                class="consumer-home__art-slot consumer-home__art-slot--sanctuary"
+              >
+                <span>
+                  Kathmandu
+                </span>
+              </div>
+              <div
+                class="consumer-home__place-copy"
+              >
+                <h3>
+                  Kathmandu
+                </h3>
+                <p>
+                  Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+                </p>
+                <div
+                  class="consumer-home__festival-actions"
+                >
+                  <button
+                    class="btn btn-primary btn-sm"
+                    type="button"
+                  >
+                    Save this place
+                  </button>
+                  <button
+                    class="btn btn-secondary btn-sm"
+                    type="button"
+                  >
+                    Change place
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article
+              class="consumer-home__surface consumer-home__place-context"
+            >
+              <div
+                class="consumer-home__art-slot consumer-home__art-slot--context"
+              >
+                <span>
+                  Morning Calm
+                </span>
+              </div>
+              <h3>
+                Morning Calm
+              </h3>
+              <p>
+                Quiet morning at your saved Kyoto Villa location. Air is crisp. 14C.
+              </p>
+            </article>
+          </div>
+          <div
+            class="consumer-home__place-secondary"
+          >
+            <article
+              class="consumer-home__surface consumer-home__place-panel"
+            >
+              <span
+                class="consumer-home__kicker"
+              >
+                Preferences
+              </span>
+              <h3>
+                English
+                 / 
+                Asia/Kathmandu
+              </h3>
+              <p>
+                balanced
+                 notifications with 
+                meditation
+                 focus.
+              </p>
+            </article>
+            <article
+              class="consumer-home__surface consumer-home__place-panel"
+            >
+              <span
+                class="consumer-home__kicker"
+              >
+                Festival reminders
+              </span>
+              <div
+                class="consumer-home__mini-stack"
+              >
+                <div
+                  class="consumer-home__mini-card"
+                >
+                  <strong>
+                    Gion Matsuri
+                  </strong>
+                  <p>
+                    Jul 1-31
+                  </p>
+                </div>
+              </div>
+            </article>
+            <article
+              class="consumer-home__surface consumer-home__place-panel"
+            >
+              <span
+                class="consumer-home__kicker"
+              >
+                Daily inspiration
+              </span>
+              <h3>
+                Reminder rhythm
+              </h3>
+              <p>
+                1 saved
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section
+        class="ink-card personal-page__route-card"
+      >
+        <div
+          class="personal-page__route-header"
+        >
+          <div>
+            <p
+              class="today-page__eyebrow"
+            >
+              Place controls
+            </p>
+            <h2>
+              Adjust the place only when the answer needs to change.
+            </h2>
+          </div>
+        </div>
+        <form
+          class="personal-page__controls"
+        >
+          <label
+            class="ink-input"
+          >
+            <span>
+              Date
+            </span>
+            <input
+              required=""
+              type="date"
+              value="2026-02-25"
+            />
+          </label>
+          <label
+            class="ink-input"
+          >
+            <span>
+              Place
+            </span>
+            <select>
+              <option
+                value=""
+              >
+                Choose a city preset
+              </option>
+              <option
+                value="kathmandu"
+              >
+                Kathmandu
+              </option>
+              <option
+                value="pokhara"
+              >
+                Pokhara
+              </option>
+              <option
+                value="biratnagar"
+              >
+                Biratnagar
+              </option>
+              <option
+                value="nepalgunj"
+              >
+                Nepalgunj
+              </option>
+            </select>
+          </label>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Use my device
+          </button>
+        </form>
+      </section>
+      <section
+        class="personal-summary-grid"
+      >
+        <article
+          class="ink-card personal-summary-card"
+        >
+          <span
+            class="today-page__eyebrow"
+          >
+            Local sunrise
+          </span>
+          <strong>
+            6:44 AM
+          </strong>
+          <p>
+            Use this when your place materially shifts the start of the day.
+          </p>
+        </article>
+        <article
+          class="ink-card personal-summary-card"
+        >
+          <span
+            class="today-page__eyebrow"
+          >
+            Local sunset
+          </span>
+          <strong>
+            Pending
+          </strong>
+          <p>
+            Keep the close of the day visible alongside sunrise when timing is place-sensitive.
+          </p>
+        </article>
+        <article
+          class="ink-card personal-summary-card"
+        >
+          <span
+            class="today-page__eyebrow"
+          >
+            What changes here
+          </span>
+          <strong>
+            +2 minutes vs Kathmandu
+          </strong>
+          <p>
+            Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+          </p>
+        </article>
+        <article
+          class="ink-card personal-summary-card"
+        >
+          <span
+            class="today-page__eyebrow"
+          >
+            Preferences
+          </span>
+          <strong>
+            meditation
+          </strong>
+          <p>
+            English / Asia/Kathmandu / balanced
+          </p>
+        </article>
+      </section>
+      <section
+        class="personal-page__story-grid"
+      >
+        <article
+          class="ink-card personal-context-card personal-context-card--primary"
+        >
+          <span
+            class="today-page__eyebrow"
+          >
+            Current context
+          </span>
+          <strong>
+            Morning Calm
+          </strong>
+          <p>
+            Quiet morning at your saved Kyoto Villa location. Air is crisp. 14C.
+          </p>
+          <div
+            class="personal-festivals"
+          >
+            <h3
+              class="personal-festivals__title"
+            >
+              Observances active for this place
+            </h3>
+            <div
+              class="personal-festivals__chips"
+            >
+              <a
+                class="festival-chip"
+                data-discover="true"
+                href="/festivals/dashain"
+              >
+                <span
+                  class="festival-chip__name"
+                >
+                  Dashain
+                </span>
+              </a>
+            </div>
+          </div>
+        </article>
+        <article
+          class="ink-card personal-context-card"
+        >
+          <span
+            class="today-page__eyebrow"
+          >
+            Saved reminders
+          </span>
+          <strong>
+            1 in view
+          </strong>
+          <ul
+            class="personal-reminders"
+          >
+            <li>
+              <strong>
+                Gion Matsuri
+              </strong>
+              <span>
+                Jul 1-31
+              </span>
+            </li>
+          </ul>
+          <dl
+            class="personal-page__mini-facts"
+          >
+            <div>
+              <dt>
+                Place basis
+              </dt>
+              <dd>
+                Kathmandu
+              </dd>
+            </div>
+            <div>
+              <dt>
+                Sunrise shift
+              </dt>
+              <dd>
+                +2 minutes vs Kathmandu
+              </dd>
+            </div>
+            <div>
+              <dt>
+                Status
+              </dt>
+              <dd>
+                Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+              </dd>
+            </div>
+          </dl>
+        </article>
+      </section>
+      <details
+        class="personal-page__accordion"
+      >
+        <summary>
+          Place signals and method
+        </summary>
+        <div
+          class="personal-page__accordion-body"
+        >
+          <section
+            class="personal-cards-grid stagger-children"
+          >
+            <article
+              class="ink-card panchanga-card"
+            >
+              <h3>
+                What changes here
+              </h3>
+              <p
+                class="panchanga-card__value"
+              >
+                +2 minutes vs Kathmandu
+              </p>
+              <p
+                class="panchanga-card__meta"
+              >
+                This is the simplest signal for whether the place materially changes the day rhythm.
+              </p>
+            </article>
+            <article
+              class="ink-card panchanga-card"
+            >
+              <h3>
+                Local sunset
+              </h3>
+              <p
+                class="panchanga-card__value"
+              >
+                Pending
+              </p>
+              <p
+                class="panchanga-card__meta"
+              >
+                The close of the day should stay visible anywhere local timing is part of the answer.
+              </p>
+            </article>
+            <article
+              class="ink-card panchanga-card"
+            >
+              <h3>
+                Reminder rhythm
+              </h3>
+              <p
+                class="panchanga-card__value"
+              >
+                1 saved
+              </p>
+              <p
+                class="panchanga-card__meta"
+              >
+                Gion Matsuri
+              </p>
+            </article>
+            <article
+              class="ink-card panchanga-card"
+            >
+              <h3>
+                Daily inspiration
+              </h3>
+              <p
+                class="panchanga-card__value"
+              >
+                The soul sits here, in the quiet spaces we keep. - A. Chen.
+              </p>
+              <p
+                class="panchanga-card__meta"
+              >
+                Context notes remain secondary to the main place answer.
+              </p>
+            </article>
+            <article
+              class="ink-card panchanga-card"
+            >
+              <h3>
+                Tithi
+              </h3>
+              <p
+                class="panchanga-card__value"
+              >
+                Chaturdashi
+              </p>
+              <p
+                class="panchanga-card__meta"
+              >
+                krishna fortnight
+              </p>
+            </article>
+            <article
+              class="ink-card panchanga-card"
+            >
+              <h3>
+                Nakshatra
+              </h3>
+              <p
+                class="panchanga-card__value"
+              >
+                Shravana
+              </p>
+              <p
+                class="panchanga-card__meta"
+              >
+                Number 22
+              </p>
+            </article>
+            <article
+              class="ink-card panchanga-card"
+            >
+              <h3>
+                Yoga
+              </h3>
+              <p
+                class="panchanga-card__value"
+              >
+                Shubha
+              </p>
+              <p
+                class="panchanga-card__meta"
+              >
+                Sunday
+              </p>
+            </article>
+          </section>
+          <button
+            class="btn btn-secondary evidence-drawer__trigger"
+            type="button"
+          >
+            How this was calculated
+          </button>
+          <section
+            aria-label="How Personal Panchanga Is Different"
+            class="knowledge-panel ink-card personal-knowledge"
+          >
+            <header
+              class="knowledge-panel__header"
+            >
+              <p
+                class="knowledge-panel__eyebrow"
+              >
+                Explainability
+              </p>
+              <h2>
+                How Personal Panchanga Is Different
+              </h2>
+              <p
+                class="knowledge-panel__intro"
+              >
+                Personal Panchanga recalculates the day using your location and timezone, so sunrise-based results match your city, not only Kathmandu.
+              </p>
+            </header>
+            <div
+              class="knowledge-panel__sections"
+            >
+              <details
+                class="knowledge-section"
+                open=""
+              >
+                <summary>
+                  <span
+                    class="knowledge-section__title"
+                  >
+                    Inputs That Change the Result
+                  </span>
+                </summary>
+                <ul
+                  class="knowledge-terms"
+                >
+                  <li
+                    class="knowledge-term"
+                  >
+                    <h3>
+                      Latitude / Longitude
+                    </h3>
+                    <p>
+                      Your physical location for sunrise and local sky calculations.
+                    </p>
+                    <p
+                      class="knowledge-term__why"
+                    >
+                      <strong>
+                        Why it matters:
+                      </strong>
+                       
+                      A tithi boundary can shift when sunrise changes by location.
+                    </p>
+                  </li>
+                  <li
+                    class="knowledge-term"
+                  >
+                    <h3>
+                      Timezone
+                    </h3>
+                    <p>
+                      Local civil time context for date boundaries and display.
+                    </p>
+                    <p
+                      class="knowledge-term__why"
+                    >
+                      <strong>
+                        Why it matters:
+                      </strong>
+                       
+                      Diaspora users get date labels aligned with their local day.
+                    </p>
+                  </li>
+                  <li
+                    class="knowledge-term"
+                  >
+                    <h3>
+                      Method Profile
+                    </h3>
+                    <p>
+                      Named ruleset used to compute this personal output.
+                    </p>
+                    <p
+                      class="knowledge-term__why"
+                    >
+                      <strong>
+                        Why it matters:
+                      </strong>
+                       
+                      Makes results auditable and consistent across clients.
+                    </p>
+                  </li>
+                </ul>
+              </details>
+              <details
+                class="knowledge-section"
+              >
+                <summary>
+                  <span
+                    class="knowledge-section__title"
+                  >
+                    The 5 Limbs of Panchanga
+                  </span>
+                  <span
+                    class="knowledge-section__description"
+                  >
+                    Each day is described using five markers:
+                  </span>
+                </summary>
+                <ul
+                  class="knowledge-terms"
+                >
+                  <li
+                    class="knowledge-term"
+                  >
+                    <h3>
+                      Tithi
+                    </h3>
+                    <p>
+                      The lunar day based on Moon-Sun angle (1 to 30).
+                    </p>
+                    <p
+                      class="knowledge-term__why"
+                    >
+                      <strong>
+                        Why it matters:
+                      </strong>
+                       
+                      Most festivals and fasts are tied to a specific tithi at sunrise.
+                    </p>
+                  </li>
+                  <li
+                    class="knowledge-term"
+                  >
+                    <h3>
+                      Nakshatra
+                    </h3>
+                    <p>
+                      The Moon's star sector among 27 nakshatras.
+                    </p>
+                    <p
+                      class="knowledge-term__why"
+                    >
+                      <strong>
+                        Why it matters:
+                      </strong>
+                       
+                      Used in puja planning, naming traditions, and muhurta filtering.
+                    </p>
+                  </li>
+                  <li
+                    class="knowledge-term"
+                  >
+                    <h3>
+                      Yoga
+                    </h3>
+                    <p>
+                      A combined Sun-Moon angle classification among 27 yogas.
+                    </p>
+                    <p
+                      class="knowledge-term__why"
+                    >
+                      <strong>
+                        Why it matters:
+                      </strong>
+                       
+                      Traditionally used to classify general day quality.
+                    </p>
+                  </li>
+                  <li
+                    class="knowledge-term"
+                  >
+                    <h3>
+                      Karana
+                    </h3>
+                    <p>
+                      Half of a tithi; a finer time unit for action windows.
+                    </p>
+                    <p
+                      class="knowledge-term__why"
+                    >
+                      <strong>
+                        Why it matters:
+                      </strong>
+                       
+                      Useful when selecting specific periods within a day.
+                    </p>
+                  </li>
+                  <li
+                    class="knowledge-term"
+                  >
+                    <h3>
+                      Vaara
+                    </h3>
+                    <p>
+                      Weekday (Ravivara, Somavara, etc.).
+                    </p>
+                    <p
+                      class="knowledge-term__why"
+                    >
+                      <strong>
+                        Why it matters:
+                      </strong>
+                       
+                      Many rituals have weekday preferences or restrictions.
+                    </p>
+                  </li>
+                </ul>
+              </details>
+            </div>
+          </section>
+        </div>
+      </details>
+    </section>
+  </main>
+  <footer
+    class="app-shell__footer"
+  >
+    <div
+      class="app-shell__footer-copy"
+    >
+      <strong>
+        Parva
+      </strong>
+      <span>
+        Sacred Wisdom for the Digital Era.
+      </span>
+    </div>
+    <div
+      class="app-shell__footer-links"
+    >
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Consumer
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/today"
+          >
+            Today
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/my-place"
+          >
+            My Place
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/festivals"
+          >
+            Festivals
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/best-time"
+          >
+            Best Time
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/birth-reading"
+          >
+            Birth Reading
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Utilities
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/saved"
+          >
+            Saved
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/profile"
+          >
+            Profile
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/integrations"
+          >
+            Integrations
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/about"
+          >
+            About
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Support
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            href="mailto:hello@parva.app"
+          >
+            Contact
+          </a>
+          <a
+            href="/developers/index.html"
+          >
+            For developers
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`visual regression harness > my-place page visual baseline on mobile 1`] = `
+<section
+  class="personal-page animate-fade-in-up consumer-route consumer-route--utility"
+>
+  <section
+    class="consumer-home__section"
+    id="my-place"
+  >
+    <div
+      class="consumer-home__section-header"
+    >
+      <div
+        class="consumer-home__section-copy"
+      >
+        <span
+          class="consumer-home__eyebrow"
+        >
+          My Place
+        </span>
+        <h2>
+          Keep the place that changes your day in view.
+        </h2>
+        <p>
+          Set the place that shapes your day, then keep only the place-aware changes that matter in view.
+        </p>
+      </div>
+      <div
+        class="consumer-home__section-action"
+      >
+        <a
+          class="btn btn-secondary btn-sm"
+          data-discover="true"
+          href="/#my-place"
+        >
+          Jump to home section
+        </a>
+      </div>
+    </div>
+    <div
+      class="consumer-home__section-shell consumer-home__section-shell--place"
+    >
+      <div
+        class="consumer-home__place-grid"
+      >
+        <article
+          class="consumer-home__surface consumer-home__place-hero"
+        >
+          <div
+            class="consumer-home__art-slot consumer-home__art-slot--sanctuary"
+          >
+            <span>
+              Kathmandu
+            </span>
+          </div>
+          <div
+            class="consumer-home__place-copy"
+          >
+            <h3>
+              Kathmandu
+            </h3>
+            <p>
+              Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+            </p>
+            <div
+              class="consumer-home__festival-actions"
+            >
+              <button
+                class="btn btn-primary btn-sm"
+                type="button"
+              >
+                Save this place
+              </button>
+              <button
+                class="btn btn-secondary btn-sm"
+                type="button"
+              >
+                Change place
+              </button>
+            </div>
+          </div>
+        </article>
+        <article
+          class="consumer-home__surface consumer-home__place-context"
+        >
+          <div
+            class="consumer-home__art-slot consumer-home__art-slot--context"
+          >
+            <span>
+              Morning Calm
+            </span>
+          </div>
+          <h3>
+            Morning Calm
+          </h3>
+          <p>
+            Quiet morning at your saved Kyoto Villa location. Air is crisp. 14C.
+          </p>
+        </article>
+      </div>
+      <div
+        class="consumer-home__place-secondary"
+      >
+        <article
+          class="consumer-home__surface consumer-home__place-panel"
+        >
+          <span
+            class="consumer-home__kicker"
+          >
+            Preferences
+          </span>
+          <h3>
+            English
+             / 
+            Asia/Kathmandu
+          </h3>
+          <p>
+            balanced
+             notifications with 
+            meditation
+             focus.
+          </p>
+        </article>
+        <article
+          class="consumer-home__surface consumer-home__place-panel"
+        >
+          <span
+            class="consumer-home__kicker"
+          >
+            Festival reminders
+          </span>
+          <div
+            class="consumer-home__mini-stack"
+          >
+            <div
+              class="consumer-home__mini-card"
+            >
+              <strong>
+                Gion Matsuri
+              </strong>
+              <p>
+                Jul 1-31
+              </p>
+            </div>
+          </div>
+        </article>
+        <article
+          class="consumer-home__surface consumer-home__place-panel"
+        >
+          <span
+            class="consumer-home__kicker"
+          >
+            Daily inspiration
+          </span>
+          <h3>
+            Reminder rhythm
+          </h3>
+          <p>
+            1 saved
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <section
+    class="ink-card personal-page__route-card"
+  >
+    <div
+      class="personal-page__route-header"
+    >
+      <div>
+        <p
+          class="today-page__eyebrow"
+        >
+          Place controls
+        </p>
+        <h2>
+          Adjust the place only when the answer needs to change.
+        </h2>
+      </div>
+    </div>
+    <form
+      class="personal-page__controls"
+    >
+      <label
+        class="ink-input"
+      >
+        <span>
+          Date
+        </span>
+        <input
+          required=""
+          type="date"
+          value="2026-02-25"
+        />
+      </label>
+      <label
+        class="ink-input"
+      >
+        <span>
+          Place
+        </span>
+        <select>
+          <option
+            value=""
+          >
+            Choose a city preset
+          </option>
+          <option
+            value="kathmandu"
+          >
+            Kathmandu
+          </option>
+          <option
+            value="pokhara"
+          >
+            Pokhara
+          </option>
+          <option
+            value="biratnagar"
+          >
+            Biratnagar
+          </option>
+          <option
+            value="nepalgunj"
+          >
+            Nepalgunj
+          </option>
+        </select>
+      </label>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Use my device
+      </button>
+    </form>
+  </section>
+  <section
+    class="personal-summary-grid"
+  >
+    <article
+      class="ink-card personal-summary-card"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        Local sunrise
+      </span>
+      <strong>
+        6:44 AM
+      </strong>
+      <p>
+        Use this when your place materially shifts the start of the day.
+      </p>
+    </article>
+    <article
+      class="ink-card personal-summary-card"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        Local sunset
+      </span>
+      <strong>
+        Pending
+      </strong>
+      <p>
+        Keep the close of the day visible alongside sunrise when timing is place-sensitive.
+      </p>
+    </article>
+    <article
+      class="ink-card personal-summary-card"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        What changes here
+      </span>
+      <strong>
+        +2 minutes vs Kathmandu
+      </strong>
+      <p>
+        Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+      </p>
+    </article>
+    <article
+      class="ink-card personal-summary-card"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        Preferences
+      </span>
+      <strong>
+        meditation
+      </strong>
+      <p>
+        English / Asia/Kathmandu / balanced
+      </p>
+    </article>
+  </section>
+  <section
+    class="personal-page__story-grid"
+  >
+    <article
+      class="ink-card personal-context-card personal-context-card--primary"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        Current context
+      </span>
+      <strong>
+        Morning Calm
+      </strong>
+      <p>
+        Quiet morning at your saved Kyoto Villa location. Air is crisp. 14C.
+      </p>
+      <div
+        class="personal-festivals"
+      >
+        <h3
+          class="personal-festivals__title"
+        >
+          Observances active for this place
+        </h3>
+        <div
+          class="personal-festivals__chips"
+        >
+          <a
+            class="festival-chip"
+            data-discover="true"
+            href="/festivals/dashain"
+          >
+            <span
+              class="festival-chip__name"
+            >
+              Dashain
+            </span>
+          </a>
+        </div>
+      </div>
+    </article>
+    <article
+      class="ink-card personal-context-card"
+    >
+      <span
+        class="today-page__eyebrow"
+      >
+        Saved reminders
+      </span>
+      <strong>
+        1 in view
+      </strong>
+      <ul
+        class="personal-reminders"
+      >
+        <li>
+          <strong>
+            Gion Matsuri
+          </strong>
+          <span>
+            Jul 1-31
+          </span>
+        </li>
+      </ul>
+      <dl
+        class="personal-page__mini-facts"
+      >
+        <div>
+          <dt>
+            Place basis
+          </dt>
+          <dd>
+            Kathmandu
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Sunrise shift
+          </dt>
+          <dd>
+            +2 minutes vs Kathmandu
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Status
+          </dt>
+          <dd>
+            Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+          </dd>
+        </div>
+      </dl>
+    </article>
+  </section>
+  <details
+    class="personal-page__accordion"
+  >
+    <summary>
+      Place signals and method
+    </summary>
+    <div
+      class="personal-page__accordion-body"
+    >
+      <section
+        class="personal-cards-grid stagger-children"
+      >
+        <article
+          class="ink-card panchanga-card"
+        >
+          <h3>
+            What changes here
+          </h3>
+          <p
+            class="panchanga-card__value"
+          >
+            +2 minutes vs Kathmandu
+          </p>
+          <p
+            class="panchanga-card__meta"
+          >
+            This is the simplest signal for whether the place materially changes the day rhythm.
+          </p>
+        </article>
+        <article
+          class="ink-card panchanga-card"
+        >
+          <h3>
+            Local sunset
+          </h3>
+          <p
+            class="panchanga-card__value"
+          >
+            Pending
+          </p>
+          <p
+            class="panchanga-card__meta"
+          >
+            The close of the day should stay visible anywhere local timing is part of the answer.
+          </p>
+        </article>
+        <article
+          class="ink-card panchanga-card"
+        >
+          <h3>
+            Reminder rhythm
+          </h3>
+          <p
+            class="panchanga-card__value"
+          >
+            1 saved
+          </p>
+          <p
+            class="panchanga-card__meta"
+          >
+            Gion Matsuri
+          </p>
+        </article>
+        <article
+          class="ink-card panchanga-card"
+        >
+          <h3>
+            Daily inspiration
+          </h3>
+          <p
+            class="panchanga-card__value"
+          >
+            The soul sits here, in the quiet spaces we keep. - A. Chen.
+          </p>
+          <p
+            class="panchanga-card__meta"
+          >
+            Context notes remain secondary to the main place answer.
+          </p>
+        </article>
+        <article
+          class="ink-card panchanga-card"
+        >
+          <h3>
+            Tithi
+          </h3>
+          <p
+            class="panchanga-card__value"
+          >
+            Chaturdashi
+          </p>
+          <p
+            class="panchanga-card__meta"
+          >
+            krishna fortnight
+          </p>
+        </article>
+        <article
+          class="ink-card panchanga-card"
+        >
+          <h3>
+            Nakshatra
+          </h3>
+          <p
+            class="panchanga-card__value"
+          >
+            Shravana
+          </p>
+          <p
+            class="panchanga-card__meta"
+          >
+            Number 22
+          </p>
+        </article>
+        <article
+          class="ink-card panchanga-card"
+        >
+          <h3>
+            Yoga
+          </h3>
+          <p
+            class="panchanga-card__value"
+          >
+            Shubha
+          </p>
+          <p
+            class="panchanga-card__meta"
+          >
+            Sunday
+          </p>
+        </article>
+      </section>
+      <button
+        class="btn btn-secondary evidence-drawer__trigger"
+        type="button"
+      >
+        How this was calculated
+      </button>
+      <section
+        aria-label="How Personal Panchanga Is Different"
+        class="knowledge-panel ink-card personal-knowledge"
+      >
+        <header
+          class="knowledge-panel__header"
+        >
+          <p
+            class="knowledge-panel__eyebrow"
+          >
+            Explainability
+          </p>
+          <h2>
+            How Personal Panchanga Is Different
+          </h2>
+          <p
+            class="knowledge-panel__intro"
+          >
+            Personal Panchanga recalculates the day using your location and timezone, so sunrise-based results match your city, not only Kathmandu.
+          </p>
+        </header>
+        <div
+          class="knowledge-panel__sections"
+        >
+          <details
+            class="knowledge-section"
+            open=""
+          >
+            <summary>
+              <span
+                class="knowledge-section__title"
+              >
+                Inputs That Change the Result
+              </span>
+            </summary>
+            <ul
+              class="knowledge-terms"
+            >
+              <li
+                class="knowledge-term"
+              >
+                <h3>
+                  Latitude / Longitude
+                </h3>
+                <p>
+                  Your physical location for sunrise and local sky calculations.
+                </p>
+                <p
+                  class="knowledge-term__why"
+                >
+                  <strong>
+                    Why it matters:
+                  </strong>
+                   
+                  A tithi boundary can shift when sunrise changes by location.
+                </p>
+              </li>
+              <li
+                class="knowledge-term"
+              >
+                <h3>
+                  Timezone
+                </h3>
+                <p>
+                  Local civil time context for date boundaries and display.
+                </p>
+                <p
+                  class="knowledge-term__why"
+                >
+                  <strong>
+                    Why it matters:
+                  </strong>
+                   
+                  Diaspora users get date labels aligned with their local day.
+                </p>
+              </li>
+              <li
+                class="knowledge-term"
+              >
+                <h3>
+                  Method Profile
+                </h3>
+                <p>
+                  Named ruleset used to compute this personal output.
+                </p>
+                <p
+                  class="knowledge-term__why"
+                >
+                  <strong>
+                    Why it matters:
+                  </strong>
+                   
+                  Makes results auditable and consistent across clients.
+                </p>
+              </li>
+            </ul>
+          </details>
+          <details
+            class="knowledge-section"
+          >
+            <summary>
+              <span
+                class="knowledge-section__title"
+              >
+                The 5 Limbs of Panchanga
+              </span>
+              <span
+                class="knowledge-section__description"
+              >
+                Each day is described using five markers:
+              </span>
+            </summary>
+            <ul
+              class="knowledge-terms"
+            >
+              <li
+                class="knowledge-term"
+              >
+                <h3>
+                  Tithi
+                </h3>
+                <p>
+                  The lunar day based on Moon-Sun angle (1 to 30).
+                </p>
+                <p
+                  class="knowledge-term__why"
+                >
+                  <strong>
+                    Why it matters:
+                  </strong>
+                   
+                  Most festivals and fasts are tied to a specific tithi at sunrise.
+                </p>
+              </li>
+              <li
+                class="knowledge-term"
+              >
+                <h3>
+                  Nakshatra
+                </h3>
+                <p>
+                  The Moon's star sector among 27 nakshatras.
+                </p>
+                <p
+                  class="knowledge-term__why"
+                >
+                  <strong>
+                    Why it matters:
+                  </strong>
+                   
+                  Used in puja planning, naming traditions, and muhurta filtering.
+                </p>
+              </li>
+              <li
+                class="knowledge-term"
+              >
+                <h3>
+                  Yoga
+                </h3>
+                <p>
+                  A combined Sun-Moon angle classification among 27 yogas.
+                </p>
+                <p
+                  class="knowledge-term__why"
+                >
+                  <strong>
+                    Why it matters:
+                  </strong>
+                   
+                  Traditionally used to classify general day quality.
+                </p>
+              </li>
+              <li
+                class="knowledge-term"
+              >
+                <h3>
+                  Karana
+                </h3>
+                <p>
+                  Half of a tithi; a finer time unit for action windows.
+                </p>
+                <p
+                  class="knowledge-term__why"
+                >
+                  <strong>
+                    Why it matters:
+                  </strong>
+                   
+                  Useful when selecting specific periods within a day.
+                </p>
+              </li>
+              <li
+                class="knowledge-term"
+              >
+                <h3>
+                  Vaara
+                </h3>
+                <p>
+                  Weekday (Ravivara, Somavara, etc.).
+                </p>
+                <p
+                  class="knowledge-term__why"
+                >
+                  <strong>
+                    Why it matters:
+                  </strong>
+                   
+                  Many rituals have weekday preferences or restrictions.
+                </p>
+              </li>
+            </ul>
+          </details>
+        </div>
+      </section>
+    </div>
+  </details>
+</section>
+`;
+
+exports[`visual regression harness > today page visual baseline on desktop 1`] = `
+<div
+  class="app-shell app-shell--consumer app-shell--with-rail"
+  data-theme="warm-paper"
+>
+  <header
+    class="app-shell__header"
+  >
+    <a
+      class="app-shell__brand"
+      data-discover="true"
+      href="/"
+    >
+      <span
+        class="app-shell__brand-wordmark"
+      >
+        Parva
+      </span>
+    </a>
+    <div
+      class="app-shell__nav-shell"
+    >
+      <nav
+        aria-label="Primary"
+        class="app-shell__nav"
+      >
+        <a
+          aria-current="page"
+          class="nav-link active"
+          data-discover="true"
+          href="/today"
+        >
+          Today
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/my-place"
+        >
+          My Place
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/festivals"
+        >
+          Festivals
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/best-time"
+        >
+          Best Time
+        </a>
+        <a
+          class="nav-link"
+          data-discover="true"
+          href="/birth-reading"
+        >
+          Birth Reading
+        </a>
+      </nav>
+    </div>
+    <div
+      class="app-shell__actions"
+    >
+      <button
+        class="app-shell__search-chip"
+        type="button"
+      >
+        Search
+      </button>
+      <button
+        aria-label="Place"
+        class="app-shell__icon-btn"
+        type="button"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          location_on
+        </span>
+      </button>
+      <a
+        aria-label="Profile"
+        class="app-shell__icon-btn"
+        data-discover="true"
+        href="/profile"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          account_circle
+        </span>
+      </a>
+      <div
+        class="app-shell__location-summary"
+      >
+        <span>
+          Place
+        </span>
+        <strong>
+          Kathmandu
+        </strong>
+      </div>
+    </div>
+  </header>
+  <aside
+    aria-label="Editorial quick links"
+    class="app-shell__side-rail"
+  >
+    <div
+      class="app-shell__side-head"
+    >
+      <div
+        class="app-shell__side-avatar"
+      >
+        <span
+          class="material-symbols-outlined"
+        >
+          spa
+        </span>
+      </div>
+      <div
+        class="app-shell__side-copy"
+      >
+        <span
+          class="app-shell__side-label"
+        >
+          Quick paths
+        </span>
+        <strong>
+          Parva
+        </strong>
+      </div>
+    </div>
+    <nav
+      class="app-shell__side-nav"
+    >
+      <a
+        aria-current="page"
+        aria-label="Today"
+        class="app-shell__side-link active"
+        data-discover="true"
+        href="/today"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          today
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Today
+        </span>
+      </a>
+      <a
+        aria-label="My Place"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/my-place"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          location_on
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          My Place
+        </span>
+      </a>
+      <a
+        aria-label="Festivals"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/festivals"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          explore
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Festivals
+        </span>
+      </a>
+      <a
+        aria-label="Best Time"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/best-time"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          auto_awesome
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Best Time
+        </span>
+      </a>
+      <a
+        aria-label="Birth Reading"
+        class="app-shell__side-link"
+        data-discover="true"
+        href="/birth-reading"
+      >
+        <span
+          class="material-symbols-outlined app-shell__side-link-icon"
+        >
+          flare
+        </span>
+        <span
+          class="app-shell__side-link-label"
+        >
+          Birth Reading
+        </span>
+      </a>
+    </nav>
+  </aside>
+  <main
+    class="app-shell__content"
+  >
+    <section
+      class="today-page animate-fade-in-up consumer-route consumer-route--overview"
+    >
+      <section
+        class="consumer-home__section consumer-home__section--hero"
+        id="today"
+      >
+        <div
+          class="consumer-home__section-header"
+        >
+          <div
+            class="consumer-home__section-copy"
+          >
+            <span
+              class="consumer-home__eyebrow"
+            >
+              Today
+            </span>
+            <h2>
+              Today in Kathmandu
+            </h2>
+            <p>
+              A calm reading of today should tell you what matters, what opens cleanly, and what to leave alone.
+            </p>
+          </div>
+          <div
+            class="consumer-home__section-action"
+          >
+            <a
+              class="btn btn-secondary btn-sm"
+              data-discover="true"
+              href="/#best-time"
+            >
+              Jump to Best Time on home
+            </a>
+          </div>
+        </div>
+        <div
+          class="consumer-home__section-shell consumer-home__section-shell--hero"
+        >
+          <div
+            class="consumer-home__today-grid"
+          >
+            <article
+              class="consumer-home__surface consumer-home__surface--hero-card"
+            >
+              <div
+                class="consumer-home__date-stack"
+              >
+                <span
+                  class="consumer-home__kicker"
+                >
+                  Bikram Sambat date pending
+                </span>
+                <strong
+                  class="consumer-home__hero-date"
+                >
+                  February 25, 2026
+                </strong>
+              </div>
+              <p
+                class="consumer-home__hero-story"
+              >
+                A calm reading of today should tell you what matters, what opens cleanly, and what to leave alone.
+              </p>
+              <div
+                class="consumer-home__observance-row"
+              >
+                <span>
+                  Today's observance
+                </span>
+                <strong>
+                  Dashain
+                </strong>
+              </div>
+              <div
+                class="consumer-home__hero-actions"
+              >
+                <a
+                  class="btn btn-primary"
+                  data-discover="true"
+                  href="/best-time"
+                >
+                  Open Best Time
+                </a>
+              </div>
+            </article>
+            <div
+              class="consumer-home__today-rail"
+            >
+              <article
+                class="consumer-home__surface consumer-home__support-card"
+              >
+                <span
+                  class="consumer-home__kicker"
+                >
+                  Highlights
+                </span>
+                <strong>
+                  Balanced
+                </strong>
+                <p>
+                  Abhijit Muhurta is the clearest opening in the current live ranking.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="ink-card today-page__route-card"
+      >
+        <div
+          class="today-page__panel-header"
+        >
+          <div>
+            <p
+              class="today-page__eyebrow"
+            >
+              Read further only when you need it
+            </p>
+            <h2>
+              The rest of today in one compact pass
+            </h2>
+          </div>
+          <div
+            class="today-page__panel-actions"
+          >
+            <span
+              class="today-page__meta-pill"
+            >
+              Steady rhythm
+            </span>
+          </div>
+        </div>
+        <div
+          class="today-page__route-meta"
+        >
+          <label
+            class="ink-input today-page__date-field"
+          >
+            <span>
+              Date
+            </span>
+            <input
+              type="date"
+              value="2026-02-25"
+            />
+          </label>
+          <article
+            class="today-page__meta-card"
+          >
+            <span
+              class="today-page__label"
+            >
+              Place basis
+            </span>
+            <strong>
+              Kathmandu
+            </strong>
+            <p
+              class="today-page__subsummary"
+            >
+              Change the place when the timing answer materially shifts.
+            </p>
+          </article>
+          <article
+            class="today-page__meta-card"
+          >
+            <span
+              class="today-page__label"
+            >
+              Day tone
+            </span>
+            <strong>
+              Balanced
+            </strong>
+            <p
+              class="today-page__subsummary"
+            >
+              The day tone softens when fewer signal layers are available.
+            </p>
+          </article>
+        </div>
+        <div
+          class="today-page__timeline-grid"
+        >
+          <article
+            class="today-page__timeline-segment today-page__timeline-segment--strong"
+          >
+            <span
+              class="today-page__label"
+            >
+              Abhijit Muhurta
+            </span>
+            <strong>
+              11:48 AM - 12:36 PM
+            </strong>
+            <p>
+              Strong overlap of supportive factors.
+            </p>
+          </article>
+          <article
+            class="today-page__timeline-segment today-page__timeline-segment--good"
+          >
+            <span
+              class="today-page__label"
+            >
+              Labh
+            </span>
+            <strong>
+              12:36 PM - 1:24 PM
+            </strong>
+            <p>
+              Supportive but not as strong as the lead window.
+            </p>
+          </article>
+        </div>
+        <details
+          class="today-page__accordion"
+        >
+          <summary>
+            How this was calculated
+          </summary>
+          <div
+            class="today-page__accordion-body"
+          >
+            <div
+              class="today-page__signal-grid"
+            >
+              <div>
+                <span>
+                  Tithi
+                </span>
+                <strong>
+                  Pending
+                </strong>
+                <p
+                  class="today-page__subsummary"
+                >
+                  Lunar day context is still loading.
+                </p>
+              </div>
+              <div>
+                <span>
+                  Nakshatra
+                </span>
+                <strong>
+                  Pending
+                </strong>
+                <p
+                  class="today-page__subsummary"
+                >
+                  Star field context appears here when available.
+                </p>
+              </div>
+              <div>
+                <span>
+                  Yoga
+                </span>
+                <strong>
+                  Pending
+                </strong>
+                <p
+                  class="today-page__subsummary"
+                >
+                  The day tone becomes clearer when yoga data is present.
+                </p>
+              </div>
+              <div>
+                <span>
+                  Karana
+                </span>
+                <strong>
+                  Pending
+                </strong>
+                <p
+                  class="today-page__subsummary"
+                >
+                  Weekday context joins here when available.
+                </p>
+              </div>
+            </div>
+            <button
+              class="btn btn-secondary evidence-drawer__trigger"
+              type="button"
+            >
+              How this was calculated
+            </button>
+          </div>
+        </details>
+      </section>
+      <div
+        class="today-page__insights-grid"
+      >
+        <section
+          class="ink-card today-page__panel"
+        >
+          <div
+            class="today-page__panel-header"
+          >
+            <div>
+              <p
+                class="today-page__eyebrow"
+              >
+                What's active
+              </p>
+              <h2>
+                Observances in view
+              </h2>
+            </div>
+          </div>
+          <div
+            class="today-page__festival-list"
+          >
+            <a
+              class="today-page__festival-item"
+              data-discover="true"
+              href="/festivals/dashain"
+            >
+              <strong>
+                Dashain
+              </strong>
+              <span>
+                Date pending
+              </span>
+              <p
+                class="today-page__subsummary"
+              >
+                Open the observance for the story, timing, and practice notes.
+              </p>
+            </a>
+            <a
+              class="today-page__festival-item"
+              data-discover="true"
+              href="/festivals/tihar"
+            >
+              <strong>
+                Tihar
+              </strong>
+              <span>
+                November 7, 2026
+              </span>
+              <p
+                class="today-page__subsummary"
+              >
+                Open the observance for the story, timing, and practice notes.
+              </p>
+            </a>
+            <a
+              class="today-page__festival-item"
+              data-discover="true"
+              href="/festivals/chhath"
+            >
+              <strong>
+                Chhath
+              </strong>
+              <span>
+                November 18, 2026
+              </span>
+              <p
+                class="today-page__subsummary"
+              >
+                Open the observance for the story, timing, and practice notes.
+              </p>
+            </a>
+          </div>
+        </section>
+        <section
+          class="ink-card today-page__panel"
+        >
+          <div
+            class="today-page__panel-header"
+          >
+            <div>
+              <p
+                class="today-page__eyebrow"
+              >
+                Act on it
+              </p>
+              <h2>
+                How to use today
+              </h2>
+            </div>
+          </div>
+          <dl
+            class="today-page__timing-notes"
+          >
+            <div>
+              <dt>
+                Lead with
+              </dt>
+              <dd>
+                hora supportive, tara good
+              </dd>
+            </div>
+            <div>
+              <dt>
+                Keep light
+              </dt>
+              <dd>
+                Keep lower-priority tasks here when possible.
+              </dd>
+            </div>
+            <div>
+              <dt>
+                Place context
+              </dt>
+              <dd>
+                Kathmandu
+                 is the current place basis for today's answer.
+              </dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+    </section>
+  </main>
+  <footer
+    class="app-shell__footer"
+  >
+    <div
+      class="app-shell__footer-copy"
+    >
+      <strong>
+        Parva
+      </strong>
+      <span>
+        Sacred Wisdom for the Digital Era.
+      </span>
+    </div>
+    <div
+      class="app-shell__footer-links"
+    >
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Consumer
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/today"
+          >
+            Today
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/my-place"
+          >
+            My Place
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/festivals"
+          >
+            Festivals
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/best-time"
+          >
+            Best Time
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/birth-reading"
+          >
+            Birth Reading
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Utilities
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/saved"
+          >
+            Saved
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/profile"
+          >
+            Profile
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/integrations"
+          >
+            Integrations
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/about"
+          >
+            About
+          </a>
+        </div>
+      </div>
+      <div
+        class="app-shell__footer-group"
+      >
+        <span
+          class="app-shell__footer-title"
+        >
+          Support
+        </span>
+        <div
+          class="app-shell__footer-group-links"
+        >
+          <a
+            href="mailto:hello@parva.app"
+          >
+            Contact
+          </a>
+          <a
+            href="/developers/index.html"
+          >
+            For developers
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`visual regression harness > today page visual baseline on mobile 1`] = `
+<section
+  class="today-page animate-fade-in-up consumer-route consumer-route--overview"
+>
+  <section
+    class="consumer-home__section consumer-home__section--hero"
+    id="today"
+  >
+    <div
+      class="consumer-home__section-header"
+    >
+      <div
+        class="consumer-home__section-copy"
+      >
+        <span
+          class="consumer-home__eyebrow"
+        >
+          Today
+        </span>
+        <h2>
+          Today in Kathmandu
+        </h2>
+        <p>
+          A calm reading of today should tell you what matters, what opens cleanly, and what to leave alone.
+        </p>
+      </div>
+      <div
+        class="consumer-home__section-action"
+      >
+        <a
+          class="btn btn-secondary btn-sm"
+          data-discover="true"
+          href="/#best-time"
+        >
+          Jump to Best Time on home
+        </a>
+      </div>
+    </div>
+    <div
+      class="consumer-home__section-shell consumer-home__section-shell--hero"
+    >
+      <div
+        class="consumer-home__today-grid"
+      >
+        <article
+          class="consumer-home__surface consumer-home__surface--hero-card"
+        >
+          <div
+            class="consumer-home__date-stack"
+          >
+            <span
+              class="consumer-home__kicker"
+            >
+              Bikram Sambat date pending
+            </span>
+            <strong
+              class="consumer-home__hero-date"
+            >
+              February 25, 2026
+            </strong>
+          </div>
+          <p
+            class="consumer-home__hero-story"
+          >
+            A calm reading of today should tell you what matters, what opens cleanly, and what to leave alone.
+          </p>
+          <div
+            class="consumer-home__observance-row"
+          >
+            <span>
+              Today's observance
+            </span>
+            <strong>
+              Dashain
+            </strong>
+          </div>
+          <div
+            class="consumer-home__hero-actions"
+          >
+            <a
+              class="btn btn-primary"
+              data-discover="true"
+              href="/best-time"
+            >
+              Open Best Time
+            </a>
+          </div>
+        </article>
+        <div
+          class="consumer-home__today-rail"
+        >
+          <article
+            class="consumer-home__surface consumer-home__support-card"
+          >
+            <span
+              class="consumer-home__kicker"
+            >
+              Highlights
+            </span>
+            <strong>
+              Balanced
+            </strong>
+            <p>
+              Abhijit Muhurta is the clearest opening in the current live ranking.
+            </p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section
+    class="ink-card today-page__route-card"
+  >
+    <div
+      class="today-page__panel-header"
+    >
+      <div>
+        <p
+          class="today-page__eyebrow"
+        >
+          Read further only when you need it
+        </p>
+        <h2>
+          The rest of today in one compact pass
+        </h2>
+      </div>
+      <div
+        class="today-page__panel-actions"
+      >
+        <span
+          class="today-page__meta-pill"
+        >
+          Steady rhythm
+        </span>
+      </div>
+    </div>
+    <div
+      class="today-page__route-meta"
+    >
+      <label
+        class="ink-input today-page__date-field"
+      >
+        <span>
+          Date
+        </span>
+        <input
+          type="date"
+          value="2026-02-25"
+        />
+      </label>
+      <article
+        class="today-page__meta-card"
+      >
+        <span
+          class="today-page__label"
+        >
+          Place basis
+        </span>
+        <strong>
+          Kathmandu
+        </strong>
+        <p
+          class="today-page__subsummary"
+        >
+          Change the place when the timing answer materially shifts.
+        </p>
+      </article>
+      <article
+        class="today-page__meta-card"
+      >
+        <span
+          class="today-page__label"
+        >
+          Day tone
+        </span>
+        <strong>
+          Balanced
+        </strong>
+        <p
+          class="today-page__subsummary"
+        >
+          The day tone softens when fewer signal layers are available.
+        </p>
+      </article>
+    </div>
+    <div
+      class="today-page__timeline-grid"
+    >
+      <article
+        class="today-page__timeline-segment today-page__timeline-segment--strong"
+      >
+        <span
+          class="today-page__label"
+        >
+          Abhijit Muhurta
+        </span>
+        <strong>
+          11:48 AM - 12:36 PM
+        </strong>
+        <p>
+          Strong overlap of supportive factors.
+        </p>
+      </article>
+      <article
+        class="today-page__timeline-segment today-page__timeline-segment--good"
+      >
+        <span
+          class="today-page__label"
+        >
+          Labh
+        </span>
+        <strong>
+          12:36 PM - 1:24 PM
+        </strong>
+        <p>
+          Supportive but not as strong as the lead window.
+        </p>
+      </article>
+    </div>
+    <details
+      class="today-page__accordion"
+    >
+      <summary>
+        How this was calculated
+      </summary>
+      <div
+        class="today-page__accordion-body"
+      >
+        <div
+          class="today-page__signal-grid"
+        >
+          <div>
+            <span>
+              Tithi
+            </span>
+            <strong>
+              Pending
+            </strong>
+            <p
+              class="today-page__subsummary"
+            >
+              Lunar day context is still loading.
+            </p>
+          </div>
+          <div>
+            <span>
+              Nakshatra
+            </span>
+            <strong>
+              Pending
+            </strong>
+            <p
+              class="today-page__subsummary"
+            >
+              Star field context appears here when available.
+            </p>
+          </div>
+          <div>
+            <span>
+              Yoga
+            </span>
+            <strong>
+              Pending
+            </strong>
+            <p
+              class="today-page__subsummary"
+            >
+              The day tone becomes clearer when yoga data is present.
+            </p>
+          </div>
+          <div>
+            <span>
+              Karana
+            </span>
+            <strong>
+              Pending
+            </strong>
+            <p
+              class="today-page__subsummary"
+            >
+              Weekday context joins here when available.
+            </p>
+          </div>
+        </div>
+        <button
+          class="btn btn-secondary evidence-drawer__trigger"
+          type="button"
+        >
+          How this was calculated
+        </button>
+      </div>
+    </details>
+  </section>
+  <div
+    class="today-page__insights-grid"
+  >
+    <section
+      class="ink-card today-page__panel"
+    >
+      <div
+        class="today-page__panel-header"
+      >
+        <div>
+          <p
+            class="today-page__eyebrow"
+          >
+            What's active
+          </p>
+          <h2>
+            Observances in view
+          </h2>
+        </div>
+      </div>
+      <div
+        class="today-page__festival-list"
+      >
+        <a
+          class="today-page__festival-item"
+          data-discover="true"
+          href="/festivals/dashain"
+        >
+          <strong>
+            Dashain
+          </strong>
+          <span>
+            Date pending
+          </span>
+          <p
+            class="today-page__subsummary"
+          >
+            Open the observance for the story, timing, and practice notes.
+          </p>
+        </a>
+        <a
+          class="today-page__festival-item"
+          data-discover="true"
+          href="/festivals/tihar"
+        >
+          <strong>
+            Tihar
+          </strong>
+          <span>
+            November 7, 2026
+          </span>
+          <p
+            class="today-page__subsummary"
+          >
+            Open the observance for the story, timing, and practice notes.
+          </p>
+        </a>
+        <a
+          class="today-page__festival-item"
+          data-discover="true"
+          href="/festivals/chhath"
+        >
+          <strong>
+            Chhath
+          </strong>
+          <span>
+            November 18, 2026
+          </span>
+          <p
+            class="today-page__subsummary"
+          >
+            Open the observance for the story, timing, and practice notes.
+          </p>
+        </a>
+      </div>
+    </section>
+    <section
+      class="ink-card today-page__panel"
+    >
+      <div
+        class="today-page__panel-header"
+      >
+        <div>
+          <p
+            class="today-page__eyebrow"
+          >
+            Act on it
+          </p>
+          <h2>
+            How to use today
+          </h2>
+        </div>
+      </div>
+      <dl
+        class="today-page__timing-notes"
+      >
+        <div>
+          <dt>
+            Lead with
+          </dt>
+          <dd>
+            hora supportive, tara good
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Keep light
+          </dt>
+          <dd>
+            Keep lower-priority tasks here when possible.
+          </dd>
+        </div>
+        <div>
+          <dt>
+            Place context
+          </dt>
+          <dd>
+            Kathmandu
+             is the current place basis for today's answer.
+          </dd>
+        </div>
+      </dl>
+    </section>
+  </div>
+</section>
+`;

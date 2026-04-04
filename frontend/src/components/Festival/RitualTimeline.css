@@ -1,0 +1,281 @@
+/**
+ * RitualTimeline Styles
+ * =====================
+ */
+
+.ritual-timeline {
+    max-width: 720px;
+}
+
+.ritual-timeline--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: var(--space-8);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: var(--space-4);
+}
+
+.empty-state h3 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+}
+
+.empty-state p {
+    color: var(--color-text-muted);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Preparation */
+.ritual-prep {
+    margin-bottom: var(--space-6);
+    padding: var(--space-4);
+    background: var(--color-bg-elevated);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-accent-gold);
+}
+
+.prep-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+}
+
+.prep-icon {
+    font-size: 1.2em;
+}
+
+.prep-content {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+}
+
+/* Day Selector */
+.day-selector {
+    display: flex;
+    gap: var(--space-2);
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+    margin-bottom: var(--space-4);
+    -webkit-overflow-scrolling: touch;
+}
+
+.day-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    min-width: 100px;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.day-btn:hover {
+    background: var(--color-bg-card);
+    border-color: var(--color-primary);
+}
+
+.day-btn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+.day-number {
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.day-name {
+    font-size: var(--text-xs);
+    opacity: 0.8;
+}
+
+/* Day Header */
+.day-header {
+    margin-bottom: var(--space-5);
+}
+
+.day-title {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-2);
+}
+
+.day-significance {
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+/* Timeline Track */
+.timeline-track {
+    position: relative;
+    padding-left: var(--space-4);
+}
+
+/* Timeline Event */
+.timeline-event {
+    display: grid;
+    grid-template-columns: 60px 24px 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    cursor: pointer;
+}
+
+.timeline-event:last-child {
+    margin-bottom: 0;
+}
+
+/* Time */
+.event-time {
+    text-align: right;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-muted);
+    padding-top: var(--space-3);
+}
+
+/* Node */
+.event-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: var(--space-3);
+}
+
+.node-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px var(--color-bg-surface),
+        0 0 10px rgba(255, 107, 53, 0.5);
+    z-index: 1;
+    transition: transform var(--transition-fast);
+}
+
+.timeline-event:hover .node-dot {
+    transform: scale(1.3);
+}
+
+.timeline-event.expanded .node-dot {
+    background: var(--color-accent-gold);
+}
+
+.node-line {
+    width: 2px;
+    flex: 1;
+    background: var(--color-border);
+    margin-top: var(--space-2);
+    min-height: 40px;
+}
+
+/* Event Content */
+.event-content {
+    padding: var(--space-4);
+    transition: all var(--transition-base);
+}
+
+.timeline-event:hover .event-content {
+    border-color: var(--color-primary);
+}
+
+.timeline-event.expanded .event-content {
+    border-color: var(--color-accent-gold);
+}
+
+.event-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+}
+
+.event-location {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--color-primary);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    margin-bottom: var(--space-2);
+}
+
+.event-location:hover {
+    text-decoration: underline;
+}
+
+.event-details {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+}
+
+.event-description {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-3);
+}
+
+.event-participants,
+.event-offerings {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+}
+
+.label {
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-right: var(--space-2);
+}
+
+.event-expand-hint {
+    display: block;
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-align: right;
+    margin-top: var(--space-2);
+}
+
+/* No Events */
+.no-events {
+    padding: var(--space-6);
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .timeline-event {
+        grid-template-columns: 50px 20px 1fr;
+        gap: var(--space-2);
+    }
+
+    .event-time {
+        font-size: var(--text-xs);
+    }
+
+    .day-btn {
+        min-width: 80px;
+        padding: var(--space-2) var(--space-3);
+    }
+}

@@ -1,0 +1,14 @@
+{
+  "festival_id": "bisket-jatra",
+  "rule_type": "solar",
+  "rule_family": "solar_fixed",
+  "source": "festival_rules_legacy",
+  "status": "computed",
+  "confidence": "medium",
+  "executable": true,
+  "execution_template": "solar_bs_fixed_v1",
+  "payload": {
+    "bs_month": 12,
+    "solar_day": 25
+  }
+}

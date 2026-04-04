@@ -1,0 +1,244 @@
+/**
+ * TemporalNavigator Styles
+ * ========================
+ * 
+ * Clean sidebar with organized festival list and warm theme.
+ */
+
+.temporal-navigator {
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: var(--color-bg-sidebar);
+    border-right: 1px solid var(--color-border);
+    overflow: hidden;
+    z-index: var(--z-sticky);
+}
+
+/* Header */
+.temporal-navigator__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-elevated);
+}
+
+.temporal-navigator__branding {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.temporal-navigator__logo {
+    font-size: 1.5rem;
+}
+
+.temporal-navigator__title {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.temporal-navigator__subtitle {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* Toggle */
+.temporal-navigator__toggle {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-1);
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-md);
+}
+
+.toggle-btn {
+    flex: 1;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.toggle-btn:hover {
+    color: var(--color-text-primary);
+}
+
+.toggle-btn.active {
+    background: var(--color-bg-elevated);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Content */
+.temporal-navigator__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4);
+}
+
+/* List */
+.temporal-navigator__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    list-style: none;
+}
+
+/* Festival Item */
+.festival-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-card);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.festival-item:hover {
+    background: var(--color-bg-hover);
+    border-color: var(--color-border);
+}
+
+.festival-item--active {
+    background: var(--color-primary-subtle);
+    border-color: var(--color-primary);
+}
+
+.festival-item__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.festival-item__content {
+    flex: 1;
+    min-width: 0;
+}
+
+.festival-item__name {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.festival-item__date {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+.festival-item__countdown {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-secondary-dark);
+    white-space: nowrap;
+}
+
+/* Loading Skeleton */
+.festival-skeleton {
+    height: 48px;
+    border-radius: var(--radius-md);
+}
+
+.temporal-navigator__loading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+/* Error State */
+.temporal-navigator__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    text-align: center;
+}
+
+.error-icon {
+    font-size: 2rem;
+    color: var(--color-vermillion);
+}
+
+.temporal-navigator__error p {
+    color: var(--color-text-secondary);
+}
+
+/* Empty State */
+.temporal-navigator__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 2.5rem;
+}
+
+.temporal-navigator__empty p {
+    color: var(--color-text-muted);
+}
+
+/* Footer */
+.temporal-navigator__footer {
+    padding: var(--space-4) var(--space-5);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-surface);
+}
+
+.festival-count {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.festival-count strong {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .temporal-navigator {
+        width: 100%;
+        height: auto;
+        position: relative;
+        max-height: 300px;
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .temporal-navigator__list {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: var(--space-2);
+    }
+
+    .festival-item {
+        min-width: 200px;
+        flex-shrink: 0;
+    }
+}

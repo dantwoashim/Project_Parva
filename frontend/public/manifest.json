@@ -1,0 +1,38 @@
+{
+  "name": "Project Parva",
+  "short_name": "Parva",
+  "description": "A calm, premium guide to Nepal's sacred time with daily guidance, observances, and personal timing.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#2d2a26",
+  "orientation": "any",
+  "categories": [
+    "lifestyle",
+    "education",
+    "utilities"
+  ],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/parva-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Festivals",
+      "short_name": "Festivals",
+      "description": "Browse upcoming observances and seasonal rhythm",
+      "url": "/festivals"
+    },
+    {
+      "name": "Today",
+      "short_name": "Today",
+      "description": "See today's guidance for your place",
+      "url": "/today"
+    }
+  ]
+}

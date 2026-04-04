@@ -1,0 +1,16 @@
+{
+  "festival_id": "ghode-jatra",
+  "rule_type": "lunar",
+  "rule_family": "lunar_month_tithi",
+  "source": "festival_rules_v3",
+  "status": "computed",
+  "confidence": "high",
+  "executable": true,
+  "execution_template": "lunar_tithi_window_v1",
+  "payload": {
+    "lunar_month": "Chaitra",
+    "paksha": "krishna",
+    "tithi": 15,
+    "adhik_policy": "skip"
+  }
+}

@@ -1,0 +1,223 @@
+.panchanga-page {
+  display: grid;
+  gap: 1.4rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.panchanga-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.8fr);
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.panchanga-hero__copy,
+.panchanga-hero__side {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.panchanga-hero__date,
+.panchanga-hero__intro {
+  margin: 0;
+}
+
+.panchanga-hero__date {
+  color: var(--ink-text);
+  font-size: 1rem;
+}
+
+.panchanga-hero__intro {
+  max-width: 58ch;
+  color: var(--ink-muted);
+  line-height: 1.7;
+}
+
+.panchanga-hero__side {
+  justify-items: start;
+}
+
+.panchanga-hero__picker {
+  width: min(100%, 220px);
+}
+
+.moon-phase {
+  display: grid;
+  gap: 0.7rem;
+  justify-items: center;
+  padding: 1rem;
+  width: min(100%, 220px);
+  border-radius: 1.25rem;
+  border: 1px solid var(--ink-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.moon-phase__orb {
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 38% 34%, #f1dfbb, #b48948 60%, #61472a 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 22px rgba(0, 0, 0, 0.2),
+    0 18px 36px rgba(0, 0, 0, 0.26);
+}
+
+.moon-phase__shadow {
+  position: absolute;
+  inset: 0;
+  background: #0f1014;
+  transition: clip-path 180ms ease;
+}
+
+.moon-phase__label {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.panchanga-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.panchanga-summary-card {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.panchanga-summary-card strong {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--ink-text);
+  line-height: 1.2;
+}
+
+.panchanga-summary-card p {
+  margin: 0;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+
+.panchanga-festivals {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.panchanga-festivals__title {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.panchanga-festivals__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.panchanga-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.panchanga-card {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1.1rem;
+  text-align: left;
+}
+
+.panchanga-card h3 {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+}
+
+.panchanga-card__value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.18;
+  color: var(--ink-text);
+}
+
+.panchanga-card__meta {
+  margin: 0;
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
+.panchanga-loading {
+  display: grid;
+  gap: 1rem;
+}
+
+.panchanga-loading .panchanga-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.panchanga-error {
+  padding: 1.4rem;
+  text-align: center;
+}
+
+.panchanga-error h3 {
+  margin: 0 0 0.35rem;
+  color: #ffb09d;
+}
+
+.panchanga-details-card {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.panchanga-details-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+}
+
+.panchanga-details-card__header h2 {
+  margin: 0.25rem 0 0;
+  font-size: 1.2rem;
+}
+
+.panchanga-details-card p {
+  margin: 0;
+  color: var(--ink-muted);
+}
+
+.panchanga-details-card strong {
+  color: var(--ink-text);
+}
+
+@media (max-width: 920px) {
+  .panchanga-hero,
+  .panchanga-summary-grid,
+  .panchanga-cards,
+  .panchanga-loading .panchanga-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .panchanga-hero__side {
+    justify-items: stretch;
+  }
+
+  .moon-phase,
+  .panchanga-hero__picker {
+    width: 100%;
+  }
+
+  .panchanga-details-card__header {
+    flex-direction: column;
+  }
+}

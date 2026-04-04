@@ -1,0 +1,199 @@
+/**
+ * ConnectionsView Styles
+ */
+
+.connections-view {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+/* Intro */
+.connections-intro {
+    padding: var(--space-4);
+    background: linear-gradient(135deg, var(--color-surface), var(--color-bg));
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-primary);
+}
+
+.connections-intro p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+/* Sections */
+.connections-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.section-icon {
+    font-size: 1.2rem;
+}
+
+/* Deity Grid */
+.deity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-3);
+}
+
+/* Related Festivals */
+.related-festivals {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-3);
+}
+
+.related-festival-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-align: left;
+    transition: all 200ms ease;
+    position: relative;
+}
+
+.related-festival-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--festival-color, var(--color-primary));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.related-festival-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--festival-color, var(--color-primary));
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.related-festival__badge {
+    margin-bottom: var(--space-1);
+}
+
+.related-festival__name {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.related-festival__nepali {
+    font-size: var(--text-sm);
+    color: var(--festival-color, var(--color-text-secondary));
+    opacity: 0.8;
+}
+
+.related-festival__tagline {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.related-festival__arrow {
+    position: absolute;
+    top: 50%;
+    right: var(--space-3);
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--festival-color, var(--color-primary));
+    opacity: 0.5;
+    transition: all 200ms ease;
+}
+
+.related-festival-card:hover .related-festival__arrow {
+    opacity: 1;
+    transform: translateY(-50%) translateX(4px);
+}
+
+/* Hints */
+.connections-hints {
+    background: var(--color-surface);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+}
+
+.hints-list {
+    margin: 0;
+    padding-left: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.hints-list li {
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.hints-list strong {
+    color: var(--color-primary);
+}
+
+/* Empty State */
+.connections-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8);
+    text-align: center;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    border: 2px dashed var(--color-border);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-3);
+    opacity: 0.5;
+}
+
+.connections-empty h4 {
+    font-size: var(--text-lg);
+    color: var(--color-text);
+    margin: 0 0 var(--space-2);
+}
+
+.connections-empty p {
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 280px;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .deity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .related-festivals {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+.venv*/
+.verify*/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/.vite/
+dist/
+frontend/dist/
+
+# Local env
+.env
+.env.*
+SKILL.md
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Build/output artifacts
+output/
+reports/
+benchmark/results/
+*.zip
+
+# Runtime data
+data/transparency/*.jsonl
+
+# Generated provenance artifacts
+backend/data/snapshots/
+backend/data/traces/
+backend/data/traces/tr_*.json
+backend/data/snapshots/snap_*.json
+backend/data/snapshots/snap_*.festival_snapshot.json

@@ -1,0 +1,128 @@
+{
+    "_meta": {
+        "description": "Ground truth sources for festival date validation",
+        "version": "1.0.0",
+        "last_updated": "2026-02-06"
+    },
+    "primary_sources": {
+        "nepal_government_calendar": {
+            "name": "Nepal Government Official Calendar",
+            "authority": "Government of Nepal",
+            "url": "https://www.nepal.gov.np/calendar",
+            "notes": "Official holiday dates published annually",
+            "reliability": "authoritative"
+        },
+        "pashupati_panchanga": {
+            "name": "Pashupati Panchanga",
+            "authority": "Pashupati Area Development Trust",
+            "notes": "Traditional panchanga with detailed tithi/nakshatra",
+            "reliability": "authoritative"
+        },
+        "drik_panchang": {
+            "name": "Drik Panchang",
+            "url": "https://www.drikpanchang.com",
+            "notes": "Swiss Ephemeris based, widely referenced",
+            "reliability": "high"
+        }
+    },
+    "secondary_sources": {
+        "pradhanlaw_public_holidays_2082": {
+            "name": "Pradhan Law - Public Holidays 2082 (2025/26)",
+            "url": "https://pradhanlaw.com/publications/list-of-public-holidays-2082-bs-202526-ad",
+            "pdf": "https://pradhanlaw.com/wp-content/uploads/2025/04/List-of-Public-Holidays-2082-202526-A.D.-1.pdf",
+            "notes": "English table of official public holidays (derived from Government of Nepal notice). Used for overrides ingestion.",
+            "reliability": "secondary"
+        },
+        "moha_public_holidays_2079": {
+            "name": "MOHA - Public Holidays 2079 (PDF)",
+            "url": "https://www.moha.gov.np/uploads/publication/pubfiles/६२३६_२०७९-०३-२९_111057.pdf",
+            "notes": "Government of Nepal PDF list. Use for expanding overrides when accessible.",
+            "reliability": "authoritative"
+        }
+    },
+    "reference_dates_2026": {
+        "makara_sankranti": {
+            "date": "2026-01-14",
+            "sources": [
+                "nepal_government_calendar",
+                "drik_panchang"
+            ],
+            "notes": "Sun enters Makara rashi"
+        },
+        "shivaratri": {
+            "date": "2026-02-15",
+            "sources": [
+                "nepal_government_calendar",
+                "pashupati_panchanga"
+            ],
+            "notes": "Falgun Krishna 14"
+        },
+        "holi": {
+            "date": "2026-03-03",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Falgun Purnima"
+        },
+        "bs_new_year_2083": {
+            "date": "2026-04-14",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Mesh Sankranti, Baishakh 1"
+        },
+        "buddha_jayanti": {
+            "date": "2026-05-12",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Baisakh Purnima"
+        },
+        "teej": {
+            "date": "2026-08-30",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Bhadra Shukla 3, Haritalika Teej"
+        },
+        "indra_jatra": {
+            "date": "2026-09-08",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Yenya Punhi begins"
+        },
+        "dashain_ghatasthapana": {
+            "date": "2026-10-10",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Ashwin Shukla 1"
+        },
+        "dashain_vijaya_dashami": {
+            "date": "2026-10-19",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Ashwin Shukla 10"
+        },
+        "tihar_kaag": {
+            "date": "2026-11-07",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Kartik Krishna 14"
+        },
+        "tihar_bhai_tika": {
+            "date": "2026-11-12",
+            "sources": [
+                "nepal_government_calendar"
+            ],
+            "notes": "Kartik Shukla 2"
+        }
+    },
+    "validation_methodology": {
+        "acceptable_variance_days": 1,
+        "notes": "Due to different calculation methods (udaya tithi vs purnimant vs amant), 1-day variance is acceptable for lunar festivals"
+    }
+}

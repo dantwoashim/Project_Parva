@@ -1,0 +1,296 @@
+.kundali-reset {
+  display: grid;
+  gap: 2rem;
+}
+
+.kundali-reset__hero,
+.kundali-reset__layout,
+.kundali-reset__results-head,
+.kundali-reset__section-head,
+.kundali-reset__panel-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.kundali-reset__hero,
+.kundali-reset__results-head,
+.kundali-reset__section-head,
+.kundali-reset__panel-head {
+  align-items: end;
+}
+
+.kundali-reset__eyebrow,
+.kundali-reset__anchor-card span,
+.kundali-reset__anchor-list span,
+.kundali-reset__aspect-card span {
+  margin: 0;
+  color: var(--editorial-accent);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.kundali-reset h1,
+.kundali-reset h2,
+.kundali-reset h3 {
+  margin: 0;
+  font-family: var(--font-serif);
+  color: var(--text-primary);
+}
+
+.kundali-reset h1 {
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+}
+
+.kundali-reset__intro,
+.kundali-reset__thesis-card p,
+.kundali-reset__anchor-card p,
+.kundali-reset__highlight-list p,
+.kundali-reset__aspect-card p,
+.kundali-reset__panel p,
+.kundali-reset__status,
+.kundali-reset__attribution,
+.kundali-reset__error {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.kundali-reset__layout,
+.kundali-reset__chart-grid,
+.kundali-reset__tab-grid {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.kundali-reset__layout {
+  grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr);
+  align-items: start;
+}
+
+.kundali-reset__form-card,
+.kundali-reset__anchor-card,
+.kundali-reset__results,
+.kundali-reset__panel,
+.kundali-reset__thesis-card,
+.kundali-reset__aspect-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.2rem;
+  border-radius: 1.3rem;
+  border: 1px solid rgba(115, 92, 0, 0.12);
+  background: rgba(255, 250, 243, 0.92);
+}
+
+.kundali-reset__anchors,
+.kundali-reset__side-reading,
+.kundali-reset__highlight-list,
+.kundali-reset__anchor-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.kundali-reset__date-grid,
+.kundali-reset__advanced-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.kundali-reset__advanced-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.kundali-reset__place-block,
+.kundali-reset__search-results,
+.kundali-reset__results-actions,
+.kundali-reset__tabs,
+.kundali-reset__houses-grid,
+.kundali-reset__aspect-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.kundali-reset__place-search {
+  display: flex;
+  gap: 0.8rem;
+  align-items: end;
+}
+
+.kundali-reset__place-input {
+  flex: 1 1 auto;
+}
+
+.kundali-reset__search-results {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kundali-reset__search-result,
+.kundali-reset__house-card {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.9rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(115, 92, 0, 0.12);
+  background: rgba(255, 250, 243, 0.96);
+  text-align: left;
+}
+
+.kundali-reset__search-result strong,
+.kundali-reset__house-card strong,
+.kundali-reset__anchor-card strong,
+.kundali-reset__anchor-list strong,
+.kundali-reset__highlight-list strong,
+.kundali-reset__aspect-card strong {
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+}
+
+.kundali-reset__search-result span,
+.kundali-reset__house-card small,
+.kundali-reset__panel small,
+.kundali-reset__results-head p {
+  color: var(--text-muted);
+}
+
+.kundali-reset__advanced-toggle,
+.kundali-reset__inline-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--editorial-accent);
+  text-align: left;
+}
+
+.kundali-reset__results {
+  gap: 1.3rem;
+}
+
+.kundali-reset__results-actions {
+  justify-items: end;
+}
+
+.kundali-reset__thesis-card small {
+  color: var(--text-muted);
+}
+
+.kundali-reset__tabs {
+  grid-auto-flow: column;
+  justify-content: start;
+}
+
+.kundali-reset__tab {
+  min-height: 2.7rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(115, 92, 0, 0.12);
+  background: rgba(255, 250, 243, 0.96);
+  color: var(--text-primary);
+}
+
+.kundali-reset__tab.is-active,
+.kundali-reset__tab:hover,
+.kundali-reset__tab:focus-visible,
+.kundali-reset__search-result:hover,
+.kundali-reset__search-result:focus-visible,
+.kundali-reset__house-card:hover,
+.kundali-reset__house-card:focus-visible,
+.kundali-reset__house-card.is-selected {
+  border-color: rgba(156, 63, 0, 0.24);
+  background: rgba(255, 242, 226, 0.96);
+}
+
+.kundali-reset__chart-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  align-items: start;
+}
+
+.kundali-reset__tab-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kundali-reset__table-wrap {
+  overflow-x: auto;
+}
+
+.kundali-reset__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.kundali-reset__table th,
+.kundali-reset__table td {
+  padding: 0.8rem 0;
+  text-align: left;
+  border-bottom: 1px solid rgba(115, 92, 0, 0.12);
+}
+
+.kundali-reset__table th {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.kundali-reset__houses-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kundali-reset__anchor-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.kundali-reset__anchor-list div,
+.kundali-reset__highlight-list div {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.kundali-reset__aspect-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 1080px) {
+  .kundali-reset__hero,
+  .kundali-reset__results-head,
+  .kundali-reset__section-head,
+  .kundali-reset__panel-head {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .kundali-reset__layout,
+  .kundali-reset__chart-grid,
+  .kundali-reset__tab-grid,
+  .kundali-reset__aspect-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kundali-reset__date-grid,
+  .kundali-reset__advanced-grid,
+  .kundali-reset__search-results,
+  .kundali-reset__houses-grid,
+  .kundali-reset__anchor-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .kundali-reset__date-grid,
+  .kundali-reset__advanced-grid,
+  .kundali-reset__search-results,
+  .kundali-reset__houses-grid,
+  .kundali-reset__anchor-list {
+    grid-template-columns: 1fr;
+  }
+
+  .kundali-reset__place-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kundali-reset__tabs {
+    grid-auto-flow: row;
+  }
+}

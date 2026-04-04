@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-03-21T11:05:13.533795+00:00",
+  "release_track": "public-beta-v3",
+  "pipeline_health": {
+    "conformance_total": 6,
+    "conformance_passed": 6,
+    "conformance_pass_rate": 100.0,
+    "rule_catalog_total": 453,
+    "rule_catalog_generated": 387,
+    "rule_catalog_coverage_pct": 151.0
+  },
+  "discrepancy_classes": {},
+  "confidence_breakdown": {
+    "rule_catalog": {
+      "low": 130,
+      "medium": 302,
+      "high": 21
+    },
+    "response_samples": {
+      "sample_size": 8,
+      "confidence_levels": {
+        "exact": 2,
+        "astronomical": 1,
+        "unknown": 2,
+        "computed": 3
+      },
+      "boundary_risk": {
+        "unknown": 8
+      },
+      "failed_samples": []
+    }
+  },
+  "artifacts": {
+    "conformance_report": "reports/conformance_report.json",
+    "rule_catalog": "data/festivals/festival_rules_v4.json",
+    "rule_ingestion_summary": "reports/rule_ingestion_summary.json",
+    "discrepancies": "data/ground_truth/discrepancies.json"
+  }
+}

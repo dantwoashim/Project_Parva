@@ -1,0 +1,28 @@
+{
+  "festival_id": "navami-vrata-bhadra-shukla",
+  "generated_at": "2026-02-17T10:07:35.911172+00:00",
+  "validation_framework": "parva_rule_validation_v1",
+  "cases": [
+    {
+      "year": 2025,
+      "expected_start_date": "2025-08-31",
+      "expected_end_date": "2025-08-31",
+      "method": "rule_dsl_lunar_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2026,
+      "expected_start_date": "2026-08-20",
+      "expected_end_date": "2026-08-20",
+      "method": "rule_dsl_lunar_month_v1",
+      "status": "passed"
+    },
+    {
+      "year": 2027,
+      "expected_start_date": "2027-09-09",
+      "expected_end_date": "2027-09-09",
+      "method": "rule_dsl_lunar_month_v1",
+      "status": "passed"
+    }
+  ]
+}

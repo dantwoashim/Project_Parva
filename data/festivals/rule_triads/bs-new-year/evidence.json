@@ -1,0 +1,15 @@
+{
+  "festival_id": "bs-new-year",
+  "generated_at": "2026-02-17T10:12:05.328753+00:00",
+  "source_evidence_ids": [
+    "festival_rules_v3"
+  ],
+  "confidence": "high",
+  "status": "computed",
+  "rule_family": "solar_sankranti",
+  "tags": [
+    "v3",
+    "canonical"
+  ],
+  "notes": "Mesh Sankranti, Baishakh 1"
+}

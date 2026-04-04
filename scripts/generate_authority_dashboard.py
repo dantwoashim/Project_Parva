@@ -1,0 +1,288 @@
+#!/usr/bin/env python3
+"""Generate authority dashboard from CI artifacts and runtime metadata (v3 public profile)."""
+
+from __future__ import annotations
+
+import json
+import sys
+from collections import Counter
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+BACKEND_ROOT = PROJECT_ROOT / "backend"
+if str(BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(BACKEND_ROOT))
+
+from app.main import app  # noqa: E402
+from fastapi.testclient import TestClient  # noqa: E402
+
+REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_RELEASE_DIR = REPORTS_DIR / "release"
+PUBLIC_ARTIFACTS_DIR = PROJECT_ROOT / "backend" / "data" / "public_artifacts"
+OUT_JSON = REPORTS_DIR / "authority_dashboard.json"
+OUT_RUNTIME_JSON = PUBLIC_ARTIFACTS_DIR / "authority_dashboard.json"
+OUT_MD = REPORTS_RELEASE_DIR / "authority_dashboard.md"
+
+
+class ArtifactError(RuntimeError):
+    """Raised when required release artifacts are missing or incomplete."""
+
+
+def _rel(path: Path) -> str:
+    return path.relative_to(PROJECT_ROOT).as_posix()
+
+
+def _read_json(path: Path) -> Dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _require_json(path: Path) -> Dict[str, Any]:
+    payload = _read_json(path)
+    if not payload:
+        raise ArtifactError(f"Missing or unreadable required artifact: {path}")
+    return payload
+
+
+def _collect_discrepancy_classes() -> Dict[str, int]:
+    counts: Counter[str] = Counter()
+    ignore = {"match", "exact_match", "ok", "none"}
+
+    eval_v4 = _read_json(REPORTS_DIR / "evaluation_v4" / "evaluation_v4.json")
+    for cause, value in (eval_v4.get("summary", {}).get("causes", {}) or {}).items():
+        cause_key = str(cause).strip().lower()
+        if cause_key not in ignore:
+            counts[cause_key] += int(value)
+    for row in eval_v4.get("rows", []):
+        if row.get("passed") is False:
+            cause = str(row.get("probable_cause") or "unclassified").strip().lower()
+            if cause not in ignore:
+                counts[cause] += 1
+
+    discrepancies = _read_json(PROJECT_ROOT / "data" / "ground_truth" / "discrepancies.json")
+    for cause, value in (discrepancies.get("summary", {}).get("by_cause", {}) or {}).items():
+        cause_key = str(cause).strip().lower()
+        if cause_key not in ignore:
+            counts[cause_key] += int(value)
+    for row in discrepancies.get("discrepancies", []):
+        cause = str(row.get("probable_cause") or row.get("cause") or "unclassified").strip().lower()
+        if cause not in ignore:
+            counts[cause] += 1
+
+    return dict(sorted(counts.items(), key=lambda item: item[0]))
+
+
+def _collect_rule_confidence_breakdown() -> Dict[str, int]:
+    catalog = _read_json(PROJECT_ROOT / "data" / "festivals" / "festival_rules_v4.json")
+    rows = catalog.get("festivals", [])
+    return dict(Counter(str(row.get("confidence", "unknown")) for row in rows))
+
+
+def _extract_runtime_confidence(payload: dict[str, Any]) -> str:
+    # v3 may return plain confidence string; v4/v5 envelope can still appear in compatibility mode.
+    if isinstance(payload.get("meta"), dict):
+        confidence = payload["meta"].get("confidence")
+        if isinstance(confidence, dict):
+            return str(confidence.get("level", "unknown"))
+        if isinstance(confidence, str):
+            return confidence
+    if isinstance(payload.get("confidence"), str):
+        return payload["confidence"]
+    panchanga = payload.get("panchanga")
+    if isinstance(panchanga, dict) and isinstance(panchanga.get("confidence"), str):
+        return panchanga["confidence"]
+    tithi = payload.get("tithi")
+    if isinstance(tithi, dict) and isinstance(tithi.get("confidence"), str):
+        return tithi["confidence"]
+    return "unknown"
+
+
+def _extract_boundary_risk(payload: dict[str, Any]) -> str:
+    if isinstance(payload.get("meta"), dict):
+        uncertainty = payload["meta"].get("uncertainty") or {}
+        if isinstance(uncertainty, dict):
+            return str(uncertainty.get("boundary_risk", "unknown"))
+    uncertainty = payload.get("uncertainty")
+    if isinstance(uncertainty, dict):
+        return str(uncertainty.get("boundary_risk", "unknown"))
+    return "unknown"
+
+
+def _collect_response_confidence_breakdown() -> Dict[str, Any]:
+    client = TestClient(app)
+    endpoints = [
+        "/v3/api/calendar/today",
+        "/v3/api/calendar/convert?date=2026-02-15",
+        "/v3/api/calendar/panchanga?date=2026-02-15",
+        "/v3/api/festivals/upcoming?days=30",
+        "/v3/api/festivals/coverage",
+        "/v3/api/personal/panchanga?date=2026-02-15",
+        "/v3/api/muhurta?date=2026-02-15",
+        "/v3/api/kundali?datetime=2026-02-15T06:30:00%2B05:45",
+    ]
+    confidence = Counter()
+    boundary = Counter()
+    failures = []
+
+    for endpoint in endpoints:
+        response = client.get(endpoint)
+        if response.status_code != 200:
+            failures.append({"endpoint": endpoint, "status_code": response.status_code})
+            continue
+        try:
+            payload = response.json()
+            confidence[_extract_runtime_confidence(payload)] += 1
+            boundary[_extract_boundary_risk(payload)] += 1
+        except Exception:
+            failures.append(
+                {"endpoint": endpoint, "status_code": response.status_code, "error": "invalid_json"}
+            )
+
+    return {
+        "sample_size": len(endpoints),
+        "confidence_levels": dict(confidence),
+        "boundary_risk": dict(boundary),
+        "failed_samples": failures,
+    }
+
+
+def _collect_pipeline_health() -> Dict[str, Any]:
+    conformance = _require_json(REPORTS_DIR / "conformance_report.json")
+    ingestion = _require_json(REPORTS_DIR / "rule_ingestion_summary.json")
+
+    pipeline_health = {
+        "conformance_total": conformance.get("total"),
+        "conformance_passed": conformance.get("passed"),
+        "conformance_pass_rate": conformance.get("pass_rate"),
+        "rule_catalog_total": ingestion.get("total_rules"),
+        "rule_catalog_generated": ingestion.get("generated_rules"),
+        "rule_catalog_coverage_pct": ingestion.get("coverage_pct"),
+    }
+    missing = [key for key, value in pipeline_health.items() if value is None]
+    if missing:
+        joined = ", ".join(missing)
+        raise ArtifactError(f"Authority dashboard has null pipeline health fields: {joined}")
+    return pipeline_health
+
+
+def _build_artifacts_payload() -> Dict[str, str]:
+    artifacts = {
+        "conformance_report": _rel(REPORTS_DIR / "conformance_report.json"),
+        "rule_catalog": _rel(PROJECT_ROOT / "data" / "festivals" / "festival_rules_v4.json"),
+        "rule_ingestion_summary": _rel(REPORTS_DIR / "rule_ingestion_summary.json"),
+    }
+
+    optional_artifacts = {
+        "evaluation_v4": REPORTS_DIR / "evaluation_v4" / "evaluation_v4.json",
+        "discrepancies": PROJECT_ROOT / "data" / "ground_truth" / "discrepancies.json",
+    }
+    for key, path in optional_artifacts.items():
+        if path.exists():
+            artifacts[key] = _rel(path)
+    return artifacts
+
+
+def _build_markdown(payload: Dict[str, Any]) -> str:
+    discrepancy_rows = payload["discrepancy_classes"]
+    confidence_rules = payload["confidence_breakdown"]["rule_catalog"]
+    confidence_responses = payload["confidence_breakdown"]["response_samples"]["confidence_levels"]
+
+    lines = [
+        "# Authority Dashboard",
+        "",
+        f"- Generated: `{payload['generated_at']}`",
+        f"- Release Track: `{payload['release_track']}`",
+        "",
+        "## Pipeline Health",
+        "",
+        "| Metric | Value |",
+        "|---|---:|",
+        f"| Conformance Pass Rate | {payload['pipeline_health'].get('conformance_pass_rate', 0)}% |",
+        f"| Rule Catalog Total | {payload['pipeline_health'].get('rule_catalog_total', 0)} |",
+        f"| Rule Catalog Coverage (target 300) | {payload['pipeline_health'].get('rule_catalog_coverage_pct', 0)}% |",
+        "",
+        "## Discrepancy Classes",
+        "",
+    ]
+
+    if discrepancy_rows:
+        lines.extend(
+            [
+                "| Class | Count |",
+                "|---|---:|",
+            ]
+        )
+        for key, value in discrepancy_rows.items():
+            lines.append(f"| {key} | {value} |")
+    else:
+        lines.append("- No discrepancies recorded in current artifacts.")
+
+    lines.extend(
+        [
+            "",
+            "## Confidence Breakdown",
+            "",
+            "### Rule Catalog Confidence",
+            "",
+            "| Confidence | Count |",
+            "|---|---:|",
+        ]
+    )
+    for key, value in confidence_rules.items():
+        lines.append(f"| {key} | {value} |")
+
+    lines.extend(
+        [
+            "",
+            "### Runtime Response Confidence (sampled v3 endpoints)",
+            "",
+            "| Confidence | Count |",
+            "|---|---:|",
+        ]
+    )
+    for key, value in confidence_responses.items():
+        lines.append(f"| {key} | {value} |")
+
+    return "\n".join(lines) + "\n"
+
+
+def main() -> int:
+    try:
+        payload = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "release_track": "public-beta-v3",
+            "pipeline_health": _collect_pipeline_health(),
+            "discrepancy_classes": _collect_discrepancy_classes(),
+            "confidence_breakdown": {
+                "rule_catalog": _collect_rule_confidence_breakdown(),
+                "response_samples": _collect_response_confidence_breakdown(),
+            },
+            "artifacts": _build_artifacts_payload(),
+        }
+    except ArtifactError as exc:
+        print(f"[FAIL] {exc}")
+        return 1
+
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    REPORTS_RELEASE_DIR.mkdir(parents=True, exist_ok=True)
+    PUBLIC_ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    OUT_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    OUT_RUNTIME_JSON.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+    OUT_MD.write_text(_build_markdown(payload), encoding="utf-8")
+
+    print(json.dumps(payload, indent=2, ensure_ascii=False))
+    print(f"Wrote {OUT_JSON}")
+    print(f"Wrote {OUT_RUNTIME_JSON}")
+    print(f"Wrote {OUT_MD}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

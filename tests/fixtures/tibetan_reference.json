@@ -1,0 +1,11 @@
+{
+  "source": "Working reference corpus for Year-2 plugin validation",
+  "notes": "v1 Tibetan plugin currently runs in approximate mode; this corpus is for integration checks and will be replaced with table-backed references.",
+  "observances": [
+    {"id": "sonam-lhosar", "year": 2025, "date": "2025-01-30", "confidence": "computed"},
+    {"id": "sonam-lhosar", "year": 2026, "date": "2026-02-18", "confidence": "computed"},
+    {"id": "gyalpo-lhosar", "year": 2026, "date": "2026-02-18", "confidence": "computed"},
+    {"id": "tamu-lhosar", "year": 2026, "date": "2025-12-30", "confidence": "computed"},
+    {"id": "saga-dawa", "year": 2026, "date": "2026-05-01", "confidence": "approximate"}
+  ]
+}

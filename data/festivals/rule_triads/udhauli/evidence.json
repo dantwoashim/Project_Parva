@@ -1,0 +1,16 @@
+{
+  "festival_id": "udhauli",
+  "generated_at": "2026-02-17T10:12:06.938156+00:00",
+  "source_evidence_ids": [
+    "festival_rules_legacy"
+  ],
+  "confidence": "medium",
+  "status": "computed",
+  "rule_family": "lunar_bs_tithi",
+  "tags": [
+    "computed-month2",
+    "legacy",
+    "quality-validated"
+  ],
+  "notes": "Kirat winter migration festival"
+}

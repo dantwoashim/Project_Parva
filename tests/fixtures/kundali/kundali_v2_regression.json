@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "description": "Deterministic kundali v2 regression corpus across season and location profiles.",
+  "cases": [
+    {
+      "id": "kathmandu-spring",
+      "datetime": "2026-03-22T06:30:00+05:45",
+      "lat": 27.7172,
+      "lon": 85.324,
+      "tz": "Asia/Kathmandu",
+      "expected": {
+        "lagna_rashi": 12,
+        "lagna_name": "Pisces",
+        "aspect_count": 6,
+        "yoga_ids": [],
+        "dosha_ids": ["manglik", "kaal_sarpa"],
+        "first_major_lord": "venus",
+        "first_major_years": 20,
+        "first_antar_lord": "venus",
+        "mars_dignity": "neutral",
+        "consistency_pass_count": 4
+      }
+    },
+    {
+      "id": "pokhara-monsoon",
+      "datetime": "2026-07-15T09:15:00+05:45",
+      "lat": 28.2096,
+      "lon": 83.9856,
+      "tz": "Asia/Kathmandu",
+      "expected": {
+        "lagna_rashi": 5,
+        "lagna_name": "Leo",
+        "aspect_count": 6,
+        "yoga_ids": ["gaja_kesari", "budha_aditya"],
+        "dosha_ids": ["shani_ashtama"],
+        "first_major_lord": "saturn",
+        "first_major_years": 19,
+        "first_antar_lord": "saturn",
+        "mars_dignity": "neutral",
+        "consistency_pass_count": 4
+      }
+    },
+    {
+      "id": "newyork-autumn",
+      "datetime": "2026-10-21T19:45:00-04:00",
+      "lat": 40.7128,
+      "lon": -74.006,
+      "tz": "America/New_York",
+      "expected": {
+        "lagna_rashi": 2,
+        "lagna_name": "Taurus",
+        "aspect_count": 6,
+        "yoga_ids": ["dharma_karmadhipati"],
+        "dosha_ids": [],
+        "first_major_lord": "rahu",
+        "first_major_years": 18,
+        "first_antar_lord": "rahu",
+        "mars_dignity": "debilitated",
+        "consistency_pass_count": 4
+      }
+    }
+  ]
+}

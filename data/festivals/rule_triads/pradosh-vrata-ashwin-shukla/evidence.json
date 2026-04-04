@@ -1,0 +1,18 @@
+{
+  "festival_id": "pradosh-vrata-ashwin-shukla",
+  "generated_at": "2026-02-17T10:12:06.176175+00:00",
+  "source_evidence_ids": [
+    "rule_ingestion_seed_v1"
+  ],
+  "confidence": "medium",
+  "status": "computed",
+  "rule_family": "monthly_pradosh",
+  "tags": [
+    "computed-month2",
+    "generated",
+    "quality-validated",
+    "recurring",
+    "seed-ingestion"
+  ],
+  "notes": "Generated recurring observance rule from ingestion seed profile."
+}

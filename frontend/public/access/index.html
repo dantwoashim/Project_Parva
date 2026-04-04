@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Parva Access Paths</title>
+  <link rel="stylesheet" href="../portals.css" />
+</head>
+<body>
+  <main class="portal-shell">
+    <section class="portal-hero">
+      <div>
+        <p class="portal-eyebrow">Project Parva Access</p>
+        <h1 class="portal-title">Choose the smallest surface that solves your problem.</h1>
+        <p class="portal-subtitle">
+          Most adopters do not need everything. Start with public read or embeds.
+          Move to <code>commercial.read</code> only if you need reliability, conformance,
+          public artifact discovery, or provenance verification.
+        </p>
+      </div>
+      <div class="portal-actions">
+        <a class="portal-button portal-button--primary" href="/developers/index.html">Developer Path</a>
+        <a class="portal-button" href="/institutions/index.html">Institution Path</a>
+        <a class="portal-button" href="/embed/index.html">Embed Examples</a>
+      </div>
+    </section>
+
+    <section class="portal-grid">
+      <article class="portal-card portal-card--third">
+        <h2>Free public read</h2>
+        <p>Use this if you only need product data and public routes.</p>
+        <ul class="portal-list">
+          <li>calendar conversion</li>
+          <li>upcoming festivals</li>
+          <li>personal panchanga</li>
+          <li>muhurta heatmap</li>
+          <li>kundali</li>
+        </ul>
+      </article>
+
+      <article class="portal-card portal-card--third">
+        <h2>Embeds</h2>
+        <p>Use this if you want a drop-in website surface with minimal engineering work.</p>
+        <ul class="portal-list">
+          <li><code>/embed/temporal-compass.html</code></li>
+          <li><code>/embed/upcoming-festivals.html</code></li>
+          <li><code>/embed/parva-embed.js</code></li>
+        </ul>
+      </article>
+
+      <article class="portal-card portal-card--third">
+        <h2>Commercial.read</h2>
+        <p>Use this if you need evidence-backed routes and operational visibility.</p>
+        <ul class="portal-list">
+          <li>reliability status</li>
+          <li>conformance visibility</li>
+          <li>artifact manifest</li>
+          <li>provenance verification</li>
+        </ul>
+      </article>
+
+      <article class="portal-card portal-card--half">
+        <h2>If you operate this deployment</h2>
+        <pre><code>py -3.11 scripts/release/generate_partner_api_key.py --key-id partner-prod
+py -3.11 scripts/release/check_render_blueprint.py</code></pre>
+        <p class="portal-note">
+          Provision partner access with <code>PARVA_API_KEYS</code>. Prefer one key per partner.
+        </p>
+      </article>
+
+      <article class="portal-card portal-card--half">
+        <h2>If you consume this deployment</h2>
+        <p>
+          Start with the free surfaces. Only ask the deployment operator for a
+          <code>commercial.read</code> key if your workflow depends on evidence-backed routes.
+        </p>
+        <div class="portal-links">
+          <a class="portal-link" href="/developers/index.html">Developer Onboarding</a>
+          <a class="portal-link" href="/source">Repository and Docs</a>
+        </div>
+      </article>
+
+      <article class="portal-card">
+        <h2>Example evidence-backed request</h2>
+        <pre><code>curl "https://your-host.example/v3/api/public/artifacts/manifest" ^
+  -H "X-API-Key: replace-me"</code></pre>
+      </article>
+
+      <article class="portal-card">
+        <h2>Truth-first note</h2>
+        <ul class="portal-list">
+          <li>Public beta is the correct launch posture for this build.</li>
+          <li>Known limits still matter even if you have access to evidence-backed routes.</li>
+          <li>Commercial access does not change the factual state of the product; it changes operational visibility.</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

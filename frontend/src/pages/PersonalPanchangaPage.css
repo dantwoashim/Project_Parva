@@ -1,0 +1,256 @@
+.personal-page {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.personal-page__route-card,
+.personal-page__controls,
+.personal-summary-card,
+.personal-page__story-grid,
+.personal-page__truth-grid,
+.personal-page__accordion-body {
+  display: grid;
+}
+
+.personal-page__hero {
+  min-height: 300px;
+}
+
+.personal-page__intro,
+.personal-page__status,
+.personal-page__privacy-copy,
+.personal-page__privacy-state,
+.personal-summary-card p,
+.personal-page .panchanga-card__meta,
+.personal-context-card p,
+.personal-reminders,
+.personal-reminders li,
+.personal-reminders span,
+.personal-page__mini-facts dd {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.personal-page__route-card {
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.personal-page__privacy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.personal-page__truth-card {
+  display: grid;
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.personal-page__route-header h2 {
+  margin: 0.2rem 0 0;
+  font-size: 1.2rem;
+}
+
+.personal-page__controls {
+  grid-template-columns: minmax(220px, 260px) minmax(220px, 260px) auto;
+  gap: 0.85rem;
+  align-items: end;
+}
+
+.personal-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.personal-summary-card {
+  gap: 0.35rem;
+  padding: 1rem;
+}
+
+.personal-summary-card strong {
+  font-size: 1.1rem;
+}
+
+.personal-page__story-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: 1rem;
+}
+
+.personal-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.personal-page .panchanga-card {
+  padding: 1.05rem;
+  text-align: left;
+}
+
+.personal-page .panchanga-card__value {
+  margin: 0.28rem 0;
+}
+
+.personal-context-card {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem;
+}
+
+.personal-context-card--primary {
+  background:
+    radial-gradient(circle at top right, rgba(214, 170, 103, 0.08), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+}
+
+.personal-context-card strong {
+  font-size: 1.15rem;
+}
+
+.personal-page__mini-facts {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding-top: 0.35rem;
+}
+
+.personal-page__truth-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.personal-page__truth-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.personal-page__truth-chip--authoritative {
+  background: rgba(76, 134, 104, 0.16);
+  border-color: rgba(76, 134, 104, 0.34);
+}
+
+.personal-page__truth-chip--computed {
+  background: rgba(214, 170, 103, 0.12);
+  border-color: rgba(214, 170, 103, 0.28);
+}
+
+.personal-page__truth-chip--fallback {
+  background: rgba(181, 82, 64, 0.12);
+  border-color: rgba(181, 82, 64, 0.24);
+}
+
+.personal-page__truth-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.personal-page__truth-source {
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.95rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.personal-page__truth-source p,
+.personal-page__truth-note {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.personal-page__truth-list {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.personal-page__truth-note {
+  color: var(--editorial-accent);
+  font-size: 0.84rem;
+}
+
+.personal-page__mini-facts div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.personal-page__mini-facts dt {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.personal-reminders {
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.personal-reminders strong {
+  color: var(--text-primary);
+}
+
+.personal-festivals {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.personal-festivals__title {
+  margin: 0;
+}
+
+.personal-festivals__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.personal-page__accordion {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 0.95rem;
+}
+
+.personal-page__accordion summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.personal-page__accordion-body {
+  gap: 1rem;
+  padding-top: 0.95rem;
+}
+
+.personal-error {
+  padding: 1.25rem;
+}
+
+.personal-loading {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (max-width: 1080px) {
+  .personal-page__controls,
+  .personal-summary-grid,
+  .personal-page__story-grid,
+  .personal-cards-grid,
+  .personal-page__truth-grid {
+    grid-template-columns: 1fr;
+  }
+}

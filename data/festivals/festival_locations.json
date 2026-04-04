@@ -1,0 +1,167 @@
+{
+    "version": "1.0.0",
+    "last_updated": "2026-02-02",
+    "mappings": {
+        "dashain": {
+            "primary": [
+                "kathmandu-durbar",
+                "patan-durbar",
+                "bhaktapur-durbar",
+                "dakshinkali"
+            ],
+            "roles": {
+                "kathmandu-durbar": "Main Phulpati procession and Tika ceremony",
+                "patan-durbar": "Traditional Dashain celebrations",
+                "bhaktapur-durbar": "Community celebrations and Navami rituals",
+                "dakshinkali": "Animal sacrifice and Kali worship",
+                "taleju-bhawani": "Opens for Maha Navami (only day of year)"
+            }
+        },
+        "tihar": {
+            "primary": [
+                "kathmandu-durbar",
+                "boudhanath",
+                "swayambhunath"
+            ],
+            "roles": {
+                "kathmandu-durbar": "Laxmi Puja celebrations",
+                "boudhanath": "Mha Puja celebrations by Newari community",
+                "swayambhunath": "Buddhist observances and oil lamp lighting"
+            }
+        },
+        "indra-jatra": {
+            "primary": [
+                "kathmandu-durbar",
+                "kumari-ghar"
+            ],
+            "roles": {
+                "kathmandu-durbar": "Chariot procession, Lakhey dances",
+                "kumari-ghar": "Starting point for Kumari chariot, blessing"
+            }
+        },
+        "shivaratri": {
+            "primary": [
+                "pashupatinath"
+            ],
+            "roles": {
+                "pashupatinath": "Main celebration - all-night vigil, sadhu gathering"
+            }
+        },
+        "teej": {
+            "primary": [
+                "pashupatinath"
+            ],
+            "roles": {
+                "pashupatinath": "Women's gathering, fasting rituals, Shiva worship"
+            }
+        },
+        "buddha-jayanti": {
+            "primary": [
+                "swayambhunath",
+                "boudhanath"
+            ],
+            "roles": {
+                "swayambhunath": "Buddha Purnima circumambulation",
+                "boudhanath": "Tibetan Buddhist celebrations, butter lamp offerings"
+            }
+        },
+        "bisket-jatra": {
+            "primary": [
+                "bhaktapur-durbar"
+            ],
+            "roles": {
+                "bhaktapur-durbar": "Chariot procession, lingam pole erection and felling"
+            }
+        },
+        "rato-machhindranath": {
+            "primary": [
+                "patan-durbar",
+                "rato-machhindranath"
+            ],
+            "roles": {
+                "patan-durbar": "Chariot journey through Patan",
+                "rato-machhindranath": "Bhoto Jatra display, deity's winter residence"
+            }
+        },
+        "krishna-janmashtami": {
+            "primary": [
+                "krishna-mandir",
+                "patan-durbar"
+            ],
+            "roles": {
+                "krishna-mandir": "Midnight birthday celebration, overnight vigil",
+                "patan-durbar": "Cultural programs and community celebrations"
+            }
+        },
+        "gai-jatra": {
+            "primary": [
+                "bhaktapur-durbar",
+                "kathmandu-durbar"
+            ],
+            "roles": {
+                "bhaktapur-durbar": "Cow procession honoring deceased",
+                "kathmandu-durbar": "Satirical performances and cow parade"
+            }
+        },
+        "ghode-jatra": {
+            "primary": [
+                "tundikhel"
+            ],
+            "roles": {
+                "tundikhel": "Horse racing, cavalry displays, acrobatics"
+            }
+        },
+        "mha-puja": {
+            "primary": [
+                "boudhanath"
+            ],
+            "roles": {
+                "boudhanath": "Nepal Sambat New Year celebrations"
+            }
+        },
+        "lhosar": {
+            "primary": [
+                "boudhanath",
+                "swayambhunath"
+            ],
+            "roles": {
+                "boudhanath": "Sherpa and Tibetan community celebrations",
+                "swayambhunath": "Tamang and Buddhist gatherings"
+            }
+        },
+        "janai-purnima": {
+            "primary": [
+                "pashupatinath"
+            ],
+            "roles": {
+                "pashupatinath": "Sacred thread changing ceremony"
+            }
+        },
+        "ram-navami": {
+            "primary": [
+                "janaki-mandir"
+            ],
+            "roles": {
+                "janaki-mandir": "Rama's birthday celebration in Janakpur"
+            }
+        },
+        "holi": {
+            "primary": [
+                "kathmandu-durbar",
+                "bhaktapur-durbar"
+            ],
+            "roles": {
+                "kathmandu-durbar": "Community color throwing",
+                "bhaktapur-durbar": "Traditional Holi celebrations"
+            }
+        },
+        "ubhauli": {
+            "primary": [
+                "tundikhel"
+            ],
+            "roles": {
+                "tundikhel": "Rai and Limbu Sakela dance celebrations"
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: project-parva
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PARVA_ENABLE_EXPERIMENTAL_API
+        value: "false"
+      - key: PARVA_ALLOW_EXPERIMENTAL_IN_PROD
+        value: "false"
+      - key: PARVA_ENV
+        value: production
+      - key: PARVA_RATE_LIMIT_ENABLED
+        value: "true"
+      - key: PARVA_RATE_LIMIT_BACKEND
+        value: redis
+      - key: PARVA_REDIS_URL
+        sync: false
+      - key: PARVA_SERVE_FRONTEND
+        value: "true"
+      - key: PARVA_SOURCE_URL
+        sync: false
+      - key: CORS_ALLOW_ORIGINS
+        value: https://project-parva.onrender.com

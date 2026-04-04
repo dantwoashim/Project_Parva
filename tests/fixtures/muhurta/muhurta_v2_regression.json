@@ -1,0 +1,89 @@
+{
+  "version": "muhurta_v2_regression_1",
+  "cases": [
+    {
+      "id": "ktm_spring_vivah",
+      "date": "2026-03-21",
+      "lat": 27.7172,
+      "lon": 85.324,
+      "tz": "Asia/Kathmandu",
+      "ceremony_type": "vivah",
+      "birth_nakshatra": "7",
+      "assumption_set": "np-mainstream-v2",
+      "expect": {
+        "daylight_minutes": 725.5,
+        "night_minutes": 713.4,
+        "hora_day_first_lord": "saturn",
+        "chaughadia_day_first": "kal",
+        "rahu_segment": 3,
+        "best_window_name": "Vidhi",
+        "best_window_score": 77,
+        "tara_quality": "auspicious",
+        "auspicious_count_min": 1
+      }
+    },
+    {
+      "id": "ktm_monsoon_griha",
+      "date": "2026-07-15",
+      "lat": 27.7172,
+      "lon": 85.324,
+      "tz": "Asia/Kathmandu",
+      "ceremony_type": "griha_pravesh",
+      "birth_nakshatra": "12",
+      "assumption_set": "np-mainstream-v2",
+      "expect": {
+        "daylight_minutes": 820.2,
+        "night_minutes": 620.3,
+        "hora_day_first_lord": "mercury",
+        "chaughadia_day_first": "labh",
+        "rahu_segment": 5,
+        "best_window_name": "Vidhi",
+        "best_window_score": 0,
+        "tara_quality": "inauspicious",
+        "auspicious_count_min": 0
+      }
+    },
+    {
+      "id": "newyork_winter_travel",
+      "date": "2026-12-15",
+      "lat": 40.7128,
+      "lon": -74.006,
+      "tz": "America/New_York",
+      "ceremony_type": "travel",
+      "birth_nakshatra": "3",
+      "assumption_set": "diaspora-practical-v2",
+      "expect": {
+        "daylight_minutes": 552.5,
+        "night_minutes": 888.2,
+        "hora_day_first_lord": "mars",
+        "chaughadia_day_first": "rog",
+        "rahu_segment": 7,
+        "best_window_name": "Vidhi",
+        "best_window_score": 0,
+        "tara_quality": "auspicious",
+        "auspicious_count_min": 0
+      }
+    },
+    {
+      "id": "sydney_autumn_general",
+      "date": "2026-04-10",
+      "lat": -33.8688,
+      "lon": 151.2093,
+      "tz": "Australia/Sydney",
+      "ceremony_type": "general",
+      "birth_nakshatra": "21",
+      "assumption_set": "diaspora-practical-v2",
+      "expect": {
+        "daylight_minutes": 680.0,
+        "night_minutes": 760.7,
+        "hora_day_first_lord": "venus",
+        "chaughadia_day_first": "char",
+        "rahu_segment": 4,
+        "best_window_name": "Vidhi",
+        "best_window_score": 0,
+        "tara_quality": "neutral",
+        "auspicious_count_min": 0
+      }
+    }
+  ]
+}

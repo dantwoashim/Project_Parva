@@ -1,0 +1,42 @@
+{
+  "version": "1.1",
+  "generated_for": "Parva Temporal Spec v1 (v3 public profile)",
+  "cases": [
+    {
+      "id": "calendar-convert-v3",
+      "endpoint": "/v3/api/calendar/convert",
+      "params": {"date": "2026-02-15"},
+      "required_keys": ["bikram_sambat", "tithi", "provenance", "policy"]
+    },
+    {
+      "id": "calendar-panchanga-v3",
+      "endpoint": "/v3/api/calendar/panchanga",
+      "params": {"date": "2026-02-15"},
+      "required_keys": ["panchanga", "ephemeris", "policy"]
+    },
+    {
+      "id": "festival-explain-v3",
+      "endpoint": "/v3/api/festivals/dashain/explain",
+      "params": {"year": 2026},
+      "required_keys": ["explanation", "steps", "calculation_trace_id"]
+    },
+    {
+      "id": "personal-panchanga-v3",
+      "endpoint": "/v3/api/personal/panchanga",
+      "params": {"date": "2026-02-15"},
+      "required_keys": ["tithi", "nakshatra", "yoga", "karana", "vaara", "calculation_trace_id"]
+    },
+    {
+      "id": "muhurta-v3",
+      "endpoint": "/v3/api/muhurta",
+      "params": {"date": "2026-02-15"},
+      "required_keys": ["muhurtas", "calculation_trace_id", "confidence"]
+    },
+    {
+      "id": "kundali-v3",
+      "endpoint": "/v3/api/kundali",
+      "params": {"datetime": "2026-02-15T06:30:00+05:45"},
+      "required_keys": ["lagna", "grahas", "houses", "d9", "dasha", "calculation_trace_id"]
+    }
+  ]
+}
