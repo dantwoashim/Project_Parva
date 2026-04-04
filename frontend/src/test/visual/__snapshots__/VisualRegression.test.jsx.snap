@@ -2,7 +2,7 @@
 
 exports[`visual regression harness > best-time page visual baseline on desktop 1`] = `
 <div
-  class="app-shell app-shell--consumer app-shell--with-rail"
+  class="app-shell app-shell--consumer"
   data-theme="warm-paper"
 >
   <header
@@ -71,7 +71,21 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
         class="app-shell__search-chip"
         type="button"
       >
-        Search
+        <span
+          class="material-symbols-outlined"
+        >
+          search
+        </span>
+        <strong
+          class="app-shell__search-chip-label"
+        >
+          Search
+        </strong>
+        <span
+          class="app-shell__search-shortcut"
+        >
+          Ctrl/Cmd K
+        </span>
       </button>
       <button
         aria-label="Place"
@@ -108,126 +122,6 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
       </div>
     </div>
   </header>
-  <aside
-    aria-label="Editorial quick links"
-    class="app-shell__side-rail"
-  >
-    <div
-      class="app-shell__side-head"
-    >
-      <div
-        class="app-shell__side-avatar"
-      >
-        <span
-          class="material-symbols-outlined"
-        >
-          spa
-        </span>
-      </div>
-      <div
-        class="app-shell__side-copy"
-      >
-        <span
-          class="app-shell__side-label"
-        >
-          Quick paths
-        </span>
-        <strong>
-          Parva
-        </strong>
-      </div>
-    </div>
-    <nav
-      class="app-shell__side-nav"
-    >
-      <a
-        aria-label="Today"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/today"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          today
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Today
-        </span>
-      </a>
-      <a
-        aria-label="My Place"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/my-place"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          location_on
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          My Place
-        </span>
-      </a>
-      <a
-        aria-label="Festivals"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/festivals"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          explore
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Festivals
-        </span>
-      </a>
-      <a
-        aria-current="page"
-        aria-label="Best Time"
-        class="app-shell__side-link active"
-        data-discover="true"
-        href="/best-time"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          auto_awesome
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Best Time
-        </span>
-      </a>
-      <a
-        aria-label="Birth Reading"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/birth-reading"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          flare
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Birth Reading
-        </span>
-      </a>
-    </nav>
-  </aside>
   <main
     class="app-shell__content"
   >
@@ -412,7 +306,11 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
               11:48 AM - 12:36 PM
             </strong>
             <span>
-              Best
+              <span
+                class=""
+              >
+                Best
+              </span>
             </span>
             <small>
               Strong overlap of supportive factors.
@@ -426,7 +324,11 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
               12:36 PM - 1:24 PM
             </strong>
             <span>
-              Backup
+              <span
+                class=""
+              >
+                Backup
+              </span>
             </span>
             <small>
               Supportive but not as strong as the lead window.
@@ -536,7 +438,21 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
           <a
             class=""
             data-discover="true"
+            href="/time-lab"
+          >
+            Time Lab
+          </a>
+          <a
+            class=""
+            data-discover="true"
             href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/truth-lab"
           >
             Methodology
           </a>
@@ -760,34 +676,190 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
       >
         <article>
           <p>
-            Tithi
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Tithi
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Tithi
+                </strong>
+                <span>
+                  The lunar day based on Moon-Sun angle (1 to 30).
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  Most festivals and fasts are tied to a specific tithi at sunrise.
+                </span>
+              </span>
+            </span>
           </p>
           <strong>
-            Pending
+            <span
+              class=""
+            >
+              Pending
+            </span>
           </strong>
         </article>
         <article>
           <p>
-            Nakshatra
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Nakshatra
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Nakshatra
+                </strong>
+                <span>
+                  The Moon's star sector among 27 nakshatras.
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  Used in puja planning, naming traditions, and muhurta filtering.
+                </span>
+              </span>
+            </span>
           </p>
           <strong>
-            Pending
+            <span
+              class=""
+            >
+              Pending
+            </span>
           </strong>
         </article>
         <article>
           <p>
-            Yoga
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Yoga
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Yoga
+                </strong>
+                <span>
+                  A combined Sun-Moon angle classification among 27 yogas.
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  Traditionally used to classify general day quality.
+                </span>
+              </span>
+            </span>
           </p>
           <strong>
-            Pending
+            <span
+              class=""
+            >
+              Pending
+            </span>
           </strong>
         </article>
         <article>
           <p>
-            Karana
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Karana
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Karana
+                </strong>
+                <span>
+                  Half of a tithi; a finer time unit for action windows.
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  Useful when selecting specific periods within a day.
+                </span>
+              </span>
+            </span>
           </p>
           <strong>
-            Pending
+            <span
+              class=""
+            >
+              Pending
+            </span>
           </strong>
         </article>
       </div>
@@ -938,6 +1010,9 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
         <h3>
           Dashain
         </h3>
+        <small>
+          236 days away
+        </small>
         <p>
           Open the observance for the story, timing, and household rhythm.
         </p>
@@ -953,6 +1028,9 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
         <h3>
           Tihar
         </h3>
+        <small>
+          254 days away
+        </small>
         <p>
           Open the observance for the story, timing, and household rhythm.
         </p>
@@ -968,6 +1046,9 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
         <h3>
           Chhath
         </h3>
+        <small>
+          265 days away
+        </small>
         <p>
           Open the observance for the story, timing, and household rhythm.
         </p>
@@ -1021,7 +1102,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
 
 exports[`visual regression harness > festival detail page visual baseline on desktop 1`] = `
 <div
-  class="app-shell app-shell--consumer app-shell--with-rail"
+  class="app-shell app-shell--consumer"
   data-theme="warm-paper"
 >
   <header
@@ -1090,7 +1171,21 @@ exports[`visual regression harness > festival detail page visual baseline on des
         class="app-shell__search-chip"
         type="button"
       >
-        Search
+        <span
+          class="material-symbols-outlined"
+        >
+          search
+        </span>
+        <strong
+          class="app-shell__search-chip-label"
+        >
+          Search
+        </strong>
+        <span
+          class="app-shell__search-shortcut"
+        >
+          Ctrl/Cmd K
+        </span>
       </button>
       <button
         aria-label="Place"
@@ -1127,126 +1222,6 @@ exports[`visual regression harness > festival detail page visual baseline on des
       </div>
     </div>
   </header>
-  <aside
-    aria-label="Editorial quick links"
-    class="app-shell__side-rail"
-  >
-    <div
-      class="app-shell__side-head"
-    >
-      <div
-        class="app-shell__side-avatar"
-      >
-        <span
-          class="material-symbols-outlined"
-        >
-          spa
-        </span>
-      </div>
-      <div
-        class="app-shell__side-copy"
-      >
-        <span
-          class="app-shell__side-label"
-        >
-          Quick paths
-        </span>
-        <strong>
-          Parva
-        </strong>
-      </div>
-    </div>
-    <nav
-      class="app-shell__side-nav"
-    >
-      <a
-        aria-label="Today"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/today"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          today
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Today
-        </span>
-      </a>
-      <a
-        aria-label="My Place"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/my-place"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          location_on
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          My Place
-        </span>
-      </a>
-      <a
-        aria-current="page"
-        aria-label="Festivals"
-        class="app-shell__side-link active"
-        data-discover="true"
-        href="/festivals"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          explore
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Festivals
-        </span>
-      </a>
-      <a
-        aria-label="Best Time"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/best-time"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          auto_awesome
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Best Time
-        </span>
-      </a>
-      <a
-        aria-label="Birth Reading"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/birth-reading"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          flare
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Birth Reading
-        </span>
-      </a>
-    </nav>
-  </aside>
   <main
     class="app-shell__content"
   >
@@ -1596,6 +1571,82 @@ exports[`visual regression harness > festival detail page visual baseline on des
         </div>
       </section>
       <section
+        class="festival-detail__truth"
+      >
+        <div
+          class="festival-detail__section-head"
+        >
+          <h2>
+            Truth Surface
+          </h2>
+          <p>
+            Authority selection, fallback state, and alternate candidates stay visible instead of disappearing behind one confidence badge.
+          </p>
+        </div>
+        <div
+          class="festival-detail__truth-grid"
+        >
+          <article
+            class="festival-detail__truth-panel"
+          >
+            <p
+              class="festival-detail__eyebrow"
+            >
+              Resolution contract
+            </p>
+            <div
+              class="festival-detail__truth-chip-row"
+            />
+            <div
+              class="festival-detail__truth-copy"
+            >
+              <p>
+                <strong>
+                  Engine path:
+                </strong>
+                 
+                Unavailable
+              </p>
+              <p>
+                <strong>
+                  Source family:
+                </strong>
+                 
+                Computed rule profile
+              </p>
+              <p>
+                <strong>
+                  Selection policy:
+                </strong>
+                 
+                Public Default
+              </p>
+              <p>
+                <strong>
+                  Authority conflict:
+                </strong>
+                 
+                No conflict published
+              </p>
+            </div>
+          </article>
+          <article
+            class="festival-detail__truth-panel festival-detail__truth-panel--ledger"
+          >
+            <p
+              class="festival-detail__eyebrow"
+            >
+              Authority ledger
+            </p>
+            <p
+              class="festival-detail__truth-note"
+            >
+              No alternate authority-backed candidates are published for this festival-year.
+            </p>
+          </article>
+        </div>
+      </section>
+      <section
         class="festival-detail__technical"
       >
         <div
@@ -1740,7 +1791,21 @@ exports[`visual regression harness > festival detail page visual baseline on des
           <a
             class=""
             data-discover="true"
+            href="/time-lab"
+          >
+            Time Lab
+          </a>
+          <a
+            class=""
+            data-discover="true"
             href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/truth-lab"
           >
             Methodology
           </a>
@@ -2128,6 +2193,82 @@ exports[`visual regression harness > festival detail page visual baseline on mob
     </div>
   </section>
   <section
+    class="festival-detail__truth"
+  >
+    <div
+      class="festival-detail__section-head"
+    >
+      <h2>
+        Truth Surface
+      </h2>
+      <p>
+        Authority selection, fallback state, and alternate candidates stay visible instead of disappearing behind one confidence badge.
+      </p>
+    </div>
+    <div
+      class="festival-detail__truth-grid"
+    >
+      <article
+        class="festival-detail__truth-panel"
+      >
+        <p
+          class="festival-detail__eyebrow"
+        >
+          Resolution contract
+        </p>
+        <div
+          class="festival-detail__truth-chip-row"
+        />
+        <div
+          class="festival-detail__truth-copy"
+        >
+          <p>
+            <strong>
+              Engine path:
+            </strong>
+             
+            Unavailable
+          </p>
+          <p>
+            <strong>
+              Source family:
+            </strong>
+             
+            Computed rule profile
+          </p>
+          <p>
+            <strong>
+              Selection policy:
+            </strong>
+             
+            Public Default
+          </p>
+          <p>
+            <strong>
+              Authority conflict:
+            </strong>
+             
+            No conflict published
+          </p>
+        </div>
+      </article>
+      <article
+        class="festival-detail__truth-panel festival-detail__truth-panel--ledger"
+      >
+        <p
+          class="festival-detail__eyebrow"
+        >
+          Authority ledger
+        </p>
+        <p
+          class="festival-detail__truth-note"
+        >
+          No alternate authority-backed candidates are published for this festival-year.
+        </p>
+      </article>
+    </div>
+  </section>
+  <section
     class="festival-detail__technical"
   >
     <div
@@ -2175,7 +2316,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
 
 exports[`visual regression harness > festivals page visual baseline on desktop 1`] = `
 <div
-  class="app-shell app-shell--consumer app-shell--with-rail"
+  class="app-shell app-shell--consumer"
   data-theme="warm-paper"
 >
   <header
@@ -2244,7 +2385,21 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
         class="app-shell__search-chip"
         type="button"
       >
-        Search
+        <span
+          class="material-symbols-outlined"
+        >
+          search
+        </span>
+        <strong
+          class="app-shell__search-chip-label"
+        >
+          Search
+        </strong>
+        <span
+          class="app-shell__search-shortcut"
+        >
+          Ctrl/Cmd K
+        </span>
       </button>
       <button
         aria-label="Place"
@@ -2281,126 +2436,6 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
       </div>
     </div>
   </header>
-  <aside
-    aria-label="Editorial quick links"
-    class="app-shell__side-rail"
-  >
-    <div
-      class="app-shell__side-head"
-    >
-      <div
-        class="app-shell__side-avatar"
-      >
-        <span
-          class="material-symbols-outlined"
-        >
-          spa
-        </span>
-      </div>
-      <div
-        class="app-shell__side-copy"
-      >
-        <span
-          class="app-shell__side-label"
-        >
-          Quick paths
-        </span>
-        <strong>
-          Parva
-        </strong>
-      </div>
-    </div>
-    <nav
-      class="app-shell__side-nav"
-    >
-      <a
-        aria-label="Today"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/today"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          today
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Today
-        </span>
-      </a>
-      <a
-        aria-label="My Place"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/my-place"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          location_on
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          My Place
-        </span>
-      </a>
-      <a
-        aria-current="page"
-        aria-label="Festivals"
-        class="app-shell__side-link active"
-        data-discover="true"
-        href="/festivals"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          explore
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Festivals
-        </span>
-      </a>
-      <a
-        aria-label="Best Time"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/best-time"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          auto_awesome
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Best Time
-        </span>
-      </a>
-      <a
-        aria-label="Birth Reading"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/birth-reading"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          flare
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Birth Reading
-        </span>
-      </a>
-    </nav>
-  </aside>
   <main
     class="app-shell__content"
   >
@@ -2428,6 +2463,18 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
         <div
           class="explorer-hero__actions"
         >
+          <label
+            class="ink-input explorer-search"
+          >
+            <span>
+              Search observances
+            </span>
+            <input
+              placeholder="Bisket Jatra, Buddha Jayanti, Indra..."
+              type="search"
+              value=""
+            />
+          </label>
           <button
             class="explorer-pill is-active"
             type="button"
@@ -2516,6 +2563,9 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
                 <span>
                   Happening now
                 </span>
+                <span>
+                  Date pending
+                </span>
               </div>
               <h3>
                 Dashain
@@ -2556,6 +2606,9 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
                   </span>
                   <span>
                     Kathmandu Valley
+                  </span>
+                  <span>
+                    254 days away
                   </span>
                 </div>
                 <h3>
@@ -2630,6 +2683,19 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
                 <div
                   class="explorer-card__copy"
                 >
+                  <div
+                    class="explorer-card__badges"
+                  >
+                    <span>
+                      national
+                    </span>
+                    <span>
+                      Nepal
+                    </span>
+                    <span>
+                      236 days away
+                    </span>
+                  </div>
                   <h3>
                     Dashain
                   </h3>
@@ -2661,6 +2727,19 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
                   <div
                     class="explorer-card__copy"
                   >
+                    <div
+                      class="explorer-card__badges"
+                    >
+                      <span>
+                        national
+                      </span>
+                      <span>
+                        Kathmandu Valley
+                      </span>
+                      <span>
+                        254 days away
+                      </span>
+                    </div>
                     <h3>
                       Tihar
                     </h3>
@@ -2781,7 +2860,21 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
           <a
             class=""
             data-discover="true"
+            href="/time-lab"
+          >
+            Time Lab
+          </a>
+          <a
+            class=""
+            data-discover="true"
             href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/truth-lab"
           >
             Methodology
           </a>
@@ -2847,6 +2940,18 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
     <div
       class="explorer-hero__actions"
     >
+      <label
+        class="ink-input explorer-search"
+      >
+        <span>
+          Search observances
+        </span>
+        <input
+          placeholder="Bisket Jatra, Buddha Jayanti, Indra..."
+          type="search"
+          value=""
+        />
+      </label>
       <button
         class="explorer-pill is-active"
         type="button"
@@ -2935,6 +3040,9 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             <span>
               Happening now
             </span>
+            <span>
+              Date pending
+            </span>
           </div>
           <h3>
             Dashain
@@ -2975,6 +3083,9 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
               </span>
               <span>
                 Kathmandu Valley
+              </span>
+              <span>
+                254 days away
               </span>
             </div>
             <h3>
@@ -3049,6 +3160,19 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             <div
               class="explorer-card__copy"
             >
+              <div
+                class="explorer-card__badges"
+              >
+                <span>
+                  national
+                </span>
+                <span>
+                  Nepal
+                </span>
+                <span>
+                  236 days away
+                </span>
+              </div>
               <h3>
                 Dashain
               </h3>
@@ -3080,6 +3204,19 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
               <div
                 class="explorer-card__copy"
               >
+                <div
+                  class="explorer-card__badges"
+                >
+                  <span>
+                    national
+                  </span>
+                  <span>
+                    Kathmandu Valley
+                  </span>
+                  <span>
+                    254 days away
+                  </span>
+                </div>
                 <h3>
                   Tihar
                 </h3>
@@ -3300,7 +3437,7 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
 
 exports[`visual regression harness > my-place page visual baseline on desktop 1`] = `
 <div
-  class="app-shell app-shell--consumer app-shell--with-rail"
+  class="app-shell app-shell--consumer"
   data-theme="warm-paper"
 >
   <header
@@ -3369,7 +3506,21 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
         class="app-shell__search-chip"
         type="button"
       >
-        Search
+        <span
+          class="material-symbols-outlined"
+        >
+          search
+        </span>
+        <strong
+          class="app-shell__search-chip-label"
+        >
+          Search
+        </strong>
+        <span
+          class="app-shell__search-shortcut"
+        >
+          Ctrl/Cmd K
+        </span>
       </button>
       <button
         aria-label="Place"
@@ -3406,126 +3557,6 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
       </div>
     </div>
   </header>
-  <aside
-    aria-label="Editorial quick links"
-    class="app-shell__side-rail"
-  >
-    <div
-      class="app-shell__side-head"
-    >
-      <div
-        class="app-shell__side-avatar"
-      >
-        <span
-          class="material-symbols-outlined"
-        >
-          spa
-        </span>
-      </div>
-      <div
-        class="app-shell__side-copy"
-      >
-        <span
-          class="app-shell__side-label"
-        >
-          Quick paths
-        </span>
-        <strong>
-          Parva
-        </strong>
-      </div>
-    </div>
-    <nav
-      class="app-shell__side-nav"
-    >
-      <a
-        aria-label="Today"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/today"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          today
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Today
-        </span>
-      </a>
-      <a
-        aria-current="page"
-        aria-label="My Place"
-        class="app-shell__side-link active"
-        data-discover="true"
-        href="/my-place"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          location_on
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          My Place
-        </span>
-      </a>
-      <a
-        aria-label="Festivals"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/festivals"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          explore
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Festivals
-        </span>
-      </a>
-      <a
-        aria-label="Best Time"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/best-time"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          auto_awesome
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Best Time
-        </span>
-      </a>
-      <a
-        aria-label="Birth Reading"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/birth-reading"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          flare
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Birth Reading
-        </span>
-      </a>
-    </nav>
-  </aside>
   <main
     class="app-shell__content"
   >
@@ -3589,7 +3620,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
                   Kathmandu
                 </h3>
                 <p>
-                  Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+                  Local saving is off until you enable it on this device.
                 </p>
                 <div
                   class="consumer-home__festival-actions"
@@ -3766,6 +3797,50 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
         </form>
       </section>
       <section
+        class="ink-card personal-page__route-card"
+      >
+        <div
+          class="personal-page__route-header"
+        >
+          <div>
+            <p
+              class="today-page__eyebrow"
+            >
+              Privacy
+            </p>
+            <h2>
+              Local saving is explicit, local-only, and reversible.
+            </h2>
+          </div>
+        </div>
+        <p
+          class="personal-page__privacy-copy"
+        >
+          Personal place details, saved reminders, and readings stay on this browser only. Turn local save on only if you want this device to remember them later.
+        </p>
+        <div
+          class="personal-page__privacy-actions"
+        >
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Enable local save
+          </button>
+          <button
+            class="btn btn-secondary"
+            type="button"
+          >
+            Purge local data
+          </button>
+        </div>
+        <p
+          class="personal-page__privacy-state"
+        >
+          Status: local save is off by default until you explicitly enable it.
+        </p>
+      </section>
+      <section
         class="personal-summary-grid"
       >
         <article
@@ -3810,7 +3885,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             +2 minutes vs Kathmandu
           </strong>
           <p>
-            Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+            Local saving is off until you enable it on this device.
           </p>
         </article>
         <article
@@ -3918,10 +3993,58 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
                 Status
               </dt>
               <dd>
-                Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+                Local saving is off until you enable it on this device.
               </dd>
             </div>
           </dl>
+          <div
+            class="today-page__truth-sources"
+          >
+            <article
+              class="today-page__truth-card"
+            >
+              <span
+                class="today-page__label"
+              >
+                Personal panchanga
+              </span>
+              <strong>
+                Unknown
+              </strong>
+              <p
+                class="today-page__subsummary"
+              >
+                Method 
+                Unknown
+                . Confidence 
+                Unknown
+                .
+                 No defaults were applied.
+              </p>
+            </article>
+            <article
+              class="today-page__truth-card"
+            >
+              <span
+                class="today-page__label"
+              >
+                Place context
+              </span>
+              <strong>
+                Unknown
+              </strong>
+              <p
+                class="today-page__subsummary"
+              >
+                Method 
+                Unknown
+                . Confidence 
+                Unknown
+                .
+                 No defaults were applied.
+              </p>
+            </article>
+          </div>
         </article>
       </section>
       <details
@@ -3940,12 +4063,20 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               class="ink-card panchanga-card"
             >
               <h3>
-                What changes here
+                <span
+                  class=""
+                >
+                  What changes here
+                </span>
               </h3>
               <p
                 class="panchanga-card__value"
               >
-                +2 minutes vs Kathmandu
+                <span
+                  class=""
+                >
+                  +2 minutes vs Kathmandu
+                </span>
               </p>
               <p
                 class="panchanga-card__meta"
@@ -3957,12 +4088,20 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               class="ink-card panchanga-card"
             >
               <h3>
-                Local sunset
+                <span
+                  class=""
+                >
+                  Local sunset
+                </span>
               </h3>
               <p
                 class="panchanga-card__value"
               >
-                Pending
+                <span
+                  class=""
+                >
+                  Pending
+                </span>
               </p>
               <p
                 class="panchanga-card__meta"
@@ -3974,12 +4113,20 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               class="ink-card panchanga-card"
             >
               <h3>
-                Reminder rhythm
+                <span
+                  class=""
+                >
+                  Reminder rhythm
+                </span>
               </h3>
               <p
                 class="panchanga-card__value"
               >
-                1 saved
+                <span
+                  class=""
+                >
+                  1 saved
+                </span>
               </p>
               <p
                 class="panchanga-card__meta"
@@ -3991,12 +4138,20 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               class="ink-card panchanga-card"
             >
               <h3>
-                Daily inspiration
+                <span
+                  class=""
+                >
+                  Daily inspiration
+                </span>
               </h3>
               <p
                 class="panchanga-card__value"
               >
-                The soul sits here, in the quiet spaces we keep. - A. Chen.
+                <span
+                  class=""
+                >
+                  The soul sits here, in the quiet spaces we keep. - A. Chen.
+                </span>
               </p>
               <p
                 class="panchanga-card__meta"
@@ -4008,12 +4163,82 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               class="ink-card panchanga-card"
             >
               <h3>
-                Tithi
+                <span
+                  class="hover-glossary-term"
+                >
+                  <button
+                    class="hover-glossary-term__trigger"
+                    type="button"
+                  >
+                    <span>
+                      Tithi
+                    </span>
+                    <span
+                      class="hover-glossary-term__icon"
+                    >
+                      i
+                    </span>
+                  </button>
+                  <span
+                    aria-hidden="true"
+                    class="hover-glossary-term__card"
+                    hidden=""
+                    role="tooltip"
+                  >
+                    <strong>
+                      Tithi
+                    </strong>
+                    <span>
+                      The lunar day based on Moon-Sun angle (1 to 30).
+                    </span>
+                    <span
+                      class="hover-glossary-term__why"
+                    >
+                      Why it matters: 
+                      Most festivals and fasts are tied to a specific tithi at sunrise.
+                    </span>
+                  </span>
+                </span>
               </h3>
               <p
                 class="panchanga-card__value"
               >
-                Chaturdashi
+                <span
+                  class="hover-glossary-term"
+                >
+                  <button
+                    class="hover-glossary-term__trigger"
+                    type="button"
+                  >
+                    <span>
+                      Chaturdashi
+                    </span>
+                    <span
+                      class="hover-glossary-term__icon"
+                    >
+                      i
+                    </span>
+                  </button>
+                  <span
+                    aria-hidden="true"
+                    class="hover-glossary-term__card"
+                    hidden=""
+                    role="tooltip"
+                  >
+                    <strong>
+                      Chaturdashi
+                    </strong>
+                    <span>
+                      The fourteenth lunar day.
+                    </span>
+                    <span
+                      class="hover-glossary-term__why"
+                    >
+                      Why it matters: 
+                      It often sits at a high-intensity lunar edge, close to amavasya or purnima.
+                    </span>
+                  </span>
+                </span>
               </p>
               <p
                 class="panchanga-card__meta"
@@ -4025,12 +4250,51 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               class="ink-card panchanga-card"
             >
               <h3>
-                Nakshatra
+                <span
+                  class="hover-glossary-term"
+                >
+                  <button
+                    class="hover-glossary-term__trigger"
+                    type="button"
+                  >
+                    <span>
+                      Nakshatra
+                    </span>
+                    <span
+                      class="hover-glossary-term__icon"
+                    >
+                      i
+                    </span>
+                  </button>
+                  <span
+                    aria-hidden="true"
+                    class="hover-glossary-term__card"
+                    hidden=""
+                    role="tooltip"
+                  >
+                    <strong>
+                      Nakshatra
+                    </strong>
+                    <span>
+                      The Moon's star sector among 27 nakshatras.
+                    </span>
+                    <span
+                      class="hover-glossary-term__why"
+                    >
+                      Why it matters: 
+                      Used in puja planning, naming traditions, and muhurta filtering.
+                    </span>
+                  </span>
+                </span>
               </h3>
               <p
                 class="panchanga-card__value"
               >
-                Shravana
+                <span
+                  class=""
+                >
+                  Shravana
+                </span>
               </p>
               <p
                 class="panchanga-card__meta"
@@ -4042,12 +4306,82 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               class="ink-card panchanga-card"
             >
               <h3>
-                Yoga
+                <span
+                  class="hover-glossary-term"
+                >
+                  <button
+                    class="hover-glossary-term__trigger"
+                    type="button"
+                  >
+                    <span>
+                      Yoga
+                    </span>
+                    <span
+                      class="hover-glossary-term__icon"
+                    >
+                      i
+                    </span>
+                  </button>
+                  <span
+                    aria-hidden="true"
+                    class="hover-glossary-term__card"
+                    hidden=""
+                    role="tooltip"
+                  >
+                    <strong>
+                      Yoga
+                    </strong>
+                    <span>
+                      A combined Sun-Moon angle classification among 27 yogas.
+                    </span>
+                    <span
+                      class="hover-glossary-term__why"
+                    >
+                      Why it matters: 
+                      Traditionally used to classify general day quality.
+                    </span>
+                  </span>
+                </span>
               </h3>
               <p
                 class="panchanga-card__value"
               >
-                Shubha
+                <span
+                  class="hover-glossary-term"
+                >
+                  <button
+                    class="hover-glossary-term__trigger"
+                    type="button"
+                  >
+                    <span>
+                      Shubha
+                    </span>
+                    <span
+                      class="hover-glossary-term__icon"
+                    >
+                      i
+                    </span>
+                  </button>
+                  <span
+                    aria-hidden="true"
+                    class="hover-glossary-term__card"
+                    hidden=""
+                    role="tooltip"
+                  >
+                    <strong>
+                      Shubha
+                    </strong>
+                    <span>
+                      A favorable or clean-quality slot.
+                    </span>
+                    <span
+                      class="hover-glossary-term__why"
+                    >
+                      Why it matters: 
+                      It suggests the window is generally more supportive for meaningful activity.
+                    </span>
+                  </span>
+                </span>
               </p>
               <p
                 class="panchanga-card__meta"
@@ -4380,7 +4714,21 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
           <a
             class=""
             data-discover="true"
+            href="/time-lab"
+          >
+            Time Lab
+          </a>
+          <a
+            class=""
+            data-discover="true"
             href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/truth-lab"
           >
             Methodology
           </a>
@@ -4482,7 +4830,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
               Kathmandu
             </h3>
             <p>
-              Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+              Local saving is off until you enable it on this device.
             </p>
             <div
               class="consumer-home__festival-actions"
@@ -4659,6 +5007,50 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
     </form>
   </section>
   <section
+    class="ink-card personal-page__route-card"
+  >
+    <div
+      class="personal-page__route-header"
+    >
+      <div>
+        <p
+          class="today-page__eyebrow"
+        >
+          Privacy
+        </p>
+        <h2>
+          Local saving is explicit, local-only, and reversible.
+        </h2>
+      </div>
+    </div>
+    <p
+      class="personal-page__privacy-copy"
+    >
+      Personal place details, saved reminders, and readings stay on this browser only. Turn local save on only if you want this device to remember them later.
+    </p>
+    <div
+      class="personal-page__privacy-actions"
+    >
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Enable local save
+      </button>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Purge local data
+      </button>
+    </div>
+    <p
+      class="personal-page__privacy-state"
+    >
+      Status: local save is off by default until you explicitly enable it.
+    </p>
+  </section>
+  <section
     class="personal-summary-grid"
   >
     <article
@@ -4703,7 +5095,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
         +2 minutes vs Kathmandu
       </strong>
       <p>
-        Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+        Local saving is off until you enable it on this device.
       </p>
     </article>
     <article
@@ -4811,10 +5203,58 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             Status
           </dt>
           <dd>
-            Last visited Oct 15. Next reminder: Cherry Blossom (Apr).
+            Local saving is off until you enable it on this device.
           </dd>
         </div>
       </dl>
+      <div
+        class="today-page__truth-sources"
+      >
+        <article
+          class="today-page__truth-card"
+        >
+          <span
+            class="today-page__label"
+          >
+            Personal panchanga
+          </span>
+          <strong>
+            Unknown
+          </strong>
+          <p
+            class="today-page__subsummary"
+          >
+            Method 
+            Unknown
+            . Confidence 
+            Unknown
+            .
+             No defaults were applied.
+          </p>
+        </article>
+        <article
+          class="today-page__truth-card"
+        >
+          <span
+            class="today-page__label"
+          >
+            Place context
+          </span>
+          <strong>
+            Unknown
+          </strong>
+          <p
+            class="today-page__subsummary"
+          >
+            Method 
+            Unknown
+            . Confidence 
+            Unknown
+            .
+             No defaults were applied.
+          </p>
+        </article>
+      </div>
     </article>
   </section>
   <details
@@ -4833,12 +5273,20 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
           class="ink-card panchanga-card"
         >
           <h3>
-            What changes here
+            <span
+              class=""
+            >
+              What changes here
+            </span>
           </h3>
           <p
             class="panchanga-card__value"
           >
-            +2 minutes vs Kathmandu
+            <span
+              class=""
+            >
+              +2 minutes vs Kathmandu
+            </span>
           </p>
           <p
             class="panchanga-card__meta"
@@ -4850,12 +5298,20 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
           class="ink-card panchanga-card"
         >
           <h3>
-            Local sunset
+            <span
+              class=""
+            >
+              Local sunset
+            </span>
           </h3>
           <p
             class="panchanga-card__value"
           >
-            Pending
+            <span
+              class=""
+            >
+              Pending
+            </span>
           </p>
           <p
             class="panchanga-card__meta"
@@ -4867,12 +5323,20 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
           class="ink-card panchanga-card"
         >
           <h3>
-            Reminder rhythm
+            <span
+              class=""
+            >
+              Reminder rhythm
+            </span>
           </h3>
           <p
             class="panchanga-card__value"
           >
-            1 saved
+            <span
+              class=""
+            >
+              1 saved
+            </span>
           </p>
           <p
             class="panchanga-card__meta"
@@ -4884,12 +5348,20 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
           class="ink-card panchanga-card"
         >
           <h3>
-            Daily inspiration
+            <span
+              class=""
+            >
+              Daily inspiration
+            </span>
           </h3>
           <p
             class="panchanga-card__value"
           >
-            The soul sits here, in the quiet spaces we keep. - A. Chen.
+            <span
+              class=""
+            >
+              The soul sits here, in the quiet spaces we keep. - A. Chen.
+            </span>
           </p>
           <p
             class="panchanga-card__meta"
@@ -4901,12 +5373,82 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
           class="ink-card panchanga-card"
         >
           <h3>
-            Tithi
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Tithi
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Tithi
+                </strong>
+                <span>
+                  The lunar day based on Moon-Sun angle (1 to 30).
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  Most festivals and fasts are tied to a specific tithi at sunrise.
+                </span>
+              </span>
+            </span>
           </h3>
           <p
             class="panchanga-card__value"
           >
-            Chaturdashi
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Chaturdashi
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Chaturdashi
+                </strong>
+                <span>
+                  The fourteenth lunar day.
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  It often sits at a high-intensity lunar edge, close to amavasya or purnima.
+                </span>
+              </span>
+            </span>
           </p>
           <p
             class="panchanga-card__meta"
@@ -4918,12 +5460,51 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
           class="ink-card panchanga-card"
         >
           <h3>
-            Nakshatra
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Nakshatra
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Nakshatra
+                </strong>
+                <span>
+                  The Moon's star sector among 27 nakshatras.
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  Used in puja planning, naming traditions, and muhurta filtering.
+                </span>
+              </span>
+            </span>
           </h3>
           <p
             class="panchanga-card__value"
           >
-            Shravana
+            <span
+              class=""
+            >
+              Shravana
+            </span>
           </p>
           <p
             class="panchanga-card__meta"
@@ -4935,12 +5516,82 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
           class="ink-card panchanga-card"
         >
           <h3>
-            Yoga
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Yoga
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Yoga
+                </strong>
+                <span>
+                  A combined Sun-Moon angle classification among 27 yogas.
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  Traditionally used to classify general day quality.
+                </span>
+              </span>
+            </span>
           </h3>
           <p
             class="panchanga-card__value"
           >
-            Shubha
+            <span
+              class="hover-glossary-term"
+            >
+              <button
+                class="hover-glossary-term__trigger"
+                type="button"
+              >
+                <span>
+                  Shubha
+                </span>
+                <span
+                  class="hover-glossary-term__icon"
+                >
+                  i
+                </span>
+              </button>
+              <span
+                aria-hidden="true"
+                class="hover-glossary-term__card"
+                hidden=""
+                role="tooltip"
+              >
+                <strong>
+                  Shubha
+                </strong>
+                <span>
+                  A favorable or clean-quality slot.
+                </span>
+                <span
+                  class="hover-glossary-term__why"
+                >
+                  Why it matters: 
+                  It suggests the window is generally more supportive for meaningful activity.
+                </span>
+              </span>
+            </span>
           </p>
           <p
             class="panchanga-card__meta"
@@ -5176,7 +5827,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
 
 exports[`visual regression harness > today page visual baseline on desktop 1`] = `
 <div
-  class="app-shell app-shell--consumer app-shell--with-rail"
+  class="app-shell app-shell--consumer"
   data-theme="warm-paper"
 >
   <header
@@ -5245,7 +5896,21 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
         class="app-shell__search-chip"
         type="button"
       >
-        Search
+        <span
+          class="material-symbols-outlined"
+        >
+          search
+        </span>
+        <strong
+          class="app-shell__search-chip-label"
+        >
+          Search
+        </strong>
+        <span
+          class="app-shell__search-shortcut"
+        >
+          Ctrl/Cmd K
+        </span>
       </button>
       <button
         aria-label="Place"
@@ -5282,126 +5947,6 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
       </div>
     </div>
   </header>
-  <aside
-    aria-label="Editorial quick links"
-    class="app-shell__side-rail"
-  >
-    <div
-      class="app-shell__side-head"
-    >
-      <div
-        class="app-shell__side-avatar"
-      >
-        <span
-          class="material-symbols-outlined"
-        >
-          spa
-        </span>
-      </div>
-      <div
-        class="app-shell__side-copy"
-      >
-        <span
-          class="app-shell__side-label"
-        >
-          Quick paths
-        </span>
-        <strong>
-          Parva
-        </strong>
-      </div>
-    </div>
-    <nav
-      class="app-shell__side-nav"
-    >
-      <a
-        aria-current="page"
-        aria-label="Today"
-        class="app-shell__side-link active"
-        data-discover="true"
-        href="/today"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          today
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Today
-        </span>
-      </a>
-      <a
-        aria-label="My Place"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/my-place"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          location_on
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          My Place
-        </span>
-      </a>
-      <a
-        aria-label="Festivals"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/festivals"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          explore
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Festivals
-        </span>
-      </a>
-      <a
-        aria-label="Best Time"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/best-time"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          auto_awesome
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Best Time
-        </span>
-      </a>
-      <a
-        aria-label="Birth Reading"
-        class="app-shell__side-link"
-        data-discover="true"
-        href="/birth-reading"
-      >
-        <span
-          class="material-symbols-outlined app-shell__side-link-icon"
-        >
-          flare
-        </span>
-        <span
-          class="app-shell__side-link-label"
-        >
-          Birth Reading
-        </span>
-      </a>
-    </nav>
-  </aside>
   <main
     class="app-shell__content"
   >
@@ -5504,7 +6049,11 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   Highlights
                 </span>
                 <strong>
-                  Balanced
+                  <span
+                    class=""
+                  >
+                    Balanced
+                  </span>
                 </strong>
                 <p>
                   Abhijit Muhurta is the clearest opening in the current live ranking.
@@ -5580,7 +6129,11 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
               Day tone
             </span>
             <strong>
-              Balanced
+              <span
+                class=""
+              >
+                Balanced
+              </span>
             </strong>
             <p
               class="today-page__subsummary"
@@ -5598,7 +6151,42 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             <span
               class="today-page__label"
             >
-              Abhijit Muhurta
+              <span
+                class="hover-glossary-term"
+              >
+                <button
+                  class="hover-glossary-term__trigger"
+                  type="button"
+                >
+                  <span>
+                    Abhijit Muhurta
+                  </span>
+                  <span
+                    class="hover-glossary-term__icon"
+                  >
+                    i
+                  </span>
+                </button>
+                <span
+                  aria-hidden="true"
+                  class="hover-glossary-term__card"
+                  hidden=""
+                  role="tooltip"
+                >
+                  <strong>
+                    Abhijit Muhurta
+                  </strong>
+                  <span>
+                    A traditionally favorable midday window.
+                  </span>
+                  <span
+                    class="hover-glossary-term__why"
+                  >
+                    Why it matters: 
+                    Often used when no other strong window is available.
+                  </span>
+                </span>
+              </span>
             </span>
             <strong>
               11:48 AM - 12:36 PM
@@ -5613,7 +6201,42 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             <span
               class="today-page__label"
             >
-              Labh
+              <span
+                class="hover-glossary-term"
+              >
+                <button
+                  class="hover-glossary-term__trigger"
+                  type="button"
+                >
+                  <span>
+                    Labh
+                  </span>
+                  <span
+                    class="hover-glossary-term__icon"
+                  >
+                    i
+                  </span>
+                </button>
+                <span
+                  aria-hidden="true"
+                  class="hover-glossary-term__card"
+                  hidden=""
+                  role="tooltip"
+                >
+                  <strong>
+                    Labh
+                  </strong>
+                  <span>
+                    A gain-oriented slot associated with benefit and progress.
+                  </span>
+                  <span
+                    class="hover-glossary-term__why"
+                  >
+                    Why it matters: 
+                    It is often read as productive for work that should move forward smoothly.
+                  </span>
+                </span>
+              </span>
             </span>
             <strong>
               12:36 PM - 1:24 PM
@@ -5637,10 +6260,49 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             >
               <div>
                 <span>
-                  Tithi
+                  <span
+                    class="hover-glossary-term"
+                  >
+                    <button
+                      class="hover-glossary-term__trigger"
+                      type="button"
+                    >
+                      <span>
+                        Tithi
+                      </span>
+                      <span
+                        class="hover-glossary-term__icon"
+                      >
+                        i
+                      </span>
+                    </button>
+                    <span
+                      aria-hidden="true"
+                      class="hover-glossary-term__card"
+                      hidden=""
+                      role="tooltip"
+                    >
+                      <strong>
+                        Tithi
+                      </strong>
+                      <span>
+                        The lunar day based on Moon-Sun angle (1 to 30).
+                      </span>
+                      <span
+                        class="hover-glossary-term__why"
+                      >
+                        Why it matters: 
+                        Most festivals and fasts are tied to a specific tithi at sunrise.
+                      </span>
+                    </span>
+                  </span>
                 </span>
                 <strong>
-                  Pending
+                  <span
+                    class=""
+                  >
+                    Pending
+                  </span>
                 </strong>
                 <p
                   class="today-page__subsummary"
@@ -5650,10 +6312,49 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
               </div>
               <div>
                 <span>
-                  Nakshatra
+                  <span
+                    class="hover-glossary-term"
+                  >
+                    <button
+                      class="hover-glossary-term__trigger"
+                      type="button"
+                    >
+                      <span>
+                        Nakshatra
+                      </span>
+                      <span
+                        class="hover-glossary-term__icon"
+                      >
+                        i
+                      </span>
+                    </button>
+                    <span
+                      aria-hidden="true"
+                      class="hover-glossary-term__card"
+                      hidden=""
+                      role="tooltip"
+                    >
+                      <strong>
+                        Nakshatra
+                      </strong>
+                      <span>
+                        The Moon's star sector among 27 nakshatras.
+                      </span>
+                      <span
+                        class="hover-glossary-term__why"
+                      >
+                        Why it matters: 
+                        Used in puja planning, naming traditions, and muhurta filtering.
+                      </span>
+                    </span>
+                  </span>
                 </span>
                 <strong>
-                  Pending
+                  <span
+                    class=""
+                  >
+                    Pending
+                  </span>
                 </strong>
                 <p
                   class="today-page__subsummary"
@@ -5663,10 +6364,49 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
               </div>
               <div>
                 <span>
-                  Yoga
+                  <span
+                    class="hover-glossary-term"
+                  >
+                    <button
+                      class="hover-glossary-term__trigger"
+                      type="button"
+                    >
+                      <span>
+                        Yoga
+                      </span>
+                      <span
+                        class="hover-glossary-term__icon"
+                      >
+                        i
+                      </span>
+                    </button>
+                    <span
+                      aria-hidden="true"
+                      class="hover-glossary-term__card"
+                      hidden=""
+                      role="tooltip"
+                    >
+                      <strong>
+                        Yoga
+                      </strong>
+                      <span>
+                        A combined Sun-Moon angle classification among 27 yogas.
+                      </span>
+                      <span
+                        class="hover-glossary-term__why"
+                      >
+                        Why it matters: 
+                        Traditionally used to classify general day quality.
+                      </span>
+                    </span>
+                  </span>
                 </span>
                 <strong>
-                  Pending
+                  <span
+                    class=""
+                  >
+                    Pending
+                  </span>
                 </strong>
                 <p
                   class="today-page__subsummary"
@@ -5676,10 +6416,49 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
               </div>
               <div>
                 <span>
-                  Karana
+                  <span
+                    class="hover-glossary-term"
+                  >
+                    <button
+                      class="hover-glossary-term__trigger"
+                      type="button"
+                    >
+                      <span>
+                        Karana
+                      </span>
+                      <span
+                        class="hover-glossary-term__icon"
+                      >
+                        i
+                      </span>
+                    </button>
+                    <span
+                      aria-hidden="true"
+                      class="hover-glossary-term__card"
+                      hidden=""
+                      role="tooltip"
+                    >
+                      <strong>
+                        Karana
+                      </strong>
+                      <span>
+                        Half of a tithi; a finer time unit for action windows.
+                      </span>
+                      <span
+                        class="hover-glossary-term__why"
+                      >
+                        Why it matters: 
+                        Useful when selecting specific periods within a day.
+                      </span>
+                    </span>
+                  </span>
                 </span>
                 <strong>
-                  Pending
+                  <span
+                    class=""
+                  >
+                    Pending
+                  </span>
                 </strong>
                 <p
                   class="today-page__subsummary"
@@ -5819,6 +6598,32 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
               </dd>
             </div>
           </dl>
+          <div
+            class="today-page__truth-sources"
+          >
+            <article
+              class="today-page__truth-card"
+            >
+              <span
+                class="today-page__label"
+              >
+                Best time
+              </span>
+              <strong>
+                Unknown
+              </strong>
+              <p
+                class="today-page__subsummary"
+              >
+                Method 
+                Unknown
+                . Confidence 
+                Unknown
+                .
+                 No defaults were applied.
+              </p>
+            </article>
+          </div>
         </section>
       </div>
     </section>
@@ -5923,7 +6728,21 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
           <a
             class=""
             data-discover="true"
+            href="/time-lab"
+          >
+            Time Lab
+          </a>
+          <a
+            class=""
+            data-discover="true"
             href="/methodology"
+          >
+            Methodology
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/truth-lab"
           >
             Methodology
           </a>
@@ -6064,7 +6883,11 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
               Highlights
             </span>
             <strong>
-              Balanced
+              <span
+                class=""
+              >
+                Balanced
+              </span>
             </strong>
             <p>
               Abhijit Muhurta is the clearest opening in the current live ranking.
@@ -6140,7 +6963,11 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
           Day tone
         </span>
         <strong>
-          Balanced
+          <span
+            class=""
+          >
+            Balanced
+          </span>
         </strong>
         <p
           class="today-page__subsummary"
@@ -6158,7 +6985,42 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
         <span
           class="today-page__label"
         >
-          Abhijit Muhurta
+          <span
+            class="hover-glossary-term"
+          >
+            <button
+              class="hover-glossary-term__trigger"
+              type="button"
+            >
+              <span>
+                Abhijit Muhurta
+              </span>
+              <span
+                class="hover-glossary-term__icon"
+              >
+                i
+              </span>
+            </button>
+            <span
+              aria-hidden="true"
+              class="hover-glossary-term__card"
+              hidden=""
+              role="tooltip"
+            >
+              <strong>
+                Abhijit Muhurta
+              </strong>
+              <span>
+                A traditionally favorable midday window.
+              </span>
+              <span
+                class="hover-glossary-term__why"
+              >
+                Why it matters: 
+                Often used when no other strong window is available.
+              </span>
+            </span>
+          </span>
         </span>
         <strong>
           11:48 AM - 12:36 PM
@@ -6173,7 +7035,42 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
         <span
           class="today-page__label"
         >
-          Labh
+          <span
+            class="hover-glossary-term"
+          >
+            <button
+              class="hover-glossary-term__trigger"
+              type="button"
+            >
+              <span>
+                Labh
+              </span>
+              <span
+                class="hover-glossary-term__icon"
+              >
+                i
+              </span>
+            </button>
+            <span
+              aria-hidden="true"
+              class="hover-glossary-term__card"
+              hidden=""
+              role="tooltip"
+            >
+              <strong>
+                Labh
+              </strong>
+              <span>
+                A gain-oriented slot associated with benefit and progress.
+              </span>
+              <span
+                class="hover-glossary-term__why"
+              >
+                Why it matters: 
+                It is often read as productive for work that should move forward smoothly.
+              </span>
+            </span>
+          </span>
         </span>
         <strong>
           12:36 PM - 1:24 PM
@@ -6197,10 +7094,49 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
         >
           <div>
             <span>
-              Tithi
+              <span
+                class="hover-glossary-term"
+              >
+                <button
+                  class="hover-glossary-term__trigger"
+                  type="button"
+                >
+                  <span>
+                    Tithi
+                  </span>
+                  <span
+                    class="hover-glossary-term__icon"
+                  >
+                    i
+                  </span>
+                </button>
+                <span
+                  aria-hidden="true"
+                  class="hover-glossary-term__card"
+                  hidden=""
+                  role="tooltip"
+                >
+                  <strong>
+                    Tithi
+                  </strong>
+                  <span>
+                    The lunar day based on Moon-Sun angle (1 to 30).
+                  </span>
+                  <span
+                    class="hover-glossary-term__why"
+                  >
+                    Why it matters: 
+                    Most festivals and fasts are tied to a specific tithi at sunrise.
+                  </span>
+                </span>
+              </span>
             </span>
             <strong>
-              Pending
+              <span
+                class=""
+              >
+                Pending
+              </span>
             </strong>
             <p
               class="today-page__subsummary"
@@ -6210,10 +7146,49 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
           </div>
           <div>
             <span>
-              Nakshatra
+              <span
+                class="hover-glossary-term"
+              >
+                <button
+                  class="hover-glossary-term__trigger"
+                  type="button"
+                >
+                  <span>
+                    Nakshatra
+                  </span>
+                  <span
+                    class="hover-glossary-term__icon"
+                  >
+                    i
+                  </span>
+                </button>
+                <span
+                  aria-hidden="true"
+                  class="hover-glossary-term__card"
+                  hidden=""
+                  role="tooltip"
+                >
+                  <strong>
+                    Nakshatra
+                  </strong>
+                  <span>
+                    The Moon's star sector among 27 nakshatras.
+                  </span>
+                  <span
+                    class="hover-glossary-term__why"
+                  >
+                    Why it matters: 
+                    Used in puja planning, naming traditions, and muhurta filtering.
+                  </span>
+                </span>
+              </span>
             </span>
             <strong>
-              Pending
+              <span
+                class=""
+              >
+                Pending
+              </span>
             </strong>
             <p
               class="today-page__subsummary"
@@ -6223,10 +7198,49 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
           </div>
           <div>
             <span>
-              Yoga
+              <span
+                class="hover-glossary-term"
+              >
+                <button
+                  class="hover-glossary-term__trigger"
+                  type="button"
+                >
+                  <span>
+                    Yoga
+                  </span>
+                  <span
+                    class="hover-glossary-term__icon"
+                  >
+                    i
+                  </span>
+                </button>
+                <span
+                  aria-hidden="true"
+                  class="hover-glossary-term__card"
+                  hidden=""
+                  role="tooltip"
+                >
+                  <strong>
+                    Yoga
+                  </strong>
+                  <span>
+                    A combined Sun-Moon angle classification among 27 yogas.
+                  </span>
+                  <span
+                    class="hover-glossary-term__why"
+                  >
+                    Why it matters: 
+                    Traditionally used to classify general day quality.
+                  </span>
+                </span>
+              </span>
             </span>
             <strong>
-              Pending
+              <span
+                class=""
+              >
+                Pending
+              </span>
             </strong>
             <p
               class="today-page__subsummary"
@@ -6236,10 +7250,49 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
           </div>
           <div>
             <span>
-              Karana
+              <span
+                class="hover-glossary-term"
+              >
+                <button
+                  class="hover-glossary-term__trigger"
+                  type="button"
+                >
+                  <span>
+                    Karana
+                  </span>
+                  <span
+                    class="hover-glossary-term__icon"
+                  >
+                    i
+                  </span>
+                </button>
+                <span
+                  aria-hidden="true"
+                  class="hover-glossary-term__card"
+                  hidden=""
+                  role="tooltip"
+                >
+                  <strong>
+                    Karana
+                  </strong>
+                  <span>
+                    Half of a tithi; a finer time unit for action windows.
+                  </span>
+                  <span
+                    class="hover-glossary-term__why"
+                  >
+                    Why it matters: 
+                    Useful when selecting specific periods within a day.
+                  </span>
+                </span>
+              </span>
             </span>
             <strong>
-              Pending
+              <span
+                class=""
+              >
+                Pending
+              </span>
             </strong>
             <p
               class="today-page__subsummary"
@@ -6379,6 +7432,32 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
           </dd>
         </div>
       </dl>
+      <div
+        class="today-page__truth-sources"
+      >
+        <article
+          class="today-page__truth-card"
+        >
+          <span
+            class="today-page__label"
+          >
+            Best time
+          </span>
+          <strong>
+            Unknown
+          </strong>
+          <p
+            class="today-page__subsummary"
+          >
+            Method 
+            Unknown
+            . Confidence 
+            Unknown
+            .
+             No defaults were applied.
+          </p>
+        </article>
+      </div>
     </section>
   </div>
 </section>

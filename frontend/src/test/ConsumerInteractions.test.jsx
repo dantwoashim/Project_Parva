@@ -146,6 +146,53 @@ function buildFetchMock() {
       });
     }
 
+    if (url.includes('/muhurta/calendar?')) {
+      return jsonResponse({
+        data: {
+          from: '2026-04-01',
+          to: '2026-05-31',
+          type: 'general',
+          location: {
+            latitude: 27.7172,
+            longitude: 85.324,
+            timezone: 'Asia/Kathmandu',
+          },
+          assumption_set_id: 'np-mainstream-v2',
+          days: [
+            {
+              date: '2026-04-04',
+              tone: 'strong',
+              window_count: 2,
+              top_score: 88,
+              has_viable_window: true,
+              best_window: {
+                name: 'Abhijit Muhurta',
+                start: '2026-04-04T10:30:00+05:45',
+                end: '2026-04-04T12:15:00+05:45',
+                rank_explanation: 'This is the clearest opening in the current timing profile.',
+                reason_codes: ['hora_supportive', 'tara_good'],
+              },
+            },
+            {
+              date: '2026-04-05',
+              tone: 'good',
+              window_count: 1,
+              top_score: 62,
+              has_viable_window: true,
+              best_window: {
+                name: 'Labh',
+                start: '2026-04-05T15:45:00+05:45',
+                end: '2026-04-05T17:00:00+05:45',
+                rank_explanation: 'A reliable backup if you miss the main answer.',
+                reason_codes: ['tara_good'],
+              },
+            },
+          ],
+        },
+        meta: {},
+      });
+    }
+
     if (url.includes('/temporal/compass')) {
       return jsonResponse({
         data: {
@@ -233,7 +280,7 @@ describe('consumer route interactions', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Festival\s*Explorer/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Closest observances first/i })).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: /More filters/i }));
     const filtersDialog = await screen.findByRole('dialog', { name: /Refine the observance view/i });
@@ -249,24 +296,18 @@ describe('consumer route interactions', () => {
     });
   }, 15000);
 
-  it('updates best-time requests when the activity and place change', async () => {
+  it('updates best-time requests when the activity changes', async () => {
     render(
       <MemoryRouter initialEntries={['/best-time']}>
         <App />
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Muhurta Explorer/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Choose a date first/i })).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: 'Travel' }));
     await waitFor(() => {
       const request = fetchMock.mock.calls.find(([url, options]) => String(url).includes('/muhurta/heatmap') && String(options?.body).includes('"type":"travel"'));
-      expect(request).toBeTruthy();
-    });
-
-    await userEvent.click(screen.getByRole('button', { name: /Change Place/i }));
-    await waitFor(() => {
-      const request = fetchMock.mock.calls.find(([url, options]) => String(url).includes('/muhurta/heatmap') && String(options?.body).includes('"lat":"28.2096"') && String(options?.body).includes('"lon":"83.9856"'));
       expect(request).toBeTruthy();
     });
   }, 15000);
