@@ -44,6 +44,9 @@ def test_tithi_detail_strict_mode_abstains_near_boundary(monkeypatch):
 
 def test_panchanga_strict_mode_abstains_near_boundary(monkeypatch):
     import app.calendar.panchanga as panchanga_module
+    import app.services.calendar_surface_service as surface_module
+
+    monkeypatch.setattr(surface_module, "load_precomputed_panchanga", lambda *_args, **_kwargs: None)
 
     monkeypatch.setattr(
         panchanga_module,

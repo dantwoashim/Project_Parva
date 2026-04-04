@@ -267,6 +267,12 @@ def _log_security_event(
 def build_access_control_guard(*, settings: AppSettings):
     async def access_control(request: Request, call_next):
         requirement = classify_request(request.url.path, request.method)
+        if requirement.policy_name == "unclassified_api":
+            # Let genuinely missing API paths fall through to FastAPI's 404 instead of
+            # converting them into auth failures. Startup validation already blocks
+            # shipping real registered routes in this state.
+            request.state.principal = None
+            return await call_next(request)
         if not requirement.required:
             request.state.principal = None
             _log_security_event(
