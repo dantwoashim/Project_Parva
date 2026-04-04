@@ -398,12 +398,15 @@ def calculate_sunrise(
     # Calculate sunrise using Swiss Ephemeris
     # Signature: rise_trans(tjdut, body, rsmi, geopos, atpress=0.0, attemp=0.0, flags=FLG_SWIEPH)
     try:
-        # rsmi: swe.CALC_RISE = 1 for sunrise
+        # Use the visible upper limb instead of the disc center so public-facing
+        # sunrise/sunset times match common calendar references more closely.
+        # The center-crossing time is useful for some astronomical work but reads
+        # about a minute late for sunrise and a minute early for sunset.
         # geopos: (longitude, latitude, altitude)
         result = swe.rise_trans(
             jd_start,  # tjdut
             SUN,  # body
-            swe.CALC_RISE | swe.BIT_DISC_CENTER,  # rsmi (combined flags)
+            swe.CALC_RISE,  # rsmi
             (longitude, latitude, altitude),  # geopos
             0.0,  # atpress (default)
             0.0,  # attemp (default)
@@ -458,7 +461,7 @@ def calculate_sunset(
         result = swe.rise_trans(
             jd_start,  # tjdut
             SUN,  # body
-            swe.CALC_SET | swe.BIT_DISC_CENTER,  # rsmi (combined flags)
+            swe.CALC_SET,  # rsmi
             (longitude, latitude, altitude),  # geopos
             0.0,  # atpress (default)
             0.0,  # attemp (default)

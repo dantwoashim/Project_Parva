@@ -104,10 +104,7 @@ function TopNav({
           <>
             <button type="button" className="app-shell__search-chip" onClick={onOpenSearch}>
               <span className="material-symbols-outlined">search</span>
-              <span className="app-shell__search-chip-copy">
-                <strong>Search Parva</strong>
-                <small>Festivals, places, meanings, pages</small>
-              </span>
+              <strong className="app-shell__search-chip-label">Search</strong>
               <span className="app-shell__search-shortcut">Ctrl/Cmd K</span>
             </button>
             <button type="button" className="app-shell__icon-btn" onClick={onOpenSettings} aria-label={copy('shell.place')}>

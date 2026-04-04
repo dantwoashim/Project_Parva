@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getInlineGlossaryEntry } from '../../data/inlineGlossary';
 import './HoverGlossaryTerm.css';
@@ -15,19 +15,6 @@ export function HoverGlossaryTerm({
   const [open, setOpen] = useState(false);
   const rootRef = useRef(null);
 
-  useEffect(() => {
-    if (!open) return undefined;
-
-    function handlePointer(event) {
-      if (!rootRef.current?.contains(event.target)) {
-        setOpen(false);
-      }
-    }
-
-    document.addEventListener('pointerdown', handlePointer);
-    return () => document.removeEventListener('pointerdown', handlePointer);
-  }, [open]);
-
   if (!entry) {
     return <span className={className}>{label || term}</span>;
   }
@@ -39,10 +26,16 @@ export function HoverGlossaryTerm({
     : {
         type: 'button',
         className: 'hover-glossary-term__trigger',
-        onClick: () => setOpen((current) => !current),
+        onFocus: () => setOpen(true),
         onBlur: (event) => {
           if (!rootRef.current?.contains(event.relatedTarget)) {
             setOpen(false);
+          }
+        },
+        onKeyDown: (event) => {
+          if (event.key === 'Escape') {
+            setOpen(false);
+            event.currentTarget.blur();
           }
         },
       };
@@ -66,7 +59,12 @@ export function HoverGlossaryTerm({
         </button>
       )}
 
-      <span className="hover-glossary-term__card" role="tooltip">
+      <span
+        className="hover-glossary-term__card"
+        role="tooltip"
+        aria-hidden={!open}
+        hidden={!open}
+      >
         <strong>{entry.term}</strong>
         <span>{entry.meaning}</span>
         {entry.whyItMatters ? (
