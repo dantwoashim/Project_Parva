@@ -23,6 +23,7 @@ from app.core.request_context import (
     normalize_timezone,
     parse_date,
 )
+from app.domain.temporal_context import CalendarContext, LocationContext
 from app.explainability import create_reason_trace
 from app.festivals.repository import get_repository
 from app.rules import get_rule_service
@@ -171,6 +172,12 @@ def build_personal_panchanga_response(
             "timezone": context.timezone_name,
             "input_sources": context.location_sources,
         },
+        "location_context": LocationContext(
+            latitude=context.latitude,
+            longitude=context.longitude,
+            timezone_name=context.timezone_name,
+            source="personal_request",
+        ).as_dict(),
         "bikram_sambat": {
             "year": bs_year,
             "month": bs_month,
@@ -283,6 +290,12 @@ def build_personal_context_response(
             "timezone": context.timezone_name,
             "input_sources": context.location_sources,
         },
+        "location_context": LocationContext(
+            latitude=context.latitude,
+            longitude=context.longitude,
+            timezone_name=context.timezone_name,
+            source="personal_request",
+        ).as_dict(),
         "place_title": "Your sanctuary",
         "status_line": f"Sunrise {_format_local_time(panchanga.get('sunrise'))} - {context.timezone_name}",
         "visit_note": "Place-aware daily guidance stays synced to this location and date.",
@@ -359,6 +372,19 @@ def build_personal_proof_capsule(
         surface=surface,
         payload=payload,
         request=request,
+        calendar_context=CalendarContext(
+            target_date=date.fromisoformat(str(payload["date"])),
+            surface=surface,
+            risk_mode=str(payload.get("risk_mode") or "standard"),
+            support_tier=str(payload.get("support_tier") or ""),
+            snapshot_id=((payload.get("provenance") or {}).get("snapshot_id")),
+        ),
+        location_context=LocationContext(
+            latitude=location.get("latitude"),
+            longitude=location.get("longitude"),
+            timezone_name=location.get("timezone"),
+            source="personal_request",
+        ),
         source_lineage={
             "timezone_source": payload.get("timezone_source"),
             "input_sources": location.get("input_sources"),

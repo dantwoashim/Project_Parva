@@ -56,6 +56,7 @@ class AppSettings:
     rate_limit_backend: str = "memory"
     redis_url: str | None = None
     require_precomputed: bool = False
+    prewarm_hotset: bool = False
     precomputed_stale_hours: int = 24 * 30
     trusted_proxy_ips: frozenset[str] = field(default_factory=frozenset)
 
@@ -212,6 +213,10 @@ def load_settings() -> AppSettings:
         rate_limit_backend=(os.getenv("PARVA_RATE_LIMIT_BACKEND", "memory").strip() or "memory"),
         redis_url=_parse_optional_text(os.getenv("PARVA_REDIS_URL")),
         require_precomputed=require_precomputed,
+        prewarm_hotset=_parse_bool(
+            os.getenv("PARVA_PREWARM_HOTSET"),
+            default=environment.strip().lower() == "production",
+        ),
         precomputed_stale_hours=int(os.getenv("PARVA_PRECOMPUTED_STALE_HOURS", str(24 * 30))),
         trusted_proxy_ips=_parse_csv_set(os.getenv("PARVA_TRUSTED_PROXY_IPS", "")),
     )

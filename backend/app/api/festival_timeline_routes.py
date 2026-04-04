@@ -8,7 +8,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Query
 
 from app.explainability import create_reason_trace
-from app.services import build_festival_timeline
+from app.services.timeline_service import build_festival_timeline
 
 from ._personal_utils import base_meta_payload
 

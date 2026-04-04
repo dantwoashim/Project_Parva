@@ -162,6 +162,8 @@ SDK details live in [sdk/python/README.md](sdk/python/README.md).
 - [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 - [docs/EMBED_GUIDE.md](docs/EMBED_GUIDE.md)
 - [docs/ENGINE_ARCHITECTURE.md](docs/ENGINE_ARCHITECTURE.md)
+- [docs/ARCHITECTURE_BOUNDARIES.md](docs/ARCHITECTURE_BOUNDARIES.md)
+- [docs/ADR_0001_TRUST_ROUTE_POLICY.md](docs/ADR_0001_TRUST_ROUTE_POLICY.md)
 - [docs/SUPPORT_MATRIX.md](docs/SUPPORT_MATRIX.md)
 - [docs/ACCURACY_METHOD.md](docs/ACCURACY_METHOD.md)
 - [docs/KNOWN_LIMITS.md](docs/KNOWN_LIMITS.md)

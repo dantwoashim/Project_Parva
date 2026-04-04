@@ -8,7 +8,7 @@ from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
 from app.explainability import create_reason_trace
-from app.services import build_muhurta_heatmap
+from app.services.muhurta_heatmap_service import build_muhurta_heatmap
 
 from ._personal_utils import (
     CoordinateInput,

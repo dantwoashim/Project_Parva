@@ -8,7 +8,7 @@ from typing import Optional
 from fastapi import APIRouter, HTTPException, Query
 
 from app.explainability import create_reason_trace
-from app.services import build_muhurta_calendar
+from app.services.muhurta_calendar_service import build_muhurta_calendar
 
 from ._personal_utils import (
     base_meta_payload,

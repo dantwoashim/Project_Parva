@@ -8,7 +8,7 @@ from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
 from app.core.request_context import CoordinateInput
-from app.services import (
+from app.services.personal_surface_service import (
     build_personal_context_response,
     build_personal_panchanga_response,
     build_personal_proof_capsule,

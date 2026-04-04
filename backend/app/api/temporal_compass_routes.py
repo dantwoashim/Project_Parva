@@ -7,8 +7,9 @@ from typing import Optional
 from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
+from app.domain.temporal_context import CalendarContext, LocationContext
 from app.explainability import create_reason_trace
-from app.services import build_temporal_compass
+from app.services.compass_service import build_temporal_compass
 from app.services.trust_surface_service import (
     build_portable_proof_capsule,
     build_temporal_risk_payload,
@@ -96,6 +97,12 @@ def _build_temporal_compass_response(
     return {
         **payload,
         "warnings": coord_warnings + tz_warnings,
+        "location_context": LocationContext(
+            latitude=latitude,
+            longitude=longitude,
+            timezone_name=timezone_name,
+            source="temporal_compass_request",
+        ).as_dict(),
         **meta,
         **risk,
     }
@@ -110,6 +117,19 @@ def _build_temporal_compass_proof_capsule(
         surface="temporal_compass",
         payload=payload,
         request=request,
+        calendar_context=CalendarContext(
+            target_date=parse_date(str(request["date"])),
+            surface="temporal_compass",
+            risk_mode=str(request.get("risk_mode") or "standard"),
+            support_tier=str(payload.get("support_tier") or ""),
+            snapshot_id=((payload.get("provenance") or {}).get("snapshot_id")),
+        ),
+        location_context=LocationContext(
+            latitude=request.get("lat"),
+            longitude=request.get("lon"),
+            timezone_name=request.get("tz"),
+            source="temporal_compass_request",
+        ),
         source_lineage={
             "quality_band_filter": payload.get("quality_band_filter"),
             "warnings": payload.get("warnings"),

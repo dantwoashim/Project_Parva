@@ -29,7 +29,7 @@ async def get_conformance_status():
         try:
             case_payload = json.loads(CONFORMANCE_CASES.read_text(encoding="utf-8"))
             case_count = len(case_payload.get("cases", []))
-        except Exception:
+        except (OSError, json.JSONDecodeError):
             case_count = 0
 
     return {

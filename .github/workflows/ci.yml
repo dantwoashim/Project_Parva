@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  backend-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .[test,dev]
+          python -m pip install -e sdk/python
+
+      - name: Run backend quality gates
+        run: |
+          python scripts/release/check_repo_hygiene.py
+          python scripts/release/check_render_blueprint.py
+          python scripts/validate_festival_catalog.py
+          python scripts/release/check_license_compliance.py
+          python scripts/check_docs_links.py
+          python scripts/check_path_leaks.py
+          python scripts/release/check_contract_freeze.py
+          python scripts/spec/run_conformance_tests.py
+
+      - name: Run backend tests
+        run: pytest -q backend/tests tests/unit tests/contract
+
+  frontend-quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+
+      - name: Run frontend quality gates
+        run: |
+          npm --prefix frontend run lint
+          npm --prefix frontend test -- --run
+          npm --prefix frontend run build

@@ -125,3 +125,5 @@ def test_cache_stats_endpoint_lists_available_years(monkeypatch, tmp_path):
     assert 2028 in body["coverage"]["shared_years"]
     assert 2029 in body["coverage"]["panchanga_only_years"]
     assert "freshness" in body
+    assert "hotset_latency" in body
+    assert "cold_ms" in body["hotset_latency"]

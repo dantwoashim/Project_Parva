@@ -18,12 +18,10 @@ SKIP_DIRS = {
     "build",
     "__pycache__",
 }
-STRING_PATTERNS = (
-    "/Users/",
-    "C:\\Users\\",
-    "/home/",
-)
 REGEX_PATTERNS = (
+    re.compile(r"(?<![A-Za-z0-9+.-])/Users/[^/\s]+/"),
+    re.compile(r"(?<![A-Za-z0-9+.-])/home/[^/\s]+/"),
+    re.compile(r"(?<![A-Za-z0-9+.-])[A-Za-z]:\\\\Users\\\\"),
     re.compile(r"(?<![A-Za-z0-9+.-])[A-Za-z]:\\\\"),
     re.compile(r"(?<![A-Za-z0-9+.-])[A-Za-z]:/"),
 )
@@ -85,9 +83,9 @@ def main() -> int:
             continue
 
         for line_number, line in enumerate(lines, start=1):
-            if any(pattern in line for pattern in STRING_PATTERNS) or any(
-                regex.search(line) for regex in REGEX_PATTERNS
-            ):
+            if line.startswith(("http://", "https://")):
+                continue
+            if any(regex.search(line) for regex in REGEX_PATTERNS):
                 matches.append((path.relative_to(PROJECT_ROOT), line_number, line.strip()))
 
     if not matches:

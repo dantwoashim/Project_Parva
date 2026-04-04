@@ -44,9 +44,17 @@ Festival detail and explain responses must additionally expose:
 - `fallback_used` is reserved for legacy or fallback computation activation, not for input defaulting alone.
 - `calibration_status="unavailable"` means the route does not currently have an empirical calibration artifact behind its confidence wording.
 - `calibration_status="not_applicable"` is used where empirical calibration is not the right abstraction, such as explicit authority-selected override results.
+- Reliability surfaces now separate product-visible signals from operator telemetry:
+  - `product_signals.surface_visible` lists the degraded states that should be shown in product/trust surfaces.
+  - `product_signals.telemetry_only` lists metrics/log signals intended for Prometheus and server logs rather than end-user copy.
 - `quality_band` and `support_tier` are related but not identical:
   - `quality_band` is a route- or dataset-facing maturity band.
   - `support_tier` is the public trust posture for the specific response.
+
+## Trust Artifact Refresh
+
+- Immutable provenance snapshots are content-addressed via `artifact_id`, `artifact_root`, and `artifact_paths`.
+- Use `python scripts/release/refresh_trust_artifacts.py` to refresh the latest provenance snapshot plus public trust artifacts in one pass.
 
 ## Known Limits
 

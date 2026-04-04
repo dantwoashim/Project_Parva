@@ -20,6 +20,7 @@ def test_reliability_endpoints_exist():
     status = client.get("/api/reliability/status", headers=TRUST_HEADERS)
     slos = client.get("/api/reliability/slos", headers=TRUST_HEADERS)
     playbooks = client.get("/api/reliability/playbooks", headers=TRUST_HEADERS)
+    metrics_prom = client.get("/api/reliability/metrics.prom", headers=TRUST_HEADERS)
     benchmark = client.get("/api/reliability/benchmark-manifest", headers=TRUST_HEADERS)
     review_queue = client.get("/api/reliability/source-review-queue", headers=TRUST_HEADERS)
     boundary_suite = client.get("/api/reliability/boundary-suite", headers=TRUST_HEADERS)
@@ -28,6 +29,7 @@ def test_reliability_endpoints_exist():
     assert status.status_code == 200
     assert slos.status_code == 200
     assert playbooks.status_code == 200
+    assert metrics_prom.status_code == 200
     assert benchmark.status_code == 200
     assert review_queue.status_code == 200
     assert boundary_suite.status_code == 200
@@ -37,8 +39,11 @@ def test_reliability_endpoints_exist():
     assert "freshness" in status.json()["runtime"]["cache"]
     assert "required" in status.json()["runtime"]["cache"]
     assert "artifact_classes" in status.json()["runtime"]["cache"]
+    assert "hotset_latency" in status.json()["runtime"]["cache"]
+    assert "runtime_cache" in status.json()["runtime"]
     assert "slo" in slos.json()
     assert isinstance(playbooks.json().get("playbooks"), list)
+    assert "parva_requests_total" in metrics_prom.text
     assert "benchmark" in benchmark.json()
     assert "engine_manifest_hash" in benchmark.json()["benchmark"]
     assert "queue" in review_queue.json()
@@ -53,6 +58,7 @@ def test_reliability_endpoints_are_publicly_readable():
     status = client.get("/api/reliability/status")
     slos = client.get("/api/reliability/slos")
     playbooks = client.get("/api/reliability/playbooks")
+    metrics_prom = client.get("/api/reliability/metrics.prom")
     benchmark = client.get("/api/reliability/benchmark-manifest")
     review_queue = client.get("/api/reliability/source-review-queue")
     boundary_suite = client.get("/api/reliability/boundary-suite")
@@ -61,6 +67,7 @@ def test_reliability_endpoints_are_publicly_readable():
     assert status.status_code == 200
     assert slos.status_code == 200
     assert playbooks.status_code == 200
+    assert metrics_prom.status_code == 200
     assert benchmark.status_code == 200
     assert review_queue.status_code == 200
     assert boundary_suite.status_code == 200

@@ -42,6 +42,7 @@ def test_load_settings_requires_precomputed_by_default_in_production(
     settings = load_settings()
 
     assert settings.require_precomputed is True
+    assert settings.prewarm_hotset is True
 
 
 def test_load_settings_allows_explicit_precomputed_override_in_production(

@@ -8,7 +8,7 @@ from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
 from app.explainability import create_reason_trace
-from app.services import build_kundali_graph
+from app.services.kundali_graph_service import build_kundali_graph
 
 from ._personal_utils import (
     CoordinateInput,

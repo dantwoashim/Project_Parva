@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import hashlib
-import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from .attestation import build_attestation, verify_attestation
+from app.storage.file_stores import FileTransparencyLogStore
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRANSPARENCY_DIR = PROJECT_ROOT / "data" / "transparency"
@@ -72,17 +72,16 @@ def _ensure_dir() -> None:
     TRANSPARENCY_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def get_transparency_store() -> FileTransparencyLogStore:
+    return FileTransparencyLogStore(
+        transparency_dir=TRANSPARENCY_DIR,
+        log_path=TRANSPARENCY_LOG,
+        anchor_path=ANCHOR_LOG,
+    )
+
+
 def load_log_entries() -> List[Dict[str, Any]]:
-    _ensure_dir()
-    if not TRANSPARENCY_LOG.exists():
-        return []
-    rows: List[Dict[str, Any]] = []
-    for line in TRANSPARENCY_LOG.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        rows.append(json.loads(line))
-    return rows
+    return get_transparency_store().load_entries()
 
 
 def _last_hash(entries: List[Dict[str, Any]]) -> str:
@@ -92,38 +91,16 @@ def _last_hash(entries: List[Dict[str, Any]]) -> str:
 
 
 def append_entry(event_type: str, payload: Dict[str, Any]) -> TransparencyEntry:
-    _ensure_dir()
-    entries = load_log_entries()
-
-    now = _now_utc()
-    entry_id = f"tle_{now.strftime('%Y%m%dT%H%M%S%fZ')}"
-    timestamp = now.isoformat()
-    prev_hash = _last_hash(entries)
-
-    body = _entry_body(
-        entry_id=entry_id,
-        timestamp=timestamp,
-        event_type=event_type,
-        payload=payload,
-        prev_hash=prev_hash,
+    row = get_transparency_store().append_entry(event_type, payload)
+    return TransparencyEntry(
+        entry_id=str(row["entry_id"]),
+        timestamp=str(row["timestamp"]),
+        event_type=str(row["event_type"]),
+        payload=dict(row["payload"]),
+        prev_hash=str(row["prev_hash"]),
+        entry_hash=str(row["entry_hash"]),
+        attestation=dict(row["attestation"]),
     )
-    entry_hash = _sha256_hex(_canonical(body))
-    attestation = build_attestation({**body, "entry_hash": entry_hash})
-
-    entry = TransparencyEntry(
-        entry_id=entry_id,
-        timestamp=timestamp,
-        event_type=event_type,
-        payload=payload,
-        prev_hash=prev_hash,
-        entry_hash=entry_hash,
-        attestation=attestation,
-    )
-
-    with TRANSPARENCY_LOG.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(entry.to_dict(), ensure_ascii=False) + "\n")
-
-    return entry
 
 
 def append_snapshot_event(
@@ -140,78 +117,11 @@ def append_snapshot_event(
 
 
 def verify_log_integrity() -> Dict[str, Any]:
-    entries = load_log_entries()
-    checks: List[Dict[str, Any]] = []
-
-    prev_hash = "GENESIS"
-    valid = True
-
-    for idx, row in enumerate(entries):
-        body = _entry_body(
-            entry_id=str(row.get("entry_id")),
-            timestamp=str(row.get("timestamp")),
-            event_type=str(row.get("event_type")),
-            payload=dict(row.get("payload") or {}),
-            prev_hash=str(row.get("prev_hash")),
-        )
-        expected_hash = _sha256_hex(_canonical(body))
-        attestation = row.get("attestation")
-
-        hash_ok = expected_hash == str(row.get("entry_hash"))
-        chain_ok = str(row.get("prev_hash")) == prev_hash
-        if isinstance(attestation, dict):
-            attestation_ok = verify_attestation(
-                {**body, "entry_hash": str(row.get("entry_hash"))},
-                attestation,
-            )
-            attestation_mode = str(attestation.get("mode") or "unknown")
-        else:
-            legacy_signature = str(row.get("signature") or "")
-            attestation_ok = legacy_signature == f"sha256:{row.get('entry_hash')}"
-            attestation_mode = "legacy-unverified" if legacy_signature else "missing"
-
-        row_ok = hash_ok and chain_ok and attestation_ok
-        if not row_ok:
-            valid = False
-
-        checks.append(
-            {
-                "index": idx,
-                "entry_id": row.get("entry_id"),
-                "hash_ok": hash_ok,
-                "chain_ok": chain_ok,
-                "attestation_ok": attestation_ok,
-                "attestation_mode": attestation_mode,
-            }
-        )
-
-        prev_hash = str(row.get("entry_hash"))
-
-    return {
-        "valid": valid,
-        "total_entries": len(entries),
-        "head_hash": prev_hash,
-        "checks": checks,
-    }
+    return get_transparency_store().verify_integrity()
 
 
 def replay_state() -> Dict[str, Any]:
-    entries = load_log_entries()
-    latest_snapshot: Optional[Dict[str, Any]] = None
-    by_event: Dict[str, int] = {}
-
-    for row in entries:
-        event = str(row.get("event_type") or "unknown")
-        by_event[event] = by_event.get(event, 0) + 1
-        if event == "snapshot_created":
-            latest_snapshot = dict(row.get("payload") or {})
-
-    return {
-        "total_entries": len(entries),
-        "event_counts": by_event,
-        "latest_snapshot": latest_snapshot,
-        "head_hash": entries[-1]["entry_hash"] if entries else "GENESIS",
-    }
+    return get_transparency_store().replay_state()
 
 
 def prepare_anchor_payload(note: str = "") -> Dict[str, Any]:
@@ -228,25 +138,12 @@ def prepare_anchor_payload(note: str = "") -> Dict[str, Any]:
 def record_anchor(
     tx_ref: str, network: str, payload: Optional[Dict[str, Any]] = None
 ) -> Dict[str, Any]:
-    _ensure_dir()
-    anchor = {
-        "timestamp": _now_utc().isoformat(),
-        "network": network,
-        "tx_ref": tx_ref,
-        "payload": payload or prepare_anchor_payload(),
-    }
-    with ANCHOR_LOG.open("a", encoding="utf-8") as f:
-        f.write(json.dumps(anchor, ensure_ascii=False) + "\n")
-    return anchor
+    return get_transparency_store().record_anchor(
+        tx_ref,
+        network,
+        payload or prepare_anchor_payload(),
+    )
 
 
 def list_anchors(limit: int = 50) -> List[Dict[str, Any]]:
-    _ensure_dir()
-    if not ANCHOR_LOG.exists():
-        return []
-    rows = [
-        json.loads(line)
-        for line in ANCHOR_LOG.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
-    return rows[-max(1, limit) :]
+    return get_transparency_store().list_anchors(limit=limit)

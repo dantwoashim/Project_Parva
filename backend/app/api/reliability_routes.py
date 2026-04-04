@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter
+from fastapi.responses import PlainTextResponse
 
 from app.policy import get_policy_metadata
 from app.reliability.benchmark_manifest import get_benchmark_manifest
@@ -12,6 +13,7 @@ from app.reliability import (
     get_differential_manifest,
     get_runtime_status,
 )
+from app.reliability.metrics import get_metrics_registry
 from app.sources import build_source_review_queue
 
 router = APIRouter(prefix="/api/reliability", tags=["reliability"])
@@ -63,6 +65,11 @@ async def reliability_metrics():
         "runtime": get_runtime_status(),
         "policy": get_policy_metadata(),
     }
+
+
+@router.get("/metrics.prom", response_class=PlainTextResponse)
+async def reliability_metrics_prometheus():
+    return get_metrics_registry().to_prometheus()
 
 
 @router.get("/benchmark-manifest")

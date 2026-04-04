@@ -5,10 +5,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime
 from math import isfinite
-from typing import Any, Dict, List, Optional, Tuple, TypeAlias
+from typing import Any, Dict, List, Optional, Tuple, Union
 from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException
+
+try:  # Python 3.10 compatibility for local release scripts.
+    from typing import TypeAlias
+except ImportError:  # pragma: no cover - exercised only on older interpreters
+    from typing_extensions import TypeAlias
 
 from app.policy import get_policy_metadata
 from app.provenance import get_provenance_payload
@@ -16,7 +21,7 @@ from app.provenance import get_provenance_payload
 DEFAULT_LAT = 27.7172
 DEFAULT_LON = 85.3240
 DEFAULT_TZ = "Asia/Kathmandu"
-CoordinateInput: TypeAlias = str | int | float | None
+CoordinateInput: TypeAlias = Optional[Union[str, int, float]]
 
 
 @dataclass(frozen=True)

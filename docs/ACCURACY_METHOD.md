@@ -18,7 +18,7 @@
 ## Reporting artifacts
 - `reports/authority_dashboard.json` (generated artifact)
 - `reports/conformance_report.json` (generated artifact)
-- `reports/evaluation_v4/evaluation_v4.json` (track-aware evaluation artifact)
+- `reports/evaluation_v4/evaluation_v4.json` (generated artifact, track-aware evaluation artifact)
 - `data/ground_truth/*`
 
 ## Reproducibility contract

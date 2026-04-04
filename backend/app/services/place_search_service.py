@@ -51,7 +51,7 @@ def _load_timezone_finder():
 
     try:
         from timezonefinder import TimezoneFinder
-    except Exception:
+    except ImportError:
         _TIMEZONE_FINDER = False
         return _TIMEZONE_FINDER
 
