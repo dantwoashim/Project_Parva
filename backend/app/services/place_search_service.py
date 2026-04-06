@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import json
 import os
+import random
+import time
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
@@ -34,14 +37,50 @@ _USER_AGENT = os.getenv(
     _default_user_agent(),
 ).strip() or _default_user_agent()
 _REQUEST_TIMEOUT_SECONDS = float(os.getenv("PARVA_PLACE_SEARCH_TIMEOUT_SECONDS", "5.0"))
+_TIME_BUDGET_SECONDS = float(os.getenv("PARVA_PLACE_SEARCH_TIME_BUDGET_SECONDS", "8.0"))
+_RETRY_ATTEMPTS = max(1, int(os.getenv("PARVA_PLACE_SEARCH_RETRY_ATTEMPTS", "2")))
+_RETRY_BACKOFF_SECONDS = max(0.0, float(os.getenv("PARVA_PLACE_SEARCH_RETRY_BACKOFF_SECONDS", "0.3")))
+_CACHE_TTL_SECONDS = max(30, int(os.getenv("PARVA_PLACE_SEARCH_CACHE_TTL_SECONDS", "3600")))
 _ATTRIBUTION = "Search results use OpenStreetMap Nominatim data."
 _ALLOW_REMOTE = os.getenv("PARVA_PLACE_SEARCH_ALLOW_REMOTE", "true").strip().lower() not in {
     "0",
     "false",
     "no",
 }
+_PROVIDER_CHAIN = tuple(
+    part.strip().lower()
+    for part in os.getenv("PARVA_PLACE_SEARCH_PROVIDER_CHAIN", "offline,nominatim").split(",")
+    if part.strip()
+) or ("offline", "nominatim")
 _TIMEZONE_FINDER = None
 _OFFLINE_GAZETTEER = None
+_RETRYABLE_HTTP_CODES = {408, 425, 429, 500, 502, 503, 504}
+
+
+@dataclass(frozen=True)
+class PlaceProviderSpec:
+    key: str
+    source_mode: str
+    remote: bool = False
+
+
+OFFLINE_PROVIDER = PlaceProviderSpec("offline_nepal_gazetteer", "offline_gazetteer", remote=False)
+NOMINATIM_PROVIDER = PlaceProviderSpec("openstreetmap_nominatim", "remote_geocoder", remote=True)
+
+
+def _provider_specs() -> tuple[PlaceProviderSpec, ...]:
+    mapping = {
+        "offline": OFFLINE_PROVIDER,
+        "offline_nepal_gazetteer": OFFLINE_PROVIDER,
+        "nominatim": NOMINATIM_PROVIDER,
+        "openstreetmap_nominatim": NOMINATIM_PROVIDER,
+    }
+    specs: list[PlaceProviderSpec] = []
+    for key in _PROVIDER_CHAIN:
+        spec = mapping.get(key)
+        if spec and spec not in specs:
+            specs.append(spec)
+    return tuple(specs or (OFFLINE_PROVIDER, NOMINATIM_PROVIDER))
 
 
 def _load_timezone_finder():
@@ -164,15 +203,34 @@ def _fetch_nominatim_rows(query: str, limit: int) -> list[dict[str, Any]]:
             "Accept": "application/json",
         },
     )
-    try:
-        with urlopen(request, timeout=_REQUEST_TIMEOUT_SECONDS) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except HTTPError as exc:
-        raise RuntimeError(f"Place search upstream returned HTTP {exc.code}.") from exc
-    except URLError as exc:
-        raise RuntimeError("Place search upstream is unavailable.") from exc
-    except json.JSONDecodeError as exc:
-        raise RuntimeError("Place search upstream returned malformed JSON.") from exc
+    started = time.monotonic()
+    last_error: RuntimeError | None = None
+    for attempt in range(1, _RETRY_ATTEMPTS + 1):
+        remaining_budget = _TIME_BUDGET_SECONDS - (time.monotonic() - started)
+        if remaining_budget <= 0:
+            break
+        try:
+            with urlopen(request, timeout=min(_REQUEST_TIMEOUT_SECONDS, remaining_budget)) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+            break
+        except HTTPError as exc:
+            last_error = RuntimeError(f"Place search upstream returned HTTP {exc.code}.")
+            if exc.code not in _RETRYABLE_HTTP_CODES or attempt >= _RETRY_ATTEMPTS:
+                raise last_error from exc
+        except URLError as exc:
+            last_error = RuntimeError("Place search upstream is unavailable.")
+            if attempt >= _RETRY_ATTEMPTS:
+                raise last_error from exc
+        except json.JSONDecodeError as exc:
+            raise RuntimeError("Place search upstream returned malformed JSON.") from exc
+
+        jitter = random.uniform(0.0, min(0.25, _RETRY_BACKOFF_SECONDS))
+        time.sleep((_RETRY_BACKOFF_SECONDS * attempt) + jitter)
+    else:
+        payload = None
+
+    if payload is None:
+        raise last_error or RuntimeError("Place search upstream timed out.")
 
     if not isinstance(payload, list):
         raise RuntimeError("Place search upstream returned an unexpected payload shape.")
@@ -207,60 +265,99 @@ def search_places(*, query: str, limit: int = 5) -> dict[str, Any]:
     cache_key = f"place_search:{normalized_query.lower()}:{limit}"
 
     def _compute() -> dict[str, Any]:
-        offline_items = _search_offline_places(normalized_query, limit)
-        if offline_items:
+        provider_health: list[dict[str, str]] = []
+        provider_attempts: dict[str, int] = {}
+
+        for provider in _provider_specs():
+            provider_attempts[provider.key] = provider_attempts.get(provider.key, 0) + 1
+
+            if provider is OFFLINE_PROVIDER:
+                offline_items = _search_offline_places(normalized_query, limit)
+                if offline_items:
+                    provider_health.append({"provider": provider.key, "status": "hit"})
+                    return {
+                        "query": normalized_query,
+                        "items": offline_items,
+                        "total": len(offline_items),
+                        "source": provider.key,
+                        "source_mode": provider.source_mode,
+                        "attribution": "Curated offline Nepal gazetteer bundled with Project Parva.",
+                        "privacy_notice": "This search was resolved locally without sending the query to a remote geocoder.",
+                        "service_notice": "Offline results prioritize common Nepal locations for fast, privacy-preserving form entry.",
+                        "provider_chain": [spec.key for spec in _provider_specs()],
+                        "provider_attempts": provider_attempts,
+                        "provider_health": provider_health,
+                        "cache_ttl_seconds": _CACHE_TTL_SECONDS,
+                    }
+                provider_health.append({"provider": provider.key, "status": "miss"})
+                continue
+
+            try:
+                rows = _fetch_nominatim_rows(normalized_query, limit)
+            except RuntimeError as exc:
+                provider_health.append(
+                    {
+                        "provider": provider.key,
+                        "status": "error",
+                        "detail": str(exc),
+                    }
+                )
+                continue
+
+            items: list[dict[str, Any]] = []
+            seen: set[tuple[str, float, float]] = set()
+
+            for row in rows:
+                try:
+                    latitude = float(row["lat"])
+                    longitude = float(row["lon"])
+                except (KeyError, TypeError, ValueError):
+                    continue
+
+                label = _normalize_label(row)
+                dedupe_key = (label.lower(), round(latitude, 6), round(longitude, 6))
+                if dedupe_key in seen:
+                    continue
+                seen.add(dedupe_key)
+
+                timezone_name, timezone_source = _resolve_timezone(latitude, longitude)
+                items.append(
+                    {
+                        "label": label,
+                        "latitude": float(f"{latitude:.6f}"),
+                        "longitude": float(f"{longitude:.6f}"),
+                        "timezone": timezone_name,
+                        "source": provider.key,
+                        "timezone_source": timezone_source,
+                    }
+                )
+
+            provider_health.append({"provider": provider.key, "status": "hit"})
             return {
                 "query": normalized_query,
-                "items": offline_items,
-                "total": len(offline_items),
-                "source": "offline_nepal_gazetteer",
-                "source_mode": "offline_gazetteer",
-                "attribution": "Curated offline Nepal gazetteer bundled with Project Parva.",
-                "privacy_notice": "This search was resolved locally without sending the query to a remote geocoder.",
-                "service_notice": "Offline results prioritize common Nepal locations for fast, privacy-preserving form entry.",
+                "items": items,
+                "total": len(items),
+                "source": provider.key,
+                "source_mode": provider.source_mode,
+                "attribution": _ATTRIBUTION,
+                "privacy_notice": "Place queries are sent to the configured geocoding provider for resolution.",
+                "service_notice": "For privacy-sensitive or high-volume deployments, prefer an offline gazetteer over the public upstream service.",
+                "provider_chain": [spec.key for spec in _provider_specs()],
+                "provider_attempts": provider_attempts,
+                "provider_health": provider_health,
+                "cache_ttl_seconds": _CACHE_TTL_SECONDS,
             }
 
-        rows = _fetch_nominatim_rows(normalized_query, limit)
-        items: list[dict[str, Any]] = []
-        seen: set[tuple[str, float, float]] = set()
-
-        for row in rows:
-            try:
-                latitude = float(row["lat"])
-                longitude = float(row["lon"])
-            except (KeyError, TypeError, ValueError):
-                continue
-
-            label = _normalize_label(row)
-            dedupe_key = (label.lower(), round(latitude, 6), round(longitude, 6))
-            if dedupe_key in seen:
-                continue
-            seen.add(dedupe_key)
-
-            timezone_name, timezone_source = _resolve_timezone(latitude, longitude)
-            items.append(
-                {
-                    "label": label,
-                    "latitude": float(f"{latitude:.6f}"),
-                    "longitude": float(f"{longitude:.6f}"),
-                    "timezone": timezone_name,
-                    "source": "openstreetmap_nominatim",
-                    "timezone_source": timezone_source,
-                }
+        if any(entry["status"] == "error" for entry in provider_health):
+            last_error = next(
+                (entry["detail"] for entry in reversed(provider_health) if entry["status"] == "error"),
+                "Place search upstream is unavailable.",
             )
+            raise RuntimeError(last_error)
 
-        return {
-            "query": normalized_query,
-            "items": items,
-            "total": len(items),
-            "source": "openstreetmap_nominatim",
-            "source_mode": "remote_geocoder",
-            "attribution": _ATTRIBUTION,
-            "privacy_notice": "Place queries are sent to the configured geocoding provider for resolution.",
-            "service_notice": "For privacy-sensitive or high-volume deployments, prefer an offline gazetteer over the public upstream service.",
-        }
+        raise RuntimeError("No configured place provider could resolve the query.")
 
-    return cached(cache_key, ttl_seconds=3600, compute=_compute)
+    return cached(cache_key, ttl_seconds=_CACHE_TTL_SECONDS, compute=_compute)
 
 
 __all__ = ["search_places"]
