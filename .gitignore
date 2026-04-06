@@ -32,7 +32,10 @@ SKILL.md
 output/
 reports/
 benchmark/results/
+tmp/
 *.zip
+evaluation.csv
+backend/evaluation.csv
 
 # Runtime data
 data/transparency/*.jsonl
