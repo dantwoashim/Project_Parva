@@ -11,7 +11,7 @@ Practical integration guides:
 - `docs/API_QUICKSTART.md`
 - `docs/EMBED_GUIDE.md`
 
-Launch-critical routes also support an additive authoritative envelope mode.
+Selected routes also support an additive envelope mode.
 Send header `X-Parva-Envelope: data-meta` to receive:
 
 ```json
@@ -110,7 +110,7 @@ date resolution, and related observances.
 - `GET /engine/convert?date=YYYY-MM-DD&calendar=bs|ns|tibetan|islamic|hebrew|chinese|julian`
 - `GET /engine/plugins/quality`
 
-## Reliability + Provenance (public read)
+## Operational + Provenance Routes
 - `GET /reliability/status`
 - `GET /reliability/metrics`
 - `GET /reliability/metrics.prom`
@@ -123,10 +123,10 @@ date resolution, and related observances.
 - `GET /public-artifacts/manifest`
 - `GET /explain/{trace_id}`
 
-These trust-facing read routes are part of the public v3 profile and are present in runtime, docs, and the frozen OpenAPI contract. Mutating provenance routes remain admin-only.
+These read routes are part of the public v3 profile. Mutating provenance routes remain admin-only.
 
 ## Metadata Expectations
-Critical routes carry authority metadata fields needed by Authority Mode:
+Integration-sensitive routes carry metadata fields that help clients render honest output:
 - `engine_version`
 - `calculation_trace_id`
 - `confidence`
@@ -138,7 +138,7 @@ Critical routes carry authority metadata fields needed by Authority Mode:
 - `policy`
 - `provenance`
 
-`provenance` now includes explicit `attestation` metadata. When no signing key is configured, Parva returns `attestation.mode = "unsigned"` instead of presenting a plain hash as a signature.
+`provenance` includes explicit attestation metadata. When no signing key is configured, Parva returns `attestation.mode = "unsigned"` instead of presenting a plain hash as a signature.
 
 ## Experimental API Tracks
 `/v2`, `/v4`, `/v5` are disabled by default.

@@ -12,7 +12,7 @@ https://your-host.example/v3/api
 
 - Read-only calendar and festival endpoints
 - POST-first personal compute flows for location-sensitive requests
-- Explainability metadata such as `calculation_trace_id`, `method`, `quality_band`, and `provenance`
+- Integration metadata such as `calculation_trace_id`, `method`, `quality_band`, and `provenance`
 
 ## Start the stack
 
@@ -104,7 +104,7 @@ print(compass.meta.trace_id)
 
 ## Metadata to preserve
 
-For explainable and auditable integrations, keep these fields when you store or forward results:
+For integrations that store or forward Parva output, keep these fields:
 
 - `calculation_trace_id`
 - `method`
@@ -117,6 +117,5 @@ For explainable and auditable integrations, keep these fields when you store or 
 ## Operational notes
 
 - Personal compute responses are served with `Cache-Control: no-store`.
-- Public messaging should remain public-beta and known-limits-first.
 - If you need a drop-in website integration, see `docs/EMBED_GUIDE.md`.
 - For local development, point the same `/v3/api` path at your local backend instead of the deployment example above.

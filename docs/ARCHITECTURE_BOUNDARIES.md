@@ -1,6 +1,6 @@
 # Architecture Boundaries
 
-This document defines the current ownership boundaries for Parva's public beta backend.
+This document defines the current ownership boundaries for Parva's backend.
 
 ## Canonical Boundaries
 
@@ -50,7 +50,7 @@ Those wrappers intentionally re-export the canonical route modules. They should 
 
 ## Trust Route Policy
 
-Trust-facing read routes are public in the v3 profile:
+Read-only operational routes are public in the v3 profile:
 
 - `/api/reliability/*`
 - `/api/provenance/root`
