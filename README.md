@@ -4,7 +4,7 @@ Project Parva is a Nepal-focused temporal platform. It provides BS/AD conversion
 
 The project mixes methods on purpose. BS/AD conversion in the supported official range uses overlap data from official calendars. Panchanga, tithi, muhurta, and other calendrical calculations use Swiss Ephemeris (`pyswisseph`) rather than static festival date tables.
 
-Use `/v3/api/*` for new integrations. `/api/*` still exists as a deprecated compatibility alias on the current hosted deployment.
+Use `/v3/api/*` for new integrations. `/api/*` still exists as a compatibility alias for the current hosted deployment.
 
 ## Live links
 
@@ -159,6 +159,7 @@ SDK details live in [sdk/python/README.md](sdk/python/README.md).
 
 - [docs/API_QUICKSTART.md](docs/API_QUICKSTART.md)
 - [docs/API_REFERENCE_V3.md](docs/API_REFERENCE_V3.md)
+- [docs/API_LIFECYCLE.md](docs/API_LIFECYCLE.md)
 - [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 - [docs/EMBED_GUIDE.md](docs/EMBED_GUIDE.md)
 - [docs/SUPPORT_MATRIX.md](docs/SUPPORT_MATRIX.md)
