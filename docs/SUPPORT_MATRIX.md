@@ -1,6 +1,6 @@
 # Support Matrix
 
-Project Parva exposes multiple temporal subsystems with different evidence models. This matrix defines how each subsystem should be interpreted in the public product and API.
+Project Parva exposes multiple temporal subsystems with different evidence models. This matrix defines how each subsystem should be interpreted in the product and API.
 
 ## Support Tiers
 
@@ -9,7 +9,7 @@ Project Parva exposes multiple temporal subsystems with different evidence model
 - `heuristic`: Computed output is usable, but defaults, provisional bands, or weaker evidence make it less trustworthy than the canonical computed path.
 - `estimated`: Output extends beyond the strongest support zone or depends on explicitly estimated logic.
 - `conflicted`: Multiple authority-backed candidates exist and the public default is a policy selection, not a universally uncontested date.
-- `abstained`: Reserved for future strict/risk-coverage modes where the engine chooses not to force a weak answer.
+- `abstained`: Reserved for strict modes where the engine chooses not to force a weak answer.
 
 ## Product Scope
 
@@ -44,21 +44,12 @@ Festival detail and explain responses must additionally expose:
 - `fallback_used` is reserved for legacy or fallback computation activation, not for input defaulting alone.
 - `calibration_status="unavailable"` means the route does not currently have an empirical calibration artifact behind its confidence wording.
 - `calibration_status="not_applicable"` is used where empirical calibration is not the right abstraction, such as explicit authority-selected override results.
-- Reliability surfaces now separate product-visible signals from operator telemetry:
-  - `product_signals.surface_visible` lists the degraded states that should be shown in product/trust surfaces.
-  - `product_signals.telemetry_only` lists metrics/log signals intended for Prometheus and server logs rather than end-user copy.
 - `quality_band` and `support_tier` are related but not identical:
   - `quality_band` is a route- or dataset-facing maturity band.
   - `support_tier` is the public trust posture for the specific response.
-
-## Trust Artifact Refresh
-
-- Immutable provenance snapshots are content-addressed via `artifact_id`, `artifact_root`, and `artifact_paths`.
-- Use `python scripts/release/refresh_trust_artifacts.py` to refresh the latest provenance snapshot plus public trust artifacts in one pass.
 
 ## Known Limits
 
 - Festival conflicts can still occur across authority families; `public_default` is the stable product policy, not proof that all sources agree.
 - Personal routes may remain deterministic while still dropping to `heuristic` if location or timezone defaults were applied.
 - Kundali and muhurta outputs should be presented as deterministic tradition-scoped assistance, not scientific validation.
-- Future strict-mode abstention and risk-coverage outputs are planned but not yet the default product behavior.

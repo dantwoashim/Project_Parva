@@ -33,7 +33,7 @@ Use `/v3/api/*` for new integrations. `/api/*` still exists as a deprecated comp
 Disabled by default:
 
 - Experimental version tracks such as `/v2`, `/v4`, and `/v5`
-- Admin and provenance mutation routes
+- Admin-only operational routes
 
 These require `PARVA_ENABLE_EXPERIMENTAL_API=true`.
 
@@ -107,7 +107,7 @@ print(personal.data["tithi"]["name"])
 - Use `/v3/api/*` for all new clients.
 - Treat `/api/*` as legacy compatibility only.
 - Send `X-Parva-Envelope: data-meta` when you want a stable `data` plus `meta` response shape.
-- Preserve `calculation_trace_id`, `method`, `method_profile`, `engine_path`, `support_tier`, `fallback_used`, `calibration_status`, `quality_band`, `assumption_set_id`, `provenance`, and `policy` if you store or forward results.
+- Preserve `calculation_trace_id`, `method`, `method_profile`, `engine_path`, `support_tier`, `fallback_used`, `quality_band`, and `provenance` if you store or forward results.
 - Personal compute routes return `Cache-Control: no-store`.
 - This is still a public beta. Keep known limitations visible if you present results as authoritative.
 
@@ -161,10 +161,8 @@ SDK details live in [sdk/python/README.md](sdk/python/README.md).
 - [docs/API_REFERENCE_V3.md](docs/API_REFERENCE_V3.md)
 - [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 - [docs/EMBED_GUIDE.md](docs/EMBED_GUIDE.md)
-- [docs/ENGINE_ARCHITECTURE.md](docs/ENGINE_ARCHITECTURE.md)
-- [docs/ARCHITECTURE_BOUNDARIES.md](docs/ARCHITECTURE_BOUNDARIES.md)
-- [docs/ADR_0001_TRUST_ROUTE_POLICY.md](docs/ADR_0001_TRUST_ROUTE_POLICY.md)
 - [docs/SUPPORT_MATRIX.md](docs/SUPPORT_MATRIX.md)
+- [docs/ENGINE_ARCHITECTURE.md](docs/ENGINE_ARCHITECTURE.md)
 - [docs/ACCURACY_METHOD.md](docs/ACCURACY_METHOD.md)
 - [docs/KNOWN_LIMITS.md](docs/KNOWN_LIMITS.md)
 
@@ -187,7 +185,6 @@ npm --prefix frontend test -- --run
 npm --prefix frontend run build
 py -3.11 scripts/release/check_contract_freeze.py
 py -3.11 scripts/spec/run_conformance_tests.py
-py -3.11 scripts/release/generate_public_beta_artifacts.py --target 300 --computed-target 300
 py -3.11 scripts/run_browser_smoke.py
 ```
 
@@ -206,8 +203,6 @@ Lean submission bundle:
 ```bash
 py -3.11 scripts/release/package_submission_bundle.py
 ```
-
-Files under `reports/` are generated during validation runs and do not need manual editing.
 
 ## License
 

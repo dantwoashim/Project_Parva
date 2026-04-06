@@ -6,9 +6,8 @@
 4. Personal Muhurta/Kundali outputs are informational and include policy advisories.
 5. Public API profile is v3; experimental routes may change without compatibility guarantees.
 6. Zero-budget hosting implies occasional cold-start latency on free tiers.
-7. Authority Mode exposes computation metadata; it is not a legal or doctrinal certification layer.
-8. Temporal Compass and ribbon views are optimized for modern browsers; older embedded webviews may degrade to basic card rendering.
-9. Visual regression snapshots are deterministic fixtures, not live observational truth data.
-10. This repository now uses the AGPL zero-budget path for Swiss Ephemeris / `pyswisseph`, so hosted commercial use remains possible only if users can access the corresponding deployed source.
-11. The dispute atlas and proof-capsule surfaces improve honesty for contested festival rows, but they do not eliminate the need for human review on authority-sensitive observances.
-12. Benchmark reproducibility surfaces are strongest for festival evaluation artifacts; equivalent rigor is still lighter on some personal and interpretive ritual outputs.
+7. Computation metadata improves traceability; it is not a legal or doctrinal certification layer.
+8. Temporal Compass and ribbon views are optimized for modern browsers; older embedded webviews may degrade to simpler rendering.
+9. Visual regression snapshots are fixed UI fixtures, not live observational data.
+10. This repository uses AGPL-compatible Swiss Ephemeris integration through `pyswisseph`; hosted deployments must keep corresponding source available.
+11. High-sensitivity festival rows may still require human review when multiple traditions publish different observance dates.

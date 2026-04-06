@@ -86,7 +86,6 @@ python scripts/release/check_license_compliance.py
 python -m pytest -q
 python scripts/release/check_contract_freeze.py
 python scripts/spec/run_conformance_tests.py
-python scripts/release/generate_public_beta_artifacts.py --target 300 --computed-target 300
 npm --prefix frontend run lint
 npm --prefix frontend test -- --run
 npm --prefix frontend run build
@@ -108,11 +107,6 @@ python scripts/run_browser_smoke.py
 sh scripts/release/run_month9_release_gates.sh
 ```
 
-## Public beta posture
-- The current launch posture is public beta.
-- Only claim what the generated evidence artifacts can currently prove.
-- Keep `KNOWN_LIMITS.md` visible anywhere the product is presented as authoritative or explainable.
-
 ## Embed surfaces
 - Static institutional widgets are published from `frontend/public/embed/`.
 - Copy-paste usage is documented in `docs/EMBED_GUIDE.md`.
@@ -125,8 +119,7 @@ py -3.11 scripts/release/package_source_archive.py
 ```
 
 ## Lean submission bundle
-For academic/demo handoff where docs, tests, CI metadata, and raw source PDFs
-are not needed:
+For lightweight handoff where docs, tests, CI metadata, and raw source PDFs are not needed:
 
 ```bash
 py -3.11 scripts/release/package_submission_bundle.py
