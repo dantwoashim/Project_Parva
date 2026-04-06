@@ -1,16 +1,38 @@
 #!/usr/bin/env python3
-"""Reject known non-Parva workspace residue in the repo root."""
+"""Reject known workspace residue and tracked release artifacts in the repo."""
 
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+DISALLOWED_TRACKED_PREFIXES = (
+    ".venv/",
+    "frontend/node_modules/",
+    "frontend/dist/",
+    "output/",
+    "reports/",
+)
+DISALLOWED_TRACKED_EXACT = {
+    "evaluation.csv",
+}
 
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _tracked_files() -> list[str]:
+    result = subprocess.run(
+        ["git", "ls-files"],
+        cwd=PROJECT_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
 
 
 def main() -> int:
@@ -47,6 +69,13 @@ def main() -> int:
     root_tsconfig_base = PROJECT_ROOT / "tsconfig.base.json"
     if root_tsconfig_base.exists():
         issues.append("Root tsconfig.base.json still exists even though Parva does not use a root TS workspace.")
+
+    for tracked in _tracked_files():
+        if tracked in DISALLOWED_TRACKED_EXACT:
+            issues.append(f"Tracked generated artifact must not live in source control: {tracked}")
+            continue
+        if tracked.startswith(DISALLOWED_TRACKED_PREFIXES):
+            issues.append(f"Tracked release artifact must not live in source control: {tracked}")
 
     if issues:
         for issue in issues:
