@@ -111,6 +111,7 @@ def main(argv: list[str] | None = None) -> int:
         ("Render blueprint", [python, "scripts/release/check_render_blueprint.py"]),
         ("SDK install surface", [python, "scripts/release/check_sdk_install.py"]),
         ("Contract freeze", [python, "scripts/release/check_contract_freeze.py"]),
+        ("Route inventory", [python, "scripts/release/check_route_inventory.py"]),
         ("Provenance readiness", provenance_command),
         ("Backend test suite", [python, "-m", "pytest", "-q"]),
         ("Spec conformance", [python, "scripts/spec/run_conformance_tests.py"]),
@@ -188,6 +189,7 @@ def main(argv: list[str] | None = None) -> int:
             "skipping human approval verification."
         )
     steps.append(("Clean source archive", archive_command))
+    steps.append(("Verify source archive", [python, "scripts/release/verify_source_archive.py"]))
     dossier_approved = (
         args.frontend_clean_install
         and args.require_signed_provenance
