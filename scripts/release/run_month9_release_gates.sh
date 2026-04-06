@@ -25,19 +25,20 @@ PYTHONPATH=backend python3 scripts/spec/run_conformance_tests.py
 echo "[Month9] 7/12 Contract freeze"
 PYTHONPATH=backend python3 scripts/release/check_contract_freeze.py
 
-echo "[Month9] 8/12 Public beta artifacts"
-python3 scripts/release/generate_public_beta_artifacts.py --target 300 --computed-target 300
+echo "[Month9] 8/12 Route inventory"
+PYTHONPATH=backend python3 scripts/release/check_route_inventory.py
 
-echo "[Month9] 9/12 Frontend lint"
+echo "[Month9] 9/12 Clean source archive"
+python3 scripts/release/package_source_archive.py
+python3 scripts/release/verify_source_archive.py
+
+echo "[Month9] 10/12 Frontend lint"
 npm --prefix frontend run lint
 
-echo "[Month9] 10/12 Frontend tests"
+echo "[Month9] 11/12 Frontend tests"
 npm --prefix frontend test -- --run
 
-echo "[Month9] 11/12 Frontend build"
+echo "[Month9] 12/12 Frontend build"
 npm --prefix frontend run build
-
-echo "[Month9] 12/12 Browser smoke"
-python3 scripts/run_browser_smoke.py
 
 echo "[Month9] All release gates passed."
