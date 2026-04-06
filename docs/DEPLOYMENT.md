@@ -30,6 +30,13 @@ npm --prefix frontend run dev
 - `PARVA_ADMIN_TOKEN` (required for admin and experimental surfaces)
 - `PARVA_API_KEYS` (optional scoped API keys for non-public reads)
 - `PARVA_TRUSTED_PROXY_IPS` (comma-separated proxy source IPs allowed to supply forwarded headers)
+- `PARVA_PLACE_SEARCH_PROVIDER_CHAIN` (default `offline,nominatim`)
+- `PARVA_PLACE_SEARCH_ALLOW_REMOTE` (`true|false`, default `true`)
+- `PARVA_PLACE_SEARCH_TIMEOUT_SECONDS` (single-attempt upstream timeout)
+- `PARVA_PLACE_SEARCH_TIME_BUDGET_SECONDS` (overall geocoder time budget)
+- `PARVA_PLACE_SEARCH_RETRY_ATTEMPTS` (default `2`)
+- `PARVA_PLACE_SEARCH_RETRY_BACKOFF_SECONDS` (default `0.3`)
+- `PARVA_PLACE_SEARCH_CACHE_TTL_SECONDS` (default `3600`)
 
 ## Recommended Zero-Dollar Deploy (Single Place)
 This is the best practical zero-budget setup for the current stack:
@@ -75,6 +82,12 @@ npm --prefix frontend run build
 - `GET /source`
 - `GET /v3/api/calendar/today`
 - `GET /v3/api/festivals/upcoming?days=30`
+
+## Geocoding posture
+
+- Default provider chain: offline Nepal gazetteer first, remote geocoder second.
+- For serious production traffic, replace the public remote provider with a self-hosted or paid upstream.
+- Keep provider time budgets and retries conservative so place search cannot dominate request latency.
 
 ## CI gates
 ```bash
