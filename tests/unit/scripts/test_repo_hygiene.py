@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+import subprocess
+
+from scripts.release import check_repo_hygiene
+
+
+def test_repo_hygiene_rejects_tracked_release_artifacts(monkeypatch):
+    def fake_run(*_args, **_kwargs):
+        return subprocess.CompletedProcess(
+            args=[],
+            returncode=0,
+            stdout="frontend/dist/assets/index.js\nreports/conformance_report.json\nevaluation.csv\n",
+            stderr="",
+        )
+
+    monkeypatch.setattr(check_repo_hygiene.subprocess, "run", fake_run)
+
+    try:
+        check_repo_hygiene.main()
+    except SystemExit as exc:
+        assert exc.code == 1
+    else:
+        raise AssertionError("Expected hygiene check to reject tracked release artifacts.")
+
+
+def test_repo_hygiene_accepts_clean_tracking(monkeypatch):
+    def fake_run(*_args, **_kwargs):
+        return subprocess.CompletedProcess(args=[], returncode=0, stdout="README.md\nbackend/app/main.py\n", stderr="")
+
+    monkeypatch.setattr(check_repo_hygiene.subprocess, "run", fake_run)
+
+    assert check_repo_hygiene.main() == 0
