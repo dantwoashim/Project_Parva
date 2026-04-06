@@ -1,0 +1,1456 @@
+{
+  "inventory": {
+    "schema_version": 1,
+    "canonical_prefix": "/v3/api",
+    "compat_prefix": "/api",
+    "v3_count": 118,
+    "compat_count": 118,
+    "alias_gaps": [],
+    "v3_routes": [
+      {
+        "path": "/v3/api/cache/festivals/{year}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/cache/panchanga/{year}/{month}/{day}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/cache/stats",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/bs-to-gregorian",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/convert",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/convert/compare",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/dual-month",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/festivals/calculate/{festival_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/festivals/upcoming",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/panchanga",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/panchanga/proof-capsule",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/panchanga/range",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/sankranti/{year}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/tithi",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/tithi/proof-capsule",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/today",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/calendar/today/proof-capsule",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/calendars",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/config",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/convert",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/health",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/manifest",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/observance-calculate",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/observance-plugins",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/observances",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/engine/plugins/quality",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/explain",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/explain/",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/explain/{trace_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/feeds/all.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/feeds/custom.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/feeds/ical",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/feeds/integrations/catalog",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/feeds/integrations/custom-plan",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/feeds/national.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/feeds/newari.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/feeds/next",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/calendar/{year}/{month}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/coverage",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/coverage/scoreboard",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/disputes",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/on-date/{target_date}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/timeline",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/upcoming",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/{festival_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/{festival_id}/dates",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/{festival_id}/explain",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/{festival_id}/proof-capsule",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/festivals/{festival_id}/variants",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/forecast/error-curve",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/forecast/festivals",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/glossary",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/integrations/feeds/all.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/integrations/feeds/catalog",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/integrations/feeds/custom-plan",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/integrations/feeds/custom.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/integrations/feeds/national.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/integrations/feeds/newari.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/integrations/feeds/next",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/kundali",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/kundali/graph",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/kundali/lagna",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/muhurta",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/muhurta/auspicious",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/muhurta/calendar",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/muhurta/heatmap",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/muhurta/rahu-kalam",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/observances",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/observances/conflicts",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/observances/next",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/observances/stream",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/observances/today",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/personal/context",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/personal/context/proof-capsule",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/personal/panchanga",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/personal/panchanga/proof-capsule",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/places/search",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/policy",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/policy/",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/batch-verify",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/dashboard",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/proof",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/root",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/snapshot/create",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/snapshot/{snapshot_id}/verify",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/transparency/anchor/prepare",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/transparency/anchor/record",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/transparency/anchors",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/transparency/append",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/transparency/audit",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/transparency/log",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/transparency/replay",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/verify/trace/{trace_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/provenance/verify/{festival_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/public/artifacts/boundary-suite",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/public/artifacts/dashboard",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/public/artifacts/differential",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/public/artifacts/manifest",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/public/artifacts/precomputed/{filename}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/public/artifacts/source-review-queue",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/benchmark-manifest",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/boundary-suite",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/differential-manifest",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/metrics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/metrics.prom",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/playbooks",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/slos",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/source-review-queue",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/reliability/status",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/resolve",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/spec/conformance",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/temples",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/temples/for-festival/{festival_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/temples/{temple_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/temples/{temple_id}/festivals",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/v3/api/temporal/compass",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/v3/api/temporal/compass/proof-capsule",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      }
+    ],
+    "compat_routes": [
+      {
+        "path": "/api/cache/festivals/{year}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/cache/panchanga/{year}/{month}/{day}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/cache/stats",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/bs-to-gregorian",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/calendar/convert",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/convert/compare",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/dual-month",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/festivals/calculate/{festival_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/festivals/upcoming",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/panchanga",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/panchanga/proof-capsule",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/panchanga/range",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/sankranti/{year}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/tithi",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/tithi/proof-capsule",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/today",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/calendar/today/proof-capsule",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/calendars",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/config",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/convert",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/health",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/manifest",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/observance-calculate",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/observance-plugins",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/observances",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/engine/plugins/quality",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/explain",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/explain/",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/explain/{trace_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/feeds/all.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/feeds/custom.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/feeds/ical",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/feeds/integrations/catalog",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/feeds/integrations/custom-plan",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/feeds/national.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/feeds/newari.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/feeds/next",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/calendar/{year}/{month}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/coverage",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/coverage/scoreboard",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/disputes",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/on-date/{target_date}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/timeline",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/upcoming",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/{festival_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/{festival_id}/dates",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/{festival_id}/explain",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/{festival_id}/proof-capsule",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/festivals/{festival_id}/variants",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/forecast/error-curve",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/forecast/festivals",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/glossary",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/integrations/feeds/all.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/integrations/feeds/catalog",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/integrations/feeds/custom-plan",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/integrations/feeds/custom.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/integrations/feeds/national.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/integrations/feeds/newari.ics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/integrations/feeds/next",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/kundali",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/kundali/graph",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/kundali/lagna",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/muhurta",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/muhurta/auspicious",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/muhurta/calendar",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/muhurta/heatmap",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/muhurta/rahu-kalam",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/observances",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/observances/conflicts",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/observances/next",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/observances/stream",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/observances/today",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/personal/context",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/personal/context/proof-capsule",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/personal/panchanga",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/personal/panchanga/proof-capsule",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/places/search",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/policy",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/policy/",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/batch-verify",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/dashboard",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/proof",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/root",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/snapshot/create",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/provenance/snapshot/{snapshot_id}/verify",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/transparency/anchor/prepare",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/transparency/anchor/record",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/provenance/transparency/anchors",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/transparency/append",
+        "methods": [
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/provenance/transparency/audit",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/transparency/log",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/transparency/replay",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/verify/trace/{trace_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/provenance/verify/{festival_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/public/artifacts/boundary-suite",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/public/artifacts/dashboard",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/public/artifacts/differential",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/public/artifacts/manifest",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/public/artifacts/precomputed/{filename}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/public/artifacts/source-review-queue",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/benchmark-manifest",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/boundary-suite",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/differential-manifest",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/metrics",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/metrics.prom",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/playbooks",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/slos",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/source-review-queue",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/reliability/status",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/resolve",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/spec/conformance",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/temples",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/temples/for-festival/{festival_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/temples/{temple_id}",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/temples/{temple_id}/festivals",
+        "methods": [
+          "GET"
+        ]
+      },
+      {
+        "path": "/api/temporal/compass",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      },
+      {
+        "path": "/api/temporal/compass/proof-capsule",
+        "methods": [
+          "GET",
+          "POST"
+        ]
+      }
+    ]
+  }
+}
