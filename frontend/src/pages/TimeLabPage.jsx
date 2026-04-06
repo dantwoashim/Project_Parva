@@ -1,339 +1,41 @@
-import { useDeferredValue, useEffect, useMemo, useState, useTransition } from 'react';
 import { Link } from 'react-router-dom';
 import { useTemporalContext } from '../context/useTemporalContext';
-import { todayIso } from '../context/temporalContextState';
 import {
   BS_MONTHS,
-  GREGORIAN_MONTHS,
-  buildExperimentalConversion,
-  buildHorizonDescriptor,
-  daysInGregorianMonth,
-  daysInProjectedBsMonth,
-  formatBsCoordinate,
-  formatGregorianCoordinate,
+  DEFAULT_BS_ERA,
+  DEFAULT_GREGORIAN_ERA,
   formatHistoricalYear,
   formatInputSignature,
-  gregorianToJdn,
-  historicalYearToAstronomical,
-  parseGregorianIso,
-  projectedBsToJdn,
-} from '../lib/chronologyProjection';
-import { calendarAPI } from '../services/api';
+  formatOutputCoordinate,
+  GREGORIAN_MONTHS,
+  HORIZON_ORDER,
+  modeSummary,
+  supportPosture,
+  systemCopy,
+} from './timeLab/timeLabHelpers';
+import { useTimeLabState } from './timeLab/useTimeLabState';
 import './TimeLabPage.css';
-
-const DEFAULT_GREGORIAN_ERA = 'AD';
-const DEFAULT_BS_ERA = 'BS';
-const HORIZON_ORDER = ['authoritative', 'estimated', 'experimental', 'deep_time'];
-
-function buildDefaultQuery(dateIso) {
-  const match = String(dateIso || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!match) {
-    return {
-      system: 'gregorian',
-      era: DEFAULT_GREGORIAN_ERA,
-      year: '2026',
-      month: 4,
-      day: 14,
-    };
-  }
-
-  return {
-    system: 'gregorian',
-    era: DEFAULT_GREGORIAN_ERA,
-    year: String(Number(match[1])),
-    month: Number(match[2]),
-    day: Number(match[3]),
-  };
-}
-
-function apiGregorianIso(query) {
-  return `${String(query.year).padStart(4, '0')}-${String(query.month).padStart(2, '0')}-${String(query.day).padStart(2, '0')}`;
-}
-
-function parseQuery(query) {
-  const normalizedYear = String(query.year || '').replace(/,/g, '').trim();
-  if (!normalizedYear) {
-    throw new Error('Enter a year before running the conversion.');
-  }
-
-  const year = Number(normalizedYear);
-  if (!Number.isInteger(year) || year < 1) {
-    throw new Error('Year must be a whole number greater than 0.');
-  }
-
-  const month = Number(query.month);
-  const day = Number(query.day);
-  if (!Number.isInteger(month) || month < 1 || month > 12) {
-    throw new Error('Month must be between 1 and 12.');
-  }
-  if (!Number.isInteger(day) || day < 1) {
-    throw new Error('Day must be a whole number greater than 0.');
-  }
-
-  if (query.system === 'gregorian') {
-    return {
-      system: 'gregorian',
-      era: query.era === 'BC' ? 'BC' : 'AD',
-      year,
-      month,
-      day,
-    };
-  }
-
-  return {
-    system: 'bs',
-    era: query.era === 'PRE_BS' ? 'PRE_BS' : 'BS',
-    year,
-    month,
-    day,
-  };
-}
-
-function dayLimitForQuery(query) {
-  try {
-    const parsed = parseQuery({ ...query, day: 1 });
-    const astronomicalYear = historicalYearToAstronomical(parsed.year, parsed.era);
-    if (parsed.system === 'gregorian') {
-      return daysInGregorianMonth(astronomicalYear, parsed.month);
-    }
-    return daysInProjectedBsMonth(astronomicalYear, parsed.month);
-  } catch {
-    return query.system === 'gregorian' ? 31 : 32;
-  }
-}
-
-function formatOutputCoordinate(result) {
-  if (!result) return '';
-  return result.calendar === 'gregorian'
-    ? formatGregorianCoordinate(result)
-    : formatBsCoordinate(result);
-}
-
-function buildPresetCatalog(todayQuery) {
-  return [
-    {
-      id: 'today',
-      label: 'Parva today',
-      detail: 'Current live date from the app context.',
-      query: todayQuery,
-    },
-    {
-      id: 'bc10000',
-      label: '10,000 BC',
-      detail: 'Deep prehistory, projected only.',
-      query: { system: 'gregorian', era: 'BC', year: '10000', month: 1, day: 1 },
-    },
-    {
-      id: 'ad10000',
-      label: '10,000 AD',
-      detail: 'Far future, projected horizon.',
-      query: { system: 'gregorian', era: 'AD', year: '10000', month: 1, day: 1 },
-    },
-    {
-      id: 'bs2083',
-      label: '2083 BS',
-      detail: 'The live BS new year anchor.',
-      query: { system: 'bs', era: 'BS', year: '2083', month: 1, day: 1 },
-    },
-    {
-      id: 'bs10000',
-      label: '10,000 BS',
-      detail: 'Long-range BS projection.',
-      query: { system: 'bs', era: 'BS', year: '10000', month: 1, day: 1 },
-    },
-  ];
-}
-
-async function resolveAnchoredConversion(query) {
-  const horizon = buildHorizonDescriptor(query);
-  const liveCapable = horizon.band === 'authoritative' || horizon.band === 'estimated';
-  if (!liveCapable) {
-    return null;
-  }
-
-  if (query.system === 'gregorian' && query.era === 'AD') {
-    const iso = apiGregorianIso(query);
-    const [convert, compare] = await Promise.all([
-      calendarAPI.convertGregorian(iso),
-      calendarAPI.compareGregorian(iso).catch(() => null),
-    ]);
-    return {
-      system: 'gregorian_to_bs',
-      confidence: convert?.bikram_sambat?.confidence || 'computed',
-      sourceRange: convert?.bikram_sambat?.source_range || null,
-      estimatedErrorDays: convert?.bikram_sambat?.estimated_error_days || null,
-      comparison: compare,
-      output: {
-        calendar: 'bs',
-        year: convert.bikram_sambat.year,
-        era: 'BS',
-        month: convert.bikram_sambat.month,
-        day: convert.bikram_sambat.day,
-        monthName: convert.bikram_sambat.month_name,
-      },
-    };
-  }
-
-  if (query.system === 'bs' && query.era === 'BS') {
-    const convert = await calendarAPI.convertBsToGregorian({
-      year: query.year,
-      month: query.month,
-      day: query.day,
-    });
-    return {
-      system: 'bs_to_gregorian',
-      confidence: convert?.bs?.confidence || 'computed',
-      sourceRange: convert?.bs?.source_range || null,
-      estimatedErrorDays: convert?.bs?.estimated_error_days || null,
-      comparison: null,
-      output: {
-        calendar: 'gregorian',
-        ...parseGregorianIso(convert.gregorian),
-      },
-    };
-  }
-
-  return null;
-}
-
-function computeDriftDays(experimental, anchored) {
-  if (!experimental?.output || !anchored?.output) return null;
-
-  if (anchored.output.calendar === 'gregorian') {
-    const experimentalYear = historicalYearToAstronomical(experimental.output.year, experimental.output.era);
-    const anchoredYear = historicalYearToAstronomical(anchored.output.year, anchored.output.era);
-    return Math.abs(
-      gregorianToJdn(experimentalYear, experimental.output.month, experimental.output.day)
-      - gregorianToJdn(anchoredYear, anchored.output.month, anchored.output.day),
-    );
-  }
-
-  const experimentalYear = historicalYearToAstronomical(experimental.output.year, experimental.output.era);
-  const anchoredYear = historicalYearToAstronomical(anchored.output.year, anchored.output.era);
-  return Math.abs(
-    projectedBsToJdn(experimentalYear, experimental.output.month, experimental.output.day)
-    - projectedBsToJdn(anchoredYear, anchored.output.month, anchored.output.day),
-  );
-}
-
-function engineLabel(confidence) {
-  if (confidence === 'official' || confidence === 'exact') return 'Live authoritative engine';
-  if (confidence === 'estimated') return 'Live estimated engine';
-  return 'Experimental horizon engine';
-}
-
-function systemCopy(system) {
-  return system === 'gregorian' ? 'Gregorian' : 'Bikram Sambat';
-}
-
-function modeSummary(result) {
-  if (!result) return 'Awaiting lock';
-  return result.anchored ? 'Blended live + projected mode' : 'Projected deep-time mode';
-}
-
-function supportPosture(horizon) {
-  if (!horizon) return 'Unknown';
-  if (horizon.band === 'authoritative') return 'Source-backed live window';
-  if (horizon.band === 'estimated') return 'Estimated live window';
-  if (horizon.band === 'experimental') return 'Frontend projection window';
-  return 'Deep-time speculative window';
-}
 
 export function TimeLabPage() {
   const { state } = useTemporalContext();
-  const todayQuery = useMemo(() => buildDefaultQuery(todayIso(state.timezone)), [state.timezone]);
-  const initialQuery = todayQuery;
-  const [draft, setDraft] = useState(initialQuery);
-  const [activeQuery, setActiveQuery] = useState(initialQuery);
-  const [isPresetPending, startPresetTransition] = useTransition();
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const deferredDraft = useDeferredValue(draft);
-
-  const presets = useMemo(() => buildPresetCatalog(initialQuery), [initialQuery]);
-  const draftHorizon = useMemo(() => buildHorizonDescriptor(deferredDraft), [deferredDraft]);
-  const dayLimit = useMemo(() => dayLimitForQuery(draft), [draft]);
-  const signature = useMemo(() => formatInputSignature(deferredDraft), [deferredDraft]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function run() {
-      setLoading(true);
-      setError(null);
-      try {
-        const normalized = parseQuery(activeQuery);
-        const experimental = buildExperimentalConversion(normalized);
-        const anchored = await resolveAnchoredConversion(normalized);
-        if (cancelled) return;
-        setResult({
-          query: normalized,
-          horizon: buildHorizonDescriptor(normalized),
-          experimental,
-          anchored,
-          driftDays: computeDriftDays(experimental, anchored),
-        });
-      } catch (nextError) {
-        if (!cancelled) {
-          setResult(null);
-          setError(nextError?.message || 'The conversion engine could not stabilize this request.');
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    void run();
-    return () => {
-      cancelled = true;
-    };
-  }, [activeQuery]);
-
-  function patchDraft(patch) {
-    setDraft((current) => {
-      const next = { ...current, ...patch };
-      const nextLimit = dayLimitForQuery(next);
-      if (next.day > nextLimit) {
-        next.day = nextLimit;
-      }
-      return next;
-    });
-  }
-
-  function submitCurrentDraft(event) {
-    event?.preventDefault?.();
-    try {
-      const normalized = parseQuery(draft);
-      setActiveQuery(normalized);
-    } catch (nextError) {
-      setError(nextError?.message || 'The conversion engine could not stabilize this request.');
-    }
-  }
-
-  function applyPreset(query) {
-    startPresetTransition(() => {
-      setDraft(query);
-      setActiveQuery(query);
-    });
-  }
-
-  function resetToToday() {
-    setError(null);
-    applyPreset(todayQuery);
-  }
-
-  const primaryResult = result?.anchored?.output || result?.experimental?.output || null;
-  const primaryEngine = result?.anchored ? engineLabel(result.anchored.confidence) : 'Experimental horizon engine';
-  const comparisonLabel = result?.anchored
-    ? result.anchored.comparison?.match === true
-      ? 'Official and estimated live paths agree on this date.'
-      : result.anchored.comparison?.official && result.anchored.comparison?.estimated
-        ? 'The live engine sees both an official and estimated track here.'
-        : 'The live engine returned one stable answer for this query.'
-    : 'No live engine path exists for this query, so the horizon model carries the entire result.';
+  const {
+    draft,
+    result,
+    loading,
+    error,
+    draftHorizon,
+    dayLimit,
+    signature,
+    presets,
+    isPresetPending,
+    patchDraft,
+    submitCurrentDraft,
+    applyPreset,
+    resetToToday,
+    primaryResult,
+    primaryEngine,
+    comparisonLabel,
+  } = useTimeLabState(state.timezone);
 
   return (
     <section className="time-lab-page animate-fade-in-up consumer-route consumer-route--analysis">
