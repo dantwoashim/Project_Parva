@@ -42,10 +42,10 @@ def get_benchmark_manifest() -> dict[str, Any]:
     engine_manifest = build_engine_manifest()
 
     docs = {
+        "api_reference": "docs/API_REFERENCE_V3.md",
+        "deployment": "docs/DEPLOYMENT.md",
         "support_matrix": "docs/SUPPORT_MATRIX.md",
-        "accuracy_method": "docs/ACCURACY_METHOD.md",
         "known_limits": "docs/KNOWN_LIMITS.md",
-        "engine_architecture": "docs/ENGINE_ARCHITECTURE.md",
     }
 
     return {

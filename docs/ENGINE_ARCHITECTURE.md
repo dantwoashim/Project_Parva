@@ -10,10 +10,10 @@ flowchart TD
     D --> G["BS conversion + tithi + panchanga"]
     E --> H["Rule catalog + overrides + variants"]
     F --> I["Muhurta + kundali + temporal context"]
-    G --> J["Trust + provenance + uncertainty"]
+    G --> J["Metadata + provenance"]
     H --> J
     I --> J
-    J --> K["Response contract / proof capsule / dispute surfaces"]
+    J --> K["Public response contracts"]
 ```
 
 ## Runtime layers
@@ -27,7 +27,7 @@ flowchart TD
 4. `bootstrap/*`
    - app factory, route policy, middleware, and startup validation
 5. `provenance/*` + `explainability/*`
-   - deterministic trace storage, snapshot manifests, and transparency attestations
+   - trace storage, snapshot manifests, and response provenance
 
 ## Canonical engine decision
 - Canonical public engine id: `parva-v3-canonical`
@@ -63,19 +63,7 @@ Legacy calculators remain available only as compatibility components behind the 
 3. Route policy and rate-limit middleware classify and authorize the request.
 4. Router resolves the request to the public v3 surface (`/v3/api/*` or `/api/*` alias).
 5. Canonical engine modules compute the result.
-6. Response metadata adds policy, provenance, degraded-state details, and engine headers.
-
-## Late-phase trust surfaces
-- `GET /api/festivals/disputes`
-  - dispute atlas, truth ladder, and boundary-risk rows
-- `GET /api/festivals/{festival_id}/proof-capsule`
-  - request normalization, selection policy, source lineage, risk notes, and provenance
-- `GET /api/reliability/benchmark-manifest`
-  - reproducibility summary for evaluation artifacts, hashes, and benchmark policy
-- `GET /api/reliability/source-review-queue`
-  - review-driven ingestion queue built from official-source inventory and artifact availability
-- `GET /api/reliability/boundary-suite`
-  - fixture-backed sunrise, sankranti, and adhik-month boundary regression summary
+6. Response metadata adds engine headers, provenance fields, and degraded-state details where applicable.
 
 ## Provenance model
 - Snapshot manifests describe the actual runtime inputs used to produce public results.
