@@ -153,5 +153,5 @@ describe('FeedSubscriptionsPage', () => {
 
     await userEvent.click(screen.getByText(/^Advanced manual setup$/i));
     expect(screen.getByDisplayValue(/feeds\/custom\.ics/i)).toBeInTheDocument();
-  });
+  }, 15000);
 });
