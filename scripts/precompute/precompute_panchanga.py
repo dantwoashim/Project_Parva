@@ -84,7 +84,7 @@ def _build_panchanga_response(target_date: date) -> dict:
         },
         "engine_version": "v2",
         "provenance": get_provenance_payload(
-            verify_url="/v2/api/provenance/root", create_if_missing=True
+            verify_url="/v3/api/provenance/root", create_if_missing=True
         ),
     }
 

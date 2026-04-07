@@ -101,9 +101,9 @@ def _render_index(payload: Dict) -> str:
     <h2>API Endpoint Exposure</h2>
     <p>When API is deployed, key endpoints:</p>
     <ul>
-      <li><code>/v5/api/public/artifacts/manifest</code></li>
-      <li><code>/v5/api/public/artifacts/precomputed/{{filename}}</code></li>
-      <li><code>/v5/api/public/artifacts/dashboard</code></li>
+      <li><code>/v3/api/public/artifacts/manifest</code></li>
+      <li><code>/v3/api/public/artifacts/precomputed/{{filename}}</code></li>
+      <li><code>/v3/api/public/artifacts/dashboard</code></li>
     </ul>
   </div>
 </main>
