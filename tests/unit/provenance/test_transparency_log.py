@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from app.provenance import attestation
 from app.provenance import transparency
 
 

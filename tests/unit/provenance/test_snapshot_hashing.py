@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from app.provenance import attestation
 from app.provenance import snapshot as snap
 
 

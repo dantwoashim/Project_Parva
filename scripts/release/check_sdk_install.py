@@ -6,10 +6,9 @@ from __future__ import annotations
 import subprocess
 import sys
 import tempfile
-import warnings
+import venv
 from pathlib import Path
 from textwrap import dedent
-import venv
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SDK_ROOT = PROJECT_ROOT / "sdk" / "python"

@@ -17,7 +17,6 @@ import re
 from pathlib import Path
 from urllib.request import urlopen
 
-
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT_PATH = ROOT / "data" / "source_inventory" / "koirala_archive_discovery.json"
 

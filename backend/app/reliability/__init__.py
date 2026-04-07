@@ -1,8 +1,8 @@
 """Reliability helpers and SLO/status evaluators."""
 
-from .slo import evaluate_slos
 from .boundary_suite import get_boundary_suite
 from .differential_manifest import get_differential_manifest
+from .slo import evaluate_slos
 
 
 def get_runtime_status():

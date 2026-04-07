@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from functools import lru_cache
 import os
-from pathlib import Path
 import shutil
 import subprocess
+from dataclasses import dataclass
+from functools import lru_cache
+from pathlib import Path
 
 SUPPORTED_NODE_MAJOR = "20"
 MANAGED_NODE_SPEC = "node@20"

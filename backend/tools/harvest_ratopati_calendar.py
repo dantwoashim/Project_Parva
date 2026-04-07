@@ -35,7 +35,6 @@ from typing import Any
 
 import requests
 
-
 ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
 SOURCE_INVENTORY_DIR = DATA_DIR / "source_inventory"
