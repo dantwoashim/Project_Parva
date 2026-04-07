@@ -44,7 +44,7 @@ For a real production deployment, provide:
 
 ## Frontend
 
-The frontend is built separately with Vite and served by FastAPI when `PARVA_SERVE_FRONTEND=true` and `frontend/dist/index.html` exists.
+The frontend is built separately with Vite and served by FastAPI when `PARVA_SERVE_FRONTEND=true` and a local production build has been generated under `frontend/`.
 
 ## Hosted service requirements
 
