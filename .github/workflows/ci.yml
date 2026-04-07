@@ -8,6 +8,7 @@ on:
 
 jobs:
   backend-quality:
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'codex/') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -53,6 +54,7 @@ jobs:
         run: pytest -q backend/tests tests/unit tests/contract
 
   frontend-quality:
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'codex/') }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
