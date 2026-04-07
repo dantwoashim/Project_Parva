@@ -21,14 +21,18 @@ frontend/dist/
 # Local env
 .env
 .env.*
+!.env.example
 SKILL.md
 
 # OS/editor
 .DS_Store
 .vscode/
 .idea/
+*.iml
 
 # Build/output artifacts
+build/
+coverage/
 output/
 reports/
 benchmark/results/
@@ -36,6 +40,11 @@ tmp/
 *.zip
 evaluation.csv
 backend/evaluation.csv
+sdk/python/build/
+playwright-report/
+test-results/
+logs/
+*.pid
 
 # Runtime data
 data/transparency/*.jsonl

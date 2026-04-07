@@ -29,7 +29,9 @@ jobs:
 
       - name: Run backend quality gates
         run: |
+          python -m ruff check backend tests scripts sdk
           python scripts/release/check_repo_hygiene.py
+          python scripts/security/scan_repo_secrets.py
           python scripts/release/check_render_blueprint.py
           python scripts/validate_festival_catalog.py
           python scripts/release/check_license_compliance.py
@@ -38,6 +40,8 @@ jobs:
           python scripts/release/check_contract_freeze.py
           python scripts/release/check_route_inventory.py
           python scripts/release/check_documented_routes.py
+          python scripts/release/check_backend_smoke.py
+          python scripts/release/check_sdk_install.py
           python scripts/spec/run_conformance_tests.py
           python scripts/release/package_source_archive.py
           python scripts/release/verify_source_archive.py
