@@ -21,6 +21,14 @@ def test_classify_request_defaults_unknown_api_routes_to_denied():
     assert requirement.admin_only is True
 
 
+def test_classify_request_respects_segment_boundaries_for_public_artifacts_prefix():
+    requirement = classify_request("/v3/api/public-artifacts/manifest", "GET")
+
+    assert requirement.required is True
+    assert requirement.policy_name == "unclassified_api"
+    assert requirement.admin_only is True
+
+
 def test_find_unclassified_api_routes_reports_missing_policies():
     app = FastAPI()
 
