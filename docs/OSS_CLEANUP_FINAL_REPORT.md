@@ -21,10 +21,10 @@ Local generated or junk artifacts removed from the worktree:
 
 - `.pytest_cache/`
 - `backend/project_parva.egg-info/`
-- `benchmark/__pycache__/`
-- `scripts/__pycache__/`
+- benchmark Python bytecode caches
+- scripts Python bytecode caches
 - `sdk/__pycache__/`
-- `tests/__pycache__/`
+- tests Python bytecode caches
 - `dist/`
 - `output/`
 - `reports/`
