@@ -13,7 +13,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.sources import build_source_review_queue
+from app.sources import build_source_review_queue  # noqa: E402
 
 DEFAULT_OUT = PROJECT_ROOT / "backend" / "data" / "public_artifacts" / "source_review_queue.json"
 

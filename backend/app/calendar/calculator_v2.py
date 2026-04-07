@@ -178,6 +178,8 @@ def calculate_festival_date_v2(
         try:
             from .calculator import (
                 FestivalCalculationError,
+            )
+            from .calculator import (
                 calculate_festival_date as calculate_festival_date_v1,
             )
 

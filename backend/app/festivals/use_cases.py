@@ -40,11 +40,15 @@ from .presenters import (
 )
 from .query_service import (
     apply_profile_variant_to_dates,
-    calibration_status as route_calibration_status,
     collect_profile_occurrences,
-    fallback_used as route_fallback_used,
     resolved_date_note,
     summary_for_occurrence,
+)
+from .query_service import (
+    calibration_status as route_calibration_status,
+)
+from .query_service import (
+    fallback_used as route_fallback_used,
 )
 from .repository import get_repository
 from .risk_service import build_risk_payload, truth_ladder

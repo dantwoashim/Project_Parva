@@ -24,7 +24,7 @@ from app.domain.temporal_context import CalendarContext
 from app.policy import get_policy_metadata
 from app.services.calendar_presenters import present_calendar_payload
 from app.services.trust_surface_service import build_surface_meta, build_surface_provenance
-from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
+from app.uncertainty import build_bs_uncertainty
 
 
 def parse_iso_date(date_str: str) -> date:

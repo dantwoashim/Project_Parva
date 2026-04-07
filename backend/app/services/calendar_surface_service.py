@@ -9,28 +9,23 @@ from fastapi import HTTPException
 
 from app.cache import load_precomputed_festival_year, load_precomputed_panchanga
 from app.calendar.bikram_sambat import (
-    bs_to_gregorian,
     get_bs_confidence,
     get_bs_estimated_error_days,
     get_bs_month_name,
     get_bs_source_range,
-    get_bs_year_confidence,
     gregorian_to_bs,
-    gregorian_to_bs_estimated,
-    gregorian_to_bs_official,
 )
-from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR
-from app.calendar.nepal_sambat import format_ns_date, get_current_ns_year
 from app.domain.temporal_context import CalendarContext, LocationContext
 from app.policy import get_policy_metadata
 from app.services import calendar_conversion_service as conversion_service
-from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
 from app.services.trust_surface_service import (
     build_portable_proof_capsule,
     build_surface_meta,
     build_surface_provenance,
     build_temporal_risk_payload,
 )
+from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
+
 
 def build_provenance(
     *,

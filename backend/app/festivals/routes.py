@@ -7,48 +7,36 @@ FastAPI routes for festival discovery endpoints.
 
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date
 from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
-from ..calendar import (
-    calculate_tithi,
-    get_bs_month_name,
-    gregorian_to_bs,
-)
 from ..calendar.overrides import get_festival_override_info
 from ..rules import get_rule_service
 from ..rules.catalog_v4 import (
     get_rule_v4,
 )
 from ..rules.variants import calculate_with_variants, filter_variants_by_profile, list_profiles
-from ..services.ritual_normalization import normalize_ritual_sequence
-from .detail_service import build_detail_completeness, build_festival_explain_payload
+from .detail_service import build_festival_explain_payload
 from .models import (
-    CalendarDayFestivals,
     FestivalCalendarResponse,
-    FestivalDateAvailability,
     FestivalDates,
     FestivalDetailResponse,
     FestivalDisputeAtlasResponse,
-    FestivalDisputeRecord,
     FestivalExplainResponse,
     FestivalListResponse,
     FestivalProofCapsuleResponse,
     FestivalSummary,
-    ProvenanceMeta,
-    UpcomingFestival,
     UpcomingFestivalsResponse,
 )
 from .query_service import (
     apply_profile_variant_to_dates,
-    collect_profile_occurrences,
     validate_authority_mode,
     validate_profile,
 )
-from .risk_service import build_risk_payload, truth_ladder
 from .repository import get_repository
+from .risk_service import truth_ladder
 from .trust import build_provenance
 from .use_cases import (
     calendar_month_payload,
@@ -59,7 +47,6 @@ from .use_cases import (
     festivals_on_date_payload,
     list_festivals_payload,
     upcoming_festivals_payload,
-    rule_meta as _rule_meta,
 )
 
 router = APIRouter(prefix="/api/festivals", tags=["festivals"])

@@ -11,16 +11,16 @@ from typing import Sequence
 
 from .models import (
     CalendarDayFestivals,
+    Festival,
     FestivalCalendarResponse,
     FestivalDateAvailability,
+    FestivalDates,
     FestivalDetailCompleteness,
     FestivalDetailResponse,
     FestivalDisputeAtlasResponse,
     FestivalDisputeRecord,
     FestivalListResponse,
     FestivalSummary,
-    Festival,
-    FestivalDates,
     UpcomingFestival,
     UpcomingFestivalsResponse,
 )

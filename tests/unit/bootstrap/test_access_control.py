@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import pytest
-from fastapi import FastAPI
-
 from app.bootstrap.access_control import classify_request, find_unclassified_api_routes
+from fastapi import FastAPI
 
 
 def test_classify_request_keeps_calendar_routes_public():

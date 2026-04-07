@@ -4,8 +4,7 @@ import subprocess
 import zipfile
 from pathlib import Path
 
-from scripts.release import package_source_archive
-from scripts.release import verify_source_archive
+from scripts.release import package_source_archive, verify_source_archive
 
 
 def test_working_tree_is_clean_accepts_generated_runtime_artifacts(monkeypatch):

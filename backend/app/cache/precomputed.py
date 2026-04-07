@@ -8,7 +8,6 @@ from typing import Any, Optional
 
 from app.infrastructure.precomputed_store import (
     FilePrecomputedArtifactStore,
-    PrecomputedArtifactCorruptionError,
 )
 from app.reliability.metrics import get_metrics_registry
 

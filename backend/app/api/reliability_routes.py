@@ -6,13 +6,13 @@ from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse
 
 from app.policy import get_policy_metadata
-from app.reliability.benchmark_manifest import get_benchmark_manifest
 from app.reliability import (
     evaluate_slos,
     get_boundary_suite,
     get_differential_manifest,
     get_runtime_status,
 )
+from app.reliability.benchmark_manifest import get_benchmark_manifest
 from app.reliability.metrics import get_metrics_registry
 from app.sources import build_source_review_queue
 

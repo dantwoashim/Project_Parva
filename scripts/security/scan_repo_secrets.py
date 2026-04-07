@@ -3,10 +3,10 @@
 
 from __future__ import annotations
 
+import re
 import subprocess
 import sys
 from pathlib import Path
-import re
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SELF_PATH = Path(__file__).resolve()

@@ -15,8 +15,8 @@ BACKEND_DIR = PROJECT_ROOT / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from app.provenance.attestation import canonical_json, verify_attestation
-from app.provenance.snapshot import LATEST_POINTER, SNAPSHOT_DIR, create_snapshot
+from app.provenance.attestation import canonical_json, verify_attestation  # noqa: E402
+from app.provenance.snapshot import LATEST_POINTER, SNAPSHOT_DIR, create_snapshot  # noqa: E402
 
 
 def _remove_if_exists(path: Path | None) -> None:
