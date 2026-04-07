@@ -71,12 +71,12 @@
       </article>
 
       <article class="portal-card portal-card--half">
-        <h2>Commercial.read example</h2>
-        <pre><code>curl "https://your-host.example/v3/api/spec/conformance" ^
+        <h2>Scoped preview/admin example</h2>
+        <pre><code>curl "https://your-host.example/v4/api/spec/conformance" ^
   -H "X-API-Key: replace-me"</code></pre>
         <p class="portal-note">
-          Evidence-backed routes are not part of the anonymous public surface.
-          They require <code>commercial.read</code> through <code>PARVA_API_KEYS</code>.
+          The supported <code>v3</code> evidence and compute routes are public by default.
+          Scoped keys are only needed when an operator enables preview tracks or exposes admin-only workflows.
         </p>
       </article>
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run end-to-end smoke checks for major v2 endpoints."""
+"""Run end-to-end smoke checks for major v3 endpoints."""
 
 from __future__ import annotations
 
@@ -18,15 +18,15 @@ def main() -> None:
     client = TestClient(app)
 
     checks = [
-        ("GET", "/v2/api/calendar/today", None),
-        ("GET", "/v2/api/calendar/convert", {"date": "2026-02-15"}),
-        ("GET", "/v2/api/calendar/panchanga", {"date": "2026-02-15"}),
-        ("GET", "/v2/api/festivals", None),
-        ("GET", "/v2/api/festivals/upcoming", {"days": 30}),
-        ("GET", "/v2/api/festivals/dashain", {"year": 2026}),
-        ("GET", "/v2/api/festivals/dashain/explain", {"year": 2026}),
-        ("GET", "/v2/api/temples", None),
-        ("GET", "/v2/api/engine/config", None),
+        ("GET", "/v3/api/calendar/today", None),
+        ("GET", "/v3/api/calendar/convert", {"date": "2026-02-15"}),
+        ("GET", "/v3/api/calendar/panchanga", {"date": "2026-02-15"}),
+        ("GET", "/v3/api/festivals", None),
+        ("GET", "/v3/api/festivals/upcoming", {"days": 30}),
+        ("GET", "/v3/api/festivals/dashain", {"year": 2026}),
+        ("GET", "/v3/api/festivals/dashain/explain", {"year": 2026}),
+        ("GET", "/v3/api/temples", None),
+        ("GET", "/v3/api/engine/config", None),
     ]
 
     results = []
@@ -45,7 +45,7 @@ def main() -> None:
     passed = sum(1 for r in results if r["ok"])
 
     lines = [
-        "# V2 E2E Smoke Report",
+        "# V3 E2E Smoke Report",
         "",
         f"- Generated: `{datetime.now(timezone.utc).isoformat()}`",
         f"- Passed: **{passed}/{len(results)}**",

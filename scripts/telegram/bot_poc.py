@@ -21,7 +21,7 @@ from datetime import date
 from typing import Dict, Optional
 from urllib import parse, request
 
-DEFAULT_API_BASE = "http://localhost:8000/v2/api"
+DEFAULT_API_BASE = "http://localhost:8000/v3/api"
 
 
 def _http_get_json(url: str) -> Dict:

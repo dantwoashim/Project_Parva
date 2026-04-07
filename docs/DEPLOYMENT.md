@@ -4,7 +4,7 @@
 ```bash
 py -3.11 -m pip install -e .[test,dev]
 uvicorn app.main:app --app-dir backend --reload --port 8000
-npm --prefix frontend install
+npm --prefix frontend ci
 npm --prefix frontend run dev
 ```
 
@@ -28,7 +28,7 @@ npm --prefix frontend run dev
 - `PARVA_LICENSE_MODE` (`AGPL-3.0-or-later`, default and required for the zero-budget path)
 - `PARVA_SOURCE_URL` (required in production; public repo or source archive URL for the deployed build)
 - `PARVA_ADMIN_TOKEN` (required for admin and experimental surfaces)
-- `PARVA_API_KEYS` (optional scoped API keys for non-public reads)
+- `PARVA_API_KEYS` (optional scoped API keys for preview tracks, partner overlays, or admin surfaces)
 - `PARVA_TRUSTED_PROXY_IPS` (comma-separated proxy source IPs allowed to supply forwarded headers)
 - `PARVA_PLACE_SEARCH_PROVIDER_CHAIN` (default `offline,nominatim`)
 - `PARVA_PLACE_SEARCH_ALLOW_REMOTE` (`true|false`, default `true`)
@@ -98,6 +98,7 @@ python scripts/validate_festival_catalog.py
 python scripts/release/check_license_compliance.py
 python -m pytest -q
 python scripts/release/check_contract_freeze.py
+python scripts/release/check_documented_routes.py
 python scripts/spec/run_conformance_tests.py
 npm --prefix frontend run lint
 npm --prefix frontend test -- --run
@@ -109,6 +110,7 @@ python scripts/run_browser_smoke.py
 - Personal Panchanga, Muhurta, Kundali, and Temporal Compass now support POST bodies for location and birth inputs.
 - Responses on those routes are served with `Cache-Control: no-store`.
 - Only trust `X-Forwarded-For` when the immediate sender IP is listed in `PARVA_TRUSTED_PROXY_IPS`.
+- The supported `v3` read and compute surface is public by default; use `/v3/api/policy` for the generated route-access summary.
 
 ## AGPL deployment requirement
 - Production startup now fails if `PARVA_SOURCE_URL` is missing.
