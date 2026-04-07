@@ -1,43 +1,49 @@
 # Security Policy
 
-## Supported versions
+## Supported tracks
 
 | Track | Status | Notes |
 | --- | --- | --- |
-| `v3` | public stable | only launch-supported public contract |
-| `v2`, `v4`, `v5` | experimental | disabled by default |
-| provenance and ops mutations | admin only | not part of public stable profile |
+| `/v3/api/*` | Supported public contract | Canonical public API for new integrations |
+| `/api/*` | Legacy compatibility | Still served, but not recommended for new work |
+| `/v2`, `/v4`, `/v5` | Experimental | Disabled by default and not version-isolated |
+| Admin or mutation surfaces | Non-public | Require explicit auth and are outside the public stability promise |
+
+See [docs/ROUTE_ACCESS.md](docs/ROUTE_ACCESS.md) and [docs/STABILITY.md](docs/STABILITY.md).
 
 ## Reporting a vulnerability
 
-- Open a private disclosure with reproduction steps, impacted endpoint, and
-  expected risk.
-- Include the affected commit hash or tag if known.
+Use GitHub private vulnerability reporting for this repository if it is enabled. If private reporting is not available, open a minimal public issue requesting a private follow-up channel and do not include exploit details, live credentials, or sensitive environment information.
 
-## Baseline controls
+Include:
+
+- affected path or component
+- reproduction steps
+- expected impact
+- affected commit or tag if known
+
+## Current security posture
 
 - request-size and query-length guards
-- per-request IDs and structured request logs
 - security response headers
-- admin bearer token and scoped API key support for non-public surfaces
-- rate limiting for anonymous and authenticated traffic
-- startup validation for risky feature flags
-- dependency audit script: `python scripts/security/run_audit.py`
+- per-request IDs
+- auth for non-public/admin surfaces
+- rate limiting with production validation for Redis-backed distributed mode
+- startup validation for risky deployment flags
+- repo hygiene and secret scanning in CI
 
-## Access control policy
+## Access model
 
-- Public stable `v3` endpoints are intentionally anonymous and read-only.
-- Non-public routes must be called with either a scoped `X-API-Key` or an
-  admin bearer token.
-- Provenance mutation routes are admin-only.
+- The normal `v3` read and compute surface is public by default.
+- Public compute does not imply private storage. Treat request-sensitive POST routes carefully and follow route metadata.
+- Admin and preview surfaces require either a scoped `X-API-Key` or an admin bearer token.
+- Experimental routes are disabled unless explicitly enabled by configuration.
 
-The detailed route matrix is documented in `docs/ROUTE_ACCESS.md`.
+## Recommended hardening routine
 
-## Hardening routine
+```bash
+make verify
+python3.11 scripts/security/run_audit.py
+```
 
-- Run `python -m pytest -q`
-- Run `npm --prefix frontend run lint`
-- Run `npm --prefix frontend test -- --run`
-- Run `python scripts/security/run_audit.py`
-- Run `python scripts/check_path_leaks.py`
-- Archive generated security output in `reports/security_audit.json`
+`scripts/security/run_audit.py` writes a generated report to `reports/security_audit.json`. That report is an artifact, not source.
