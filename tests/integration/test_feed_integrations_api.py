@@ -47,3 +47,21 @@ def test_custom_feed_plan_returns_platform_links_and_selection_metadata():
     assert body["platform_links"]["apple"]["open_url"].startswith("webcal://")
     assert body["platform_links"]["google"]["copy_url"].startswith("http")
     assert body["stats"]["event_count"] >= 0
+
+
+def test_integration_feed_alias_catalog_matches_canonical_presets():
+    canonical = client.get("/v3/api/feeds/integrations/catalog", params={"years": 2, "lang": "en"})
+    alias = client.get("/v3/api/integrations/feeds/catalog", params={"years": 2, "lang": "en"})
+
+    assert canonical.status_code == 200
+    assert alias.status_code == 200
+
+    canonical_body = canonical.json()
+    alias_body = alias.json()
+
+    assert [row["key"] for row in canonical_body["presets"]] == [row["key"] for row in alias_body["presets"]]
+    assert [row["stats"]["event_count"] for row in canonical_body["presets"]] == [
+        row["stats"]["event_count"] for row in alias_body["presets"]
+    ]
+    assert alias_body["platforms"]["google"]["requires_desktop"] is True
+    assert alias_body["presets"][0]["feed_url"].startswith("http")
