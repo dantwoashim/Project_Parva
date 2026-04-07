@@ -45,6 +45,18 @@ PROVENANCE_READ_PREFIXES = (
 )
 PROVENANCE_PREFIXES = ("/api/provenance", "/v3/api/provenance")
 API_PREFIXES = ("/api/", "/v2/api/", "/v3/api/", "/v4/api/", "/v5/api/")
+
+
+def _normalize_prefix(path: str) -> str:
+    stripped = path.rstrip("/")
+    return stripped or "/"
+
+
+def _matches_path_prefix(path: str, prefix: str) -> bool:
+    normalized_prefix = _normalize_prefix(prefix)
+    return path == normalized_prefix or path.startswith(f"{normalized_prefix}/")
+
+
 @dataclass(frozen=True)
 class Principal:
     principal_type: str
@@ -76,8 +88,8 @@ class RoutePolicy:
         if "*" not in self.methods and normalized_method not in self.methods:
             return False
         if self.match == "exact":
-            return path == self.path
-        return path.startswith(self.path)
+            return path == _normalize_prefix(self.path)
+        return _matches_path_prefix(path, self.path)
 
 
 def route_policy(
@@ -106,7 +118,7 @@ def _is_public_path(path: str) -> bool:
 
 
 def _is_api_path(path: str) -> bool:
-    return any(path.startswith(prefix) for prefix in API_PREFIXES)
+    return any(_matches_path_prefix(path, prefix) for prefix in API_PREFIXES)
 
 
 def _registered_route_policies() -> tuple[RoutePolicy, ...]:
@@ -170,10 +182,10 @@ def classify_request(path: str, method: str) -> AccessRequirement:
     if _is_public_path(path):
         return AccessRequirement(required=False, policy_name="public")
 
-    if path.startswith(PROVENANCE_PREFIXES):
+    if any(_matches_path_prefix(path, prefix) for prefix in PROVENANCE_PREFIXES):
         if method.upper() != "GET":
             return AccessRequirement(required=True, policy_name="provenance_admin", admin_only=True)
-        if any(path.startswith(prefix) for prefix in PROVENANCE_READ_PREFIXES):
+        if any(_matches_path_prefix(path, prefix) for prefix in PROVENANCE_READ_PREFIXES):
             return AccessRequirement(required=False, policy_name="provenance_read")
         return AccessRequirement(required=True, policy_name="provenance_admin", admin_only=True)
 

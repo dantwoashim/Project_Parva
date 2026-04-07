@@ -26,6 +26,7 @@ from app.bootstrap.settings import load_settings, validate_settings
 from app.cache.precomputed import get_cache_stats, prewarm_hot_set
 from app.engine.ephemeris_config import get_ephemeris_config
 from app.festivals.repository import validate_festival_catalog
+from app.policy import get_route_access_manifest
 
 PRODUCT_VERSION = "3.0.0"
 logger = logging.getLogger(__name__)
@@ -305,7 +306,13 @@ def _register_root_and_health_routes(app: FastAPI, settings) -> None:
             "experimental_api_enabled": settings.enable_experimental_api,
             "environment": settings.environment,
             "serve_frontend": settings.serve_frontend,
-            "non_public_auth": "api_key_or_admin_bearer",
+            "access_model": {
+                "profile": "public_compute_with_admin_mutations",
+                "policy_url": "/v3/api/policy",
+                "admin_and_preview_auth": "api_key_or_admin_bearer",
+                "experimental_tracks": "disabled_by_default",
+            },
+            "route_access": get_route_access_manifest(),
             "endpoints": {
                 "festivals": "/v3/api/festivals",
                 "calendar_today": "/v3/api/calendar/today",
