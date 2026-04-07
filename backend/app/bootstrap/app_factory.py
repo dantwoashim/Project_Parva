@@ -10,6 +10,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 
+from app.bootstrap.access_control import find_unclassified_api_routes
 from app.bootstrap.middleware import (
     ExperimentalEnvelopeMiddleware,
     RequestSizeGuardMiddleware,
@@ -19,7 +20,6 @@ from app.bootstrap.middleware import (
     build_rate_limit_guard,
     build_request_context,
 )
-from app.bootstrap.access_control import find_unclassified_api_routes
 from app.bootstrap.rate_limit import create_rate_limiter_backend
 from app.bootstrap.router_registry import register_routers
 from app.bootstrap.settings import load_settings, validate_settings

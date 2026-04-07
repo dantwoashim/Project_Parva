@@ -35,6 +35,7 @@ from app.api import (
     temporal_compass_router,
 )
 
+
 @dataclass(frozen=True)
 class RouterRegistration:
     router: APIRouter

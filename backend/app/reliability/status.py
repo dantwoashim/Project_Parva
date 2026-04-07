@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
 from typing import Any
 
-from app.cache import get_cache_stats, measure_hotset_latency
 from app.bootstrap.settings import load_settings
+from app.cache import get_cache_stats, measure_hotset_latency
 from app.calendar.ephemeris.swiss_eph import get_ephemeris_info
 from app.reliability.metrics import get_metrics_registry
 from app.services.runtime_cache import stats as runtime_cache_stats

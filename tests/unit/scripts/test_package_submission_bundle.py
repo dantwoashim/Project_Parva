@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import subprocess
-from pathlib import Path
 
 from scripts.release import package_submission_bundle
 

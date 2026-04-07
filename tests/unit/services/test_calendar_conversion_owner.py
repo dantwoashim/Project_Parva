@@ -1,7 +1,6 @@
 from datetime import date
 
-from app.services import calendar_conversion_service
-from app.services import calendar_surface_service
+from app.services import calendar_conversion_service, calendar_surface_service
 
 
 def test_calendar_surface_conversion_builders_delegate_to_canonical_service():
