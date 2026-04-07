@@ -50,15 +50,15 @@ Without that header, the public v3 response shape remains unchanged.
 ## Festivals
 - `GET /festivals?quality_band=computed|provisional|inventory|all&algorithmic_only=true|false`
 - `GET /festivals/upcoming?days=90&quality_band=computed|provisional|inventory|all`
-- `GET /festivals/{id}?year=2026`
-- `GET /festivals/{id}/explain?year=2026`
-- `GET /festivals/{id}/dates?years=3`
-- `GET /festivals/on-date/YYYY-MM-DD`
+- `GET /festivals/{festival_id}?year=2026`
+- `GET /festivals/{festival_id}/explain?year=2026`
+- `GET /festivals/{festival_id}/dates?years=3`
+- `GET /festivals/on-date/{target_date}`
 - `GET /festivals/coverage`
 - `GET /festivals/coverage/scoreboard`
 
 ### Festival detail ritual contract
-`GET /festivals/{id}` includes canonical ritual shape:
+`GET /festivals/{festival_id}` includes canonical ritual shape:
 ```json
 {
   "festival": {
@@ -120,7 +120,7 @@ date resolution, and related observances.
 - `GET /reliability/source-review-queue`
 - `GET /provenance/root`
 - `GET /provenance/proof`
-- `GET /public-artifacts/manifest`
+- `GET /public/artifacts/manifest`
 - `GET /explain/{trace_id}`
 
 These read routes are part of the public v3 profile. Mutating provenance routes remain admin-only.

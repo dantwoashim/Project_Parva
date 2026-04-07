@@ -114,12 +114,12 @@ def _resolve_node_version() -> str:
 
 
 def _resolve_latest_snapshot() -> dict:
-    pointer = _read_json(SNAPSHOT_POINTER, required=True)
+    pointer = _read_json(SNAPSHOT_POINTER)
     snapshot_id = pointer.get("snapshot_id")
     if not snapshot_id:
-        raise DossierError(f"Snapshot pointer missing snapshot_id: {SNAPSHOT_POINTER}")
+        return {}
     snapshot_path = SNAPSHOT_DIR / f"{snapshot_id}.json"
-    return _read_json(snapshot_path, required=True)
+    return _read_json(snapshot_path)
 
 
 def _latest_source_archive() -> Path | None:

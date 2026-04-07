@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""In-process load test for v2 panchanga endpoint."""
+"""In-process load test for the public v3 panchanga endpoint."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ async def run_once(client: httpx.AsyncClient, path: str) -> tuple[int, float]:
 
 
 async def main_async(concurrency: int = 100) -> dict:
-    path = "/v2/api/calendar/panchanga?date=2026-02-15"
+    path = "/v3/api/calendar/panchanga?date=2026-02-15"
     latencies = []
     statuses = []
 
@@ -64,7 +64,7 @@ def write_report(stats: dict) -> None:
         "# In-Process Load Test (Week 36)",
         "",
         f"- Generated: `{datetime.now(timezone.utc).isoformat()}`",
-        "- Endpoint: `/v2/api/calendar/panchanga?date=2026-02-15`",
+        "- Endpoint: `/v3/api/calendar/panchanga?date=2026-02-15`",
         f"- Concurrency: **{stats['concurrency']}**",
         f"- Success: **{stats['success']}/{stats['total']}**",
         f"- Error rate: **{stats['error_rate']}%**",

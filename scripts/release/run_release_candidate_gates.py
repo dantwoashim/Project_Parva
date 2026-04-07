@@ -112,6 +112,7 @@ def main(argv: list[str] | None = None) -> int:
         ("SDK install surface", [python, "scripts/release/check_sdk_install.py"]),
         ("Contract freeze", [python, "scripts/release/check_contract_freeze.py"]),
         ("Route inventory", [python, "scripts/release/check_route_inventory.py"]),
+        ("Documented routes", [python, "scripts/release/check_documented_routes.py"]),
         ("Provenance readiness", provenance_command),
         ("Backend test suite", [python, "-m", "pytest", "-q"]),
         ("Spec conformance", [python, "scripts/spec/run_conformance_tests.py"]),

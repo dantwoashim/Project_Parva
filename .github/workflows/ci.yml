@@ -37,6 +37,7 @@ jobs:
           python scripts/check_path_leaks.py
           python scripts/release/check_contract_freeze.py
           python scripts/release/check_route_inventory.py
+          python scripts/release/check_documented_routes.py
           python scripts/spec/run_conformance_tests.py
           python scripts/release/package_source_archive.py
           python scripts/release/verify_source_archive.py

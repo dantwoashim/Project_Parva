@@ -28,7 +28,7 @@ def main() -> None:
 
     checks = [
         {
-            "endpoint": "/v2/api/calendar/today",
+            "endpoint": "/v3/api/calendar/today",
             "params": None,
             "fields": [
                 "bikram_sambat.year",
@@ -42,7 +42,7 @@ def main() -> None:
             ],
         },
         {
-            "endpoint": "/v2/api/festivals/dashain",
+            "endpoint": "/v3/api/festivals/dashain",
             "params": {"year": 2026},
             "fields": [
                 "festival.id",
@@ -55,7 +55,7 @@ def main() -> None:
             ],
         },
         {
-            "endpoint": "/v2/api/festivals/dashain/explain",
+            "endpoint": "/v3/api/festivals/dashain/explain",
             "params": {"year": 2026},
             "fields": [
                 "festival_id",

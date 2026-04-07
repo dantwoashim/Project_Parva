@@ -55,7 +55,7 @@ Read-only operational routes are public in the v3 profile:
 - `/api/reliability/*`
 - `/api/provenance/root`
 - `/api/provenance/proof`
-- `/api/public-artifacts/*`
+- `/api/public/artifacts/*`
 - `/api/spec/conformance`
 
 Mutating provenance routes remain admin-only.

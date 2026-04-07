@@ -88,8 +88,8 @@ def test_verify_source_archive_rejects_disallowed_members(tmp_path):
     failures: list[str] = []
     members = verify_source_archive._normalized_members(archive_path)
     for member in members:
-        parts = Path(member).parts
-        if any(part in verify_source_archive.DISALLOWED_SEGMENTS for part in parts):
+        failure = verify_source_archive._member_failure(member)
+        if failure:
             failures.append(member)
 
     assert failures == ["frontend/dist/index.js"]
@@ -104,4 +104,19 @@ def test_verify_source_archive_accepts_clean_members(tmp_path):
     assert verify_source_archive._normalized_members(archive_path) == [
         "README.md",
         "backend/app/main.py",
+    ]
+
+
+def test_verify_source_archive_rejects_nested_runtime_residue(tmp_path):
+    archive_path = tmp_path / "project-parva-test-source.zip"
+    with zipfile.ZipFile(archive_path, "w") as archive:
+        archive.writestr("project-parva-test/backend/project_parva.egg-info/PKG-INFO", "bad")
+        archive.writestr("project-parva-test/img/.DS_Store", "bad")
+
+    members = verify_source_archive._normalized_members(archive_path)
+    failures = [verify_source_archive._member_failure(member) for member in members]
+
+    assert failures == [
+        "archive contains packaging residue: backend/project_parva.egg-info/PKG-INFO",
+        "archive contains compiled/local artifact: img/.DS_Store",
     ]

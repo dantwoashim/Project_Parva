@@ -106,6 +106,8 @@ print(personal.data["tithi"]["name"])
 
 - Use `/v3/api/*` for all new clients.
 - Treat `/api/*` as legacy compatibility only.
+- The supported `v3` read and compute surface is public by default; route access is summarized at `/v3/api/policy`.
+- Scoped API keys are for preview tracks, partner-specific overlays, and admin workflows, not for normal `v3` reads.
 - Send `X-Parva-Envelope: data-meta` when you want a stable `data` plus `meta` response shape.
 - Preserve `calculation_trace_id`, `method`, `method_profile`, `engine_path`, `support_tier`, `fallback_used`, `quality_band`, and `provenance` if you store or forward results.
 - Personal compute routes return `Cache-Control: no-store`.
@@ -126,14 +128,14 @@ uvicorn app.main:app --app-dir backend --reload --port 8000
 ### Frontend
 
 ```bash
-npm --prefix frontend install
+npm --prefix frontend ci
 npm --prefix frontend run dev
 ```
 
 If your Node version is newer than 20.x:
 
 ```bash
-npx -y -p node@20 -p npm@10 npm --prefix frontend install
+npx -y -p node@20 -p npm@10 npm --prefix frontend ci
 npx -y -p node@20 -p npm@10 npm --prefix frontend run dev
 ```
 

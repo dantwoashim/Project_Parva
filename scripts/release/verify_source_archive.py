@@ -10,15 +10,50 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DIST_DIR = PROJECT_ROOT / "dist"
 DISALLOWED_SEGMENTS = {
+    ".mypy_cache",
+    ".playwright-cli",
+    ".pytest_cache",
+    ".ruff_cache",
     ".venv",
     "node_modules",
     "dist",
     "output",
     "reports",
+    "tmp",
+    "__pycache__",
 }
 DISALLOWED_PATHS = {
     "evaluation.csv",
+    "backend/evaluation.csv",
 }
+DISALLOWED_PREFIXES = {
+    Path("benchmark/results"),
+    Path("backend/data/snapshots"),
+    Path("backend/data/traces"),
+}
+DISALLOWED_SUFFIXES = {
+    ".pyc",
+    ".pyo",
+}
+
+
+def _member_failure(member: str) -> str | None:
+    normalized = Path(member)
+    if member in DISALLOWED_PATHS:
+        return f"archive contains generated artifact: {member}"
+
+    if any(normalized == prefix or prefix in normalized.parents for prefix in DISALLOWED_PREFIXES):
+        return f"archive contains disallowed path: {member}"
+
+    if normalized.name == ".DS_Store" or normalized.suffix in DISALLOWED_SUFFIXES:
+        return f"archive contains compiled/local artifact: {member}"
+
+    for part in normalized.parts:
+        if part in DISALLOWED_SEGMENTS or part.startswith(".verify") or part.startswith(".venv"):
+            return f"archive contains disallowed path: {member}"
+        if part.endswith(".egg-info"):
+            return f"archive contains packaging residue: {member}"
+    return None
 
 
 def _default_archive() -> Path:
@@ -53,12 +88,9 @@ def main() -> int:
     failures: list[str] = []
 
     for member in members:
-        if member in DISALLOWED_PATHS:
-            failures.append(f"archive contains generated artifact: {member}")
-            continue
-        parts = Path(member).parts
-        if any(part in DISALLOWED_SEGMENTS for part in parts):
-            failures.append(f"archive contains disallowed path: {member}")
+        failure = _member_failure(member)
+        if failure:
+            failures.append(failure)
 
     if failures:
         print("\n".join(failures))
