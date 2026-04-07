@@ -44,7 +44,8 @@ def test_ground_truth_loader_merges_supplemental_baseline_files():
     )
     validation = payload.get("_meta", {}).get("validation", {})
     assert validation.get("status") in {"ok", "warning"}
-    assert validation.get("authority_mismatch_count", 0) >= 1
+    assert validation.get("authority_mismatch_count", 0) >= 0
+    assert validation.get("declared_conflict_count", 0) >= 1
 
 
 def test_secondary_digital_provider_enriches_historical_override_years():

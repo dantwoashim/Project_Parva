@@ -1,7 +1,7 @@
 from app.main import app
 from fastapi.testclient import TestClient
 
-client = TestClient(app)
+client = TestClient(app, client=("v3-envelope-opt-in-tests", 50000))
 ENVELOPE_HEADERS = {"X-Parva-Envelope": "data-meta"}
 
 

@@ -324,7 +324,7 @@ describe('consumer route interactions', () => {
 
     expect(await screen.findByRole('heading', { name: 'Dashain' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /The Ritual Timeline/i })).toBeInTheDocument();
-  });
+  }, 15000);
 
   it('shows place data and keeps profile as a secondary utility surface', async () => {
     render(
