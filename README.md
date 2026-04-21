@@ -24,6 +24,11 @@ Use `/v3/api/*` for new integrations. `/api/*` is a legacy compatibility alias. 
 
 See [docs/STABILITY.md](docs/STABILITY.md), [docs/ROUTE_ACCESS.md](docs/ROUTE_ACCESS.md), and [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md) before presenting Parva as authoritative.
 
+The backend platform and the frontend should be understood separately:
+
+- the canonical production commitment is the `/v3/api/*` platform
+- the frontend is a public reference beta unless explicitly productized further
+
 ## Live links
 
 - App: [https://project-parva-uzy1.onrender.com/](https://project-parva-uzy1.onrender.com/)
@@ -90,9 +95,10 @@ Frontend runs at `http://localhost:5173`. The Vite dev server proxies `/v3/api` 
 
 ```bash
 make verify
+make preflight-production
 ```
 
-That runs environment checks, repo hygiene, secret scanning, route/doc parity, backend smoke, SDK install validation, Python tests/lint, and frontend lint/test/build.
+That runs environment checks, repo hygiene, secret scanning, route/doc parity, backend smoke, SDK install validation, Python tests/lint, frontend lint/test/build, and a production-style deployment preflight.
 
 ## API examples
 
@@ -148,14 +154,20 @@ print(today.data["gregorian"] if hasattr(today, "data") else today["gregorian"])
 - [docs/API_REFERENCE_V3.md](docs/API_REFERENCE_V3.md)
 - [docs/API_LIFECYCLE.md](docs/API_LIFECYCLE.md)
 - [docs/STABILITY.md](docs/STABILITY.md)
+- [docs/PRODUCT_ARCHITECTURE_STATEMENT.md](docs/PRODUCT_ARCHITECTURE_STATEMENT.md)
 - [docs/ROUTE_ACCESS.md](docs/ROUTE_ACCESS.md)
 - [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md)
+- [docs/FRONTEND_MATURITY.md](docs/FRONTEND_MATURITY.md)
+- [docs/PRODUCTION_MINIMUMS.md](docs/PRODUCTION_MINIMUMS.md)
+- [docs/OPERATOR_QUICKSTART.md](docs/OPERATOR_QUICKSTART.md)
+- [docs/RISK_REGISTER.md](docs/RISK_REGISTER.md)
 - [docs/SUPPORT_POLICY.md](docs/SUPPORT_POLICY.md)
 - [docs/SELF_HOSTING.md](docs/SELF_HOSTING.md)
 - [docs/RELEASE_PROCESS.md](docs/RELEASE_PROCESS.md)
 - [docs/OPEN_SOURCE_SCOPE.md](docs/OPEN_SOURCE_SCOPE.md)
 - [docs/COMMERCIAL_OFFERING.md](docs/COMMERCIAL_OFFERING.md)
 - [docs/DATA_SOURCES_AND_LICENSES.md](docs/DATA_SOURCES_AND_LICENSES.md)
+- [docs/runbooks/redis-outage.md](docs/runbooks/redis-outage.md)
 - [sdk/python/README.md](sdk/python/README.md)
 
 ## Contributing
