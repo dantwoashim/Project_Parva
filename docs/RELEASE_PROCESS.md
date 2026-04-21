@@ -8,9 +8,10 @@ Project Parva releases should be reproducible from a clean clone.
 2. Install backend and SDK dependencies.
 3. Install frontend dependencies with `npm ci`.
 4. Run `make verify`.
-5. Build any source archives with `scripts/release/package_source_archive.py`.
-6. Verify the archive with `scripts/release/verify_source_archive.py`.
-7. Publish the exact source URL used by the deployment through `PARVA_SOURCE_URL`.
+5. Run `make preflight-production` or the equivalent production-like preflight command in CI.
+6. Build any source archives with `scripts/release/package_source_archive.py`.
+7. Verify the archive with `scripts/release/verify_source_archive.py`.
+8. Publish the exact source URL used by the deployment through `PARVA_SOURCE_URL`.
 
 ## Required gates
 
@@ -18,6 +19,7 @@ Project Parva releases should be reproducible from a clean clone.
 - secret scan
 - path leak check
 - route/doc parity
+- production preflight with explicit place-search policy
 - backend smoke
 - SDK wheel-install smoke
 - Python lint and tests

@@ -55,6 +55,10 @@ class AppSettings:
     rate_limit_enabled: bool = True
     rate_limit_backend: str = "memory"
     redis_url: str | None = None
+    place_search_allow_remote: bool = True
+    place_search_provider_chain: tuple[str, ...] = field(default_factory=tuple)
+    place_search_provider_policy: str | None = None
+    place_search_endpoint: str | None = None
     require_precomputed: bool = False
     prewarm_hotset: bool = False
     precomputed_stale_hours: int = 24 * 30
@@ -119,6 +123,13 @@ def _parse_optional_text(value: str | None) -> str | None:
     return stripped or None
 
 
+def _parse_provider_chain(raw: str | None) -> tuple[str, ...]:
+    if raw is None:
+        raw = "offline,nominatim"
+    tokens = tuple(token.strip().lower() for token in raw.split(",") if token.strip())
+    return tokens or ("offline", "nominatim")
+
+
 def _validate_license_mode(settings: AppSettings) -> list[str]:
     normalized_license = settings.license_mode.strip().lower()
     if normalized_license in {"agpl-3.0-only", "agpl-3.0-or-later"}:
@@ -170,6 +181,55 @@ def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
     return errors
 
 
+def _validate_place_search_settings(settings: AppSettings) -> list[str]:
+    errors: list[str] = []
+    chain = settings.place_search_provider_chain
+    if not chain:
+        errors.append("PARVA_PLACE_SEARCH_PROVIDER_CHAIN must include at least one provider.")
+        return errors
+
+    remote_provider_present = any(
+        provider in {"nominatim", "openstreetmap_nominatim"} for provider in chain
+    )
+
+    if settings.environment.lower() != "production":
+        return errors
+
+    policy = (settings.place_search_provider_policy or "").strip().lower()
+    if policy not in {"offline_only", "acknowledged_remote"}:
+        errors.append(
+            "Production deployments must set PARVA_PLACE_SEARCH_PROVIDER_POLICY to "
+            "'offline_only' or 'acknowledged_remote'."
+        )
+        return errors
+
+    if policy == "offline_only":
+        if settings.place_search_allow_remote:
+            errors.append(
+                "PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only requires "
+                "PARVA_PLACE_SEARCH_ALLOW_REMOTE=false."
+            )
+        if remote_provider_present:
+            errors.append(
+                "PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only requires "
+                "PARVA_PLACE_SEARCH_PROVIDER_CHAIN to exclude remote providers."
+            )
+
+    if policy == "acknowledged_remote":
+        if not settings.place_search_allow_remote:
+            errors.append(
+                "PARVA_PLACE_SEARCH_PROVIDER_POLICY=acknowledged_remote requires "
+                "PARVA_PLACE_SEARCH_ALLOW_REMOTE=true."
+            )
+        if not remote_provider_present:
+            errors.append(
+                "PARVA_PLACE_SEARCH_PROVIDER_POLICY=acknowledged_remote requires "
+                "PARVA_PLACE_SEARCH_PROVIDER_CHAIN to include a remote provider."
+            )
+
+    return errors
+
+
 def _validate_frontend_settings(settings: AppSettings) -> list[str]:
     if not settings.serve_frontend or settings.environment.lower() != "production":
         return []
@@ -212,6 +272,18 @@ def load_settings() -> AppSettings:
         rate_limit_enabled=_parse_bool(os.getenv("PARVA_RATE_LIMIT_ENABLED"), default=True),
         rate_limit_backend=(os.getenv("PARVA_RATE_LIMIT_BACKEND", "memory").strip() or "memory"),
         redis_url=_parse_optional_text(os.getenv("PARVA_REDIS_URL")),
+        place_search_allow_remote=_parse_bool(
+            os.getenv("PARVA_PLACE_SEARCH_ALLOW_REMOTE"),
+            default=True,
+        ),
+        place_search_provider_chain=_parse_provider_chain(
+            os.getenv("PARVA_PLACE_SEARCH_PROVIDER_CHAIN")
+        ),
+        place_search_provider_policy=_parse_optional_text(
+            os.getenv("PARVA_PLACE_SEARCH_PROVIDER_POLICY")
+        ),
+        place_search_endpoint=_parse_optional_text(os.getenv("PARVA_PLACE_SEARCH_ENDPOINT"))
+        or "https://nominatim.openstreetmap.org/search",
         require_precomputed=require_precomputed,
         prewarm_hotset=_parse_bool(
             os.getenv("PARVA_PREWARM_HOTSET"),
@@ -228,5 +300,6 @@ def validate_settings(settings: AppSettings) -> list[str]:
     errors.extend(_validate_source_url(settings))
     errors.extend(_validate_experimental_settings(settings))
     errors.extend(_validate_rate_limit_settings(settings))
+    errors.extend(_validate_place_search_settings(settings))
     errors.extend(_validate_frontend_settings(settings))
     return errors
