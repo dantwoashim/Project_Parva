@@ -3,7 +3,7 @@ NPM ?= npm
 
 .PHONY: install install-backend install-sdk install-frontend dev dev-backend dev-frontend \
 	test test-backend test-frontend lint lint-backend lint-frontend build build-frontend \
-	verify smoke clean
+	verify preflight-production smoke clean
 
 install: install-backend install-sdk install-frontend
 
@@ -59,6 +59,17 @@ verify:
 	$(NPM) --prefix frontend run lint
 	$(NPM) --prefix frontend test -- --run
 	$(NPM) --prefix frontend run build
+
+preflight-production:
+	PARVA_ENV=production \
+	PARVA_SOURCE_URL=https://example.com/source \
+	PARVA_RATE_LIMIT_BACKEND=redis \
+	PARVA_REDIS_URL=redis://localhost:6379/0 \
+	PARVA_REQUIRE_PRECOMPUTED=false \
+	PARVA_PLACE_SEARCH_ALLOW_REMOTE=false \
+	PARVA_PLACE_SEARCH_PROVIDER_CHAIN=offline \
+	PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only \
+	$(PYTHON) scripts/release/check_production_preflight.py
 
 smoke:
 	$(PYTHON) scripts/live_smoke.py --base http://127.0.0.1:8000
