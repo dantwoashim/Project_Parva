@@ -1,5 +1,7 @@
 # Deployment
 
+Project Parva should be deployed as a stable API platform with a clearly labeled reference frontend, not as an ambiguous all-in-one product shell.
+
 ## Local
 ```bash
 py -3.11 -m pip install -e .[test,dev]
@@ -32,48 +34,54 @@ npm --prefix frontend run dev
 - `PARVA_TRUSTED_PROXY_IPS` (comma-separated proxy source IPs allowed to supply forwarded headers)
 - `PARVA_PLACE_SEARCH_PROVIDER_CHAIN` (default `offline,nominatim`)
 - `PARVA_PLACE_SEARCH_ALLOW_REMOTE` (`true|false`, default `true`)
+- `PARVA_PLACE_SEARCH_PROVIDER_POLICY` (`offline_only|acknowledged_remote`, required in production)
 - `PARVA_PLACE_SEARCH_TIMEOUT_SECONDS` (single-attempt upstream timeout)
 - `PARVA_PLACE_SEARCH_TIME_BUDGET_SECONDS` (overall geocoder time budget)
 - `PARVA_PLACE_SEARCH_RETRY_ATTEMPTS` (default `2`)
 - `PARVA_PLACE_SEARCH_RETRY_BACKOFF_SECONDS` (default `0.3`)
 - `PARVA_PLACE_SEARCH_CACHE_TTL_SECONDS` (default `3600`)
 
-## Recommended Zero-Dollar Deploy (Single Place)
-This is the best practical zero-budget setup for the current stack:
+## Production minimums
 
-- One Render free web service
-- Frontend + backend served from the same container/domain
-- API under `/v3/api/*`
-- UI served at `/`
+Every serious deployment should meet these minimums before it is considered supported:
 
-### Steps
-1. Push latest code to GitHub.
-2. In Render, create a Blueprint from `render.yaml`.
-3. Confirm environment:
-   - `PARVA_ENABLE_EXPERIMENTAL_API=false`
-   - `PARVA_ENV=production`
-   - `PARVA_SERVE_FRONTEND=true`
-   - `PARVA_SOURCE_URL=https://github.com/<you>/<your-public-parva-fork>`
-4. Deploy.
-5. Smoke-check:
+- canonical public traffic goes through `/v3/api/*`
+- `PARVA_SOURCE_URL` is configured
+- `PARVA_RATE_LIMIT_BACKEND=redis`
+- `PARVA_REDIS_URL` is configured
+- required precomputed artifacts are either present or intentionally disabled with `PARVA_REQUIRE_PRECOMPUTED=false`
+- experimental routes remain disabled unless there is an explicit reason to enable them
+- place search policy is explicit:
+  - `PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only` for privacy-first production
+  - or `PARVA_PLACE_SEARCH_PROVIDER_POLICY=acknowledged_remote` if the operator knowingly allows remote geocoding
+
+Run the production preflight locally or in CI with:
+
 ```bash
-python scripts/live_smoke.py --base https://<your-render-service>.onrender.com
+make preflight-production
 ```
 
-## Cloudflare note (important)
-- Cloudflare Pages is excellent for static frontend hosting.
-- The current backend uses Python + `pyswisseph`, which is not a straightforward fit for Cloudflare Pages Functions/Workers runtime.
-- If you want Cloudflare now, use it for the frontend static site; keep the dynamic API on Render.
+## Provider posture
 
-## Legacy split deploy (if needed)
-1. Deploy backend on Render.
-2. Build frontend with production API base:
+- Treat deployment as provider-neutral. The repo hardening gates validate runtime requirements, not just one host.
+- `render.yaml` may remain as a legacy example, but it is not the canonical production control surface.
+- Cloudflare Pages is appropriate for the static frontend. The Python backend should run on a normal container/web service platform.
+
+## Reference frontend
+
+- The frontend should be described as a public reference beta unless and until account/sync/member-state workflows are explicitly productized.
+- If `PARVA_SERVE_FRONTEND=true`, treat that as a convenience delivery mode, not proof that the frontend is a fully supported consumer product.
+
+## Split frontend/backend deployment
+
+1. Deploy the backend on your chosen container/web-service runtime.
+2. Build the frontend with a production API base:
 ```bash
-set VITE_API_BASE=https://<your-render-service>.onrender.com/v3/api
+set VITE_API_BASE=https://<your-api-host>/v3/api
 set VITE_SOURCE_URL=https://github.com/<you>/<your-public-parva-fork>
 npm --prefix frontend run build
 ```
-3. Publish frontend on GitHub Pages / Netlify / Vercel.
+3. Publish the frontend on your static host of choice.
 
 ## Health checks
 - `GET /health/live`
@@ -86,8 +94,15 @@ npm --prefix frontend run build
 ## Geocoding posture
 
 - Default provider chain: offline Nepal gazetteer first, remote geocoder second.
+- In production, set `PARVA_PLACE_SEARCH_PROVIDER_POLICY` explicitly and keep it aligned with `PARVA_PLACE_SEARCH_ALLOW_REMOTE` and `PARVA_PLACE_SEARCH_PROVIDER_CHAIN`.
 - For serious production traffic, replace the public remote provider with a self-hosted or paid upstream.
 - Keep provider time budgets and retries conservative so place search cannot dominate request latency.
+
+## Legacy Render note
+
+- `render.yaml` is kept as a legacy deployment example only.
+- If you still use Render, validate it with `python scripts/release/check_render_blueprint.py`.
+- Do not treat Render-specific settings as the only supported production path.
 
 ## CI gates
 ```bash
