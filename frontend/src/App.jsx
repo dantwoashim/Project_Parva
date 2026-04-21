@@ -341,7 +341,7 @@ function AppFrame() {
       <footer className="app-shell__footer">
         <div className="app-shell__footer-copy">
           <strong>Parva</strong>
-          <span>Sacred Wisdom for the Digital Era.</span>
+          <span>Sacred Wisdom for the Digital Era. Public reference beta for the Parva API platform.</span>
         </div>
         <div className="app-shell__footer-links">
           {footerGroups.map((group) => (
