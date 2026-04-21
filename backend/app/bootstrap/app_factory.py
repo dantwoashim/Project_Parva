@@ -104,6 +104,16 @@ def _build_startup_checks(settings) -> dict[str, object]:
             "ok": frontend_index.exists(),
             "path": str(frontend_index),
         },
+        "place_search_policy": {
+            "required": settings.environment.lower() == "production",
+            "ok": bool(settings.place_search_provider_policy),
+            "detail": {
+                "policy": settings.place_search_provider_policy or "unset",
+                "allow_remote": settings.place_search_allow_remote,
+                "provider_chain": list(settings.place_search_provider_chain),
+                "endpoint": settings.place_search_endpoint,
+            },
+        },
     }
     ready = all((not item["required"]) or item["ok"] for item in checks.values())
     return {

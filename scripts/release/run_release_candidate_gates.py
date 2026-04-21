@@ -105,27 +105,56 @@ def main(argv: list[str] | None = None) -> int:
     if args.require_signed_provenance:
         provenance_command.append("--require-signed")
 
-    steps: list[tuple[str, list[str]]] = [
-        ("Verify toolchain", [python, "scripts/verify_environment.py"]),
-        ("Repository hygiene", [python, "scripts/release/check_repo_hygiene.py"]),
-        ("Render blueprint", [python, "scripts/release/check_render_blueprint.py"]),
-        ("SDK install surface", [python, "scripts/release/check_sdk_install.py"]),
-        ("Contract freeze", [python, "scripts/release/check_contract_freeze.py"]),
-        ("Route inventory", [python, "scripts/release/check_route_inventory.py"]),
-        ("Documented routes", [python, "scripts/release/check_documented_routes.py"]),
-        ("Provenance readiness", provenance_command),
-        ("Backend test suite", [python, "-m", "pytest", "-q"]),
-        ("Spec conformance", [python, "scripts/spec/run_conformance_tests.py"]),
+    production_preflight_env = dict(shared_env)
+    production_preflight_env.setdefault("PARVA_ENV", "production")
+    production_preflight_env.setdefault("PARVA_SOURCE_URL", "https://example.com/source")
+    production_preflight_env.setdefault("PARVA_RATE_LIMIT_BACKEND", "redis")
+    production_preflight_env.setdefault("PARVA_REDIS_URL", "redis://localhost:6379/0")
+    production_preflight_env.setdefault("PARVA_REQUIRE_PRECOMPUTED", "false")
+    production_preflight_env.setdefault("PARVA_PLACE_SEARCH_ALLOW_REMOTE", "false")
+    production_preflight_env.setdefault("PARVA_PLACE_SEARCH_PROVIDER_CHAIN", "offline")
+    production_preflight_env.setdefault("PARVA_PLACE_SEARCH_PROVIDER_POLICY", "offline_only")
+
+    steps: list[tuple[str, list[str], dict[str, str] | None]] = [
+        ("Verify toolchain", [python, "scripts/verify_environment.py"], None),
+        ("Repository hygiene", [python, "scripts/release/check_repo_hygiene.py"], None),
+        ("Render blueprint", [python, "scripts/release/check_render_blueprint.py"], None),
+        ("Production preflight", [python, "scripts/release/check_production_preflight.py"], production_preflight_env),
+        ("SDK install surface", [python, "scripts/release/check_sdk_install.py"], None),
+        ("Contract freeze", [python, "scripts/release/check_contract_freeze.py"], None),
+        ("Route inventory", [python, "scripts/release/check_route_inventory.py"], None),
+        ("Documented routes", [python, "scripts/release/check_documented_routes.py"], None),
+        ("Provenance readiness", provenance_command, None),
+        ("Backend test suite", [python, "-m", "pytest", "-q"], None),
+        ("Spec conformance", [python, "scripts/spec/run_conformance_tests.py"], None),
     ]
 
     if args.frontend_clean_install:
-        steps.append(("Frontend clean install", build_npm_command(["ci", "--prefix", str(FRONTEND_DIR)], node_runtime)))
+        steps.append(
+            (
+                "Frontend clean install",
+                build_npm_command(["ci", "--prefix", str(FRONTEND_DIR)], node_runtime),
+                None,
+            )
+        )
 
     steps.extend(
         [
-            ("Frontend lint", build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "lint"], node_runtime)),
-            ("Frontend tests", build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "test"], node_runtime)),
-            ("Frontend build", build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "build"], node_runtime)),
+            (
+                "Frontend lint",
+                build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "lint"], node_runtime),
+                None,
+            ),
+            (
+                "Frontend tests",
+                build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "test"], node_runtime),
+                None,
+            ),
+            (
+                "Frontend build",
+                build_npm_command(["--prefix", str(FRONTEND_DIR), "run", "build"], node_runtime),
+                None,
+            ),
             (
                 "Frontend bundle budget",
                 [
@@ -134,6 +163,7 @@ def main(argv: list[str] | None = None) -> int:
                     "--report-path",
                     str(BUNDLE_BUDGET_REPORT),
                 ],
+                None,
             ),
             (
                 "Public beta artifacts",
@@ -145,8 +175,9 @@ def main(argv: list[str] | None = None) -> int:
                     "--computed-target",
                     "300",
                 ],
+                None,
             ),
-            ("Security audit", [python, "scripts/security/run_audit.py"]),
+            ("Security audit", [python, "scripts/security/run_audit.py"], None),
         ]
     )
 
@@ -155,12 +186,14 @@ def main(argv: list[str] | None = None) -> int:
             (
                 "Browser smoke",
                 [python, "scripts/run_browser_smoke.py", "--report-path", str(BROWSER_SMOKE_REPORT)],
+                None,
             )
         )
         steps.append(
             (
                 "Golden journeys",
                 [python, "scripts/run_golden_journeys.py", "--report-path", str(GOLDEN_JOURNEYS_REPORT)],
+                None,
             )
         )
 
@@ -182,6 +215,7 @@ def main(argv: list[str] | None = None) -> int:
                     "--require-reviewer",
                     "Product",
                 ],
+                None,
             )
         )
     else:
@@ -189,8 +223,8 @@ def main(argv: list[str] | None = None) -> int:
             f"[RC] Launch signoff document not present at {LAUNCH_SIGNOFF_DOCUMENT}; "
             "skipping human approval verification."
         )
-    steps.append(("Clean source archive", archive_command))
-    steps.append(("Verify source archive", [python, "scripts/release/verify_source_archive.py"]))
+    steps.append(("Clean source archive", archive_command, None))
+    steps.append(("Verify source archive", [python, "scripts/release/verify_source_archive.py"], None))
     dossier_approved = (
         args.frontend_clean_install
         and args.require_signed_provenance
@@ -222,11 +256,11 @@ def main(argv: list[str] | None = None) -> int:
         "--approved",
         "yes" if dossier_approved else "no",
     ]
-    steps.append(("Release candidate dossier", dossier_command))
+    steps.append(("Release candidate dossier", dossier_command, None))
 
     total = len(steps)
-    for index, (label, command) in enumerate(steps, start=1):
-        _run_step(index, total, label, command, env=shared_env)
+    for index, (label, command, env_override) in enumerate(steps, start=1):
+        _run_step(index, total, label, command, env=env_override or shared_env)
 
     print("[RC] All release-candidate gates passed.")
     return 0

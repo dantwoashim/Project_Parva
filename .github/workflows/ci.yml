@@ -46,6 +46,7 @@ jobs:
           python scripts/spec/run_conformance_tests.py
           python scripts/release/package_source_archive.py
           python scripts/release/verify_source_archive.py
+          PARVA_ENV=production PARVA_SOURCE_URL=https://example.com/source PARVA_RATE_LIMIT_BACKEND=redis PARVA_REDIS_URL=redis://localhost:6379/0 PARVA_REQUIRE_PRECOMPUTED=false PARVA_PLACE_SEARCH_ALLOW_REMOTE=false PARVA_PLACE_SEARCH_PROVIDER_CHAIN=offline PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only python scripts/release/check_production_preflight.py
 
       - name: Build Docker image
         run: docker build -t project-parva-ci .
