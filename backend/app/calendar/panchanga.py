@@ -225,8 +225,8 @@ def is_auspicious_day(panchanga: Dict[str, Any]) -> Dict[str, Any]:
     tithi = panchanga["tithi"]["display_number"]
     paksha = panchanga["tithi"]["paksha"]
     nakshatra = panchanga["nakshatra"]["name"]
-    panchanga["yoga"]["name"]
-    panchanga["vaara"]["number"]
+    yoga = panchanga["yoga"]["name"]
+    weekday_number = panchanga["vaara"]["number"]
 
     # Auspicious tithis for various activities
     auspicious_tithis = {2, 3, 5, 7, 10, 11, 13}  # Generally auspicious
@@ -261,6 +261,8 @@ def is_auspicious_day(panchanga: Dict[str, Any]) -> Dict[str, Any]:
         "is_purnima": is_purnima,
         "is_amavasya": is_amavasya,
         "is_ekadashi": is_ekadashi,
+        "yoga": yoga,
+        "weekday_number": weekday_number,
         "recommended_for": _get_recommendations(panchanga),
     }
 
