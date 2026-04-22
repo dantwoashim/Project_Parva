@@ -65,7 +65,32 @@ make preflight-production
 
 - Treat deployment as provider-neutral. The repo hardening gates validate runtime requirements, not just one host.
 - `render.yaml` may remain as a legacy example, but it is not the canonical production control surface.
-- Cloudflare Pages is appropriate for the static frontend. The Python backend should run on a normal container/web service platform.
+- The recommended hosted split is:
+  - Cloudflare Pages for `frontend/`
+  - Cloud Run for the backend container
+  - Upstash Redis for distributed rate limiting
+
+## Recommended hosted split
+
+Use this shape unless you have a stronger operator reason not to:
+
+1. Deploy the backend container with `Dockerfile.cloudrun`.
+2. Build and host the frontend separately on Cloudflare Pages.
+3. Set `PARVA_SERVE_FRONTEND=false` in hosted backend environments.
+4. Keep `PARVA_RATE_LIMIT_BACKEND=redis` with `PARVA_REDIS_URL` set to a managed Redis URL such as Upstash.
+5. Set `CORS_ALLOW_ORIGINS` to the exact frontend domains you intend to serve.
+
+Reference files included in the repo:
+
+- `Dockerfile.cloudrun`
+- `cloudbuild.cloudrun.yaml`
+- `frontend/public/_redirects`
+
+Reference docs:
+
+- [DEPLOY_CLOUD_RUN.md](DEPLOY_CLOUD_RUN.md)
+- [DEPLOY_CLOUDFLARE_PAGES.md](DEPLOY_CLOUDFLARE_PAGES.md)
+- [DEPLOY_UPSTASH.md](DEPLOY_UPSTASH.md)
 
 ## Reference frontend
 
@@ -77,11 +102,13 @@ make preflight-production
 1. Deploy the backend on your chosen container/web-service runtime.
 2. Build the frontend with a production API base:
 ```bash
-set VITE_API_BASE=https://<your-api-host>/v3/api
+set VITE_API_BASE=https://api.example.com/v3/api
 set VITE_SOURCE_URL=https://github.com/<you>/<your-public-parva-fork>
 npm --prefix frontend run build
 ```
 3. Publish the frontend on your static host of choice.
+
+For Cloudflare Pages specifically, the repo already includes `frontend/public/_redirects` so client-side routing works after deploy.
 
 ## Health checks
 - `GET /health/live`
@@ -103,11 +130,13 @@ npm --prefix frontend run build
 - `render.yaml` is kept as a legacy deployment example only.
 - If you still use Render, validate it with `python scripts/release/check_render_blueprint.py`.
 - Do not treat Render-specific settings as the only supported production path.
+- The split-hosting path should also pass `python scripts/release/check_cloudrun_blueprint.py`.
 
 ## CI gates
 ```bash
 python scripts/release/check_repo_hygiene.py
 python scripts/release/check_render_blueprint.py
+python scripts/release/check_cloudrun_blueprint.py
 python scripts/release/check_sdk_install.py
 python scripts/validate_festival_catalog.py
 python scripts/release/check_license_compliance.py
