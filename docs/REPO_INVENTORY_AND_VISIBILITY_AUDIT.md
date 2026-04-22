@@ -60,7 +60,6 @@ This document classifies the current repository tree from a public open-source p
 | `data/source_archive/secondary/` | Raw third-party HTML source snapshots | Public raw archive | move to private/internal repo | Includes copied third-party markup and embedded page-level tokens; not required by runtime | High |
 | `data/transparency_log.json` | Public transparency artifact | Public trust artifact | keep public but clean up | Small and understandable, but should stay generated and documented | Medium |
 | `benchmark/` | Benchmark harness and packs | Public engineering asset | keep public but clean up | Useful for performance work; generated results should stay out of git | Medium |
-| `stitch/` | Design/reference artifacts and screenshots | Public reference asset | keep public but clean up | Useful context, but not normative product docs | Low |
 | `tests/` | Integration, contract, and unit tests | Public OSS core | keep public | Required for contributor confidence | Low |
 | `dist/` | Built archives or build output | Local generated artifact | delete as junk/generated | Should not be committed; already ignored and removed from the worktree | Medium |
 | `output/` | Generated runtime output | Local generated artifact | delete as junk/generated | Not source | Medium |

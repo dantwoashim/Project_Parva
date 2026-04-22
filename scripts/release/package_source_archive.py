@@ -40,12 +40,6 @@ EXCLUDED_RELATIVE_PREFIXES = {
     Path("backend/data/traces"),
     Path("backend/project_parva.egg-info"),
 }
-EXCLUDED_RELATIVE_PATHS = {
-    Path("SKILL.md"),
-    Path("docs/PARVA_UI_UX_TRUST_RESEARCH_2026-03-14.md"),
-    Path("docs/PROJECT_AUDIT_2026-03-13.md"),
-    Path("docs/PROJECT_DEEP_AUDIT_2026-03-14.md"),
-}
 ALLOWED_GENERATED_DIRTY_PATHS = {
     Path("backend/data/public_artifacts/authority_dashboard.json"),
     Path("backend/data/public_artifacts/dashboard_metrics.json"),
@@ -67,9 +61,6 @@ def _should_skip(path: Path) -> bool:
         return True
 
     if any(relative == prefix or prefix in relative.parents for prefix in EXCLUDED_RELATIVE_PREFIXES):
-        return True
-
-    if relative in EXCLUDED_RELATIVE_PATHS:
         return True
 
     if path.suffix in EXCLUDED_SUFFIXES:

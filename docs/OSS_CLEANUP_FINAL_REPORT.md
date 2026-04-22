@@ -15,7 +15,7 @@ This report summarizes the public-repo cleanup and OSS hardening pass completed 
 
 ## What Was Deleted
 
-Tracked source deletions in this cleanup branch were intentionally minimal.
+Tracked source deletions in this cleanup branch were intentionally minimal at first. Later cleanup also removed unused design prototypes and orphaned page surfaces.
 
 Local generated or junk artifacts removed from the worktree:
 
@@ -29,6 +29,12 @@ Local generated or junk artifacts removed from the worktree:
 - `output/`
 - `reports/`
 - `tmp/`
+
+Tracked source deletions added later:
+
+- `stitch/`
+- legacy Parva page source and stylesheet files
+- legacy Calendar Atlas page source and stylesheet files
 
 ## What Was Added
 
