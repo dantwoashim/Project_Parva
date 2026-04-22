@@ -454,7 +454,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             data-discover="true"
             href="/truth-lab"
           >
-            Methodology
+            Truth Lab
           </a>
           <a
             class=""
@@ -1807,7 +1807,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
             data-discover="true"
             href="/truth-lab"
           >
-            Methodology
+            Truth Lab
           </a>
           <a
             class=""
@@ -2876,7 +2876,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             data-discover="true"
             href="/truth-lab"
           >
-            Methodology
+            Truth Lab
           </a>
           <a
             class=""
@@ -4730,7 +4730,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             data-discover="true"
             href="/truth-lab"
           >
-            Methodology
+            Truth Lab
           </a>
           <a
             class=""
@@ -6744,7 +6744,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             data-discover="true"
             href="/truth-lab"
           >
-            Methodology
+            Truth Lab
           </a>
           <a
             class=""

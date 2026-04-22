@@ -4,8 +4,8 @@ import { trackEvent } from '../services/analytics';
 import './LandingPage.css';
 
 const TRUST_NOTES = [
-  'Built for Nepal-focused observances, timing, and reading use cases.',
-  'Method detail stays available, but never blocks the first answer.',
+  'Built for Nepal-focused observances, timing, and personal calendar questions.',
+  'Method detail stays available without blocking the main task.',
 ];
 
 const INTENT_CARDS = [
@@ -18,15 +18,15 @@ const INTENT_CARDS = [
 const DEFAULT_RHYTHM_STORIES = [
   {
     tag: 'Season watch',
-    title: 'The next observance should feel easy to notice.',
-    body: 'Parva should keep the next meaningful date visible without forcing a dense calendar first.',
-    meta: 'Calm annual rhythm',
+    title: 'The next observance should be easy to notice.',
+    body: 'Parva keeps the next meaningful date visible without forcing you into a dense calendar first.',
+    meta: 'Seasonal view',
   },
   {
-    tag: 'Meaning first',
+    tag: 'Context',
     title: 'Context should arrive before taxonomy.',
     body: 'People should understand why a day matters before they see system detail.',
-    meta: 'Trust through clarity',
+    meta: 'Readable first',
   },
 ];
 
@@ -58,11 +58,11 @@ export function LandingPage() {
         <div className="landing-hero__copy">
           <div className="landing-hero__intro">
             <p className="landing-eyebrow">Project Parva</p>
-            <span className="landing-hero__status">A calm guide to Nepal&apos;s sacred time</span>
+            <span className="landing-hero__status">Nepal-focused festival and timing reference</span>
           </div>
-          <h1 className="landing-title">A calm guide to Nepal&apos;s sacred time.</h1>
+          <h1 className="landing-title">Festival dates, daily timing, and personal context in one place.</h1>
           <p className="landing-subtitle">
-            See what matters today, find the best time for a plan, and follow upcoming observances with clarity instead of clutter.
+            Check what matters today, find a good time for a plan, and follow upcoming observances without extra clutter.
           </p>
           <div className="landing-actions">
             <Link className="btn btn-primary" to="/today" onClick={() => trackEvent('landing_cta_clicked', { cta: 'see_today' })}>See today</Link>
@@ -80,14 +80,14 @@ export function LandingPage() {
                 <path d="M34 90 L90 105 L146 90 L90 75 Z" className="landing-seal-card__petal landing-seal-card__petal--soft" />
               </svg>
             </div>
-            <span>One clear answer</span>
-            <strong>Meaning first</strong>
-            <small>Details only when asked for.</small>
+            <span>Direct answers first</span>
+            <strong>Practical and inspectable</strong>
+            <small>Method detail stays available when you want it.</small>
           </article>
 
           <article className="landing-trust-card">
-            <p className="landing-trust-card__eyebrow">Why trust Parva</p>
-            <h2>Built for Nepal-focused use cases, with method available when you want it.</h2>
+            <p className="landing-trust-card__eyebrow">What the app shows</p>
+            <h2>Festival dates, timing, and evidence stay tied together.</h2>
             <ul className="landing-trust-list">
               {TRUST_NOTES.map((item) => (
                 <li key={item}>{item}</li>
@@ -125,7 +125,7 @@ export function LandingPage() {
       <section className="landing-rhythm editorial-card">
         <div className="landing-section-header">
           <p className="landing-eyebrow">Festival rhythm</p>
-          <h2>Keep the next observance in view without opening the full calendar first.</h2>
+          <h2>Keep the next observance in view without opening the full calendar.</h2>
         </div>
         {loading ? (
           <div className="landing-rhythm__grid">

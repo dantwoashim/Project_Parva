@@ -6,8 +6,8 @@ export function AboutPage() {
     <section className="about-page utility-page animate-fade-in-up">
       <UtilityPageHeader
         eyebrow="About Parva"
-        title="Parva is built to make sacred time feel clear before it feels technical."
-        body="The product is designed for everyday people first: calm language, one useful answer, and deeper detail only when someone wants it."
+        title="Parva helps people check sacred dates and timing without wading through jargon."
+        body="The product starts with a direct answer, then exposes the method, evidence, and caveats when you need them."
         links={[
           { label: 'Today', to: '/#today' },
           { label: 'Festivals', to: '/#festivals' },
@@ -16,8 +16,8 @@ export function AboutPage() {
         aside={(
           <>
             <span className="utility-page__eyebrow">Category position</span>
-            <strong>Nepal-first sacred time guide</strong>
-            <p>The consumer product should feel singular, calm, and serious across every route.</p>
+            <strong>Nepal-focused temporal reference</strong>
+            <p>The product is meant to keep everyday calendar and observance questions readable across routes.</p>
           </>
         )}
       />
@@ -26,13 +26,13 @@ export function AboutPage() {
         <article className="editorial-card about-card utility-page__panel">
           <h2>What it is</h2>
           <p>
-            A Nepal-focused guide for festivals, panchanga, muhurta, and kundali that tries to feel trustworthy without feeling overloaded.
+            A Nepal-focused reference for festivals, panchanga, muhurta, and personal timing context.
           </p>
         </article>
         <article className="editorial-card about-card utility-page__panel">
-          <h2>How trust works</h2>
+          <h2>How it stays inspectable</h2>
           <p>
-            The first answer stays calm and useful. Method notes, where results can vary, and deeper evidence stay available when you want to inspect them.
+            Each result can expose the place, date, method, and evidence used so the answer can be checked.
           </p>
         </article>
       </section>
@@ -44,16 +44,16 @@ export function AboutPage() {
         </div>
         <div className="about-details__grid">
           <article>
-            <h3>Meaning before mechanics</h3>
-            <p>The first screen should answer the question, not explain the machinery.</p>
+            <h3>Answer first</h3>
+            <p>The first screen should answer the question before it introduces background detail.</p>
           </article>
           <article>
-            <h3>Calm trust</h3>
-            <p>Evidence, method, and variance notes stay available, but they never crowd the first answer.</p>
+            <h3>Show your work</h3>
+            <p>Evidence, method, and variance notes stay available, but they should not crowd the first answer.</p>
           </article>
           <article>
-            <h3>One product language</h3>
-            <p>Landing, reading, and planning surfaces should feel like one premium product, not separate dashboards.</p>
+            <h3>Stay consistent</h3>
+            <p>Landing, reading, and planning surfaces should feel like one product instead of separate dashboards.</p>
           </article>
         </div>
       </section>

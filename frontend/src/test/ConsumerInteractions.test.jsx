@@ -333,7 +333,7 @@ describe('consumer route interactions', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Keep preferences and device cache in one calm place/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Keep preferences and device cache in one place/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Reminder behavior/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Export JSON/i })).toBeInTheDocument();
   }, 15000);
