@@ -4,10 +4,10 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT_DIR"
 
-echo "[Month9] 1/14 Repo hygiene"
+echo "[Month9] 1/15 Repo hygiene"
 python3 scripts/release/check_repo_hygiene.py
 
-echo "[Month9] 2/14 Render blueprint"
+echo "[Month9] 2/15 Render blueprint"
 python3 scripts/release/check_render_blueprint.py
 
 echo "[Month9] 3/15 Cloud Run blueprint"
