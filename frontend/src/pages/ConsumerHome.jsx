@@ -12,7 +12,7 @@ import './ConsumerHome.css';
 function splitPrimaryTitle(value) {
   const parts = String(value || '').trim().split(/\s+/).filter(Boolean);
   if (!parts.length) {
-    return ['Sacred', 'Alignment'];
+    return ['Today', 'Overview'];
   }
   if (parts.length === 1) {
     return [parts[0], ''];
@@ -68,7 +68,7 @@ export function ConsumerHome() {
     ],
   );
   const [titleLineOne, titleLineTwo] = splitPrimaryTitle(
-    todayViewModel?.signals?.[0]?.value || todayViewModel?.headline || 'Sacred Alignment',
+    todayViewModel?.signals?.[0]?.value || todayViewModel?.headline || 'Today Overview',
   );
 
   if (loading) {
@@ -91,7 +91,7 @@ export function ConsumerHome() {
         <article className="almanac-home__error ink-card" role="alert">
           <p className="almanac-home__eyebrow">Home</p>
           <h1>Sacred guidance is temporarily unavailable.</h1>
-          <p>{error || 'The editorial landing view could not be assembled from the live calendar payload.'}</p>
+          <p>{error || 'The home view could not be assembled from the live calendar payload.'}</p>
         </article>
       </section>
     );
@@ -100,10 +100,10 @@ export function ConsumerHome() {
   return (
     <section className="almanac-home consumer-route consumer-route--overview animate-fade-in-up">
       <header className="almanac-home__hero">
-        <article className="almanac-home__alignment glass-panel">
+        <article className="almanac-home__alignment surface-panel">
           <div className="almanac-home__alignment-head">
             <div>
-              <p className="almanac-home__eyebrow">Today&apos;s Alignment</p>
+              <p className="almanac-home__eyebrow">Today at a glance</p>
               <h1>
                 <span>{titleLineOne}</span>
                 {titleLineTwo ? <span>{titleLineTwo}</span> : null}
@@ -199,7 +199,7 @@ export function ConsumerHome() {
         <div className="almanac-home__banner-overlay" />
         <div className="almanac-home__banner-copy">
           <p className="almanac-home__eyebrow">Space for Reflection</p>
-          <h2>Embrace the Divine Rhythm</h2>
+          <h2>Pause and review the day.</h2>
           <p>Let the answer arrive first, then open the deeper method only when you want the full reasoning.</p>
         </div>
       </section>

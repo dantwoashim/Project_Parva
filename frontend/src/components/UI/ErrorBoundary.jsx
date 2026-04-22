@@ -22,7 +22,7 @@ export class ErrorBoundary extends Component {
     render() {
         if (this.state.hasError) {
             return (
-                <div className="glass-card" style={{ margin: '2rem', padding: '1.25rem' }}>
+                <div className="surface-card" style={{ margin: '2rem', padding: '1.25rem' }}>
                     <h2>Something went wrong</h2>
                     <p>
                         We hit an unexpected UI error. You can retry, or refresh the page.

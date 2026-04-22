@@ -641,7 +641,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
     class="almanac-home__hero"
   >
     <article
-      class="almanac-home__alignment glass-panel"
+      class="almanac-home__alignment surface-panel"
     >
       <div
         class="almanac-home__alignment-head"
@@ -650,7 +650,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
           <p
             class="almanac-home__eyebrow"
           >
-            Today's Alignment
+            Today at a glance
           </p>
           <h1>
             <span>
@@ -1090,7 +1090,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
         Space for Reflection
       </p>
       <h2>
-        Embrace the Divine Rhythm
+        Pause and review the day.
       </h2>
       <p>
         Let the answer arrive first, then open the deeper method only when you want the full reasoning.

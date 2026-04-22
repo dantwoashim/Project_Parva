@@ -23,13 +23,13 @@ export function AboutPage() {
       />
 
       <section className="about-grid">
-        <article className="editorial-card about-card utility-page__panel">
+        <article className="feature-card about-card utility-page__panel">
           <h2>What it is</h2>
           <p>
             A Nepal-focused reference for festivals, panchanga, muhurta, and personal timing context.
           </p>
         </article>
-        <article className="editorial-card about-card utility-page__panel">
+        <article className="feature-card about-card utility-page__panel">
           <h2>How it stays inspectable</h2>
           <p>
             Each result can expose the place, date, method, and evidence used so the answer can be checked.
@@ -37,7 +37,7 @@ export function AboutPage() {
         </article>
       </section>
 
-      <section className="editorial-card about-details utility-page__panel">
+      <section className="feature-card about-details utility-page__panel">
         <div className="landing-section-header">
           <p className="landing-eyebrow">Principles</p>
           <h2>What the interface promises</h2>

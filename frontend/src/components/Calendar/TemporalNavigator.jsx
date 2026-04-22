@@ -37,7 +37,7 @@ export function TemporalNavigator({
     });
 
     return (
-        <aside className="temporal-navigator glass-card">
+        <aside className="temporal-navigator surface-card">
             {/* Header */}
             <header className="temporal-navigator__header">
                 <h2 className="temporal-navigator__title text-display">

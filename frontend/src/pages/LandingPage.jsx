@@ -54,7 +54,7 @@ export function LandingPage() {
 
   return (
     <section className="landing-page animate-fade-in-up">
-      <section className="landing-hero editorial-card">
+      <section className="landing-hero feature-card">
         <div className="landing-hero__copy">
           <div className="landing-hero__intro">
             <p className="landing-eyebrow">Project Parva</p>
@@ -111,7 +111,7 @@ export function LandingPage() {
           {INTENT_CARDS.map((card) => (
             <Link
               key={card.to}
-              className="landing-intent-card editorial-card"
+              className="landing-intent-card feature-card"
               to={card.to}
               onClick={() => trackEvent('path_card_selected', { destination: card.to, source: 'landing' })}
             >
@@ -122,7 +122,7 @@ export function LandingPage() {
         </div>
       </section>
 
-      <section className="landing-rhythm editorial-card">
+      <section className="landing-rhythm feature-card">
         <div className="landing-section-header">
           <p className="landing-eyebrow">Festival rhythm</p>
           <h2>Keep the next observance in view without opening the full calendar.</h2>
