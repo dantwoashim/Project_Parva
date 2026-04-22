@@ -1,0 +1,40 @@
+FROM python:3.11.11-slim-bookworm
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=backend \
+    PATH="/opt/venv/bin:$PATH" \
+    PARVA_SERVE_FRONTEND=false \
+    PARVA_ENABLE_EXPERIMENTAL_API=false \
+    PARVA_RATE_LIMIT_ENABLED=true \
+    PARVA_ENV=production
+
+ARG PARVA_PRECOMPUTE=0
+
+RUN python -m venv /opt/venv
+
+COPY LICENSE README.md pyproject.toml /app/
+COPY requirements/constraints.txt /app/requirements/constraints.txt
+COPY backend /app/backend
+COPY scripts /app/scripts
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -c requirements/constraints.txt -e .
+
+COPY data /app/data
+RUN mkdir -p /app/output/precomputed \
+    && if [ "$PARVA_PRECOMPUTE" = "1" ]; then \
+         START_YEAR="$(date -u +%Y)" \
+         && END_YEAR="$((START_YEAR + 2))" \
+         && python /app/scripts/precompute/precompute_all.py \
+              --start-year "${START_YEAR}" \
+              --end-year "${END_YEAR}"; \
+       fi
+
+RUN useradd --create-home --shell /usr/sbin/nologin parva \
+    && chown -R parva:parva /app
+
+EXPOSE 8080
+
+USER parva
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080} --app-dir backend"]

@@ -19,7 +19,9 @@ PYPROJECT_PATH = PROJECT_ROOT / "pyproject.toml"
 DIST_DIR = PROJECT_ROOT / "dist"
 
 INCLUDED_TOP_LEVEL_NAMES = {
+    ".env.example",
     "backend",
+    "cloudbuild.cloudrun.yaml",
     "frontend",
     "data",
     "requirements",
@@ -27,6 +29,7 @@ INCLUDED_TOP_LEVEL_NAMES = {
     "README.md",
     "LICENSE",
     "Dockerfile",
+    "Dockerfile.cloudrun",
     "render.yaml",
 }
 EXCLUDED_DIR_NAMES = {
