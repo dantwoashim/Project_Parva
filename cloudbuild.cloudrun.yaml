@@ -1,0 +1,18 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - Dockerfile.cloudrun
+      - -t
+      - ${_IMAGE}
+      - --build-arg
+      - PARVA_PRECOMPUTE=${_PARVA_PRECOMPUTE}
+      - .
+
+images:
+  - ${_IMAGE}
+
+substitutions:
+  _IMAGE: asia-southeast1-docker.pkg.dev/${PROJECT_ID}/parva/project-parva-api:latest
+  _PARVA_PRECOMPUTE: "0"

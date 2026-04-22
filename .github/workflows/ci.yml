@@ -33,6 +33,7 @@ jobs:
           python scripts/release/check_repo_hygiene.py
           python scripts/security/scan_repo_secrets.py
           python scripts/release/check_render_blueprint.py
+          python scripts/release/check_cloudrun_blueprint.py
           python scripts/validate_festival_catalog.py
           python scripts/release/check_license_compliance.py
           python scripts/check_docs_links.py
@@ -49,6 +50,9 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t project-parva-ci .
+
+      - name: Build Cloud Run Docker image
+        run: docker build -f Dockerfile.cloudrun -t project-parva-cloudrun-ci .
 
       - name: Run backend tests
         run: pytest -q backend/tests tests/unit tests/contract

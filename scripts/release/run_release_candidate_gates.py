@@ -119,6 +119,7 @@ def main(argv: list[str] | None = None) -> int:
         ("Verify toolchain", [python, "scripts/verify_environment.py"], None),
         ("Repository hygiene", [python, "scripts/release/check_repo_hygiene.py"], None),
         ("Render blueprint", [python, "scripts/release/check_render_blueprint.py"], None),
+        ("Cloud Run blueprint", [python, "scripts/release/check_cloudrun_blueprint.py"], None),
         ("Production preflight", [python, "scripts/release/check_production_preflight.py"], production_preflight_env),
         ("SDK install surface", [python, "scripts/release/check_sdk_install.py"], None),
         ("Contract freeze", [python, "scripts/release/check_contract_freeze.py"], None),
