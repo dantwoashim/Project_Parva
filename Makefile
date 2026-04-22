@@ -3,7 +3,7 @@ NPM ?= npm
 
 .PHONY: install install-backend install-sdk install-frontend dev dev-backend dev-frontend \
 	test test-backend test-frontend lint lint-backend lint-frontend build build-frontend \
-	verify preflight-production smoke clean
+	verify preflight-production smoke build-cloudrun-image clean
 
 install: install-backend install-sdk install-frontend
 
@@ -51,6 +51,7 @@ verify:
 	$(PYTHON) scripts/release/check_repo_hygiene.py
 	$(PYTHON) scripts/security/scan_repo_secrets.py
 	$(PYTHON) scripts/check_path_leaks.py
+	$(PYTHON) scripts/release/check_cloudrun_blueprint.py
 	$(PYTHON) scripts/release/check_documented_routes.py
 	$(PYTHON) scripts/release/check_backend_smoke.py
 	$(PYTHON) scripts/release/check_sdk_install.py
@@ -73,6 +74,9 @@ preflight-production:
 
 smoke:
 	$(PYTHON) scripts/live_smoke.py --base http://127.0.0.1:8000
+
+build-cloudrun-image:
+	docker build -f Dockerfile.cloudrun -t project-parva-cloudrun .
 
 clean:
 	rm -rf .pytest_cache .ruff_cache .mypy_cache htmlcov build dist output reports tmp
