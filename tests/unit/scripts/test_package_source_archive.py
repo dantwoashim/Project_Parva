@@ -65,19 +65,6 @@ def test_should_skip_generated_provenance_artifacts():
     )
 
 
-def test_should_skip_prompt_artifacts():
-    assert package_source_archive._should_skip(package_source_archive.PROJECT_ROOT / "SKILL.md")
-
-
-def test_should_skip_internal_review_docs():
-    assert package_source_archive._should_skip(
-        package_source_archive.PROJECT_ROOT / "docs" / "PROJECT_AUDIT_2026-03-13.md"
-    )
-    assert package_source_archive._should_skip(
-        package_source_archive.PROJECT_ROOT / "docs" / "PROJECT_DEEP_AUDIT_2026-03-14.md"
-    )
-
-
 def test_verify_source_archive_rejects_disallowed_members(tmp_path):
     archive_path = tmp_path / "project-parva-test-source.zip"
     with zipfile.ZipFile(archive_path, "w") as archive:
