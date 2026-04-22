@@ -61,7 +61,7 @@ export function AuthorityInspector({
   const technicalRows = buildTechnicalRows(provenance, traceId);
 
   return (
-    <section className="glass-card authority-inspector" data-testid="authority-inspector">
+    <section className="surface-card authority-inspector" data-testid="authority-inspector">
       <header className="authority-inspector__header">
         <div>
           <h3>{title}</h3>

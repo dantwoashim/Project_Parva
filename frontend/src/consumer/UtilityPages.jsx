@@ -35,7 +35,7 @@ export function UtilityPageHeader({
   links,
 }) {
   return (
-    <header className="utility-page__hero editorial-card">
+    <header className="utility-page__hero feature-card">
       <div className="utility-page__hero-copy">
         <p className="utility-page__eyebrow">{eyebrow}</p>
         <h1>{title}</h1>
