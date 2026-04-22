@@ -42,6 +42,28 @@ For a real production deployment, provide:
 - `PARVA_RATE_LIMIT_BACKEND=redis`
 - `PARVA_REDIS_URL=<your redis connection string>`
 
+## Cloud Run backend-only container
+
+For split hosting, use the backend-only container instead of the combined Render-oriented image:
+
+```bash
+docker build -f Dockerfile.cloudrun -t project-parva-cloudrun .
+docker run --rm -p 8080:8080 \
+  -e PORT=8080 \
+  -e PARVA_ENV=production \
+  -e PARVA_SERVE_FRONTEND=false \
+  -e PARVA_SOURCE_URL=https://github.com/example/project-parva \
+  -e PARVA_RATE_LIMIT_BACKEND=redis \
+  -e PARVA_REDIS_URL=rediss://default:<password>@example.upstash.io:6379 \
+  -e PARVA_REQUIRE_PRECOMPUTED=false \
+  -e PARVA_PLACE_SEARCH_ALLOW_REMOTE=false \
+  -e PARVA_PLACE_SEARCH_PROVIDER_CHAIN=offline \
+  -e PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only \
+  project-parva-cloudrun
+```
+
+That image is intended for Cloud Run or another container host where the frontend is published separately on a static host such as Cloudflare Pages.
+
 ## Frontend
 
 The frontend is built separately with Vite and served by FastAPI when `PARVA_SERVE_FRONTEND=true` and a local production build has been generated under `frontend/`.
