@@ -64,7 +64,7 @@ export function MythologySection({ mythology }) {
                     <h3 className="section-subtitle">Key Legends</h3>
                     <div className="legends-list">
                         {mythology.legends.map((legend, i) => (
-                            <article key={i} className="legend-card glass-card">
+                            <article key={i} className="legend-card surface-card">
                                 <p className="legend-summary">{legend}</p>
                             </article>
                         ))}

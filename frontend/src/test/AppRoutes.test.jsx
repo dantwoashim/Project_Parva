@@ -521,7 +521,7 @@ describe('App routing', () => {
 
     expect(await screen.findByRole('heading', { name: /Daily Glimpse/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /Upcoming Festivals/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Embrace the Divine Rhythm/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Pause and review the day/i })).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /For developers/i })).toHaveAttribute('href', '/developers/index.html');
   }, 30000);

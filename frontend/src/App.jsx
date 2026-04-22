@@ -214,7 +214,7 @@ function AppRoutes() {
   return (
     <Suspense
       fallback={(
-        <div className="glass-panel" style={{ minHeight: 240, display: 'grid', placeItems: 'center' }}>
+        <div className="surface-panel" style={{ minHeight: 240, display: 'grid', placeItems: 'center' }}>
           Loading Parva...
         </div>
       )}

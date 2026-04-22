@@ -101,7 +101,7 @@ export function RitualTimeline({ ritualSequence, onLocationClick }) {
                         </div>
 
                         {/* Event Content */}
-                        <div className="event-content glass-card">
+                        <div className="event-content surface-card">
                             <h4 className="event-title">{event.title}</h4>
 
                             {event.location && (

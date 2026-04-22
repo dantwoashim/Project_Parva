@@ -82,14 +82,14 @@ p {
   color: var(--text-muted);
 }
 
-.editorial-card,
+.feature-card,
 .ink-card,
-.glass-card,
-.glass-panel {
+.surface-card,
+.surface-panel {
   border-radius: 1.4rem;
 }
 
-.editorial-card {
+.feature-card {
   background:
     radial-gradient(circle at top right, rgba(115, 92, 0, 0.08), transparent 42%),
     linear-gradient(180deg, rgba(255, 248, 243, 0.98), rgba(251, 236, 217, 0.98));
@@ -99,14 +99,14 @@ p {
 }
 
 .ink-card,
-.glass-card,
-.glass-panel {
+.surface-card,
+.surface-panel {
   background: linear-gradient(180deg, var(--surface-1), var(--surface-2));
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-card);
 }
 
-.glass-panel {
+.surface-panel {
   padding: 1.4rem;
 }
 
@@ -219,9 +219,9 @@ p {
   color: inherit;
 }
 
-.editorial-card .ink-input input,
-.editorial-card .ink-input select,
-.editorial-card .ink-input textarea {
+.feature-card .ink-input input,
+.feature-card .ink-input select,
+.feature-card .ink-input textarea {
   background: rgba(255, 255, 255, 0.04);
 }
 

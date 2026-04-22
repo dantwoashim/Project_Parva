@@ -42,7 +42,7 @@ export function ExplainPanel({ data, loading, error, onClose }) {
         <div className="explain-panel-overlay" role="presentation" onClick={onClose}>
             <div
                 ref={dialogRef}
-                className="explain-panel glass-card"
+                className="explain-panel surface-card"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="explain-panel-title"

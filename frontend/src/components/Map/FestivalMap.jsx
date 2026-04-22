@@ -248,7 +248,7 @@ export function FestivalMap({
             )}
 
             {/* Map Legend */}
-            <div className="festival-map__legend glass-card">
+            <div className="festival-map__legend surface-card">
                 <div className="legend-item">
                     <span className="legend-icon">🎭</span>
                     <span>Heritage Site</span>

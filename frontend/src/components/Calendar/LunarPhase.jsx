@@ -50,7 +50,7 @@ export function LunarPhase({ compact = false }) {
     }
 
     return (
-        <div className="lunar-phase glass-card">
+        <div className="lunar-phase surface-card">
             <div className="lunar-phase__visual">
                 <span className="moon-emoji">{moonEmoji}</span>
                 <div className="illumination-bar">
