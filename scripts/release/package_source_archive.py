@@ -57,6 +57,9 @@ def _should_skip(path: Path) -> bool:
     if any(part in EXCLUDED_DIR_NAMES for part in relative.parts):
         return True
 
+    if any(part.endswith(".egg-info") for part in relative.parts):
+        return True
+
     if any(part.startswith(".verify") for part in relative.parts):
         return True
 
