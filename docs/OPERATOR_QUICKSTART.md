@@ -6,6 +6,7 @@ This quickstart is for operators deploying Project Parva as a production-style A
 
 - publish corresponding source and set `PARVA_SOURCE_URL`
 - configure Redis and set `PARVA_RATE_LIMIT_BACKEND=redis`
+- if you split hosting, keep `PARVA_SERVE_FRONTEND=false` on the backend
 - choose a place-search policy:
   - `offline_only`
   - or `acknowledged_remote`
@@ -25,6 +26,12 @@ make preflight-production
 - `GET /v3/api/policy`
 - `GET /v3/api/calendar/today`
 
+For the recommended hosted split:
+
+- backend: Cloud Run
+- frontend: Cloudflare Pages
+- Redis: Upstash
+
 ## 4. Know the product posture
 
 - the stable public platform is `/v3/api/*`
@@ -41,3 +48,6 @@ Before public traffic, read:
 - `docs/runbooks/precompute-artifact-failure.md`
 - `docs/runbooks/provider-degradation.md`
 - `docs/runbooks/release-rollback.md`
+- `docs/DEPLOY_CLOUD_RUN.md`
+- `docs/DEPLOY_CLOUDFLARE_PAGES.md`
+- `docs/DEPLOY_UPSTASH.md`

@@ -36,6 +36,16 @@ The backend platform and the frontend should be understood separately:
 - Developer portal: [https://project-parva-uzy1.onrender.com/developers/index.html](https://project-parva-uzy1.onrender.com/developers/index.html)
 - Embed examples: [https://project-parva-uzy1.onrender.com/embed/index.html](https://project-parva-uzy1.onrender.com/embed/index.html)
 
+## Recommended hosted split
+
+For the next production migration, the repository is prepared for:
+
+- Cloudflare Pages for the static frontend
+- Google Cloud Run for the Python API
+- Upstash Redis for distributed rate limiting and lightweight cache state
+
+That split keeps the backend stateless, preserves the `/v3/api/*` contract, and avoids serving the Vite frontend from the Python container when a static host is available.
+
 ## What this repo includes
 
 - FastAPI backend under `backend/`
@@ -163,6 +173,9 @@ print(today.data["gregorian"] if hasattr(today, "data") else today["gregorian"])
 - [docs/RISK_REGISTER.md](docs/RISK_REGISTER.md)
 - [docs/SUPPORT_POLICY.md](docs/SUPPORT_POLICY.md)
 - [docs/SELF_HOSTING.md](docs/SELF_HOSTING.md)
+- [docs/DEPLOY_CLOUDFLARE_PAGES.md](docs/DEPLOY_CLOUDFLARE_PAGES.md)
+- [docs/DEPLOY_CLOUD_RUN.md](docs/DEPLOY_CLOUD_RUN.md)
+- [docs/DEPLOY_UPSTASH.md](docs/DEPLOY_UPSTASH.md)
 - [docs/RELEASE_PROCESS.md](docs/RELEASE_PROCESS.md)
 - [docs/OPEN_SOURCE_SCOPE.md](docs/OPEN_SOURCE_SCOPE.md)
 - [docs/COMMERCIAL_OFFERING.md](docs/COMMERCIAL_OFFERING.md)
