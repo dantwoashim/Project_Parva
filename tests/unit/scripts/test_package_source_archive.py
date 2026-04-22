@@ -65,6 +65,12 @@ def test_should_skip_generated_provenance_artifacts():
     )
 
 
+def test_should_skip_nested_packaging_residue():
+    assert package_source_archive._should_skip(
+        package_source_archive.PROJECT_ROOT / "sdk" / "python" / "parva_sdk.egg-info" / "PKG-INFO"
+    )
+
+
 def test_verify_source_archive_rejects_disallowed_members(tmp_path):
     archive_path = tmp_path / "project-parva-test-source.zip"
     with zipfile.ZipFile(archive_path, "w") as archive:
