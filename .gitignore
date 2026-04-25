@@ -22,7 +22,6 @@ frontend/dist/
 .env
 .env.*
 !.env.example
-SKILL.md
 
 # OS/editor
 .DS_Store
