@@ -31,7 +31,7 @@ The backend platform and the frontend should be understood separately:
 
 ## Live links
 
-- App: [https://project-parva-uzy1.onrender.com/](https://project-parva-uzy1.onrender.com/)
+- App: [https://prabinghimire1.com.np/today/](https://prabinghimire1.com.np/today/)
 - API docs: [https://project-parva-uzy1.onrender.com/docs](https://project-parva-uzy1.onrender.com/docs)
 - Developer portal: [https://project-parva-uzy1.onrender.com/developers/index.html](https://project-parva-uzy1.onrender.com/developers/index.html)
 - Embed examples: [https://project-parva-uzy1.onrender.com/embed/index.html](https://project-parva-uzy1.onrender.com/embed/index.html)
