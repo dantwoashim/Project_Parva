@@ -38,9 +38,14 @@ The backend platform and the frontend should be understood separately:
 
 ## Documentation
 
+- [API quickstart](docs/API_QUICKSTART.md)
+- [API reference](docs/API_REFERENCE_V3.md)
 - [Accuracy method](docs/ACCURACY_METHOD.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
-- [API quickstart](docs/API_QUICKSTART.md)
+- [Stability guide](docs/STABILITY.md)
+- [Route access](docs/ROUTE_ACCESS.md)
+- [Deployment](docs/DEPLOYMENT.md)
+- [Python SDK](sdk/python/README.md)
 
 ## Recommended hosted split
 
@@ -163,31 +168,6 @@ print(today.data["gregorian"] if hasattr(today, "data") else today["gregorian"])
 - The normal `v3` read and compute surface is public by default. API keys are for preview/admin/partner-specific overlays, not ordinary `v3` reads.
 - Send `X-Parva-Envelope: data-meta` when you want stable `data` plus `meta` response envelopes.
 - Preserve trust metadata such as `method`, `engine_path`, `support_tier`, `quality_band`, and `provenance` if you store or forward results.
-
-## Key docs
-
-- [docs/API_QUICKSTART.md](docs/API_QUICKSTART.md)
-- [docs/API_REFERENCE_V3.md](docs/API_REFERENCE_V3.md)
-- [docs/API_LIFECYCLE.md](docs/API_LIFECYCLE.md)
-- [docs/STABILITY.md](docs/STABILITY.md)
-- [docs/PRODUCT_ARCHITECTURE_STATEMENT.md](docs/PRODUCT_ARCHITECTURE_STATEMENT.md)
-- [docs/ROUTE_ACCESS.md](docs/ROUTE_ACCESS.md)
-- [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md)
-- [docs/FRONTEND_MATURITY.md](docs/FRONTEND_MATURITY.md)
-- [docs/PRODUCTION_MINIMUMS.md](docs/PRODUCTION_MINIMUMS.md)
-- [docs/OPERATOR_QUICKSTART.md](docs/OPERATOR_QUICKSTART.md)
-- [docs/RISK_REGISTER.md](docs/RISK_REGISTER.md)
-- [docs/SUPPORT_POLICY.md](docs/SUPPORT_POLICY.md)
-- [docs/SELF_HOSTING.md](docs/SELF_HOSTING.md)
-- [docs/DEPLOY_CLOUDFLARE_PAGES.md](docs/DEPLOY_CLOUDFLARE_PAGES.md)
-- [docs/DEPLOY_CLOUD_RUN.md](docs/DEPLOY_CLOUD_RUN.md)
-- [docs/DEPLOY_UPSTASH.md](docs/DEPLOY_UPSTASH.md)
-- [docs/RELEASE_PROCESS.md](docs/RELEASE_PROCESS.md)
-- [docs/OPEN_SOURCE_SCOPE.md](docs/OPEN_SOURCE_SCOPE.md)
-- [docs/COMMERCIAL_OFFERING.md](docs/COMMERCIAL_OFFERING.md)
-- [docs/DATA_SOURCES_AND_LICENSES.md](docs/DATA_SOURCES_AND_LICENSES.md)
-- [docs/runbooks/redis-outage.md](docs/runbooks/redis-outage.md)
-- [sdk/python/README.md](sdk/python/README.md)
 
 ## Contributing
 

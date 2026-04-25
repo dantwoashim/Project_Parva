@@ -23,4 +23,4 @@ Project Parva combines code, curated datasets, and source references. Contributo
 - Do not add proprietary datasets without explicit permission.
 - Prefer inventories, checksums, and derived metadata over raw third-party page dumps.
 - If you add a new source archive, document its license or redistribution basis.
-- If you are unsure whether a source file belongs in the public repo, document it in [PRIVATE_MIGRATION_CANDIDATES.md](PRIVATE_MIGRATION_CANDIDATES.md).
+- If you are unsure whether a source file belongs in the public repo, open an issue with the source origin, redistribution basis, and whether a derived public-safe form is enough.
