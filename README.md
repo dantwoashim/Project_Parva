@@ -39,7 +39,6 @@ The backend platform and the frontend should be understood separately:
 ## Portfolio docs
 
 - [Case study](docs/CASE_STUDY.md)
-- [Demo script](docs/DEMO_SCRIPT.md)
 - [Accuracy method](docs/ACCURACY_METHOD.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
 - [API quickstart](docs/API_QUICKSTART.md)
