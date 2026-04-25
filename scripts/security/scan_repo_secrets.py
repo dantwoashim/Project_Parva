@@ -48,7 +48,7 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("AWS access key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
     ("GitHub token", re.compile(r"\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36,}\b")),
     ("GitHub fine-grained token", re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,}\b")),
-    ("OpenAI key", re.compile(r"\bsk-[A-Za-z0-9_-]{20,}\b")),
+    ("Provider API key", re.compile(r"\bsk-[A-Za-z0-9_-]{20,}\b")),
     ("Slack token", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b")),
     (
         "Hard-coded credential assignment",
