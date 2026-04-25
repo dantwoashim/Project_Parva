@@ -36,9 +36,8 @@ The backend platform and the frontend should be understood separately:
 - Developer portal: [https://project-parva-uzy1.onrender.com/developers/index.html](https://project-parva-uzy1.onrender.com/developers/index.html)
 - Embed examples: [https://project-parva-uzy1.onrender.com/embed/index.html](https://project-parva-uzy1.onrender.com/embed/index.html)
 
-## Portfolio docs
+## Documentation
 
-- [Case study](docs/CASE_STUDY.md)
 - [Accuracy method](docs/ACCURACY_METHOD.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
 - [API quickstart](docs/API_QUICKSTART.md)
