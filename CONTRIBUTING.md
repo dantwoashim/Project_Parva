@@ -66,4 +66,4 @@ If your change is narrow, include the targeted commands you ran in the PR descri
 - Preserve public interfaces unless the change is deliberate and documented.
 - Keep compatibility wrappers thin.
 - Do not add product claims that the runtime or data cannot justify.
-- If a file looks stale but risky to delete, document it in `docs/STALE_AND_DEPRECATED_ITEMS.md` instead of guessing.
+- If a file looks stale but risky to delete, open an issue with the path, current references, and deletion risk instead of guessing.
