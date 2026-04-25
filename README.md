@@ -36,6 +36,14 @@ The backend platform and the frontend should be understood separately:
 - Developer portal: [https://project-parva-uzy1.onrender.com/developers/index.html](https://project-parva-uzy1.onrender.com/developers/index.html)
 - Embed examples: [https://project-parva-uzy1.onrender.com/embed/index.html](https://project-parva-uzy1.onrender.com/embed/index.html)
 
+## Portfolio docs
+
+- [Case study](docs/CASE_STUDY.md)
+- [Demo script](docs/DEMO_SCRIPT.md)
+- [Accuracy method](docs/ACCURACY_METHOD.md)
+- [Known limitations](docs/KNOWN_LIMITATIONS.md)
+- [API quickstart](docs/API_QUICKSTART.md)
+
 ## Recommended hosted split
 
 For the next production migration, the repository is prepared for:
