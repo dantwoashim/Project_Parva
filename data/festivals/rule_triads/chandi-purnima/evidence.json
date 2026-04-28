@@ -1,6 +1,6 @@
 {
   "festival_id": "chandi-purnima",
-  "generated_at": "2026-02-17T10:12:05.354772+00:00",
+  "generated_at": "2026-04-24T01:03:55.005530+00:00",
   "source_evidence_ids": [
     "festival_rules_legacy"
   ],
@@ -8,7 +8,7 @@
   "status": "computed",
   "rule_family": "lunar_bs_tithi",
   "tags": [
-    "computed-month2",
+    "computed-promoted",
     "legacy",
     "quality-validated"
   ],

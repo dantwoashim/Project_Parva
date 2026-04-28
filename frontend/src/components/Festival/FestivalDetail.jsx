@@ -1,3 +1,11 @@
+/**
+ * FestivalDetail Component
+ * ========================
+ * 
+ * Full festival detail view with tabbed content.
+ * Slides in from right as a drawer.
+ */
+
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
@@ -15,6 +23,10 @@ const TABS = [
     { id: 'connections', label: 'Connections', icon: '🔗' },
 ];
 
+/**
+ * Normalize ritual data to RitualTimeline expected format.
+ * RitualTimeline expects { days: [...], preparation: string }
+ */
 function normalizeRitualData(festival) {
     const toOfferingsArray = (value) => {
         if (!value) return null;
@@ -77,6 +89,17 @@ function normalizeRitualData(festival) {
     return null;
 }
 
+/**
+ * FestivalDetail displays complete festival information with tabs.
+ * 
+ * @param {Object} props
+ * @param {Object} props.festival - Full festival object
+ * @param {Object} props.dates - Festival dates
+ * @param {Function} props.onClose - Close handler
+ * @param {Function} props.onLocationClick - Handler for location clicks
+ * @param {Array} props.allFestivals - All festivals for connection links
+ * @param {Function} props.onFestivalClick - Handler for clicking related festivals
+ */
 export function FestivalDetail({
     festival,
     dates,

@@ -1,16 +1,18 @@
 {
   "festival_id": "saptami-vrata-mangsir-krishna",
-  "generated_at": "2026-02-17T10:07:37.584883+00:00",
+  "generated_at": "2026-04-24T01:03:57.149616+00:00",
   "source_evidence_ids": [
     "rule_ingestion_seed_v1"
   ],
-  "confidence": "low",
-  "status": "provisional",
+  "confidence": "medium",
+  "status": "computed",
   "rule_family": "monthly_saptami",
   "tags": [
+    "computed-promoted",
     "generated",
-    "seed-ingestion",
-    "recurring"
+    "quality-validated",
+    "recurring",
+    "seed-ingestion"
   ],
   "notes": "Generated recurring observance rule from ingestion seed profile."
 }

@@ -46,7 +46,7 @@
   font-family: var(--font-display);
   font-size: clamp(2.2rem, 5vw, 3.8rem);
   line-height: 0.94;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .utility-page__lede {

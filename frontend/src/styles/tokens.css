@@ -1,9 +1,9 @@
 /* Canonical design tokens for the launch-critical frontend system. */
 
 :root {
-  --font-display: 'Playfair Display', Georgia, serif;
+  --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --font-serif: 'Noto Serif', Georgia, serif;
-  --font-sans: 'Inter', 'Segoe UI', sans-serif;
+  --font-sans: 'Manrope', 'Inter', 'Segoe UI', sans-serif;
   --font-nepali: 'Noto Sans Devanagari', sans-serif;
 
   --bp-xs: 360px;
@@ -65,14 +65,14 @@
   --z-modal: 120;
   --z-toast: 140;
 
-  --gold: #735c00;
-  --gold-soft: #9c3f00;
-  --gold-bright: #c45100;
-  --saffron: #9c3f00;
-  --jade: #7a6a52;
+  --gold: #8c6f30;
+  --gold-soft: #b9873f;
+  --gold-bright: #c89445;
+  --saffron: #b9581b;
+  --jade: #2f7b62;
   --vermillion: #ba1a1a;
-  --indigo: #5f656c;
-  --amber: #cca830;
+  --indigo: #32496d;
+  --amber: #c99b43;
 
   --bg-deep: #fff8f3;
   --bg-surface: #fff2e7;
@@ -92,9 +92,9 @@
   --editorial-muted: #6f6558;
   --editorial-accent: #9c3f00;
 
-  --text-primary: #221a0f;
-  --text-secondary: #584238;
-  --text-muted: #8c7166;
+  --text-primary: #1d1711;
+  --text-secondary: #4b4138;
+  --text-muted: #766b60;
   --text-inverse: #fff8f3;
 
   --border-subtle: rgba(140, 113, 102, 0.16);

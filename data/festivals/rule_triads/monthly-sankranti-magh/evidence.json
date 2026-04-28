@@ -1,6 +1,6 @@
 {
   "festival_id": "monthly-sankranti-magh",
-  "generated_at": "2026-02-17T10:12:06.095168+00:00",
+  "generated_at": "2026-04-24T01:03:56.233469+00:00",
   "source_evidence_ids": [
     "rule_ingestion_seed_v1"
   ],
@@ -8,7 +8,7 @@
   "status": "computed",
   "rule_family": "solar_sankranti_monthly",
   "tags": [
-    "computed-month2",
+    "computed-promoted",
     "generated",
     "quality-validated",
     "seed-ingestion",

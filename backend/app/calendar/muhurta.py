@@ -255,10 +255,17 @@ def _default_sun_times(
 ) -> tuple[datetime, datetime, datetime]:
     tz = _timezone(tz_name)
     try:
-        sunrise = calculate_sunrise(target_date, latitude=lat, longitude=lon).astimezone(tz)
-        sunset = calculate_sunset(target_date, latitude=lat, longitude=lon).astimezone(tz)
+        sunrise = calculate_sunrise(
+            target_date, latitude=lat, longitude=lon, timezone_name=tz_name
+        ).astimezone(tz)
+        sunset = calculate_sunset(
+            target_date, latitude=lat, longitude=lon, timezone_name=tz_name
+        ).astimezone(tz)
         next_sunrise = calculate_sunrise(
-            target_date + timedelta(days=1), latitude=lat, longitude=lon
+            target_date + timedelta(days=1),
+            latitude=lat,
+            longitude=lon,
+            timezone_name=tz_name,
         ).astimezone(tz)
 
         # Ensure monotonic ordering even if timezone conversion crosses midnight boundaries.
@@ -413,9 +420,14 @@ def _nakshatra_number(value: str | int | None) -> int | None:
 
 
 def _tara_bala_profile(
-    *, target_date: date, lat: float, lon: float, birth_nakshatra: str | int | None
+    *,
+    target_date: date,
+    lat: float,
+    lon: float,
+    tz_name: str,
+    birth_nakshatra: str | int | None,
 ) -> dict[str, Any]:
-    panchanga = get_panchanga(target_date, latitude=lat, longitude=lon)
+    panchanga = get_panchanga(target_date, latitude=lat, longitude=lon, timezone_name=tz_name)
     current_num = int(panchanga["nakshatra"]["number"])
     current_name = panchanga["nakshatra"]["name"]
 
@@ -514,6 +526,7 @@ def get_muhurtas(
         target_date=target_date,
         lat=lat,
         lon=lon,
+        tz_name=tz_name,
         birth_nakshatra=birth_nakshatra,
     )
 

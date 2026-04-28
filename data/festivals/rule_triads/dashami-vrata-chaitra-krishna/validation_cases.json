@@ -1,6 +1,6 @@
 {
   "festival_id": "dashami-vrata-chaitra-krishna",
-  "generated_at": "2026-02-17T10:07:34.347122+00:00",
+  "generated_at": "2026-04-24T01:03:55.523132+00:00",
   "validation_framework": "parva_rule_validation_v1",
   "cases": [
     {
@@ -12,8 +12,8 @@
     },
     {
       "year": 2026,
-      "expected_start_date": "2025-04-22",
-      "expected_end_date": "2025-04-22",
+      "expected_start_date": "2026-04-11",
+      "expected_end_date": "2026-04-11",
       "method": "rule_dsl_lunar_month_v1",
       "status": "passed"
     },

@@ -39,6 +39,20 @@ function parseTimeOnlyValue(value) {
   return new Date(Date.UTC(1970, 0, 1, hour, minute, second));
 }
 
+function shouldRoundToDisplayMinute(options = {}) {
+  return options.second === undefined;
+}
+
+function roundToDisplayMinute(value, options = {}) {
+  if (!shouldRoundToDisplayMinute(options)) return value;
+  const rounded = new Date(value.getTime());
+  if (rounded.getUTCSeconds() >= 30 || rounded.getUTCMilliseconds() >= 500) {
+    rounded.setUTCMinutes(rounded.getUTCMinutes() + 1);
+  }
+  rounded.setUTCSeconds(0, 0);
+  return rounded;
+}
+
 function buildFormatterOptions(options = {}, context = {}) {
   return {
     ...options,
@@ -63,24 +77,26 @@ export function formatProductTime(value, context = {}, options = {}) {
   const timeOnlyDate = parseTimeOnlyValue(value);
   const locale = resolveUiLocale(context.language);
   if (timeOnlyDate) {
+    const displayDate = roundToDisplayMinute(timeOnlyDate, options);
     try {
       return new Intl.DateTimeFormat(locale, {
         hour: 'numeric',
         minute: '2-digit',
         ...options,
         timeZone: 'UTC',
-      }).format(timeOnlyDate);
+      }).format(displayDate);
     } catch {
       return new Intl.DateTimeFormat(locale, {
         hour: 'numeric',
         minute: '2-digit',
         ...options,
-      }).format(timeOnlyDate);
+      }).format(displayDate);
     }
   }
 
   const parsed = parseProductDateValue(value);
   if (!parsed) return '';
+  const displayDate = roundToDisplayMinute(parsed, options);
   const formatterOptions = buildFormatterOptions({
     hour: 'numeric',
     minute: '2-digit',
@@ -88,13 +104,13 @@ export function formatProductTime(value, context = {}, options = {}) {
   }, context);
 
   try {
-    return new Intl.DateTimeFormat(locale, formatterOptions).format(parsed);
+    return new Intl.DateTimeFormat(locale, formatterOptions).format(displayDate);
   } catch {
     return new Intl.DateTimeFormat(locale, {
       hour: 'numeric',
       minute: '2-digit',
       ...options,
-    }).format(parsed);
+    }).format(displayDate);
   }
 }
 

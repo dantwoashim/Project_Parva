@@ -51,7 +51,7 @@
   color: var(--editorial-accent);
   font-size: clamp(3rem, 7vw, 5.3rem);
   line-height: 0.92;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
 }
 
 .almanac-home__lunar-mark {

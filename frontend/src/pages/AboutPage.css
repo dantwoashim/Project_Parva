@@ -19,7 +19,7 @@
   font-family: var(--font-display);
   font-size: clamp(2.45rem, 5vw, 4rem);
   line-height: 0.92;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .about-hero p:last-child {

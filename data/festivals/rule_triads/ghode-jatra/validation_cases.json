@@ -1,6 +1,6 @@
 {
   "festival_id": "ghode-jatra",
-  "generated_at": "2026-02-17T10:12:05.941417+00:00",
+  "generated_at": "2026-04-24T01:03:56.133799+00:00",
   "validation_framework": "parva_rule_validation_v1",
   "cases": [
     {
@@ -19,8 +19,8 @@
     },
     {
       "year": 2027,
-      "expected_start_date": "2026-04-16",
-      "expected_end_date": "2026-04-16",
+      "expected_start_date": "2027-04-06",
+      "expected_end_date": "2027-04-06",
       "method": "rule_dsl_lunar_month_v1",
       "status": "passed"
     }

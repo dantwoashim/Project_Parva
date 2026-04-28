@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&family=Material+Symbols+Outlined:wght,FILL,GRAD,opsz@200..400,0..1,0,20..48&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&family=Noto+Serif:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Material+Symbols+Outlined:wght,FILL,GRAD,opsz@200..400,0..1,0,20..48&display=swap');
 
 *,
 *::before,
@@ -71,7 +71,7 @@ p {
   font-family: var(--font-display);
   font-size: var(--text-hero);
   line-height: 0.96;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
 .text-nepali {

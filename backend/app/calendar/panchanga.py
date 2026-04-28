@@ -32,7 +32,8 @@ from .ephemeris.swiss_eph import (
     get_ephemeris_info,
 )
 from .ephemeris.time_utils import (
-    to_nepal_time,
+    DEFAULT_OBSERVER_TIMEZONE,
+    resolve_observer_timezone,
 )
 from .tithi.tithi_boundaries import find_tithi_end
 from .tithi.tithi_core import (
@@ -45,7 +46,10 @@ from .tithi.tithi_core import (
 
 
 def get_panchanga(
-    date_val: date, latitude: float = LAT_KATHMANDU, longitude: float = LON_KATHMANDU
+    date_val: date,
+    latitude: float = LAT_KATHMANDU,
+    longitude: float = LON_KATHMANDU,
+    timezone_name: str = DEFAULT_OBSERVER_TIMEZONE,
 ) -> Dict[str, Any]:
     """
     Calculate complete panchanga (5 elements) for a date.
@@ -57,6 +61,7 @@ def get_panchanga(
         date_val: Date to calculate panchanga for
         latitude: Location latitude (default: Kathmandu)
         longitude: Location longitude (default: Kathmandu)
+        timezone_name: Observer IANA timezone for the civil date
 
     Returns:
         Dictionary with complete panchanga information:
@@ -77,10 +82,11 @@ def get_panchanga(
         'Panchami'
     """
     # Calculate sunrise
-    sunrise_utc = calculate_sunrise(date_val, latitude, longitude)
-    sunrise_nepal = to_nepal_time(sunrise_utc)
-    sunset_utc = calculate_sunset(date_val, latitude, longitude)
-    sunset_nepal = to_nepal_time(sunset_utc)
+    observer_tz = resolve_observer_timezone(timezone_name)
+    sunrise_utc = calculate_sunrise(date_val, latitude, longitude, timezone_name=timezone_name)
+    sunrise_local = sunrise_utc.astimezone(observer_tz)
+    sunset_utc = calculate_sunset(date_val, latitude, longitude, timezone_name=timezone_name)
+    sunset_local = sunset_utc.astimezone(observer_tz)
 
     # Get tithi at sunrise (udaya tithi)
     tithi_info = calculate_tithi(sunrise_utc)
@@ -109,13 +115,15 @@ def get_panchanga(
         "date": date_val.isoformat(),
         "sunrise": {
             "utc": sunrise_utc.isoformat(),
-            "local": sunrise_nepal.isoformat(),
-            "local_time": sunrise_nepal.strftime("%H:%M:%S"),
+            "local": sunrise_local.isoformat(),
+            "local_time": sunrise_local.strftime("%H:%M:%S"),
+            "timezone": timezone_name,
         },
         "sunset": {
             "utc": sunset_utc.isoformat(),
-            "local": sunset_nepal.isoformat(),
-            "local_time": sunset_nepal.strftime("%H:%M:%S"),
+            "local": sunset_local.isoformat(),
+            "local_time": sunset_local.strftime("%H:%M:%S"),
+            "timezone": timezone_name,
         },
         "tithi": {
             "number": tithi_info["number"],

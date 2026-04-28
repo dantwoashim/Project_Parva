@@ -3,22 +3,22 @@ import { UtilityPageHeader } from '../consumer/UtilityPages';
 import { trackEvent } from '../services/analytics';
 import './MethodologyPage.css';
 
-const METHODOLOGY_LAYERS = [
+const TRUST_LAYERS = [
   {
-    title: 'Visible inputs',
-    body: 'Major results should state the place, date, and method used.',
+    title: 'First impression trust',
+    body: 'A calm shell, clear language, and fewer broken states should do more than decorative trust badges ever could.',
   },
   {
-    title: 'Clear support level',
-    body: 'Responses should signal whether they come from validated computation, provisional data, or a fallback path.',
+    title: 'Result trust',
+    body: 'Every major answer should state the place used, the date used, and a short note about how confident the product is in that answer.',
   },
   {
-    title: 'Local continuity',
-    body: 'Saved places, reminders, readings, and integrations can stay on this device until account-backed sync is ready.',
+    title: 'Local-first continuity',
+    body: 'Saved places, reminders, readings, and integrations can stay on this device without adding a heavier account layer before the product really needs it.',
   },
   {
-    title: 'Inspectable evidence',
-    body: 'Method notes, trace metadata, and variance notes stay one step away instead of being buried.',
+    title: 'Verifiability',
+    body: 'Method detail, trace metadata, and variance notes stay available on demand through contextual evidence drawers.',
   },
 ];
 
@@ -31,8 +31,8 @@ export function MethodologyPage() {
     <section className="method-page utility-page animate-fade-in-up">
       <UtilityPageHeader
         eyebrow="Methodology"
-        title="Method should be inspectable, not mystical."
-        body="Parva tries to answer quickly, then expose the method, caveats, and evidence behind the result."
+        title="Trust should come from visible seriousness, not extra chrome."
+        body="Parva is built to lead with calm guidance first, then offer method, variance, and evidence when you want to inspect the answer more closely."
         links={[
           { label: 'Today', to: '/#today' },
           { label: 'Best Time', to: '/#best-time' },
@@ -40,15 +40,15 @@ export function MethodologyPage() {
         ]}
         aside={(
           <>
-            <span className="utility-page__eyebrow">Review posture</span>
-            <strong>Inspectable by default</strong>
-            <p>Each result should name its inputs before it makes a strong claim.</p>
+            <span className="utility-page__eyebrow">Trust posture</span>
+            <strong>Meaning first</strong>
+            <p>Every result page should answer the question before it explains the method.</p>
           </>
         )}
       />
 
       <section className="method-grid">
-        {METHODOLOGY_LAYERS.map((item) => (
+        {TRUST_LAYERS.map((item) => (
           <article key={item.title} className="ink-card method-card utility-page__panel">
             <h2>{item.title}</h2>
             <p>{item.body}</p>
@@ -80,7 +80,7 @@ export function MethodologyPage() {
       <section className="ink-card method-detail utility-page__panel">
         <div className="landing-section-header">
           <p className="landing-eyebrow">Current product posture</p>
-          <h2>Guest-first means local continuity now and heavier systems later.</h2>
+          <h2>Guest-first means local continuity first and heavier systems later.</h2>
         </div>
         <div className="method-detail__grid">
           <article>
@@ -88,8 +88,8 @@ export function MethodologyPage() {
             <p>Places, reminders, readings, and integrations are stored on this device for now, with export and import available from Profile.</p>
           </article>
           <article>
-            <h3>Do not overbuild early</h3>
-            <p>Parva should not interrupt a simple task with account or platform language unless a heavier system is actually ready and needed.</p>
+            <h3>Keep the flow light</h3>
+            <p>Parva should not interrupt a simple consumer task with account or platform language unless a heavier system is ready and genuinely needed.</p>
           </article>
           <article>
             <h3>Missing data should step back</h3>

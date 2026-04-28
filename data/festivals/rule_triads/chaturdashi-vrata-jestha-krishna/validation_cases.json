@@ -1,6 +1,6 @@
 {
   "festival_id": "chaturdashi-vrata-jestha-krishna",
-  "generated_at": "2026-02-17T10:07:33.606569+00:00",
+  "generated_at": "2026-04-24T01:03:55.149778+00:00",
   "validation_framework": "parva_rule_validation_v1",
   "cases": [
     {
@@ -19,11 +19,10 @@
     },
     {
       "year": 2027,
-      "expected_start_date": null,
-      "expected_end_date": null,
-      "method": null,
-      "status": "pending",
-      "note": "No executable path for this year/rule combination."
+      "expected_start_date": "2027-06-03",
+      "expected_end_date": "2027-06-03",
+      "method": "rule_dsl_lunar_month_v1",
+      "status": "passed"
     }
   ]
 }

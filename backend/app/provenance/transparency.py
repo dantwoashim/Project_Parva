@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -36,6 +38,15 @@ class TransparencyEntry:
             "attestation": self.attestation,
         }
 
+
+def _canonical(value: Dict[str, Any]) -> str:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def _sha256_hex(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
 def _now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
@@ -56,6 +67,11 @@ def _entry_body(
         "prev_hash": prev_hash,
     }
 
+
+def _ensure_dir() -> None:
+    TRANSPARENCY_DIR.mkdir(parents=True, exist_ok=True)
+
+
 def get_transparency_store() -> FileTransparencyLogStore:
     return FileTransparencyLogStore(
         transparency_dir=TRANSPARENCY_DIR,
@@ -66,6 +82,13 @@ def get_transparency_store() -> FileTransparencyLogStore:
 
 def load_log_entries() -> List[Dict[str, Any]]:
     return get_transparency_store().load_entries()
+
+
+def _last_hash(entries: List[Dict[str, Any]]) -> str:
+    if not entries:
+        return "GENESIS"
+    return str(entries[-1].get("entry_hash") or "GENESIS")
+
 
 def append_entry(event_type: str, payload: Dict[str, Any]) -> TransparencyEntry:
     row = get_transparency_store().append_entry(event_type, payload)

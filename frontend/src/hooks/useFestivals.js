@@ -1,7 +1,22 @@
+/**
+ * useFestivals Hook
+ * =================
+ * 
+ * Fetches and manages festival list state.
+ */
+
 import { useState, useEffect, useCallback } from 'react';
 import { festivalAPI } from '../services/api';
 import { describeSupportError } from '../services/errorFormatting';
 
+/**
+ * Hook to fetch and manage festivals list.
+ * 
+ * @param {Object} options
+ * @param {string} options.category - Filter by category
+ * @param {string} options.search - Search query
+ * @returns {Object} Festival state and actions
+ */
 export function useFestivals({ category, search, qualityBand = "computed", algorithmicOnly = true } = {}) {
     const [festivals, setFestivals] = useState([]);
     const [total, setTotal] = useState(0);
@@ -51,6 +66,12 @@ export function useFestivals({ category, search, qualityBand = "computed", algor
     };
 }
 
+/**
+ * Hook to fetch upcoming festivals.
+ * 
+ * @param {number} days - Days to look ahead
+ * @returns {Object} Upcoming festivals state
+ */
 export function useUpcomingFestivals(days = 90, qualityBand = "computed") {
     const [festivals, setFestivals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -78,6 +99,13 @@ export function useUpcomingFestivals(days = 90, qualityBand = "computed") {
     return { festivals, loading, error };
 }
 
+/**
+ * Hook to fetch single festival detail.
+ * 
+ * @param {string} festivalId - Festival ID
+ * @param {number|null} year - Optional year for date calculation
+ * @returns {Object} Festival detail state
+ */
 export function useFestivalDetail(festivalId, year = null) {
     const [festival, setFestival] = useState(null);
     const [dates, setDates] = useState(null);
@@ -131,6 +159,13 @@ export function useFestivalDetail(festivalId, year = null) {
     return { festival, dates, nearbyFestivals, completeness, meta, loading, error };
 }
 
+/**
+ * Hook to fetch festival dates for multiple years.
+ * 
+ * @param {string} festivalId - Festival ID
+ * @param {number} years - Number of years to fetch
+ * @returns {Object} Dates state
+ */
 export function useFestivalDates(festivalId, years = 3) {
     const [dates, setDates] = useState([]);
     const [loading, setLoading] = useState(false);

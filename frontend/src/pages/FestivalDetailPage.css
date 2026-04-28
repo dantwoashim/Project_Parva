@@ -96,7 +96,7 @@
 .festival-detail__hero h1 {
   font-size: clamp(4rem, 10vw, 7rem);
   line-height: 0.9;
-  letter-spacing: -0.06em;
+  letter-spacing: 0;
 }
 
 .festival-detail__hero p {

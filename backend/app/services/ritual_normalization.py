@@ -68,9 +68,10 @@ def normalize_ritual_sequence(festival: Any) -> dict[str, Any] | None:
 
     daily_rituals = getattr(festival, "daily_rituals", None)
     simple_rituals = getattr(festival, "simple_rituals", None)
+    ritual_sequence = getattr(festival, "ritual_sequence", None)
 
-    if isinstance(daily_rituals, dict) and isinstance(daily_rituals.get("days"), list):
-        return daily_rituals
+    if isinstance(ritual_sequence, dict) and isinstance(ritual_sequence.get("days"), list):
+        return ritual_sequence
 
     days: list[dict[str, Any]] = []
 
