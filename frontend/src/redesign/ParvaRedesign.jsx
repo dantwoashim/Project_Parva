@@ -661,7 +661,7 @@ export function RedesignToday() {
           body={`${formatIsoDate(state.date)}  •  ${state.timezone}`}
           action={(
             <Link className="location-mini" to="/my-place">
-              <span>⌖ {placeLabel}</span>
+              <span><span aria-hidden="true">⌖</span>{placeLabel}</span>
               <small>{formatCoordinates(state.location)}</small>
             </Link>
           )}
@@ -753,9 +753,9 @@ export function RedesignToday() {
               <div className="quality-row">
                 <ScoreRing value={qualityScore} label={muhurta?.best_window?.quality || 'API'} />
                 <ul className="quality-legend">
-                  <li><span className="dot good" />Auspicious <strong>{liveWindows.filter((item) => item.type === 'good').length}</strong></li>
-                  <li><span className="dot warm" />Neutral <strong>{liveWindows.filter((item) => item.type === 'warm').length}</strong></li>
-                  <li><span className="dot bad" />Avoid <strong>{liveWindows.filter((item) => item.type === 'bad').length}</strong></li>
+                  <li><span className="dot good" /><span>Auspicious</span><strong>{liveWindows.filter((item) => item.type === 'good').length}</strong></li>
+                  <li><span className="dot warm" /><span>Neutral</span><strong>{liveWindows.filter((item) => item.type === 'warm').length}</strong></li>
+                  <li><span className="dot bad" /><span>Avoid</span><strong>{liveWindows.filter((item) => item.type === 'bad').length}</strong></li>
                 </ul>
               </div>
             </section>
@@ -1433,7 +1433,7 @@ export function RedesignFestivals() {
                 />
               </label>
               <button type="button" className="filter-open-button" onClick={openFilters}>
-                Filters {activeFilterCount ? <b>{activeFilterCount}</b> : null}
+                Filters{activeFilterCount ? <b>{activeFilterCount}</b> : null}
               </button>
               <label className="sort-control">
                 <span>Sort by</span>
@@ -2051,7 +2051,7 @@ export function RedesignBestTime() {
         <PageHero
           title="Best Time / Muhurta"
           body="Find auspicious time windows for your important activities."
-          action={<div className="hero-actions"><Link to="/panchanga">▣ {state.date}</Link><Link to="/my-place">⌖ {formatCoordinates(state.location)}</Link></div>}
+          action={<div className="hero-actions"><Link to="/panchanga"><span aria-hidden="true">▣</span>{state.date}</Link><Link to="/my-place"><span aria-hidden="true">⌖</span>{formatCoordinates(state.location)}</Link></div>}
         />
         <section className="planner-shell">
           <aside className="intent-panel">
@@ -2098,10 +2098,10 @@ export function RedesignBestTime() {
             <h2>{selected?.time || 'Pending'}</h2>
             <ScoreRing value={selected?.score || 0} label={selected?.kind || 'API'} />
             <ul>
-              <li>Intent: {readableCategory(intent)}</li>
-              <li>Window: {selected?.name || 'No backend window selected'}</li>
-              <li>Class: {selected?.kind || 'Pending'}</li>
-              <li>Reasons: {selected?.reasonCodes?.join(', ') || 'Returned by backend ranking.'}</li>
+              <li><span>Intent:</span><strong>{readableCategory(intent)}</strong></li>
+              <li><span>Window:</span><strong>{selected?.name || 'No backend window selected'}</strong></li>
+              <li><span>Class:</span><strong>{selected?.kind || 'Pending'}</strong></li>
+              <li><span>Reasons:</span><strong>{selected?.reasonCodes?.join(', ') || 'Returned by backend ranking.'}</strong></li>
             </ul>
             <Confidence value={selected?.score || 0} />
             {selectedNotice ? <small className="selected-window__notice" role="status">{selectedNotice}</small> : null}

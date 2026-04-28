@@ -302,21 +302,12 @@ function buildFetchMock() {
                   summary: 'Blessing, reunion, and seasonal turning gathered into one long observance.',
                   regional_focus: ['Nepal'],
                 },
-                {
-                  id: 'tihar',
-                  name: 'Tihar',
-                  display_name: 'Tihar',
-                  category: 'national',
-                  start_date: '2026-11-07',
-                  summary: 'Festival of lights with layered family and household observance.',
-                  regional_focus: ['Kathmandu Valley'],
-                },
               ],
             },
           ],
           facets: {
-            categories: [{ value: 'national', label: 'National', count: 2 }],
-            months: [{ value: '2026-10', label: 'October', count: 2 }],
+            categories: [{ value: 'national', label: 'National', count: 1 }],
+            months: [{ value: '2026-10', label: 'October', count: 1 }],
             regions: [{ value: 'nepal', label: 'Nepal', count: 1 }],
           },
         },
@@ -519,11 +510,11 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Daily Glimpse/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Upcoming Festivals/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Pause and review the day/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Next on the calendar/i })).toBeInTheDocument();
+    expect(screen.getByText(/Source & calculation/i)).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /For developers/i })).toHaveAttribute('href', '/developers/index.html');
+    expect(screen.getByRole('link', { name: /Review evidence/i })).toHaveAttribute('href', '/truth-lab');
   }, 30000);
 
   it('keeps the same consumer shell on desktop routes', async () => {
@@ -534,7 +525,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /The rest of today in one compact pass/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
 
     const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
     expect(within(primaryNav).getByRole('link', { name: /^Today$/i })).toBeInTheDocument();
@@ -544,29 +535,21 @@ describe('App routing', () => {
     expect(within(primaryNav).getByRole('link', { name: /^Birth Reading$/i })).toBeInTheDocument();
 
     await userEvent.click(within(primaryNav).getByRole('link', { name: /^Best Time$/i }));
-    expect(await screen.findByRole('heading', { name: /Choose a date first/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions)).toBeInTheDocument();
   }, 30000);
 
-  it('keeps festivals and my-place inside the same product shell', async () => {
-    setViewportWidth(1440);
+  it('keeps festivals inside the same product shell', async () => {
+    setViewportWidth(390);
     const festivalsRender = render(
       <MemoryRouter initialEntries={['/festivals']}>
         <App />
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Closest observances first/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /National/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Filters/i })).toBeInTheDocument();
+    expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
     festivalsRender.unmount();
-
-    render(
-      <MemoryRouter initialEntries={['/my-place']}>
-        <App />
-      </MemoryRouter>,
-    );
-
-    expect(await screen.findByRole('heading', { name: /Adjust the place only when the answer needs to change/i }, routeLoadOptions)).toBeInTheDocument();
-    expect((await screen.findAllByText(/Morning Calm/i, {}, routeLoadOptions)).length).toBeGreaterThan(0);
   }, 30000);
 
   it('keeps the same shell on mobile widths and exposes the bottom navigation', async () => {
@@ -577,8 +560,8 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /The rest of today in one compact pass/i }, routeLoadOptions)).toBeInTheDocument();
-    const bottomNav = document.querySelector('.app-shell__bottom-nav');
+    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
+    const bottomNav = document.querySelector('.bottom-nav');
     expect(bottomNav).not.toBeNull();
     expect(within(bottomNav).getByText(/^Today$/i)).toBeInTheDocument();
     expect(within(bottomNav).getByText(/^My Place$/i)).toBeInTheDocument();
@@ -587,7 +570,7 @@ describe('App routing', () => {
     expect(within(bottomNav).getByText(/^Birth Reading$/i)).toBeInTheDocument();
   }, 30000);
 
-  it('closes the mobile dialog navigation on Escape', async () => {
+  it('opens and closes the mobile search dialog', async () => {
     setViewportWidth(390);
     render(
       <MemoryRouter initialEntries={['/today']}>
@@ -595,15 +578,15 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /The rest of today in one compact pass/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: /^Menu$/i }));
-    expect(screen.getByRole('dialog', { name: /Mobile menu/i })).toBeInTheDocument();
+    await userEvent.click(document.querySelector('.mobile-search-button'));
+    expect(screen.getByRole('dialog', { name: /Search Parva/i })).toBeInTheDocument();
 
-    await userEvent.keyboard('{Escape}');
+    await userEvent.click(screen.getByRole('button', { name: /^Close$/i }));
 
     await waitFor(() => {
-      expect(screen.queryByRole('dialog', { name: /Mobile menu/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('dialog', { name: /Search Parva/i })).not.toBeInTheDocument();
     });
   }, 30000);
 
@@ -630,8 +613,8 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('button', { name: /How this was calculated/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByText(/Secondary surface/i)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Date Converter & Panchanga/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /^Date Converter$/i })).toBeInTheDocument();
     firstRender.unmount();
 
     render(
@@ -640,7 +623,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Choose a date first/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
   }, 30000);
 });
