@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-04T14:19:42.882175+00:00",
+  "generated_at": "2026-04-28T18:14:04.980575+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -6772,7 +6772,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Create Provenance Snapshot V3 Api Provenance Snapshot Create Post"
                   }
@@ -7075,7 +7074,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Batch Verify V3 Api Provenance Batch Verify Get"
                   }
                 }
@@ -7123,7 +7121,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Get Transparency Log V3 Api Provenance Transparency Log Get"
                   }
                 }
@@ -7156,7 +7153,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Audit Transparency Log V3 Api Provenance Transparency Audit Get"
                   }
@@ -7180,7 +7176,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Transparency Replay V3 Api Provenance Transparency Replay Get"
                   }
@@ -7236,7 +7231,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Append Transparency Event V3 Api Provenance Transparency Append Post"
                   }
                 }
@@ -7288,7 +7282,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Prepare Anchor V3 Api Provenance Transparency Anchor Prepare Get"
                   }
                 }
@@ -7346,7 +7339,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Save Anchor Record V3 Api Provenance Transparency Anchor Record Post"
                   }
                 }
@@ -7394,7 +7386,6 @@
                 "application/json": {
                   "schema": {
                     "type": "object",
-                    "additionalProperties": true,
                     "title": "Response Get Anchor Records V3 Api Provenance Transparency Anchors Get"
                   }
                 }
@@ -7427,7 +7418,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Get Public Beta Dashboard V3 Api Provenance Dashboard Get"
                   }
@@ -7644,7 +7634,6 @@
               "content": {
                 "application/json": {
                   "schema": {
-                    "additionalProperties": true,
                     "type": "object",
                     "title": "Response Get Artifacts Manifest V3 Api Public Artifacts Manifest Get"
                   }
@@ -8023,7 +8012,6 @@
             "uncertainty": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -8089,30 +8077,25 @@
               "title": "Trace Type"
             },
             "subject": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Subject"
             },
             "inputs": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Inputs"
             },
             "outputs": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Outputs"
             },
             "steps": {
               "items": {
-                "additionalProperties": true,
                 "type": "object"
               },
               "type": "array",
               "title": "Steps"
             },
             "provenance": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Provenance"
             }
@@ -8238,7 +8221,6 @@
             "provenance": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -8250,7 +8232,6 @@
             "policy": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -8508,7 +8489,6 @@
             "ritual_sequence": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -9648,22 +9628,18 @@
               "title": "Year"
             },
             "request": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Request"
             },
             "selection": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Selection"
             },
             "source_lineage": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Source Lineage"
             },
             "risk": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Risk"
             },
@@ -10562,28 +10538,23 @@
               "title": "Profile"
             },
             "location": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Location"
             },
             "bikram_sambat": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Bikram Sambat"
             },
             "tithi": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Tithi"
             },
             "panchanga": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Panchanga"
             },
             "observances": {
               "items": {
-                "additionalProperties": true,
                 "type": "object"
               },
               "type": "array",
@@ -11130,7 +11101,6 @@
             "uncertainty": {
               "anyOf": [
                 {
-                  "additionalProperties": true,
                   "type": "object"
                 },
                 {
@@ -11168,7 +11138,6 @@
               "title": "Checks"
             },
             "detail": {
-              "additionalProperties": true,
               "type": "object",
               "title": "Detail"
             }
@@ -11225,6 +11194,45 @@
             "days_until": {
               "type": "integer",
               "title": "Days Until"
+            },
+            "temporal_status": {
+              "type": "string",
+              "pattern": "^(upcoming|ongoing)$",
+              "title": "Temporal Status",
+              "default": "upcoming"
+            },
+            "days_until_start": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Days Until Start"
+            },
+            "days_since_start": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Days Since Start"
+            },
+            "days_until_end": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Days Until End"
             },
             "duration_days": {
               "type": "integer",
@@ -11456,6 +11464,13 @@
             "type": {
               "type": "string",
               "title": "Error Type"
+            },
+            "input": {
+              "title": "Input"
+            },
+            "ctx": {
+              "type": "object",
+              "title": "Context"
             }
           },
           "type": "object",

@@ -489,57 +489,57 @@ describe('visual regression harness', () => {
 
   it('consumer home visual baseline', async () => {
     const { container } = await renderRoute('/');
-    await screen.findByRole('heading', { name: /Upcoming Festivals/i }, routeLoadOptions);
-    expect(container.querySelector('.almanac-home')).toMatchSnapshot();
+    await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
+    expect(container.querySelector('.today-page')).toMatchSnapshot();
   }, 15000);
 
   it('today page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/today', 390, 844);
-    await screen.findByRole('heading', { name: /Today in Kathmandu/i }, routeLoadOptions);
+    await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
     expect(container.querySelector('.today-page')).toMatchSnapshot();
   }, 15000);
 
   it('best-time page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/best-time', 390, 844);
-    await screen.findByRole('heading', { name: /Choose a date first/i }, routeLoadOptions);
-    expect(container.querySelector('.muhurta-page')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions);
+    await screen.findAllByText(/Abhijit Muhurta/i, {}, routeLoadOptions);
+    expect(container.querySelector('.best-time-page')).toMatchSnapshot();
   }, 15000);
 
   it('festivals page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/festivals', 390, 844);
-    await screen.findByRole('heading', { name: /Closest observances first/i }, routeLoadOptions);
-    expect(container.querySelector('.explorer-page')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions);
+    expect(container.querySelector('.festivals-page')).toMatchSnapshot();
   }, 15000);
 
   it('festival detail page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/festivals/dashain', 390, 844);
     await screen.findByRole('heading', { name: 'Dashain' }, routeLoadOptions);
-    await screen.findByRole('heading', { name: /The Ritual Timeline/i }, routeLoadOptions);
-    expect(container.querySelector('.festival-detail')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /Ritual sequence/i }, routeLoadOptions);
+    expect(container.querySelector('.detail-page')).toMatchSnapshot();
   }, 15000);
 
   it('my-place page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/my-place', 390, 844);
-    await screen.findByRole('heading', { name: /Keep the place that changes your day in view/i }, routeLoadOptions);
-    expect(container.querySelector('.personal-page')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions);
+    expect(container.querySelector('.place-page')).toMatchSnapshot();
   }, 15000);
 
   it('kundali page visual baseline', async () => {
     const { container } = await renderRoute('/kundali');
-    await screen.findByRole('heading', { name: /Enter the birth details first/i }, routeLoadOptions);
-    await screen.findByRole('heading', { name: /Three anchors, then detail/i }, routeLoadOptions);
-    expect(container.querySelector('.kundali-reset')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /Birth Reading/i }, routeLoadOptions);
+    expect(container.querySelector('.birth-page')).toMatchSnapshot();
   }, 20000);
 
   it('today page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/today', 1440, 900);
-    await screen.findByRole('heading', { name: /Today in Kathmandu/i }, routeLoadOptions);
+    await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('festivals page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/festivals', 1440, 900);
-    await screen.findByRole('heading', { name: /Closest observances first/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
@@ -551,13 +551,14 @@ describe('visual regression harness', () => {
 
   it('best-time page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/best-time', 1440, 900);
-    await screen.findByRole('heading', { name: /Choose a date first/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions);
+    await screen.findAllByText(/Abhijit Muhurta/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('my-place page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/my-place', 1440, 900);
-    await screen.findByRole('heading', { name: /Keep the place that changes your day in view/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 });

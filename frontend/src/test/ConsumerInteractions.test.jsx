@@ -280,17 +280,19 @@ describe('consumer route interactions', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Closest observances first/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /^Festivals$/i })).toBeInTheDocument();
+    expect(await screen.findByLabelText(/festival in this view/i)).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: /More filters/i }));
-    const filtersDialog = await screen.findByRole('dialog', { name: /Refine the observance view/i });
-
-    fireEvent.change(within(filtersDialog).getByRole('searchbox', { name: /Search/i }), { target: { value: 'tihar' } });
+    fireEvent.change(screen.getByPlaceholderText(/Dashain, Ekadashi, Jatra/i), { target: { value: 'tihar' } });
     await waitFor(() => {
       expect(fetchMock.mock.calls.some(([url]) => String(url).includes('search=tihar'))).toBe(true);
     });
 
-    await userEvent.click(screen.getByRole('button', { name: /National/i }));
+    await userEvent.click(screen.getByRole('button', { name: /^Filters/i }));
+    const filtersDialog = await screen.findByRole('dialog', { name: /Festival filters/i });
+
+    await userEvent.click(within(filtersDialog).getByRole('button', { name: /National/i }));
+    await userEvent.click(within(filtersDialog).getByRole('button', { name: /Apply filters/i }));
     await waitFor(() => {
       expect(fetchMock.mock.calls.some(([url]) => String(url).includes('category=national'))).toBe(true);
     });
@@ -303,7 +305,7 @@ describe('consumer route interactions', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Choose a date first/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i })).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: 'Travel' }));
     await waitFor(() => {
@@ -312,18 +314,18 @@ describe('consumer route interactions', () => {
     });
   }, 15000);
 
-  it('navigates from a festival card into the detail page', async () => {
+  it('expands a festival card into the inline detail surface', async () => {
     render(
       <MemoryRouter initialEntries={['/festivals']}>
         <App />
       </MemoryRouter>,
     );
 
-    const dashainLinks = await screen.findAllByRole('link', { name: /Dashain/i });
-    await userEvent.click(dashainLinks[0]);
+    const dashainCard = await screen.findByRole('button', { name: /Dashain/i });
+    await userEvent.click(dashainCard);
 
-    expect(await screen.findByRole('heading', { name: 'Dashain' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /The Ritual Timeline/i })).toBeInTheDocument();
+    expect(await screen.findByText(/Festival detail/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Ritual structure/i).length).toBeGreaterThan(0);
   }, 15000);
 
   it('shows place data and keeps profile as a secondary utility surface', async () => {
@@ -333,8 +335,8 @@ describe('consumer route interactions', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Keep preferences and device cache in one place/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Reminder behavior/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Export JSON/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Profile & Saved/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Calendar export/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Browse API festivals/i })).toBeInTheDocument();
   }, 15000);
 });
