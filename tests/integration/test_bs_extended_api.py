@@ -36,6 +36,16 @@ def test_convert_includes_estimated_error_metadata_for_out_of_range_date():
     assert body["bikram_sambat"]["estimated_error_days"] == "0-1"
 
 
+def test_convert_uses_correct_2081_bhadra_boundary():
+    response = client.get("/api/calendar/convert", params={"date": "2024-08-21"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["bikram_sambat"]["year"] == 2081
+    assert body["bikram_sambat"]["month"] == 5
+    assert body["bikram_sambat"]["day"] == 5
+    assert body["bikram_sambat"]["month_name"] == "Bhadra"
+
+
 def test_convert_compare_returns_both_modes():
     response = client.get("/api/calendar/convert/compare", params={"date": "2026-02-15"})
     assert response.status_code == 200
