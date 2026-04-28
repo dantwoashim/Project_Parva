@@ -128,6 +128,27 @@ def _calendar_risk_payload(
     )
 
 
+def _precomputed_panchanga_matches_date(payload: dict[str, Any], target_date: date) -> bool:
+    """
+    Guard against stale artifacts whose row key and computed sunrise drift apart.
+
+    A panchanga row for a civil date must be based on sunrise for that same
+    local date. Older generated artifacts have existed with the next day's
+    sunrise under the previous date key, which shifts vaara by one day.
+    """
+    expected = target_date.isoformat()
+    row_date = payload.get("date")
+    if row_date is not None and str(row_date) != expected:
+        return False
+
+    tithi = ((payload.get("panchanga") or {}).get("tithi") or {})
+    sunrise_used = tithi.get("sunrise_used")
+    if not sunrise_used:
+        return True
+
+    return str(sunrise_used)[:10] == expected
+
+
 def bs_struct(gregorian_date: date) -> dict[str, Any]:
     return conversion_service.bs_struct(gregorian_date)
 
@@ -191,7 +212,7 @@ def build_panchanga_payload(target_date: date, *, risk_mode: str = "standard") -
     from app.calendar.panchanga import get_panchanga
 
     cached_payload = load_precomputed_panchanga(target_date)
-    if cached_payload:
+    if cached_payload and _precomputed_panchanga_matches_date(cached_payload, target_date):
         response = dict(cached_payload)
         response["date"] = target_date.isoformat()
         response["engine_version"] = "v2"
@@ -339,7 +360,7 @@ def build_panchanga_range_payload(start: date, days: int) -> dict[str, Any]:
     for offset in range(days):
         current = start + timedelta(days=offset)
         cached = load_precomputed_panchanga(current)
-        if cached:
+        if cached and _precomputed_panchanga_matches_date(cached, current):
             results.append(
                 {
                     "date": current.isoformat(),

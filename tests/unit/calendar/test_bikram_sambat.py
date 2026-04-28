@@ -58,6 +58,12 @@ class TestBSToGregorian:
         expected = date(2023, 4, 14) + timedelta(days=31 + 31 + 32 + 31 + 31)
         assert result == expected
 
+    def test_bs_2081_bhadra_boundary(self):
+        """2081 Bhadra starts on 2024-08-17 in published Nepali calendars."""
+        assert bs_to_gregorian(2081, 5, 1) == date(2024, 8, 17)
+        assert bs_to_gregorian(2081, 5, 4) == date(2024, 8, 20)
+        assert bs_to_gregorian(2081, 5, 5) == date(2024, 8, 21)
+
     def test_last_day_of_year(self):
         """Test last day of BS year."""
         result = bs_to_gregorian(2080, 12, 30)  # Chaitra 30
@@ -127,6 +133,12 @@ class TestGregorianToBS:
         """Test second day of BS year."""
         result = gregorian_to_bs(date(2023, 4, 15))
         assert result == (2080, 1, 2)
+
+    def test_gregorian_2024_08_21_is_bhadra_5_2081(self):
+        """Regression for GitHub issue #2 and Hamro Patro parity."""
+        assert gregorian_to_bs(date(2024, 8, 20)) == (2081, 5, 4)
+        assert gregorian_to_bs(date(2024, 8, 21)) == (2081, 5, 5)
+        assert gregorian_to_bs(date(2024, 9, 17)) == (2081, 6, 1)
 
     def test_round_trip_conversion(self):
         """Test that BS -> Gregorian -> BS gives same result."""
@@ -226,6 +238,12 @@ class TestMonthLength:
         assert days_in_bs_month(2080, 1) == 31  # Baishakh
         assert days_in_bs_month(2080, 3) == 32  # Ashadh
         assert days_in_bs_month(2080, 8) == 29  # Mangsir
+
+    def test_2081_month_lengths(self):
+        """Guard the 2081 official table around the Bhadra regression."""
+        assert days_in_bs_month(2081, 3) == 31  # Ashadh
+        assert days_in_bs_month(2081, 4) == 32  # Shrawan
+        assert days_in_bs_month(2081, 5) == 31  # Bhadra
 
     def test_invalid_month_raises(self):
         """Test that invalid month raises ValueError."""
