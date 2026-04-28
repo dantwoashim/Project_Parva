@@ -1,0 +1,31 @@
+{
+  "festival_id": "moha-observance-84d836a085",
+  "generated_at": "2026-04-24T01:03:56.223367+00:00",
+  "validation_framework": "parva_rule_validation_v1",
+  "cases": [
+    {
+      "year": 2025,
+      "expected_start_date": null,
+      "expected_end_date": null,
+      "method": null,
+      "status": "pending",
+      "note": "No executable path for this year/rule combination."
+    },
+    {
+      "year": 2026,
+      "expected_start_date": null,
+      "expected_end_date": null,
+      "method": null,
+      "status": "pending",
+      "note": "No executable path for this year/rule combination."
+    },
+    {
+      "year": 2027,
+      "expected_start_date": null,
+      "expected_end_date": null,
+      "method": null,
+      "status": "pending",
+      "note": "No executable path for this year/rule combination."
+    }
+  ]
+}

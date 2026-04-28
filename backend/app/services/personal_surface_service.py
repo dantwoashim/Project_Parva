@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Optional
 
 from app.calendar.bikram_sambat import (
@@ -97,9 +97,15 @@ def _format_local_time(value: str | dict | None, fallback: str = "Time pending")
         return fallback
     if isinstance(value, str) and "T" not in value:
         parsed = datetime.strptime(value, "%H:%M:%S")
-        return parsed.strftime("%I:%M %p").lstrip("0")
+        return _round_to_display_minute(parsed).strftime("%I:%M %p").lstrip("0")
     parsed = datetime.fromisoformat(value)
-    return parsed.strftime("%I:%M %p").lstrip("0")
+    return _round_to_display_minute(parsed).strftime("%I:%M %p").lstrip("0")
+
+
+def _round_to_display_minute(value: datetime) -> datetime:
+    if value.second >= 30 or value.microsecond >= 500_000:
+        value += timedelta(minutes=1)
+    return value.replace(second=0, microsecond=0)
 
 
 def _context_title_for_payload(panchanga: dict) -> str:
@@ -161,6 +167,7 @@ def build_personal_panchanga_response(
         context.target_date,
         latitude=context.latitude,
         longitude=context.longitude,
+        timezone_name=context.timezone_name,
     )
     bs_year, bs_month, bs_day = gregorian_to_bs(context.target_date)
     timezone_source = context.location_sources["timezone"]
@@ -281,6 +288,7 @@ def build_personal_context_response(
         context.target_date,
         latitude=context.latitude,
         longitude=context.longitude,
+        timezone_name=context.timezone_name,
     )
 
     payload = {

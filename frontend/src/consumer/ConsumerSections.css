@@ -107,7 +107,7 @@
   margin: 0;
   font-family: var(--font-display);
   line-height: 0.96;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
 .consumer-home__section-copy h2 {

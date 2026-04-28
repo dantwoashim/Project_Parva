@@ -58,6 +58,27 @@ QUALITY_BAND_CHOICES = {"computed", "provisional", "inventory", "all"}
 rule_service = get_rule_service()
 
 
+def _upcoming_timing_fields(dates, start: date) -> dict:
+    """Return non-negative timing fields for upcoming and ongoing occurrences."""
+    days_until_start = (dates.start_date - start).days
+    if dates.start_date <= start <= dates.end_date:
+        return {
+            "days_until": 0,
+            "temporal_status": "ongoing",
+            "days_until_start": 0,
+            "days_since_start": (start - dates.start_date).days,
+            "days_until_end": (dates.end_date - start).days,
+        }
+
+    return {
+        "days_until": max(days_until_start, 0),
+        "temporal_status": "upcoming",
+        "days_until_start": max(days_until_start, 0),
+        "days_since_start": None,
+        "days_until_end": (dates.end_date - start).days if dates.end_date >= start else None,
+    }
+
+
 def _validation_band(rule) -> str:
     if rule is None:
         return "inventory"
@@ -235,7 +256,7 @@ def upcoming_festivals_payload(
                     category=festival.category,
                     start_date=dates.start_date,
                     end_date=dates.end_date,
-                    days_until=max((dates.start_date - start).days, 0),
+                    **_upcoming_timing_fields(dates, start),
                     duration_days=dates.duration_days,
                     primary_color=festival.primary_color,
                     rule_status=meta["rule_status"],
@@ -277,7 +298,7 @@ def upcoming_festivals_payload(
                         category=festival.category,
                         start_date=dates.start_date,
                         end_date=dates.end_date,
-                        days_until=max((dates.start_date - start).days, 0),
+                        **_upcoming_timing_fields(dates, start),
                         duration_days=dates.duration_days,
                         primary_color=festival.primary_color,
                         rule_status=meta["rule_status"],

@@ -8,6 +8,7 @@ which requires special handling in many datetime libraries.
 """
 
 from datetime import date, datetime, time, timedelta, timezone
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 # =============================================================================
 # NEPAL TIMEZONE
@@ -20,6 +21,7 @@ NEPAL_UTC_OFFSET_TOTAL_SECONDS = (NEPAL_UTC_OFFSET_HOURS * 3600) + (NEPAL_UTC_OF
 
 # Create timezone object
 NEPAL_TZ = timezone(timedelta(hours=5, minutes=45))
+DEFAULT_OBSERVER_TIMEZONE = "Asia/Kathmandu"
 
 
 # =============================================================================
@@ -69,6 +71,23 @@ def to_utc(dt: datetime) -> datetime:
 
     # Convert to UTC
     return dt.astimezone(timezone.utc)
+
+
+def resolve_observer_timezone(timezone_name: str | None = None):
+    """
+    Resolve an observer timezone for civil-date astronomical events.
+
+    Sunrise and sunset are tied to the observer's local civil date, not the UTC
+    calendar date. Kathmandu remains the default for the public Nepal almanac.
+    """
+    if not timezone_name:
+        return NEPAL_TZ
+    if timezone_name == DEFAULT_OBSERVER_TIMEZONE:
+        return NEPAL_TZ
+    try:
+        return ZoneInfo(timezone_name)
+    except ZoneInfoNotFoundError as exc:
+        raise ValueError(f"Unknown observer timezone: {timezone_name}") from exc
 
 
 def nepal_midnight(date_val: date) -> datetime:

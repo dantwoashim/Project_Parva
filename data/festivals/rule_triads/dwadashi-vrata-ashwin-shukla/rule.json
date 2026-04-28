@@ -3,8 +3,8 @@
   "rule_type": "lunar",
   "rule_family": "monthly_dwadashi",
   "source": "rule_ingestion_seed_v1",
-  "status": "provisional",
-  "confidence": "low",
+  "status": "computed",
+  "confidence": "medium",
   "executable": true,
   "execution_template": "lunar_tithi_window_v1",
   "payload": {

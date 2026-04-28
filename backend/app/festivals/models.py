@@ -370,6 +370,10 @@ class UpcomingFestival(BaseModel):
     start_date: date
     end_date: date
     days_until: int
+    temporal_status: str = Field(default="upcoming", pattern=r"^(upcoming|ongoing)$")
+    days_until_start: Optional[int] = None
+    days_since_start: Optional[int] = None
+    days_until_end: Optional[int] = None
     duration_days: int
     primary_color: Optional[str] = None
     rule_status: Optional[str] = None

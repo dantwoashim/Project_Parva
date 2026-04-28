@@ -26,7 +26,6 @@ from app.bootstrap.settings import load_settings, validate_settings
 from app.cache.precomputed import get_cache_stats, prewarm_hot_set
 from app.engine.ephemeris_config import get_ephemeris_config
 from app.festivals.repository import validate_festival_catalog
-from app.policy import get_route_access_manifest
 
 PRODUCT_VERSION = "3.0.0"
 logger = logging.getLogger(__name__)
@@ -103,16 +102,6 @@ def _build_startup_checks(settings) -> dict[str, object]:
             "required": settings.serve_frontend and settings.environment.lower() == "production",
             "ok": frontend_index.exists(),
             "path": str(frontend_index),
-        },
-        "place_search_policy": {
-            "required": settings.environment.lower() == "production",
-            "ok": bool(settings.place_search_provider_policy),
-            "detail": {
-                "policy": settings.place_search_provider_policy or "unset",
-                "allow_remote": settings.place_search_allow_remote,
-                "provider_chain": list(settings.place_search_provider_chain),
-                "endpoint": settings.place_search_endpoint,
-            },
         },
     }
     ready = all((not item["required"]) or item["ok"] for item in checks.values())
@@ -316,13 +305,7 @@ def _register_root_and_health_routes(app: FastAPI, settings) -> None:
             "experimental_api_enabled": settings.enable_experimental_api,
             "environment": settings.environment,
             "serve_frontend": settings.serve_frontend,
-            "access_model": {
-                "profile": "public_compute_with_admin_mutations",
-                "policy_url": "/v3/api/policy",
-                "admin_and_preview_auth": "api_key_or_admin_bearer",
-                "experimental_tracks": "disabled_by_default",
-            },
-            "route_access": get_route_access_manifest(),
+            "non_public_auth": "api_key_or_admin_bearer",
             "endpoints": {
                 "festivals": "/v3/api/festivals",
                 "calendar_today": "/v3/api/calendar/today",

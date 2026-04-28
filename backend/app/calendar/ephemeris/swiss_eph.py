@@ -15,10 +15,12 @@ Author: Project Parva
 Created: February 2026
 """
 
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone
 from typing import TYPE_CHECKING, Optional, Tuple
 
 import swisseph as swe
+
+from .time_utils import resolve_observer_timezone
 
 if TYPE_CHECKING:
     from app.engine.ephemeris_config import EphemerisConfig
@@ -368,6 +370,7 @@ def calculate_sunrise(
     latitude: float = LAT_KATHMANDU,
     longitude: float = LON_KATHMANDU,
     altitude: float = ALT_KATHMANDU,
+    timezone_name: str | None = None,
 ) -> datetime:
     """
     Calculate sunrise time for a given location.
@@ -377,6 +380,8 @@ def calculate_sunrise(
         latitude: Location latitude (default: Kathmandu)
         longitude: Location longitude (default: Kathmandu)
         altitude: Altitude in meters (default: Kathmandu)
+        timezone_name: IANA timezone for the observer's civil date.
+            Defaults to Asia/Kathmandu.
 
     Returns:
         Datetime of sunrise in UTC (with tzinfo=timezone.utc)
@@ -390,10 +395,9 @@ def calculate_sunrise(
     """
     _ensure_initialized()
 
-    # Get Julian Day for midnight UTC of the date
-    # For Nepal (UTC+5:45), local midnight is previous day ~18:15 UTC
-    # But we want sunrise which is around 6 AM local = 0:15 UTC same day
-    jd_start = swe.julday(date_val.year, date_val.month, date_val.day, 0.0)
+    observer_tz = resolve_observer_timezone(timezone_name)
+    local_midnight = datetime.combine(date_val, time(0, 0), tzinfo=observer_tz)
+    jd_start = get_julian_day(local_midnight.astimezone(timezone.utc))
 
     # Calculate sunrise using Swiss Ephemeris
     # Signature: rise_trans(tjdut, body, rsmi, geopos, atpress=0.0, attemp=0.0, flags=FLG_SWIEPH)
@@ -437,6 +441,7 @@ def calculate_sunset(
     latitude: float = LAT_KATHMANDU,
     longitude: float = LON_KATHMANDU,
     altitude: float = ALT_KATHMANDU,
+    timezone_name: str | None = None,
 ) -> datetime:
     """
     Calculate sunset time for a given location.
@@ -446,6 +451,8 @@ def calculate_sunset(
         latitude: Location latitude (default: Kathmandu)
         longitude: Location longitude (default: Kathmandu)
         altitude: Altitude in meters (default: Kathmandu)
+        timezone_name: IANA timezone for the observer's civil date.
+            Defaults to Asia/Kathmandu.
 
     Returns:
         Datetime of sunset in UTC (with tzinfo=timezone.utc)
@@ -455,7 +462,9 @@ def calculate_sunset(
     """
     _ensure_initialized()
 
-    jd_start = swe.julday(date_val.year, date_val.month, date_val.day, 12.0)
+    observer_tz = resolve_observer_timezone(timezone_name)
+    local_midnight = datetime.combine(date_val, time(0, 0), tzinfo=observer_tz)
+    jd_start = get_julian_day(local_midnight.astimezone(timezone.utc))
 
     try:
         result = swe.rise_trans(

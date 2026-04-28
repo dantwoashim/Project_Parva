@@ -66,7 +66,7 @@
   font-family: var(--font-display);
   font-size: clamp(3.1rem, 7vw, 5.3rem);
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
 }
 
 .landing-subtitle {

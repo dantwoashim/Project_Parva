@@ -1,7 +1,7 @@
 {
   "version": 4,
-  "generated_at": "2026-02-18T17:06:15.496592+00:00",
-  "total_rules": 453,
+  "generated_at": "2026-04-24T01:03:54.311652+00:00",
+  "total_rules": 473,
   "source_files": [
     "backend/app/calendar/festival_rules.json",
     "backend/app/calendar/festival_rules_v3.json",
@@ -7463,10 +7463,103 @@
         "needs-curation"
       ],
       "rule": {
-        "bs_year": 2081,
+        "bs_year": 2078,
         "bs_month": 11,
-        "bs_day": 16,
-        "source_line": "ल्होसार- फागुन १६ गते शुक्रबार ।"
+        "bs_day": 19,
+        "source_line": "ल्होसार - फागुन १९ गते बिहीबार।"
+      }
+    },
+    {
+      "festival_id": "moha-observance-038056bcd3",
+      "name_en": "MoHA Observance ((gq). श्रीकृष्ण जन्माष्टमी)",
+      "name_ne": "(gq). श्रीकृष्ण जन्माष्टमी",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2079,
+        "bs_month": 5,
+        "bs_day": 3,
+        "source_line": "(gq). श्रीकृष्ण जन्माष्टमी - भदौ ३ गते शुक्रबार।"
+      }
+    },
+    {
+      "festival_id": "moha-observance-0a44fc5f48",
+      "name_en": "MoHA Observance ((ख) गाई तिहार)",
+      "name_ne": "(ख) गाई तिहार",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2079,
+        "bs_month": 7,
+        "bs_day": 8,
+        "source_line": "(ख) गाई तिहार - कात्तिक ८ गते मङ्गलबार ।"
+      }
+    },
+    {
+      "festival_id": "moha-observance-0a997263b2",
+      "name_en": "MoHA Observance ((a) गणतन्त्र दिवस)",
+      "name_ne": "(a) गणतन्त्र दिवस",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2078,
+        "bs_month": 2,
+        "bs_day": 15,
+        "source_line": "(a) गणतन्त्र दिवस - जेठ १५ गते शनिबार ।"
       }
     },
     {
@@ -7494,10 +7587,10 @@
         "needs-curation"
       ],
       "rule": {
-        "bs_year": 2080,
+        "bs_year": 2078,
         "bs_month": 6,
-        "bs_day": 2,
-        "source_line": "(ग) संविधान दिवस (राष्ट्रिय दिवस) - असोज 2 गते"
+        "bs_day": 3,
+        "source_line": "(ग) संविधान दिवस (राष्ट्रिय दिवस) - असोज ३ गते"
       }
     },
     {
@@ -7618,10 +7711,41 @@
         "needs-curation"
       ],
       "rule": {
-        "bs_year": 2080,
+        "bs_year": 2078,
         "bs_month": 7,
         "bs_day": 25,
-        "source_line": "(क) फागुनन्द जयंती - कात्तिक २५ गते शनिबार"
+        "source_line": "(क) फागुनन्द जयंती - कात्तिक २५ गते बिहीबार"
+      }
+    },
+    {
+      "festival_id": "moha-observance-278a58ff9b",
+      "name_en": "MoHA Observance ((a) शहीद दिवस)",
+      "name_ne": "(a) शहीद दिवस",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2079,
+        "bs_month": 10,
+        "bs_day": 16,
+        "source_line": "(a) शहीद दिवस - माघ १६ गते सोमबार।"
       }
     },
     {
@@ -7656,6 +7780,37 @@
       }
     },
     {
+      "festival_id": "moha-observance-33b26486f7",
+      "name_en": "MoHA Observance ((a) भाइटीका/किजापूजा)",
+      "name_ne": "(a) भाइटीका/किजापूजा",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2079,
+        "bs_month": 7,
+        "bs_day": 10,
+        "source_line": "(a) भाइटीका/किजापूजा - कात्तिक १० गते बिहीबार ।"
+      }
+    },
+    {
       "festival_id": "moha-observance-364292cf8b",
       "name_en": "MoHA Observance ((ङ) राष्ट्रिय प्रजातन्त्र दिबस)",
       "name_ne": "(ङ) राष्ट्रिय प्रजातन्त्र दिबस",
@@ -7684,6 +7839,37 @@
         "bs_month": 11,
         "bs_day": 7,
         "source_line": "(ङ) राष्ट्रिय प्रजातन्त्र दिबस - फागुन ७ गते बुधबार |"
+      }
+    },
+    {
+      "festival_id": "moha-observance-3dd6b674c1",
+      "name_en": "MoHA Observance ((ख) गुरु नानक जयंती)",
+      "name_ne": "(ख) गुरु नानक जयंती",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2078,
+        "bs_month": 8,
+        "bs_day": 3,
+        "source_line": "(ख) गुरु नानक जयंती - मङ्सिर ३ गते शुक्रबार"
       }
     },
     {
@@ -7718,6 +7904,37 @@
       }
     },
     {
+      "festival_id": "moha-observance-416ad3f899",
+      "name_en": "MoHA Observance ((क) लक्ष्मी पूजा)",
+      "name_ne": "(क) लक्ष्मी पूजा",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2078,
+        "bs_month": 7,
+        "bs_day": 18,
+        "source_line": "(क) लक्ष्मी पूजा - कात्तिक १८ गते बिहीबार ।"
+      }
+    },
+    {
       "festival_id": "moha-observance-421df2e663",
       "name_en": "MoHA Observance ((ङ) राष्ट्रिय प्रजातन्त्र दिवस)",
       "name_ne": "(ङ) राष्ट्रिय प्रजातन्त्र दिवस",
@@ -7746,6 +7963,99 @@
         "bs_month": 11,
         "bs_day": 7,
         "source_line": "(ङ) राष्ट्रिय प्रजातन्त्र दिवस - फागुन ७ गते सोमबार |"
+      }
+    },
+    {
+      "festival_id": "moha-observance-4739c1339a",
+      "name_en": "MoHA Observance ((च) दशैं बिदा)",
+      "name_ne": "(च) दशैं बिदा",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2083,
+        "bs_month": 6,
+        "bs_day": 31,
+        "source_line": "(च) दशैं बिदा - असोज ३१ गते शनिबारदेखि"
+      }
+    },
+    {
+      "festival_id": "moha-observance-519663ee41",
+      "name_en": "MoHA Observance ((घ) शहीद दिवस)",
+      "name_ne": "(घ) शहीद दिवस",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2078,
+        "bs_month": 10,
+        "bs_day": 16,
+        "source_line": "(घ) शहीद दिवस - माघ १६ गते आइतबार।"
+      }
+    },
+    {
+      "festival_id": "moha-observance-5c99c3697a",
+      "name_en": "MoHA Observance ((ग) ८ जेनजी सहिद दिवस)",
+      "name_ne": "(ग) ८ जेनजी सहिद दिवस",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2083,
+        "bs_month": 5,
+        "bs_day": 23,
+        "source_line": "(ग) ८ जेनजी सहिद दिवस - भदौ २३ गते मङ्गलबार ।"
       }
     },
     {
@@ -7835,10 +8145,41 @@
         "needs-curation"
       ],
       "rule": {
-        "bs_year": 2080,
+        "bs_year": 2079,
         "bs_month": 9,
-        "bs_day": 9,
-        "source_line": "२५) - पुस ९ गते सोमबार |"
+        "bs_day": 10,
+        "source_line": "२५) - पुस १० गते आइतबार ।"
+      }
+    },
+    {
+      "festival_id": "moha-observance-84d836a085",
+      "name_en": "MoHA Observance ((ङ) अन्तर्राष्ट्रिय महिला दिवस (मार्च ८))",
+      "name_ne": "(ङ) अन्तर्राष्ट्रिय महिला दिवस (मार्च ८)",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2079,
+        "bs_month": 11,
+        "bs_day": 24,
+        "source_line": "(ङ) अन्तर्राष्ट्रिय महिला दिवस (मार्च ८) - फागुन २४ गते"
       }
     },
     {
@@ -7866,10 +8207,41 @@
         "needs-curation"
       ],
       "rule": {
-        "bs_year": 2080,
+        "bs_year": 2078,
         "bs_month": 5,
         "bs_day": 22,
-        "source_line": "(ख) निजामती सेवा दिवस - भदौ २२ गते शुक्रबार ।"
+        "source_line": "(ख) निजामती सेवा दिवस - भदौ २२ गते मङ्गलबार ।"
+      }
+    },
+    {
+      "festival_id": "moha-observance-875feb1ebd",
+      "name_en": "MoHA Observance ((वैशाखरपूर्णिमा))",
+      "name_ne": "(वैशाखरपूर्णिमा)",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2079,
+        "bs_month": 2,
+        "bs_day": 2,
+        "source_line": "(वैशाखरपूर्णिमा) - जेठ २ गते सोमबार ।"
       }
     },
     {
@@ -7928,10 +8300,10 @@
         "needs-curation"
       ],
       "rule": {
-        "bs_year": 2081,
+        "bs_year": 2079,
         "bs_month": 2,
         "bs_day": 15,
-        "source_line": "(ख) गणतन्त्र दिवस - जेठ १५ गते मङ्गलबार।"
+        "source_line": "(ख) गणतन्त्र दिवस - जेठ १५ गते आइतबार |"
       }
     },
     {
@@ -7963,6 +8335,37 @@
         "bs_month": 11,
         "bs_day": 25,
         "source_line": "(च) अन्तर्राष्ट्रिय महिला दिवस (मार्च ८) - फागुन २५ गते"
+      }
+    },
+    {
+      "festival_id": "moha-observance-926fceb9e7",
+      "name_en": "MoHA Observance ((घ) राष्ट्रिय प्रजातन्त्र दिवस)",
+      "name_ne": "(घ) राष्ट्रिय प्रजातन्त्र दिवस",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2078,
+        "bs_month": 11,
+        "bs_day": 7,
+        "source_line": "(घ) राष्ट्रिय प्रजातन्त्र दिवस - फागुन ७ गते"
       }
     },
     {
@@ -8152,6 +8555,37 @@
       }
     },
     {
+      "festival_id": "moha-observance-affd988b99",
+      "name_en": "MoHA Observance ((क) लक्ष्मीपूजा)",
+      "name_ne": "(क) लक्ष्मीपूजा",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2079,
+        "bs_month": 7,
+        "bs_day": 7,
+        "source_line": "(क) लक्ष्मीपूजा - कात्तिक ७ गते TAA |"
+      }
+    },
+    {
       "festival_id": "moha-observance-bb9a0be565",
       "name_en": "MoHA Observance ((ख) जितिया:पर्व)",
       "name_ne": "(ख) जितिया:पर्व",
@@ -8180,6 +8614,37 @@
         "bs_month": 6,
         "bs_day": 9,
         "source_line": "(ख) जितिया:पर्व - असोज ९ गते बुधबार (जितिया पर्व मनाउने"
+      }
+    },
+    {
+      "festival_id": "moha-observance-bbe9523723",
+      "name_en": "MoHA Observance ((ट) सोनाम ल्होसार)",
+      "name_ne": "(ट) सोनाम ल्होसार",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2079,
+        "bs_month": 10,
+        "bs_day": 8,
+        "source_line": "(ट) सोनाम ल्होसार - माघ ८ गते आइतबार ।"
       }
     },
     {
@@ -8238,10 +8703,165 @@
         "needs-curation"
       ],
       "rule": {
-        "bs_year": 2080,
+        "bs_year": 2078,
         "bs_month": 6,
+        "bs_day": 13,
+        "source_line": "(ख) जितिया पर्व - असोज १३ गते बुधबार (जितिया पर्व"
+      }
+    },
+    {
+      "festival_id": "moha-observance-d31ec3a1e7",
+      "name_en": "MoHA Observance (पर्व, योमरी पुन्हि, ज्यापू दिवस)",
+      "name_ne": "पर्व, योमरी पुन्हि, ज्यापू दिवस",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2083,
+        "bs_month": 9,
+        "bs_day": 9,
+        "source_line": "पर्व, योमरी पुन्हि, ज्यापू दिवस - पुस ९ गते"
+      }
+    },
+    {
+      "festival_id": "moha-observance-dd6009e96c",
+      "name_en": "MoHA Observance ((ग) राष्ट्रिय एकता दिवस)",
+      "name_ne": "(ग) राष्ट्रिय एकता दिवस",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2078,
+        "bs_month": 9,
+        "bs_day": 27,
+        "source_line": "(ग) राष्ट्रिय एकता दिवस - पुस २७ गते मङ्गलबार ।"
+      }
+    },
+    {
+      "festival_id": "moha-observance-ea9467b771",
+      "name_en": "MoHA Observance ((ग) भाइटीका/किजापूजा)",
+      "name_ne": "(ग) भाइटीका/किजापूजा",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2078,
+        "bs_month": 7,
         "bs_day": 20,
-        "source_line": "(ख) जितिया पर्व - असोज २० गते शनिबार (जितिया पर्व मनाउने"
+        "source_line": "(ग) भाइटीका/किजापूजा - कात्तिक २० गते शनिबार ।"
+      }
+    },
+    {
+      "festival_id": "moha-observance-ed0f4beb9c",
+      "name_en": "MoHA Observance ((ग) दुरा म्हैप्रु नकुमा)",
+      "name_ne": "(ग) दुरा म्हैप्रु नकुमा",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2083,
+        "bs_month": 9,
+        "bs_day": 15,
+        "source_line": "(ग) दुरा म्हैप्रु नकुमा - पुस १५ गते बुधबार"
+      }
+    },
+    {
+      "festival_id": "moha-observance-ee7bc48c15",
+      "name_en": "MoHA Observance ((डिसेम्बर २५))",
+      "name_ne": "(डिसेम्बर २५)",
+      "rule_type": "override",
+      "status": "provisional",
+      "confidence": "low",
+      "category": "national",
+      "importance": "regional",
+      "tradition": "mixed",
+      "regions": [
+        "nepal"
+      ],
+      "rule_family": "moha_ingested_observance",
+      "profile_ids": [],
+      "has_variant_profiles": false,
+      "source": "moha_pdf_parsed_ingest",
+      "engine": "catalog_ingestion_pipeline",
+      "notes": "Auto-ingested candidate from parsed MoHA holiday line; awaiting curation.",
+      "tags": [
+        "generated",
+        "moha-ingest",
+        "needs-curation"
+      ],
+      "rule": {
+        "bs_year": 2083,
+        "bs_month": 9,
+        "bs_day": 10,
+        "source_line": "(डिसेम्बर २५) - पुस १० गते शुक्रबार ।"
       }
     },
     {
@@ -8269,10 +8889,10 @@
         "needs-curation"
       ],
       "rule": {
-        "bs_year": 2082,
+        "bs_year": 2078,
         "bs_month": 5,
-        "bs_day": 15,
-        "source_line": "(ख) गोरा पर्व- भदौ १५ गते आइतबार |"
+        "bs_day": 14,
+        "source_line": "(ख) गोरा पर्व - भदौ १४ गते सोमबार।"
       }
     },
     {

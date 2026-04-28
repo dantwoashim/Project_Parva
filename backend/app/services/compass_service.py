@@ -53,7 +53,12 @@ def build_temporal_compass(
         repo = get_repository()
         rule_service = get_rule_service()
 
-        panchanga = get_panchanga(target_date, latitude=latitude, longitude=longitude)
+        panchanga = get_panchanga(
+            target_date,
+            latitude=latitude,
+            longitude=longitude,
+            timezone_name=timezone_name,
+        )
         bs_year, bs_month, bs_day = gregorian_to_bs(target_date)
 
         muhurta = get_auspicious_windows(

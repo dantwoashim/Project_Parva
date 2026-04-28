@@ -91,7 +91,7 @@ export function EvidenceDrawer({
             <AuthorityInspector title={`${title} metadata`} meta={meta} traceFallbackId={traceFallbackId} />
 
             <div className="evidence-drawer__footer">
-              <p>Open the methodology page for system-wide method notes, support levels, and review criteria.</p>
+              <p>Open the full methodology page when you want the broader trust model, variance notes, and review expectations in one place.</p>
               <Link to="/methodology" className="btn btn-secondary" onClick={() => setOpen(false)}>
                 Open methodology
               </Link>
