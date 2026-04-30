@@ -32,9 +32,8 @@ The backend platform and the frontend should be understood separately:
 ## Live links
 
 - App: [https://prabinghimire1.com.np/today/](https://prabinghimire1.com.np/today/)
-- API docs: [https://project-parva-uzy1.onrender.com/docs](https://project-parva-uzy1.onrender.com/docs)
-- Developer portal: [https://project-parva-uzy1.onrender.com/developers/index.html](https://project-parva-uzy1.onrender.com/developers/index.html)
-- Embed examples: [https://project-parva-uzy1.onrender.com/embed/index.html](https://project-parva-uzy1.onrender.com/embed/index.html)
+- API base: [https://api.prabinghimire1.com.np/v3/api](https://api.prabinghimire1.com.np/v3/api)
+- API docs: [https://api.prabinghimire1.com.np/docs](https://api.prabinghimire1.com.np/docs)
 
 ## Documentation
 
@@ -126,28 +125,39 @@ That runs environment checks, repo hygiene, secret scanning, route/doc parity, b
 Base URL:
 
 ```text
-https://project-parva-uzy1.onrender.com/v3/api
+https://api.prabinghimire1.com.np/v3/api
 ```
 
 Check connectivity:
 
 ```bash
-curl https://project-parva-uzy1.onrender.com/v3/api/calendar/today
+curl https://api.prabinghimire1.com.np/v3/api/calendar/today
 ```
 
 Convert Gregorian to BS:
 
 ```bash
-curl "https://project-parva-uzy1.onrender.com/v3/api/calendar/convert?date=2026-10-21"
+curl "https://api.prabinghimire1.com.np/v3/api/calendar/convert?date=2026-10-21"
 ```
 
 Location-sensitive request:
 
 ```bash
-curl -X POST https://project-parva-uzy1.onrender.com/v3/api/personal/panchanga \
+curl -X POST https://api.prabinghimire1.com.np/v3/api/personal/panchanga \
   -H "Content-Type: application/json" \
   -H "X-Parva-Envelope: data-meta" \
   -d '{"date":"2026-10-21","lat":"27.7172","lon":"85.3240","tz":"Asia/Kathmandu"}'
+```
+
+Browser integration example:
+
+```js
+const apiBase = "https://api.prabinghimire1.com.np/v3/api";
+
+const response = await fetch(`${apiBase}/calendar/convert?date=2024-08-21`);
+const calendar = await response.json();
+
+console.log(calendar.bikram_sambat);
 ```
 
 Python SDK example:
@@ -155,7 +165,7 @@ Python SDK example:
 ```python
 from parva_sdk import ParvaClient
 
-client = ParvaClient("https://project-parva-uzy1.onrender.com/v3/api")
+client = ParvaClient("https://api.prabinghimire1.com.np/v3/api")
 today = client.today()
 print(today.data["gregorian"] if hasattr(today, "data") else today["gregorian"])
 ```
