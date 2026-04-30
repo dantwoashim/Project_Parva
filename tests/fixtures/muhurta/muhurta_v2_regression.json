@@ -32,15 +32,15 @@
       "birth_nakshatra": "12",
       "assumption_set": "np-mainstream-v2",
       "expect": {
-        "daylight_minutes": 822.8,
-        "night_minutes": 617.7,
+        "daylight_minutes": 823.3,
+        "night_minutes": 617.2,
         "hora_day_first_lord": "mercury",
         "chaughadia_day_first": "labh",
         "rahu_segment": 5,
-        "best_window_name": "Vidhi",
-        "best_window_score": 0,
-        "tara_quality": "inauspicious",
-        "auspicious_count_min": 0
+        "best_window_name": "Aryaman",
+        "best_window_score": 66,
+        "tara_quality": "auspicious",
+        "auspicious_count_min": 3
       }
     },
     {
@@ -74,15 +74,15 @@
       "birth_nakshatra": "21",
       "assumption_set": "diaspora-practical-v2",
       "expect": {
-        "daylight_minutes": 682.6,
-        "night_minutes": 758.1,
+        "daylight_minutes": 684.7,
+        "night_minutes": 756.1,
         "hora_day_first_lord": "venus",
         "chaughadia_day_first": "char",
         "rahu_segment": 4,
-        "best_window_name": "Vidhi",
-        "best_window_score": 0,
-        "tara_quality": "neutral",
-        "auspicious_count_min": 0
+        "best_window_name": "Vasu",
+        "best_window_score": 48,
+        "tara_quality": "auspicious",
+        "auspicious_count_min": 3
       }
     }
   ]

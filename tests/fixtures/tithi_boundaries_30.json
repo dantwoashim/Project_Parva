@@ -90,14 +90,24 @@
       "date": "2025-04-12",
       "tithi": 15,
       "paksha": "shukla",
-      "vriddhi": false,
+      "vriddhi": true,
       "ksheepana": false,
-      "sunrise_utc": "2025-04-12T23:56:30+00:00",
-      "tithi_end_utc": "2025-04-13T00:22:52.031250+00:00",
-      "delta_hours": 0.4395
+      "sunrise_utc": "2025-04-11T23:57:33+00:00",
+      "tithi_end_utc": "2025-04-13T00:22:41.203125+00:00",
+      "delta_hours": 24.4189
     },
     {
       "date": "2025-05-16",
+      "tithi": 4,
+      "paksha": "krishna",
+      "vriddhi": true,
+      "ksheepana": false,
+      "sunrise_utc": "2025-05-15T23:29:21+00:00",
+      "tithi_end_utc": "2025-05-16T23:44:49.125000+00:00",
+      "delta_hours": 24.2578
+    },
+    {
+      "date": "2025-05-17",
       "tithi": 4,
       "paksha": "krishna",
       "vriddhi": false,
@@ -107,7 +117,7 @@
       "delta_hours": 0.2637
     },
     {
-      "date": "2025-05-17",
+      "date": "2025-05-18",
       "tithi": 5,
       "paksha": "krishna",
       "vriddhi": false,
@@ -117,7 +127,7 @@
       "delta_hours": 1.0107
     },
     {
-      "date": "2025-05-18",
+      "date": "2025-05-19",
       "tithi": 6,
       "paksha": "krishna",
       "vriddhi": false,
@@ -127,44 +137,34 @@
       "delta_hours": 1.2451
     },
     {
-      "date": "2025-05-19",
-      "tithi": 7,
+      "date": "2025-05-27",
+      "tithi": 15,
       "paksha": "krishna",
       "vriddhi": false,
-      "ksheepana": true,
-      "sunrise_utc": "2025-05-19T23:27:22+00:00",
-      "tithi_end_utc": "2025-05-20T00:22:44.265625+00:00",
-      "delta_hours": 0.9229
-    },
-    {
-      "date": "2025-05-27",
-      "tithi": 1,
-      "paksha": "shukla",
-      "vriddhi": false,
-      "ksheepana": true,
-      "sunrise_utc": "2025-05-27T23:24:26+00:00",
-      "tithi_end_utc": "2025-05-27T23:33:13.343750+00:00",
-      "delta_hours": 0.1465
+      "ksheepana": false,
+      "sunrise_utc": "2025-05-26T23:24:43+00:00",
+      "tithi_end_utc": "2025-05-27T03:02:41.125000+00:00",
+      "delta_hours": 3.6328
     },
     {
       "date": "2025-07-21",
-      "tithi": 12,
+      "tithi": 11,
       "paksha": "krishna",
       "vriddhi": false,
-      "ksheepana": true,
-      "sunrise_utc": "2025-07-21T23:36:39+00:00",
-      "tithi_end_utc": "2025-07-22T01:36:10.875000+00:00",
-      "delta_hours": 1.9922
+      "ksheepana": false,
+      "sunrise_utc": "2025-07-20T23:36:07+00:00",
+      "tithi_end_utc": "2025-07-21T04:10:20.125000+00:00",
+      "delta_hours": 4.5703
     },
     {
       "date": "2025-08-12",
-      "tithi": 4,
+      "tithi": 3,
       "paksha": "krishna",
       "vriddhi": false,
-      "ksheepana": true,
-      "sunrise_utc": "2025-08-12T23:48:25+00:00",
-      "tithi_end_utc": "2025-08-13T01:06:38.359375+00:00",
-      "delta_hours": 1.3037
+      "ksheepana": false,
+      "sunrise_utc": "2025-08-11T23:47:53+00:00",
+      "tithi_end_utc": "2025-08-12T03:11:47.375000+00:00",
+      "delta_hours": 3.3984
     },
     {
       "date": "2025-09-13",
