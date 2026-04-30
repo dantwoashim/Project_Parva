@@ -46,15 +46,6 @@ The backend platform and the frontend should be understood separately:
 - [Deployment](docs/DEPLOYMENT.md)
 - [Python SDK](sdk/python/README.md)
 
-## Recommended hosted split
-
-For the next production migration, the repository is prepared for:
-
-- Cloudflare Pages for the static frontend
-- Google Cloud Run for the Python API
-- Upstash Redis for distributed rate limiting and lightweight cache state
-
-That split keeps the backend stateless, preserves the `/v3/api/*` contract, and avoids serving the Vite frontend from the Python container when a static host is available.
 
 ## What this repo includes
 
