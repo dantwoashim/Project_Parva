@@ -1,8 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../../App';
 
 const routeLoadOptions = { timeout: 15000 };
+const visualNow = new Date('2026-02-25T06:30:00Z');
 
 function setViewport(width, height = 900) {
   window.innerWidth = width;
@@ -477,9 +478,33 @@ async function renderRoute(route, width = 1024, height = 900) {
 
 describe('visual regression harness', () => {
   beforeEach(() => {
+    const RealDate = Date;
+
+    class FixedVisualDate extends RealDate {
+      constructor(...args) {
+        if (args.length === 0) {
+          super(visualNow.getTime());
+          return;
+        }
+        super(...args);
+      }
+
+      static now() {
+        return visualNow.getTime();
+      }
+
+      static parse(value) {
+        return RealDate.parse(value);
+      }
+
+      static UTC(...args) {
+        return RealDate.UTC(...args);
+      }
+    }
+
     vi.stubGlobal('fetch', buildVisualFetchMock());
     vi.stubGlobal('open', vi.fn());
-    vi.spyOn(Date, 'now').mockReturnValue(new Date('2026-02-25T06:30:00Z').valueOf());
+    vi.stubGlobal('Date', FixedVisualDate);
   });
 
   afterEach(() => {
@@ -490,25 +515,28 @@ describe('visual regression harness', () => {
   it('consumer home visual baseline', async () => {
     const { container } = await renderRoute('/');
     await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
+    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
     expect(container.querySelector('.today-page')).toMatchSnapshot();
   }, 15000);
 
   it('today page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/today', 390, 844);
     await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
+    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
     expect(container.querySelector('.today-page')).toMatchSnapshot();
   }, 15000);
 
   it('best-time page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/best-time', 390, 844);
     await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions);
-    await screen.findAllByText(/Abhijit Muhurta/i, {}, routeLoadOptions);
+    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
     expect(container.querySelector('.best-time-page')).toMatchSnapshot();
   }, 15000);
 
   it('festivals page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/festivals', 390, 844);
     await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions);
+    await waitFor(() => expect(container.querySelectorAll('.festival-list-card')).toHaveLength(2), routeLoadOptions);
     expect(container.querySelector('.festivals-page')).toMatchSnapshot();
   }, 15000);
 
@@ -522,6 +550,7 @@ describe('visual regression harness', () => {
   it('my-place page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/my-place', 390, 844);
     await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions);
+    await screen.findByText(/Sunrise 6:44 AM - Asia\/Kathmandu/i, routeLoadOptions);
     expect(container.querySelector('.place-page')).toMatchSnapshot();
   }, 15000);
 
@@ -534,12 +563,14 @@ describe('visual regression harness', () => {
   it('today page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/today', 1440, 900);
     await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
+    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('festivals page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/festivals', 1440, 900);
     await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions);
+    await waitFor(() => expect(container.querySelectorAll('.festival-list-card')).toHaveLength(2), routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
@@ -552,7 +583,7 @@ describe('visual regression harness', () => {
   it('best-time page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/best-time', 1440, 900);
     await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions);
-    await screen.findAllByText(/Abhijit Muhurta/i, {}, routeLoadOptions);
+    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
