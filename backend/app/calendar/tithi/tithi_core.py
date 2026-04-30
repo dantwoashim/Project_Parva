@@ -27,6 +27,7 @@ from ..ephemeris.swiss_eph import (
     LON_KATHMANDU,
     calculate_sunrise,
 )
+from ..ephemeris.time_utils import DEFAULT_OBSERVER_TIMEZONE
 
 # =============================================================================
 # TITHI NAMES
@@ -124,13 +125,14 @@ def calculate_tithi_at_sunrise(
     date_val: date,
     latitude: float = LAT_KATHMANDU,
     longitude: float = LON_KATHMANDU,
+    timezone_name: str = DEFAULT_OBSERVER_TIMEZONE,
 ) -> Dict[str, Any]:
     """
     Convenience helper for official day-level tithi.
 
     Computes sunrise for the date/location and returns tithi at that moment.
     """
-    sunrise_utc = calculate_sunrise(date_val, latitude, longitude)
+    sunrise_utc = calculate_sunrise(date_val, latitude, longitude, timezone_name=timezone_name)
     return calculate_tithi(sunrise_utc)
 
 
