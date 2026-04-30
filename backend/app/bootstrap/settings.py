@@ -58,6 +58,10 @@ class AppSettings:
     require_precomputed: bool = False
     prewarm_hotset: bool = False
     precomputed_stale_hours: int = 24 * 30
+    place_search_provider_policy: str = ""
+    place_search_allow_remote: bool = True
+    place_search_provider_chain: tuple[str, ...] = ("offline", "nominatim")
+    place_search_endpoint: str = "https://nominatim.openstreetmap.org/search"
     trusted_proxy_ips: frozenset[str] = field(default_factory=frozenset)
 
     @property
@@ -110,6 +114,10 @@ def _parse_api_keys(raw: str, *, environment: str) -> dict[str, APIKeyRecord]:
 
 def _parse_csv_set(raw: str) -> frozenset[str]:
     return frozenset(token.strip() for token in raw.split(",") if token.strip())
+
+
+def _parse_csv_tuple(raw: str) -> tuple[str, ...]:
+    return tuple(token.strip() for token in raw.split(",") if token.strip())
 
 
 def _parse_optional_text(value: str | None) -> str | None:
@@ -189,6 +197,36 @@ def _validate_frontend_settings(settings: AppSettings) -> list[str]:
     return [f"Frontend serving enabled but built assets are missing at {index_path}."]
 
 
+def _validate_place_search_settings(settings: AppSettings) -> list[str]:
+    errors: list[str] = []
+    policy = settings.place_search_provider_policy.strip().lower()
+    provider_chain = tuple(provider.strip().lower() for provider in settings.place_search_provider_chain)
+    remote_providers = tuple(provider for provider in provider_chain if provider != "offline")
+
+    if settings.environment.lower() == "production" and not policy:
+        errors.append(
+            "Production deployments must set PARVA_PLACE_SEARCH_PROVIDER_POLICY "
+            "to offline_only or acknowledged_remote."
+        )
+        return errors
+
+    if policy and policy not in {"offline_only", "acknowledged_remote"}:
+        errors.append(
+            "PARVA_PLACE_SEARCH_PROVIDER_POLICY must be either offline_only or acknowledged_remote."
+        )
+
+    if policy == "offline_only" and (settings.place_search_allow_remote or remote_providers):
+        errors.append(
+            "PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only requires "
+            "PARVA_PLACE_SEARCH_ALLOW_REMOTE=false and PARVA_PLACE_SEARCH_PROVIDER_CHAIN=offline."
+        )
+
+    if not provider_chain:
+        errors.append("PARVA_PLACE_SEARCH_PROVIDER_CHAIN must include at least one provider.")
+
+    return errors
+
+
 def load_settings() -> AppSettings:
     environment = _default_environment()
     admin_token = os.getenv("PARVA_ADMIN_TOKEN", "").strip() or None
@@ -230,6 +268,18 @@ def load_settings() -> AppSettings:
             default=environment.strip().lower() == "production",
         ),
         precomputed_stale_hours=int(os.getenv("PARVA_PRECOMPUTED_STALE_HOURS", str(24 * 30))),
+        place_search_provider_policy=os.getenv("PARVA_PLACE_SEARCH_PROVIDER_POLICY", "").strip(),
+        place_search_allow_remote=_parse_bool(
+            os.getenv("PARVA_PLACE_SEARCH_ALLOW_REMOTE"),
+            default=True,
+        ),
+        place_search_provider_chain=_parse_csv_tuple(
+            os.getenv("PARVA_PLACE_SEARCH_PROVIDER_CHAIN", "offline,nominatim")
+        ),
+        place_search_endpoint=(
+            os.getenv("PARVA_PLACE_SEARCH_ENDPOINT", "https://nominatim.openstreetmap.org/search").strip()
+            or "https://nominatim.openstreetmap.org/search"
+        ),
         trusted_proxy_ips=_parse_csv_set(os.getenv("PARVA_TRUSTED_PROXY_IPS", "")),
     )
 
@@ -241,4 +291,5 @@ def validate_settings(settings: AppSettings) -> list[str]:
     errors.extend(_validate_experimental_settings(settings))
     errors.extend(_validate_rate_limit_settings(settings))
     errors.extend(_validate_frontend_settings(settings))
+    errors.extend(_validate_place_search_settings(settings))
     return errors
