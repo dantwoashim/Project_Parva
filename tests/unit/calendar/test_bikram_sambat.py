@@ -55,7 +55,7 @@ class TestBSToGregorian:
         # 2080-06-01 (Ashwin 1)
         result = bs_to_gregorian(2080, 6, 1)
         # Calculate expected: sum of first 5 months
-        expected = date(2023, 4, 14) + timedelta(days=31 + 31 + 32 + 31 + 31)
+        expected = date(2023, 4, 14) + timedelta(days=31 + 32 + 31 + 32 + 31)
         assert result == expected
 
     def test_bs_2081_bhadra_boundary(self):
@@ -66,6 +66,8 @@ class TestBSToGregorian:
 
     def test_bs_2082_bhadra_ashwin_boundaries(self):
         """2082 Bhadra/Ashwin boundaries match published Nepali calendars."""
+        assert bs_to_gregorian(2082, 2, 31) == date(2025, 6, 14)
+        assert bs_to_gregorian(2082, 3, 1) == date(2025, 6, 15)
         assert bs_to_gregorian(2082, 4, 31) == date(2025, 8, 16)
         assert bs_to_gregorian(2082, 5, 1) == date(2025, 8, 17)
         assert bs_to_gregorian(2082, 5, 31) == date(2025, 9, 16)
@@ -151,6 +153,8 @@ class TestGregorianToBS:
 
     def test_gregorian_2025_10_17_is_ashwin_31_2082(self):
         """Regression for Hamro Patro parity around 2082 Ashwin end."""
+        assert gregorian_to_bs(date(2025, 6, 14)) == (2082, 2, 31)
+        assert gregorian_to_bs(date(2025, 6, 15)) == (2082, 3, 1)
         assert gregorian_to_bs(date(2025, 8, 16)) == (2082, 4, 31)
         assert gregorian_to_bs(date(2025, 8, 17)) == (2082, 5, 1)
         assert gregorian_to_bs(date(2025, 9, 16)) == (2082, 5, 31)
@@ -229,7 +233,7 @@ class TestValidation:
         """Test is_valid_bs_date for valid dates."""
         assert is_valid_bs_date(2080, 1, 15) is True
         assert is_valid_bs_date(2080, 6, 30) is True
-        assert is_valid_bs_date(2080, 3, 32) is True  # Ashadh has 32 days
+        assert is_valid_bs_date(2080, 2, 32) is True  # Jestha has 32 days
 
     def test_invalid_year(self):
         """Test is_valid_bs_date for invalid year."""
@@ -252,10 +256,37 @@ class TestMonthLength:
 
     def test_days_in_month(self):
         """Test days_in_bs_month."""
-        # 2080: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+        # 2080: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30]
         assert days_in_bs_month(2080, 1) == 31  # Baishakh
-        assert days_in_bs_month(2080, 3) == 32  # Ashadh
-        assert days_in_bs_month(2080, 8) == 29  # Mangsir
+        assert days_in_bs_month(2080, 2) == 32  # Jestha
+        assert days_in_bs_month(2080, 8) == 30  # Mangsir
+
+    def test_hamro_verified_month_lengths_2070_2089(self):
+        """Guard the Hamro Patro-derived official table rows."""
+        expected = {
+            2070: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+            2071: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+            2072: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+            2073: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+            2074: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+            2075: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+            2076: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+            2077: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+            2078: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+            2079: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+            2080: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+            2081: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+            2082: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+            2083: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+            2084: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30],
+            2085: [31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30],
+            2086: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+            2087: [31, 31, 32, 31, 31, 31, 30, 30, 30, 30, 30, 30],
+            2088: [30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30],
+            2089: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+        }
+        for year, month_lengths in expected.items():
+            assert [days_in_bs_month(year, month) for month in range(1, 13)] == month_lengths
 
     def test_2081_month_lengths(self):
         """Guard the 2081 official table around the Bhadra regression."""
@@ -265,6 +296,8 @@ class TestMonthLength:
 
     def test_2082_month_lengths(self):
         """Guard the 2082 official table around the Ashwin regression."""
+        assert days_in_bs_month(2082, 2) == 31  # Jestha
+        assert days_in_bs_month(2082, 3) == 32  # Ashadh
         assert days_in_bs_month(2082, 4) == 31  # Shrawan
         assert days_in_bs_month(2082, 5) == 31  # Bhadra
         assert days_in_bs_month(2082, 6) == 31  # Ashwin
