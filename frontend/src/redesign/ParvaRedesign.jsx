@@ -202,8 +202,8 @@ function formatIsoDate(value, options = {}) {
       month: options.month || 'short',
       day: 'numeric',
       year: options.year || 'numeric',
-      timeZone: options.timeZone,
-    }).format(new Date(`${String(value).slice(0, 10)}T00:00:00`));
+      timeZone: options.timeZone || 'Asia/Kathmandu',
+    }).format(new Date(`${String(value).slice(0, 10)}T12:00:00.000Z`));
   } catch {
     return String(value);
   }

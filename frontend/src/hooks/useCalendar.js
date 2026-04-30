@@ -7,6 +7,7 @@
 
 import { useEffect, useState } from 'react';
 import { calendarAPI } from '../services/api';
+import { formatProductDate } from '../utils/productDateTime';
 
 /**
  * Hook to get current calendar information.
@@ -25,18 +26,27 @@ export function useCalendar() {
 
       try {
         const data = await calendarAPI.getToday();
-        const apiDate = new Date(data.gregorian);
+        const apiDate = data.gregorian;
         const tithi = data.tithi || {};
+        const weekday = data.weekday?.name_english;
+        const formattedDate = formatProductDate(
+          apiDate,
+          {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          },
+          { language: 'en', timeZone: 'Asia/Kathmandu' },
+        );
 
         setCalendarInfo({
           gregorian: {
             date: apiDate,
-            formatted: apiDate.toLocaleDateString('en-US', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            }),
+            weekday,
+            formatted: weekday && formattedDate
+              ? formattedDate.replace(/^[^,]+/, weekday)
+              : formattedDate,
           },
           bikramSambat: {
             year: data.bikram_sambat?.year,
