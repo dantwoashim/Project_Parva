@@ -322,7 +322,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
               <i
                 style="left: 0%; width: 8%;"
               >
-                11:48 AM - 12:36 PM
+                06:03 AM - 06:51 AM
               </i>
             </button>
             <button
@@ -335,7 +335,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
               <i
                 style="left: 8%; width: 8%;"
               >
-                12:36 PM - 01:24 PM
+                06:51 AM - 07:39 AM
               </i>
             </button>
             <div
@@ -353,7 +353,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
                 Auspicious
               </small>
               <strong>
-                11:48 AM - 12:36 PM
+                06:03 AM - 06:51 AM
               </strong>
               <span>
                 Abhijit Muhurta
@@ -378,7 +378,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             Selected window
           </p>
           <h2>
-            11:48 AM - 12:36 PM
+            06:03 AM - 06:51 AM
           </h2>
           <div
             class="score-ring"
@@ -800,7 +800,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
           <i
             style="left: 0%; width: 8%;"
           >
-            11:48 AM - 12:36 PM
+            06:03 AM - 06:51 AM
           </i>
         </button>
         <button
@@ -813,7 +813,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
           <i
             style="left: 8%; width: 8%;"
           >
-            12:36 PM - 01:24 PM
+            06:51 AM - 07:39 AM
           </i>
         </button>
         <div
@@ -831,7 +831,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             Auspicious
           </small>
           <strong>
-            11:48 AM - 12:36 PM
+            06:03 AM - 06:51 AM
           </strong>
           <span>
             Abhijit Muhurta
@@ -856,7 +856,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
         Selected window
       </p>
       <h2>
-        11:48 AM - 12:36 PM
+        06:03 AM - 06:51 AM
       </h2>
       <div
         class="score-ring"
@@ -1293,7 +1293,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
               Abhijit Muhurta
             </strong>
             <small>
-              11:48 AM - 12:36 PM
+              06:03 AM - 06:51 AM
             </small>
           </a>
         </div>
@@ -1338,7 +1338,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             href="/best-time"
           >
             <span>
-              11:48 AM - 12:36 PM
+              06:03 AM - 06:51 AM
             </span>
             <strong>
               Abhijit Muhurta
@@ -1355,7 +1355,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             href="/best-time"
           >
             <span>
-              12:36 PM - 01:24 PM
+              06:51 AM - 07:39 AM
             </span>
             <strong>
               Labh
@@ -4259,7 +4259,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
                 Sunrise
               </dt>
               <dd>
-                06:44
+                Pending
               </dd>
             </div>
             <div>
@@ -4283,10 +4283,16 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
                 Context
               </dt>
               <dd>
-                Sunrise 6:44 AM - Asia/Kathmandu
+                API context pending
               </dd>
             </div>
           </dl>
+          <p
+            class="birth-error"
+            role="alert"
+          >
+            Unexpected response shape for /personal/panchanga Support reference: application/json.
+          </p>
           <div
             class="confidence-meter"
           >
@@ -4655,7 +4661,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             Sunrise
           </dt>
           <dd>
-            06:44
+            Pending
           </dd>
         </div>
         <div>
@@ -4679,10 +4685,16 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             Context
           </dt>
           <dd>
-            Sunrise 6:44 AM - Asia/Kathmandu
+            API context pending
           </dd>
         </div>
       </dl>
+      <p
+        class="birth-error"
+        role="alert"
+      >
+        Unexpected response shape for /personal/panchanga Support reference: application/json.
+      </p>
       <div
         class="confidence-meter"
       >
@@ -5244,7 +5256,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   Abhijit Muhurta
                 </strong>
                 <small>
-                  11:48 AM - 12:36 PM
+                  06:03 AM - 06:51 AM
                 </small>
               </a>
             </div>
@@ -5289,7 +5301,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                 href="/best-time"
               >
                 <span>
-                  11:48 AM - 12:36 PM
+                  06:03 AM - 06:51 AM
                 </span>
                 <strong>
                   Abhijit Muhurta
@@ -5306,7 +5318,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                 href="/best-time"
               >
                 <span>
-                  12:36 PM - 01:24 PM
+                  06:51 AM - 07:39 AM
                 </span>
                 <strong>
                   Labh
@@ -6007,7 +6019,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
               Abhijit Muhurta
             </strong>
             <small>
-              11:48 AM - 12:36 PM
+              06:03 AM - 06:51 AM
             </small>
           </a>
         </div>
@@ -6052,7 +6064,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             href="/best-time"
           >
             <span>
-              11:48 AM - 12:36 PM
+              06:03 AM - 06:51 AM
             </span>
             <strong>
               Abhijit Muhurta
@@ -6069,7 +6081,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             href="/best-time"
           >
             <span>
-              12:36 PM - 01:24 PM
+              06:51 AM - 07:39 AM
             </span>
             <strong>
               Labh

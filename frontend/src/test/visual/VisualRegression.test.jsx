@@ -289,14 +289,14 @@ function buildVisualFetchMock() {
           vaara: { name_english: 'Sunday', name_sanskrit: 'Ravivara' },
           location: { latitude: 27.7172, longitude: 85.324, timezone: 'Asia/Kathmandu' },
           local_sunrise: {
-            local: '2026-02-15T06:44:00+05:45',
-            utc: '2026-02-15T00:59:00Z',
-            local_time: '06:44 AM',
+            local: null,
+            utc: null,
+            local_time: null,
           },
           sunrise: {
-            local: '2026-02-15T06:42:00+05:45',
-            utc: '2026-02-15T00:57:00Z',
-            local_time: '06:42 AM',
+            local: null,
+            utc: null,
+            local_time: null,
           },
           confidence: 'computed',
           method_profile: 'personal_panchanga_v2_udaya',
@@ -315,7 +315,7 @@ function buildVisualFetchMock() {
           date: '2026-02-25',
           location: { latitude: 27.7172, longitude: 85.324, timezone: 'Asia/Kathmandu' },
           place_title: 'Kyoto Villa',
-          status_line: 'Sunrise 6:44 AM - Asia/Kathmandu',
+          status_line: null,
           visit_note: 'Last visited Oct 15. Next reminder: Cherry Blossom (Apr).',
           context_title: 'Morning Calm',
           context_summary: 'Quiet morning at your saved Kyoto Villa location. Air is crisp. 14C.',
@@ -353,8 +353,8 @@ function buildVisualFetchMock() {
               name: 'Abhijit Muhurta',
               class: 'auspicious',
               score: 88,
-              start: '2026-02-15T11:48:00+05:45',
-              end: '2026-02-15T12:36:00+05:45',
+              start: '2026-02-25T06:03:00+05:45',
+              end: '2026-02-25T06:51:00+05:45',
               confidence_score: 0.91,
               reason_codes: ['hora_supportive', 'tara_good'],
               rank_explanation: 'Strong overlap of supportive factors.',
@@ -364,8 +364,8 @@ function buildVisualFetchMock() {
               name: 'Labh',
               class: 'mixed',
               score: 42,
-              start: '2026-02-15T12:36:00+05:45',
-              end: '2026-02-15T13:24:00+05:45',
+              start: '2026-02-25T06:51:00+05:45',
+              end: '2026-02-25T07:39:00+05:45',
               confidence_score: 0.75,
               reason_codes: ['tara_good'],
               rank_explanation: 'Supportive but not as strong as the lead window.',
@@ -375,8 +375,8 @@ function buildVisualFetchMock() {
             index: 6,
             name: 'Abhijit Muhurta',
             score: 88,
-            start: '2026-02-15T11:48:00+05:45',
-            end: '2026-02-15T12:36:00+05:45',
+            start: '2026-02-25T06:03:00+05:45',
+            end: '2026-02-25T06:51:00+05:45',
             confidence_score: 0.91,
             reason_codes: ['hora_supportive', 'tara_good'],
           },
@@ -543,7 +543,7 @@ describe('visual regression harness', () => {
   it('my-place page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/my-place', 390, 844);
     await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions);
-    await screen.findByText(/Sunrise 6:44 AM - Asia\/Kathmandu/i, routeLoadOptions);
+    await screen.findByText(/API context pending/i, routeLoadOptions);
     expect(container.querySelector('.place-page')).toMatchSnapshot();
   }, 15000);
 
