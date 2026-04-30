@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import Any, Optional
+from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException
 
@@ -25,6 +26,18 @@ from app.services.trust_surface_service import (
     build_temporal_risk_payload,
 )
 from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
+
+NEPAL_TZ = ZoneInfo("Asia/Kathmandu")
+VAARA_SANSKRIT = [
+    "Ravivara",
+    "Somavara",
+    "Mangalavara",
+    "Budhavara",
+    "Guruvara",
+    "Shukravara",
+    "Shanivara",
+]
+VAARA_ENGLISH = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
 
 def build_provenance(
@@ -149,6 +162,19 @@ def _precomputed_panchanga_matches_date(payload: dict[str, Any], target_date: da
     return str(sunrise_used)[:10] == expected
 
 
+def _nepal_today() -> date:
+    return datetime.now(NEPAL_TZ).date()
+
+
+def _weekday_payload(target_date: date) -> dict[str, Any]:
+    vaara_index = (target_date.weekday() + 1) % 7
+    return {
+        "number": vaara_index,
+        "name_sanskrit": VAARA_SANSKRIT[vaara_index],
+        "name_english": VAARA_ENGLISH[vaara_index],
+    }
+
+
 def bs_struct(gregorian_date: date) -> dict[str, Any]:
     return conversion_service.bs_struct(gregorian_date)
 
@@ -174,7 +200,7 @@ def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
 
 
 def build_today_payload(*, risk_mode: str = "standard") -> dict[str, Any]:
-    today = date.today()
+    today = _nepal_today()
     bs_payload = build_bs_date_payload(today)
     tithi_payload = build_tithi_payload(today)
     meta = _calendar_meta(
@@ -198,6 +224,7 @@ def build_today_payload(*, risk_mode: str = "standard") -> dict[str, Any]:
     )
     return {
         "gregorian": today.isoformat(),
+        "weekday": _weekday_payload(today),
         "bikram_sambat": bs_payload,
         "tithi": tithi_payload,
         **meta,

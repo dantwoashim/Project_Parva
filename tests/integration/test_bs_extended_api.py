@@ -1,5 +1,8 @@
 """Week 22-24 API integration checks for dual-mode BS confidence."""
 
+from datetime import date
+
+import app.services.calendar_surface_service as calendar_surface_service
 from app.main import app
 from fastapi.testclient import TestClient
 
@@ -54,6 +57,17 @@ def test_convert_uses_correct_2082_ashwin_boundary():
     assert body["bikram_sambat"]["month"] == 6
     assert body["bikram_sambat"]["day"] == 31
     assert body["bikram_sambat"]["month_name"] == "Ashwin"
+
+
+def test_today_exposes_nepal_civil_weekday(monkeypatch):
+    monkeypatch.setattr(calendar_surface_service, "_nepal_today", lambda: date(2026, 4, 30))
+
+    response = client.get("/api/calendar/today")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["gregorian"] == "2026-04-30"
+    assert body["weekday"]["name_english"] == "Thursday"
+    assert body["weekday"]["name_sanskrit"] == "Guruvara"
 
 
 def test_convert_compare_returns_both_modes():
