@@ -46,6 +46,16 @@ def test_convert_uses_correct_2081_bhadra_boundary():
     assert body["bikram_sambat"]["month_name"] == "Bhadra"
 
 
+def test_convert_uses_correct_2082_ashwin_boundary():
+    response = client.get("/api/calendar/convert", params={"date": "2025-10-17"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["bikram_sambat"]["year"] == 2082
+    assert body["bikram_sambat"]["month"] == 6
+    assert body["bikram_sambat"]["day"] == 31
+    assert body["bikram_sambat"]["month_name"] == "Ashwin"
+
+
 def test_convert_compare_returns_both_modes():
     response = client.get("/api/calendar/convert/compare", params={"date": "2026-02-15"})
     assert response.status_code == 200
