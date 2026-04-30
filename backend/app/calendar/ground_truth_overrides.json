@@ -6,7 +6,7 @@
   },
   "2025": {
     "dashain": {
-      "start": "2025-09-23",
+      "start": "2025-09-22",
       "source": "moha_pdf_2082",
       "confidence": "official",
       "notes": "BS 2082-06-06 (असोज ६) (ङ) घटस्थापना"
@@ -48,13 +48,13 @@
       "notes": "BS 2082-04-31 (साउन ३१) (घ) श्रीकृष्ण जन्माष्टमी"
     },
     "teej": {
-      "start": "2025-08-27",
+      "start": "2025-08-26",
       "source": "moha_pdf_2082",
       "confidence": "official",
       "notes": "BS 2082-05-10 (भदौ १०) (क) हरितालिका (तीज) व्रत"
     },
     "indra-jatra": {
-      "start": "2025-09-07",
+      "start": "2025-09-06",
       "source": "moha_pdf_2082",
       "confidence": "official",
       "notes": "BS 2082-05-21 (भदौ २१) (ख) इन्द्रजात्रा"

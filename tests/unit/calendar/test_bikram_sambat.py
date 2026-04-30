@@ -64,6 +64,15 @@ class TestBSToGregorian:
         assert bs_to_gregorian(2081, 5, 4) == date(2024, 8, 20)
         assert bs_to_gregorian(2081, 5, 5) == date(2024, 8, 21)
 
+    def test_bs_2082_bhadra_ashwin_boundaries(self):
+        """2082 Bhadra/Ashwin boundaries match published Nepali calendars."""
+        assert bs_to_gregorian(2082, 4, 31) == date(2025, 8, 16)
+        assert bs_to_gregorian(2082, 5, 1) == date(2025, 8, 17)
+        assert bs_to_gregorian(2082, 5, 31) == date(2025, 9, 16)
+        assert bs_to_gregorian(2082, 6, 1) == date(2025, 9, 17)
+        assert bs_to_gregorian(2082, 6, 31) == date(2025, 10, 17)
+        assert bs_to_gregorian(2082, 7, 1) == date(2025, 10, 18)
+
     def test_last_day_of_year(self):
         """Test last day of BS year."""
         result = bs_to_gregorian(2080, 12, 30)  # Chaitra 30
@@ -139,6 +148,15 @@ class TestGregorianToBS:
         assert gregorian_to_bs(date(2024, 8, 20)) == (2081, 5, 4)
         assert gregorian_to_bs(date(2024, 8, 21)) == (2081, 5, 5)
         assert gregorian_to_bs(date(2024, 9, 17)) == (2081, 6, 1)
+
+    def test_gregorian_2025_10_17_is_ashwin_31_2082(self):
+        """Regression for Hamro Patro parity around 2082 Ashwin end."""
+        assert gregorian_to_bs(date(2025, 8, 16)) == (2082, 4, 31)
+        assert gregorian_to_bs(date(2025, 8, 17)) == (2082, 5, 1)
+        assert gregorian_to_bs(date(2025, 9, 16)) == (2082, 5, 31)
+        assert gregorian_to_bs(date(2025, 9, 17)) == (2082, 6, 1)
+        assert gregorian_to_bs(date(2025, 10, 17)) == (2082, 6, 31)
+        assert gregorian_to_bs(date(2025, 10, 18)) == (2082, 7, 1)
 
     def test_round_trip_conversion(self):
         """Test that BS -> Gregorian -> BS gives same result."""
@@ -244,6 +262,12 @@ class TestMonthLength:
         assert days_in_bs_month(2081, 3) == 31  # Ashadh
         assert days_in_bs_month(2081, 4) == 32  # Shrawan
         assert days_in_bs_month(2081, 5) == 31  # Bhadra
+
+    def test_2082_month_lengths(self):
+        """Guard the 2082 official table around the Ashwin regression."""
+        assert days_in_bs_month(2082, 4) == 31  # Shrawan
+        assert days_in_bs_month(2082, 5) == 31  # Bhadra
+        assert days_in_bs_month(2082, 6) == 31  # Ashwin
 
     def test_invalid_month_raises(self):
         """Test that invalid month raises ValueError."""
