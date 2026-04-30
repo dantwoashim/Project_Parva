@@ -3,7 +3,25 @@ import { MemoryRouter } from 'react-router-dom';
 import App from '../../App';
 
 const routeLoadOptions = { timeout: 15000 };
-const visualNow = new Date('2026-02-25T06:30:00Z');
+
+vi.mock('../../context/temporalContextState', async (importOriginal) => {
+  const actual = await importOriginal();
+  const createVisualState = () => ({
+    date: '2026-02-25',
+    location: { latitude: 27.7172, longitude: 85.324 },
+    timezone: 'Asia/Kathmandu',
+    language: 'en',
+    theme: 'warm-paper',
+    lastViewed: '/',
+  });
+
+  return {
+    ...actual,
+    todayIso: () => '2026-02-25',
+    createInitialState: createVisualState,
+    loadInitialState: createVisualState,
+  };
+});
 
 function setViewport(width, height = 900) {
   window.innerWidth = width;
@@ -478,33 +496,8 @@ async function renderRoute(route, width = 1024, height = 900) {
 
 describe('visual regression harness', () => {
   beforeEach(() => {
-    const RealDate = Date;
-
-    class FixedVisualDate extends RealDate {
-      constructor(...args) {
-        if (args.length === 0) {
-          super(visualNow.getTime());
-          return;
-        }
-        super(...args);
-      }
-
-      static now() {
-        return visualNow.getTime();
-      }
-
-      static parse(value) {
-        return RealDate.parse(value);
-      }
-
-      static UTC(...args) {
-        return RealDate.UTC(...args);
-      }
-    }
-
     vi.stubGlobal('fetch', buildVisualFetchMock());
     vi.stubGlobal('open', vi.fn());
-    vi.stubGlobal('Date', FixedVisualDate);
   });
 
   afterEach(() => {
@@ -515,21 +508,21 @@ describe('visual regression harness', () => {
   it('consumer home visual baseline', async () => {
     const { container } = await renderRoute('/');
     await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
-    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
+    await waitFor(() => expect(container.querySelectorAll('.mini-window').length).toBeGreaterThan(0), routeLoadOptions);
     expect(container.querySelector('.today-page')).toMatchSnapshot();
   }, 15000);
 
   it('today page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/today', 390, 844);
     await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
-    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
+    await waitFor(() => expect(container.querySelectorAll('.mini-window').length).toBeGreaterThan(0), routeLoadOptions);
     expect(container.querySelector('.today-page')).toMatchSnapshot();
   }, 15000);
 
   it('best-time page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/best-time', 390, 844);
     await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions);
-    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
+    await waitFor(() => expect(container.querySelectorAll('.chart-row')).toHaveLength(2), routeLoadOptions);
     expect(container.querySelector('.best-time-page')).toMatchSnapshot();
   }, 15000);
 
@@ -563,7 +556,7 @@ describe('visual regression harness', () => {
   it('today page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/today', 1440, 900);
     await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
-    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
+    await waitFor(() => expect(container.querySelectorAll('.mini-window').length).toBeGreaterThan(0), routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
@@ -583,7 +576,7 @@ describe('visual regression harness', () => {
   it('best-time page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/best-time', 1440, 900);
     await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions);
-    await screen.findAllByText(/11:48 AM - 12:36 PM/i, {}, routeLoadOptions);
+    await waitFor(() => expect(container.querySelectorAll('.chart-row')).toHaveLength(2), routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
