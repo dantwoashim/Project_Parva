@@ -68,6 +68,24 @@ def test_today_exposes_nepal_civil_weekday(monkeypatch):
     assert body["gregorian"] == "2026-04-30"
     assert body["weekday"]["name_english"] == "Thursday"
     assert body["weekday"]["name_sanskrit"] == "Guruvara"
+    assert body["tithi"]["sunrise_used"].startswith("2026-04-30")
+
+
+def test_convert_tithi_uses_nepal_civil_sunrise():
+    response = client.get("/api/calendar/convert", params={"date": "2026-04-30"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["tithi"]["tithi_name"] == "Chaturdashi"
+    assert body["tithi"]["sunrise_used"].startswith("2026-04-30")
+
+
+def test_panchanga_uses_nepal_civil_weekday_and_sunrise():
+    response = client.get("/api/calendar/panchanga", params={"date": "2026-04-30"})
+    assert response.status_code == 200
+    body = response.json()
+    assert body["panchanga"]["vaara"]["name_english"] == "Thursday"
+    assert body["panchanga"]["tithi"]["name"] == "Chaturdashi"
+    assert body["panchanga"]["tithi"]["sunrise_used"].startswith("2026-04-30")
 
 
 def test_convert_compare_returns_both_modes():

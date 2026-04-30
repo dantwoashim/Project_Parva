@@ -98,13 +98,13 @@ def build_ns_date_payload(gregorian_date: date) -> Optional[dict[str, Any]]:
 
 def build_tithi_payload(gregorian_date: date) -> dict[str, Any]:
     from app.calendar.ephemeris.swiss_eph import calculate_sunrise
-    from app.calendar.ephemeris.time_utils import to_nepal_time
+    from app.calendar.ephemeris.time_utils import DEFAULT_OBSERVER_TIMEZONE, to_nepal_time
     from app.calendar.tithi import calculate_tithi, get_moon_phase_name, get_udaya_tithi
     from app.uncertainty import build_tithi_uncertainty
 
     try:
-        udaya = get_udaya_tithi(gregorian_date)
-        sunrise_utc = calculate_sunrise(gregorian_date)
+        udaya = get_udaya_tithi(gregorian_date, timezone_name=DEFAULT_OBSERVER_TIMEZONE)
+        sunrise_utc = calculate_sunrise(gregorian_date, timezone_name=DEFAULT_OBSERVER_TIMEZONE)
         return {
             "tithi": udaya["tithi"],
             "paksha": udaya["paksha"],

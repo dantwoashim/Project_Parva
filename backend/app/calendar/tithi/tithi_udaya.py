@@ -14,7 +14,7 @@ from datetime import date, timedelta
 from typing import Any, Dict, Optional
 
 from ..ephemeris.swiss_eph import LAT_KATHMANDU, LON_KATHMANDU, calculate_sunrise
-from ..ephemeris.time_utils import to_nepal_time
+from ..ephemeris.time_utils import DEFAULT_OBSERVER_TIMEZONE, to_nepal_time
 from .tithi_boundaries import find_tithi_end, get_tithi_window
 from .tithi_core import calculate_tithi
 
@@ -24,7 +24,10 @@ from .tithi_core import calculate_tithi
 
 
 def get_udaya_tithi(
-    date_val: date, latitude: float = LAT_KATHMANDU, longitude: float = LON_KATHMANDU
+    date_val: date,
+    latitude: float = LAT_KATHMANDU,
+    longitude: float = LON_KATHMANDU,
+    timezone_name: str = DEFAULT_OBSERVER_TIMEZONE,
 ) -> Dict[str, Any]:
     """
     Get the tithi prevailing at sunrise (udaya tithi).
@@ -38,6 +41,7 @@ def get_udaya_tithi(
         date_val: Date to get udaya tithi for
         latitude: Location latitude (default: Kathmandu)
         longitude: Location longitude (default: Kathmandu)
+        timezone_name: Observer timezone for the civil date
 
     Returns:
         Dictionary with:
@@ -64,7 +68,7 @@ def get_udaya_tithi(
         }
     """
     # Calculate tithi at sunrise (official udaya rule)
-    tithi_info = calculate_tithi_at_sunrise(date_val, latitude, longitude)
+    tithi_info = calculate_tithi_at_sunrise(date_val, latitude, longitude, timezone_name)
     sunrise_utc = tithi_info["sunrise"]
     sunrise_nepal = tithi_info["sunrise_local"]
 
@@ -86,7 +90,10 @@ def get_udaya_tithi(
 
 
 def calculate_tithi_at_sunrise(
-    date_val: date, latitude: float = LAT_KATHMANDU, longitude: float = LON_KATHMANDU
+    date_val: date,
+    latitude: float = LAT_KATHMANDU,
+    longitude: float = LON_KATHMANDU,
+    timezone_name: str = DEFAULT_OBSERVER_TIMEZONE,
 ) -> Dict[str, Any]:
     """
     Calculate tithi at sunrise for a given date/location.
@@ -95,11 +102,12 @@ def calculate_tithi_at_sunrise(
         date_val: Gregorian date
         latitude: latitude of observation
         longitude: longitude of observation
+        timezone_name: Observer timezone for the civil date
 
     Returns:
         Dict containing tithi fields from `calculate_tithi()` plus sunrise metadata.
     """
-    sunrise_utc = calculate_sunrise(date_val, latitude, longitude)
+    sunrise_utc = calculate_sunrise(date_val, latitude, longitude, timezone_name=timezone_name)
     sunrise_nepal = to_nepal_time(sunrise_utc)
     tithi_info = calculate_tithi(sunrise_utc)
     return {
@@ -110,20 +118,26 @@ def calculate_tithi_at_sunrise(
 
 
 def detect_vriddhi(
-    date_val: date, latitude: float = LAT_KATHMANDU, longitude: float = LON_KATHMANDU
+    date_val: date,
+    latitude: float = LAT_KATHMANDU,
+    longitude: float = LON_KATHMANDU,
+    timezone_name: str = DEFAULT_OBSERVER_TIMEZONE,
 ) -> bool:
     """
     Detect vriddhi tithi for a date.
 
     Vriddhi means the same absolute tithi prevails at two consecutive sunrises.
     """
-    today = calculate_tithi_at_sunrise(date_val, latitude, longitude)
-    tomorrow = calculate_tithi_at_sunrise(date_val + timedelta(days=1), latitude, longitude)
+    today = calculate_tithi_at_sunrise(date_val, latitude, longitude, timezone_name)
+    tomorrow = calculate_tithi_at_sunrise(date_val + timedelta(days=1), latitude, longitude, timezone_name)
     return today["number"] == tomorrow["number"]
 
 
 def detect_ksheepana(
-    date_val: date, latitude: float = LAT_KATHMANDU, longitude: float = LON_KATHMANDU
+    date_val: date,
+    latitude: float = LAT_KATHMANDU,
+    longitude: float = LON_KATHMANDU,
+    timezone_name: str = DEFAULT_OBSERVER_TIMEZONE,
 ) -> bool:
     """
     Detect ksheepana (skipped tithi) around a date.
@@ -131,8 +145,8 @@ def detect_ksheepana(
     Ksheepana occurs when sunrise-to-sunrise tithi jump is 2, meaning one tithi
     started and ended between the two sunrises.
     """
-    today = calculate_tithi_at_sunrise(date_val, latitude, longitude)
-    tomorrow = calculate_tithi_at_sunrise(date_val + timedelta(days=1), latitude, longitude)
+    today = calculate_tithi_at_sunrise(date_val, latitude, longitude, timezone_name)
+    tomorrow = calculate_tithi_at_sunrise(date_val + timedelta(days=1), latitude, longitude, timezone_name)
     delta = (tomorrow["number"] - today["number"]) % 30
     return delta == 2
 
