@@ -77,7 +77,7 @@ class RoutePolicy:
             return False
         if self.match == "exact":
             return path == self.path
-        return path == self.path or path.startswith(f"{self.path}/")
+        return path.startswith(self.path)
 
 
 def route_policy(

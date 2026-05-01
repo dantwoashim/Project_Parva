@@ -14,9 +14,11 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:visual": "vitest run src/test/visual/VisualRegression.test.jsx"
+    "test:visual": "vitest run src/test/visual/VisualRegression.test.jsx",
+    "test:a11y:live": "node scripts/accessibility_walkthrough.mjs"
   },
   "dependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.59.0",
     "date-fns": "^4.1.0",
     "leaflet": "^1.9.4",
     "prop-types": "^15.8.1",

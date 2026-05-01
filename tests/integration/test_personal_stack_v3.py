@@ -90,6 +90,16 @@ def test_personal_panchanga_explicit_timezone_remains_high_authority():
     }
 
 
+def test_personal_panchanga_warm_season_sunrise_uses_requested_local_date():
+    resp = client.get("/v3/api/personal/panchanga", params={"date": "2026-04-24"})
+
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["sunrise"]["utc"] == "2026-04-23T23:45:54+00:00"
+    assert body["sunrise"]["local"] == "2026-04-24T05:30:54+05:45"
+    assert body["sunrise"]["local_time"] == "05:30:54"
+
+
 def test_personal_panchanga_get_and_post_normalize_coordinates_equivalently():
     params = {"date": "2026-02-15", "lat": "27.7172", "lon": "85.3240"}
     payload = {"date": "2026-02-15", "lat": 27.7172, "lon": 85.3240}

@@ -7,14 +7,33 @@ import re
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DOC_FILES = [PROJECT_ROOT / "README.md", *sorted((PROJECT_ROOT / "docs").rglob("*.md"))]
-PATH_PATTERN = re.compile(
+DOC_FILES = [
+    PROJECT_ROOT / "README.md",
+    PROJECT_ROOT / "SECURITY.md",
+    PROJECT_ROOT / "CONTRIBUTING.md",
+    *sorted((PROJECT_ROOT / "docs").rglob("*.md")),
+]
+BACKTICK_PATH_PATTERN = re.compile(
     r"`(/?(?:docs|scripts|data|backend|frontend|tests|reports|benchmark)/[A-Za-z0-9_./-]+)`"
 )
+MARKDOWN_LINK_PATTERN = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
+REPO_PATH_PREFIXES = ("docs/", "scripts/", "data/", "backend/", "frontend/", "tests/", "reports/", "benchmark/")
 
 
 def _normalize(raw: str) -> str:
-    return raw.rstrip("`.,)").lstrip("/")
+    cleaned = raw.strip().strip("<>").split("#", 1)[0].split("?", 1)[0]
+    return cleaned.rstrip("`.,)").lstrip("/")
+
+
+def _repo_paths_from_line(line: str) -> list[str]:
+    paths = list(BACKTICK_PATH_PATTERN.findall(line))
+    for raw in MARKDOWN_LINK_PATTERN.findall(line):
+        if raw.startswith(("http://", "https://", "mailto:", "#", "/")):
+            continue
+        normalized = _normalize(raw)
+        if normalized.startswith(REPO_PATH_PREFIXES) or normalized in {"README.md", "SECURITY.md", "CONTRIBUTING.md"}:
+            paths.append(normalized)
+    return paths
 
 
 def main() -> int:
@@ -23,8 +42,10 @@ def main() -> int:
     for doc in DOC_FILES:
         lines = doc.read_text(encoding="utf-8").splitlines()
         for line_number, line in enumerate(lines, start=1):
-            for raw in PATH_PATTERN.findall(line):
+            for raw in _repo_paths_from_line(line):
                 rel_path = _normalize(raw)
+                if not rel_path:
+                    continue
                 if rel_path.startswith("reports/"):
                     if "generated artifact" not in line.lower():
                         failures.append(

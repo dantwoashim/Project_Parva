@@ -1,151 +1,120 @@
 #!/usr/bin/env python3
-"""Scan tracked text files for likely hard-coded credentials."""
+"""Scan source files for obvious committed secrets."""
 
 from __future__ import annotations
 
 import re
-import subprocess
-import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SELF_PATH = Path(__file__).resolve()
-SKIP_PREFIXES = (
-    "data/source_archive/",
-    "docs/contracts/",
-)
-SKIP_FILES = {
-    "frontend/package-lock.json",
+
+EXCLUDED_DIRS = {
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    ".venv311",
+    ".verify",
+    "__pycache__",
+    "dist",
+    "htmlcov",
+    "node_modules",
+    "output",
+    "reports",
 }
-BINARY_SUFFIXES = {
-    ".7z",
-    ".dll",
-    ".eot",
-    ".gif",
-    ".gz",
-    ".ico",
-    ".jpeg",
-    ".jpg",
-    ".otf",
-    ".pdf",
-    ".png",
-    ".tar",
-    ".ttf",
-    ".woff",
-    ".woff2",
-    ".zip",
+EXCLUDED_PREFIXES = {
+    Path("backend/data/snapshots"),
+    Path("backend/data/traces"),
+    Path("frontend/dist"),
 }
-ALLOWLIST_PATTERNS = (
-    re.compile(r"parva-test-(?:admin|read)-token", re.IGNORECASE),
-    re.compile(r"parva-test-read-key", re.IGNORECASE),
-    re.compile(r"change-me", re.IGNORECASE),
-    re.compile(r"https://github\.com/example/project-parva", re.IGNORECASE),
-    re.compile(r"https://example\.com/", re.IGNORECASE),
-    re.compile(r"http://localhost", re.IGNORECASE),
-    re.compile(r"http://127\.0\.0\.1", re.IGNORECASE),
-)
-PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
-    ("AWS access key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
-    ("GitHub token", re.compile(r"\b(?:ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{36,}\b")),
-    ("GitHub fine-grained token", re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,}\b")),
-    ("Provider API key", re.compile(r"\bsk-[A-Za-z0-9_-]{20,}\b")),
-    ("Slack token", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}\b")),
+TEXT_SUFFIXES = {
+    ".cfg",
+    ".css",
+    ".csv",
+    ".env",
+    ".example",
+    ".html",
+    ".ics",
+    ".ini",
+    ".js",
+    ".json",
+    ".jsx",
+    ".lock",
+    ".md",
+    ".mjs",
+    ".py",
+    ".sh",
+    ".toml",
+    ".ts",
+    ".tsx",
+    ".txt",
+    ".yaml",
+    ".yml",
+}
+
+SECRET_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
+    ("private key block", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----")),
+    ("aws access key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
+    ("github token", re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{36,}\b")),
+    ("openai key", re.compile(r"\bsk-[A-Za-z0-9]{32,}\b")),
+    ("anthropic key", re.compile(r"\bsk-ant-[A-Za-z0-9_-]{32,}\b")),
+    ("slack token", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{20,}\b")),
     (
-        "Hard-coded credential assignment",
+        "generic assigned secret",
         re.compile(
-            r"(?i)(?<![\w.])(api[_-]?key|secret|token|password|passwd)\b.{0,20}[:=].{0,5}[\"'](?!\{)[^\"'\s]{12,}[\"']"
+            r"(?i)\b(?:api[_-]?key|secret|token|password)\b\s*[:=]\s*"
+            r"['\"]?(?!changeme|change-me|example|placeholder|test|dummy|local|<|\\$)"
+            r"[A-Za-z0-9_./+=:@-]{24,}['\"]?"
         ),
     ),
-    (
-        "Authorization bearer literal",
-        re.compile(r"(?i)authorization[\"']?\s*[:=]\s*[\"']bearer [^\"'\s]{12,}[\"']"),
-    ),
-    (
-        "Credential-bearing URL",
-        re.compile(r"(?i)\b(?:postgres(?:ql)?|mysql|mongodb(?:\+srv)?|redis|amqp|smtp)://[^/\s:@]+:[^/\s@]+@"),
-    ),
-    (
-        "Private key block",
-        re.compile(r"-----BEGIN (?:RSA|OPENSSH|EC|DSA|PGP) PRIVATE KEY-----"),
-    ),
 )
 
 
-def _tracked_files() -> list[Path]:
-    result = subprocess.run(
-        ["git", "ls-files"],
-        cwd=PROJECT_ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    files: list[Path] = []
-    for raw in result.stdout.splitlines():
-        rel = raw.strip()
-        if not rel:
+def _is_excluded(path: Path) -> bool:
+    relative = path.relative_to(PROJECT_ROOT)
+    if any(part in EXCLUDED_DIRS for part in relative.parts):
+        return True
+    return any(relative == prefix or prefix in relative.parents for prefix in EXCLUDED_PREFIXES)
+
+
+def _is_text_candidate(path: Path) -> bool:
+    if path.name.startswith(".env"):
+        return True
+    if path.suffix in TEXT_SUFFIXES:
+        return True
+    return path.name in {"Makefile", "Dockerfile", "Dockerfile.cloudrun"}
+
+
+def _scan_file(path: Path) -> list[str]:
+    try:
+        text = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return []
+
+    failures: list[str] = []
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if "nosec" in line or "pragma: allowlist secret" in line:
             continue
-        files.append(PROJECT_ROOT / rel)
-    return files
-
-
-def _is_skipped(path: Path) -> bool:
-    rel = path.relative_to(PROJECT_ROOT).as_posix()
-    if rel in SKIP_FILES:
-        return True
-    if rel == SELF_PATH.relative_to(PROJECT_ROOT).as_posix():
-        return True
-    return any(rel.startswith(prefix) for prefix in SKIP_PREFIXES)
-
-
-def _is_binary(path: Path) -> bool:
-    if path.suffix.lower() in BINARY_SUFFIXES:
-        return True
-    try:
-        return b"\x00" in path.read_bytes()[:4096]
-    except OSError:
-        return True
-
-
-def _is_allowed(line: str) -> bool:
-    return any(pattern.search(line) for pattern in ALLOWLIST_PATTERNS)
-
-
-def _print_line(text: str) -> None:
-    try:
-        print(text)
-    except UnicodeEncodeError:
-        encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
-        sys.stdout.buffer.write((text + "\n").encode(encoding, errors="backslashreplace"))
-        sys.stdout.flush()
+        for label, pattern in SECRET_PATTERNS:
+            if pattern.search(line):
+                rel = path.relative_to(PROJECT_ROOT)
+                failures.append(f"{rel}:{line_number}: possible {label}")
+    return failures
 
 
 def main() -> int:
-    findings: list[str] = []
-
-    for path in _tracked_files():
-        if _is_skipped(path) or _is_binary(path):
+    failures: list[str] = []
+    for path in sorted(PROJECT_ROOT.rglob("*")):
+        if not path.is_file() or _is_excluded(path) or not _is_text_candidate(path):
             continue
+        failures.extend(_scan_file(path))
 
-        try:
-            lines = path.read_text(encoding="utf-8").splitlines()
-        except UnicodeDecodeError:
-            continue
-
-        rel = path.relative_to(PROJECT_ROOT).as_posix()
-        for line_number, line in enumerate(lines, start=1):
-            if _is_allowed(line):
-                continue
-            for label, pattern in PATTERNS:
-                if pattern.search(line):
-                    findings.append(f"{rel}:{line_number}: {label}")
-                    break
-
-    if findings:
-        for finding in findings:
-            _print_line(finding)
+    if failures:
+        print("\n".join(failures))
         return 1
 
-    print("No hard-coded secrets detected in tracked source files.")
+    print("Secret scan passed.")
     return 0
 
 

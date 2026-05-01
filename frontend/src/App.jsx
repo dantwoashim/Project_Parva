@@ -5,6 +5,7 @@ import { TemporalProvider } from './context/TemporalContext';
 import { MemberProvider } from './context/MemberContext';
 import { useTemporalContext } from './context/useTemporalContext';
 import { resolveDocumentLanguage } from './i18n/locale';
+import { trackEvent } from './services/analytics';
 import {
   RedesignBestTime,
   RedesignBirthReading,
@@ -26,6 +27,67 @@ import './index.css';
 import './styles/layouts.css';
 import './styles/interactions.css';
 import './App.css';
+
+const routeSeo = {
+  '/today': {
+    title: 'Today - Parva',
+    description: 'Today on Parva: daily panchanga, observances, best-time guidance, place context, and visible source evidence.',
+  },
+  '/my-place': {
+    title: 'My Place - Parva',
+    description: 'Set a private calculation place for sunrise, panchanga, festivals, and best-time windows.',
+  },
+  '/festivals': {
+    title: 'Festivals - Parva',
+    description: 'Browse source-aware Nepal festivals with calendar subscription and evidence export.',
+  },
+  '/best-time': {
+    title: 'Best Time - Parva',
+    description: 'Plan with ranked muhurta windows, caution periods, confidence, and plain-language method evidence.',
+  },
+  '/birth-reading': {
+    title: 'Birth Reading - Parva',
+    description: 'Create a privacy-aware Kundali reading with visible assumptions, sample preview, and calculation trace.',
+  },
+  '/panchanga': {
+    title: 'Panchanga - Parva',
+    description: 'Convert dates, inspect panchanga signals, and export source evidence from Parva.',
+  },
+  '/trust': {
+    title: 'Trust - Parva',
+    description: 'Inspect Parva reliability, source coverage, method limits, policy, and live trust posture.',
+  },
+  '/methodology': {
+    title: 'Methodology - Parva',
+    description: 'Learn how Parva turns date, place, source, and risk state into calendar and timing results.',
+  },
+  '/truth-lab': {
+    title: 'Truth Lab - Parva',
+    description: 'Review live reliability, benchmark, source-review, and boundary evidence for Parva.',
+  },
+  '/policy': {
+    title: 'API Policy - Parva',
+    description: 'Read Parva advisory policy, API posture, and usage boundaries.',
+  },
+};
+
+function setMetaDescription(description) {
+  let meta = document.querySelector('meta[name="description"]');
+  if (!meta) {
+    meta = document.createElement('meta');
+    meta.setAttribute('name', 'description');
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute('content', description);
+}
+
+function seoForPath(pathname) {
+  const festivalDetail = pathname.startsWith('/festivals/') ? routeSeo['/festivals'] : null;
+  return routeSeo[pathname] || festivalDetail || {
+    title: 'Parva - Source-aware Nepal time',
+    description: 'Parva brings source-aware Nepal panchanga, festivals, best-time planning, place context, and trust-visible evidence into one calm product.',
+  };
+}
 
 function AppRoutes() {
   return (
@@ -74,6 +136,13 @@ function AppFrame() {
 
   useEffect(() => {
     setLastViewed(location.pathname);
+    const seo = seoForPath(location.pathname);
+    document.title = seo.title;
+    setMetaDescription(seo.description);
+    trackEvent('route_viewed', {
+      path: location.pathname,
+      title: seo.title,
+    });
   }, [location.pathname, setLastViewed]);
 
   return (

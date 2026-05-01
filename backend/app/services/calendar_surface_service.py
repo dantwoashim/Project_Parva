@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from typing import Any, Optional
-from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException
 
@@ -26,18 +25,6 @@ from app.services.trust_surface_service import (
     build_temporal_risk_payload,
 )
 from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
-
-NEPAL_TZ = ZoneInfo("Asia/Kathmandu")
-VAARA_SANSKRIT = [
-    "Ravivara",
-    "Somavara",
-    "Mangalavara",
-    "Budhavara",
-    "Guruvara",
-    "Shukravara",
-    "Shanivara",
-]
-VAARA_ENGLISH = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
 
 def build_provenance(
@@ -141,40 +128,6 @@ def _calendar_risk_payload(
     )
 
 
-def _precomputed_panchanga_matches_date(payload: dict[str, Any], target_date: date) -> bool:
-    """
-    Guard against stale artifacts whose row key and computed sunrise drift apart.
-
-    A panchanga row for a civil date must be based on sunrise for that same
-    local date. Older generated artifacts have existed with the next day's
-    sunrise under the previous date key, which shifts vaara by one day.
-    """
-    expected = target_date.isoformat()
-    row_date = payload.get("date")
-    if row_date is not None and str(row_date) != expected:
-        return False
-
-    tithi = ((payload.get("panchanga") or {}).get("tithi") or {})
-    sunrise_used = tithi.get("sunrise_used")
-    if not sunrise_used:
-        return True
-
-    return str(sunrise_used)[:10] == expected
-
-
-def _nepal_today() -> date:
-    return datetime.now(NEPAL_TZ).date()
-
-
-def _weekday_payload(target_date: date) -> dict[str, Any]:
-    vaara_index = (target_date.weekday() + 1) % 7
-    return {
-        "number": vaara_index,
-        "name_sanskrit": VAARA_SANSKRIT[vaara_index],
-        "name_english": VAARA_ENGLISH[vaara_index],
-    }
-
-
 def bs_struct(gregorian_date: date) -> dict[str, Any]:
     return conversion_service.bs_struct(gregorian_date)
 
@@ -200,7 +153,7 @@ def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
 
 
 def build_today_payload(*, risk_mode: str = "standard") -> dict[str, Any]:
-    today = _nepal_today()
+    today = date.today()
     bs_payload = build_bs_date_payload(today)
     tithi_payload = build_tithi_payload(today)
     meta = _calendar_meta(
@@ -224,7 +177,6 @@ def build_today_payload(*, risk_mode: str = "standard") -> dict[str, Any]:
     )
     return {
         "gregorian": today.isoformat(),
-        "weekday": _weekday_payload(today),
         "bikram_sambat": bs_payload,
         "tithi": tithi_payload,
         **meta,
@@ -239,7 +191,7 @@ def build_panchanga_payload(target_date: date, *, risk_mode: str = "standard") -
     from app.calendar.panchanga import get_panchanga
 
     cached_payload = load_precomputed_panchanga(target_date)
-    if cached_payload and _precomputed_panchanga_matches_date(cached_payload, target_date):
+    if cached_payload:
         response = dict(cached_payload)
         response["date"] = target_date.isoformat()
         response["engine_version"] = "v2"
@@ -387,7 +339,7 @@ def build_panchanga_range_payload(start: date, days: int) -> dict[str, Any]:
     for offset in range(days):
         current = start + timedelta(days=offset)
         cached = load_precomputed_panchanga(current)
-        if cached and _precomputed_panchanga_matches_date(cached, current):
+        if cached:
             results.append(
                 {
                     "date": current.isoformat(),

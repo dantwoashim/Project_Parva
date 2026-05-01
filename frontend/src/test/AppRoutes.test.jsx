@@ -302,12 +302,21 @@ function buildFetchMock() {
                   summary: 'Blessing, reunion, and seasonal turning gathered into one long observance.',
                   regional_focus: ['Nepal'],
                 },
+                {
+                  id: 'tihar',
+                  name: 'Tihar',
+                  display_name: 'Tihar',
+                  category: 'national',
+                  start_date: '2026-11-07',
+                  summary: 'Festival of lights with layered family and household observance.',
+                  regional_focus: ['Kathmandu Valley'],
+                },
               ],
             },
           ],
           facets: {
-            categories: [{ value: 'national', label: 'National', count: 1 }],
-            months: [{ value: '2026-10', label: 'October', count: 1 }],
+            categories: [{ value: 'national', label: 'National', count: 2 }],
+            months: [{ value: '2026-10', label: 'October', count: 2 }],
             regions: [{ value: 'nepal', label: 'Nepal', count: 1 }],
           },
         },
@@ -511,10 +520,8 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /Next on the calendar/i })).toBeInTheDocument();
-    expect(screen.getByText(/Source & calculation/i)).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Review evidence/i })).toHaveAttribute('href', '/truth-lab');
+    expect(screen.getByRole('link', { name: /Open Best Time/i })).toHaveAttribute('href', '/best-time');
   }, 30000);
 
   it('keeps the same consumer shell on desktop routes', async () => {
@@ -535,11 +542,11 @@ describe('App routing', () => {
     expect(within(primaryNav).getByRole('link', { name: /^Birth Reading$/i })).toBeInTheDocument();
 
     await userEvent.click(within(primaryNav).getByRole('link', { name: /^Best Time$/i }));
-    expect(await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /^Best Time$/i }, routeLoadOptions)).toBeInTheDocument();
   }, 30000);
 
-  it('keeps festivals inside the same product shell', async () => {
-    setViewportWidth(390);
+  it('keeps festivals and my-place inside the same product shell', async () => {
+    setViewportWidth(1440);
     const festivalsRender = render(
       <MemoryRouter initialEntries={['/festivals']}>
         <App />
@@ -547,9 +554,19 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /^Filters/i })).toBeInTheDocument();
-    expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: /Dashain/i }, routeLoadOptions)).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
     festivalsRender.unmount();
+
+    render(
+      <MemoryRouter initialEntries={['/my-place']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions)).toBeInTheDocument();
   }, 30000);
 
   it('keeps the same shell on mobile widths and exposes the bottom navigation', async () => {
@@ -561,16 +578,15 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
-    const bottomNav = document.querySelector('.bottom-nav');
-    expect(bottomNav).not.toBeNull();
-    expect(within(bottomNav).getByText(/^Today$/i)).toBeInTheDocument();
-    expect(within(bottomNav).getByText(/^My Place$/i)).toBeInTheDocument();
-    expect(within(bottomNav).getByText(/^Festivals$/i)).toBeInTheDocument();
-    expect(within(bottomNav).getByText(/^Best Time$/i)).toBeInTheDocument();
-    expect(within(bottomNav).getByText(/^Birth Reading$/i)).toBeInTheDocument();
+    const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
+    expect(within(primaryNav).getByRole('link', { name: /^Today$/i })).toHaveAttribute('href', '/today');
+    expect(within(primaryNav).getByRole('link', { name: /^My Place$/i })).toHaveAttribute('href', '/my-place');
+    expect(within(primaryNav).getByRole('link', { name: /^Festivals$/i })).toHaveAttribute('href', '/festivals');
+    expect(within(primaryNav).getByRole('link', { name: /^Best Time$/i })).toHaveAttribute('href', '/best-time');
+    expect(within(primaryNav).getByRole('link', { name: /^Birth Reading$/i })).toHaveAttribute('href', '/birth-reading');
   }, 30000);
 
-  it('opens and closes the mobile search dialog', async () => {
+  it('navigates with mobile-width overlay links', async () => {
     setViewportWidth(390);
     render(
       <MemoryRouter initialEntries={['/today']}>
@@ -579,15 +595,9 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
-
-    await userEvent.click(document.querySelector('.mobile-search-button'));
-    expect(screen.getByRole('dialog', { name: /Search Parva/i })).toBeInTheDocument();
-
-    await userEvent.click(screen.getByRole('button', { name: /^Close$/i }));
-
-    await waitFor(() => {
-      expect(screen.queryByRole('dialog', { name: /Search Parva/i })).not.toBeInTheDocument();
-    });
+    const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
+    await userEvent.click(within(primaryNav).getByRole('link', { name: /^Festivals$/i }));
+    expect(await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions)).toBeInTheDocument();
   }, 30000);
 
   it('applies the selected UI language to document lang', async () => {
@@ -613,8 +623,9 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Date Converter & Panchanga/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /^Date Converter$/i })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /^Panchanga$/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(document.title).toBe('Panchanga - Parva');
+    expect(window.parvaAnalytics.some((item) => item.event === 'route_viewed' && item.properties.path === '/panchanga')).toBe(true);
     firstRender.unmount();
 
     render(
@@ -623,7 +634,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /^Best Time$/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
   }, 30000);
 });

@@ -166,7 +166,7 @@ describe('MuhurtaPage', () => {
         body: expect.stringContaining('2026-03-24'),
       }),
     );
-  }, 30000);
+  }, 15000);
 
   it('reloads the planner when the activity changes', async () => {
     renderPage();

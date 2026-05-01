@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-03-21T11:05:13.533795+00:00",
+  "generated_at": "2026-04-24T01:05:24.458253+00:00",
   "release_track": "public-beta-v3",
   "pipeline_health": {
     "conformance_total": 6,
     "conformance_passed": 6,
     "conformance_pass_rate": 100.0,
-    "rule_catalog_total": 453,
-    "rule_catalog_generated": 387,
-    "rule_catalog_coverage_pct": 151.0
+    "rule_catalog_total": 473,
+    "rule_catalog_generated": 407,
+    "rule_catalog_coverage_pct": 157.67
   },
   "discrepancy_classes": {},
   "confidence_breakdown": {
     "rule_catalog": {
-      "low": 130,
+      "low": 150,
       "medium": 302,
       "high": 21
     },
@@ -34,6 +34,7 @@
     "conformance_report": "reports/conformance_report.json",
     "rule_catalog": "data/festivals/festival_rules_v4.json",
     "rule_ingestion_summary": "reports/rule_ingestion_summary.json",
+    "evaluation_v4": "reports/evaluation_v4/evaluation_v4.json",
     "discrepancies": "data/ground_truth/discrepancies.json"
   }
 }

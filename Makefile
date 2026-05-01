@@ -1,7 +1,7 @@
-PYTHON ?= python3.11
-NPM ?= npm
+PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3.11; fi)
+NPM ?= npx -y -p node@20 -p npm@10 npm
 
-.PHONY: install install-backend install-sdk install-frontend dev dev-backend dev-frontend \
+.PHONY: install install-backend install-sdk install-frontend dev dev-backend dev-frontend dev-local \
 	test test-backend test-frontend lint lint-backend lint-frontend build build-frontend \
 	verify preflight-production smoke build-cloudrun-image clean
 
@@ -24,6 +24,9 @@ dev-backend:
 
 dev-frontend:
 	$(NPM) --prefix frontend run dev
+
+dev-local:
+	scripts/run-local-launch.sh
 
 test: test-backend test-frontend
 

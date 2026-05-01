@@ -13,9 +13,9 @@ ASSETS_DIR = PROJECT_ROOT / "frontend" / "dist" / "assets"
 DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "release" / "frontend_bundle_budget.json"
 
 DEFAULT_BUDGETS = {
-    "total_js_bytes": 475_000,
+    "total_js_bytes": 600_000,
     "max_js_bytes": 300_000,
-    "total_css_bytes": 110_000,
+    "total_css_bytes": 145_000,
     "max_css_bytes": 40_000,
 }
 

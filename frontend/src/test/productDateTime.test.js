@@ -33,6 +33,22 @@ describe('productDateTime', () => {
     ).toMatch(/6:16/i);
   });
 
+  it('rounds public minute display from precise ephemeris seconds', () => {
+    expect(
+      formatProductTime('05:30:54', {
+        language: 'en',
+        timeZone: 'Asia/Kathmandu',
+      }),
+    ).toMatch(/5:31/i);
+
+    expect(
+      formatProductTime('2026-04-24T05:30:54+05:45', {
+        language: 'en',
+        timeZone: 'Asia/Kathmandu',
+      }),
+    ).toMatch(/5:31/i);
+  });
+
   it('builds a time range from the same product context', () => {
     expect(
       formatProductTimeRange(

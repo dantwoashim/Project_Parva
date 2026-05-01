@@ -24,26 +24,27 @@ const navItems = [
   { label: 'My Place', to: '/my-place' },
   { label: 'Festivals', to: '/festivals' },
   { label: 'Best Time', to: '/best-time' },
-  { label: 'Birth Reading', to: '/birth-reading' },
-  { label: 'Time Lab', to: '/panchanga' },
+  { label: 'Birth Reading', shortLabel: 'Birth', to: '/birth-reading' },
+  { label: 'Panchanga', shortLabel: 'Dates', to: '/panchanga' },
 ];
 
 const footerGroups = [
   {
-    title: 'Explore',
+    title: 'Product',
     links: [
       { label: 'Today', to: '/today' },
+      { label: 'My Place', to: '/my-place' },
       { label: 'Festivals', to: '/festivals' },
       { label: 'Best Time', to: '/best-time' },
       { label: 'Birth Reading', to: '/birth-reading' },
+      { label: 'Panchanga', to: '/panchanga' },
     ],
   },
   {
-    title: 'Tools',
+    title: 'Workspace',
     links: [
-      { label: 'My Place', to: '/my-place' },
-      { label: 'Time Lab', to: '/panchanga' },
-      { label: 'Saved', to: '/profile' },
+      { label: 'Saved', to: '/saved' },
+      { label: 'Profile', to: '/profile' },
       { label: 'Integrations', to: '/integrations' },
     ],
   },
@@ -84,6 +85,16 @@ const fallbackFestivalRegions = [
   { value: 'Madhesh', label: 'Madhesh / Terai' },
   { value: 'Lumbini', label: 'Lumbini' },
 ];
+
+const sampleBirthProfile = {
+  name: 'Sample reading',
+  date: '1994-04-18',
+  time: '06:32',
+  place: 'Kathmandu, Nepal',
+  lat: '27.7172',
+  lon: '85.3240',
+  tz: 'Asia/Kathmandu',
+};
 
 const festivalQualityOptions = [
   { value: 'all', label: 'All source states' },
@@ -202,8 +213,8 @@ function formatIsoDate(value, options = {}) {
       month: options.month || 'short',
       day: 'numeric',
       year: options.year || 'numeric',
-      timeZone: options.timeZone || 'Asia/Kathmandu',
-    }).format(new Date(`${String(value).slice(0, 10)}T12:00:00.000Z`));
+      timeZone: options.timeZone,
+    }).format(new Date(`${String(value).slice(0, 10)}T00:00:00`));
   } catch {
     return String(value);
   }
@@ -243,7 +254,52 @@ function formatCoordinates(location = {}) {
 }
 
 function placeLabelFromLocation(location = {}) {
-  return location.label || location.place_title || location.name || `${formatCoordinates(location)}`;
+  if (location.label || location.place_title || location.name) {
+    return location.label || location.place_title || location.name;
+  }
+  const lat = Number(location.latitude);
+  const lon = Number(location.longitude);
+  if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat - 27.7172) < 0.03 && Math.abs(lon - 85.3240) < 0.03) {
+    return 'Kathmandu, Nepal';
+  }
+  return `${formatCoordinates(location)}`;
+}
+
+function humanMethodLabel(value, fallback = 'Verified calculation') {
+  const normalized = String(value || '').toLowerCase();
+  if (!normalized) return fallback;
+  if (normalized.includes('temporal_compass')) return 'Parva daily model';
+  if (normalized.includes('rule_ranked_muhurta')) return 'Ranked muhurta model';
+  if (normalized.includes('swiss_moshier') || normalized.includes('swiss') || normalized.includes('pyswisseph')) return 'Swiss Ephemeris';
+  if (normalized.includes('ephemeris_udaya')) return 'Sunrise-based panchanga';
+  if (normalized.includes('np-mainstream')) return 'Nepal mainstream rules';
+  if (normalized.includes('official')) return 'Official calendar source';
+  if (normalized.includes('astronomical')) return 'Astronomical calculation';
+  return readableCategory(value);
+}
+
+function supportReference(value) {
+  if (typeof value !== 'string' || !value.trim()) return 'Available after calculation';
+  return `Ref ${value.trim().slice(0, 8)}`;
+}
+
+function addDaysToIsoDate(value, offset) {
+  const date = new Date(`${String(value || todayIso()).slice(0, 10)}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return todayIso();
+  date.setDate(date.getDate() + offset);
+  return date.toISOString().slice(0, 10);
+}
+
+function sourceFreshness(meta = {}, fallback = 'Checked on demand') {
+  const safeMeta = meta || {};
+  const candidate = safeMeta.generated_at || safeMeta.created_at || safeMeta.updated_at || safeMeta.requested_at || safeMeta.as_of;
+  if (!candidate) return fallback;
+  return `Checked ${formatDateTime(candidate)}`;
+}
+
+function panchangaProofUrl(date) {
+  const params = new URLSearchParams({ date: String(date || todayIso()).slice(0, 10), risk_mode: 'strict' });
+  return `/v3/api/calendar/panchanga/proof-capsule?${params.toString()}`;
 }
 
 function scoreTone(scoreOrClass) {
@@ -281,11 +337,11 @@ function buildPanchangaItems(compass = {}, panchangaPayload = null) {
   const panchanga = panchangaPayload?.panchanga || {};
   const primary = compassData.primary_readout || panchanga.tithi || {};
   return [
-    { icon: '☾', label: 'Tithi', value: primary.tithi_name || primary.name || 'Pending', meta: primary.paksha ? readableCategory(primary.paksha) : 'From API' },
-    { icon: '◐', label: 'Paksha', value: readableCategory(primary.paksha || panchanga.tithi?.paksha || 'Pending'), meta: primary.tithi_number || panchanga.tithi?.number ? `Tithi ${primary.tithi_number || panchanga.tithi.number}` : 'From API' },
-    { icon: '✦', label: 'Nakshatra', value: signals.nakshatra?.name || panchanga.nakshatra?.name || 'Pending', meta: signals.nakshatra?.pada ? `Pada ${signals.nakshatra.pada}` : 'From API' },
-    { icon: '✣', label: 'Yoga', value: signals.yoga?.name || panchanga.yoga?.name || 'Pending', meta: 'From API' },
-    { icon: '❋', label: 'Karana', value: signals.karana?.name || panchanga.karana?.name || 'Pending', meta: 'From API' },
+    { icon: '☾', label: 'Tithi', value: primary.tithi_name || primary.name || 'Pending', meta: primary.paksha ? readableCategory(primary.paksha) : 'Computed for sunrise' },
+    { icon: '◐', label: 'Paksha', value: readableCategory(primary.paksha || panchanga.tithi?.paksha || 'Pending'), meta: primary.tithi_number || panchanga.tithi?.number ? `Tithi ${primary.tithi_number || panchanga.tithi.number}` : 'Computed for date' },
+    { icon: '✦', label: 'Nakshatra', value: signals.nakshatra?.name || panchanga.nakshatra?.name || 'Pending', meta: signals.nakshatra?.pada ? `Pada ${signals.nakshatra.pada}` : 'Astronomical signal' },
+    { icon: '✣', label: 'Yoga', value: signals.yoga?.name || panchanga.yoga?.name || 'Pending', meta: 'Astronomical signal' },
+    { icon: '❋', label: 'Karana', value: signals.karana?.name || panchanga.karana?.name || 'Pending', meta: 'Astronomical signal' },
   ];
 }
 
@@ -368,10 +424,18 @@ function AppChrome({ children }) {
           <span className="brand-symbol" aria-hidden="true"><span /></span>
           <span>Parva</span>
         </Link>
+        <Link className="mobile-inline-context" to="/my-place" aria-label={`Current context ${bsLabel}, ${placeLabel}`}>
+          <span>{bsLabel}</span>
+          <strong>{placeLabel}</strong>
+        </Link>
+        <button type="button" className="mobile-inline-search" onClick={() => setSearchOpen(true)} aria-label="Search Parva">
+          ⌕
+        </button>
         <nav className="top-nav" aria-label="Primary navigation">
           {navItems.map((item) => (
             <NavLink key={item.to} to={item.to}>
-              {item.label}
+              <span className="nav-label-full">{item.label}</span>
+              <span className="nav-label-short">{item.shortLabel || item.label}</span>
             </NavLink>
           ))}
         </nav>
@@ -390,7 +454,7 @@ function AppChrome({ children }) {
           <Link className="profile-chip" to="/profile" aria-label="Open profile">
             <span aria-hidden="true">◎</span>
             <strong>Profile</strong>
-            <small>Local only</small>
+            <small>Private workspace</small>
           </Link>
         </div>
       </header>
@@ -416,11 +480,11 @@ function AppChrome({ children }) {
               <span>Parva</span>
             </Link>
             <p>
-              A public reference beta for Nepal-focused time, festival, panchanga, muhurta,
-              and kundali surfaces. Built for clarity, provenance, and careful self-hosting.
+              Source-aware Nepal time, festival, panchanga, muhurta, and kundali tools.
+              Built for daily clarity, visible provenance, and careful decisions.
             </p>
             <div className="footer-status" aria-label="Service status">
-              <span><i aria-hidden="true" /> v3 API canonical</span>
+              <span><i aria-hidden="true" /> Verified API</span>
               <span>AGPL-3.0-or-later</span>
             </div>
           </div>
@@ -438,14 +502,14 @@ function AppChrome({ children }) {
           </div>
         </section>
         <section className="footer-bottom" aria-label="Legal and service notes">
-          <span>Public reference beta. Informational use only; verify ritual decisions with local authorities or a trusted panchang.</span>
+          <span>Informational use only; verify ritual decisions with local authorities or a trusted panchang.</span>
           <span>© 2026 Parva. Source-aware temporal tools for Nepal.</span>
         </section>
       </footer>
       <nav className="bottom-nav" aria-label="Mobile navigation">
         {navItems.slice(0, 5).map((item) => (
           <NavLink key={item.to} to={item.to}>
-            {item.label}
+            {item.shortLabel || item.label}
           </NavLink>
         ))}
       </nav>
@@ -460,6 +524,14 @@ function SearchDialog({ onClose }) {
   const [loading, setLoading] = useState(false);
   const fromDate = useMemo(() => todayIso('Asia/Kathmandu'), []);
   const toDate = useMemo(() => addDaysIso(fromDate, 365), [fromDate]);
+  const quickCommands = useMemo(() => [
+    { label: 'Today', meta: 'Daily panchanga, source status, and best window', to: '/today' },
+    { label: 'Best Time', meta: 'Ranked muhurta planner', to: '/best-time' },
+    { label: 'Panchanga', meta: 'Date converter and almanac signals', to: '/panchanga' },
+    { label: 'My Place', meta: 'Private calculation context', to: '/my-place' },
+    { label: 'Birth Reading', meta: 'Privacy-aware Kundali workflow', to: '/birth-reading' },
+    { label: 'Trust', meta: 'Reliability, limits, and source evidence', to: '/trust' },
+  ], []);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -508,8 +580,15 @@ function SearchDialog({ onClose }) {
           { label: 'Truth Lab', meta: 'Live reliability and source evidence', to: '/truth-lab' },
           { label: 'About', meta: 'Product stance and scope', to: '/about' },
           { label: 'API Policy', meta: 'Backend advisory policy', to: '/policy' },
+          { label: 'Tithi', meta: 'Panchanga term · lunar day', to: '/panchanga' },
+          { label: 'Nakshatra', meta: 'Panchanga term · lunar mansion', to: '/panchanga' },
+          { label: 'Rahu Kalam', meta: 'Timing term · caution window', to: '/today' },
+          { label: 'Swiss Ephemeris', meta: 'Method term · calculation engine', to: '/methodology' },
         ].filter((item) => `${item.label} ${item.meta}`.toLowerCase().includes(value.toLowerCase()));
-        setResults([...supportRows, ...festivalRows, ...placeRows]);
+        const commandRows = quickCommands
+          .filter((item) => `${item.label} ${item.meta}`.toLowerCase().includes(value.toLowerCase()))
+          .map((item) => ({ ...item, meta: `Command · ${item.meta}` }));
+        setResults([...commandRows, ...supportRows, ...festivalRows, ...placeRows]);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -519,7 +598,7 @@ function SearchDialog({ onClose }) {
       cancelled = true;
       window.clearTimeout(timeoutId);
     };
-  }, [fromDate, query, toDate]);
+  }, [fromDate, query, quickCommands, toDate]);
 
   return (
     <div className="modal-layer" role="dialog" aria-modal="true" aria-label="Search Parva">
@@ -536,9 +615,21 @@ function SearchDialog({ onClose }) {
           <button type="button" onClick={onClose}>Close</button>
         </div>
         <div className="search-results">
-          {loading ? <p className="festival-muted-note">Searching the API...</p> : null}
-          {!loading && query.trim().length < 2 ? <p className="festival-muted-note">Type at least two characters to search live festival and place data.</p> : null}
-          {!loading && query.trim().length >= 2 && !results.length ? <p className="festival-muted-note">No API results found.</p> : null}
+          {loading ? <p className="festival-muted-note">Searching live calendar and place data...</p> : null}
+          {!loading && query.trim().length < 2 ? (
+            <>
+              <p className="festival-muted-note">Type at least two characters to search live festival, place, method, and support data.</p>
+              <div className="search-command-grid" aria-label="Quick commands">
+                {quickCommands.map((item) => (
+                  <Link key={item.to} to={item.to} onClick={onClose}>
+                    <span>{item.label}</span>
+                    <small>{item.meta}</small>
+                  </Link>
+                ))}
+              </div>
+            </>
+          ) : null}
+          {!loading && query.trim().length >= 2 && !results.length ? <p className="festival-muted-note">No matches found. Try a festival name, place, or topic like “trust”.</p> : null}
           {results.map((result) => (
             <Link key={result.to} to={result.to} onClick={onClose}>
               <span>{result.label}</span>
@@ -581,6 +672,25 @@ function SourceDots({ active = 5 }) {
     <span className="source-dots" aria-label={`${active} of 6 source checks passed`}>
       {sourceDots.map((dot) => <i key={dot} className={dot <= active ? 'is-active' : ''} />)}
     </span>
+  );
+}
+
+function evidenceId(meta = {}) {
+  const raw = meta?.trace_id || meta?.traceId || meta?.request_id || meta?.requestId;
+  return raw ? String(raw).slice(0, 10) : 'local-ready';
+}
+
+function VerificationStrip({ items = [] }) {
+  return (
+    <section className="verification-strip" aria-label="Verification summary">
+      {items.map((item) => (
+        <div key={item.label}>
+          <span>{item.label}</span>
+          <strong>{item.value}</strong>
+          {item.meta ? <small>{item.meta}</small> : null}
+        </div>
+      ))}
+    </section>
   );
 }
 
@@ -649,8 +759,12 @@ export function RedesignToday() {
   ].filter(Boolean);
   const placeLabel = compass?.location_context?.place_title || placeLabelFromLocation(state.location);
   const qualityScore = Math.max(0, Math.min(100, Math.round(Number(muhurta?.best_window?.score ?? 0))));
-  const sourceLabel = compassMeta?.method || compass?.engine?.method || 'API';
+  const sourceLabel = humanMethodLabel(compassMeta?.method || compass?.engine?.method || compass?.engine?.method_profile);
   const festivalCards = (onDateFestivals.length ? onDateFestivals : upcomingFestivals).slice(0, 3);
+  const bestWindowLabel = muhurta?.best_window?.name || bestWindows[0]?.name || 'Checking windows';
+  const bestWindowTime = muhurta?.best_window
+    ? formatTimeRange(muhurta.best_window.start, muhurta.best_window.end)
+    : bestWindows[0]?.time || 'Loading';
 
   return (
     <AppChrome>
@@ -658,13 +772,21 @@ export function RedesignToday() {
         <PageHero
           eyebrow="Today"
           title={`${weekday}, ${bsLabel}`}
-          body={`${formatIsoDate(state.date)}  •  ${state.timezone}`}
+          body={`Nepal calendar, panchanga, festivals, and timing decisions with source evidence for ${placeLabel}.`}
           action={(
             <Link className="location-mini" to="/my-place">
-              <span><span aria-hidden="true">⌖</span>{placeLabel}</span>
-              <small>{formatCoordinates(state.location)}</small>
+              <span>{placeLabel}</span>
+              <small>{formatIsoDate(state.date)} · {state.timezone}</small>
             </Link>
           )}
+        />
+        <VerificationStrip
+          items={[
+            { label: 'Answer', value: bestWindowLabel, meta: bestWindowTime },
+            { label: 'Place', value: placeLabel, meta: state.timezone },
+            { label: 'Source', value: sourceLabel, meta: `Evidence ${evidenceId(compassMeta)}` },
+            { label: 'Action', value: 'Plan or subscribe', meta: 'Calendar-ready' },
+          ]}
         />
         {error ? (
           <section className="festival-empty-state panel" role="alert">
@@ -677,11 +799,11 @@ export function RedesignToday() {
             <section className="panel panchanga-panel">
               <div className="panel-heading">
               <div>
-                  <p className="eyebrow">Panchanga ⓘ ({placeLabel})</p>
+                  <p className="eyebrow">Panchanga for {placeLabel}</p>
                 </div>
                 <Link className="text-link compact-link" to="/panchanga">View full panchanga ›</Link>
               </div>
-              {loading && !compass ? <p className="festival-muted-note">Loading panchanga from the API...</p> : null}
+              {loading && !compass ? <p className="festival-muted-note">Loading panchanga for the selected place...</p> : null}
               <div className="panchanga-grid">
                 {panchangaItems.map((item) => <InfoCell key={item.label} {...item} />)}
               </div>
@@ -716,9 +838,9 @@ export function RedesignToday() {
             </section>
             <section className="panel best-overview">
               <div className="panel-heading">
-                <div>
-                  <p className="eyebrow">Best time today ⓘ</p>
-                  <h2>{muhurta?.best_window?.name || 'API window pending'}</h2>
+              <div>
+                  <p className="eyebrow">Recommended window</p>
+                  <h2>{muhurta?.best_window?.name || 'Window pending'}</h2>
                 </div>
                 <Link className="text-link compact-link" to="/best-time">How it works</Link>
               </div>
@@ -737,7 +859,7 @@ export function RedesignToday() {
                 )) : <p className="festival-muted-note">No auspicious windows were returned for this date.</p>}
               </div>
               <Link className="primary-button best-time-cta" to="/best-time">Open Best Time</Link>
-              <p className="panel-note">{muhurtaMeta?.method || 'Timings are computed by the API for the selected location.'}</p>
+              <p className="panel-note">{humanMethodLabel(muhurtaMeta?.method, 'Timings are ranked for the selected place and intent.')}</p>
             </section>
           </div>
           <aside className="side-rail">
@@ -753,9 +875,9 @@ export function RedesignToday() {
               <div className="quality-row">
                 <ScoreRing value={qualityScore} label={muhurta?.best_window?.quality || 'API'} />
                 <ul className="quality-legend">
-                  <li><span className="dot good" /><span>Auspicious</span><strong>{liveWindows.filter((item) => item.type === 'good').length}</strong></li>
-                  <li><span className="dot warm" /><span>Neutral</span><strong>{liveWindows.filter((item) => item.type === 'warm').length}</strong></li>
-                  <li><span className="dot bad" /><span>Avoid</span><strong>{liveWindows.filter((item) => item.type === 'bad').length}</strong></li>
+                  <li><span className="dot good" />Auspicious <strong>{liveWindows.filter((item) => item.type === 'good').length}</strong></li>
+                  <li><span className="dot warm" />Neutral <strong>{liveWindows.filter((item) => item.type === 'warm').length}</strong></li>
+                  <li><span className="dot bad" />Avoid <strong>{liveWindows.filter((item) => item.type === 'bad').length}</strong></li>
                 </ul>
               </div>
             </section>
@@ -764,12 +886,22 @@ export function RedesignToday() {
                 <p className="eyebrow">Source & calculation</p>
               </div>
               <dl className="source-list">
-                <div><dt>Calendar system</dt><dd>{compass?.engine?.method_profile || 'API'}</dd></div>
-                <div><dt>Calculation mode</dt><dd>{compass?.engine?.ephemeris_mode || compass?.engine?.method || 'API'}</dd></div>
+                <div><dt>Calendar system</dt><dd>{humanMethodLabel(compass?.engine?.method_profile, 'Nepal calendar')}</dd></div>
+                <div><dt>Calculation mode</dt><dd>{humanMethodLabel(compass?.engine?.ephemeris_mode || compass?.engine?.method)}</dd></div>
                 <div><dt>Location</dt><dd>{placeLabel}</dd></div>
-                <div><dt>Request ID</dt><dd>{compassMeta?.request_id || 'Pending'}</dd></div>
+                <div><dt>Evidence</dt><dd>{supportReference(compassMeta?.request_id)}</dd></div>
               </dl>
               <Link className="text-link" to="/truth-lab">Review evidence</Link>
+            </section>
+            <section className="panel conversion-panel">
+              <p className="eyebrow">Use this day</p>
+              <h2>Turn the result into a plan.</h2>
+              <p>Every important result should be usable, portable, and source-aware.</p>
+              <div>
+                <Link className="primary-button" to="/best-time">Choose safest window</Link>
+                <a className="ghost-button" href="/v3/api/feeds/all.ics?years=1&download=1">Subscribe calendar</a>
+                <Link className="ghost-button" to="/truth-lab">Export evidence</Link>
+              </div>
             </section>
           </aside>
         </section>
@@ -790,6 +922,9 @@ export function RedesignMyPlace() {
     timezone: state.timezone,
     source: 'temporal_context',
   };
+  const activePlaceName = placeLabelFromLocation(activeLocation);
+  const coordinateStatus = formatCoordinates(activeLocation);
+  const queryReady = query.trim().length >= 2;
   const placeBundle = usePersonalPlaceBundle({
     date: state.date,
     latitude: activeLocation?.latitude,
@@ -839,7 +974,7 @@ export function RedesignMyPlace() {
               <h2>Place search</h2>
               <button type="button" className="inline-button" onClick={() => setQuery('')}>Clear</button>
             </div>
-            <div className="place-buttons">
+            <div className="place-buttons" aria-label="Place search results">
               {placesState.items.length ? placesState.items.map((place) => (
                 <button
                   key={`${place.label}-${place.latitude}-${place.longitude}`}
@@ -850,18 +985,23 @@ export function RedesignMyPlace() {
                   <span>⌖</span>
                   {place.label}
                 </button>
-              )) : <p className="festival-muted-note">Search results appear here from `/places/search`.</p>}
+              )) : (
+                <p className="festival-muted-note">
+                  {queryReady ? 'No selectable result yet. Try a district, city, or country name.' : 'Search for a town, city, or village to personalize calculations.'}
+                </p>
+              )}
             </div>
             <div className="region-stack">
               <p className="eyebrow">Provider</p>
-              <span>{placesState.loading ? 'Searching...' : placesState.items[0]?.source || activeLocation.source || 'API'}</span>
+              <span>{placesState.loading ? 'Searching...' : humanMethodLabel(placesState.items[0]?.source || activeLocation.source, 'Local place index')}</span>
               {placesState.error ? <span>{placesState.error}</span> : null}
+              <small>Remote search can be skipped; the selected place stays in this browser context.</small>
             </div>
           </aside>
           <section className="panel map-panel">
             <div className="workspace-title">
               <h1>Find your place</h1>
-              <p>Search any city, town, or village to get accurate Nepal temporal data.</p>
+              <p>Choose the place Parva should use for sunrise, panchanga, festivals, and timing windows.</p>
             </div>
             <label className="search-field">
               <span aria-hidden="true">⌕</span>
@@ -879,25 +1019,34 @@ export function RedesignMyPlace() {
               <button type="button" onClick={() => setQuery('')} aria-label="Clear place search">×</button>
             </label>
             <div className="place-suggestions">
-              {placesState.loading ? <p className="festival-muted-note">Searching backend gazetteer...</p> : null}
-              {!placesState.loading && query.trim().length < 2 ? <p className="festival-muted-note">Type at least two characters to search the backend place index.</p> : null}
-              {!placesState.loading && query.trim().length >= 2 && !placesState.items.length ? <p className="festival-muted-note">No backend place result found.</p> : null}
+              {placesState.loading ? <p className="festival-muted-note">Searching places...</p> : null}
+              {!placesState.loading && !queryReady ? <p className="festival-muted-note">Type at least two characters to search places.</p> : null}
+              {!placesState.loading && queryReady && !placesState.items.length ? <p className="festival-muted-note">No matching place found. Try Kathmandu, Lalitpur, Pokhara, Nepal, or a nearby district.</p> : null}
               {placesState.items.map((place) => (
                 <button key={`${place.label}-${place.latitude}-${place.longitude}`} type="button" onClick={() => choosePlace(place)}>
                   <span>⌖</span>
                   <strong>{place.label}</strong>
-                  <small>{place.source}</small>
+                  <small>{humanMethodLabel(place.source, 'Place match')}</small>
                   <em>{formatCoordinates(place)}</em>
                 </button>
               ))}
             </div>
-            <div className="map-canvas" role="img" aria-label={`${placeLabelFromLocation(activeLocation)} map preview`}>
-              <div className="map-label">{placeLabelFromLocation(activeLocation)}</div>
-              <div className="map-ring" />
-              <div className="map-pin" />
-              <div className="map-road one" />
-              <div className="map-road two" />
-            </div>
+            <section className="place-context-card" aria-label={`${activePlaceName} calculation context`}>
+              <div>
+                <p className="eyebrow">Current calculation place</p>
+                <h2>{activePlaceName}</h2>
+                <p>{coordinateStatus} · {activeLocation.timezone || state.timezone}</p>
+              </div>
+              <dl>
+                <div><dt>Used for</dt><dd>Sunrise, tithi, nakshatra, muhurta</dd></div>
+                <div><dt>Precision shown</dt><dd>{coordinateStatus === 'Coordinates pending' ? 'Place name only' : '4 decimal coordinates'}</dd></div>
+                <div><dt>Storage</dt><dd>Browser session context</dd></div>
+              </dl>
+              <div className="place-privacy-row">
+                <span>Private by default</span>
+                <strong>No account or location tracking required.</strong>
+              </div>
+            </section>
             <div className="place-result-strip">
               {placesState.items.map((place) => (
                 <button key={`${place.label}-${place.source}`} type="button" onClick={() => choosePlace(place)}>
@@ -906,13 +1055,13 @@ export function RedesignMyPlace() {
                 </button>
               ))}
             </div>
-            <div className="notice-row">◇ Place results and privacy notices are returned by the backend place search service.</div>
+            <div className="notice-row">Place search is used only to set calculation context for this browser session. Coordinates are shown for auditability, not as the primary identity of the place.</div>
           </section>
           <aside className="panel place-detail">
             <div className="panel-heading">
               <div>
                 <p className="eyebrow">Selected place</p>
-                <h2>{placeLabelFromLocation(activeLocation)}</h2>
+                <h2>{activePlaceName}</h2>
                 <p>{activeLocation.timezone || state.timezone}</p>
               </div>
             </div>
@@ -920,7 +1069,7 @@ export function RedesignMyPlace() {
               <div><dt>Sunrise</dt><dd>{formatTimeReference(placeBundle.payload?.local_sunrise || placeBundle.payload?.sunrise)}</dd></div>
               <div><dt>Sunset</dt><dd>{formatTimeReference(placeBundle.payload?.local_sunset)}</dd></div>
               <div><dt>Coordinates</dt><dd>{formatCoordinates(activeLocation)}</dd></div>
-              <div><dt>Context</dt><dd>{placeBundle.contextPayload?.status_line || placeBundle.meta?.method || 'API context pending'}</dd></div>
+              <div><dt>Context</dt><dd>{humanMethodLabel(placeBundle.contextPayload?.status_line || placeBundle.meta?.method, 'Ready for calculation')}</dd></div>
             </dl>
             {placeBundle.error ? <p className="birth-error" role="alert">{placeBundle.error}</p> : null}
             <Confidence value={placeBundle.meta?.confidence?.score || 86} />
@@ -1007,18 +1156,27 @@ function FestivalIllustration({ art }) {
 function FestivalArtwork({ festival, compact = false }) {
   const visual = resolveFestivalVisual(festival);
   const image = festivalImageSrc(festival);
+  const fallbackImage = festivalFallbackImageSrc(festival, image);
+  const [imageStatus, setImageStatus] = useState({ primary: '', fallback: false, failed: false, loadedSrc: '' });
+  const activeStatus = imageStatus.primary === image ? imageStatus : null;
+  const currentImage = activeStatus?.failed ? '' : activeStatus?.fallback ? fallbackImage : image;
+  const imageLoaded = Boolean(currentImage && activeStatus?.loadedSrc === currentImage);
 
   return (
-    <span className={`festival-art festival-art--${visual.art} ${image ? 'has-image' : ''} ${compact ? 'is-compact' : ''}`} aria-hidden="true">
+    <span className={`festival-art festival-art--${visual.art} ${imageLoaded ? 'has-image' : ''} ${compact ? 'is-compact' : ''}`} aria-hidden="true">
       <span className="festival-art__halo" />
-      {image ? (
+      {currentImage ? (
         <img
-          src={image}
+          src={currentImage}
           alt=""
-          loading="lazy"
-          onError={(event) => {
-            event.currentTarget.hidden = true;
-            event.currentTarget.closest('.festival-art')?.classList.remove('has-image');
+          loading={compact ? 'lazy' : 'eager'}
+          onLoad={() => setImageStatus({ primary: image, fallback: currentImage === fallbackImage, failed: false, loadedSrc: currentImage })}
+          onError={() => {
+            if (fallbackImage && currentImage !== fallbackImage) {
+              setImageStatus({ primary: image, fallback: true, failed: false, loadedSrc: '' });
+              return;
+            }
+            setImageStatus({ primary: image, fallback: false, failed: true, loadedSrc: '' });
           }}
         />
       ) : null}
@@ -1052,6 +1210,14 @@ function festivalImageSrc(festival = {}) {
   if (festival.image) return festival.image;
   if (festival.id) return `/festival-images/${festival.id}.png`;
   return '';
+}
+
+function festivalFallbackImageSrc(festival = {}, primary = '') {
+  if (!festival.id) return '';
+  const id = String(festival.id);
+  const primaryString = String(primary || '');
+  if (!primaryString.includes(`/festival-images/${id}.png`)) return '';
+  return `/festival-images/${id}.svg`;
 }
 
 function addDaysIso(baseIso, days) {
@@ -1110,6 +1276,14 @@ function readableCategory(value) {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function readableReason(value) {
+  const normalized = String(value || '')
+    .replace(/^quality[:_-]/i, '')
+    .replace(/[:_-]+/g, ' ')
+    .trim();
+  return readableCategory(normalized || 'Recommended');
+}
+
 function sourceStrength(item = {}) {
   const band = String(item.quality_band || '').toLowerCase();
   const status = String(item.rule_status || '').toLowerCase();
@@ -1122,7 +1296,7 @@ function sourceStrength(item = {}) {
   if (band === 'inventory') {
     return { label: 'Inventory', tone: 'low', score: 42 };
   }
-  return { label: readableCategory(band || status || 'Source'), tone: 'medium', score: 62 };
+  return { label: readableCategory(band || status || 'Documented'), tone: 'medium', score: 62 };
 }
 
 function normalizeFestivalTimelineRows(groups = []) {
@@ -1141,6 +1315,27 @@ function normalizeFestivalTimelineRows(groups = []) {
     visual: resolveFestivalVisual(item),
     source: sourceStrength(item),
   })));
+}
+
+function groupFestivalRowsByMonth(rows = []) {
+  return rows.reduce((groups, festival) => {
+    const key = festival.monthKey || monthFilterValue(festival);
+    const label = festival.monthLabel || monthFilterValue(festival);
+    const existing = groups.find((group) => group.key === key);
+    if (existing) {
+      existing.items.push(festival);
+    } else {
+      groups.push({ key, label, items: [festival] });
+    }
+    return groups;
+  }, []);
+}
+
+function festivalDateRail(item = {}) {
+  const bs = item.bs_start || {};
+  const day = bs.day ? String(bs.day).padStart(2, '0') : item.start_date ? item.start_date.slice(8, 10) : '--';
+  const month = bs.month_name ? String(bs.month_name).slice(0, 3) : item.monthLabel ? String(item.monthLabel).slice(0, 3) : 'Date';
+  return { day, month };
 }
 
 function monthFilterValue(item = {}) {
@@ -1230,7 +1425,7 @@ function buildExpandedFestivalStory(festival = {}, detailData = {}) {
       ['Who observes', who],
       ['Associated deities', deities.length ? deities.join(', ') : 'Community and household deities'],
       ['Regional focus', regions.length ? regions.join(', ') : 'Nepal-focused'],
-      ['Catalog depth', readableCategory(detailFestival.content_status || festival.content_status || 'API-backed')],
+      ['Catalog depth', readableCategory(detailFestival.content_status || festival.content_status || 'Documented profile')],
     ],
     rituals,
   };
@@ -1238,6 +1433,28 @@ function buildExpandedFestivalStory(festival = {}, detailData = {}) {
 
 function buildCalendarFeedUrl(festivalId) {
   return `/v3/api/feeds/custom.ics?festivals=${encodeURIComponent(festivalId)}&years=1&download=1`;
+}
+
+const savedFestivalStorageKey = 'parva.savedFestivalIds.v1';
+
+function readSavedFestivalIds() {
+  if (typeof window === 'undefined') return [];
+  try {
+    const parsed = JSON.parse(window.localStorage.getItem(savedFestivalStorageKey) || '[]');
+    return Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeSavedFestivalIds(ids) {
+  if (typeof window === 'undefined') return;
+  window.localStorage.setItem(savedFestivalStorageKey, JSON.stringify([...new Set(ids)].sort()));
+}
+
+function buildFestivalEvidenceUrl(festival = {}) {
+  const year = festival.start_date ? new Date(`${festival.start_date}T00:00:00`).getFullYear() : new Date().getFullYear();
+  return `/v3/api/festivals/${encodeURIComponent(festival.id || 'dashain')}/proof-capsule?year=${year}&authority_mode=authority_compare&risk_mode=strict`;
 }
 
 function festivalOccurrenceKey(festival = {}) {
@@ -1254,7 +1471,7 @@ export function RedesignFestivals() {
   const [draftFilters, setDraftFilters] = useState(defaultFestivalFilters);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [expandedKey, setExpandedKey] = useState('');
-  const [savedIds, setSavedIds] = useState(() => new Set());
+  const [savedIds, setSavedIds] = useState(() => new Set(readSavedFestivalIds()));
   const [copiedId, setCopiedId] = useState('');
   const [timelineEnvelope, setTimelineEnvelope] = useState(null);
   const [timelineLoading, setTimelineLoading] = useState(true);
@@ -1331,9 +1548,14 @@ export function RedesignFestivals() {
       : allFestivalRows.filter((item) => monthFilterValue(item) === filters.month);
     return rows;
   }, [allFestivalRows, filters.month]);
+  const groupedVisibleFestivals = useMemo(() => groupFestivalRowsByMonth(visibleFestivals), [visibleFestivals]);
   const activeFilterCount = activeFestivalFilterCount(filters, search);
   const expandedFestival = visibleFestivals.find((item) => festivalOccurrenceKey(item) === expandedKey) || null;
   const expandedDetail = expandedFestival ? detailCache[expandedFestival.id] : null;
+
+  useEffect(() => {
+    writeSavedFestivalIds(savedIds);
+  }, [savedIds]);
 
   useEffect(() => {
     if (!expandedKey) return;
@@ -1421,7 +1643,7 @@ export function RedesignFestivals() {
       <main className="page-shell festivals-page">
         <PageHero
           title="Festivals"
-          body="A source-aware list of Nepal observances. Search, filter, and expand without leaving the calendar."
+          body="Scan Nepal festivals by date, status, region, and source confidence without losing the calendar thread."
           action={(
             <div className="hero-actions festival-hero-actions">
               <label className="festival-search-control">
@@ -1433,8 +1655,9 @@ export function RedesignFestivals() {
                 />
               </label>
               <button type="button" className="filter-open-button" onClick={openFilters}>
-                Filters{activeFilterCount ? <b>{activeFilterCount}</b> : null}
+                Filters {activeFilterCount ? <b>{activeFilterCount}</b> : null}
               </button>
+              <a className="primary-button subscribe-calendar-button" href="/v3/api/feeds/all.ics?years=1&download=1">Subscribe calendar</a>
               <label className="sort-control">
                 <span>Sort by</span>
                 <select
@@ -1458,7 +1681,7 @@ export function RedesignFestivals() {
               <span>festival{visibleFestivals.length === 1 ? '' : 's'} in this view</span>
             </div>
             <p>
-              {timelineRefreshing ? 'Refreshing live calendar...' : `Showing ${filters.month === 'All' ? 'all BS months' : filters.month}`}
+              {timelineRefreshing ? 'Refreshing calendar...' : `Showing ${filters.month === 'All' ? 'all BS months' : filters.month}`}
               {filters.category !== 'All' ? ` · ${readableCategory(filters.category)}` : ''}
               {filters.qualityBand !== 'all' ? ` · ${readableCategory(filters.qualityBand)}` : ''}
             </p>
@@ -1467,8 +1690,8 @@ export function RedesignFestivals() {
           {timelineLoading ? (
             <section className="festival-empty-state panel">
               <p className="eyebrow">Loading live catalog</p>
-              <h2>Fetching the public festival timeline.</h2>
-              <p>Dates, source state, and observance windows are coming from the Parva API.</p>
+              <h2>Preparing the festival calendar.</h2>
+              <p>Dates, source state, and observance windows are being verified for this view.</p>
             </section>
           ) : timelineError ? (
             <section className="festival-empty-state panel">
@@ -1479,23 +1702,31 @@ export function RedesignFestivals() {
             </section>
           ) : visibleFestivals.length ? (
             <div className="festival-list-view" aria-label="Festival list">
-              {visibleFestivals.map((festival) => {
-                const occurrenceKey = festivalOccurrenceKey(festival);
-                return (
-                  <FestivalListCard
-                    key={occurrenceKey}
-                    occurrenceKey={occurrenceKey}
-                    festival={festival}
-                    expanded={expandedKey === occurrenceKey}
-                    detail={expandedKey === occurrenceKey ? expandedDetail : null}
-                    saved={savedIds.has(festival.id)}
-                    copied={copiedId === festival.id}
-                    onToggle={() => setExpandedKey((current) => (current === occurrenceKey ? '' : occurrenceKey))}
-                    onSave={() => toggleSave(festival)}
-                    onCopy={() => copyFestivalLink(festival)}
-                  />
-                );
-              })}
+              {groupedVisibleFestivals.map((group) => (
+                <section key={group.key} className="festival-month-group" aria-label={`${group.label} festivals`}>
+                  <div className="festival-month-heading">
+                    <h2>{group.label}</h2>
+                    <span>{group.items.length} observance{group.items.length === 1 ? '' : 's'}</span>
+                  </div>
+                  {group.items.map((festival) => {
+                    const occurrenceKey = festivalOccurrenceKey(festival);
+                    return (
+                      <FestivalListCard
+                        key={occurrenceKey}
+                        occurrenceKey={occurrenceKey}
+                        festival={festival}
+                        expanded={expandedKey === occurrenceKey}
+                        detail={expandedKey === occurrenceKey ? expandedDetail : null}
+                        saved={savedIds.has(festival.id)}
+                        copied={copiedId === festival.id}
+                        onToggle={() => setExpandedKey((current) => (current === occurrenceKey ? '' : occurrenceKey))}
+                        onSave={() => toggleSave(festival)}
+                        onCopy={() => copyFestivalLink(festival)}
+                      />
+                    );
+                  })}
+                </section>
+              ))}
             </div>
           ) : (
             <section className="festival-empty-state panel">
@@ -1635,7 +1866,7 @@ function FestivalFilterSheet({
         <section className="filter-summary-card">
           <span>Current result estimate</span>
           <strong>{resultCount}</strong>
-          <small>Filters apply to the API-backed festival timeline. Month is refined locally from BS month labels.</small>
+          <small>Filters apply to the verified festival calendar. Month is refined from BS month labels.</small>
         </section>
 
         <div className="festival-filter-actions">
@@ -1659,6 +1890,7 @@ function FestivalListCard({ festival, occurrenceKey, expanded, detail, saved, co
   const detailPending = expanded && !detail;
   const artworkFestival = { ...festival, ...detailFestival, images: detailFestival.images || festival.images };
   const panelId = `festival-detail-${String(occurrenceKey || festivalOccurrenceKey(festival)).replace(/[^a-z0-9_-]+/gi, '-')}`;
+  const dateRail = festivalDateRail(festival);
 
   return (
     <article className={`festival-list-card tone-${visual.tone} ${expanded ? 'is-expanded' : ''}`}>
@@ -1669,6 +1901,10 @@ function FestivalListCard({ festival, occurrenceKey, expanded, detail, saved, co
         aria-controls={panelId}
         onClick={onToggle}
       >
+        <span className="festival-date-rail">
+          <strong>{dateRail.day}</strong>
+          <small>{dateRail.month}</small>
+        </span>
         <span className="festival-list-card__media">
           <FestivalArtwork festival={artworkFestival} />
         </span>
@@ -1694,13 +1930,21 @@ function FestivalListCard({ festival, occurrenceKey, expanded, detail, saved, co
         </span>
       </button>
 
+      {!expanded ? (
+        <div className="festival-list-card__quick-actions" aria-label={`${festival.displayName} quick actions`}>
+          <button type="button" onClick={onSave}>{saved ? 'Following' : 'Follow'}</button>
+          <a href={buildCalendarFeedUrl(festival.id)}>Calendar</a>
+          <Link to={`/festivals/${festival.id}`}>Open</Link>
+        </div>
+      ) : null}
+
       {expanded ? (
         <section id={panelId} className="festival-expanded-panel">
           {detail?.error ? (
             <div className="festival-detail-loading">
               <p className="eyebrow">Detail unavailable</p>
               <h3>{detail.error}</h3>
-              <p>The list date and source state above are still available from the timeline endpoint.</p>
+              <p>The list date and source state above are still available.</p>
             </div>
           ) : (
             <>
@@ -1720,8 +1964,8 @@ function FestivalListCard({ festival, occurrenceKey, expanded, detail, saved, co
 
               {detailPending || detail?.loading ? (
                 <div className="festival-detail-loading is-inline">
-                  <p className="eyebrow">Refreshing backend detail</p>
-                  <h3>Showing the timeline profile while the full source profile opens.</h3>
+                  <p className="eyebrow">Opening source profile</p>
+                  <h3>Showing the calendar profile while detailed evidence loads.</h3>
                 </div>
               ) : null}
 
@@ -1784,6 +2028,7 @@ function FestivalListCard({ festival, occurrenceKey, expanded, detail, saved, co
                 <button type="button" onClick={onSave}>{saved ? 'Saved' : 'Save'}</button>
                 <button type="button" onClick={onCopy}>{copied ? 'Copied' : 'Copy link'}</button>
                 <a href={buildCalendarFeedUrl(festival.id)}>Add to calendar</a>
+                <a href={buildFestivalEvidenceUrl(festival)}>Export evidence</a>
               </footer>
             </>
           )}
@@ -1948,10 +2193,11 @@ export function RedesignFestivalDetail() {
                 <p className="eyebrow">Provenance</p>
                 <strong>{source.label}</strong>
               </div>
-              <p>{dates?.calculation_method || 'Resolved through the Parva festival endpoint and source metadata.'}</p>
-              {[
-                { name: 'Timeline profile', note: meta?.method || 'API detail endpoint', confidence: source.score },
-                { name: 'Quality band', note: meta?.quality_band || dates?.confidence || 'source-aware', confidence: source.score },
+            <p>{dates?.calculation_method || 'Resolved through the Parva festival endpoint and source metadata.'}</p>
+            <a className="text-link" href={buildFestivalEvidenceUrl(detailRow)}>Export evidence capsule</a>
+            {[
+              { name: 'Timeline profile', note: meta?.method || 'API detail endpoint', confidence: source.score },
+              { name: 'Quality band', note: meta?.quality_band || dates?.confidence || 'source-aware', confidence: source.score },
               ].map((item) => (
                 <article key={item.name}>
                   <div>
@@ -1999,11 +2245,23 @@ export function RedesignBestTime() {
   ];
   const windows = useMemo(() => (payload?.blocks || []).map(normalizeMuhurtaWindow), [payload?.blocks]);
   const selected = windows.find((window) => window.id === selectedId) || windows[0] || null;
+  const avoidWindow = windows.find((window) => window.type === 'bad');
+  const viableWindows = windows.filter((window) => window.type === 'good');
+  const cautionWindows = windows.filter((window) => window.type !== 'good');
+  const strongestScore = viableWindows[0]?.score || selected?.score || 0;
+  const confidenceLabel = strongestScore >= 80 ? 'High confidence' : strongestScore >= 55 ? 'Use with context' : 'Low confidence';
+  const confidenceCaution = strongestScore < 55;
+  const recommendationLabel = confidenceCaution ? 'Best available, low confidence' : 'Recommended first';
+  const selectedGuidance = selected
+    ? confidenceCaution
+      ? `${selected.name} is only the best available returned window for ${readableCategory(intent).toLowerCase()} in ${placeLabelFromLocation(state.location)}. Treat it as a cautious planning input, not a strong recommendation.`
+      : `${selected.name} is the strongest returned window for ${readableCategory(intent).toLowerCase()} in ${placeLabelFromLocation(state.location)}.`
+    : 'Parva is checking the ranked muhurta response for this place and date.';
+  const copyActionLabel = confidenceCaution ? 'Copy cautious result' : 'Copy result';
 
   useEffect(() => {
     let cancelled = false;
     async function loadMuhurta() {
-      await Promise.resolve();
       if (cancelled) return;
       setStatus({ loading: true, error: '' });
       try {
@@ -2049,22 +2307,68 @@ export function RedesignBestTime() {
     <AppChrome>
       <main className="page-shell best-time-page">
         <PageHero
-          title="Best Time / Muhurta"
-          body="Find auspicious time windows for your important activities."
-          action={<div className="hero-actions"><Link to="/panchanga"><span aria-hidden="true">▣</span>{state.date}</Link><Link to="/my-place"><span aria-hidden="true">⌖</span>{formatCoordinates(state.location)}</Link></div>}
+          title="Best Time"
+          body="Pick an intent, see the best available window, avoid the wrong one, and understand the confidence before acting."
+          action={<div className="hero-actions"><Link to="/panchanga">▣ {formatIsoDate(state.date)}</Link><Link to="/my-place">⌖ {placeLabelFromLocation(state.location)}</Link></div>}
         />
+        <section className="best-answer-grid" aria-label="Best Time answer">
+          <article className="best-answer-card">
+            <p className={`eyebrow ${confidenceCaution ? 'is-caution' : ''}`}>{recommendationLabel}</p>
+            <h2>{selected?.time || 'Checking today'}</h2>
+            <p>{selectedGuidance}</p>
+            <div>
+              <span><strong>{selected?.score || 0}</strong><small>score</small></span>
+              <span><strong>{readableCategory(intent)}</strong><small>intent</small></span>
+              <span><strong>{humanMethodLabel(meta?.method, 'Ranked model')}</strong><small>method</small></span>
+            </div>
+            <button type="button" className="primary-button" disabled={!selected} onClick={useSelectedWindow}>{copyActionLabel}</button>
+            <div className="best-next-actions" aria-label="Best Time next actions">
+              <button type="button" onClick={() => setIntent('worship')}>Try worship</button>
+              <Link to="/panchanga">Check date context</Link>
+              <button type="button" onClick={() => setSelectedId(avoidWindow?.id || '')} disabled={!avoidWindow}>Show avoid window</button>
+            </div>
+          </article>
+          <article className="best-constraint-card">
+            <p className="eyebrow">Constraint to respect</p>
+            <h2>{avoidWindow?.name || 'Avoid window pending'}</h2>
+            <p>{avoidWindow ? `${avoidWindow.time} is marked as ${avoidWindow.kind.toLowerCase()}. Keep it visible when planning.` : 'No avoid window was returned yet. The timeline will show caution periods when available.'}</p>
+            <Link className="ghost-button" to="/methodology">Review rules</Link>
+          </article>
+        </section>
+        <section className="planner-validation-strip" aria-label="Best Time confidence and source status">
+          <div>
+            <span>Viable windows</span>
+            <strong>{viableWindows.length ? `${viableWindows.length} found` : 'None found'}</strong>
+            <small>{confidenceCaution ? 'No strong recommendation yet.' : viableWindows.length ? 'Use the selected window first.' : 'No window crossed the safe planning threshold.'}</small>
+          </div>
+          <div>
+            <span>Caution windows</span>
+            <strong>{cautionWindows.length}</strong>
+            <small>Visible in the timeline before you commit.</small>
+          </div>
+          <div>
+            <span>Confidence</span>
+            <strong>{confidenceLabel}</strong>
+            <small>{humanMethodLabel(meta?.method, 'Ranked muhurta model')}</small>
+          </div>
+          <div>
+            <span>Fallback</span>
+            <strong>{status.error ? 'Backend unavailable' : 'Live calculation'}</strong>
+            <small>{status.error || sourceFreshness(meta, 'Fresh for this request')}</small>
+          </div>
+        </section>
         <section className="planner-shell">
           <aside className="intent-panel">
             <h2>1. Choose your intent</h2>
             {intentOptions.map((item) => (
               <button key={item.value} type="button" className={intent === item.value ? 'is-selected' : ''} onClick={() => setIntent(item.value)}>{item.label}</button>
             ))}
-            <p>{meta?.method || 'The backend evaluates panchanga, hora, chaughadia, and avoidance periods.'}</p>
+            <p>{humanMethodLabel(meta?.method, 'Parva weighs panchanga, hora, chaughadia, and avoidance periods for the selected intent.')}</p>
           </aside>
           <section className="timeline-planner">
             <div className="panel-heading">
               <p className="eyebrow">2. Select your time window</p>
-              <strong>{status.loading ? 'Loading...' : payload?.assumption_set_id || 'API'}</strong>
+              <strong>{status.loading ? 'Loading...' : humanMethodLabel(payload?.assumption_set_id, 'Nepal mainstream rules')}</strong>
             </div>
             <div className="hour-axis"><span>12 AM</span><span>3 AM</span><span>6 AM</span><span>9 AM</span><span>12 PM</span><span>3 PM</span><span>6 PM</span><span>9 PM</span></div>
             <div className="timeline-chart">
@@ -2073,6 +2377,8 @@ export function RedesignBestTime() {
                   key={window.id}
                   type="button"
                   className={`chart-row is-${window.type} ${selectedId === window.id ? 'is-selected' : ''}`}
+                  aria-label={`${window.name}, ${window.time}, ${window.kind}, score ${window.score}`}
+                  aria-pressed={selectedId === window.id}
                   onClick={() => setSelectedId(window.id)}
                 >
                   <span>{window.name}</span>
@@ -2083,13 +2389,19 @@ export function RedesignBestTime() {
             </div>
             <div className="recommended-windows">
               {windows.filter((window) => window.type === 'good').slice(0, 3).map((window) => (
-                <button key={window.id} type="button" onClick={() => setSelectedId(window.id)}>
+                <button key={window.id} type="button" aria-pressed={selectedId === window.id} onClick={() => setSelectedId(window.id)}>
                   <small>{window.kind}</small>
                   <strong>{window.time}</strong>
                   <span>{window.name}</span>
-                  <em>{window.reasonCodes.join(', ') || 'Backend ranked'}</em>
+                  <em>{window.reasonCodes.map(readableReason).join(', ') || 'Recommended'}</em>
                 </button>
               ))}
+              {!viableWindows.length ? (
+                <article className="no-window-card" role="status">
+                  <strong>No safe window crossed threshold</strong>
+                  <span>Try another date, loosen the intent, or review the caution periods before acting.</span>
+                </article>
+              ) : null}
             </div>
           </section>
           <aside className="selected-window">
@@ -2098,14 +2410,15 @@ export function RedesignBestTime() {
             <h2>{selected?.time || 'Pending'}</h2>
             <ScoreRing value={selected?.score || 0} label={selected?.kind || 'API'} />
             <ul>
-              <li><span>Intent:</span><strong>{readableCategory(intent)}</strong></li>
-              <li><span>Window:</span><strong>{selected?.name || 'No backend window selected'}</strong></li>
-              <li><span>Class:</span><strong>{selected?.kind || 'Pending'}</strong></li>
-              <li><span>Reasons:</span><strong>{selected?.reasonCodes?.join(', ') || 'Returned by backend ranking.'}</strong></li>
+              <li>Intent: {readableCategory(intent)}</li>
+              <li>Window: {selected?.name || 'No backend window selected'}</li>
+              <li>Class: {selected?.kind || 'Pending'}</li>
+              <li>Confidence: {confidenceLabel}</li>
+              <li>Reasons: {selected?.reasonCodes?.map(readableReason).join(', ') || 'Recommended for the selected intent.'}</li>
             </ul>
             <Confidence value={selected?.score || 0} />
             {selectedNotice ? <small className="selected-window__notice" role="status">{selectedNotice}</small> : null}
-            <button type="button" className="primary-button" disabled={!selected} onClick={useSelectedWindow}>Use this time</button>
+            <button type="button" className="primary-button" disabled={!selected} onClick={useSelectedWindow}>Copy time details</button>
           </aside>
         </section>
       </main>
@@ -2117,6 +2430,7 @@ export function RedesignPanchanga() {
   const { state, setDate: setContextDate } = useTemporalContext();
   const [date, setDate] = useState(state.date);
   const [payload, setPayload] = useState(null);
+  const [meta, setMeta] = useState(null);
   const [status, setStatus] = useState({ loading: true, error: '' });
   const calendarDays = useMemo(() => {
     const selected = new Date(`${date}T00:00:00`);
@@ -2136,14 +2450,16 @@ export function RedesignPanchanga() {
       if (cancelled) return;
       setStatus({ loading: true, error: '' });
       try {
-        const data = await calendarAPI.getPanchanga(date);
+        const envelope = await calendarAPI.getPanchangaEnvelope(date, 'strict');
         if (cancelled) return;
-        setPayload(data);
+        setPayload(envelope.data || null);
+        setMeta(envelope.meta || null);
         setContextDate(date);
         setStatus({ loading: false, error: '' });
       } catch (error) {
         if (cancelled) return;
         setPayload(null);
+        setMeta(null);
         setStatus({ loading: false, error: describeSupportError(error, 'Panchanga data could not be loaded.') });
       }
     }
@@ -2156,7 +2472,33 @@ export function RedesignPanchanga() {
   return (
     <AppChrome>
       <main className="page-shell panchanga-page">
-        <PageHero title="Date Converter & Panchanga" body="Convert between Gregorian (AD) and Bikram Sambat (BS)." />
+        <PageHero
+          title="Panchanga"
+          body="Convert dates, inspect the almanac signals, and keep the calculation source visible before using the result."
+          action={<div className="hero-actions"><a href={panchangaProofUrl(date)}>Export evidence</a><Link to="/methodology">How dates work</Link></div>}
+        />
+        <section className="date-semantics-strip" aria-label="Selected date semantics">
+          <div>
+            <span>Gregorian date</span>
+            <strong>{formatIsoDate(date, { weekday: 'long' })}</strong>
+            <small>Input date used by the API.</small>
+          </div>
+          <div>
+            <span>Bikram Sambat</span>
+            <strong>{bsLabel}</strong>
+            <small>{humanMethodLabel(payload?.bikram_sambat?.confidence, 'Calendar conversion')}</small>
+          </div>
+          <div>
+            <span>Place basis</span>
+            <strong>{placeLabelFromLocation(state.location)}</strong>
+            <small>{state.timezone}</small>
+          </div>
+          <div>
+            <span>Source freshness</span>
+            <strong>{status.loading ? 'Checking' : status.error ? 'Unavailable' : 'Fresh'}</strong>
+            <small>{status.error || sourceFreshness(meta, 'Fresh for this request')}</small>
+          </div>
+        </section>
         <section className="panchanga-workspace">
           <section className="panel converter-card">
             <h2>Date Converter</h2>
@@ -2167,7 +2509,25 @@ export function RedesignPanchanga() {
               {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => <span key={day}>{day}</span>)}
               {calendarDays.map((day) => {
                 const selectedDay = Number(date.slice(8, 10));
-                return <button key={day} type="button" className={day === selectedDay ? 'is-selected' : ''} onClick={() => setDate(`${date.slice(0, 8)}${String(day).padStart(2, '0')}`)}>{day}</button>;
+                const nextDate = `${date.slice(0, 8)}${String(day).padStart(2, '0')}`;
+                return (
+                  <button
+                    key={day}
+                    type="button"
+                    className={day === selectedDay ? 'is-selected' : ''}
+                    aria-label={`${formatIsoDate(nextDate)}${day === selectedDay ? ', selected' : ''}`}
+                    aria-pressed={day === selectedDay}
+                    onClick={() => setDate(nextDate)}
+                    onKeyDown={(event) => {
+                      const offsets = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+                      if (!(event.key in offsets)) return;
+                      event.preventDefault();
+                      setDate(addDaysToIsoDate(nextDate, offsets[event.key]));
+                    }}
+                  >
+                    {day}
+                  </button>
+                );
               })}
             </div>
             <Confidence value={payload?.bikram_sambat?.confidence === 'official' ? 100 : 72} label="Conversion confidence" />
@@ -2177,12 +2537,12 @@ export function RedesignPanchanga() {
               <p className="eyebrow">Panchanga for {bsLabel}</p>
               <a className="ghost-button" href={feedAPI.getAllLink(1)}>Add to calendar</a>
             </div>
-            {status.loading ? <p className="festival-muted-note">Loading panchanga from the backend...</p> : null}
+            {status.loading ? <p className="festival-muted-note">Loading panchanga for this date...</p> : null}
             {status.error ? <p className="birth-error" role="alert">{status.error}</p> : null}
             {[
               ...panchangaItems,
-              { icon: '☼', label: 'Sunrise reference', value: formatTimeReference(payload?.panchanga?.tithi?.sunrise_used), meta: payload?.panchanga?.tithi?.reference_time || 'API' },
-              { icon: '✣', label: 'Engine', value: payload?.ephemeris?.mode || 'Pending', meta: payload?.ephemeris?.library || 'API' },
+              { icon: '☼', label: 'Sunrise reference', value: formatTimeReference(payload?.panchanga?.tithi?.sunrise_used), meta: humanMethodLabel(payload?.panchanga?.tithi?.reference_time, 'Local sunrise') },
+              { icon: '✣', label: 'Calculation', value: humanMethodLabel(payload?.ephemeris?.mode, 'Astronomical calculation'), meta: humanMethodLabel(payload?.ephemeris?.library, 'Ephemeris source') },
             ].map((item) => (
               <article key={item.label}>
                 <span>{item.icon}</span>
@@ -2194,10 +2554,11 @@ export function RedesignPanchanga() {
           </section>
           <aside className="panel provenance-card">
             <h2>Provenance</h2>
-            <div><span>Primary source</span><strong>{payload?.bikram_sambat?.confidence || 'Pending'}</strong><small>{payload?.bikram_sambat?.source_range || 'Backend lookup'}</small></div>
-            <div><span>Secondary source</span><strong>{payload?.panchanga?.confidence || 'Pending'}</strong><small>{payload?.ephemeris?.library || 'Backend panchanga'}</small></div>
-            <div><span>Snapshot</span><strong>{payload?.provenance?.snapshot_id || 'Pending'}</strong><small>{payload?.provenance?.canonical_engine_id || 'API provenance'}</small></div>
+            <div><span>Primary source</span><strong>{humanMethodLabel(payload?.bikram_sambat?.confidence, 'Verified calendar')}</strong><small>{payload?.bikram_sambat?.source_range || 'Source range pending'}</small></div>
+            <div><span>Secondary source</span><strong>{humanMethodLabel(payload?.panchanga?.confidence, 'Astronomical calculation')}</strong><small>{humanMethodLabel(payload?.ephemeris?.library, 'Ephemeris source')}</small></div>
+            <div><span>Evidence</span><strong>{supportReference(payload?.provenance?.snapshot_id || meta?.request_id)}</strong><small>{humanMethodLabel(payload?.provenance?.canonical_engine_id || meta?.method, 'Canonical engine')}</small></div>
             <Confidence value={payload?.panchanga?.confidence === 'astronomical' ? 92 : 70} />
+            <a className="text-link" href={panchangaProofUrl(date)}>Export panchanga proof capsule</a>
           </aside>
         </section>
       </main>
@@ -2392,13 +2753,13 @@ function CalculationTrace({ payload, graphPayload }) {
     <section className="panel trace-card">
       <div className="panel-heading">
         <p className="eyebrow">Verify calculation</p>
-        <strong>{payload?.method || 'swiss_ephemeris_sidereal'}</strong>
+        <strong>{humanMethodLabel(payload?.method, 'Swiss Ephemeris sidereal')}</strong>
       </div>
       <div className="trace-grid">
-        <div><span>Assumption set</span><strong>{payload?.assumption_set_id || 'np-kundali-v2'}</strong></div>
-        <div><span>Trace ID</span><strong>{payload?.calculation_trace_id || graphPayload?.calculation_trace_id || 'Pending'}</strong></div>
-        <div><span>Quality band</span><strong>{payload?.quality_band || 'validated'}</strong></div>
-        <div><span>Advisory scope</span><strong>{payload?.advisory_scope || 'astrology_assist'}</strong></div>
+        <div><span>Rule set</span><strong>{humanMethodLabel(payload?.assumption_set_id, 'Kundali rules')}</strong></div>
+        <div><span>Evidence</span><strong>{supportReference(payload?.calculation_trace_id || graphPayload?.calculation_trace_id)}</strong></div>
+        <div><span>Quality</span><strong>{readableCategory(payload?.quality_band || 'validated')}</strong></div>
+        <div><span>Scope</span><strong>{readableCategory(payload?.advisory_scope || 'astrology assist')}</strong></div>
       </div>
       <p>Swiss Ephemeris-based sidereal placements are used for calculation. Interpretive labels remain tradition-dependent and should stay transparent.</p>
     </section>
@@ -2424,6 +2785,20 @@ export function RedesignBirthReading() {
   const [chartMode, setChartMode] = useState('d1');
   const [status, setStatus] = useState({ loading: false, error: '' });
   const update = (key, value) => setForm((current) => ({ ...current, [key]: value }));
+  const missingFields = [
+    ['date', 'Date of birth'],
+    ['time', 'Exact birth time'],
+    ['lat', 'Latitude'],
+    ['lon', 'Longitude'],
+    ['tz', 'Timezone'],
+  ].filter(([key]) => !String(form[key] || '').trim());
+  const canGenerate = missingFields.length === 0;
+  const loadSample = () => {
+    setForm(sampleBirthProfile);
+    setPlaceOptions([]);
+    setPlaceStatus({ loading: false, error: '' });
+    setStatus({ loading: false, error: '' });
+  };
 
   const applyPlace = (place) => {
     setForm((current) => ({
@@ -2491,12 +2866,38 @@ export function RedesignBirthReading() {
   return (
     <AppChrome>
       <main className="page-shell birth-page">
-        <PageHero title="Birth Reading" body="A real Kundali instrument: exact birth inputs, Swiss Ephemeris-backed sidereal calculation, interactive D1/D9 charts, dasha timing, and visible provenance." />
+        <PageHero
+          title="Birth Reading"
+          body="Enter birth date, time, and place to generate a private Kundali with assumptions and limits visible."
+          action={<div className="hero-actions"><button type="button" onClick={loadSample}>Load sample</button><Link to="/methodology">Read limits</Link></div>}
+        />
+        <section className="birth-trust-strip" aria-label="Birth Reading privacy and readiness">
+          <div>
+            <span>Privacy</span>
+            <strong>Local session</strong>
+            <small>No account is required to calculate.</small>
+          </div>
+          <div>
+            <span>Required</span>
+            <strong>{missingFields.length ? `${missingFields.length} missing` : 'Ready'}</strong>
+            <small>{missingFields.map(([, label]) => label).join(', ') || 'All required fields are present.'}</small>
+          </div>
+          <div>
+            <span>Interpretation</span>
+            <strong>Advisory</strong>
+            <small>Tradition, time precision, and timezone can change readings.</small>
+          </div>
+        </section>
         <section className="birth-workspace">
           <form className="panel birth-form" onSubmit={generate}>
             <div className="panel-heading tight">
               <p className="eyebrow">Create chart</p>
               <strong>Birth details</strong>
+            </div>
+            <div className="birth-stepper" aria-label="Birth Reading steps">
+              <span className={form.date && form.time ? 'is-complete' : 'is-current'}>1 Details</span>
+              <span className={form.place ? 'is-complete' : ''}>2 Place</span>
+              <span className={canGenerate ? 'is-current' : ''}>3 Generate</span>
             </div>
             <label>Profile name<input value={form.name} onChange={(event) => update('name', event.target.value)} /></label>
             <label>Date of birth<input type="date" value={form.date} onChange={(event) => update('date', event.target.value)} /></label>
@@ -2510,7 +2911,7 @@ export function RedesignBirthReading() {
                   setPlaceStatus({ loading: false, error: '' });
                 }
               }}
-              placeholder="Search backend places"
+              placeholder="Search places"
             /></label>
             <div className="place-result-strip">
               {placeStatus.loading ? <span>Searching...</span> : null}
@@ -2522,19 +2923,32 @@ export function RedesignBirthReading() {
                 </button>
               ))}
             </div>
-            <div className="coordinate-grid">
-              <label>Latitude<input value={form.lat} onChange={(event) => update('lat', event.target.value)} /></label>
-              <label>Longitude<input value={form.lon} onChange={(event) => update('lon', event.target.value)} /></label>
-            </div>
-            <label>Timezone<input value={form.tz} onChange={(event) => update('tz', event.target.value)} /></label>
-            <div className="method-strip">
-              <span>Method</span>
-              <strong>Lahiri-style sidereal / Swiss Ephemeris</strong>
-            </div>
+            <details className="advanced-birth-settings">
+              <summary>Advanced calculation settings</summary>
+              <div className="coordinate-grid">
+                <label>Latitude<input value={form.lat} onChange={(event) => update('lat', event.target.value)} /></label>
+                <label>Longitude<input value={form.lon} onChange={(event) => update('lon', event.target.value)} /></label>
+              </div>
+              <label>Timezone<input value={form.tz} onChange={(event) => update('tz', event.target.value)} /></label>
+              <div className="method-strip">
+                <span>Method</span>
+                <strong>Lahiri-style sidereal / Swiss Ephemeris</strong>
+                <small>Birth details stay in this browser session unless you choose to share or export them.</small>
+              </div>
+            </details>
+            {missingFields.length ? (
+              <div className="missing-field-list" role="status">
+                <strong>Still needed</strong>
+                {missingFields.map(([, label]) => <span key={label}>{label}</span>)}
+              </div>
+            ) : null}
             {status.error ? <p className="birth-error" role="alert">{status.error}</p> : null}
-            <button type="submit" className="primary-button" disabled={status.loading || !form.date || !form.time || !form.lat || !form.lon}>
+            <div className="birth-form-actions">
+              <button type="submit" className="primary-button" disabled={status.loading || !canGenerate}>
               {status.loading ? 'Calculating Kundali...' : 'Generate Kundali'}
-            </button>
+              </button>
+              <button type="button" className="ghost-button" onClick={loadSample}>Preview sample</button>
+            </div>
           </form>
 
           <section className="panel kundali-card" aria-label="Interactive Kundali chart">
@@ -2546,8 +2960,14 @@ export function RedesignBirthReading() {
               <KundaliChart payload={payload} graphPayload={graphPayload} selected={selected} onSelect={setSelected} mode={chartMode} />
             ) : (
               <div className="chart-loading">
-                <strong>{status.loading ? 'Calculating chart...' : 'Chart will appear here'}</strong>
-                <p>Enter exact birth details to generate the Kundali.</p>
+                <div className="sample-chart-preview" aria-hidden="true">
+                  {Array.from({ length: 12 }, (_, index) => (
+                    <span key={index}>{index + 1}</span>
+                  ))}
+                </div>
+                <strong>{status.loading ? 'Calculating chart...' : 'Sample-ready chart preview'}</strong>
+                <p>{canGenerate ? 'Generate the Kundali when ready.' : 'Complete the required fields or load the sample profile to see the finished state.'}</p>
+                <button type="button" className="ghost-button" onClick={loadSample}>Load sample profile</button>
               </div>
             )}
           </section>
@@ -2555,8 +2975,9 @@ export function RedesignBirthReading() {
           {payload ? <ReadingBrief payload={payload} selected={selected} /> : (
             <aside className="panel birth-brief">
               <p className="eyebrow">Reading brief</p>
-              <h2>Waiting for calculation</h2>
-              <p>The interpretation appears only after real chart data is returned.</p>
+              <h2>{canGenerate ? 'Ready to calculate' : 'Complete the required fields'}</h2>
+              <p>{canGenerate ? 'The interpretation will appear after the backend returns real chart data.' : `Needed: ${missingFields.map(([, label]) => label).join(', ')}.`}</p>
+              <button type="button" className="ghost-button" onClick={loadSample}>Use sample details</button>
             </aside>
           )}
         </section>
@@ -2576,6 +2997,7 @@ export function RedesignBirthReading() {
 export function RedesignIntegrations() {
   const [payload, setPayload] = useState(null);
   const [status, setStatus] = useState({ loading: true, error: '' });
+  const [copiedFeed, setCopiedFeed] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -2600,18 +3022,34 @@ export function RedesignIntegrations() {
   const presetCards = payload?.presets || [];
   const platformCards = Object.entries(payload?.platforms || {});
 
+  const copyFeed = async (item) => {
+    const url = item.feed_url?.startsWith('http') ? item.feed_url : `${window.location.origin}${item.feed_url}`;
+    try {
+      await navigator.clipboard?.writeText(url);
+      setCopiedFeed(item.key || item.title);
+      window.setTimeout(() => setCopiedFeed(''), 1800);
+    } catch {
+      if (typeof window.prompt === 'function') window.prompt('Copy calendar feed URL', url);
+    }
+  };
+
   return (
     <AppChrome>
       <main className="page-shell simple-grid">
-        <PageHero title="Integrations" body="Feeds, widgets, calendar exports, and public API entry points." />
+        <PageHero title="Integrations" body="Subscribe to verified festival calendars, copy feed URLs, or connect Parva data to the calendar app you already use." />
         {status.loading ? <article className="panel"><h2>Loading integrations</h2><p>Fetching feed catalog from the backend.</p></article> : null}
         {status.error ? <article className="panel"><h2>Integrations unavailable</h2><p>{status.error}</p></article> : null}
         {presetCards.map((item) => (
-          <article className="panel" key={item.key || item.title}>
+          <article className="panel integration-card" key={item.key || item.title}>
             <p className="eyebrow">Feed preset</p>
             <h2>{item.title}</h2>
             <p>{item.description}</p>
-            <a className="text-link" href={item.feed_url}>Open feed</a>
+            <div className="integration-actions">
+              <a className="primary-button" href={item.feed_url}>Subscribe</a>
+              <button type="button" className="ghost-button" onClick={() => copyFeed(item)}>
+                {copiedFeed === (item.key || item.title) ? 'Copied' : 'Copy URL'}
+              </button>
+            </div>
           </article>
         ))}
         {platformCards.map(([key, item]) => (
@@ -2744,6 +3182,7 @@ function TrustLoading({ loading, error }) {
 }
 
 function TrustMetricCard({ eyebrow, title, value, detail, actionTo, actionLabel }) {
+  if (value === 'Unavailable' && !detail) return null;
   return (
     <article className="trust-metric-card">
       <p className="eyebrow">{eyebrow}</p>
@@ -2752,6 +3191,29 @@ function TrustMetricCard({ eyebrow, title, value, detail, actionTo, actionLabel 
       <p>{detail}</p>
       {actionTo ? <Link className="text-link" to={actionTo}>{actionLabel || 'Open'}</Link> : null}
     </article>
+  );
+}
+
+function TrustLimitsStrip({ runtime = {}, policy = {} }) {
+  const warnings = runtime.warnings || [];
+  return (
+    <section className="trust-limits-strip" aria-label="Known trust limits">
+      <div>
+        <span>Known limits</span>
+        <strong>{warnings.length ? `${warnings.length} warnings` : 'No runtime warnings'}</strong>
+        <small>{warnings[0] || 'Live feed did not report runtime warnings.'}</small>
+      </div>
+      <div>
+        <span>Advisory boundary</span>
+        <strong>{readableCategory(policy.usage || 'Informational')}</strong>
+        <small>{trustValue(policy.advisory, 'Verify ritual-critical decisions locally.')}</small>
+      </div>
+      <div>
+        <span>Failure posture</span>
+        <strong>Show uncertainty</strong>
+        <small>Missing feeds should hide claims instead of presenting fake certainty.</small>
+      </div>
+    </section>
   );
 }
 
@@ -2784,6 +3246,7 @@ export function RedesignTrust() {
       action={<Link className="primary-button" to="/truth-lab">Inspect live evidence</Link>}
     >
       <TrustLoading loading={trust.loading} error={trust.error} />
+      <TrustLimitsStrip runtime={runtime} policy={policy} />
       <section className="trust-hero-grid">
         <TrustMetricCard
           eyebrow="Runtime"
@@ -2793,10 +3256,10 @@ export function RedesignTrust() {
           actionTo="/truth-lab"
           actionLabel="Open Truth Lab"
         />
-        <TrustMetricCard
+      <TrustMetricCard
           eyebrow="Ephemeris"
           title="Calculation engine"
-          value={trustValue(ephemeris.mode)}
+          value={humanMethodLabel(ephemeris.mode, 'Unavailable')}
           detail={`${trustValue(ephemeris.ayanamsa)} ayanamsa, ${trustValue(ephemeris.coordinate_system)} coordinates.`}
           actionTo="/methodology"
           actionLabel="Read methodology"
@@ -2853,7 +3316,7 @@ export function RedesignMethodology() {
   const benchmark = trust.benchmark || {};
   const steps = [
     ['Context first', 'Date, timezone, latitude, longitude, and requested surface are normalized before interpretation.'],
-    ['Compute openly', `${trustValue(ephemeris.library)} powers the current sidereal calculation path when the backend is healthy.`],
+    ['Compute openly', `${humanMethodLabel(ephemeris.library, 'The configured ephemeris')} powers the current sidereal calculation path when the backend is healthy.`],
     ['Compare and classify', 'Festival and timing outputs carry support tiers, authority mode, quality band, and boundary sensitivity.'],
     ['Expose provenance', 'Policy, request IDs, source status, cache state, and benchmark signals stay close to the result.'],
   ];
@@ -2879,11 +3342,11 @@ export function RedesignMethodology() {
       <section className="trust-evidence-grid">
         <article>
           <p className="eyebrow">Engine path</p>
-          <h2>{trustValue(ephemeris.mode)}</h2>
+          <h2>{humanMethodLabel(ephemeris.mode, 'Unavailable')}</h2>
           <dl>
             <div><dt>Ayanamsa</dt><dd>{trustValue(ephemeris.ayanamsa)}</dd></div>
             <div><dt>Accuracy</dt><dd>{trustValue(ephemeris.accuracy)}</dd></div>
-            <div><dt>Library</dt><dd>{trustValue(ephemeris.library)}</dd></div>
+            <div><dt>Library</dt><dd>{humanMethodLabel(ephemeris.library, 'Unavailable')}</dd></div>
           </dl>
         </article>
         <article>
@@ -3063,14 +3526,39 @@ export function RedesignApiPolicy() {
 
 export function RedesignProfileSaved() {
   const { state } = useTemporalContext();
+  const [savedIds, setSavedIds] = useState(() => readSavedFestivalIds());
+
+  const clearSavedFestival = (festivalId) => {
+    setSavedIds((current) => {
+      const next = current.filter((item) => item !== festivalId);
+      writeSavedFestivalIds(next);
+      return next;
+    });
+  };
 
   return (
     <AppChrome>
       <main className="page-shell simple-grid">
-        <PageHero title="Profile & Saved" body="Saved places, festivals, birth readings, and integrations." />
+        <PageHero title="Profile & Saved" body="A private workspace for place context, saved observances, and calendar connections." />
         <article className="panel"><h2>Current place</h2><p>{formatCoordinates(state.location)} · {state.timezone}</p><Link className="text-link" to="/my-place">Load place data</Link></article>
-        <article className="panel"><h2>Saved festivals</h2><p>No saved festival backend is configured for this reference frontend.</p><Link className="text-link" to="/festivals">Browse API festivals</Link></article>
-        <article className="panel"><h2>Calendar export</h2><p>Feed options are loaded from the backend integration catalog.</p><Link className="text-link" to="/integrations">Open integrations</Link></article>
+        <article className="panel saved-festival-panel">
+          <h2>Saved festivals</h2>
+          {savedIds.length ? (
+            <div className="saved-festival-list" aria-label="Saved festival list">
+              {savedIds.map((festivalId) => (
+                <div key={festivalId}>
+                  <Link className="text-link" to={`/festivals/${festivalId}`}>{readableCategory(festivalId)}</Link>
+                  <a href={buildCalendarFeedUrl(festivalId)}>Calendar</a>
+                  <button type="button" onClick={() => clearSavedFestival(festivalId)}>Remove</button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Save observances from the festival calendar to build a personal ritual year.</p>
+          )}
+          <Link className="text-link" to="/festivals">Browse festivals</Link>
+        </article>
+        <article className="panel"><h2>Calendar export</h2><p>Subscribe to Parva calendars from the integrations page.</p><Link className="text-link" to="/integrations">Open integrations</Link></article>
       </main>
     </AppChrome>
   );

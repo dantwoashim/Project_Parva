@@ -164,3 +164,14 @@ def resolve_node_runtime() -> NodeRuntime | None:
 def current_npm_version(runtime: NodeRuntime | None = None) -> tuple[bool, str]:
     env = runtime.build_env() if runtime else None
     return _run_version("npm", env=env)
+
+
+def build_npm_command(args: list[str], runtime: NodeRuntime | None = None) -> list[str]:
+    if runtime and runtime.managed:
+        npx = shutil.which("npx")
+        if npx:
+            return [npx, "-y", "-p", MANAGED_NODE_SPEC, "-p", "npm@10", "npm", *args]
+
+    env = runtime.build_env() if runtime else os.environ
+    npm = shutil.which("npm", path=env.get("PATH")) or "npm"
+    return [npm, *args]

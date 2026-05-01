@@ -1,99 +1,127 @@
 #!/usr/bin/env python3
-"""Verify that a generated source archive excludes non-source artifacts."""
+"""Verify that the release source archive contains only source material."""
 
 from __future__ import annotations
 
 import argparse
+import tomllib
 import zipfile
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PYPROJECT_PATH = PROJECT_ROOT / "pyproject.toml"
 DIST_DIR = PROJECT_ROOT / "dist"
-DISALLOWED_SEGMENTS = {
+
+COMPILED_OR_LOCAL_PARTS = {
+    ".git",
     ".mypy_cache",
-    ".playwright-cli",
     ".pytest_cache",
     ".ruff_cache",
     ".venv",
-    "node_modules",
+    ".venv311",
+    ".verify",
+    "__pycache__",
     "dist",
+    "htmlcov",
+    "node_modules",
     "output",
     "reports",
-    "tmp",
-    "__pycache__",
 }
-DISALLOWED_PATHS = {
-    "evaluation.csv",
-    "backend/evaluation.csv",
-}
-DISALLOWED_PREFIXES = {
-    Path("benchmark/results"),
-    Path("backend/data/snapshots"),
-    Path("backend/data/traces"),
-}
-DISALLOWED_SUFFIXES = {
+COMPILED_OR_LOCAL_SUFFIXES = {
+    ".DS_Store",
+    ".log",
     ".pyc",
     ".pyo",
+    ".sqlite",
+    ".zip",
 }
+COMPILED_OR_LOCAL_PREFIXES = (
+    "backend/data/snapshots/",
+    "backend/data/traces/",
+    "frontend/dist/",
+    "sdk/python/build/",
+)
 
 
-def _member_failure(member: str) -> str | None:
-    normalized = Path(member)
-    if member in DISALLOWED_PATHS:
-        return f"archive contains generated artifact: {member}"
-
-    if any(normalized == prefix or prefix in normalized.parents for prefix in DISALLOWED_PREFIXES):
-        return f"archive contains disallowed path: {member}"
-
-    if normalized.name == ".DS_Store" or normalized.suffix in DISALLOWED_SUFFIXES:
-        return f"archive contains compiled/local artifact: {member}"
-
-    for part in normalized.parts:
-        if part in DISALLOWED_SEGMENTS or part.startswith(".verify") or part.startswith(".venv"):
-            return f"archive contains disallowed path: {member}"
-        if part.endswith(".egg-info"):
-            return f"archive contains packaging residue: {member}"
-    return None
+def _project_version() -> str:
+    payload = tomllib.loads(PYPROJECT_PATH.read_text(encoding="utf-8"))
+    return str(payload["project"]["version"])
 
 
-def _default_archive() -> Path:
-    candidates = sorted(DIST_DIR.glob("*-source.zip"), key=lambda path: path.stat().st_mtime, reverse=True)
-    if not candidates:
-        raise SystemExit("No source archive found in dist/. Run package_source_archive.py first.")
-    return candidates[0]
+def _default_archive_path() -> Path:
+    version = _project_version()
+    preferred = DIST_DIR / f"project-parva-{version}-source.zip"
+    if preferred.exists():
+        return preferred
+
+    candidates = sorted(DIST_DIR.glob("*-source.zip"), key=lambda path: path.stat().st_mtime)
+    if candidates:
+        return candidates[-1]
+    raise SystemExit(
+        f"No source archive found in {DIST_DIR}. Run scripts/release/package_source_archive.py first."
+    )
 
 
 def _normalized_members(archive_path: Path) -> list[str]:
+    """Return archive member paths without the generated top-level archive root."""
     with zipfile.ZipFile(archive_path) as archive:
-        names = [name.rstrip("/") for name in archive.namelist() if name and not name.endswith("/")]
+        names = [
+            name.rstrip("/")
+            for name in archive.namelist()
+            if name and not name.endswith("/")
+        ]
+
     if not names:
-        raise SystemExit(f"Archive is empty: {archive_path}")
+        return []
 
-    root_prefix = names[0].split("/", 1)[0]
-    normalized: list[str] = []
-    for name in names:
-        if name == root_prefix:
-            continue
-        normalized.append(name.split("/", 1)[1] if name.startswith(f"{root_prefix}/") else name)
-    return normalized
+    first_parts = {name.split("/", 1)[0] for name in names}
+    if len(first_parts) == 1 and all("/" in name for name in names):
+        return sorted(name.split("/", 1)[1] for name in names)
+    return sorted(names)
 
 
-def main() -> int:
+def _member_failure(member: str) -> str | None:
+    normalized = member.strip().lstrip("/")
+    parts = normalized.split("/")
+
+    if any(part.endswith(".egg-info") for part in parts):
+        return f"archive contains packaging residue: {normalized}"
+
+    if any(part in COMPILED_OR_LOCAL_PARTS for part in parts):
+        return f"archive contains compiled/local artifact: {normalized}"
+
+    if any(normalized.startswith(prefix) for prefix in COMPILED_OR_LOCAL_PREFIXES):
+        return f"archive contains compiled/local artifact: {normalized}"
+
+    if any(normalized.endswith(suffix) for suffix in COMPILED_OR_LOCAL_SUFFIXES):
+        return f"archive contains compiled/local artifact: {normalized}"
+
+    return None
+
+
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--archive", type=Path, help="Path to a source zip archive. Defaults to the newest dist/*-source.zip")
-    args = parser.parse_args()
+    parser.add_argument(
+        "archive",
+        nargs="?",
+        type=Path,
+        help="Archive to verify. Defaults to dist/project-parva-<version>-source.zip.",
+    )
+    args = parser.parse_args(argv)
 
-    archive_path = args.archive or _default_archive()
-    members = _normalized_members(archive_path)
-    failures: list[str] = []
+    archive_path = (args.archive or _default_archive_path()).resolve()
+    if not archive_path.exists():
+        raise SystemExit(f"Archive does not exist: {archive_path}")
 
-    for member in members:
-        failure = _member_failure(member)
-        if failure:
-            failures.append(failure)
+    failures = [
+        failure
+        for member in _normalized_members(archive_path)
+        if (failure := _member_failure(member))
+    ]
 
     if failures:
-        print("\n".join(failures))
+        for failure in failures:
+            print(f"[source-archive] {failure}")
         return 1
 
     print(f"Source archive verified: {archive_path}")

@@ -77,23 +77,23 @@ def main() -> int:
             checks.append(
                 (
                     "pip_audit",
-                    {
-                        "cmd": f"{sys.executable} -m pip_audit",
-                        "returncode": None,
-                        "stdout": "",
-                        "stderr": "No Python project dependencies found; skipped",
-                    },
-                )
+                {
+                    "cmd": f"{sys.executable} -m pip_audit",
+                    "returncode": 2,
+                    "stdout": "",
+                    "stderr": "No Python project dependencies found; cannot audit",
+                },
             )
+        )
     else:
         checks.append(
             (
                 "pip_audit",
                 {
                     "cmd": f"{sys.executable} -m pip_audit -f json",
-                    "returncode": None,
+                    "returncode": 2,
                     "stdout": "",
-                    "stderr": "pip-audit not installed; skipped",
+                    "stderr": "pip-audit not installed; install project dev dependencies before release audit",
                 },
             )
         )
@@ -107,9 +107,9 @@ def main() -> int:
                 "npm_audit",
                 {
                     "cmd": "npm audit --json",
-                    "returncode": None,
+                    "returncode": 2,
                     "stdout": "",
-                    "stderr": "npm not installed; skipped",
+                    "stderr": "npm not installed; install Node.js before release audit",
                 },
             )
         )
@@ -117,7 +117,7 @@ def main() -> int:
     failing_checks = [
         name
         for name, result in checks
-        if result.get("returncode") not in {0, None}
+        if result.get("returncode") != 0
     ]
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
