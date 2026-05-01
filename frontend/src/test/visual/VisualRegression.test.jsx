@@ -1,27 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../../App';
 
 const routeLoadOptions = { timeout: 15000 };
-
-vi.mock('../../context/temporalContextState', async (importOriginal) => {
-  const actual = await importOriginal();
-  const createVisualState = () => ({
-    date: '2026-02-25',
-    location: { latitude: 27.7172, longitude: 85.324 },
-    timezone: 'Asia/Kathmandu',
-    language: 'en',
-    theme: 'warm-paper',
-    lastViewed: '/',
-  });
-
-  return {
-    ...actual,
-    todayIso: () => '2026-02-25',
-    createInitialState: createVisualState,
-    loadInitialState: createVisualState,
-  };
-});
 
 function setViewport(width, height = 900) {
   window.innerWidth = width;
@@ -154,7 +135,7 @@ function buildVisualFetchMock() {
             longitude: 85.324,
             timezone: 'Asia/Kathmandu',
           },
-          bikram_sambat: { year: 2082, month_name: 'Falgun', day: 3 },
+          bikram_sambat: { year: 2082, month: 11, month_name: 'Falgun', day: 3 },
           primary_readout: { tithi_name: 'Chaturdashi', paksha: 'krishna' },
           horizon: {
             sunrise: {
@@ -289,14 +270,14 @@ function buildVisualFetchMock() {
           vaara: { name_english: 'Sunday', name_sanskrit: 'Ravivara' },
           location: { latitude: 27.7172, longitude: 85.324, timezone: 'Asia/Kathmandu' },
           local_sunrise: {
-            local: null,
-            utc: null,
-            local_time: null,
+            local: '2026-02-15T06:44:00+05:45',
+            utc: '2026-02-15T00:59:00Z',
+            local_time: '06:44 AM',
           },
           sunrise: {
-            local: null,
-            utc: null,
-            local_time: null,
+            local: '2026-02-15T06:42:00+05:45',
+            utc: '2026-02-15T00:57:00Z',
+            local_time: '06:42 AM',
           },
           confidence: 'computed',
           method_profile: 'personal_panchanga_v2_udaya',
@@ -315,7 +296,7 @@ function buildVisualFetchMock() {
           date: '2026-02-25',
           location: { latitude: 27.7172, longitude: 85.324, timezone: 'Asia/Kathmandu' },
           place_title: 'Kyoto Villa',
-          status_line: null,
+          status_line: 'Sunrise 6:44 AM - Asia/Kathmandu',
           visit_note: 'Last visited Oct 15. Next reminder: Cherry Blossom (Apr).',
           context_title: 'Morning Calm',
           context_summary: 'Quiet morning at your saved Kyoto Villa location. Air is crisp. 14C.',
@@ -353,8 +334,8 @@ function buildVisualFetchMock() {
               name: 'Abhijit Muhurta',
               class: 'auspicious',
               score: 88,
-              start: '2026-02-25T06:03:00',
-              end: '2026-02-25T06:51:00',
+              start: '2026-02-15T11:48:00+05:45',
+              end: '2026-02-15T12:36:00+05:45',
               confidence_score: 0.91,
               reason_codes: ['hora_supportive', 'tara_good'],
               rank_explanation: 'Strong overlap of supportive factors.',
@@ -364,8 +345,8 @@ function buildVisualFetchMock() {
               name: 'Labh',
               class: 'mixed',
               score: 42,
-              start: '2026-02-25T06:51:00',
-              end: '2026-02-25T07:39:00',
+              start: '2026-02-15T12:36:00+05:45',
+              end: '2026-02-15T13:24:00+05:45',
               confidence_score: 0.75,
               reason_codes: ['tara_good'],
               rank_explanation: 'Supportive but not as strong as the lead window.',
@@ -375,8 +356,8 @@ function buildVisualFetchMock() {
             index: 6,
             name: 'Abhijit Muhurta',
             score: 88,
-            start: '2026-02-25T06:03:00',
-            end: '2026-02-25T06:51:00',
+            start: '2026-02-15T11:48:00+05:45',
+            end: '2026-02-15T12:36:00+05:45',
             confidence_score: 0.91,
             reason_codes: ['hora_supportive', 'tara_good'],
           },
@@ -498,6 +479,7 @@ describe('visual regression harness', () => {
   beforeEach(() => {
     vi.stubGlobal('fetch', buildVisualFetchMock());
     vi.stubGlobal('open', vi.fn());
+    vi.spyOn(Date, 'now').mockReturnValue(new Date('2026-02-25T06:30:00Z').valueOf());
   });
 
   afterEach(() => {
@@ -507,82 +489,83 @@ describe('visual regression harness', () => {
 
   it('consumer home visual baseline', async () => {
     const { container } = await renderRoute('/');
-    await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
-    await waitFor(() => expect(container.querySelectorAll('.mini-window').length).toBeGreaterThan(0), routeLoadOptions);
-    expect(container.querySelector('.today-page')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions);
+    expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('today page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/today', 390, 844);
-    await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
-    await waitFor(() => expect(container.querySelectorAll('.mini-window').length).toBeGreaterThan(0), routeLoadOptions);
-    expect(container.querySelector('.today-page')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions);
+    expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('best-time page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/best-time', 390, 844);
-    await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions);
-    await waitFor(() => expect(container.querySelectorAll('.chart-row')).toHaveLength(2), routeLoadOptions);
-    expect(container.querySelector('.best-time-page')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /^Best Time$/i }, routeLoadOptions);
+    await screen.findAllByRole('button', { name: /Abhijit Muhurta/i }, routeLoadOptions);
+    expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('festivals page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/festivals', 390, 844);
     await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions);
-    await waitFor(() => expect(container.querySelectorAll('.festival-list-card')).toHaveLength(2), routeLoadOptions);
-    expect(container.querySelector('.festivals-page')).toMatchSnapshot();
+    await screen.findByLabelText(/2 festivals in this view/i, {}, routeLoadOptions);
+    await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
+    expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('festival detail page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/festivals/dashain', 390, 844);
-    await screen.findByRole('heading', { name: 'Dashain' }, routeLoadOptions);
-    await screen.findByRole('heading', { name: /Ritual sequence/i }, routeLoadOptions);
-    expect(container.querySelector('.detail-page')).toMatchSnapshot();
+    await screen.findByRole('heading', { name: /^Dashain$/i }, routeLoadOptions);
+    expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('my-place page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/my-place', 390, 844);
     await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions);
-    await screen.findByText(/API context pending/i, routeLoadOptions);
-    expect(container.querySelector('.place-page')).toMatchSnapshot();
+    await screen.findByText(/06:44/i, {}, routeLoadOptions);
+    await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
+    expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('kundali page visual baseline', async () => {
     const { container } = await renderRoute('/kundali');
     await screen.findByRole('heading', { name: /Birth Reading/i }, routeLoadOptions);
-    expect(container.querySelector('.birth-page')).toMatchSnapshot();
+    expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 20000);
 
   it('today page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/today', 1440, 900);
-    await screen.findAllByRole('link', { name: /Parva home/i }, routeLoadOptions);
-    await waitFor(() => expect(container.querySelectorAll('.mini-window').length).toBeGreaterThan(0), routeLoadOptions);
+    await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('festivals page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/festivals', 1440, 900);
     await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions);
-    await waitFor(() => expect(container.querySelectorAll('.festival-list-card')).toHaveLength(2), routeLoadOptions);
+    await screen.findByLabelText(/2 festivals in this view/i, {}, routeLoadOptions);
+    await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('festival detail page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/festivals/dashain', 1440, 900);
-    await screen.findByRole('heading', { name: 'Dashain' }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /^Dashain$/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('best-time page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/best-time', 1440, 900);
-    await screen.findByRole('heading', { name: /Best Time \/ Muhurta/i }, routeLoadOptions);
-    await waitFor(() => expect(container.querySelectorAll('.chart-row')).toHaveLength(2), routeLoadOptions);
+    await screen.findByRole('heading', { name: /^Best Time$/i }, routeLoadOptions);
+    await screen.findAllByRole('button', { name: /Abhijit Muhurta/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('my-place page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/my-place', 1440, 900);
     await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions);
+    await screen.findByText(/06:44/i, {}, routeLoadOptions);
+    await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 });

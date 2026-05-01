@@ -17,6 +17,7 @@ SKIP_DIRS = {
     "dist",
     "build",
     "__pycache__",
+    "reports",
 }
 REGEX_PATTERNS = (
     re.compile(r"(?<![A-Za-z0-9+.-])/Users/[^/\s]+/"),

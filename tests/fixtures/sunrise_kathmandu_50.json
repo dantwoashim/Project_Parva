@@ -4,7 +4,7 @@
     "latitude": 27.7172,
     "longitude": 85.324,
     "samples": 50,
-    "generated_at_utc": "2026-04-04T07:31:21.718761+00:00",
+    "generated_at_utc": "2026-04-24T01:28:35.957541+00:00",
     "notes": "Regression corpus generated from Swiss Ephemeris sunrise calculation."
   },
   "samples": [

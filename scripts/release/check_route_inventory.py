@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Check the public route inventory and compatibility alias coverage."""
+"""Validate API route registration, classification, and v3 legacy parity."""
 
 from __future__ import annotations
 
-import argparse
 import json
 import sys
 from pathlib import Path
@@ -13,93 +12,66 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
+from app.bootstrap.access_control import find_unclassified_api_routes  # noqa: E402
 from app.main import app  # noqa: E402
 
-SNAPSHOT_PATH = PROJECT_ROOT / "docs" / "contracts" / "v3_route_inventory_snapshot.json"
-HTTP_METHODS = {"get", "post", "put", "patch", "delete"}
 
-
-def _route_rows(prefix: str) -> list[dict[str, object]]:
-    schema = app.openapi()
-    rows: list[dict[str, object]] = []
-    for path, spec in sorted(schema.get("paths", {}).items()):
-        if not path.startswith(prefix):
+def _api_routes(prefix: str | None = None) -> dict[tuple[str, str], str]:
+    routes: dict[tuple[str, str], str] = {}
+    for route in app.routes:
+        path = getattr(route, "path", None)
+        methods = getattr(route, "methods", None)
+        name = str(getattr(route, "name", "") or "")
+        if not isinstance(path, str) or methods is None:
             continue
-        methods = sorted(method.upper() for method in spec.keys() if method.lower() in HTTP_METHODS)
-        rows.append({"path": path, "methods": methods})
-    return rows
-
-
-def _build_inventory() -> dict[str, object]:
-    v3_rows = _route_rows("/v3/api/")
-    compat_rows = _route_rows("/api/")
-
-    v3_methods = {
-        (row["path"], method)
-        for row in v3_rows
-        for method in row["methods"]
-    }
-
-    alias_gaps: list[dict[str, str]] = []
-    for row in compat_rows:
-        canonical_path = f"/v3{row['path']}"
-        for method in row["methods"]:
-            if (canonical_path, method) not in v3_methods:
-                alias_gaps.append({"compat_path": row["path"], "canonical_path": canonical_path, "method": method})
-
-    return {
-        "schema_version": 1,
-        "canonical_prefix": "/v3/api",
-        "compat_prefix": "/api",
-        "v3_count": len(v3_rows),
-        "compat_count": len(compat_rows),
-        "alias_gaps": alias_gaps,
-        "v3_routes": v3_rows,
-        "compat_routes": compat_rows,
-    }
-
-
-def _normalize(payload: dict[str, object]) -> dict[str, object]:
-    return {
-        "schema_version": payload["schema_version"],
-        "canonical_prefix": payload["canonical_prefix"],
-        "compat_prefix": payload["compat_prefix"],
-        "v3_count": payload["v3_count"],
-        "compat_count": payload["compat_count"],
-        "alias_gaps": payload["alias_gaps"],
-        "v3_routes": payload["v3_routes"],
-        "compat_routes": payload["compat_routes"],
-    }
+        if prefix and not path.startswith(prefix):
+            continue
+        for method in methods:
+            if method in {"HEAD", "OPTIONS"}:
+                continue
+            routes[(method, path)] = name
+    return routes
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--write-snapshot", action="store_true", help="Write the current inventory to the frozen snapshot.")
-    args = parser.parse_args()
+    failures: list[str] = []
+    all_api_routes = _api_routes()
+    canonical_v3_routes = _api_routes("/v3/api/")
+    legacy_routes = _api_routes("/api/")
 
-    current = _normalize(_build_inventory())
+    if len(canonical_v3_routes) < 100:
+        failures.append(
+            f"Expected a substantial canonical v3 surface; found only {len(canonical_v3_routes)} routes."
+        )
 
-    if current["alias_gaps"]:
-        print("[route-inventory] compatibility routes are missing canonical /v3 counterparts:")
-        for gap in current["alias_gaps"]:
-            print(f"  - {gap['method']} {gap['compat_path']} -> {gap['canonical_path']}")
+    for method, v3_path in sorted(canonical_v3_routes):
+        legacy_path = v3_path.removeprefix("/v3")
+        if (method, legacy_path) not in legacy_routes:
+            failures.append(f"Missing legacy parity route for {method} {v3_path}: {legacy_path}")
+
+    for method, legacy_path in sorted(legacy_routes):
+        v3_path = f"/v3{legacy_path}"
+        if (method, v3_path) not in canonical_v3_routes:
+            failures.append(f"Legacy route lacks canonical v3 equivalent: {method} {legacy_path}")
+
+    unclassified = find_unclassified_api_routes(app.routes)
+    failures.extend(f"Unclassified API route: {route}" for route in unclassified)
+
+    if failures:
+        print("\n".join(failures))
         return 1
 
-    if args.write_snapshot:
-        SNAPSHOT_PATH.write_text(json.dumps({"inventory": current}, indent=2) + "\n", encoding="utf-8")
-        print(f"[route-inventory] wrote snapshot to {SNAPSHOT_PATH}")
-        return 0
-
-    if not SNAPSHOT_PATH.exists():
-        print(f"[route-inventory] missing snapshot: {SNAPSHOT_PATH}")
-        return 2
-
-    frozen = json.loads(SNAPSHOT_PATH.read_text(encoding="utf-8")).get("inventory", {})
-    if _normalize(frozen) != current:
-        print("[route-inventory] current inventory differs from frozen snapshot.")
-        return 1
-
-    print("[route-inventory] inventory check passed.")
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "route_count": len(all_api_routes),
+                "canonical_v3_route_count": len(canonical_v3_routes),
+                "legacy_route_count": len(legacy_routes),
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

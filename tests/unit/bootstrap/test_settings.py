@@ -88,9 +88,6 @@ def test_create_app_requires_precomputed_artifacts_in_production_by_default(
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
     monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
     monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_PROVIDER_POLICY", "offline_only")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_ALLOW_REMOTE", "false")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_PROVIDER_CHAIN", "offline")
     monkeypatch.delenv("PARVA_REQUIRE_PRECOMPUTED", raising=False)
     monkeypatch.setattr(
         app_factory,
@@ -100,57 +97,3 @@ def test_create_app_requires_precomputed_artifacts_in_production_by_default(
 
     with pytest.raises(RuntimeError, match="requires precomputed artifacts"):
         app_factory.create_app()
-
-
-def test_create_app_requires_explicit_place_search_policy_in_production(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    from app.bootstrap.app_factory import create_app
-
-    monkeypatch.setenv("PARVA_ENV", "production")
-    monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
-    monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
-    monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
-    monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
-    monkeypatch.delenv("PARVA_PLACE_SEARCH_PROVIDER_POLICY", raising=False)
-
-    with pytest.raises(RuntimeError, match="PARVA_PLACE_SEARCH_PROVIDER_POLICY"):
-        create_app()
-
-
-def test_create_app_rejects_offline_only_policy_when_remote_provider_is_present(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    from app.bootstrap.app_factory import create_app
-
-    monkeypatch.setenv("PARVA_ENV", "production")
-    monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
-    monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
-    monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
-    monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_PROVIDER_POLICY", "offline_only")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_ALLOW_REMOTE", "true")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_PROVIDER_CHAIN", "offline,nominatim")
-
-    with pytest.raises(RuntimeError, match="offline_only"):
-        create_app()
-
-
-def test_create_app_accepts_acknowledged_remote_place_search_policy(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    from app.bootstrap.app_factory import create_app
-
-    monkeypatch.setenv("PARVA_ENV", "production")
-    monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
-    monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
-    monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
-    monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_PROVIDER_POLICY", "acknowledged_remote")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_ALLOW_REMOTE", "true")
-    monkeypatch.setenv("PARVA_PLACE_SEARCH_PROVIDER_CHAIN", "offline,nominatim")
-
-    app = create_app()
-
-    assert app.state.settings.place_search_provider_policy == "acknowledged_remote"
-    assert app.state.startup_checks["checks"]["place_search_policy"]["ok"] is True

@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
-"""Verify that documented v3 API routes still exist and resolve at runtime."""
+"""Ensure canonical v3 API routes are represented in route access docs."""
 
 from __future__ import annotations
 
-import logging
-import re
 import sys
-from dataclasses import dataclass
 from pathlib import Path
-
-from fastapi.testclient import TestClient
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_ROOT = PROJECT_ROOT / "backend"
@@ -18,82 +13,71 @@ if str(BACKEND_ROOT) not in sys.path:
 
 from app.main import app  # noqa: E402
 
-DOC_PATH = PROJECT_ROOT / "docs" / "API_REFERENCE_V3.md"
-ROUTE_PATTERN = re.compile(r"^- `(?P<method>[A-Z]+) (?P<path>/[^`]+)`$")
-CANONICAL_API_PREFIX = "/v3/api"
+API_REFERENCE = PROJECT_ROOT / "docs" / "API_REFERENCE_V3.md"
+ROUTE_ACCESS = PROJECT_ROOT / "docs" / "ROUTE_ACCESS.md"
 
 
-@dataclass(frozen=True)
-class DocumentedRoute:
-    method: str
-    path: str
-
-    @property
-    def canonical_path(self) -> str:
-        base_path, _, _query = self.path.partition("?")
-        if base_path.startswith(("/v3/", "/api/", "/health", "/docs", "/openapi.json", "/source")):
-            return base_path
-        return f"{CANONICAL_API_PREFIX}{base_path}"
-
-    @property
-    def request_path(self) -> str:
-        base_path, separator, query = self.path.partition("?")
-        if base_path.startswith(("/v3/", "/api/", "/health", "/docs", "/openapi.json", "/source")):
-            canonical_base = base_path
-        else:
-            canonical_base = f"{CANONICAL_API_PREFIX}{base_path}"
-        return f"{canonical_base}{separator}{query}" if separator else canonical_base
-
-
-def _documented_routes(text: str) -> list[DocumentedRoute]:
-    routes: list[DocumentedRoute] = []
-    for raw_line in text.splitlines():
-        match = ROUTE_PATTERN.match(raw_line.strip())
-        if not match:
+def _canonical_routes() -> list[tuple[str, str]]:
+    rows: list[tuple[str, str]] = []
+    for route in app.routes:
+        path = getattr(route, "path", None)
+        methods = getattr(route, "methods", None)
+        if not isinstance(path, str) or not path.startswith("/v3/api/") or methods is None:
             continue
-        routes.append(DocumentedRoute(method=match.group("method"), path=match.group("path")))
-    return routes
+        for method in methods:
+            if method in {"HEAD", "OPTIONS"}:
+                continue
+            rows.append((method, path))
+    return sorted(set(rows), key=lambda row: (row[1], row[0]))
 
 
-def _validate_documented_routes(routes: list[DocumentedRoute]) -> list[str]:
-    failures: list[str] = []
-    schema = app.openapi()
-    documented_paths = schema.get("paths", {})
-    logging.disable(logging.CRITICAL)
-    client = TestClient(app)
-
-    for route in routes:
-        methods = {
-            candidate.upper()
-            for candidate in documented_paths.get(route.canonical_path, {}).keys()
-        }
-        if route.method not in methods:
-            failures.append(
-                f"documented route missing from OpenAPI: {route.method} {route.request_path}"
-            )
-            continue
-
-        if "{" in route.canonical_path:
-            continue
-
-        response = client.request(route.method, route.request_path)
-        if response.status_code in {404, 405}:
-            failures.append(
-                f"documented route does not resolve at runtime: {route.method} {route.request_path} -> {response.status_code}"
-            )
-
-    return failures
+def _route_families(routes: list[tuple[str, str]]) -> set[str]:
+    families: set[str] = set()
+    for _, path in routes:
+        parts = path.removeprefix("/v3/api/").split("/")
+        if parts and parts[0]:
+            families.add(parts[0])
+    return families
 
 
 def main() -> int:
-    routes = _documented_routes(DOC_PATH.read_text(encoding="utf-8"))
-    failures = _validate_documented_routes(routes)
+    failures: list[str] = []
+    routes = _canonical_routes()
+
+    if not API_REFERENCE.exists():
+        failures.append(f"Missing {API_REFERENCE.relative_to(PROJECT_ROOT)}")
+        api_text = ""
+    else:
+        api_text = API_REFERENCE.read_text(encoding="utf-8")
+
+    if not ROUTE_ACCESS.exists():
+        failures.append(f"Missing {ROUTE_ACCESS.relative_to(PROJECT_ROOT)}")
+        access_text = ""
+    else:
+        access_text = ROUTE_ACCESS.read_text(encoding="utf-8")
+
+    for family in sorted(_route_families(routes)):
+        if f"/{family}" not in api_text and family not in api_text:
+            failures.append(f"API reference does not mention route family: {family}")
+
+    missing_inventory = [
+        f"{method} {path}"
+        for method, path in routes
+        if f"`{method} {path}`" not in access_text
+    ]
+    if missing_inventory:
+        failures.append(
+            "ROUTE_ACCESS.md is missing canonical route inventory entries:\n"
+            + "\n".join(f"- {item}" for item in missing_inventory[:40])
+        )
+        if len(missing_inventory) > 40:
+            failures.append(f"...and {len(missing_inventory) - 40} more routes.")
+
     if failures:
-        for failure in failures:
-            print(f"[documented-routes] {failure}")
+        print("\n".join(failures))
         return 1
 
-    print("[documented-routes] documented route check passed.")
+    print(f"Documented route inventory verified ({len(routes)} canonical v3 routes).")
     return 0
 
 

@@ -1,15 +1,12 @@
-import hashlib
-
 import pytest
 from fastapi.testclient import TestClient
 
 
 @pytest.fixture
-def client(request):
+def client():
     from app.main import app
 
-    client_name = hashlib.sha1(request.node.nodeid.encode("utf-8")).hexdigest()[:12]
-    return TestClient(app, client=(f"desktop-api-{client_name}", 50000))
+    return TestClient(app)
 
 
 def test_muhurta_heatmap_supports_creative_focus(client):

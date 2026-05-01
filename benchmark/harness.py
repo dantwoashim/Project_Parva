@@ -46,8 +46,8 @@ def _http_get_json(base_url: str, endpoint: str, params: Dict[str, Any]) -> Tupl
 
 
 def _build_local_requester() -> Callable[[str, Dict[str, Any]], Tuple[Dict[str, Any], int]]:
-    from fastapi.testclient import TestClient
     from app.main import app
+    from fastapi.testclient import TestClient
 
     client = TestClient(app)
 

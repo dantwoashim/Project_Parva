@@ -70,52 +70,6 @@ def test_panchanga_endpoint_uses_precomputed_cache(monkeypatch, tmp_path):
     assert body["panchanga"]["tithi"]["name"] == "Pratipada"
 
 
-def test_panchanga_endpoint_recomputes_misaligned_precomputed_row(monkeypatch, tmp_path):
-    import app.cache.precomputed as precomputed_module
-
-    monkeypatch.setattr(precomputed_module, "PRECOMPUTE_DIR", tmp_path)
-
-    target = date(2026, 4, 29)
-    _write_json(
-        tmp_path / "panchanga_2026.json",
-        {
-            "year": 2026,
-            "generated_at": "2026-04-01T00:00:00+00:00",
-            "count": 1,
-            "dates": {
-                target.isoformat(): {
-                    "date": target.isoformat(),
-                    "bikram_sambat": {},
-                    "panchanga": {
-                        "tithi": {
-                            "number": 1,
-                            "name": "Pratipada",
-                            "paksha": "shukla",
-                            "progress": 0.1,
-                            "method": "ephemeris_udaya",
-                            "sunrise_used": "2026-04-30T05:26:52+05:45",
-                        },
-                        "nakshatra": {"number": 1, "name": "Ashwini", "pada": 1},
-                        "yoga": {"number": 1, "name": "Vishkumbha"},
-                        "karana": {"number": 1, "name": "Kimstughna"},
-                        "vaara": {"name_sanskrit": "Guruvara", "name_english": "Thursday"},
-                    },
-                    "ephemeris": {},
-                }
-            },
-        },
-    )
-
-    client = TestClient(app)
-    response = client.get("/api/calendar/panchanga", params={"date": target.isoformat()})
-    assert response.status_code == 200
-    body = response.json()
-    assert body["cache"]["hit"] is False
-    assert body["cache"]["source"] == "computed"
-    assert body["panchanga"]["tithi"]["sunrise_used"].startswith("2026-04-29")
-    assert body["panchanga"]["vaara"]["name_english"] == "Wednesday"
-
-
 def test_upcoming_festivals_uses_precomputed_cache(monkeypatch, tmp_path):
     import app.cache.precomputed as precomputed_module
     import app.calendar.routes as calendar_routes

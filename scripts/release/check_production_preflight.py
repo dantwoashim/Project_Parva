@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate that a production-like environment satisfies Parva's minimum runtime rules."""
+"""Validate that the configured production profile can build a safe app."""
 
 from __future__ import annotations
 
@@ -8,35 +8,58 @@ import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(PROJECT_ROOT / "backend"))
+BACKEND_ROOT = PROJECT_ROOT / "backend"
+if str(BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(BACKEND_ROOT))
 
+from app.bootstrap.access_control import find_unclassified_api_routes  # noqa: E402
 from app.bootstrap.app_factory import create_app  # noqa: E402
 
 
 def main() -> int:
-    try:
-        app = create_app()
-    except Exception as exc:
-        print(f"[production-preflight] failed: {exc}")
+    app = create_app()
+    settings = app.state.settings
+    failures: list[str] = []
+
+    if settings.environment.lower() != "production":
+        failures.append("PARVA_ENV must be production for production preflight.")
+    if not settings.source_url:
+        failures.append("PARVA_SOURCE_URL is required for production preflight.")
+    if settings.rate_limit_enabled and settings.rate_limit_backend.lower() != "redis":
+        failures.append("Production preflight requires PARVA_RATE_LIMIT_BACKEND=redis.")
+    if settings.rate_limit_backend.lower() == "redis" and not settings.redis_url:
+        failures.append("Production preflight requires PARVA_REDIS_URL when Redis rate limiting is selected.")
+
+    startup_checks = getattr(app.state, "startup_checks", {})
+    if not startup_checks.get("ready"):
+        checks = startup_checks.get("checks", {})
+        failed_required = [
+            name
+            for name, detail in checks.items()
+            if isinstance(detail, dict) and detail.get("required") and not detail.get("ok")
+        ]
+        failures.append(f"Required startup checks are not ready: {', '.join(failed_required)}")
+
+    unclassified = find_unclassified_api_routes(app.routes)
+    failures.extend(f"Unclassified API route: {route}" for route in unclassified)
+
+    if failures:
+        print("\n".join(failures))
         return 1
 
-    settings = app.state.settings
-    startup_checks = app.state.startup_checks
-    summary = {
-        "environment": settings.environment,
-        "source_url": settings.source_url,
-        "rate_limit_backend": settings.rate_limit_backend,
-        "require_precomputed": settings.require_precomputed,
-        "place_search": {
-            "policy": settings.place_search_provider_policy,
-            "allow_remote": settings.place_search_allow_remote,
-            "provider_chain": list(settings.place_search_provider_chain),
-            "endpoint": settings.place_search_endpoint,
-        },
-        "startup_ready": startup_checks["ready"],
-        "checks": startup_checks["checks"],
-    }
-    print(json.dumps(summary, indent=2, sort_keys=True))
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "environment": settings.environment,
+                "rate_limit_backend": settings.rate_limit_backend,
+                "source_url": settings.source_url,
+                "route_count": len(app.routes),
+                "startup_ready": startup_checks.get("ready"),
+            },
+            indent=2,
+        )
+    )
     return 0
 
 

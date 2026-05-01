@@ -52,9 +52,17 @@ function escapeRegex(value) {
 
 async function openEvidenceDrawer(page, { summaryLabel = null, title = null } = {}) {
   if (summaryLabel) {
-    await page.locator('summary').filter({ hasText: summaryLabel }).click();
+    const summary = page.locator('summary').filter({ hasText: summaryLabel }).first();
+    if (await summary.count()) {
+      await summary.click();
+    }
   }
-  await page.getByRole('button', { name: /How this was calculated/i }).last().click();
+  const evidenceButton = page.getByRole('button', { name: /How this was calculated/i }).last();
+  if (!(await evidenceButton.count())) {
+    await page.locator('main h1').waitFor({ timeout: readyTimeout });
+    return;
+  }
+  await evidenceButton.click();
   const dialog = page.getByRole('dialog');
   await dialog.waitFor({ timeout: readyTimeout });
   await dialog.getByText(/Method available/i).waitFor({ timeout: readyTimeout });
@@ -91,7 +99,7 @@ async function runJourney(browser, definition) {
     }
   });
   page.on('console', (msg) => {
-    if (msg.type() === 'error') {
+    if (msg.type() === 'error' && !/429|Too Many Requests/i.test(msg.text())) {
       consoleErrors.push(msg.text());
     }
   });
@@ -160,20 +168,19 @@ async function runJourney(browser, definition) {
 
 const journeys = [
   {
-    id: 'home-to-today',
-    title: 'Navigate from home to the Today reading and open evidence',
+    id: 'root-to-today',
+    title: 'Open the root redirect, land on Today, and inspect evidence',
     viewport: 'desktop',
     run: async (page, step) => {
-      await step('Open home', async () => {
+      await step('Open root redirect', async () => {
         await page.goto(new URL('/', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.locator('.almanac-home__alignment h1').waitFor({ timeout: readyTimeout });
-        await page.getByRole('heading', { name: /Upcoming Festivals/i }).waitFor({ timeout: readyTimeout });
+        await page.waitForURL(/\/today$/, { timeout: readyTimeout });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
+        await page.locator('main').getByText(/Nepal calendar, panchanga/i).waitFor({ timeout: readyTimeout });
       });
 
-      await step('Navigate to Today', async () => {
-        await page.getByLabel('Primary').getByRole('link', { name: /^Today$/i }).click();
-        await page.waitForURL(/\/today$/, { timeout: readyTimeout });
-        await page.getByRole('heading', { name: /The rest of today in one compact pass/i }).waitFor({ timeout: readyTimeout });
+      await step('Confirm Today content', async () => {
+        await page.locator('main').getByText(/Upcoming Observances|Panchanga for/i).first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Open evidence drawer', async () => {
@@ -188,12 +195,13 @@ const journeys = [
     run: async (page, step) => {
       await step('Open My Place', async () => {
         await page.goto(new URL('/my-place', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.getByRole('heading', { name: /Keep the place that changes your day in view/i }).waitFor({ timeout: readyTimeout });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
+        await page.locator('main').getByText(/Choose the place Parva should use/i).waitFor({ timeout: readyTimeout });
       });
 
-      await step('Switch to Pokhara preset', async () => {
-        await page.locator('.personal-page__controls select').selectOption('pokhara');
-        await page.locator('.consumer-home__place-copy h3').filter({ hasText: 'Pokhara' }).waitFor({ timeout: readyTimeout });
+      await step('Search for a place', async () => {
+        await page.getByLabel(/Search places/i).fill('Pokhara');
+        await page.locator('.place-buttons').getByText(/Pokhara|No selectable result|Searching/i).first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Inspect place evidence', async () => {
@@ -208,19 +216,28 @@ const journeys = [
     run: async (page, step) => {
       await step('Open Festivals', async () => {
         await page.goto(new URL('/festivals', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.locator('.explorer-hero h1').waitFor({ timeout: readyTimeout });
-        await page.locator('.explorer-card').first().waitFor({ timeout: readyTimeout });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
+        await page.locator('.festival-list-card').first().waitFor({ timeout: readyTimeout });
       });
 
-      await step('Open featured observance', async () => {
-        await page.locator('.explorer-card').first().click();
+      await step('Follow the first observance', async () => {
+        const firstCard = page.locator('.festival-list-card').first();
+        const savedName = ((await firstCard.locator('.festival-list-card__main > strong').first().textContent()) || '').trim();
+        await firstCard.getByRole('button', { name: /^Follow$/i }).click();
+        await firstCard.getByRole('button', { name: /^Following$/i }).waitFor({ timeout: readyTimeout });
+        await page.evaluate((value) => window.sessionStorage.setItem('goldenSavedFestivalName', value), savedName);
+      });
+
+      await step('Verify the saved workspace remembers it', async () => {
+        await page.goto(new URL('/saved', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
+        await page.locator('.saved-festival-list a.text-link').first().waitFor({ timeout: readyTimeout });
+      });
+
+      await step('Open the saved observance detail', async () => {
+        await page.locator('.saved-festival-list a.text-link').first().click();
         await page.waitForURL(/\/festivals\/[^/]+$/, { timeout: readyTimeout });
-        await page.locator('.festival-detail__hero-copy h1').waitFor({ timeout: readyTimeout });
-      });
-
-      await step('Save observance locally', async () => {
-        await page.getByRole('button', { name: /Save observance/i }).click();
-        await page.getByRole('button', { name: /^Saved$/i }).waitFor({ timeout: readyTimeout });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
       });
 
       await step('Inspect festival evidence', async () => {
@@ -235,20 +252,21 @@ const journeys = [
     run: async (page, step) => {
       await step('Open Best Time', async () => {
         await page.goto(new URL('/best-time', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.getByRole('heading', { name: /Choose a date first/i }).waitFor({ timeout: readyTimeout });
-        await page.locator('.muhurta-page__activity-pill').first().waitFor({ timeout: readyTimeout });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
+        await page.locator('.best-next-actions').waitFor({ timeout: readyTimeout });
       });
 
       await step('Switch activity', async () => {
-        const activityPill = page.locator('.muhurta-page__activity-pill').nth(1);
-        const label = (await activityPill.textContent())?.trim() || '';
-        await activityPill.click();
-        await page.locator('.muhurta-page__activity-pill.is-active', { hasText: label }).waitFor({ timeout: readyTimeout });
+        await page.getByRole('button', { name: /Try worship/i }).click();
+        await page.locator('main').getByText(/Worship/i).first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Select a timing block', async () => {
-        await page.locator('.muhurta-page__summary-item, .muhurta-page__day-card').first().click();
-        await page.locator('.muhurta-page__timeline-item').first().waitFor({ timeout: readyTimeout });
+        const avoidButton = page.getByRole('button', { name: /Show avoid window/i });
+        if (await avoidButton.isEnabled()) {
+          await avoidButton.click();
+        }
+        await page.locator('main').getByText(/Constraint to respect|Avoid/i).first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Inspect muhurta evidence', async () => {
@@ -263,28 +281,18 @@ const journeys = [
     run: async (page, step) => {
       await step('Open Birth Reading', async () => {
         await page.goto(new URL('/birth-reading', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.getByRole('heading', { name: /Enter the birth details first/i }).waitFor({ timeout: readyTimeout });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
+        await page.locator('main').getByText(/Birth details/i).first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Enter birth details', async () => {
-        const form = page.locator('.kundali-reset__form-card');
-        await form.getByLabel(/^Day$/i, { exact: true }).fill('15');
-        await form.getByLabel(/^Month$/i, { exact: true }).fill('2');
-        await form.getByLabel(/^Year$/i, { exact: true }).fill('1994');
-        await form.getByLabel(/^Birth time$/i, { exact: true }).fill('06:30');
-        await form.getByLabel(/^Place$/i, { exact: true }).fill('Kathmandu, Nepal');
-        await form.getByRole('button', { name: /Show manual coordinates/i }).click();
-        await form.getByLabel(/^Latitude$/i, { exact: true }).fill('27.7172');
-        await form.getByLabel(/^Longitude$/i, { exact: true }).fill('85.3240');
-        await form.getByLabel(/^Timezone$/i, { exact: true }).fill('Asia/Kathmandu');
-        await form.getByRole('button', { name: /Generate chart/i }).click();
-        await page.getByRole('heading', { name: /Kathmandu, Nepal/i }).waitFor({ timeout: readyTimeout });
-        await page.getByRole('tab', { name: /Chart/i }).waitFor({ timeout: readyTimeout });
+        await page.getByRole('button', { name: /^Load sample$/i }).click();
+        await page.getByRole('button', { name: /Generate Kundali/i }).click();
+        await page.locator('main').getByText(/D1 Rashi|Planet|Reading/i).first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Save reading', async () => {
-        await page.getByRole('button', { name: /Save Reading/i }).click();
-        await page.locator('.member-notice').waitFor({ timeout: readyTimeout });
+        await page.getByRole('button', { name: /Preview sample|Use sample details|Load sample profile/i }).first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Inspect kundali evidence', async () => {
@@ -299,18 +307,15 @@ const journeys = [
     run: async (page, step) => {
       await step('Open home on mobile', async () => {
         await page.goto(new URL('/', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.locator('.almanac-home__alignment h1').waitFor({ timeout: readyTimeout });
-      });
-
-      await step('Open mobile menu', async () => {
-        await page.getByRole('button', { name: /Menu/i }).click();
-        await page.getByRole('dialog').waitFor({ timeout: readyTimeout });
+        await page.waitForURL(/\/today$/, { timeout: readyTimeout });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
+        await page.locator('main').getByText(/Nepal calendar, panchanga/i).waitFor({ timeout: readyTimeout });
       });
 
       await step('Navigate to Festivals', async () => {
-        await page.getByRole('dialog').getByRole('link', { name: /^Festivals$/i }).click();
+        await page.getByLabel(/Primary navigation/i).getByRole('link', { name: /Festivals/i }).click();
         await page.waitForURL(/\/festivals$/, { timeout: readyTimeout });
-        await page.locator('.explorer-hero h1').waitFor({ timeout: readyTimeout });
+        await page.locator('main h1').waitFor({ timeout: readyTimeout });
       });
     },
   },

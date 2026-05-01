@@ -103,7 +103,6 @@ const ROUTE_MANIFEST = [
     tier: 'beta',
     keywords: 'time lab conversion converter bs ad bc experimental infinite chronology',
     metaKey: 'search.command.timeLab.meta',
-    footerGroup: 'utilities',
   },
   {
     id: 'trust',

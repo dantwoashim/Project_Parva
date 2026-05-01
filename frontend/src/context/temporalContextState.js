@@ -1,5 +1,5 @@
 export const STORAGE_KEY = 'parva.temporal_context.v2';
-export const DEFAULT_LOCATION = { latitude: 27.7172, longitude: 85.324 };
+export const DEFAULT_LOCATION = { latitude: 27.7172, longitude: 85.324, label: 'Kathmandu, Nepal' };
 const SUPPORTED_THEMES = new Set(['warm-paper', 'dawn-paper', 'ink-black']);
 const SUPPORTED_LANGUAGES = new Set(['en', 'ne']);
 

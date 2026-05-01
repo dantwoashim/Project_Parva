@@ -8,10 +8,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 try:
-    from benchmark.harness import run_pack, _build_local_requester
+    from benchmark.harness import _build_local_requester, run_pack
     from benchmark.validate_pack import validate_pack_file
 except ModuleNotFoundError:  # pragma: no cover - direct script execution fallback
-    from harness import run_pack, _build_local_requester  # type: ignore
+    from harness import _build_local_requester, run_pack  # type: ignore
     from validate_pack import validate_pack_file  # type: ignore
 
 PACK_DIR = Path("benchmark/packs")
