@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import os
-import time
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
@@ -35,8 +34,6 @@ _USER_AGENT = os.getenv(
     _default_user_agent(),
 ).strip() or _default_user_agent()
 _REQUEST_TIMEOUT_SECONDS = float(os.getenv("PARVA_PLACE_SEARCH_TIMEOUT_SECONDS", "5.0"))
-_RETRY_ATTEMPTS = max(1, int(os.getenv("PARVA_PLACE_SEARCH_RETRY_ATTEMPTS", "2")))
-_RETRY_BACKOFF_SECONDS = float(os.getenv("PARVA_PLACE_SEARCH_RETRY_BACKOFF_SECONDS", "0.3"))
 _ATTRIBUTION = "Search results use OpenStreetMap Nominatim data."
 _ALLOW_REMOTE = os.getenv("PARVA_PLACE_SEARCH_ALLOW_REMOTE", "true").strip().lower() not in {
     "0",
@@ -167,25 +164,15 @@ def _fetch_nominatim_rows(query: str, limit: int) -> list[dict[str, Any]]:
             "Accept": "application/json",
         },
     )
-    payload: Any = None
-    last_error: URLError | None = None
-    for attempt in range(_RETRY_ATTEMPTS):
-        try:
-            with urlopen(request, timeout=_REQUEST_TIMEOUT_SECONDS) as response:
-                payload = json.loads(response.read().decode("utf-8"))
-            break
-        except HTTPError as exc:
-            raise RuntimeError(f"Place search upstream returned HTTP {exc.code}.") from exc
-        except URLError as exc:
-            last_error = exc
-            if attempt == _RETRY_ATTEMPTS - 1:
-                raise RuntimeError("Place search upstream is unavailable.") from exc
-            time.sleep(_RETRY_BACKOFF_SECONDS * (attempt + 1))
-        except json.JSONDecodeError as exc:
-            raise RuntimeError("Place search upstream returned malformed JSON.") from exc
-
-    if last_error is not None and payload is None:
-        raise RuntimeError("Place search upstream is unavailable.") from last_error
+    try:
+        with urlopen(request, timeout=_REQUEST_TIMEOUT_SECONDS) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except HTTPError as exc:
+        raise RuntimeError(f"Place search upstream returned HTTP {exc.code}.") from exc
+    except URLError as exc:
+        raise RuntimeError("Place search upstream is unavailable.") from exc
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("Place search upstream returned malformed JSON.") from exc
 
     if not isinstance(payload, list):
         raise RuntimeError("Place search upstream returned an unexpected payload shape.")
@@ -228,8 +215,6 @@ def search_places(*, query: str, limit: int = 5) -> dict[str, Any]:
                 "total": len(offline_items),
                 "source": "offline_nepal_gazetteer",
                 "source_mode": "offline_gazetteer",
-                "provider_chain": ["offline_nepal_gazetteer"],
-                "provider_health": [{"provider": "offline_nepal_gazetteer", "status": "hit"}],
                 "attribution": "Curated offline Nepal gazetteer bundled with Project Parva.",
                 "privacy_notice": "This search was resolved locally without sending the query to a remote geocoder.",
                 "service_notice": "Offline results prioritize common Nepal locations for fast, privacy-preserving form entry.",
@@ -270,11 +255,6 @@ def search_places(*, query: str, limit: int = 5) -> dict[str, Any]:
             "total": len(items),
             "source": "openstreetmap_nominatim",
             "source_mode": "remote_geocoder",
-            "provider_chain": ["offline_nepal_gazetteer", "openstreetmap_nominatim"],
-            "provider_health": [
-                {"provider": "offline_nepal_gazetteer", "status": "miss"},
-                {"provider": "openstreetmap_nominatim", "status": "hit" if items else "miss"},
-            ],
             "attribution": _ATTRIBUTION,
             "privacy_notice": "Place queries are sent to the configured geocoding provider for resolution.",
             "service_notice": "For privacy-sensitive or high-volume deployments, prefer an offline gazetteer over the public upstream service.",

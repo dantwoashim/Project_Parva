@@ -116,6 +116,19 @@ class TestSwissEphemeris:
         
         # Sunrise should be between 5:30 and 7:00 AM Nepal time
         assert sunrise_nepal.hour in [5, 6]
+
+    def test_sunrise_uses_observer_civil_date_before_utc_midnight(self):
+        """Warm-season Nepal sunrise occurs on the previous UTC date."""
+        from app.calendar.ephemeris.swiss_eph import calculate_sunrise
+        from app.calendar.ephemeris.time_utils import to_nepal_time
+
+        target_date = date(2026, 4, 24)
+        sunrise = calculate_sunrise(target_date)
+        sunrise_nepal = to_nepal_time(sunrise)
+
+        assert sunrise.date() == date(2026, 4, 23)
+        assert sunrise_nepal.date() == target_date
+        assert sunrise_nepal.strftime("%H:%M:%S") == "05:30:54"
     
     def test_ephemeris_info(self):
         """Test ephemeris info returns correct metadata."""

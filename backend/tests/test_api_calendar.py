@@ -10,19 +10,16 @@ Tests the new ephemeris-based calendar API endpoints:
 """
 
 
-import hashlib
-
 import pytest
 from fastapi.testclient import TestClient
 
 
 @pytest.fixture
-def client(request):
+def client():
     """Create test client for API."""
     from app.main import app
 
-    client_name = hashlib.sha1(request.node.nodeid.encode("utf-8")).hexdigest()[:12]
-    return TestClient(app, client=(f"backend-api-{client_name}", 50000))
+    return TestClient(app)
 
 
 # =============================================================================

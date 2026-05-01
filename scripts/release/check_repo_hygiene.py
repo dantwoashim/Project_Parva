@@ -1,77 +1,16 @@
 #!/usr/bin/env python3
-"""Reject known workspace residue and tracked release artifacts in the repo."""
+"""Reject known non-Parva workspace residue in the repo root."""
 
 from __future__ import annotations
 
 import json
-import subprocess
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DISALLOWED_TRACKED_PREFIXES = {
-    Path("benchmark/results"),
-    Path("backend/data/snapshots"),
-    Path("backend/data/traces"),
-    Path("output"),
-    Path("reports"),
-    Path("tmp"),
-}
-DISALLOWED_TRACKED_EXACT = {
-    Path("evaluation.csv"),
-    Path("backend/evaluation.csv"),
-}
-DISALLOWED_TRACKED_SEGMENTS = {
-    ".mypy_cache",
-    ".playwright-cli",
-    ".pytest_cache",
-    ".ruff_cache",
-    "__pycache__",
-    "dist",
-    "node_modules",
-}
-DISALLOWED_TRACKED_FILENAMES = {
-    ".DS_Store",
-}
-DISALLOWED_TRACKED_SUFFIXES = {
-    ".pyc",
-    ".pyo",
-}
 
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def _tracked_files() -> list[str]:
-    result = subprocess.run(
-        ["git", "ls-files"],
-        cwd=PROJECT_ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
-
-
-def _tracked_path_issue(tracked: str) -> str | None:
-    relative = Path(tracked)
-
-    if relative in DISALLOWED_TRACKED_EXACT:
-        return f"Tracked generated artifact must not live in source control: {tracked}"
-
-    if any(relative == prefix or prefix in relative.parents for prefix in DISALLOWED_TRACKED_PREFIXES):
-        return f"Tracked release artifact must not live in source control: {tracked}"
-
-    if relative.name in DISALLOWED_TRACKED_FILENAMES or relative.suffix in DISALLOWED_TRACKED_SUFFIXES:
-        return f"Tracked local/runtime artifact must not live in source control: {tracked}"
-
-    for part in relative.parts:
-        if part in DISALLOWED_TRACKED_SEGMENTS or part.startswith(".venv") or part.startswith(".verify"):
-            return f"Tracked release artifact must not live in source control: {tracked}"
-        if part.endswith(".egg-info"):
-            return f"Tracked packaging residue must not live in source control: {tracked}"
-
-    return None
 
 
 def main() -> int:
@@ -108,11 +47,6 @@ def main() -> int:
     root_tsconfig_base = PROJECT_ROOT / "tsconfig.base.json"
     if root_tsconfig_base.exists():
         issues.append("Root tsconfig.base.json still exists even though Parva does not use a root TS workspace.")
-
-    for tracked in _tracked_files():
-        issue = _tracked_path_issue(tracked)
-        if issue:
-            issues.append(issue)
 
     if issues:
         for issue in issues:

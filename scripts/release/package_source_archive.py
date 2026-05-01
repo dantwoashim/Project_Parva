@@ -34,6 +34,7 @@ EXCLUDED_DIR_NAMES = {
     "reports",
 }
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".zip"}
+EXCLUDED_FILE_NAMES = {".DS_Store"}
 EXCLUDED_RELATIVE_PREFIXES = {
     Path("benchmark/results"),
     Path("backend/data/snapshots"),
@@ -61,6 +62,9 @@ def _should_skip(path: Path) -> bool:
         return True
 
     if any(part.startswith(".verify") for part in relative.parts):
+        return True
+
+    if path.name in EXCLUDED_FILE_NAMES:
         return True
 
     if any(relative == prefix or prefix in relative.parents for prefix in EXCLUDED_RELATIVE_PREFIXES):
