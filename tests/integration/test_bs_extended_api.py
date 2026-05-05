@@ -17,6 +17,27 @@ def test_bs_to_gregorian_official_confidence():
     assert body["bs"]["estimated_error_days"] is None
 
 
+def test_bs_to_gregorian_official_range_edges():
+    first = client.post(
+        "/api/calendar/bs-to-gregorian", json={"year": 2070, "month": 1, "day": 1}
+    )
+    assert first.status_code == 200
+    assert first.json()["gregorian"] == "2013-04-13"
+    assert first.json()["bs"]["confidence"] == "official"
+
+    last = client.post(
+        "/api/calendar/bs-to-gregorian", json={"year": 2095, "month": 12, "day": 30}
+    )
+    assert last.status_code == 200
+    assert last.json()["gregorian"] == "2039-04-14"
+    assert last.json()["bs"]["confidence"] == "official"
+
+    invalid = client.post(
+        "/api/calendar/bs-to-gregorian", json={"year": 2095, "month": 12, "day": 31}
+    )
+    assert invalid.status_code == 400
+
+
 def test_bs_to_gregorian_estimated_confidence_for_far_year():
     response = client.post(
         "/api/calendar/bs-to-gregorian", json={"year": 2150, "month": 1, "day": 1}
