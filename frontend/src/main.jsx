@@ -8,7 +8,9 @@ if ('serviceWorker' in navigator) {
     // Register for production builds; keep dev deterministic.
     const isLocalhost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
     if (!isLocalhost) {
-      navigator.serviceWorker.register('/sw.js').catch(() => {
+      navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then((registration) => {
+        registration.update().catch(() => {});
+      }).catch(() => {
         // Ignore SW registration failures.
       });
     }
