@@ -46,4 +46,4 @@ make verify
 python3.11 scripts/security/run_audit.py
 ```
 
-`scripts/security/run_audit.py` writes a generated report to `reports/security_audit.json`. That report is an artifact, not source.
+`scripts/security/run_audit.py` writes a generated artifact report to `reports/security_audit.json`. That report is an artifact, not source.
