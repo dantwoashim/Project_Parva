@@ -47,6 +47,19 @@ Without that header, the public v3 response shape remains unchanged.
 - `GET /calendar/panchanga/range?start=YYYY-MM-DD&days=7`
 - `GET /resolve?date=YYYY-MM-DD&profile=&latitude=&longitude=&include_trace=true|false`
 
+## Enterprise Calendar Evaluation
+- `GET /enterprise/capabilities`
+- `GET /enterprise/fiscal-year/{bs_year}`
+- `GET /enterprise/bs-months/{bs_year}`
+- `POST /enterprise/business-days` with JSON body `{ "start_bs", "end_bs", "weekend", "include_start", "include_end", "holiday_policy" }`
+- `POST /enterprise/bulk-convert` with JSON body `{ "mode": "ad_to_bs|bs_to_ad", "dates": [] }`
+- `POST /enterprise/validate` with JSON body `{ "cases": [{ "id", "type", "input", "expected" }] }`
+
+The enterprise surface is intended for technical evaluation, regression reference
+work, and private-deployment review. Business-day calculations are weekend-aware
+only unless a holiday policy profile is configured; Parva does not present these
+routes as legal, tax, or final financial authority without client validation.
+
 ## Festivals
 - `GET /festivals?quality_band=computed|provisional|inventory|all&algorithmic_only=true|false`
 - `GET /festivals/upcoming?days=90&quality_band=computed|provisional|inventory|all`
@@ -110,6 +123,21 @@ date resolution, and related observances.
 - `GET /engine/convert?date=YYYY-MM-DD&calendar=bs|ns|tibetan|islamic|hebrew|chinese|julian`
 - `GET /engine/plugins/quality`
 
+## Billing, Keys, and Webhooks
+- `GET /billing/plans`
+- `POST /billing/checkout`
+- `GET /billing/checkout/{checkout_id}`
+- `POST /billing/checkout/{checkout_id}/verify`
+- `POST /keys`
+- `DELETE /keys/{key_id}`
+- `GET /me/usage`
+- `GET /webhooks`
+- `POST /webhooks`
+
+Billing and key routes support the monetized API surface. Admin routes under
+`/admin` are protected operations for customer, invoice, subscription, usage, and
+API-key support workflows.
+
 ## Operational + Provenance Routes
 - `GET /reliability/status`
 - `GET /reliability/metrics`
@@ -122,6 +150,18 @@ date resolution, and related observances.
 - `GET /provenance/proof`
 - `GET /public/artifacts/manifest`
 - `GET /explain/{trace_id}`
+- `GET /cache/stats`
+- `GET /cache/festivals/{year}`
+- `GET /cache/panchanga/{year}/{month}/{day}`
+- `GET /forecast/festivals`
+- `GET /forecast/error-curve`
+- `GET /integrations/feeds/*`
+- `GET /places/search`
+- `GET /spec/conformance`
+- `GET /temples`
+- `GET /temples/{temple_id}`
+- `GET /temples/{temple_id}/festivals`
+- `GET /temples/for-festival/{festival_id}`
 
 These read routes are part of the public v3 profile. Mutating provenance routes remain admin-only.
 

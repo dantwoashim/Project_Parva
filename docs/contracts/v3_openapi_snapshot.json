@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-24T00:58:57.329622+00:00",
+  "generated_at": "2026-05-05T14:37:43.997467+00:00",
   "track": "v3",
   "schema": {
     "openapi": "3.1.0",
@@ -1932,6 +1932,665 @@
                   "schema": {
                     "$ref": "#/components/schemas/HTTPValidationError"
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/enterprise/capabilities": {
+        "get": {
+          "tags": [
+            "enterprise"
+          ],
+          "summary": "Enterprise Capabilities",
+          "operationId": "enterprise_capabilities_v3_api_enterprise_capabilities_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/enterprise/fiscal-year/{bs_year}": {
+        "get": {
+          "tags": [
+            "enterprise"
+          ],
+          "summary": "Enterprise Fiscal Year",
+          "operationId": "enterprise_fiscal_year_v3_api_enterprise_fiscal_year__bs_year__get",
+          "parameters": [
+            {
+              "name": "bs_year",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Bs Year"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/enterprise/bs-months/{bs_year}": {
+        "get": {
+          "tags": [
+            "enterprise"
+          ],
+          "summary": "Enterprise Bs Months",
+          "operationId": "enterprise_bs_months_v3_api_enterprise_bs_months__bs_year__get",
+          "parameters": [
+            {
+              "name": "bs_year",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "title": "Bs Year"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/enterprise/business-days": {
+        "post": {
+          "tags": [
+            "enterprise"
+          ],
+          "summary": "Enterprise Business Days",
+          "operationId": "enterprise_business_days_v3_api_enterprise_business_days_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessDaysRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/enterprise/bulk-convert": {
+        "post": {
+          "tags": [
+            "enterprise"
+          ],
+          "summary": "Enterprise Bulk Convert",
+          "operationId": "enterprise_bulk_convert_v3_api_enterprise_bulk_convert_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkConvertRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/enterprise/validate": {
+        "post": {
+          "tags": [
+            "enterprise"
+          ],
+          "summary": "Enterprise Validate",
+          "operationId": "enterprise_validate_v3_api_enterprise_validate_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidateRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/billing/plans": {
+        "get": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Billing Plans",
+          "operationId": "billing_plans_v3_api_billing_plans_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/billing/checkout": {
+        "post": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Create Billing Checkout",
+          "operationId": "create_billing_checkout_v3_api_billing_checkout_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckoutRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/billing/checkout/{checkout_id}": {
+        "get": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Get Billing Checkout",
+          "operationId": "get_billing_checkout_v3_api_billing_checkout__checkout_id__get",
+          "parameters": [
+            {
+              "name": "checkout_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Checkout Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/billing/checkout/{checkout_id}/verify": {
+        "post": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Verify Billing Checkout",
+          "operationId": "verify_billing_checkout_v3_api_billing_checkout__checkout_id__verify_post",
+          "parameters": [
+            {
+              "name": "checkout_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Checkout Id"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyCheckoutRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/keys": {
+        "post": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Create Api Key",
+          "operationId": "create_api_key_v3_api_keys_post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateKeyRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/keys/{key_id}": {
+        "delete": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Revoke Api Key",
+          "operationId": "revoke_api_key_v3_api_keys__key_id__delete",
+          "parameters": [
+            {
+              "name": "key_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Key Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/me/usage": {
+        "get": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "My Usage",
+          "operationId": "my_usage_v3_api_me_usage_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/admin/customers": {
+        "get": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Admin Customers",
+          "operationId": "admin_customers_v3_api_admin_customers_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/admin/subscriptions": {
+        "get": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Admin Subscriptions",
+          "operationId": "admin_subscriptions_v3_api_admin_subscriptions_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/admin/invoices/{invoice_id}/mark-paid": {
+        "post": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Admin Mark Invoice Paid",
+          "operationId": "admin_mark_invoice_paid_v3_api_admin_invoices__invoice_id__mark_paid_post",
+          "parameters": [
+            {
+              "name": "invoice_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Invoice Id"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarkInvoicePaidRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/admin/subscriptions/{subscription_id}/extend": {
+        "post": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Admin Extend Subscription",
+          "operationId": "admin_extend_subscription_v3_api_admin_subscriptions__subscription_id__extend_post",
+          "parameters": [
+            {
+              "name": "subscription_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Subscription Id"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtendSubscriptionRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/admin/api-keys/{key_id}/revoke": {
+        "post": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Admin Revoke Key",
+          "operationId": "admin_revoke_key_v3_api_admin_api_keys__key_id__revoke_post",
+          "parameters": [
+            {
+              "name": "key_id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "title": "Key Id"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
+                }
+              }
+            },
+            "422": {
+              "description": "Validation Error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/HTTPValidationError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/v3/api/admin/usage/anomalies": {
+        "get": {
+          "tags": [
+            "billing"
+          ],
+          "summary": "Admin Usage Anomalies",
+          "operationId": "admin_usage_anomalies_v3_api_admin_usage_anomalies_get",
+          "responses": {
+            "200": {
+              "description": "Successful Response",
+              "content": {
+                "application/json": {
+                  "schema": {}
                 }
               }
             }
@@ -8066,6 +8725,77 @@
           "title": "BSDateLite",
           "description": "Bikram Sambat date shape for mixed-calendar UI surfaces."
         },
+        "BulkConvertRequest": {
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "ad_to_bs",
+                "bs_to_ad"
+              ],
+              "title": "Mode"
+            },
+            "dates": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "maxItems": 500,
+              "minItems": 1,
+              "title": "Dates"
+            }
+          },
+          "type": "object",
+          "required": [
+            "mode",
+            "dates"
+          ],
+          "title": "BulkConvertRequest"
+        },
+        "BusinessDaysRequest": {
+          "properties": {
+            "start_bs": {
+              "type": "string",
+              "title": "Start Bs",
+              "examples": [
+                "2082-04-01"
+              ]
+            },
+            "end_bs": {
+              "type": "string",
+              "title": "End Bs",
+              "examples": [
+                "2082-04-31"
+              ]
+            },
+            "weekend": {
+              "type": "string",
+              "title": "Weekend",
+              "default": "saturday"
+            },
+            "include_start": {
+              "type": "boolean",
+              "title": "Include Start",
+              "default": true
+            },
+            "include_end": {
+              "type": "boolean",
+              "title": "Include End",
+              "default": true
+            },
+            "holiday_policy": {
+              "type": "string",
+              "title": "Holiday Policy",
+              "default": "none"
+            }
+          },
+          "type": "object",
+          "required": [
+            "start_bs",
+            "end_bs"
+          ],
+          "title": "BusinessDaysRequest"
+        },
         "CalculationTraceV2": {
           "properties": {
             "trace_id": {
@@ -8174,6 +8904,95 @@
           "title": "CalendarDayFestivals",
           "description": "Festivals on a specific calendar day."
         },
+        "CheckoutRequest": {
+          "properties": {
+            "email": {
+              "type": "string",
+              "maxLength": 255,
+              "minLength": 3,
+              "title": "Email"
+            },
+            "tier": {
+              "type": "string",
+              "enum": [
+                "starter",
+                "professional",
+                "enterprise"
+              ],
+              "title": "Tier"
+            },
+            "provider": {
+              "type": "string",
+              "enum": [
+                "manual_qr",
+                "manual_bank_qr",
+                "manual_esewa_qr",
+                "manual_khalti_qr",
+                "manual_contact",
+                "payoneer",
+                "khalti",
+                "esewa"
+              ],
+              "title": "Provider",
+              "default": "manual_bank_qr"
+            },
+            "name": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 160
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            },
+            "company_name": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 180
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Company Name"
+            },
+            "country": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Country",
+              "default": "NP"
+            },
+            "phone": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 80
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Phone"
+            }
+          },
+          "type": "object",
+          "required": [
+            "email",
+            "tier"
+          ],
+          "title": "CheckoutRequest"
+        },
         "ConversionResult": {
           "properties": {
             "gregorian": {
@@ -8273,6 +9092,31 @@
           "title": "Coordinates",
           "description": "Geographic coordinates."
         },
+        "CreateKeyRequest": {
+          "properties": {
+            "checkout_id": {
+              "type": "string",
+              "title": "Checkout Id"
+            },
+            "name": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 120
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Name"
+            }
+          },
+          "type": "object",
+          "required": [
+            "checkout_id"
+          ],
+          "title": "CreateKeyRequest"
+        },
         "DayRituals": {
           "properties": {
             "day": {
@@ -8361,6 +9205,19 @@
           ],
           "title": "DeityLink",
           "description": "Reference to a deity associated with a festival."
+        },
+        "ExtendSubscriptionRequest": {
+          "properties": {
+            "days": {
+              "type": "integer",
+              "maximum": 366.0,
+              "minimum": 1.0,
+              "title": "Days",
+              "default": 30
+            }
+          },
+          "type": "object",
+          "title": "ExtendSubscriptionRequest"
         },
         "Festival": {
           "properties": {
@@ -10053,6 +10910,36 @@
           "title": "LocationLink",
           "description": "Reference to a temple or location."
         },
+        "MarkInvoicePaidRequest": {
+          "properties": {
+            "provider_reference": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 180
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Provider Reference"
+            },
+            "notes": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 500
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Notes"
+            }
+          },
+          "type": "object",
+          "title": "MarkInvoicePaidRequest"
+        },
         "MuhurtaDayRequest": {
           "properties": {
             "date": {
@@ -11441,6 +12328,62 @@
           "title": "UpcomingFestivalsResponse",
           "description": "API response for upcoming festivals."
         },
+        "ValidateRequest": {
+          "properties": {
+            "cases": {
+              "items": {
+                "$ref": "#/components/schemas/ValidationCase"
+              },
+              "type": "array",
+              "maxItems": 500,
+              "minItems": 1,
+              "title": "Cases"
+            }
+          },
+          "type": "object",
+          "required": [
+            "cases"
+          ],
+          "title": "ValidateRequest"
+        },
+        "ValidationCase": {
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "Id"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "ad_to_bs",
+                "bs_to_ad"
+              ],
+              "title": "Type"
+            },
+            "input": {
+              "type": "string",
+              "title": "Input"
+            },
+            "expected": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Expected"
+            }
+          },
+          "type": "object",
+          "required": [
+            "id",
+            "type",
+            "input"
+          ],
+          "title": "ValidationCase"
+        },
         "ValidationError": {
           "properties": {
             "loc": {
@@ -11480,6 +12423,44 @@
             "type"
           ],
           "title": "ValidationError"
+        },
+        "VerifyCheckoutRequest": {
+          "properties": {
+            "status": {
+              "type": "string",
+              "maxLength": 80,
+              "minLength": 1,
+              "title": "Status"
+            },
+            "provider_reference": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 180
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Provider Reference"
+            },
+            "raw_payload": {
+              "anyOf": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Raw Payload"
+            }
+          },
+          "type": "object",
+          "required": [
+            "status"
+          ],
+          "title": "VerifyCheckoutRequest"
         }
       }
     }

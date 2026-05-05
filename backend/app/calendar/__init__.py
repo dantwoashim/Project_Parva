@@ -35,6 +35,13 @@ from .calculator_v2 import (
 from .ephemeris.positions import (
     get_paksha,
 )
+from .fiscal import (
+    fiscal_month_for_bs_month,
+    fiscal_period_for_bs_date,
+    fiscal_period_for_gregorian,
+    fiscal_year_label,
+    fiscal_year_start_for_bs_date,
+)
 from .nepal_sambat import (
     format_ns_date,
     get_current_ns_year,
@@ -117,6 +124,11 @@ __all__ = [
     "get_bs_month_name_nepali",
     "days_in_bs_month",
     "is_valid_bs_date",
+    "fiscal_month_for_bs_month",
+    "fiscal_period_for_bs_date",
+    "fiscal_period_for_gregorian",
+    "fiscal_year_label",
+    "fiscal_year_start_for_bs_date",
     # Tithi (v2.0 ephemeris-based)
     "calculate_tithi",
     "get_paksha",
