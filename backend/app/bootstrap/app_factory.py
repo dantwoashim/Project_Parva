@@ -44,6 +44,25 @@ RESERVED_FRONTEND_PREFIXES = (
     "openapi.json",
     "health",
 )
+IMMUTABLE_FRONTEND_PREFIXES = (
+    "assets/",
+    "festival-images/",
+    "front-end-images/",
+    "payment-qr/",
+)
+
+
+def _frontend_response(path, *, immutable: bool = False) -> FileResponse:
+    response = FileResponse(path)
+    response.headers["Cache-Control"] = (
+        "public, max-age=31536000, immutable" if immutable else "no-cache"
+    )
+    return response
+
+
+def _is_immutable_frontend_asset(path: str) -> bool:
+    normalized = path.lstrip("/")
+    return any(normalized.startswith(prefix) for prefix in IMMUTABLE_FRONTEND_PREFIXES)
 
 
 def _cors_origins_from_env() -> list[str]:
@@ -294,7 +313,7 @@ def _register_root_and_health_routes(app: FastAPI, settings) -> None:
     @app.get("/")
     async def root():
         if settings.serve_frontend and frontend_index and frontend_index.exists():
-            return FileResponse(frontend_index)
+            return _frontend_response(frontend_index)
 
         return {
             "name": "Project Parva",
@@ -375,9 +394,9 @@ def _register_frontend_spa_route(app: FastAPI, settings) -> None:
 
         candidate = (frontend_dist / full_path).resolve()
         if frontend_dist in candidate.parents and candidate.exists() and candidate.is_file():
-            return FileResponse(candidate)
+            return _frontend_response(candidate, immutable=_is_immutable_frontend_asset(full_path))
 
-        return FileResponse(index_file)
+        return _frontend_response(index_file)
 
 
 def _prewarm_runtime_hotset(app: FastAPI, settings) -> None:
