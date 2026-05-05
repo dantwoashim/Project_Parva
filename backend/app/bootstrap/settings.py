@@ -59,6 +59,17 @@ class AppSettings:
     prewarm_hotset: bool = False
     precomputed_stale_hours: int = 24 * 30
     trusted_proxy_ips: frozenset[str] = field(default_factory=frozenset)
+    billing_enabled: bool = False
+    database_url: str | None = None
+    api_key_pepper: str = "parva-local-development-pepper"
+    khalti_secret_key: str | None = None
+    khalti_public_key: str | None = None
+    khalti_base_url: str = "https://dev.khalti.com/api/v2"
+    khalti_return_url: str | None = None
+    esewa_merchant_id: str | None = None
+    esewa_secret: str | None = None
+    esewa_base_url: str = "https://rc.esewa.com.np"
+    esewa_return_url: str | None = None
 
     @property
     def is_dev_environment(self) -> bool:
@@ -79,6 +90,12 @@ def _frontend_dist_from_env() -> Path:
     if configured:
         return Path(configured).expanduser().resolve()
     return (PROJECT_ROOT / "frontend" / "dist").resolve()
+
+
+def _default_database_url(environment: str) -> str:
+    if environment.strip().lower() in TEST_ENV_VALUES:
+        return "sqlite:///:memory:"
+    return f"sqlite:///{(PROJECT_ROOT / '.parva-billing.sqlite3').resolve()}"
 
 
 def _parse_api_keys(raw: str, *, environment: str) -> dict[str, APIKeyRecord]:
@@ -179,6 +196,21 @@ def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
     return errors
 
 
+def _validate_billing_settings(settings: AppSettings) -> list[str]:
+    if not settings.billing_enabled:
+        return []
+
+    errors: list[str] = []
+    if not settings.database_url:
+        errors.append("PARVA_DATABASE_URL is required when PARVA_BILLING_ENABLED=true.")
+    if settings.environment.lower() == "production":
+        if settings.database_url and not settings.database_url.startswith(("postgres://", "postgresql://")):
+            errors.append("Production billing requires a Postgres PARVA_DATABASE_URL.")
+        if settings.api_key_pepper == "parva-local-development-pepper":
+            errors.append("Production billing requires PARVA_API_KEY_PEPPER to be set.")
+    return errors
+
+
 def _validate_frontend_settings(settings: AppSettings) -> list[str]:
     if not settings.serve_frontend or settings.environment.lower() != "production":
         return []
@@ -231,6 +263,24 @@ def load_settings() -> AppSettings:
         ),
         precomputed_stale_hours=int(os.getenv("PARVA_PRECOMPUTED_STALE_HOURS", str(24 * 30))),
         trusted_proxy_ips=_parse_csv_set(os.getenv("PARVA_TRUSTED_PROXY_IPS", "")),
+        billing_enabled=_parse_bool(os.getenv("PARVA_BILLING_ENABLED"), default=False),
+        database_url=_parse_optional_text(os.getenv("PARVA_DATABASE_URL"))
+        or _default_database_url(environment),
+        api_key_pepper=os.getenv("PARVA_API_KEY_PEPPER", "parva-local-development-pepper"),
+        khalti_secret_key=_parse_optional_text(os.getenv("PARVA_KHALTI_SECRET_KEY")),
+        khalti_public_key=_parse_optional_text(os.getenv("PARVA_KHALTI_PUBLIC_KEY")),
+        khalti_base_url=(
+            os.getenv("PARVA_KHALTI_BASE_URL", "https://dev.khalti.com/api/v2").strip().rstrip("/")
+            or "https://dev.khalti.com/api/v2"
+        ),
+        khalti_return_url=_parse_optional_text(os.getenv("PARVA_KHALTI_RETURN_URL")),
+        esewa_merchant_id=_parse_optional_text(os.getenv("PARVA_ESEWA_MERCHANT_ID")),
+        esewa_secret=_parse_optional_text(os.getenv("PARVA_ESEWA_SECRET")),
+        esewa_base_url=(
+            os.getenv("PARVA_ESEWA_BASE_URL", "https://rc.esewa.com.np").strip().rstrip("/")
+            or "https://rc.esewa.com.np"
+        ),
+        esewa_return_url=_parse_optional_text(os.getenv("PARVA_ESEWA_RETURN_URL")),
     )
 
 
@@ -240,5 +290,6 @@ def validate_settings(settings: AppSettings) -> list[str]:
     errors.extend(_validate_source_url(settings))
     errors.extend(_validate_experimental_settings(settings))
     errors.extend(_validate_rate_limit_settings(settings))
+    errors.extend(_validate_billing_settings(settings))
     errors.extend(_validate_frontend_settings(settings))
     return errors

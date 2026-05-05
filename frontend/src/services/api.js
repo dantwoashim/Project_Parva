@@ -609,6 +609,31 @@ export const feedAPI = {
   getPreview: (days = 30, lang = 'en') => fetchAPI(`/feeds/next?days=${days}&lang=${lang}`),
 };
 
+export const billingAPI = {
+  getPlans: () => fetchAPI('/billing/plans'),
+  createCheckout: (payload) => fetchAPI('/billing/checkout', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  getCheckout: (checkoutId) => fetchAPI(`/billing/checkout/${encodeURIComponent(checkoutId)}`),
+  verifyCheckout: (checkoutId, payload) => fetchAPI(`/billing/checkout/${encodeURIComponent(checkoutId)}/verify`, {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  createKey: (payload) => fetchAPI('/keys', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+  getUsage: (apiKey) => fetchAPI('/me/usage', {
+    headers: apiKey ? { 'X-API-Key': apiKey } : {},
+  }),
+  createWebhook: (apiKey, payload) => fetchAPI('/webhooks', {
+    method: 'POST',
+    headers: apiKey ? { 'X-API-Key': apiKey } : {},
+    body: JSON.stringify(payload),
+  }),
+};
+
 export default {
   temporal: temporalAPI,
   glossary: glossaryAPI,
@@ -619,4 +644,5 @@ export default {
   kundali: kundaliAPI,
   places: placesAPI,
   feeds: feedAPI,
+  billing: billingAPI,
 };
