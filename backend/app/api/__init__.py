@@ -4,6 +4,7 @@ from .billing_routes import router as billing_router
 from .cache_routes import router as cache_router
 from .calendar_routes import router as calendar_router
 from .engine_routes import router as engine_router
+from .enterprise_routes import router as enterprise_router
 from .explain_routes import router as explain_router
 from .feed_routes import router as feed_router
 from .festival_routes import router as festival_router
@@ -42,6 +43,7 @@ __all__ = [
     "provenance_router",
     "reliability_router",
     "engine_router",
+    "enterprise_router",
     "place_router",
     "resolve_router",
     "spec_router",
