@@ -1,0 +1,6 @@
+id,type,input,expected,category,notes
+ny-2083,ad_to_bs,2026-04-14,2083-01-01,new_year,Nepali New Year 2083
+fy-start-2082,bs_to_ad,2082-04-01,2025-07-17,fiscal_boundary,Shrawan 1 fiscal start
+fy-end-2081,bs_to_ad,2081-03-31,2024-07-15,fiscal_boundary,Ashadh end
+month-end,bs_to_ad,2083-03-32,,month_end,Generated reference for a 32-day Ashadh month
+invalid-date,bs_to_ad,2082-13-01,ERROR,invalid_input,Invalid BS month
