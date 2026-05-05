@@ -16,6 +16,7 @@ import {
   RedesignPanchanga,
   RedesignProfileSaved,
   RedesignAbout,
+  RedesignApiPricing,
   RedesignApiPolicy,
   RedesignMethodology,
   RedesignToday,
@@ -69,6 +70,10 @@ const routeSeo = {
     title: 'API Policy - Parva',
     description: 'Read Parva advisory policy, API posture, and usage boundaries.',
   },
+  '/pricing': {
+    title: 'API Pricing - Parva',
+    description: 'Create Parva API keys, start Khalti or eSewa checkout, request Payoneer invoices, and inspect quota usage.',
+  },
 };
 
 function setMetaDescription(description) {
@@ -110,6 +115,8 @@ function AppRoutes() {
         <Route path="/about" element={<RedesignAbout />} />
         <Route path="/policy" element={<RedesignApiPolicy />} />
         <Route path="/policy/" element={<RedesignApiPolicy />} />
+        <Route path="/pricing" element={<RedesignApiPricing />} />
+        <Route path="/pricing/*" element={<RedesignApiPricing />} />
         <Route path="/panchanga" element={<RedesignPanchanga />} />
         <Route path="/muhurta" element={<Navigate to="/best-time" replace />} />
         <Route path="/personal" element={<Navigate to="/my-place" replace />} />

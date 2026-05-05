@@ -8,6 +8,7 @@ from fastapi import APIRouter, FastAPI
 
 from app.api import (
     cache_router,
+    billing_router,
     calendar_router,
     engine_router,
     explain_router,
@@ -50,6 +51,7 @@ ROUTER_REGISTRATIONS = [
     RouterRegistration(festival_timeline_router, "public", "public", "festivals_timeline"),
     RouterRegistration(festival_router, "public", "public", "festivals"),
     RouterRegistration(calendar_router, "public", "public", "calendar"),
+    RouterRegistration(billing_router, "public", "public", "billing", policy_path="/api/billing"),
     RouterRegistration(cache_router, "public", "public", "cache"),
     RouterRegistration(explain_router, "public", "public", "explain"),
     RouterRegistration(locations_router, "public", "public", "locations"),

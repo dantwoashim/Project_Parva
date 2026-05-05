@@ -31,20 +31,10 @@ The backend platform and the frontend should be understood separately:
 
 ## Live links
 
-- App: [https://prabinghimire1.com.np/today/](https://prabinghimire1.com.np/today/)
-- API base: [https://api.prabinghimire1.com.np/v3/api](https://api.prabinghimire1.com.np/v3/api)
-- API docs: [https://api.prabinghimire1.com.np/docs](https://api.prabinghimire1.com.np/docs)
-
-## Documentation
-
-- [API quickstart](docs/API_QUICKSTART.md)
-- [API reference](docs/API_REFERENCE_V3.md)
-- [Accuracy method](docs/ACCURACY_METHOD.md)
-- [Known limitations](docs/KNOWN_LIMITATIONS.md)
-- [Stability guide](docs/STABILITY.md)
-- [Route access](docs/ROUTE_ACCESS.md)
-- [Deployment](docs/DEPLOYMENT.md)
-- [Python SDK](sdk/python/README.md)
+- App: [https://project-parva-uzy1.onrender.com/](https://project-parva-uzy1.onrender.com/)
+- API docs: [https://project-parva-uzy1.onrender.com/docs](https://project-parva-uzy1.onrender.com/docs)
+- Developer portal: [https://project-parva-uzy1.onrender.com/developers/index.html](https://project-parva-uzy1.onrender.com/developers/index.html)
+- Embed examples: [https://project-parva-uzy1.onrender.com/embed/index.html](https://project-parva-uzy1.onrender.com/embed/index.html)
 
 ## Recommended hosted split
 
@@ -86,6 +76,15 @@ make dev-backend
 make dev-frontend
 ```
 
+For product/design review with the built frontend and API on one origin:
+
+```bash
+make build-frontend
+make dev-local
+```
+
+Then open `http://127.0.0.1:8000/today`. This mode sets `PARVA_SERVE_FRONTEND=true` so deep links and `/v3/api` calls work from the same FastAPI server.
+
 If your default `npm` is not backed by Node 20, override the frontend command:
 
 ```bash
@@ -125,47 +124,53 @@ That runs environment checks, repo hygiene, secret scanning, route/doc parity, b
 Base URL:
 
 ```text
-https://api.prabinghimire1.com.np/v3/api
+https://project-parva-uzy1.onrender.com/v3/api
 ```
 
 Check connectivity:
 
 ```bash
-curl https://api.prabinghimire1.com.np/v3/api/calendar/today
+curl https://project-parva-uzy1.onrender.com/v3/api/calendar/today
 ```
 
 Convert Gregorian to BS:
 
 ```bash
-curl "https://api.prabinghimire1.com.np/v3/api/calendar/convert?date=2026-10-21"
+curl "https://project-parva-uzy1.onrender.com/v3/api/calendar/convert?date=2026-10-21"
 ```
 
 Location-sensitive request:
 
 ```bash
-curl -X POST https://api.prabinghimire1.com.np/v3/api/personal/panchanga \
+curl -X POST https://project-parva-uzy1.onrender.com/v3/api/personal/panchanga \
   -H "Content-Type: application/json" \
   -H "X-Parva-Envelope: data-meta" \
   -d '{"date":"2026-10-21","lat":"27.7172","lon":"85.3240","tz":"Asia/Kathmandu"}'
 ```
 
-Browser integration example:
+Paid-key request:
 
-```js
-const apiBase = "https://api.prabinghimire1.com.np/v3/api";
-
-const response = await fetch(`${apiBase}/calendar/convert?date=2024-08-21`);
-const calendar = await response.json();
-
-console.log(calendar.bikram_sambat);
+```bash
+curl "https://project-parva-uzy1.onrender.com/v3/api/calendar/today" \
+  -H "X-API-Key: parva_live_your_key_here"
 ```
+
+Request paid access manually:
+
+```bash
+curl -X POST https://project-parva-uzy1.onrender.com/v3/api/billing/checkout \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","name":"Your Name","tier":"starter","provider":"manual_bank_qr"}'
+```
+
+Current paid activation is manual-first. Use `manual_bank_qr`, `manual_esewa_qr`, `manual_khalti_qr`, or `manual_contact` for Nepali customers and `payoneer` for international customers. Khalti/eSewa API checkout is intentionally not presented until merchant registration and company PAN requirements are ready.
 
 Python SDK example:
 
 ```python
 from parva_sdk import ParvaClient
 
-client = ParvaClient("https://api.prabinghimire1.com.np/v3/api")
+client = ParvaClient("https://project-parva-uzy1.onrender.com/v3/api")
 today = client.today()
 print(today.data["gregorian"] if hasattr(today, "data") else today["gregorian"])
 ```
@@ -175,9 +180,34 @@ print(today.data["gregorian"] if hasattr(today, "data") else today["gregorian"])
 - Use `/v3/api/*` for all new integrations.
 - Treat `/api/*` as legacy compatibility only.
 - Route access is summarized at `/v3/api/policy` and documented in [docs/ROUTE_ACCESS.md](docs/ROUTE_ACCESS.md).
-- The normal `v3` read and compute surface is public by default. API keys are for preview/admin/partner-specific overlays, not ordinary `v3` reads.
+- The free tier works without an API key up to the public quota. Paid API keys unlock higher monthly quotas after manual payment confirmation.
 - Send `X-Parva-Envelope: data-meta` when you want stable `data` plus `meta` response envelopes.
 - Preserve trust metadata such as `method`, `engine_path`, `support_tier`, `quality_band`, and `provenance` if you store or forward results.
+
+## Key docs
+
+- [docs/API_QUICKSTART.md](docs/API_QUICKSTART.md)
+- [docs/API_REFERENCE_V3.md](docs/API_REFERENCE_V3.md)
+- [docs/API_LIFECYCLE.md](docs/API_LIFECYCLE.md)
+- [docs/STABILITY.md](docs/STABILITY.md)
+- [docs/PRODUCT_ARCHITECTURE_STATEMENT.md](docs/PRODUCT_ARCHITECTURE_STATEMENT.md)
+- [docs/ROUTE_ACCESS.md](docs/ROUTE_ACCESS.md)
+- [docs/KNOWN_LIMITATIONS.md](docs/KNOWN_LIMITATIONS.md)
+- [docs/FRONTEND_MATURITY.md](docs/FRONTEND_MATURITY.md)
+- [docs/PRODUCTION_MINIMUMS.md](docs/PRODUCTION_MINIMUMS.md)
+- [docs/OPERATOR_QUICKSTART.md](docs/OPERATOR_QUICKSTART.md)
+- [docs/RISK_REGISTER.md](docs/RISK_REGISTER.md)
+- [docs/SUPPORT_POLICY.md](docs/SUPPORT_POLICY.md)
+- [docs/SELF_HOSTING.md](docs/SELF_HOSTING.md)
+- [docs/DEPLOY_CLOUDFLARE_PAGES.md](docs/DEPLOY_CLOUDFLARE_PAGES.md)
+- [docs/DEPLOY_CLOUD_RUN.md](docs/DEPLOY_CLOUD_RUN.md)
+- [docs/DEPLOY_UPSTASH.md](docs/DEPLOY_UPSTASH.md)
+- [docs/RELEASE_PROCESS.md](docs/RELEASE_PROCESS.md)
+- [docs/OPEN_SOURCE_SCOPE.md](docs/OPEN_SOURCE_SCOPE.md)
+- [docs/COMMERCIAL_OFFERING.md](docs/COMMERCIAL_OFFERING.md)
+- [docs/DATA_SOURCES_AND_LICENSES.md](docs/DATA_SOURCES_AND_LICENSES.md)
+- [docs/runbooks/redis-outage.md](docs/runbooks/redis-outage.md)
+- [sdk/python/README.md](sdk/python/README.md)
 
 ## Contributing
 

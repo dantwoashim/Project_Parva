@@ -14,7 +14,7 @@ from fastapi.responses import JSONResponse, Response
 from starlette.datastructures import Headers, QueryParams
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from app.bootstrap.access_control import authenticate_request, classify_request
+from app.bootstrap.access_control import Principal, authenticate_request, classify_request
 from app.bootstrap.rate_limit import RateLimiterBackend, RatePolicy
 from app.bootstrap.settings import AppSettings
 from app.core.meta_envelope import extract_meta, merge_meta_defaults
@@ -267,6 +267,10 @@ def _log_security_event(
 def build_access_control_guard(*, settings: AppSettings):
     async def access_control(request: Request, call_next):
         requirement = classify_request(request.url.path, request.method)
+        credentials_present = bool(
+            request.headers.get("authorization", "").strip()
+            or request.headers.get("x-api-key", "").strip()
+        )
         if requirement.policy_name == "unclassified_api":
             # Let genuinely missing API paths fall through to FastAPI's 404 instead of
             # converting them into auth failures. Startup validation already blocks
@@ -274,11 +278,29 @@ def build_access_control_guard(*, settings: AppSettings):
             request.state.principal = None
             return await call_next(request)
         if not requirement.required:
-            request.state.principal = None
+            principal = authenticate_request(request, settings) if credentials_present else None
+            if credentials_present and principal is None:
+                return JSONResponse(
+                    status_code=getattr(request.state, "auth_failure_status", 401),
+                    content={
+                        "detail": getattr(request.state, "auth_failure_detail", "Invalid credentials"),
+                        "request_id": getattr(request.state, "request_id", None),
+                    },
+                )
+            if principal is None and request.url.path.startswith(_RATE_LIMITED_PREFIXES):
+                principal = Principal(
+                    principal_type="free_ip",
+                    principal_id=str(getattr(request.state, "client_ip", "unknown")),
+                    scopes=frozenset({"public.read"}),
+                    tier="free",
+                    monthly_limit=None,
+                )
+            request.state.principal = principal
             _log_security_event(
                 event="auth.skipped",
                 request=request,
                 requirement_name=requirement.policy_name,
+                principal_id=getattr(principal, "principal_id", None),
             )
             return await call_next(request)
 
@@ -380,9 +402,57 @@ def _rate_policy_for_request(path: str, principal_type: str | None) -> tuple[str
 
     if principal_type == "admin":
         return "admin", RatePolicy(limit=600, window_seconds=60)
-    if principal_type:
+    if principal_type == "api_key":
         return "authenticated", RatePolicy(limit=240, window_seconds=60)
+    if principal_type == "free_ip":
+        return "public", RatePolicy(limit=120, window_seconds=60)
     return "public", RatePolicy(limit=120, window_seconds=60)
+
+
+def _billing_quota_for_request(request: Request, settings: AppSettings):
+    if not settings.billing_enabled:
+        return None
+    if request.url.path.startswith(
+        (
+            "/api/billing",
+            "/v3/api/billing",
+            "/api/keys",
+            "/v3/api/keys",
+            "/api/me/usage",
+            "/v3/api/me/usage",
+            "/api/webhooks",
+            "/v3/api/webhooks",
+            "/api/admin",
+            "/v3/api/admin",
+        )
+    ):
+        return None
+    principal = getattr(request.state, "principal", None)
+    if principal is None or getattr(principal, "principal_type", None) == "admin":
+        return None
+    try:
+        from app.billing import get_billing_service
+        from app.billing.plans import FREE_DAILY_LIMIT
+
+        service = get_billing_service(settings)
+        if principal.principal_type == "api_key":
+            return service.check_quota(
+                subject_type="api_key",
+                subject_id=principal.principal_id,
+                tier=principal.tier or "paid",
+                limit=int(principal.monthly_limit or 0),
+                bucket="monthly",
+            )
+        return service.check_quota(
+            subject_type="ip",
+            subject_id=principal.principal_id,
+            tier="free",
+            limit=FREE_DAILY_LIMIT,
+            bucket="daily",
+        )
+    except Exception as exc:
+        logger.exception("Billing quota check failed", exc_info=exc)
+        raise
 
 
 def _should_rate_limit(path: str) -> bool:
@@ -436,9 +506,38 @@ def build_rate_limit_guard(*, settings: AppSettings, backend: RateLimiterBackend
                 },
             )
 
+        billing_decision = _billing_quota_for_request(request, settings)
+        if billing_decision is not None and not billing_decision.allowed:
+            metrics.record_throttle(request.url.path)
+            return JSONResponse(
+                status_code=429,
+                content={
+                    "detail": billing_decision.detail or "Quota exceeded",
+                    "tier": billing_decision.tier,
+                    "limit": billing_decision.limit,
+                    "remaining": billing_decision.remaining,
+                    "reset_at": billing_decision.reset_at,
+                    "upgrade": "/pricing",
+                    "request_id": getattr(request.state, "request_id", None),
+                },
+                headers={
+                    "X-RateLimit-Limit": str(billing_decision.limit),
+                    "X-RateLimit-Remaining": "0",
+                    "X-RateLimit-Reset": billing_decision.reset_at,
+                    "X-Parva-Tier": billing_decision.tier,
+                },
+            )
+
         response = await call_next(request)
-        response.headers["X-RateLimit-Limit"] = str(policy.limit)
-        response.headers["X-RateLimit-Remaining"] = str(decision.remaining)
+        if billing_decision is not None:
+            response.headers["X-RateLimit-Limit"] = str(billing_decision.limit)
+            response.headers["X-RateLimit-Remaining"] = str(billing_decision.remaining)
+            response.headers["X-RateLimit-Reset"] = billing_decision.reset_at
+            response.headers["X-Parva-Tier"] = billing_decision.tier
+        else:
+            response.headers["X-RateLimit-Limit"] = str(policy.limit)
+            response.headers["X-RateLimit-Remaining"] = str(decision.remaining)
+            response.headers["X-Parva-Tier"] = getattr(principal, "tier", None) or "public"
         return response
 
     return rate_limit_guard
