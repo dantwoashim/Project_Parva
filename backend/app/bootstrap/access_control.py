@@ -50,6 +50,9 @@ class Principal:
     principal_type: str
     principal_id: str
     scopes: frozenset[str]
+    customer_id: str | None = None
+    tier: str | None = None
+    monthly_limit: int | None = None
 
     def has_scope(self, scope: str) -> bool:
         return scope in self.scopes
@@ -177,6 +180,12 @@ def classify_request(path: str, method: str) -> AccessRequirement:
             return AccessRequirement(required=False, policy_name="provenance_read")
         return AccessRequirement(required=True, policy_name="provenance_admin", admin_only=True)
 
+    if path.startswith(("/api/admin", "/v3/api/admin", "/v2/api/admin", "/v4/api/admin", "/v5/api/admin")):
+        return AccessRequirement(required=True, policy_name="billing_admin", admin_only=True)
+
+    if path.startswith(("/api/billing", "/v3/api/billing", "/api/keys", "/v3/api/keys", "/api/me/usage", "/v3/api/me/usage", "/api/webhooks", "/v3/api/webhooks")):
+        return AccessRequirement(required=False, policy_name="billing")
+
     for policy in ROUTE_POLICY_REGISTRY:
         if policy.matches(path, method):
             return policy.requirement
@@ -212,11 +221,30 @@ def authenticate_request(request: Request, settings: AppSettings) -> Principal |
                 principal_type="admin",
                 principal_id="admin",
                 scopes=frozenset({"ops.admin", "commercial.read"}),
+                tier="admin",
             )
 
     api_key = request.headers.get("x-api-key", "").strip()
     if not api_key:
         return None
+
+    if settings.billing_enabled:
+        try:
+            from app.billing import BillingAuthError, get_billing_service
+
+            key_record = get_billing_service(settings).authenticate_api_key(api_key)
+            return Principal(
+                principal_type="api_key",
+                principal_id=key_record["id"],
+                scopes=frozenset({"commercial.read", "public.read"}),
+                customer_id=key_record["customer_id"],
+                tier=key_record["tier"],
+                monthly_limit=int(key_record["monthly_limit"]),
+            )
+        except BillingAuthError as exc:
+            request.state.auth_failure_status = exc.status_code
+            request.state.auth_failure_detail = exc.detail
+            return None
 
     for record in settings.api_keys.values():
         if hmac.compare_digest(api_key, record.secret):
@@ -224,6 +252,8 @@ def authenticate_request(request: Request, settings: AppSettings) -> Principal |
                 principal_type="api_key",
                 principal_id=record.key_id,
                 scopes=record.scopes,
+                tier="env",
+                monthly_limit=10_000,
             )
 
     return None
