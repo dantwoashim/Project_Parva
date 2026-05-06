@@ -16,10 +16,12 @@ from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR, BS_MONTH_LENGTHS, B
 from app.calendar.provenance import get_bs_year_provenance
 
 METHOD_VERSION = "parva_future_bs_v1"
-CALIBRATION_VERSION = "static_lookup_tail_ensemble_2000_2099_v1"
+CALIBRATION_VERSION = "static_lookup_calibrated_cycle_ensemble_2000_2099_v2"
 SUPPORTED_MIN_YEAR = BS_MIN_YEAR
 PREDICTION_MAX_YEAR = 2200
 MONTH_DAY_VALUES = (29, 30, 31, 32)
+MAX_CALIBRATION_CYCLE = 60
+DEFAULT_ENSEMBLE_SIZE = 5
 
 
 @dataclass(frozen=True)
@@ -85,6 +87,49 @@ def _prediction_horizon_factor(bs_year: int) -> float:
     return 0.62
 
 
+def _month_match_count(predicted: list[int], actual: list[int]) -> int:
+    return sum(predicted_days == actual_days for predicted_days, actual_days in zip(predicted, actual))
+
+
+def _cycle_training_score(cycle_length: int, train_start: int, train_end: int) -> float:
+    exact_matches = 0
+    months_tested = 0
+    for year in range(train_start + cycle_length, train_end + 1):
+        previous_year = year - cycle_length
+        if previous_year not in BS_MONTH_LENGTHS or year not in BS_MONTH_LENGTHS:
+            continue
+        exact_matches += _month_match_count(BS_MONTH_LENGTHS[previous_year], BS_MONTH_LENGTHS[year])
+        months_tested += 12
+    return exact_matches / months_tested if months_tested else 0.0
+
+
+def _calibrated_cycles(
+    train_start: int,
+    train_end: int,
+    *,
+    ensemble_size: int = DEFAULT_ENSEMBLE_SIZE,
+) -> list[tuple[int, float]]:
+    max_cycle = min(MAX_CALIBRATION_CYCLE, max(1, train_end - train_start))
+    scored = [
+        (cycle, _cycle_training_score(cycle, train_start, train_end))
+        for cycle in range(1, max_cycle + 1)
+    ]
+    scored = [row for row in scored if row[1] > 0]
+    scored.sort(key=lambda row: (row[1], row[0] in {4, 8, 23, 27, 31, 35}), reverse=True)
+    return scored[:ensemble_size]
+
+
+def _corpus_cycle_pattern(bs_year: int, cycle_length: int) -> list[int]:
+    candidate = bs_year - cycle_length
+    while candidate > BS_MAX_YEAR:
+        candidate -= cycle_length
+    while candidate < BS_MIN_YEAR:
+        candidate += cycle_length
+    if candidate not in BS_MONTH_LENGTHS:
+        candidate = min(BS_MONTH_LENGTHS, key=lambda year: abs(year - candidate))
+    return list(BS_MONTH_LENGTHS[candidate])
+
+
 def _year_patterns_from_training(end_year: int, window: int = 28) -> list[list[int]]:
     start_year = max(BS_MIN_YEAR, end_year - window + 1)
     return [BS_MONTH_LENGTHS[year] for year in range(start_year, end_year + 1) if year in BS_MONTH_LENGTHS]
@@ -105,16 +150,14 @@ def _model_outputs_for_year(bs_year: int) -> dict[str, list[int]]:
     if not anchor_patterns:
         raise ValueError("No training corpus is available for future BS prediction.")
 
-    offset = bs_year - BS_MAX_YEAR - 1
-    last_4 = anchor_patterns[-4:]
+    cycles = _calibrated_cycles(BS_MIN_YEAR, BS_MAX_YEAR)
+    outputs: dict[str, list[int]] = {
+        f"calibrated_cycle_{cycle_length}": _corpus_cycle_pattern(bs_year, cycle_length)
+        for cycle_length, _ in cycles
+    }
+
     last_12 = anchor_patterns[-12:]
     last_28 = anchor_patterns[-28:]
-
-    outputs: dict[str, list[int]] = {
-        "recent_cycle_4": list(last_4[offset % len(last_4)]),
-        "recent_cycle_12": list(last_12[offset % len(last_12)]),
-        "long_cycle_28": list(last_28[offset % len(last_28)]),
-    }
 
     month_modes: list[int] = []
     for month_index in range(12):
@@ -137,6 +180,14 @@ def _probabilities_from_votes(votes: list[int]) -> dict[str, float]:
     counts = Counter(votes)
     total = len(votes) or 1
     return {f"{days}_days": round(counts.get(days, 0) / total, 4) for days in MONTH_DAY_VALUES}
+
+
+def _weighted_probabilities_from_votes(votes: list[tuple[int, float]]) -> dict[str, float]:
+    counts: Counter[int] = Counter()
+    total = sum(weight for _, weight in votes) or 1.0
+    for days, weight in votes:
+        counts[days] += weight
+    return {f"{days}_days": round(counts.get(days, 0.0) / total, 4) for days in MONTH_DAY_VALUES}
 
 
 def _risk_flags(
@@ -173,12 +224,25 @@ def _prediction_rows(bs_year: int) -> list[MonthPrediction]:
     source_factor = 1.0 if known_official else (0.92 if bs_year in BS_MONTH_LENGTHS else 0.80)
 
     predictions: list[MonthPrediction] = []
+    cycle_scores = {
+        f"calibrated_cycle_{cycle_length}": score
+        for cycle_length, score in _calibrated_cycles(BS_MIN_YEAR, BS_MAX_YEAR)
+    }
     model_count = len(outputs)
     for index in range(12):
         votes = [month_lengths[index] for month_lengths in outputs.values()]
         vote_counts = Counter(votes)
-        final_days, final_vote_count = vote_counts.most_common(1)[0]
-        max_probability = final_vote_count / model_count
+        weighted_votes = [
+            (month_lengths[index], cycle_scores.get(model_name, 1.0))
+            for model_name, month_lengths in outputs.items()
+        ]
+        weighted_probabilities = _weighted_probabilities_from_votes(weighted_votes)
+        final_days = max(
+            MONTH_DAY_VALUES,
+            key=lambda days: (weighted_probabilities[f"{days}_days"], vote_counts.get(days, 0)),
+        )
+        final_vote_count = vote_counts.get(final_days, 0)
+        max_probability = max(weighted_probabilities.values())
         confidence_score = round(max_probability * horizon_factor * source_factor, 4)
         risk_flags = _risk_flags(
             bs_year=bs_year,
@@ -192,7 +256,7 @@ def _prediction_rows(bs_year: int) -> list[MonthPrediction]:
                 month=index + 1,
                 month_name=BS_MONTH_NAMES[index],
                 final_days=final_days,
-                probabilities=_probabilities_from_votes(votes),
+                probabilities=weighted_probabilities if bs_year > BS_MAX_YEAR else _probabilities_from_votes(votes),
                 confidence_score=confidence_score,
                 confidence_label=_confidence_label(confidence_score, known_official=known_official),
                 risk_flags=risk_flags,
@@ -352,21 +416,41 @@ def compare_external_sheet(source_name: str, years: list[dict[str, Any]]) -> dic
     }
 
 
-def _predict_from_training(bs_year: int, train_start: int, train_end: int) -> list[int]:
-    patterns = [BS_MONTH_LENGTHS[year] for year in range(train_start, train_end + 1)]
-    if not patterns:
-        raise ValueError("Training range has no corpus years.")
-    offset = bs_year - train_end - 1
-    cycle_pattern = patterns[offset % len(patterns)]
-    modes: list[int] = []
+def _predict_from_training(bs_year: int, train_start: int, train_end: int) -> tuple[list[int], list[dict[str, Any]]]:
+    cycles = _calibrated_cycles(train_start, train_end, ensemble_size=3)
+    if not cycles:
+        raise ValueError("Training range has no calibratable cycle candidates.")
+    model_outputs: list[dict[str, Any]] = []
+    for cycle_length, score in cycles:
+        source_year = bs_year - cycle_length
+        if source_year < train_start or source_year > train_end:
+            continue
+        model_outputs.append(
+            {
+                "model": f"calibrated_cycle_{cycle_length}",
+                "training_score": round(score * 100, 2),
+                "source_year": source_year,
+                "months": list(BS_MONTH_LENGTHS[source_year]),
+            }
+        )
+    if not model_outputs:
+        fallback_year = train_end
+        model_outputs.append(
+            {
+                "model": "training_tail_fallback",
+                "training_score": 0.0,
+                "source_year": fallback_year,
+                "months": list(BS_MONTH_LENGTHS[fallback_year]),
+            }
+        )
+
+    predicted: list[int] = []
     for month_index in range(12):
-        votes = [pattern[month_index] for pattern in patterns[-min(28, len(patterns)) :]]
-        modes.append(Counter(votes).most_common(1)[0][0])
-    blended: list[int] = []
-    for month_index in range(12):
-        vote_counts = Counter([cycle_pattern[month_index], modes[month_index], patterns[-1][month_index]])
-        blended.append(vote_counts.most_common(1)[0][0])
-    return blended
+        weighted_votes: Counter[int] = Counter()
+        for model in model_outputs:
+            weighted_votes[model["months"][month_index]] += float(model["training_score"]) or 1.0
+        predicted.append(weighted_votes.most_common(1)[0][0])
+    return predicted, model_outputs
 
 
 def backtest_model(train_start: int, train_end: int, test_start: int, test_end: int) -> dict[str, Any]:
@@ -378,16 +462,20 @@ def backtest_model(train_start: int, train_end: int, test_start: int, test_end: 
     if train_end >= test_start:
         raise ValueError("train_end must be earlier than test_start.")
 
+    calibrated_cycles = _calibrated_cycles(train_start, train_end, ensemble_size=3)
     mismatches: list[dict[str, Any]] = []
     exact_matches = 0
     months_tested = 0
+    yearly_predictions: list[dict[str, Any]] = []
     for year in range(test_start, test_end + 1):
-        predicted = _predict_from_training(year, train_start, train_end)
+        predicted, model_outputs = _predict_from_training(year, train_start, train_end)
         actual = BS_MONTH_LENGTHS[year]
+        year_matches = 0
         for index, (predicted_days, actual_days) in enumerate(zip(predicted, actual), start=1):
             months_tested += 1
             if predicted_days == actual_days:
                 exact_matches += 1
+                year_matches += 1
             else:
                 mismatches.append(
                     {
@@ -398,6 +486,23 @@ def backtest_model(train_start: int, train_end: int, test_start: int, test_end: 
                         "actual_days": actual_days,
                     }
                 )
+        yearly_predictions.append(
+            {
+                "bs_year": year,
+                "predicted": predicted,
+                "actual": actual,
+                "matches": year_matches,
+                "accuracy": round((year_matches / 12) * 100, 2),
+                "models": [
+                    {
+                        "model": model["model"],
+                        "training_score": model["training_score"],
+                        "source_year": model["source_year"],
+                    }
+                    for model in model_outputs
+                ],
+            }
+        )
     accuracy = round((exact_matches / months_tested) * 100, 2) if months_tested else 0.0
     return {
         "train_range": f"{train_start}-{train_end} BS",
@@ -406,6 +511,11 @@ def backtest_model(train_start: int, train_end: int, test_start: int, test_end: 
         "exact_matches": exact_matches,
         "mismatches": len(mismatches),
         "accuracy": accuracy,
+        "calibrated_cycles": [
+            {"cycle_years": cycle_length, "training_score": round(score * 100, 2)}
+            for cycle_length, score in calibrated_cycles
+        ],
+        "yearly_predictions": yearly_predictions,
         "mismatch_details": mismatches,
         "method_version": METHOD_VERSION,
         "calibration_version": CALIBRATION_VERSION,
