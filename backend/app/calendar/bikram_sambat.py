@@ -9,7 +9,7 @@ The Bikram Sambat calendar is Nepal's official calendar. It is approximately
 56 years, 8 months, and 14 days ahead of the Gregorian calendar, but month
 lengths vary by year in a non-formulaic way.
 
-Supported Range (official lookup): 2070-2095 BS (2013-2038 AD)
+Supported Range (static lookup): 2070-2095 BS (2013-2038 AD)
 Extended Range (estimated, sankranti-based): ±200 BS years around lookup
 
 Usage:
@@ -40,6 +40,7 @@ from .constants import (
 )
 from .ephemeris.swiss_eph import calculate_sunrise
 from .ephemeris.time_utils import to_nepal_time
+from .provenance import get_bs_year_confidence_from_provenance, get_bs_year_provenance
 from .sankranti import find_mesh_sankranti, get_sankrantis_in_year
 
 
@@ -194,7 +195,7 @@ def bs_to_gregorian(year: int, month: int, day: int) -> date:
     """
     Convert a Bikram Sambat date to Gregorian.
 
-    Uses official lookup table for supported range. If out of range,
+    Uses the static lookup table for supported range. If out of range,
     falls back to sankranti-based estimated conversion.
 
     Args:
@@ -223,7 +224,7 @@ def bs_to_gregorian(year: int, month: int, day: int) -> date:
     if override is not None:
         return override
 
-    # If in official lookup range, use exact table
+    # If in static lookup range, use exact table
     if BS_MIN_YEAR <= year <= BS_MAX_YEAR:
         if not is_valid_bs_date(year, month, day):
             raise ValueError(
@@ -277,7 +278,7 @@ def _gregorian_to_bs_official(gregorian_date: date) -> tuple[int, int, int]:
         >>> gregorian_to_bs(date(2023, 12, 25))  # Christmas 2023
         (2080, 9, 10)
     """
-    # Find which BS year this falls in (official lookup)
+    # Find which BS year this falls in (static lookup)
     bs_year = None
     year_start = None
 
@@ -322,7 +323,7 @@ def gregorian_to_bs(gregorian_date: date) -> tuple[int, int, int]:
     """
     Convert a Gregorian date to Bikram Sambat.
 
-    Uses official lookup table for supported range. If out of range,
+    Uses the static lookup table for supported range. If out of range,
     falls back to sankranti-based estimated conversion.
     """
     # Check explicit overrides first
@@ -337,7 +338,7 @@ def gregorian_to_bs(gregorian_date: date) -> tuple[int, int, int]:
 
 def gregorian_to_bs_official(gregorian_date: date) -> tuple[int, int, int]:
     """
-    Convert a Gregorian date to BS using official lookup only.
+    Convert a Gregorian date to BS using the static lookup table only.
 
     Raises:
         ValueError if date is outside the official range.
@@ -379,7 +380,7 @@ def estimated_gregorian_to_bs(gregorian_date: date) -> tuple[int, int, int]:
 
 def _estimated_bs_year_range() -> tuple[int, int]:
     """
-    Return supported estimated range around official lookup.
+    Return supported estimated range around the static lookup.
     """
     past = 200
     future = 200
@@ -390,7 +391,7 @@ def _future_calibrated_bs_year_range() -> tuple[int, int]:
     """
     Return the near-future BS range that uses calibrated month-length extrapolation.
 
-    The official lookup tail settles into a stable 3-year month-pattern cycle from
+    The static lookup tail settles into a stable 3-year month-pattern cycle from
     2086 onward. We reuse that observed cycle for a conservative window just beyond
     the official table instead of relying only on raw sankranti month boundaries.
     """
@@ -652,20 +653,19 @@ def get_bs_confidence(gregorian_date: date) -> str:
     Return confidence level for BS conversion of a Gregorian date.
 
     Returns:
-        "official" when the date is within the lookup table range,
+        "official" when the converted BS year has structured official provenance,
+        "static_lookup" when only the static table backs the result,
         otherwise "estimated".
     """
     # Overrides are treated as official corrections
     if _get_bs_override_for_gregorian(gregorian_date) is not None:
         return "official"
 
-    min_start = BS_CALENDAR_DATA[BS_MIN_YEAR][1]
-    max_data = BS_CALENDAR_DATA[BS_MAX_YEAR]
-    max_end = max_data[1] + timedelta(days=sum(max_data[0]) - 1)
-
-    if min_start <= gregorian_date <= max_end:
-        return "official"
-    return "estimated"
+    try:
+        bs_year, _, _ = _gregorian_to_bs_official(gregorian_date)
+    except ValueError:
+        return "estimated"
+    return get_bs_year_confidence_from_provenance(bs_year)
 
 
 def get_bs_year_confidence(bs_year: int) -> str:
@@ -673,22 +673,22 @@ def get_bs_year_confidence(bs_year: int) -> str:
     Return confidence level for a BS year.
 
     Returns:
-        "official" when the BS year is within lookup range,
+        "official" when the BS year has structured official provenance,
+        "static_lookup" when only the static table backs the year,
         otherwise "estimated".
     """
-    if BS_MIN_YEAR <= bs_year <= BS_MAX_YEAR:
-        return "official"
-    return "estimated"
+    return get_bs_year_confidence_from_provenance(bs_year)
 
 
 def get_bs_source_range(gregorian_date: date) -> str | None:
     """
-    Return official source range label when lookup-backed, else None.
+    Return the source range label for the converted BS year.
     """
-    confidence = get_bs_confidence(gregorian_date)
-    if confidence == "official":
-        return f"{BS_MIN_YEAR}-{BS_MAX_YEAR}"
-    return None
+    try:
+        bs_year, _, _ = _gregorian_to_bs_official(gregorian_date)
+    except ValueError:
+        return None
+    return get_bs_year_provenance(bs_year).source_range
 
 
 def get_bs_estimated_error_days(gregorian_date: date) -> str | None:

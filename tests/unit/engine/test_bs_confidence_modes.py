@@ -1,33 +1,34 @@
-"""Week 22 tests for BS conversion confidence transitions and estimated mode."""
+"""BS conversion confidence transitions and estimated mode."""
 
 from __future__ import annotations
 
 from datetime import date
 
 from app.calendar.bikram_sambat import (
-    BS_MAX_YEAR,
-    BS_MIN_YEAR,
     bs_to_gregorian,
+    days_in_bs_month,
     get_bs_confidence,
     get_bs_estimated_error_days,
     get_bs_source_range,
     gregorian_to_bs,
 )
+from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR
+from app.calendar.provenance import STATIC_LOOKUP_RANGE_LABEL
 
 
 def _year_start_end_gregorian() -> tuple[date, date]:
     start = bs_to_gregorian(BS_MIN_YEAR, 1, 1)
-    end = bs_to_gregorian(BS_MAX_YEAR, 12, 30)
+    end = bs_to_gregorian(BS_MAX_YEAR, 12, days_in_bs_month(BS_MAX_YEAR, 12))
     return start, end
 
 
-def test_confidence_transitions_at_official_range_boundaries():
+def test_confidence_transitions_at_static_lookup_range_boundaries():
     start, end = _year_start_end_gregorian()
 
     assert get_bs_confidence(start - date.resolution) == "estimated"
-    assert get_bs_confidence(start) == "official"
+    assert get_bs_confidence(start) == "static_lookup"
 
-    assert get_bs_confidence(end) == "official"
+    assert get_bs_confidence(end) == "static_lookup"
     assert get_bs_confidence(end + date.resolution) == "estimated"
 
 
@@ -36,7 +37,7 @@ def test_source_range_and_error_bound_labels_follow_confidence():
     in_range = start
     out_range = end + date.resolution
 
-    assert get_bs_source_range(in_range) == f"{BS_MIN_YEAR}-{BS_MAX_YEAR}"
+    assert get_bs_source_range(in_range) == STATIC_LOOKUP_RANGE_LABEL
     assert get_bs_estimated_error_days(in_range) is None
 
     assert get_bs_source_range(out_range) is None
@@ -53,4 +54,4 @@ def test_estimated_mode_handles_far_years_roundtrip():
 
         # Estimated mode should not drift wildly for roundtrip diagnostics.
         assert abs((back - g_date).days) <= 2
-        assert get_bs_confidence(g_date) in {"official", "estimated"}
+        assert get_bs_confidence(g_date) in {"official", "static_lookup", "estimated"}

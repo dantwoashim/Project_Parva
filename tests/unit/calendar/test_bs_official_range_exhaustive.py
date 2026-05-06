@@ -1,8 +1,8 @@
-"""Exhaustive BS/AD and Nepal fiscal-period checks for the official range."""
+"""Exhaustive BS/AD and Nepal fiscal-period checks for the static lookup range."""
 
 from __future__ import annotations
 
-import json
+import csv
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -27,11 +27,19 @@ from app.calendar.fiscal import (
     fiscal_year_label,
     fiscal_year_start_for_bs_date,
 )
+from app.calendar.provenance import get_bs_year_provenance
 
 FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "bs_overlap_comparison.json"
+HAMRO_CSV = (
+    Path(__file__).resolve().parents[3]
+    / "data"
+    / "source_archive"
+    / "hamropatro"
+    / "hamropatro_bs_ad_2000_2099.csv"
+)
 
 
-def _all_official_bs_dates():
+def _all_static_lookup_bs_dates():
     for year in range(BS_MIN_YEAR, BS_MAX_YEAR + 1):
         for month in range(1, 13):
             for day in range(1, days_in_bs_month(year, month) + 1):
@@ -43,31 +51,31 @@ def _parse_bs(value: str) -> tuple[int, int, int]:
     return int(year), int(month), int(day)
 
 
-def test_official_table_shape_is_complete_and_bounded():
-    assert (BS_MIN_YEAR, BS_MAX_YEAR) == (2070, 2095)
-    assert len(BS_CALENDAR_DATA) == 26
+def test_static_lookup_table_shape_is_complete_and_bounded():
+    assert (BS_MIN_YEAR, BS_MAX_YEAR) == (2000, 2099)
+    assert len(BS_CALENDAR_DATA) == 100
 
     total_days = 0
     for year in range(BS_MIN_YEAR, BS_MAX_YEAR + 1):
         month_lengths, start = BS_CALENDAR_DATA[year]
         assert len(month_lengths) == 12
         assert all(29 <= length <= 32 for length in month_lengths)
-        assert sum(month_lengths) in {365, 366}
+        assert sum(month_lengths) in {364, 365, 366, 367}
         assert start == get_bs_year_start(year)
         assert get_bs_year_end(year) == start + timedelta(days=sum(month_lengths) - 1)
         total_days += sum(month_lengths)
 
-    assert total_days == 9498
-    assert get_bs_year_start(BS_MIN_YEAR) == date(2013, 4, 13)
-    assert get_bs_year_end(BS_MAX_YEAR) == date(2039, 4, 14)
+    assert total_days == 36526
+    assert get_bs_year_start(BS_MIN_YEAR) == date(1943, 4, 14)
+    assert get_bs_year_end(BS_MAX_YEAR) == date(2043, 4, 14)
 
 
-def test_every_official_bs_date_round_trips_without_gap_overlap_or_confidence_leak():
+def test_every_static_lookup_bs_date_round_trips_without_gap_overlap_or_confidence_leak():
     seen_ad_dates: set[date] = set()
     previous_ad: date | None = None
     total = 0
 
-    for bs_date in _all_official_bs_dates():
+    for bs_date in _all_static_lookup_bs_dates():
         year, month, day = bs_date
         ad_date = bs_to_gregorian(year, month, day)
 
@@ -79,43 +87,37 @@ def test_every_official_bs_date_round_trips_without_gap_overlap_or_confidence_le
         assert gregorian_to_bs_official(ad_date) == bs_date
         assert gregorian_to_bs(ad_date) == bs_date
         assert bs_to_gregorian(*gregorian_to_bs(ad_date)) == ad_date
-        assert get_bs_confidence(ad_date) == "official"
-        assert get_bs_source_range(ad_date) == "2070-2095"
+        assert get_bs_confidence(ad_date) == get_bs_year_provenance(year).confidence
+        assert get_bs_source_range(ad_date) == get_bs_year_provenance(year).source_range
         assert get_bs_estimated_error_days(ad_date) is None
 
         seen_ad_dates.add(ad_date)
         previous_ad = ad_date
         total += 1
 
-    assert total == 9498
-    assert len(seen_ad_dates) == 9498
+    assert total == 36526
+    assert len(seen_ad_dates) == 36526
 
 
-def test_every_official_gregorian_date_matches_golden_fixture_rows():
-    fixture = json.loads(FIXTURE.read_text(encoding="utf-8"))
-    rows = fixture["rows"]
-    metadata = fixture["metadata"]
+def test_every_static_lookup_gregorian_date_matches_hamropatro_harvest_rows():
+    with HAMRO_CSV.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
 
-    assert metadata["official_bs_range"] == "2070-2095"
-    assert metadata["gregorian_start"] == "2013-04-13"
-    assert metadata["gregorian_end"] == "2039-04-14"
-    assert metadata["total_days"] == 9498
-    assert len(rows) == metadata["total_days"]
+    assert len(rows) == 36526
+    assert rows[0]["bs"] == "2000-01-01"
+    assert rows[0]["ad"] == "1943-04-14"
+    assert rows[-1]["bs"] == "2099-12-31"
+    assert rows[-1]["ad"] == "2043-04-14"
 
-    current = date.fromisoformat(metadata["gregorian_start"])
-    end = date.fromisoformat(metadata["gregorian_end"])
     for row in rows:
-        assert row["gregorian"] == current.isoformat()
-        official_bs = _parse_bs(row["official_bs"])
-        assert gregorian_to_bs_official(current) == official_bs
-        assert gregorian_to_bs(current) == official_bs
-        assert bs_to_gregorian(*official_bs) == current
-        current += timedelta(days=1)
-
-    assert current == end + timedelta(days=1)
+        current = date.fromisoformat(row["ad"])
+        harvested_bs = _parse_bs(row["bs"])
+        assert gregorian_to_bs_official(current) == harvested_bs
+        assert gregorian_to_bs(current) == harvested_bs
+        assert bs_to_gregorian(*harvested_bs) == current
 
 
-def test_official_month_and_year_boundaries_are_strict():
+def test_static_lookup_month_and_year_boundaries_are_strict():
     for year in range(BS_MIN_YEAR, BS_MAX_YEAR + 1):
         assert bs_to_gregorian(year, 1, 1) == get_bs_year_start(year)
         assert bs_to_gregorian(year, 12, days_in_bs_month(year, 12)) == get_bs_year_end(year)
@@ -173,7 +175,7 @@ def test_nepal_fiscal_month_mapping_is_shrawan_based():
 
 
 def test_fiscal_period_for_every_official_bs_date_matches_bs_and_ad_paths():
-    for year, month, day in _all_official_bs_dates():
+    for year, month, day in _all_static_lookup_bs_dates():
         ad_date = bs_to_gregorian(year, month, day)
         period = fiscal_period_for_bs_date(year, month, day)
 

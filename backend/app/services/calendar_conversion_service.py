@@ -18,8 +18,8 @@ from app.calendar.bikram_sambat import (
     gregorian_to_bs_estimated,
     gregorian_to_bs_official,
 )
-from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR
 from app.calendar.nepal_sambat import format_ns_date, get_current_ns_year
+from app.calendar.provenance import get_bs_year_provenance
 from app.domain.temporal_context import CalendarContext
 from app.policy import get_policy_metadata
 from app.services.calendar_presenters import present_calendar_payload
@@ -169,18 +169,24 @@ def build_conversion_payload(gregorian_date: date) -> dict[str, Any]:
 
 def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
     official = None
+    static_lookup = None
     try:
         o_year, o_month, o_day = gregorian_to_bs_official(gregorian_date)
-        official = {
+        lookup_confidence = get_bs_year_confidence(o_year)
+        lookup = {
             "year": o_year,
             "month": o_month,
             "day": o_day,
             "month_name": get_bs_month_name(o_month),
-            "confidence": "official",
-            "source_range": f"{BS_MIN_YEAR}-{BS_MAX_YEAR}",
+            "confidence": lookup_confidence,
+            "source_range": get_bs_year_provenance(o_year).source_range,
             "estimated_error_days": None,
-            "uncertainty": build_bs_uncertainty("official", None),
+            "uncertainty": build_bs_uncertainty(lookup_confidence, None),
         }
+        if lookup_confidence == "official":
+            official = lookup
+        else:
+            static_lookup = lookup
     except ValueError:
         official = None
 
@@ -200,8 +206,13 @@ def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     match = None
-    if official:
-        match = official["year"] == estimated["year"] and official["month"] == estimated["month"] and official["day"] == estimated["day"]
+    lookup_for_match = official or static_lookup
+    if lookup_for_match:
+        match = (
+            lookup_for_match["year"] == estimated["year"]
+            and lookup_for_match["month"] == estimated["month"]
+            and lookup_for_match["day"] == estimated["day"]
+        )
 
     meta = build_surface_meta(
         engine_path="bs_compare_official_vs_estimated",
@@ -215,6 +226,7 @@ def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
         body={
             "gregorian": gregorian_date.isoformat(),
             "official": official,
+            "static_lookup": static_lookup,
             "estimated": estimated,
             "match": match,
         },
@@ -290,7 +302,7 @@ def build_bs_to_gregorian_payload(year: int, month: int, day: int) -> dict[str, 
             "day": day,
             "month_name": get_bs_month_name(month),
             "confidence": confidence,
-            "source_range": f"{BS_MIN_YEAR}-{BS_MAX_YEAR}" if confidence == "official" else None,
+            "source_range": get_bs_year_provenance(year).source_range,
             "estimated_error_days": estimated_error_days,
             "uncertainty": uncertainty,
         },

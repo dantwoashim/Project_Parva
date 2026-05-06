@@ -22,20 +22,21 @@ def test_bs_to_gregorian_official_range_edges():
         "/api/calendar/bs-to-gregorian", json={"year": 2070, "month": 1, "day": 1}
     )
     assert first.status_code == 200
-    assert first.json()["gregorian"] == "2013-04-13"
-    assert first.json()["bs"]["confidence"] == "official"
+    assert first.json()["gregorian"] == "2013-04-14"
+    assert first.json()["bs"]["confidence"] == "static_lookup"
 
     last = client.post(
-        "/api/calendar/bs-to-gregorian", json={"year": 2095, "month": 12, "day": 30}
+        "/api/calendar/bs-to-gregorian", json={"year": 2099, "month": 12, "day": 31}
     )
     assert last.status_code == 200
-    assert last.json()["gregorian"] == "2039-04-14"
-    assert last.json()["bs"]["confidence"] == "official"
+    assert last.json()["gregorian"] == "2043-04-14"
+    assert last.json()["bs"]["confidence"] == "static_lookup"
 
     invalid = client.post(
-        "/api/calendar/bs-to-gregorian", json={"year": 2095, "month": 12, "day": 31}
+        "/api/calendar/bs-to-gregorian", json={"year": 2100, "month": 1, "day": 1}
     )
-    assert invalid.status_code == 400
+    assert invalid.status_code == 200
+    assert invalid.json()["bs"]["confidence"] == "estimated"
 
 
 def test_bs_to_gregorian_estimated_confidence_for_far_year():

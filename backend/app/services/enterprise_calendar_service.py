@@ -12,11 +12,16 @@ from app.calendar.bikram_sambat import (
     get_bs_month_name,
     gregorian_to_bs,
 )
-from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR
 from app.calendar.fiscal import fiscal_year_label
+from app.calendar.provenance import (
+    ARCHIVED_RAW_OFFICIAL_RANGE_LABEL,
+    STATIC_LOOKUP_RANGE_LABEL,
+    STRUCTURED_OFFICIAL_RANGE_LABEL,
+    get_bs_year_provenance,
+)
 
 ENGINE_FISCAL_YEAR = "parva_enterprise_fiscal_year_v1"
-SOURCE_RANGE = f"{BS_MIN_YEAR}-{BS_MAX_YEAR} BS"
+SOURCE_RANGE = STATIC_LOOKUP_RANGE_LABEL
 WEEKDAY_INDEX = {
     "monday": 0,
     "tuesday": 1,
@@ -54,16 +59,43 @@ def parse_ad_date(value: str) -> date:
 
 
 def _confidence_for_bs_year(bs_year: int) -> tuple[str, str | None]:
-    if BS_MIN_YEAR <= bs_year <= BS_MAX_YEAR:
-        return "official_lookup", SOURCE_RANGE
+    provenance = get_bs_year_provenance(bs_year)
+    if provenance.confidence == "official":
+        return "official_lookup", provenance.source_range
+    if provenance.confidence == "static_lookup":
+        return "static_lookup_unverified", provenance.source_range
     return "estimated", None
+
+
+def _derived_confidence_for_bs_year(bs_year: int) -> str:
+    confidence, _ = _confidence_for_bs_year(bs_year)
+    if confidence == "official_lookup":
+        return "derived_from_official_lookup"
+    if confidence == "static_lookup_unverified":
+        return "derived_from_static_lookup_unverified"
+    return "estimated"
 
 
 def _confidence_for_ad_date(ad_date: date) -> tuple[str, str | None]:
     confidence = get_bs_confidence(ad_date)
     if confidence == "official":
-        return "official_lookup", SOURCE_RANGE
+        bs_year, _, _ = gregorian_to_bs(ad_date)
+        return "official_lookup", get_bs_year_provenance(bs_year).source_range
+    if confidence == "static_lookup":
+        bs_year, _, _ = gregorian_to_bs(ad_date)
+        return "static_lookup_unverified", get_bs_year_provenance(bs_year).source_range
     return "estimated", None
+
+
+def _provenance_payload(bs_year: int) -> dict[str, Any]:
+    provenance = get_bs_year_provenance(bs_year)
+    return {
+        "source_status": provenance.source_status,
+        "official_structured_range": STRUCTURED_OFFICIAL_RANGE_LABEL,
+        "archived_raw_official_range": ARCHIVED_RAW_OFFICIAL_RANGE_LABEL,
+        "static_lookup_range": STATIC_LOOKUP_RANGE_LABEL,
+        "provenance_note": provenance.note,
+    }
 
 
 def fiscal_year_payload(bs_year: int) -> dict[str, Any]:
@@ -84,8 +116,9 @@ def fiscal_year_payload(bs_year: int) -> dict[str, Any]:
             "ad": end_ad.isoformat(),
         },
         "basis": "Nepal fiscal year: Shrawan 1 to Ashadh end",
-        "confidence": "derived_from_bs_lookup",
-        "source_range": SOURCE_RANGE,
+        "confidence": _derived_confidence_for_bs_year(bs_year),
+        "source_range": _confidence_for_bs_year(bs_year)[1],
+        **_provenance_payload(bs_year),
         "engine": ENGINE_FISCAL_YEAR,
     }
 
@@ -103,8 +136,9 @@ def bs_months_payload(bs_year: int) -> dict[str, Any]:
         "bs_year": bs_year,
         "months": months,
         "total_days": sum(month["days"] for month in months),
-        "confidence": "official_lookup",
-        "source_range": SOURCE_RANGE,
+        "confidence": _confidence_for_bs_year(bs_year)[0],
+        "source_range": _confidence_for_bs_year(bs_year)[1],
+        **_provenance_payload(bs_year),
     }
 
 
@@ -156,7 +190,8 @@ def business_days_payload(
         "holiday_days": 0,
         "holiday_policy": holiday_policy,
         "note": "Holiday exclusion disabled unless a holiday policy is configured.",
-        "confidence": "derived_from_bs_lookup",
+        "confidence": _derived_confidence_for_bs_year(start_tuple[0]),
+        **_provenance_payload(start_tuple[0]),
     }
 
 
@@ -301,6 +336,16 @@ def capabilities_payload() -> dict[str, Any]:
             "direct production use in financial systems",
             "legal/tax final authority",
         ],
+        "source_provenance": {
+            "official_structured_range": STRUCTURED_OFFICIAL_RANGE_LABEL,
+            "archived_raw_official_range": ARCHIVED_RAW_OFFICIAL_RANGE_LABEL,
+            "static_lookup_range": STATIC_LOOKUP_RANGE_LABEL,
+            "official_2070_2095_bundle_available": False,
+            "note": (
+                "The static lookup table covers 2070-2095 BS, but only "
+                "2078-2083 BS currently has structured official source backing."
+            ),
+        },
     }
 
 

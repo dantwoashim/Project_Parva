@@ -15,6 +15,8 @@ def test_capabilities_returns_evaluation_ready():
     assert body["surface"] == "enterprise_calendar"
     assert body["status"] == "evaluation_ready"
     assert "validation_suite" in body["stable"]
+    assert body["source_provenance"]["official_structured_range"] == "2078-2083 BS"
+    assert body["source_provenance"]["official_2070_2095_bundle_available"] is False
 
 
 def test_fiscal_year_2082_returns_start_and_end():
@@ -23,10 +25,11 @@ def test_fiscal_year_2082_returns_start_and_end():
     body = response.json()
     assert body["fiscal_year"] == "2082/83"
     assert body["start"]["bs"] == "2082-04-01"
-    assert body["start"]["ad"] == "2025-07-17"
+    assert body["start"]["ad"] == "2025-07-16"
     assert body["end"]["bs"] == "2083-03-32"
     assert body["end"]["ad"] == "2026-07-16"
-    assert body["confidence"] == "derived_from_bs_lookup"
+    assert body["confidence"] == "derived_from_official_lookup"
+    assert body["source_status"] == "structured_official"
 
 
 def test_bs_months_returns_12_months():
@@ -38,6 +41,17 @@ def test_bs_months_returns_12_months():
     assert all(29 <= row["days"] <= 32 for row in body["months"])
     assert body["total_days"] == sum(row["days"] for row in body["months"])
     assert body["confidence"] == "official_lookup"
+    assert body["source_status"] == "structured_official"
+
+
+def test_bs_months_2085_is_not_marked_official():
+    response = client.get("/v3/api/enterprise/bs-months/2085")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["bs_year"] == 2085
+    assert body["confidence"] == "static_lookup_unverified"
+    assert body["source_status"] == "static_table_unverified"
+    assert body["official_structured_range"] == "2078-2083 BS"
 
 
 def test_business_days_returns_count():
@@ -54,11 +68,11 @@ def test_business_days_returns_count():
     )
     assert response.status_code == 200
     body = response.json()
-    assert body["start_ad"] == "2025-07-17"
-    assert body["end_ad"] == "2025-08-16"
+    assert body["start_ad"] == "2025-07-16"
+    assert body["end_ad"] == "2025-08-15"
     assert body["calendar_days"] == 31
-    assert body["business_days"] == 26
-    assert body["weekend_days"] == 5
+    assert body["business_days"] == 27
+    assert body["weekend_days"] == 4
     assert body["holiday_days"] == 0
 
 

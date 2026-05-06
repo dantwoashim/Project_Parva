@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "name": "Hamro Patro Calendar Source Inventory",
+    "source_type": "secondary_public_web",
+    "generated_by": "backend/tools/harvest_hamropatro_calendar.py",
+    "robots_policy": "Uses public /date pages. Does not use robots-disallowed /widgets/dateconverter.php or calendar widget endpoints."
+  },
+  "sources": [
+    {
+      "name": "Hamro Patro date page embedded daysInMonth table",
+      "url": "https://english.hamropatro.com/date/2082-1-1",
+      "local_path": "data/source_archive/hamropatro/hamropatro_date_2082-1-1.html",
+      "status": "harvested",
+      "available_range": [
+        2000,
+        2099
+      ],
+      "requested_range": [
+        2000,
+        2100
+      ],
+      "unavailable_years": [
+        2100
+      ],
+      "derived_artifacts": [
+        "data/source_archive/hamropatro/hamropatro_month_lengths_2000_2099.json",
+        "data/source_archive/hamropatro/hamropatro_bs_ad_2000_2099.csv"
+      ]
+    }
+  ]
+}

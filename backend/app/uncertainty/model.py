@@ -53,6 +53,13 @@ def build_bs_uncertainty(
 ) -> Dict[str, Any]:
     if bs_confidence == "official":
         return build_uncertainty("exact", methodology="official_lookup_table")
+    if bs_confidence == "static_lookup":
+        return build_uncertainty(
+            "uncertain",
+            methodology="static_lookup_table_unverified",
+            interval_hours=24.0,
+            notes="static lookup has no structured official provenance for this BS year",
+        )
     if bs_confidence == "estimated":
         return build_uncertainty(
             "estimated",
