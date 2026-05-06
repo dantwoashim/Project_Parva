@@ -55,7 +55,7 @@ class TestBSToGregorian:
         # 2080-06-01 (Ashwin 1)
         result = bs_to_gregorian(2080, 6, 1)
         # Calculate expected: sum of first 5 months
-        expected = date(2023, 4, 14) + timedelta(days=31 + 31 + 32 + 31 + 31)
+        expected = date(2023, 4, 14) + timedelta(days=31 + 32 + 31 + 32 + 31)
         assert result == expected
 
     def test_bs_2081_bhadra_boundary(self):
@@ -211,11 +211,11 @@ class TestValidation:
         """Test is_valid_bs_date for valid dates."""
         assert is_valid_bs_date(2080, 1, 15) is True
         assert is_valid_bs_date(2080, 6, 30) is True
-        assert is_valid_bs_date(2080, 3, 32) is True  # Ashadh has 32 days
+        assert is_valid_bs_date(2080, 4, 32) is True  # Shrawan has 32 days
 
     def test_invalid_year(self):
         """Test is_valid_bs_date for invalid year."""
-        assert is_valid_bs_date(2050, 1, 1) is False
+        assert is_valid_bs_date(1999, 1, 1) is False
         assert is_valid_bs_date(2100, 1, 1) is False
 
     def test_invalid_month(self):
@@ -234,10 +234,10 @@ class TestMonthLength:
 
     def test_days_in_month(self):
         """Test days_in_bs_month."""
-        # 2080: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]
+        # 2080: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30]
         assert days_in_bs_month(2080, 1) == 31  # Baishakh
-        assert days_in_bs_month(2080, 3) == 32  # Ashadh
-        assert days_in_bs_month(2080, 8) == 29  # Mangsir
+        assert days_in_bs_month(2080, 4) == 32  # Shrawan
+        assert days_in_bs_month(2080, 9) == 29  # Poush
 
     def test_2081_month_lengths(self):
         """Guard the 2081 official table around the Bhadra regression."""

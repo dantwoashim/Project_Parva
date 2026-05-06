@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -13,8 +14,35 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _tracked_path_issue(path: str) -> str | None:
+    if path.startswith("frontend/dist/"):
+        return "tracked frontend build artifact"
+    if path.startswith("reports/") or path == "evaluation.csv":
+        return "tracked generated report artifact"
+    if ".egg-info/" in path:
+        return "tracked Python package metadata"
+    if "__pycache__/" in path or path.endswith(".pyc"):
+        return "tracked Python bytecode cache"
+    if path.endswith(".DS_Store"):
+        return "tracked macOS metadata"
+    return None
+
+
 def main() -> int:
     issues: list[str] = []
+
+    tracked = subprocess.run(
+        ["git", "ls-files"],
+        cwd=PROJECT_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if tracked.returncode == 0:
+        for path in tracked.stdout.splitlines():
+            issue = _tracked_path_issue(path)
+            if issue:
+                issues.append(f"{path}: {issue}")
 
     root_package = PROJECT_ROOT / "package.json"
     if root_package.exists():

@@ -44,6 +44,10 @@ def test_predict_future_year_returns_probabilities_and_risk_flags():
     assert body["bs_year"] == 2112
     assert len(body["months"]) == 12
     assert all(29 <= days <= 32 for days in body["months"])
+    assert body["method_version"] == "parva_solar_ingress_calibrated_v2"
+    assert body["model_family"] == "computational_solar_ingress"
+    assert body["computational_model_outputs"]
+    assert body["legacy_model_output"]
     assert body["source"]["type"] == "computed_prediction"
     assert "outside_static_lookup" in body["risk_flags"]
     assert body["month_details"][0]["probability"]
@@ -91,7 +95,8 @@ def test_backtest_model_returns_accuracy_metrics():
     body = response.json()
     assert body["months_tested"] == 96
     assert 0 <= body["accuracy"] <= 100
-    assert body["method_version"] == "parva_future_bs_v1"
+    assert body["mode"] == "computational_solar_ingress_holdout"
+    assert body["method_version"] == "parva_solar_ingress_calibrated_v2"
 
 
 def test_explain_month_returns_model_outputs():
@@ -103,6 +108,8 @@ def test_explain_month_returns_model_outputs():
     assert body["month"] == 8
     assert body["month_name"] == "Mangsir"
     assert body["model_outputs"]
+    assert body["computational_model_outputs"]
+    assert body["legacy_model_output"]
     assert body["interpretation"]
 
 

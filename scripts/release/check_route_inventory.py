@@ -33,26 +33,42 @@ def _api_routes(prefix: str | None = None) -> dict[tuple[str, str], str]:
     return routes
 
 
-def main() -> int:
-    failures: list[str] = []
-    all_api_routes = _api_routes()
-    canonical_v3_routes = _api_routes("/v3/api/")
-    legacy_routes = _api_routes("/api/")
-
-    if len(canonical_v3_routes) < 100:
-        failures.append(
-            f"Expected a substantial canonical v3 surface; found only {len(canonical_v3_routes)} routes."
-        )
+def _build_inventory() -> dict:
+    canonical_prefix = "/v3/api"
+    compat_prefix = "/api"
+    canonical_v3_routes = _api_routes(f"{canonical_prefix}/")
+    legacy_routes = _api_routes(f"{compat_prefix}/")
+    alias_gaps: list[str] = []
 
     for method, v3_path in sorted(canonical_v3_routes):
         legacy_path = v3_path.removeprefix("/v3")
         if (method, legacy_path) not in legacy_routes:
-            failures.append(f"Missing legacy parity route for {method} {v3_path}: {legacy_path}")
+            alias_gaps.append(f"Missing legacy parity route for {method} {v3_path}: {legacy_path}")
 
     for method, legacy_path in sorted(legacy_routes):
         v3_path = f"/v3{legacy_path}"
         if (method, v3_path) not in canonical_v3_routes:
-            failures.append(f"Legacy route lacks canonical v3 equivalent: {method} {legacy_path}")
+            alias_gaps.append(f"Legacy route lacks canonical v3 equivalent: {method} {legacy_path}")
+
+    return {
+        "canonical_prefix": canonical_prefix,
+        "compat_prefix": compat_prefix,
+        "v3_count": len(canonical_v3_routes),
+        "compat_count": len(legacy_routes),
+        "alias_gaps": alias_gaps,
+    }
+
+
+def main() -> int:
+    failures: list[str] = []
+    all_api_routes = _api_routes()
+    inventory = _build_inventory()
+
+    if inventory["v3_count"] < 100:
+        failures.append(
+            f"Expected a substantial canonical v3 surface; found only {inventory['v3_count']} routes."
+        )
+    failures.extend(inventory["alias_gaps"])
 
     unclassified = find_unclassified_api_routes(app.routes)
     failures.extend(f"Unclassified API route: {route}" for route in unclassified)
@@ -66,8 +82,8 @@ def main() -> int:
             {
                 "ok": True,
                 "route_count": len(all_api_routes),
-                "canonical_v3_route_count": len(canonical_v3_routes),
-                "legacy_route_count": len(legacy_routes),
+                "canonical_v3_route_count": inventory["v3_count"],
+                "legacy_route_count": inventory["compat_count"],
             },
             indent=2,
         )

@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -15,6 +17,32 @@ from app.main import app  # noqa: E402
 
 API_REFERENCE = PROJECT_ROOT / "docs" / "API_REFERENCE_V3.md"
 ROUTE_ACCESS = PROJECT_ROOT / "docs" / "ROUTE_ACCESS.md"
+ROUTE_PATTERN = re.compile(r"`(GET|POST|PUT|PATCH|DELETE)\s+([^`\s]+)`")
+
+
+@dataclass(frozen=True)
+class DocumentedRoute:
+    method: str
+    path: str
+
+    @property
+    def canonical_path(self) -> str:
+        if self.path.startswith("/v3/api/"):
+            return self.path
+        if self.path.startswith("/api/"):
+            return f"/v3{self.path}"
+        return f"/v3/api{self.path}"
+
+    @property
+    def request_path(self) -> str:
+        return self.canonical_path
+
+
+def _documented_routes(text: str) -> list[DocumentedRoute]:
+    return [
+        DocumentedRoute(method=match.group(1), path=match.group(2))
+        for match in ROUTE_PATTERN.finditer(text)
+    ]
 
 
 def _canonical_routes() -> list[tuple[str, str]]:

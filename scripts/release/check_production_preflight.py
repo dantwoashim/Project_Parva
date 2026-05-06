@@ -17,17 +17,23 @@ from app.bootstrap.app_factory import create_app  # noqa: E402
 
 
 def main() -> int:
-    app = create_app()
+    try:
+        app = create_app()
+    except Exception as exc:
+        print(str(exc))
+        return 1
     settings = app.state.settings
     failures: list[str] = []
+    rate_limit_enabled = bool(getattr(settings, "rate_limit_enabled", True))
+    rate_limit_backend = str(getattr(settings, "rate_limit_backend", "")).lower()
 
     if settings.environment.lower() != "production":
         failures.append("PARVA_ENV must be production for production preflight.")
     if not settings.source_url:
         failures.append("PARVA_SOURCE_URL is required for production preflight.")
-    if settings.rate_limit_enabled and settings.rate_limit_backend.lower() != "redis":
+    if rate_limit_enabled and rate_limit_backend != "redis":
         failures.append("Production preflight requires PARVA_RATE_LIMIT_BACKEND=redis.")
-    if settings.rate_limit_backend.lower() == "redis" and not settings.redis_url:
+    if rate_limit_enabled and rate_limit_backend == "redis" and hasattr(settings, "redis_url") and not settings.redis_url:
         failures.append("Production preflight requires PARVA_REDIS_URL when Redis rate limiting is selected.")
 
     startup_checks = getattr(app.state, "startup_checks", {})
@@ -40,7 +46,8 @@ def main() -> int:
         ]
         failures.append(f"Required startup checks are not ready: {', '.join(failed_required)}")
 
-    unclassified = find_unclassified_api_routes(app.routes)
+    routes = getattr(app, "routes", [])
+    unclassified = find_unclassified_api_routes(routes)
     failures.extend(f"Unclassified API route: {route}" for route in unclassified)
 
     if failures:
@@ -53,8 +60,9 @@ def main() -> int:
                 "ok": True,
                 "environment": settings.environment,
                 "rate_limit_backend": settings.rate_limit_backend,
+                "policy": getattr(settings, "place_search_provider_policy", None),
                 "source_url": settings.source_url,
-                "route_count": len(app.routes),
+                "route_count": len(routes),
                 "startup_ready": startup_checks.get("ready"),
             },
             indent=2,
