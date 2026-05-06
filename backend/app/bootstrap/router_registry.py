@@ -17,6 +17,7 @@ from app.api import (
     festival_router,
     festival_timeline_router,
     forecast_router,
+    future_bs_router,
     glossary_router,
     integration_feed_router,
     kundali_graph_router,
@@ -45,6 +46,8 @@ class RouterRegistration:
     access_policy: str
     policy_name: str
     policy_path: str | None = None
+    include_v3: bool = True
+    include_experimental_versions: bool = True
 
 
 ROUTER_REGISTRATIONS = [
@@ -53,6 +56,14 @@ ROUTER_REGISTRATIONS = [
     RouterRegistration(festival_router, "public", "public", "festivals"),
     RouterRegistration(calendar_router, "public", "public", "calendar"),
     RouterRegistration(enterprise_router, "public", "public", "enterprise"),
+    RouterRegistration(
+        future_bs_router,
+        "public",
+        "public",
+        "future_bs",
+        include_v3=False,
+        include_experimental_versions=False,
+    ),
     RouterRegistration(billing_router, "public", "public", "billing", policy_path="/api/billing"),
     RouterRegistration(cache_router, "public", "public", "cache"),
     RouterRegistration(explain_router, "public", "public", "explain"),
@@ -103,13 +114,14 @@ def iter_route_policy_specs() -> list[dict[str, str]]:
                 "registration_name": registration.policy_name,
             }
         )
-        specs.append(
-            {
-                "path": f"/v3{prefix}",
-                "policy_name": registration.access_policy,
-                "registration_name": f"{registration.policy_name}_v3",
-            }
-        )
+        if registration.include_v3:
+            specs.append(
+                {
+                    "path": f"/v3{prefix}",
+                    "policy_name": registration.access_policy,
+                    "registration_name": f"{registration.policy_name}_v3",
+                }
+            )
     return specs
 
 
@@ -131,10 +143,12 @@ def register_routers(
     for router in routers:
         app.include_router(router)
 
-    for router in routers:
-        app.include_router(router, prefix="/v3")
+    for registration in registrations:
+        if registration.include_v3:
+            app.include_router(registration.router, prefix="/v3")
 
     if enable_experimental_api:
         for prefix in ("/v2", "/v4", "/v5"):
-            for router in routers:
-                app.include_router(router, prefix=prefix)
+            for registration in registrations:
+                if registration.include_experimental_versions:
+                    app.include_router(registration.router, prefix=prefix)

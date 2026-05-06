@@ -10,6 +10,7 @@ from .feed_routes import router as feed_router
 from .festival_routes import router as festival_router
 from .festival_timeline_routes import router as festival_timeline_router
 from .forecast_routes import router as forecast_router
+from .future_bs_routes import router as future_bs_router
 from .glossary_routes import router as glossary_router
 from .integration_feed_routes import router as integration_feed_router
 from .kundali_graph_routes import router as kundali_graph_router
@@ -37,6 +38,7 @@ __all__ = [
     "feed_router",
     "festival_router",
     "forecast_router",
+    "future_bs_router",
     "locations_router",
     "observance_router",
     "policy_router",

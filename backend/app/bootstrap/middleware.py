@@ -543,11 +543,19 @@ def build_rate_limit_guard(*, settings: AppSettings, backend: RateLimiterBackend
     return rate_limit_guard
 
 
+STABLE_PUBLIC_V4_PREFIXES = ("/v4/api/future-bs/",)
+
+
 def build_experimental_version_gate(*, enable_experimental_api: bool):
     blocked_prefixes = ("/v2/api/", "/v4/api/", "/v5/api/")
 
     async def version_gate(request: Request, call_next):
-        if not enable_experimental_api and request.url.path.startswith(blocked_prefixes):
+        is_stable_public_v4 = request.url.path.startswith(STABLE_PUBLIC_V4_PREFIXES)
+        if (
+            not enable_experimental_api
+            and not is_stable_public_v4
+            and request.url.path.startswith(blocked_prefixes)
+        ):
             return JSONResponse(
                 status_code=404,
                 content={
@@ -718,7 +726,11 @@ def build_engine_headers(
             response.headers["Sunset"] = "Thu, 01 May 2027 00:00:00 GMT"
             _append_link_header(response, '</v3/docs>; rel="successor-version"')
 
-        if not enable_experimental_api and request.url.path.startswith(("/v2/", "/v4/", "/v5/")):
+        if (
+            not enable_experimental_api
+            and not request.url.path.startswith(STABLE_PUBLIC_V4_PREFIXES)
+            and request.url.path.startswith(("/v2/", "/v4/", "/v5/"))
+        ):
             # Should not happen due to gate, but keep explicit.
             response.headers["X-Parva-Experimental"] = "disabled"
 

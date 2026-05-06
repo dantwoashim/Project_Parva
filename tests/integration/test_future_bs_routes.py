@@ -1,0 +1,152 @@
+"""Integration tests for the future BS month-length validation engine."""
+
+from __future__ import annotations
+
+import zipfile
+from io import BytesIO
+
+from app.main import app
+from fastapi.testclient import TestClient
+
+client = TestClient(app)
+
+
+def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
+    response = client.get("/v4/api/future-bs/capabilities")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["surface"] == "future_bs_month_length_validation"
+    assert body["status"] == "evaluation_ready"
+    assert "external_sheet_comparison" in body["stable"]
+    assert "official_future_publication" in body["not_claimed"]
+
+
+def test_predict_known_2085_uses_correct_static_month_lengths():
+    response = client.get("/v4/api/future-bs/month-lengths/2085")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["bs_year"] == 2085
+    assert body["months"] == [31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30]
+    assert body["year_total"] == 366
+    assert body["source"]["status"] == "static_table_unverified"
+    assert body["confidence"] in {"computed_high", "computed_very_high"}
+    assert body["month_details"][4]["month_name"] == "Bhadra"
+    assert body["month_details"][4]["final_days"] == 30
+
+
+def test_predict_future_year_returns_probabilities_and_risk_flags():
+    response = client.get("/v4/api/future-bs/month-lengths/2112")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["bs_year"] == 2112
+    assert len(body["months"]) == 12
+    assert all(29 <= days <= 32 for days in body["months"])
+    assert body["source"]["type"] == "computed_prediction"
+    assert "outside_static_lookup" in body["risk_flags"]
+    assert body["month_details"][0]["probability"]
+
+
+def test_predict_range_returns_requested_years():
+    response = client.get("/v4/api/future-bs/month-lengths/range?start=2084&end=2085")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total_years"] == 2
+    assert [row["bs_year"] for row in body["years"]] == [2084, 2085]
+
+
+def test_compare_external_sheet_reports_mismatch():
+    response = client.post(
+        "/v4/api/future-bs/month-lengths/compare",
+        json={
+            "source_name": "infodevelopers_excel",
+            "years": [
+                {
+                    "bs_year": 2085,
+                    "months": [31, 32, 31, 32, 31, 31, 30, 30, 29, 30, 30, 30],
+                }
+            ],
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["summary"]["years_compared"] == 1
+    assert body["summary"]["mismatches"] == 1
+    assert body["mismatches"][0]["month_name"] == "Bhadra"
+    assert body["mismatches"][0]["their_days"] == 31
+    assert body["mismatches"][0]["parva_days"] == 30
+
+
+def test_backtest_model_returns_accuracy_metrics():
+    response = client.get(
+        "/v4/api/future-bs/month-lengths/backtest"
+        "?train_start=2040&train_end=2075&test_start=2076&test_end=2083"
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["months_tested"] == 96
+    assert 0 <= body["accuracy"] <= 100
+    assert body["method_version"] == "parva_future_bs_v1"
+
+
+def test_explain_month_returns_model_outputs():
+    response = client.get("/v4/api/future-bs/month-lengths/explain?year=2112&month=8")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["bs_year"] == 2112
+    assert body["month"] == 8
+    assert body["month_name"] == "Mangsir"
+    assert body["model_outputs"]
+    assert body["interpretation"]
+
+
+def test_export_csv_contains_prediction_rows():
+    response = client.get("/v4/api/future-bs/month-lengths/export.csv?start=2084&end=2085")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/csv")
+    assert "bs_year,baishakh,jestha" in response.text
+    assert "2085,31,32,31,32,30,31" in response.text
+
+
+def test_export_xlsx_is_valid_zip_workbook():
+    response = client.get("/v4/api/future-bs/month-lengths/export.xlsx?start=2084&end=2085")
+
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith(
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    with zipfile.ZipFile(BytesIO(response.content)) as workbook:
+        assert "xl/worksheets/sheet1.xml" in workbook.namelist()
+
+
+def test_loan_impact_simulates_interest_difference_from_external_mismatch():
+    response = client.post(
+        "/v4/api/future-bs/loan-impact/simulate",
+        json={
+            "loan_start_bs": "2085-05-01",
+            "term_months": 1,
+            "principal": 1_000_000,
+            "annual_rate": 12,
+            "day_count_method": "actual_365",
+            "external_years": [
+                {
+                    "bs_year": 2085,
+                    "months": [31, 32, 31, 32, 31, 31, 30, 30, 29, 30, 30, 30],
+                }
+            ],
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["summary"]["calendar_mismatches_affecting_schedule"] == 1
+    assert body["summary"]["risk_level"] == "medium"
+    assert body["impacted_periods"][0]["bs_month"] == "2085-05"
+    assert body["impacted_periods"][0]["day_difference"] == -1
