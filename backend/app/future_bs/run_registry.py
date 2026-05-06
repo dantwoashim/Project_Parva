@@ -1,0 +1,67 @@
+"""Immutable model-run registry for future BS predictions."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+from .corpus import CORPUS_VERSION
+from .models import CALIBRATION_VERSION, METHOD_VERSION
+
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+RUNS_DIR = PROJECT_ROOT / "data" / "future_bs" / "model_runs"
+DEFAULT_RUN_ID = "parva_solar_ingress_calibrated_v2_2026_05_06_001"
+
+
+def _stable_hash(payload: dict[str, Any]) -> str:
+    data = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+    return hashlib.sha256(data).hexdigest()
+
+
+def build_run_metadata(
+    *,
+    run_id: str = DEFAULT_RUN_ID,
+    start_bs: int = 2084,
+    end_bs: int = 2200,
+    created_at: str = "2026-05-06T00:00:00Z",
+) -> dict[str, Any]:
+    payload = {
+        "run_id": run_id,
+        "model_version": METHOD_VERSION,
+        "calibration_version": CALIBRATION_VERSION,
+        "corpus_version": CORPUS_VERSION,
+        "ephemeris_version": "swiss_moshier_lahiri_sidereal",
+        "rule_version": "civil_rule_ensemble_v1",
+        "prediction_range": f"{start_bs}-{end_bs} BS",
+        "created_at": created_at,
+        "publication_status": "not_official_publication",
+    }
+    payload["hash"] = _stable_hash(payload)
+    return payload
+
+
+def write_run_metadata(metadata: dict[str, Any]) -> Path:
+    RUNS_DIR.mkdir(parents=True, exist_ok=True)
+    path = RUNS_DIR / f"{metadata['run_id']}.json"
+    path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return path
+
+
+def list_model_runs() -> list[dict[str, Any]]:
+    RUNS_DIR.mkdir(parents=True, exist_ok=True)
+    runs: list[dict[str, Any]] = []
+    for path in sorted(RUNS_DIR.glob("*.json")):
+        runs.append(json.loads(path.read_text(encoding="utf-8")))
+    if not runs:
+        runs.append(build_run_metadata(created_at=datetime.now(timezone.utc).isoformat()))
+    return runs
+
+
+def get_model_run(run_id: str) -> dict[str, Any]:
+    path = RUNS_DIR / f"{run_id}.json"
+    if not path.exists():
+        raise ValueError(f"Unknown model run: {run_id}")
+    return json.loads(path.read_text(encoding="utf-8"))

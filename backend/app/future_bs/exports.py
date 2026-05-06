@@ -15,7 +15,7 @@ from app.calendar.constants import BS_MONTH_NAMES
 def predictions_to_csv(start: int, end: int, *, range_fn) -> str:
     rows = range_fn(start, end)["years"]
     buffer = io.StringIO()
-    writer = csv.writer(buffer)
+    writer = csv.writer(buffer, lineterminator="\n")
     writer.writerow(
         [
             "bs_year",

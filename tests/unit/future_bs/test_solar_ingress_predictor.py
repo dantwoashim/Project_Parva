@@ -53,7 +53,7 @@ def test_ensemble_flags_disagreement_when_legacy_model_differs(monkeypatch: pyte
 
     monkeypatch.setattr(ensemble, "predict_legacy_cycle", fake_legacy_cycle)
 
-    prediction = ensemble.predict_year(bs_year)
+    prediction = ensemble.compute_year_live(bs_year)
 
     assert "model_disagreement" in prediction["risk_flags"]
     assert "manual_review_recommended" in prediction["month_details"][0]["risk_flags"]

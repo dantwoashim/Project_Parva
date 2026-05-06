@@ -1,0 +1,28 @@
+{
+  "corpus_id": "verified_month_lengths_2000_2099_v1",
+  "status": "mixed_verification_corpus",
+  "range": "2000-2099 BS",
+  "official_structured_years": "2078-2083 BS",
+  "archived_unstructured_official_years": "2076-2077 BS",
+  "warning": "Rows marked third_party_reference are not official ground truth and must not be represented as official_verified.",
+  "sources": {
+    "structured_official_repo_artifact": {
+      "source_type": "official_verified",
+      "verification_status": "verified",
+      "years": "2078-2083 BS",
+      "description": "Structured official-source artifacts already accepted in the repository provenance layer."
+    },
+    "archived_official_pdf_repo_artifact": {
+      "source_type": "approved_patro",
+      "verification_status": "archived_unstructured_needs_review",
+      "years": "2076-2077 BS",
+      "description": "Official PDFs are archived but not yet accepted as structured extraction for month-length proof."
+    },
+    "legacy_static_lookup_table": {
+      "source_type": "third_party_reference",
+      "verification_status": "needs_review",
+      "years": "2000-2075, 2084-2099 BS",
+      "description": "Existing static lookup table retained for continuity; requires independent source verification before financial-contract use."
+    }
+  }
+}

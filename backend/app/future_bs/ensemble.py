@@ -9,9 +9,19 @@ from typing import Any
 from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR, BS_MONTH_NAMES
 from app.calendar.provenance import get_bs_year_provenance
 
-from .corpus import corpus_range_label, is_known_year, known_months, source_label_for_year
+from .confidence import confidence_label as _confidence_label
+from .confidence import horizon_factor as _horizon_factor
+from .corpus import (
+    corpus_range_label,
+    get_corpus_row,
+    is_known_year,
+    known_months,
+    source_label_for_year,
+)
 from .legacy_cycle_predictor import predict_legacy_cycle
 from .models import CALIBRATION_VERSION, METHOD_VERSION, MONTH_DAY_VALUES, PREDICTION_MAX_YEAR
+from .precomputed_store import get_precomputed_year, live_compute_enabled
+from .run_registry import DEFAULT_RUN_ID
 from .solar_ingress_predictor import predict_solar_ingress_year
 
 
@@ -21,35 +31,6 @@ def _validate_year(bs_year: int) -> None:
             f"BS year {bs_year} is outside the future-BS engine range "
             f"({BS_MIN_YEAR}-{PREDICTION_MAX_YEAR})."
         )
-
-
-def _confidence_label(score: float, *, known_official: bool = False) -> str:
-    if known_official:
-        return "official_verified"
-    if score >= 0.95:
-        return "computed_very_high"
-    if score >= 0.85:
-        return "computed_high"
-    if score >= 0.70:
-        return "computed_medium"
-    if score >= 0.55:
-        return "computed_low"
-    return "needs_review"
-
-
-def _horizon_factor(bs_year: int) -> float:
-    if bs_year <= BS_MAX_YEAR:
-        return 1.0
-    distance = bs_year - BS_MAX_YEAR
-    if distance <= 10:
-        return 0.94
-    if distance <= 25:
-        return 0.88
-    if distance <= 50:
-        return 0.80
-    if distance <= 75:
-        return 0.72
-    return 0.62
 
 
 def _constraint_checks(months: list[int]) -> dict[str, Any]:
@@ -64,12 +45,34 @@ def _constraint_checks(months: list[int]) -> dict[str, Any]:
 
 def _source_payload(bs_year: int) -> dict[str, Any]:
     provenance = get_bs_year_provenance(bs_year)
+    corpus_row = get_corpus_row(bs_year) if is_known_year(bs_year) else None
     return {
         "type": source_label_for_year(bs_year) if is_known_year(bs_year) else "computed_prediction",
         "status": provenance.source_status,
+        "source_status": corpus_row.verification_status if corpus_row else "computed_prediction",
+        "source_reference": corpus_row.source_reference if corpus_row else "computational_solar_ingress",
+        "source_quality": corpus_row.source_quality if corpus_row else 0.0,
         "structured_official_range": provenance.official_structured_range,
         "static_lookup_range": provenance.static_lookup_range,
         "note": provenance.note,
+    }
+
+
+def _computed_source_payload(bs_year: int) -> dict[str, Any]:
+    supporting = _source_payload(bs_year)
+    return {
+        "type": "computed_prediction",
+        "status": "computed_solar_ingress",
+        "source_status": "computed_prediction",
+        "source_reference": "computational_solar_ingress",
+        "source_quality": 0.0,
+        "supporting_corpus_source": supporting if is_known_year(bs_year) else None,
+        "structured_official_range": supporting["structured_official_range"],
+        "static_lookup_range": supporting["static_lookup_range"],
+        "note": (
+            "Future-BS output is computed and is not an official publication. "
+            "Any supporting static corpus row is treated as review evidence, not final authority."
+        ),
     }
 
 
@@ -103,6 +106,7 @@ def _known_year_payload(bs_year: int) -> dict[str, Any]:
         "constraints": _constraint_checks(months),
         "method_version": METHOD_VERSION,
         "calibration_version": CALIBRATION_VERSION,
+        "run_id": DEFAULT_RUN_ID,
         "model_family": "known_corpus",
         "source": _source_payload(bs_year),
         "computational_model_outputs": [],
@@ -121,6 +125,8 @@ def _known_year_payload(bs_year: int) -> dict[str, Any]:
             "ephemeris_status": "swiss_moshier_lahiri_sidereal",
             "publication_status": "not_official_publication",
         },
+        "source_status": _source_payload(bs_year)["source_status"],
+        "publication_status": "not_official_publication",
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
 
@@ -128,7 +134,7 @@ def _known_year_payload(bs_year: int) -> dict[str, Any]:
 def _future_year_payload(bs_year: int) -> dict[str, Any]:
     solar = predict_solar_ingress_year(bs_year)
     legacy = predict_legacy_cycle(bs_year)
-    horizon = _horizon_factor(bs_year)
+    horizon = _horizon_factor(bs_year, BS_MAX_YEAR)
     details = []
     final_months: list[int] = []
     all_risk_flags = set(solar["risk_flags"])
@@ -191,8 +197,9 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
         "constraints": _constraint_checks(final_months),
         "method_version": METHOD_VERSION,
         "calibration_version": CALIBRATION_VERSION,
+        "run_id": DEFAULT_RUN_ID,
         "model_family": "computational_solar_ingress",
-        "source": _source_payload(bs_year),
+        "source": _computed_source_payload(bs_year),
         "computational_model_outputs": solar["model_outputs"],
         "legacy_model_output": legacy.payload(),
         "model_agreement": "ensemble",
@@ -210,12 +217,31 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
             "ephemeris_status": "swiss_moshier_lahiri_sidereal",
             "publication_status": "not_official_publication",
         },
+        "source_status": "computed_prediction",
+        "publication_status": "not_official_publication",
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
 
 
-def predict_year(bs_year: int) -> dict[str, Any]:
+def compute_year_live(bs_year: int) -> dict[str, Any]:
     _validate_year(bs_year)
-    if is_known_year(bs_year):
+    if is_known_year(bs_year) and bs_year <= 2083:
         return _known_year_payload(bs_year)
     return _future_year_payload(bs_year)
+
+
+def predict_year(bs_year: int) -> dict[str, Any]:
+    _validate_year(bs_year)
+    if is_known_year(bs_year) and bs_year <= 2083:
+        return _known_year_payload(bs_year)
+    precomputed = get_precomputed_year(bs_year)
+    if precomputed is not None:
+        return precomputed
+    if live_compute_enabled():
+        return compute_year_live(bs_year)
+    if is_known_year(bs_year):
+        return _known_year_payload(bs_year)
+    raise ValueError(
+        "Future BS prediction is not precomputed for this year. "
+        "Run scripts/precompute_future_bs_predictions.py or enable PARVA_FUTURE_BS_LIVE_COMPUTE=1."
+    )

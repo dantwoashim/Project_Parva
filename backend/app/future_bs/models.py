@@ -48,6 +48,7 @@ class RulePrediction:
     rule_weight: float
     risk_flags: list[str]
     events: list[SolarIngressEvent]
+    rule_assignments: list[dict[str, Any]] | None = None
 
     def payload(self) -> dict[str, Any]:
         return {
@@ -59,6 +60,7 @@ class RulePrediction:
             "rule_weight": round(self.rule_weight, 4),
             "risk_flags": self.risk_flags,
             "events": [event.payload() for event in self.events],
+            "rule_assignments": self.rule_assignments or [],
         }
 
 

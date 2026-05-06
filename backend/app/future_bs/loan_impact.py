@@ -5,13 +5,9 @@ from __future__ import annotations
 from typing import Any
 
 from .compare import external_year_map
+from .day_count_conventions import SUPPORTED_DAY_COUNT_METHODS, interest_difference
 from .models import METHOD_VERSION
-
-
-def add_bs_month(year: int, month: int, offset_months: int) -> tuple[int, int]:
-    month_zero = (year * 12 + (month - 1)) + offset_months
-    next_year, next_month_zero = divmod(month_zero, 12)
-    return next_year, next_month_zero + 1
+from .schedule_simulator import add_bs_month
 
 
 def simulate_loan_impact(payload: dict[str, Any], *, predict_fn) -> dict[str, Any]:
@@ -34,8 +30,10 @@ def simulate_loan_impact(payload: dict[str, Any], *, predict_fn) -> dict[str, An
     if principal < 0 or annual_rate < 0:
         raise ValueError("principal and annual_rate must be non-negative.")
     day_count_method = payload.get("day_count_method", "actual_365")
-    if day_count_method != "actual_365":
-        raise ValueError("Only actual_365 day_count_method is supported in v1.")
+    if day_count_method not in SUPPORTED_DAY_COUNT_METHODS:
+        raise ValueError(
+            "day_count_method must be one of: " + ", ".join(sorted(SUPPORTED_DAY_COUNT_METHODS))
+        )
 
     external_years = payload.get("external_years") or []
     external = external_year_map(external_years) if external_years else {}
@@ -47,7 +45,12 @@ def simulate_loan_impact(payload: dict[str, Any], *, predict_fn) -> dict[str, An
         if external_days is None or external_days == parva_days:
             continue
         day_difference = parva_days - external_days
-        interest_difference = principal * (annual_rate / 100.0) * (day_difference / 365.0)
+        interest_delta = interest_difference(
+            principal=principal,
+            annual_rate=annual_rate,
+            day_difference=day_difference,
+            day_count_method=day_count_method,
+        )
         impacted_periods.append(
             {
                 "installment": installment,
@@ -55,7 +58,7 @@ def simulate_loan_impact(payload: dict[str, Any], *, predict_fn) -> dict[str, An
                 "external_month_days": external_days,
                 "parva_month_days": parva_days,
                 "day_difference": day_difference,
-                "interest_difference_npr": round(interest_difference, 2),
+                "interest_difference_npr": round(interest_delta, 2),
             }
         )
 

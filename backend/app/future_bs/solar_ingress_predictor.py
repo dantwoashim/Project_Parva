@@ -8,7 +8,8 @@ from typing import Any
 
 from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR, BS_MONTH_LENGTHS
 
-from .civil_rules import ASSIGNMENT_RULES
+from .boundary_risk import boundary_risk_payload
+from .civil_rules import ASSIGNMENT_RULES, assign_with_rule
 from .models import MONTH_DAY_VALUES, RulePrediction, SolarIngressEvent
 from .solar_ingress_engine import events_around_bs_year
 
@@ -16,7 +17,7 @@ from .solar_ingress_engine import events_around_bs_year
 def _rule_month_starts(
     bs_year: int,
     rule_name: str,
-) -> tuple[list[SolarIngressEvent], list]:
+) -> tuple[list[SolarIngressEvent], list, list[dict[str, Any]]]:
     assign = ASSIGNMENT_RULES[rule_name]
     events = events_around_bs_year(bs_year)
     mesh_events = [event for event in events if event.bs_month == 1]
@@ -25,17 +26,17 @@ def _rule_month_starts(
 
     mesh_start = assign(mesh_events[0])
     mesh_next = assign(mesh_events[1])
-    scoped: list[tuple[SolarIngressEvent, Any]] = []
+    scoped: list[tuple[SolarIngressEvent, Any, dict[str, Any]]] = []
     for event in events:
         start_date = assign(event)
         if mesh_start <= start_date < mesh_next:
-            scoped.append((event, start_date))
+            scoped.append((event, start_date, assign_with_rule(event, rule_name).payload()))
     scoped.sort(key=lambda item: item[1])
     if len(scoped) != 12:
         raise ValueError(
             f"{rule_name} produced {len(scoped)} month starts for BS {bs_year}, expected 12."
         )
-    return [item[0] for item in scoped], [item[1] for item in scoped] + [mesh_next]
+    return [item[0] for item in scoped], [item[1] for item in scoped] + [mesh_next], [item[2] for item in scoped]
 
 
 def _derive_month_lengths(month_start_dates: list) -> list[int]:
@@ -54,19 +55,29 @@ def _rule_risk_flags(months: list[int]) -> list[str]:
     return flags
 
 
+def _assignment_risk_flags(assignments: list[dict[str, Any]]) -> list[str]:
+    flags: set[str] = set()
+    for assignment in assignments:
+        payload = boundary_risk_payload(assignment.get("boundary_distance_minutes"))
+        flags.update(payload["risk_flags"])
+    return sorted(flags)
+
+
 @lru_cache(maxsize=512)
 def predict_with_rule(bs_year: int, rule_name: str, rule_weight: float = 1.0) -> RulePrediction:
-    events, starts_with_next_mesh = _rule_month_starts(bs_year, rule_name)
+    events, starts_with_next_mesh, assignments = _rule_month_starts(bs_year, rule_name)
     month_starts = starts_with_next_mesh[:-1]
     months = _derive_month_lengths(starts_with_next_mesh)
+    risk_flags = sorted(set([*_rule_risk_flags(months), *_assignment_risk_flags(assignments)]))
     return RulePrediction(
         model=rule_name,
         model_family="computational_solar_ingress",
         months=months,
         month_starts=month_starts,
         rule_weight=rule_weight,
-        risk_flags=_rule_risk_flags(months),
+        risk_flags=risk_flags,
         events=events,
+        rule_assignments=assignments,
     )
 
 

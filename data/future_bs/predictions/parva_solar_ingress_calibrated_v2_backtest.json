@@ -1,0 +1,1394 @@
+{
+  "train_range": "2040-2075 BS",
+  "test_range": "2076-2083 BS",
+  "mode": "computational_solar_ingress_holdout",
+  "months_tested": 96,
+  "exact_matches": 64,
+  "mismatches": 32,
+  "accuracy": 66.67,
+  "legacy_exact_matches": 93,
+  "legacy_accuracy": 96.88,
+  "yearly_predictions": [
+    {
+      "bs_year": 2076,
+      "predicted": [
+        30,
+        32,
+        31,
+        31,
+        31,
+        31,
+        30,
+        30,
+        29,
+        30,
+        30,
+        30
+      ],
+      "actual": [
+        31,
+        32,
+        31,
+        32,
+        31,
+        30,
+        30,
+        30,
+        29,
+        29,
+        30,
+        30
+      ],
+      "matches": 8,
+      "accuracy": 66.67,
+      "legacy_predicted": [
+        31,
+        32,
+        31,
+        32,
+        31,
+        30,
+        30,
+        30,
+        29,
+        29,
+        30,
+        30
+      ],
+      "legacy_accuracy": 100.0,
+      "models": [
+        {
+          "model": "same_nepal_civil_date",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5787
+        },
+        {
+          "model": "sunrise_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5139
+        },
+        {
+          "model": "next_day_if_after_noon",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.6782
+        },
+        {
+          "model": "fixed_cutoff_18_00",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.7361
+        },
+        {
+          "model": "month_specific_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "learned_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "boundary_sensitive_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5
+        }
+      ],
+      "legacy_models": [
+        {
+          "model": "calibrated_cycle_27",
+          "training_score": 100.0,
+          "source_year": 2049,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_35",
+          "training_score": 100.0,
+          "source_year": 2041,
+          "months": [
+            31,
+            31,
+            32,
+            32,
+            31,
+            30,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_23",
+          "training_score": 93.59,
+          "source_year": 2053,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            30
+          ]
+        }
+      ]
+    },
+    {
+      "bs_year": 2077,
+      "predicted": [
+        31,
+        31,
+        31,
+        32,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "actual": [
+        31,
+        32,
+        31,
+        32,
+        31,
+        30,
+        30,
+        30,
+        29,
+        30,
+        29,
+        31
+      ],
+      "matches": 5,
+      "accuracy": 41.67,
+      "legacy_predicted": [
+        31,
+        32,
+        31,
+        32,
+        31,
+        30,
+        30,
+        30,
+        29,
+        30,
+        29,
+        31
+      ],
+      "legacy_accuracy": 100.0,
+      "models": [
+        {
+          "model": "same_nepal_civil_date",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5787
+        },
+        {
+          "model": "sunrise_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5139
+        },
+        {
+          "model": "next_day_if_after_noon",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.6782
+        },
+        {
+          "model": "fixed_cutoff_18_00",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.7361
+        },
+        {
+          "model": "month_specific_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "learned_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "boundary_sensitive_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5
+        }
+      ],
+      "legacy_models": [
+        {
+          "model": "calibrated_cycle_27",
+          "training_score": 100.0,
+          "source_year": 2050,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            30,
+            29,
+            31
+          ]
+        },
+        {
+          "model": "calibrated_cycle_35",
+          "training_score": 100.0,
+          "source_year": 2042,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            31
+          ]
+        },
+        {
+          "model": "calibrated_cycle_23",
+          "training_score": 93.59,
+          "source_year": 2054,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            30,
+            29,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "bs_year": 2078,
+      "predicted": [
+        31,
+        31,
+        31,
+        31,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "actual": [
+        31,
+        31,
+        31,
+        32,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "matches": 11,
+      "accuracy": 91.67,
+      "legacy_predicted": [
+        31,
+        31,
+        31,
+        32,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "legacy_accuracy": 100.0,
+      "models": [
+        {
+          "model": "same_nepal_civil_date",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5787
+        },
+        {
+          "model": "sunrise_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5139
+        },
+        {
+          "model": "next_day_if_after_noon",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.6782
+        },
+        {
+          "model": "fixed_cutoff_18_00",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.7361
+        },
+        {
+          "model": "month_specific_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "learned_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "boundary_sensitive_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5
+        }
+      ],
+      "legacy_models": [
+        {
+          "model": "calibrated_cycle_27",
+          "training_score": 100.0,
+          "source_year": 2051,
+          "months": [
+            31,
+            31,
+            31,
+            32,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_35",
+          "training_score": 100.0,
+          "source_year": 2043,
+          "months": [
+            31,
+            31,
+            31,
+            32,
+            31,
+            31,
+            29,
+            30,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_23",
+          "training_score": 93.59,
+          "source_year": 2055,
+          "months": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        }
+      ]
+    },
+    {
+      "bs_year": 2079,
+      "predicted": [
+        31,
+        31,
+        31,
+        31,
+        31,
+        31,
+        30,
+        30,
+        29,
+        30,
+        30,
+        30
+      ],
+      "actual": [
+        31,
+        31,
+        32,
+        31,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "matches": 8,
+      "accuracy": 66.67,
+      "legacy_predicted": [
+        31,
+        31,
+        32,
+        31,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "legacy_accuracy": 100.0,
+      "models": [
+        {
+          "model": "same_nepal_civil_date",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5787
+        },
+        {
+          "model": "sunrise_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5139
+        },
+        {
+          "model": "next_day_if_after_noon",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.6782
+        },
+        {
+          "model": "fixed_cutoff_18_00",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.7361
+        },
+        {
+          "model": "month_specific_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "learned_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "boundary_sensitive_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5
+        }
+      ],
+      "legacy_models": [
+        {
+          "model": "calibrated_cycle_27",
+          "training_score": 100.0,
+          "source_year": 2052,
+          "months": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_35",
+          "training_score": 100.0,
+          "source_year": 2044,
+          "months": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_23",
+          "training_score": 93.59,
+          "source_year": 2056,
+          "months": [
+            31,
+            31,
+            32,
+            31,
+            32,
+            30,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        }
+      ]
+    },
+    {
+      "bs_year": 2080,
+      "predicted": [
+        30,
+        32,
+        31,
+        31,
+        31,
+        31,
+        30,
+        30,
+        29,
+        30,
+        30,
+        30
+      ],
+      "actual": [
+        31,
+        32,
+        31,
+        32,
+        31,
+        30,
+        30,
+        30,
+        29,
+        29,
+        30,
+        30
+      ],
+      "matches": 8,
+      "accuracy": 66.67,
+      "legacy_predicted": [
+        31,
+        32,
+        31,
+        32,
+        31,
+        30,
+        30,
+        30,
+        29,
+        29,
+        30,
+        30
+      ],
+      "legacy_accuracy": 100.0,
+      "models": [
+        {
+          "model": "same_nepal_civil_date",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5787
+        },
+        {
+          "model": "sunrise_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5139
+        },
+        {
+          "model": "next_day_if_after_noon",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.6782
+        },
+        {
+          "model": "fixed_cutoff_18_00",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.7361
+        },
+        {
+          "model": "month_specific_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "learned_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "boundary_sensitive_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5
+        }
+      ],
+      "legacy_models": [
+        {
+          "model": "calibrated_cycle_27",
+          "training_score": 100.0,
+          "source_year": 2053,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_35",
+          "training_score": 100.0,
+          "source_year": 2045,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_23",
+          "training_score": 93.59,
+          "source_year": 2057,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "bs_year": 2081,
+      "predicted": [
+        31,
+        31,
+        31,
+        32,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "actual": [
+        31,
+        32,
+        31,
+        32,
+        31,
+        30,
+        30,
+        30,
+        29,
+        30,
+        29,
+        31
+      ],
+      "matches": 5,
+      "accuracy": 41.67,
+      "legacy_predicted": [
+        31,
+        32,
+        31,
+        32,
+        31,
+        30,
+        30,
+        30,
+        29,
+        30,
+        29,
+        31
+      ],
+      "legacy_accuracy": 100.0,
+      "models": [
+        {
+          "model": "same_nepal_civil_date",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5787
+        },
+        {
+          "model": "sunrise_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5139
+        },
+        {
+          "model": "next_day_if_after_noon",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.6782
+        },
+        {
+          "model": "fixed_cutoff_18_00",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.7361
+        },
+        {
+          "model": "month_specific_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "learned_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "boundary_sensitive_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5
+        }
+      ],
+      "legacy_models": [
+        {
+          "model": "calibrated_cycle_27",
+          "training_score": 100.0,
+          "source_year": 2054,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            30,
+            29,
+            31
+          ]
+        },
+        {
+          "model": "calibrated_cycle_35",
+          "training_score": 100.0,
+          "source_year": 2046,
+          "months": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            31
+          ]
+        },
+        {
+          "model": "calibrated_cycle_23",
+          "training_score": 93.59,
+          "source_year": 2058,
+          "months": [
+            30,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            30,
+            29,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "bs_year": 2082,
+      "predicted": [
+        31,
+        31,
+        31,
+        31,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "actual": [
+        31,
+        31,
+        31,
+        32,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "matches": 11,
+      "accuracy": 91.67,
+      "legacy_predicted": [
+        31,
+        31,
+        32,
+        31,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "legacy_accuracy": 83.33,
+      "models": [
+        {
+          "model": "same_nepal_civil_date",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5787
+        },
+        {
+          "model": "sunrise_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5139
+        },
+        {
+          "model": "next_day_if_after_noon",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.6782
+        },
+        {
+          "model": "fixed_cutoff_18_00",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.7361
+        },
+        {
+          "model": "month_specific_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "learned_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "boundary_sensitive_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5
+        }
+      ],
+      "legacy_models": [
+        {
+          "model": "calibrated_cycle_27",
+          "training_score": 100.0,
+          "source_year": 2055,
+          "months": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_35",
+          "training_score": 100.0,
+          "source_year": 2047,
+          "months": [
+            31,
+            31,
+            31,
+            32,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_23",
+          "training_score": 93.59,
+          "source_year": 2059,
+          "months": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        }
+      ]
+    },
+    {
+      "bs_year": 2083,
+      "predicted": [
+        31,
+        31,
+        31,
+        31,
+        31,
+        31,
+        30,
+        30,
+        29,
+        30,
+        30,
+        30
+      ],
+      "actual": [
+        31,
+        31,
+        32,
+        31,
+        31,
+        31,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "matches": 8,
+      "accuracy": 66.67,
+      "legacy_predicted": [
+        31,
+        31,
+        32,
+        31,
+        31,
+        30,
+        30,
+        29,
+        30,
+        29,
+        30,
+        30
+      ],
+      "legacy_accuracy": 91.67,
+      "models": [
+        {
+          "model": "same_nepal_civil_date",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5787
+        },
+        {
+          "model": "sunrise_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5139
+        },
+        {
+          "model": "next_day_if_after_noon",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.6782
+        },
+        {
+          "model": "fixed_cutoff_18_00",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.7361
+        },
+        {
+          "model": "month_specific_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "learned_cutoff",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.4977
+        },
+        {
+          "model": "boundary_sensitive_rule",
+          "model_family": "computational_solar_ingress",
+          "rule_weight": 0.5
+        }
+      ],
+      "legacy_models": [
+        {
+          "model": "calibrated_cycle_27",
+          "training_score": 100.0,
+          "source_year": 2056,
+          "months": [
+            31,
+            31,
+            32,
+            31,
+            32,
+            30,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_35",
+          "training_score": 100.0,
+          "source_year": 2048,
+          "months": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        },
+        {
+          "model": "calibrated_cycle_23",
+          "training_score": 93.59,
+          "source_year": 2060,
+          "months": [
+            31,
+            31,
+            32,
+            32,
+            31,
+            30,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ]
+        }
+      ]
+    }
+  ],
+  "mismatch_details": [
+    {
+      "bs_year": 2076,
+      "month": 1,
+      "month_name": "Baishakh",
+      "predicted_days": 30,
+      "actual_days": 31
+    },
+    {
+      "bs_year": 2076,
+      "month": 4,
+      "month_name": "Shrawan",
+      "predicted_days": 31,
+      "actual_days": 32
+    },
+    {
+      "bs_year": 2076,
+      "month": 6,
+      "month_name": "Ashwin",
+      "predicted_days": 31,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2076,
+      "month": 10,
+      "month_name": "Magh",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2077,
+      "month": 2,
+      "month_name": "Jestha",
+      "predicted_days": 31,
+      "actual_days": 32
+    },
+    {
+      "bs_year": 2077,
+      "month": 6,
+      "month_name": "Ashwin",
+      "predicted_days": 31,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2077,
+      "month": 8,
+      "month_name": "Mangsir",
+      "predicted_days": 29,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2077,
+      "month": 9,
+      "month_name": "Poush",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2077,
+      "month": 10,
+      "month_name": "Magh",
+      "predicted_days": 29,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2077,
+      "month": 11,
+      "month_name": "Falgun",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2077,
+      "month": 12,
+      "month_name": "Chaitra",
+      "predicted_days": 30,
+      "actual_days": 31
+    },
+    {
+      "bs_year": 2078,
+      "month": 4,
+      "month_name": "Shrawan",
+      "predicted_days": 31,
+      "actual_days": 32
+    },
+    {
+      "bs_year": 2079,
+      "month": 3,
+      "month_name": "Ashadh",
+      "predicted_days": 31,
+      "actual_days": 32
+    },
+    {
+      "bs_year": 2079,
+      "month": 8,
+      "month_name": "Mangsir",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2079,
+      "month": 9,
+      "month_name": "Poush",
+      "predicted_days": 29,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2079,
+      "month": 10,
+      "month_name": "Magh",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2080,
+      "month": 1,
+      "month_name": "Baishakh",
+      "predicted_days": 30,
+      "actual_days": 31
+    },
+    {
+      "bs_year": 2080,
+      "month": 4,
+      "month_name": "Shrawan",
+      "predicted_days": 31,
+      "actual_days": 32
+    },
+    {
+      "bs_year": 2080,
+      "month": 6,
+      "month_name": "Ashwin",
+      "predicted_days": 31,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2080,
+      "month": 10,
+      "month_name": "Magh",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2081,
+      "month": 2,
+      "month_name": "Jestha",
+      "predicted_days": 31,
+      "actual_days": 32
+    },
+    {
+      "bs_year": 2081,
+      "month": 6,
+      "month_name": "Ashwin",
+      "predicted_days": 31,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2081,
+      "month": 8,
+      "month_name": "Mangsir",
+      "predicted_days": 29,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2081,
+      "month": 9,
+      "month_name": "Poush",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2081,
+      "month": 10,
+      "month_name": "Magh",
+      "predicted_days": 29,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2081,
+      "month": 11,
+      "month_name": "Falgun",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2081,
+      "month": 12,
+      "month_name": "Chaitra",
+      "predicted_days": 30,
+      "actual_days": 31
+    },
+    {
+      "bs_year": 2082,
+      "month": 4,
+      "month_name": "Shrawan",
+      "predicted_days": 31,
+      "actual_days": 32
+    },
+    {
+      "bs_year": 2083,
+      "month": 3,
+      "month_name": "Ashadh",
+      "predicted_days": 31,
+      "actual_days": 32
+    },
+    {
+      "bs_year": 2083,
+      "month": 8,
+      "month_name": "Mangsir",
+      "predicted_days": 30,
+      "actual_days": 29
+    },
+    {
+      "bs_year": 2083,
+      "month": 9,
+      "month_name": "Poush",
+      "predicted_days": 29,
+      "actual_days": 30
+    },
+    {
+      "bs_year": 2083,
+      "month": 10,
+      "month_name": "Magh",
+      "predicted_days": 30,
+      "actual_days": 29
+    }
+  ],
+  "method_version": "parva_solar_ingress_calibrated_v2",
+  "calibration_version": "solar_ingress_civil_rule_ensemble_2000_2099_v1",
+  "note": "Solar-ingress backtest is a computational validation aid, not official future publication."
+}

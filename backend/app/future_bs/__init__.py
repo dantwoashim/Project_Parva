@@ -1,5 +1,5 @@
-"""Future BS month-length prediction package."""
+"""Future BS month-length prediction and risk-engine package."""
 
-from .ensemble import METHOD_VERSION, predict_year
+from .ensemble import METHOD_VERSION, compute_year_live, predict_year
 
-__all__ = ["METHOD_VERSION", "predict_year"]
+__all__ = ["METHOD_VERSION", "compute_year_live", "predict_year"]
