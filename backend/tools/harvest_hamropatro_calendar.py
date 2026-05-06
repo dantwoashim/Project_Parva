@@ -30,6 +30,10 @@ INVENTORY_DIR = ROOT / "data" / "source_inventory"
 REPORT_DIR = ROOT / "reports"
 DEFAULT_DATE_URL = "https://english.hamropatro.com/date/2082-1-1"
 USER_AGENT = "Project-Parva-Research/1.0 (+https://api.prabinghimire1.com.np)"
+GOOGLE_API_KEY_PATTERN = re.compile(r"AIza[0-9A-Za-z_-]{20,}")
+SEARCH_API_KEY_PATTERN = re.compile(
+    r'("smart_search_api_key"\s*:\s*")[^"]+(")'
+)
 
 
 @dataclass(frozen=True)
@@ -56,6 +60,12 @@ def fetch_text(url: str) -> str:
             return response.read().decode("utf-8", errors="replace")
     except (HTTPError, URLError) as exc:
         raise RuntimeError(f"Failed to fetch {url}: {exc}") from exc
+
+
+def redact_public_archive_secrets(html: str) -> str:
+    """Remove public-page API keys before storing source HTML artifacts."""
+    html = GOOGLE_API_KEY_PATTERN.sub("[REDACTED_GOOGLE_API_KEY]", html)
+    return SEARCH_API_KEY_PATTERN.sub(r"\1[REDACTED_SEARCH_API_KEY]\2", html)
 
 
 def ensure_allowed_by_robots(url: str, robots_text: str) -> None:
@@ -234,7 +244,7 @@ def write_outputs(
     ]
 
     source_html_path = SOURCE_DIR / "hamropatro_date_2082-1-1.html"
-    source_html_path.write_text(html, encoding="utf-8")
+    source_html_path.write_text(redact_public_archive_secrets(html), encoding="utf-8")
 
     anchor_offset = days_before_bs_date(
         month_lengths,
