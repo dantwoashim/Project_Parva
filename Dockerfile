@@ -23,6 +23,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PARVA_JPL_DE440_KERNEL=/app/data/ephemeris/jpl/de440s.bsp \
     PARVA_ENV=production
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN python -m venv /opt/venv
 
 COPY LICENSE README.md pyproject.toml /app/
