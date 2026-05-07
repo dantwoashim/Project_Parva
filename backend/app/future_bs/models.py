@@ -8,8 +8,8 @@ from typing import Any
 
 from app.calendar.constants import BS_MONTH_NAMES
 
-METHOD_VERSION = "parva_solar_ingress_de440_calibrated_v3"
-CALIBRATION_VERSION = "solar_ingress_de440s_civil_rule_ensemble_2000_2099_v1"
+METHOD_VERSION = "parva_solar_civil_accuracy_v4"
+CALIBRATION_VERSION = "de440_swiss_crosscheck_civil_rule_metrics_2000_2099_v2"
 MONTH_DAY_VALUES = (29, 30, 31, 32)
 PREDICTION_MAX_YEAR = 2200
 

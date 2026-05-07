@@ -1,4 +1,4 @@
-"""JPL DE440/DE440s adapter backed by a configured NAIF SPK kernel."""
+"""JPL DE440 adapter backed by a configured NAIF SPK kernel."""
 
 from __future__ import annotations
 
@@ -27,12 +27,12 @@ class JPLDe440Adapter(EphemerisAdapter):
         available = bool(self.kernel_path and self.kernel_path.exists())
         super().__init__(
             name="jpl_de440",
-            version="de440s_spk",
+            version="de440_spk",
             available=available,
             notes=(
                 f"Configured JPL DE440-family SPK kernel: {self.kernel_path.name}."
                 if available
-                else "Set PARVA_JPL_DE440_KERNEL to an existing de440/de440s .bsp file."
+                else "Set PARVA_JPL_DE440_KERNEL to an existing de440 .bsp file."
             ),
         )
 

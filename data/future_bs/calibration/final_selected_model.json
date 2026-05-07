@@ -1,0 +1,137 @@
+{
+  "model": "solar_civil_ensemble_v4",
+  "source_policy": "train_allowed",
+  "civil_rule_family": "month_specific_cutoff_grid_search_with_boundary_abstention",
+  "claim_boundary": "Selected as evaluation model only; not a 99% claim.",
+  "civil_rule_results": {
+    "calibration": "month_specific_cutoff_grid_search",
+    "train_range": "2000-2083 BS",
+    "source_policy": "train_allowed",
+    "samples": 72,
+    "usable_samples": 72,
+    "excluded_non_binary_decisions": 0,
+    "overall_decision_accuracy": 100.0,
+    "month_cutoffs": [
+      {
+        "month": 1,
+        "cutoff_minutes": 1280,
+        "cutoff": "21:20",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 2,
+        "cutoff_minutes": 1089,
+        "cutoff": "18:09",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 3,
+        "cutoff_minutes": 789,
+        "cutoff": "13:09",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 4,
+        "cutoff_minutes": 1068,
+        "cutoff": "17:48",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 5,
+        "cutoff_minutes": 720,
+        "cutoff": "12:00",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 6,
+        "cutoff_minutes": 720,
+        "cutoff": "12:00",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 7,
+        "cutoff_minutes": 720,
+        "cutoff": "12:00",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 8,
+        "cutoff_minutes": 720,
+        "cutoff": "12:00",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 9,
+        "cutoff_minutes": 720,
+        "cutoff": "12:00",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 10,
+        "cutoff_minutes": 720,
+        "cutoff": "12:00",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 11,
+        "cutoff_minutes": 960,
+        "cutoff": "16:00",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      },
+      {
+        "month": 12,
+        "cutoff_minutes": 1146,
+        "cutoff": "19:06",
+        "samples": 6,
+        "matches": 6,
+        "errors": 0,
+        "decision_accuracy": 100.0
+      }
+    ]
+  },
+  "ayanamsha": {
+    "status": "registered_for_nested_validation",
+    "active": "lahiri",
+    "candidates": [
+      "lahiri",
+      "raman",
+      "krishnamurti",
+      "fagan_bradley",
+      "calibrated_offset"
+    ],
+    "note": "Do not select a non-Lahiri production model until nested validation has enough official/printed samples."
+  }
+}

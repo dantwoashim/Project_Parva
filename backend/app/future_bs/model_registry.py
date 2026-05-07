@@ -46,7 +46,7 @@ def model_registry_payload() -> dict[str, Any]:
             },
         ],
         "claim_boundary": (
-            "DE440s is configured and available."
+            "DE440 is configured and available."
             if jpl_available
             else "DE440 models are registered but unavailable until a kernel is configured."
         ),

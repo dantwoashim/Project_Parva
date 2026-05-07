@@ -20,7 +20,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PARVA_SERVE_FRONTEND=true \
     PARVA_ENABLE_EXPERIMENTAL_API=false \
     PARVA_RATE_LIMIT_ENABLED=true \
-    PARVA_JPL_DE440_KERNEL=/app/data/ephemeris/jpl/de440s.bsp \
+    PARVA_JPL_DE440_KERNEL=/app/data/ephemeris/jpl/de440.bsp \
     PARVA_ENV=production
 
 RUN apt-get update \
@@ -38,7 +38,7 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
 
 COPY data /app/data
 RUN python /app/scripts/download_jpl_kernel.py \
-        --output /app/data/ephemeris/jpl/de440s.bsp \
+        --output /app/data/ephemeris/jpl/de440.bsp \
         --quiet
 RUN mkdir -p /app/output/precomputed \
     && START_YEAR="$(date -u +%Y)" \

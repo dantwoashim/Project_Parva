@@ -1,0 +1,11 @@
+{
+  "benchmark_id": "official_holdout_v1",
+  "minimum_official_month_cases_for_claim": 528,
+  "current_official_month_cases": 72,
+  "enforce_accuracy_gate": false,
+  "overall_top1_accuracy_min": 98.5,
+  "green_zone_accuracy_min": 99.3,
+  "green_zone_coverage_min": 90.0,
+  "boundary_cases_must_be_flagged": true,
+  "claim_boundary": "Do not market a 99%+ future-BS claim until enforce_accuracy_gate is true and the benchmark contains at least 528 official/printed month cases."
+}

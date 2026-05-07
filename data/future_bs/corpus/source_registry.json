@@ -5,6 +5,21 @@
   "official_structured_years": "2078-2083 BS",
   "archived_unstructured_official_years": "2076-2077 BS",
   "warning": "Rows marked third_party_reference are not official ground truth and must not be represented as official_verified.",
+  "source_hierarchy": {
+    "level_1": "official government / calendar committee publication",
+    "level_2": "scanned printed calendar with identifiable publisher and review",
+    "level_3": "cross-verified major Nepali calendars",
+    "level_4": "app, scraped, or legacy table data"
+  },
+  "training_policy": {
+    "official_verified": "train_and_final_test_allowed_when_verified",
+    "printed_verified": "train_allowed_and_final_test_allowed_when_reviewed",
+    "physical_patro_verified": "train_allowed_and_final_test_allowed_when_reviewed",
+    "approved_patro": "train_allowed_after_review_not_final_claim_until_structured",
+    "third_party_reference": "compare_only_excluded_from_final_accuracy_claims",
+    "scraped_reference": "compare_only_excluded_from_training",
+    "needs_review": "excluded"
+  },
   "sources": {
     "structured_official_repo_artifact": {
       "source_type": "official_verified",

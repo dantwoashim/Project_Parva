@@ -100,9 +100,20 @@ async def future_bs_import_excel(payload: ImportExcelRequest):
 
 
 @router.get("/month-lengths/backtest")
-async def future_bs_backtest(train_start: int, train_end: int, test_start: int, test_end: int):
+async def future_bs_backtest(
+    train_start: int,
+    train_end: int,
+    test_start: int,
+    test_end: int,
+    source_policy: Literal[
+        "all_reference",
+        "official_only",
+        "official_plus_printed",
+        "train_allowed",
+    ] = "all_reference",
+):
     try:
-        return backtest_model(train_start, train_end, test_start, test_end)
+        return backtest_model(train_start, train_end, test_start, test_end, source_policy=source_policy)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -114,21 +125,38 @@ async def future_bs_backtest_v2(
     train_end: int = 2075,
     test_start: int = 2076,
     test_end: int = 2083,
+    source_policy: Literal[
+        "all_reference",
+        "official_only",
+        "official_plus_printed",
+        "train_allowed",
+    ] = "all_reference",
 ):
     try:
         if mode == "full":
-            return full_backtest(test_start, test_end)
+            return full_backtest(test_start, test_end, source_policy=source_policy)
         if mode == "rolling":
-            return rolling_backtest(train_start, test_start, test_end)
-        return backtest_model(train_start, train_end, test_start, test_end)
+            return rolling_backtest(train_start, test_start, test_end, source_policy=source_policy)
+        return backtest_model(train_start, train_end, test_start, test_end, source_policy=source_policy)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
 
 @router.get("/backtest/residuals")
-async def future_bs_backtest_residuals(train_start: int, train_end: int, test_start: int, test_end: int):
+async def future_bs_backtest_residuals(
+    train_start: int,
+    train_end: int,
+    test_start: int,
+    test_end: int,
+    source_policy: Literal[
+        "all_reference",
+        "official_only",
+        "official_plus_printed",
+        "train_allowed",
+    ] = "all_reference",
+):
     try:
-        return backtest_residuals(train_start, train_end, test_start, test_end)
+        return backtest_residuals(train_start, train_end, test_start, test_end, source_policy=source_policy)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 

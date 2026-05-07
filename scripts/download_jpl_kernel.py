@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download and verify the NAIF DE440s SPK kernel used by Parva."""
+"""Download and verify the NAIF DE440 SPK kernel used by Parva."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ import tempfile
 import urllib.request
 from pathlib import Path
 
-DEFAULT_URL = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp"
-DEFAULT_MD5 = "3917ee56769db332790c751e2168843d"
+DEFAULT_URL = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp"
+DEFAULT_MD5 = "c9d581bfd84209dbeee8b1583939b148"
 
 
 def md5sum(path: Path) -> str:
@@ -56,7 +56,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", default=DEFAULT_URL)
     parser.add_argument("--md5", default=DEFAULT_MD5)
-    parser.add_argument("--output", type=Path, default=Path("data/ephemeris/jpl/de440s.bsp"))
+    parser.add_argument("--output", type=Path, default=Path("data/ephemeris/jpl/de440.bsp"))
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
     try:

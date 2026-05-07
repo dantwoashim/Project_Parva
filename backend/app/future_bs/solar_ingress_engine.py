@@ -10,6 +10,7 @@ from app.calendar.sankranti import get_sankrantis_in_year
 
 from .ephemeris import JPLDe440Adapter
 from .models import SolarIngressEvent
+from .solar_ingress_cache import cached_events_for_gregorian_year
 from .solar_ingress_solver import TARGET_LONGITUDES, solve_solar_ingress
 
 
@@ -84,6 +85,12 @@ def _jpl_gregorian_sankranti_events(
 
 
 def gregorian_sankranti_events(gregorian_year: int) -> tuple[SolarIngressEvent, ...]:
+    cached = cached_events_for_gregorian_year(
+        gregorian_year,
+        ephemeris_label=active_ephemeris_label(),
+    )
+    if cached is not None:
+        return cached
     return _gregorian_sankranti_events(gregorian_year, active_ephemeris_key())
 
 

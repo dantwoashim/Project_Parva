@@ -22,6 +22,18 @@ MONTH_COLUMNS = [
     "falgun",
     "chaitra",
 ]
+REQUIRED_PROVENANCE_COLUMNS = {
+    "source_type",
+    "verification_status",
+}
+EXTENDED_PROVENANCE_COLUMNS = {
+    "source_name",
+    "source_url_or_scan",
+    "entered_by",
+    "reviewed_by",
+    "checksum",
+    "notes",
+}
 
 
 def validate(path: Path) -> dict:
@@ -29,6 +41,13 @@ def validate(path: Path) -> dict:
     issues: list[str] = []
     with path.open(newline="", encoding="utf-8") as fh:
         reader = csv.DictReader(fh)
+        fieldnames = set(reader.fieldnames or [])
+        missing_required = REQUIRED_PROVENANCE_COLUMNS - fieldnames
+        if missing_required:
+            issues.append("missing required provenance columns: " + ", ".join(sorted(missing_required)))
+        missing_extended = EXTENDED_PROVENANCE_COLUMNS - fieldnames
+        if missing_extended:
+            issues.append("missing extended provenance columns: " + ", ".join(sorted(missing_extended)))
         for raw in reader:
             rows += 1
             year = raw.get("bs_year", "?")

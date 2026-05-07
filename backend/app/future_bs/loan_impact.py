@@ -38,11 +38,15 @@ def simulate_loan_impact(payload: dict[str, Any], *, predict_fn) -> dict[str, An
     external_years = payload.get("external_years") or []
     external = external_year_map(external_years) if external_years else {}
     impacted_periods: list[dict[str, Any]] = []
+    compared_periods = 0
     for installment in range(1, term_months + 1):
         year, month = add_bs_month(start_year, start_month, installment - 1)
         parva_days = predict_fn(year)["months"][month - 1]
         external_days = external.get(year, [None] * 12)[month - 1]
-        if external_days is None or external_days == parva_days:
+        if external_days is None:
+            continue
+        compared_periods += 1
+        if external_days == parva_days:
             continue
         day_difference = parva_days - external_days
         interest_delta = interest_difference(
@@ -72,7 +76,25 @@ def simulate_loan_impact(payload: dict[str, Any], *, predict_fn) -> dict[str, An
 
     return {
         "summary": {
+            "periods_compared": compared_periods,
             "calendar_mismatches_affecting_schedule": len(impacted_periods),
+            "calendar_accuracy": round(
+                ((compared_periods - len(impacted_periods)) / compared_periods) * 100,
+                2,
+            )
+            if compared_periods
+            else None,
+            "contract_weighted_accuracy": round(
+                100
+                - min(
+                    100.0,
+                    (abs(total_interest_difference) / principal) * 100 if principal else 0.0,
+                ),
+                4,
+            )
+            if compared_periods
+            else None,
+            "interest_impact_weighted_risk": risk_level,
             "first_impacted_installment": impacted_periods[0]["installment"] if impacted_periods else None,
             "max_due_date_shift_days": max_shift,
             "estimated_interest_difference_npr": total_interest_difference,

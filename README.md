@@ -43,7 +43,7 @@ It can:
 Important limits:
 
 - Future outputs are `not_official_publication`.
-- Cloud Run builds download and verify NASA NAIF `de440s.bsp`, then expose it through `PARVA_JPL_DE440_KERNEL`. Swiss/Moshier remains the fallback path if the kernel is not present.
+- Cloud Run builds download and verify NASA NAIF `de440.bsp`, then expose it through `PARVA_JPL_DE440_KERNEL`. Swiss/Moshier remains the fallback path if the kernel is not present.
 - Source labels matter. Third-party or legacy static rows are not represented as official ground truth.
 
 ## Future-BS API Examples
@@ -151,15 +151,38 @@ Regenerate them with:
 PYTHONPATH=backend python scripts/precompute_future_bs_predictions.py \
   --start 2084 \
   --end 2200 \
-  --model parva_solar_ingress_de440_calibrated_v3
+  --model parva_solar_civil_accuracy_v4
 ```
 
 Local JPL setup:
 
 ```bash
-python scripts/download_jpl_kernel.py --output data/ephemeris/jpl/de440s.bsp
-export PARVA_JPL_DE440_KERNEL="$PWD/data/ephemeris/jpl/de440s.bsp"
+python scripts/download_jpl_kernel.py --output data/ephemeris/jpl/de440.bsp
+export PARVA_JPL_DE440_KERNEL="$PWD/data/ephemeris/jpl/de440.bsp"
+python scripts/precompute_solar_ingress_events.py \
+  --start 1843 \
+  --end 2144 \
+  --ephemeris jpl_de440 \
+  --output data/future_bs/astronomy/solar_ingress_events_1900_2200.json \
+  --parquet-output data/future_bs/astronomy/solar_ingress_events_1900_2200.parquet
 ```
+
+Accuracy claim boundary:
+
+```bash
+python scripts/audit_verified_corpus.py
+python scripts/backtest_future_bs_model.py \
+  --validation-mode source_strict_official_only \
+  --train-start 2000 \
+  --train-end 2077 \
+  --test-start 2078 \
+  --test-end 2083
+```
+
+Parva tracks month-level `overall_top1_accuracy`, `green_zone_accuracy`,
+`green_zone_coverage`, and `boundary_case_accuracy`. A 99%+ claim is blocked
+until the source-strict official/printed benchmark has enough verified month
+cases and the green-zone thresholds pass.
 
 ## General Calendar API
 

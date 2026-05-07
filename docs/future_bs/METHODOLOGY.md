@@ -41,7 +41,7 @@ For each future BS year:
 
 ## Current Ephemeris Position
 
-Production builds download NASA NAIF `de440s.bsp`, verify its published checksum, and expose it through `PARVA_JPL_DE440_KERNEL`. When that file is present, the future-BS solar-ingress path uses the JPL-backed adapter. Swiss Ephemeris and the built-in Moshier path remain fallback/cross-check layers.
+Production builds download NASA NAIF `de440.bsp`, verify its published checksum, and expose it through `PARVA_JPL_DE440_KERNEL`. When that file is present, the future-BS solar-ingress path uses the JPL-backed adapter. Swiss Ephemeris and the built-in Moshier path remain fallback/cross-check layers. Normal API requests read precomputed prediction and solar-ingress cache artifacts instead of solving raw astronomy live.
 
 ## Backtesting
 

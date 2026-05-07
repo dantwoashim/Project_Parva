@@ -713,7 +713,7 @@ def build_engine_headers(
                 from app.future_bs.solar_ingress_engine import active_ephemeris_label
 
                 if active_ephemeris_label() == "jpl_de440":
-                    ephemeris_value = "jpl-de440s-lahiri-sidereal"
+                    ephemeris_value = "jpl-de440-lahiri-sidereal"
             except Exception:
                 pass
         response.headers["X-Parva-Ephemeris"] = ephemeris_value

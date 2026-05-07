@@ -2,10 +2,15 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any
 
-from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR, BS_MONTH_LENGTHS, BS_MONTH_NAMES
+from app.calendar.bikram_sambat import bs_to_gregorian
+from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR, BS_MONTH_NAMES
 
+from .accuracy import AccuracyCase, risk_label, source_policy_allows, summarize_accuracy
+from .boundary_risk import boundary_risk_label
+from .corpus import CorpusRow, corpus_rows, final_test_rows, get_corpus_row
 from .legacy_cycle_predictor import predict_from_training
 from .models import CALIBRATION_VERSION, METHOD_VERSION
 from .solar_ingress_predictor import predict_solar_ingress_year
@@ -19,15 +24,134 @@ def _validate_backtest_range(train_start: int, train_end: int, test_start: int, 
     if train_start > train_end or test_start > test_end:
         raise ValueError("Training and test ranges must be ascending.")
     for year in (train_start, train_end, test_start, test_end):
-        if year not in BS_MONTH_LENGTHS:
+        try:
+            get_corpus_row(year)
+        except ValueError as exc:
             raise ValueError(
                 f"Backtest year {year} is outside the static corpus range {BS_MIN_YEAR}-{BS_MAX_YEAR}."
-            )
+            ) from exc
     if train_end >= test_start:
         raise ValueError("train_end must be earlier than test_start.")
 
 
-def backtest_model(train_start: int, train_end: int, test_start: int, test_end: int) -> dict[str, Any]:
+def _rows_for_range(start: int, end: int, source_policy: str) -> list[CorpusRow]:
+    rows = [
+        row
+        for row in corpus_rows()
+        if start <= row.bs_year <= end
+        and source_policy_allows(row.source_type, row.verification_status, source_policy)
+    ]
+    if not rows:
+        raise ValueError(f"No corpus rows matched {start}-{end} BS with source_policy={source_policy}.")
+    return rows
+
+
+def _parse_agreement(value: str) -> float:
+    try:
+        numerator, denominator = value.split("/", 1)
+        return int(numerator) / int(denominator)
+    except (AttributeError, ValueError, ZeroDivisionError):
+        return 0.0
+
+
+def _selected_model_for_month(
+    solar: dict[str, Any],
+    month_index: int,
+    predicted_days: int,
+) -> dict[str, Any] | None:
+    candidates = [
+        model
+        for model in solar["model_outputs"]
+        if len(model.get("months", [])) > month_index
+        and int(model["months"][month_index]) == predicted_days
+    ]
+    if not candidates:
+        return None
+    return max(candidates, key=lambda model: float(model.get("rule_weight", 0.0)))
+
+
+def _month_diagnostics(
+    *,
+    solar: dict[str, Any],
+    month_index: int,
+    predicted_days: int,
+    actual_days: int,
+    row: CorpusRow,
+) -> dict[str, Any]:
+    selected = _selected_model_for_month(solar, month_index, predicted_days)
+    selected_assignment = None
+    selected_event = None
+    if selected:
+        if month_index < len(selected.get("rule_assignments") or []):
+            selected_assignment = selected["rule_assignments"][month_index]
+        if month_index < len(selected.get("events") or []):
+            selected_event = selected["events"][month_index]
+    selected_distance = selected_assignment.get("boundary_distance_minutes") if selected_assignment else None
+    boundary_distance = selected_distance if isinstance(selected_distance, int) else None
+    boundary = boundary_risk_label(boundary_distance)
+    risk_flags: set[str] = set()
+    if boundary in {"high", "critical"}:
+        risk_flags.update(["sankranti_near_civil_assignment_boundary", "manual_review_recommended"])
+    month_outputs = [
+        int(model["months"][month_index])
+        for model in solar["model_outputs"]
+        if len(model.get("months", [])) > month_index
+    ]
+    if len(set(month_outputs)) > 1:
+        risk_flags.add("civil_rule_disagreement")
+    model_agreement = solar["model_agreement"][month_index]
+    probability = solar["probabilities"][month_index]
+    confidence_score = max(probability.values()) if probability else 0.0
+    agreement_ratio = _parse_agreement(model_agreement)
+    label = risk_label(
+        confidence_score=confidence_score,
+        model_agreement_ratio=agreement_ratio,
+        boundary_risk=boundary,
+        risk_flags=sorted(risk_flags),
+    )
+    alternatives = [
+        model["model"]
+        for model in solar["model_outputs"]
+        if len(model.get("months", [])) > month_index
+        and int(model["months"][month_index]) == actual_days
+    ]
+    return {
+        "confidence_score": round(confidence_score, 4),
+        "model_agreement_ratio": round(agreement_ratio, 4),
+        "risk_label": label,
+        "boundary_risk": boundary,
+        "boundary_distance_minutes": boundary_distance,
+        "risk_flags": sorted(risk_flags),
+        "predicted_start": (
+            selected_assignment.get("assigned_month_start_date") if selected_assignment else None
+        ),
+        "official_start": bs_to_gregorian(row.bs_year, month_index + 1, 1).isoformat(),
+        "ingress_time": selected_event.get("datetime_nepal") if selected_event else None,
+        "selected_rule": selected["model"] if selected else None,
+        "alternative_rule_that_would_have_worked": alternatives[0] if alternatives else None,
+    }
+
+
+def _boundary_bucket(distance: int | None) -> str:
+    if distance is None:
+        return "unknown"
+    if distance < 30:
+        return "lt_30_min"
+    if distance < 120:
+        return "30_to_119_min"
+    if distance < 360:
+        return "120_to_359_min"
+    return "gte_360_min"
+
+
+def backtest_model(
+    train_start: int,
+    train_end: int,
+    test_start: int,
+    test_end: int,
+    *,
+    source_policy: str = "all_reference",
+) -> dict[str, Any]:
     _validate_backtest_range(train_start, train_end, test_start, test_end)
 
     exact_matches = 0
@@ -36,17 +160,52 @@ def backtest_model(train_start: int, train_end: int, test_start: int, test_end: 
     mismatches: list[dict[str, Any]] = []
     yearly_predictions: list[dict[str, Any]] = []
 
-    for year in range(test_start, test_end + 1):
+    accuracy_cases: list[AccuracyCase] = []
+    mismatch_by_ingress_hour: Counter[int] = Counter()
+    mismatch_by_boundary_distance: Counter[str] = Counter()
+    test_rows = _rows_for_range(test_start, test_end, source_policy)
+
+    for row in test_rows:
+        year = row.bs_year
         solar = predict_solar_ingress_year(year, train_start=train_start, train_end=train_end)
         legacy_months, legacy_models = predict_from_training(year, train_start, train_end)
-        actual = BS_MONTH_LENGTHS[year]
+        actual = row.months
         solar_matches = _match_count(solar["months"], actual)
         legacy_matches = _match_count(legacy_months, actual)
         exact_matches += solar_matches
         legacy_exact_matches += legacy_matches
         months_tested += 12
         for index, (predicted_days, actual_days) in enumerate(zip(solar["months"], actual), start=1):
+            diagnostics = _month_diagnostics(
+                solar=solar,
+                month_index=index - 1,
+                predicted_days=predicted_days,
+                actual_days=actual_days,
+                row=row,
+            )
+            accuracy_cases.append(
+                AccuracyCase(
+                    bs_year=year,
+                    month=index,
+                    month_name=BS_MONTH_NAMES[index - 1],
+                    predicted_days=predicted_days,
+                    actual_days=actual_days,
+                    confidence_score=float(diagnostics["confidence_score"]),
+                    risk_label=str(diagnostics["risk_label"]),
+                    boundary_risk=str(diagnostics["boundary_risk"]),
+                    risk_flags=list(diagnostics["risk_flags"]),
+                    source_type=row.source_type,
+                    verification_status=row.verification_status,
+                )
+            )
             if predicted_days != actual_days:
+                if diagnostics["ingress_time"]:
+                    try:
+                        hour = int(str(diagnostics["ingress_time"])[11:13])
+                        mismatch_by_ingress_hour[hour] += 1
+                    except ValueError:
+                        pass
+                mismatch_by_boundary_distance[_boundary_bucket(diagnostics["boundary_distance_minutes"])] += 1
                 mismatches.append(
                     {
                         "bs_year": year,
@@ -54,6 +213,18 @@ def backtest_model(train_start: int, train_end: int, test_start: int, test_end: 
                         "month_name": BS_MONTH_NAMES[index - 1],
                         "predicted_days": predicted_days,
                         "actual_days": actual_days,
+                        "predicted_start": diagnostics["predicted_start"],
+                        "official_start": diagnostics["official_start"],
+                        "ingress_time": diagnostics["ingress_time"],
+                        "selected_rule": diagnostics["selected_rule"],
+                        "alternative_rule_that_would_have_worked": diagnostics[
+                            "alternative_rule_that_would_have_worked"
+                        ],
+                        "boundary_distance_minutes": diagnostics["boundary_distance_minutes"],
+                        "boundary_risk": diagnostics["boundary_risk"],
+                        "risk_label": diagnostics["risk_label"],
+                        "source_type": row.source_type,
+                        "verification_status": row.verification_status,
                     }
                 )
         yearly_predictions.append(
@@ -63,6 +234,8 @@ def backtest_model(train_start: int, train_end: int, test_start: int, test_end: 
                 "actual": actual,
                 "matches": solar_matches,
                 "accuracy": round((solar_matches / 12) * 100, 2),
+                "source_type": row.source_type,
+                "verification_status": row.verification_status,
                 "legacy_predicted": legacy_months,
                 "legacy_accuracy": round((legacy_matches / 12) * 100, 2),
                 "models": [
@@ -77,36 +250,52 @@ def backtest_model(train_start: int, train_end: int, test_start: int, test_end: 
             }
         )
 
+    official_month_cases = len(final_test_rows()) * 12
+    accuracy_metrics = summarize_accuracy(accuracy_cases, official_month_cases=official_month_cases)
     return {
         "train_range": f"{train_start}-{train_end} BS",
         "test_range": f"{test_start}-{test_end} BS",
         "mode": "computational_solar_ingress_holdout",
+        "source_policy": source_policy,
         "months_tested": months_tested,
         "exact_matches": exact_matches,
         "mismatches": len(mismatches),
         "accuracy": round((exact_matches / months_tested) * 100, 2) if months_tested else 0.0,
+        "overall_top1_accuracy": accuracy_metrics["overall_top1_accuracy"],
+        "green_zone_accuracy": accuracy_metrics["green_zone_accuracy"],
+        "green_zone_coverage": accuracy_metrics["green_zone_coverage"],
+        "boundary_case_accuracy": accuracy_metrics["boundary_case_accuracy"],
+        "accuracy_metrics": accuracy_metrics,
         "legacy_exact_matches": legacy_exact_matches,
         "legacy_accuracy": round((legacy_exact_matches / months_tested) * 100, 2) if months_tested else 0.0,
         "yearly_predictions": yearly_predictions,
         "mismatch_details": mismatches,
+        "mismatch_by_ingress_hour": dict(sorted(mismatch_by_ingress_hour.items())),
+        "mismatch_by_boundary_distance": dict(sorted(mismatch_by_boundary_distance.items())),
         "method_version": METHOD_VERSION,
         "calibration_version": CALIBRATION_VERSION,
         "note": "Solar-ingress backtest is a computational validation aid, not official future publication.",
     }
 
 
-def full_replay_backtest(start: int = BS_MIN_YEAR, end: int = BS_MAX_YEAR) -> dict[str, Any]:
+def full_replay_backtest(
+    start: int = BS_MIN_YEAR,
+    end: int = BS_MAX_YEAR,
+    *,
+    source_policy: str = "all_reference",
+) -> dict[str, Any]:
     if start > end:
         raise ValueError("Backtest range must be ascending.")
     for year in (start, end):
-        if year not in BS_MONTH_LENGTHS:
-            raise ValueError(f"Backtest year {year} is outside corpus range {BS_MIN_YEAR}-{BS_MAX_YEAR}.")
+        get_corpus_row(year)
     exact_matches = 0
     months_tested = 0
     mismatch_cases: list[dict[str, Any]] = []
-    for year in range(start, end + 1):
+    rows = _rows_for_range(start, end, source_policy)
+    for row in rows:
+        year = row.bs_year
         solar = predict_solar_ingress_year(year, train_start=start, train_end=end)
-        actual = BS_MONTH_LENGTHS[year]
+        actual = row.months
         for index, (predicted_days, actual_days) in enumerate(zip(solar["months"], actual), start=1):
             months_tested += 1
             if predicted_days == actual_days:
@@ -120,11 +309,14 @@ def full_replay_backtest(start: int = BS_MIN_YEAR, end: int = BS_MAX_YEAR) -> di
                         "official_days": actual_days,
                         "predicted_days": predicted_days,
                         "reason": "civil_assignment_boundary_sensitive",
+                        "source_type": row.source_type,
+                        "verification_status": row.verification_status,
                     }
                 )
     return {
         "model_version": METHOD_VERSION,
         "mode": "full_replay",
+        "source_policy": source_policy,
         "range": f"{start}-{end} BS",
         "months_tested": months_tested,
         "exact_matches": exact_matches,
@@ -134,20 +326,27 @@ def full_replay_backtest(start: int = BS_MIN_YEAR, end: int = BS_MAX_YEAR) -> di
     }
 
 
-def rolling_validation(initial_train_start: int, predict_start: int, predict_end: int) -> dict[str, Any]:
+def rolling_validation(
+    initial_train_start: int,
+    predict_start: int,
+    predict_end: int,
+    *,
+    source_policy: str = "all_reference",
+) -> dict[str, Any]:
     if initial_train_start >= predict_start:
         raise ValueError("initial_train_start must be earlier than predict_start.")
     runs: list[dict[str, Any]] = []
     total_matches = 0
     total_months = 0
     for year in range(predict_start, predict_end + 1):
-        run = backtest_model(initial_train_start, year - 1, year, year)
+        run = backtest_model(initial_train_start, year - 1, year, year, source_policy=source_policy)
         runs.append(run)
         total_matches += int(run["exact_matches"])
         total_months += int(run["months_tested"])
     return {
         "model_version": METHOD_VERSION,
         "mode": "rolling_validation",
+        "source_policy": source_policy,
         "initial_train_start": initial_train_start,
         "predict_range": f"{predict_start}-{predict_end} BS",
         "months_tested": total_months,

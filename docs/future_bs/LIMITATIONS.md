@@ -10,9 +10,14 @@ Future predictions return `publication_status: not_official_publication`. They a
 
 Rows in the corpus are source-labeled. Only rows marked `official_verified` should be treated as structured official reference rows. Rows marked `approved_patro`, `third_party_reference`, or `needs_review` are useful for calibration and comparison, but require review before high-stakes use.
 
+The current source-strict official benchmark contains 72 month cases, below the
+528 month cases needed for a defensible 40+ year accuracy claim. Parva therefore
+blocks a 99%+ claim until more official/printed years are verified and the
+green-zone benchmark passes.
+
 ## Ephemeris Status
 
-The JPL DE440 adapter requires an installed `.bsp` kernel. Cloud Run builds download and verify `de440s.bsp`; local development must run `scripts/download_jpl_kernel.py` or set `PARVA_JPL_DE440_KERNEL` manually. If the kernel is missing, the engine falls back to the available Swiss/Moshier-style path and labels results accordingly.
+The JPL DE440 adapter requires an installed `.bsp` kernel. Cloud Run builds download and verify `de440.bsp`; local development must run `scripts/download_jpl_kernel.py` or set `PARVA_JPL_DE440_KERNEL` manually. If the kernel is missing, the engine falls back to the available Swiss/Moshier-style path and labels results accordingly.
 
 ## Civil-Date Uncertainty
 

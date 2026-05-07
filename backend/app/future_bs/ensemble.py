@@ -46,7 +46,7 @@ def _constraint_checks(months: list[int]) -> dict[str, Any]:
 
 def _ephemeris_status() -> str:
     return (
-        "jpl_de440s_lahiri_sidereal"
+        "jpl_de440_lahiri_sidereal"
         if active_ephemeris_label() == "jpl_de440"
         else "swiss_moshier_lahiri_sidereal"
     )

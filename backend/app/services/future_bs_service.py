@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.calendar.constants import BS_MONTH_NAMES
+from app.future_bs.accuracy import TARGET_THRESHOLDS
 from app.future_bs.backtest import backtest_model as computational_backtest_model
 from app.future_bs.backtest import full_replay_backtest, rolling_validation
 from app.future_bs.boundary_risk import boundary_risk_payload
@@ -23,6 +24,7 @@ from app.future_bs.models import PREDICTION_MAX_YEAR
 from app.future_bs.precomputed_store import precomputed_store_status
 from app.future_bs.residual_analysis import residual_summary
 from app.future_bs.run_registry import get_model_run, list_model_runs
+from app.future_bs.solar_ingress_cache import solar_ingress_cache_status
 from app.future_bs.source_registry import load_source_registry
 
 
@@ -58,8 +60,21 @@ def compare_external_sheet(source_name: str, years: list[dict[str, Any]]) -> dic
     return future_compare_external_sheet(source_name, years, predict_fn=predict_bs_year)
 
 
-def backtest_model(train_start: int, train_end: int, test_start: int, test_end: int) -> dict[str, Any]:
-    return computational_backtest_model(train_start, train_end, test_start, test_end)
+def backtest_model(
+    train_start: int,
+    train_end: int,
+    test_start: int,
+    test_end: int,
+    *,
+    source_policy: str = "all_reference",
+) -> dict[str, Any]:
+    return computational_backtest_model(
+        train_start,
+        train_end,
+        test_start,
+        test_end,
+        source_policy=source_policy,
+    )
 
 
 def future_bs_capabilities_payload() -> dict[str, Any]:
@@ -100,7 +115,9 @@ def future_bs_capabilities_payload() -> dict[str, Any]:
         "method_version": METHOD_VERSION,
         "calibration_version": CALIBRATION_VERSION,
         "corpus": corpus_summary(),
+        "accuracy_targets": TARGET_THRESHOLDS,
         "precomputed_store": precomputed_store_status(),
+        "solar_ingress_cache": solar_ingress_cache_status(),
         "model_registry": registry,
         "source_registry": load_source_registry(),
         "recommended_use": [
@@ -112,16 +129,29 @@ def future_bs_capabilities_payload() -> dict[str, Any]:
     }
 
 
-def full_backtest(start: int, end: int) -> dict[str, Any]:
-    return full_replay_backtest(start, end)
+def full_backtest(start: int, end: int, *, source_policy: str = "all_reference") -> dict[str, Any]:
+    return full_replay_backtest(start, end, source_policy=source_policy)
 
 
-def rolling_backtest(train_start: int, test_start: int, test_end: int) -> dict[str, Any]:
-    return rolling_validation(train_start, test_start, test_end)
+def rolling_backtest(
+    train_start: int,
+    test_start: int,
+    test_end: int,
+    *,
+    source_policy: str = "all_reference",
+) -> dict[str, Any]:
+    return rolling_validation(train_start, test_start, test_end, source_policy=source_policy)
 
 
-def backtest_residuals(train_start: int, train_end: int, test_start: int, test_end: int) -> dict[str, Any]:
-    return residual_summary(train_start, train_end, test_start, test_end)
+def backtest_residuals(
+    train_start: int,
+    train_end: int,
+    test_start: int,
+    test_end: int,
+    *,
+    source_policy: str = "all_reference",
+) -> dict[str, Any]:
+    return residual_summary(train_start, train_end, test_start, test_end, source_policy=source_policy)
 
 
 def explain_month(year: int, month: int) -> dict[str, Any]:
