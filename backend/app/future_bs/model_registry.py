@@ -11,6 +11,7 @@ from .models import CALIBRATION_VERSION, METHOD_VERSION
 
 def model_registry_payload() -> dict[str, Any]:
     adapters = [JPLDe440Adapter(), SwissEphemerisAdapter(), MoshierAdapter()]
+    jpl_available = adapters[0].available
     return {
         "method_version": METHOD_VERSION,
         "calibration_version": CALIBRATION_VERSION,
@@ -20,13 +21,13 @@ def model_registry_payload() -> dict[str, Any]:
         "models": [
             {
                 "name": "jpl_de440_lahiri_same_day",
-                "status": "registered_unavailable_until_kernel_configured",
-                "weight": 0.0,
+                "status": "active" if jpl_available else "registered_unavailable_until_kernel_configured",
+                "weight": 1.0 if jpl_available else 0.0,
             },
             {
                 "name": "jpl_de440_lahiri_sunrise",
-                "status": "registered_unavailable_until_kernel_configured",
-                "weight": 0.0,
+                "status": "active" if jpl_available else "registered_unavailable_until_kernel_configured",
+                "weight": 1.0 if jpl_available else 0.0,
             },
             {
                 "name": "swiss_lahiri_civil_rule_ensemble",
@@ -44,5 +45,9 @@ def model_registry_payload() -> dict[str, Any]:
                 "weight": 0.65,
             },
         ],
-        "claim_boundary": "DE440 models are registered but unavailable until a kernel is configured.",
+        "claim_boundary": (
+            "DE440s is configured and available."
+            if jpl_available
+            else "DE440 models are registered but unavailable until a kernel is configured."
+        ),
     }

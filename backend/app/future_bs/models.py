@@ -8,8 +8,8 @@ from typing import Any
 
 from app.calendar.constants import BS_MONTH_NAMES
 
-METHOD_VERSION = "parva_solar_ingress_calibrated_v2"
-CALIBRATION_VERSION = "solar_ingress_civil_rule_ensemble_2000_2099_v1"
+METHOD_VERSION = "parva_solar_ingress_de440_calibrated_v3"
+CALIBRATION_VERSION = "solar_ingress_de440s_civil_rule_ensemble_2000_2099_v1"
 MONTH_DAY_VALUES = (29, 30, 31, 32)
 PREDICTION_MAX_YEAR = 2200
 
@@ -22,6 +22,8 @@ class SolarIngressEvent:
     rashi_name: str
     datetime_utc: datetime
     datetime_nepal: datetime
+    ephemeris: str = "swiss_moshier"
+    calculation_version: str = "sankranti_engine_v1"
 
     @property
     def nepal_date(self) -> date:
@@ -36,6 +38,8 @@ class SolarIngressEvent:
             "datetime_utc": self.datetime_utc.isoformat(),
             "datetime_nepal": self.datetime_nepal.isoformat(),
             "nepal_date": self.nepal_date.isoformat(),
+            "ephemeris": self.ephemeris,
+            "calculation_version": self.calculation_version,
         }
 
 

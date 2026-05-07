@@ -63,6 +63,17 @@ def backtest_model(train_start: int, train_end: int, test_start: int, test_end: 
 
 
 def future_bs_capabilities_payload() -> dict[str, Any]:
+    registry = model_registry_payload()
+    jpl_available = any(
+        adapter.get("name") == "jpl_de440" and adapter.get("available")
+        for adapter in registry.get("ephemeris_adapters", [])
+    )
+    not_claimed = [
+        "official_future_publication",
+        "legal_or_tax_final_authority",
+    ]
+    if not jpl_available:
+        not_claimed.append("DE440 production certification until a kernel is configured")
     return {
         "surface": "future_bs_month_length_validation",
         "status": "evaluation_ready",
@@ -85,16 +96,12 @@ def future_bs_capabilities_payload() -> dict[str, Any]:
             "backtest_metrics",
             "residual_analysis",
         ],
-        "not_claimed": [
-            "official_future_publication",
-            "legal_or_tax_final_authority",
-            "DE440 production certification until a kernel is configured",
-        ],
+        "not_claimed": not_claimed,
         "method_version": METHOD_VERSION,
         "calibration_version": CALIBRATION_VERSION,
         "corpus": corpus_summary(),
         "precomputed_store": precomputed_store_status(),
-        "model_registry": model_registry_payload(),
+        "model_registry": registry,
         "source_registry": load_source_registry(),
         "recommended_use": [
             "technical validation",

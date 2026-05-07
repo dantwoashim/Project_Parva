@@ -41,7 +41,7 @@ For each future BS year:
 
 ## Current Ephemeris Position
 
-The architecture includes JPL DE440 as a registered target, Swiss Ephemeris as the active cross-check path, and Moshier-style fallback. DE440 is not claimed active unless a JPL kernel is configured through deployment settings.
+Production builds download NASA NAIF `de440s.bsp`, verify its published checksum, and expose it through `PARVA_JPL_DE440_KERNEL`. When that file is present, the future-BS solar-ingress path uses the JPL-backed adapter. Swiss Ephemeris and the built-in Moshier path remain fallback/cross-check layers.
 
 ## Backtesting
 

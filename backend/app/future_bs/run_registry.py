@@ -13,7 +13,7 @@ from .models import CALIBRATION_VERSION, METHOD_VERSION
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 RUNS_DIR = PROJECT_ROOT / "data" / "future_bs" / "model_runs"
-DEFAULT_RUN_ID = "parva_solar_ingress_calibrated_v2_2026_05_06_001"
+DEFAULT_RUN_ID = "parva_solar_ingress_de440_calibrated_v3_2026_05_07_001"
 
 
 def _stable_hash(payload: dict[str, Any]) -> str:
@@ -28,12 +28,22 @@ def build_run_metadata(
     end_bs: int = 2200,
     created_at: str = "2026-05-06T00:00:00Z",
 ) -> dict[str, Any]:
+    try:
+        from .solar_ingress_engine import active_ephemeris_label
+
+        ephemeris_version = (
+            "jpl_de440s_lahiri_sidereal"
+            if active_ephemeris_label() == "jpl_de440"
+            else "swiss_moshier_lahiri_sidereal"
+        )
+    except Exception:
+        ephemeris_version = "unknown"
     payload = {
         "run_id": run_id,
         "model_version": METHOD_VERSION,
         "calibration_version": CALIBRATION_VERSION,
         "corpus_version": CORPUS_VERSION,
-        "ephemeris_version": "swiss_moshier_lahiri_sidereal",
+        "ephemeris_version": ephemeris_version,
         "rule_version": "civil_rule_ensemble_v1",
         "prediction_range": f"{start_bs}-{end_bs} BS",
         "created_at": created_at,

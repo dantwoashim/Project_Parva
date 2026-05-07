@@ -6,6 +6,7 @@ import base64
 import zipfile
 from io import BytesIO
 
+from app.future_bs.models import METHOD_VERSION
 from app.main import app
 from fastapi.testclient import TestClient
 
@@ -47,7 +48,7 @@ def test_predict_future_year_returns_probabilities_and_risk_flags():
     assert body["bs_year"] == 2112
     assert len(body["months"]) == 12
     assert all(29 <= days <= 32 for days in body["months"])
-    assert body["method_version"] == "parva_solar_ingress_calibrated_v2"
+    assert body["method_version"] == METHOD_VERSION
     assert body["model_family"] == "computational_solar_ingress"
     assert body["computational_model_outputs"]
     assert body["legacy_model_output"]
@@ -102,7 +103,7 @@ def test_backtest_model_returns_accuracy_metrics():
     assert body["months_tested"] == 96
     assert 0 <= body["accuracy"] <= 100
     assert body["mode"] == "computational_solar_ingress_holdout"
-    assert body["method_version"] == "parva_solar_ingress_calibrated_v2"
+    assert body["method_version"] == METHOD_VERSION
 
 
 def test_backtest_v2_full_and_residual_routes_work():
@@ -139,7 +140,7 @@ def test_boundary_risk_route_returns_review_payload():
     assert body["bs_year"] == 2112
     assert body["month"] == 8
     assert body["boundary_risk"] in {"low", "medium", "high", "critical", "unknown"}
-    assert body["method_version"] == "parva_solar_ingress_calibrated_v2"
+    assert body["method_version"] == METHOD_VERSION
 
 
 def test_import_csv_and_compare_route_detects_mismatch():

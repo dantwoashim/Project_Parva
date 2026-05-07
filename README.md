@@ -43,7 +43,7 @@ It can:
 Important limits:
 
 - Future outputs are `not_official_publication`.
-- DE440/JPL is registered as an architecture target, but production currently uses the configured Swiss/Moshier-style ephemeris path unless a JPL kernel is supplied.
+- Cloud Run builds download and verify NASA NAIF `de440s.bsp`, then expose it through `PARVA_JPL_DE440_KERNEL`. Swiss/Moshier remains the fallback path if the kernel is not present.
 - Source labels matter. Third-party or legacy static rows are not represented as official ground truth.
 
 ## Future-BS API Examples
@@ -151,7 +151,14 @@ Regenerate them with:
 PYTHONPATH=backend python scripts/precompute_future_bs_predictions.py \
   --start 2084 \
   --end 2200 \
-  --model parva_solar_ingress_calibrated_v2
+  --model parva_solar_ingress_de440_calibrated_v3
+```
+
+Local JPL setup:
+
+```bash
+python scripts/download_jpl_kernel.py --output data/ephemeris/jpl/de440s.bsp
+export PARVA_JPL_DE440_KERNEL="$PWD/data/ephemeris/jpl/de440s.bsp"
 ```
 
 ## General Calendar API

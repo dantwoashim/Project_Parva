@@ -22,6 +22,7 @@ from .legacy_cycle_predictor import predict_legacy_cycle
 from .models import CALIBRATION_VERSION, METHOD_VERSION, MONTH_DAY_VALUES, PREDICTION_MAX_YEAR
 from .precomputed_store import get_precomputed_year, live_compute_enabled
 from .run_registry import DEFAULT_RUN_ID
+from .solar_ingress_engine import active_ephemeris_label
 from .solar_ingress_predictor import predict_solar_ingress_year
 
 
@@ -41,6 +42,14 @@ def _constraint_checks(months: list[int]) -> dict[str, Any]:
         "plausible_year_total": 354 <= total_days <= 368,
         "allowed_month_lengths": list(MONTH_DAY_VALUES),
     }
+
+
+def _ephemeris_status() -> str:
+    return (
+        "jpl_de440s_lahiri_sidereal"
+        if active_ephemeris_label() == "jpl_de440"
+        else "swiss_moshier_lahiri_sidereal"
+    )
 
 
 def _source_payload(bs_year: int) -> dict[str, Any]:
@@ -122,7 +131,7 @@ def _known_year_payload(bs_year: int) -> dict[str, Any]:
         "limits": {
             "known_static_lookup": corpus_range_label(),
             "prediction_range": f"{BS_MIN_YEAR}-{PREDICTION_MAX_YEAR} BS",
-            "ephemeris_status": "swiss_moshier_lahiri_sidereal",
+            "ephemeris_status": _ephemeris_status(),
             "publication_status": "not_official_publication",
         },
         "source_status": _source_payload(bs_year)["source_status"],
@@ -214,7 +223,7 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
         "limits": {
             "known_static_lookup": corpus_range_label(),
             "prediction_range": f"{BS_MIN_YEAR}-{PREDICTION_MAX_YEAR} BS",
-            "ephemeris_status": "swiss_moshier_lahiri_sidereal",
+            "ephemeris_status": _ephemeris_status(),
             "publication_status": "not_official_publication",
         },
         "source_status": "computed_prediction",

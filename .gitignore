@@ -47,6 +47,8 @@ logs/
 
 # Runtime data
 data/transparency/*.jsonl
+data/ephemeris/**/*.bsp
+data/ephemeris/**/*.bpc
 
 # Generated provenance artifacts
 backend/data/snapshots/

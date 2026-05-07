@@ -12,7 +12,7 @@ Rows in the corpus are source-labeled. Only rows marked `official_verified` shou
 
 ## Ephemeris Status
 
-The JPL DE440 adapter is present as an architecture target, but it requires an installed kernel. Without that kernel, production uses the available Swiss/Moshier-style ephemeris path and labels results accordingly.
+The JPL DE440 adapter requires an installed `.bsp` kernel. Cloud Run builds download and verify `de440s.bsp`; local development must run `scripts/download_jpl_kernel.py` or set `PARVA_JPL_DE440_KERNEL` manually. If the kernel is missing, the engine falls back to the available Swiss/Moshier-style path and labels results accordingly.
 
 ## Civil-Date Uncertainty
 

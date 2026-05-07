@@ -60,7 +60,7 @@
         {
           "model": "same_nepal_civil_date",
           "model_family": "computational_solar_ingress",
-          "rule_weight": 0.5787
+          "rule_weight": 0.588
         },
         {
           "model": "sunrise_rule",
@@ -204,7 +204,7 @@
         {
           "model": "same_nepal_civil_date",
           "model_family": "computational_solar_ingress",
-          "rule_weight": 0.5787
+          "rule_weight": 0.588
         },
         {
           "model": "sunrise_rule",
@@ -348,7 +348,7 @@
         {
           "model": "same_nepal_civil_date",
           "model_family": "computational_solar_ingress",
-          "rule_weight": 0.5787
+          "rule_weight": 0.588
         },
         {
           "model": "sunrise_rule",
@@ -492,7 +492,7 @@
         {
           "model": "same_nepal_civil_date",
           "model_family": "computational_solar_ingress",
-          "rule_weight": 0.5787
+          "rule_weight": 0.588
         },
         {
           "model": "sunrise_rule",
@@ -588,8 +588,8 @@
     {
       "bs_year": 2080,
       "predicted": [
-        30,
-        32,
+        31,
+        31,
         31,
         31,
         31,
@@ -636,7 +636,7 @@
         {
           "model": "same_nepal_civil_date",
           "model_family": "computational_solar_ingress",
-          "rule_weight": 0.5787
+          "rule_weight": 0.588
         },
         {
           "model": "sunrise_rule",
@@ -780,7 +780,7 @@
         {
           "model": "same_nepal_civil_date",
           "model_family": "computational_solar_ingress",
-          "rule_weight": 0.5787
+          "rule_weight": 0.588
         },
         {
           "model": "sunrise_rule",
@@ -924,7 +924,7 @@
         {
           "model": "same_nepal_civil_date",
           "model_family": "computational_solar_ingress",
-          "rule_weight": 0.5787
+          "rule_weight": 0.588
         },
         {
           "model": "sunrise_rule",
@@ -1068,7 +1068,7 @@
         {
           "model": "same_nepal_civil_date",
           "model_family": "computational_solar_ingress",
-          "rule_weight": 0.5787
+          "rule_weight": 0.588
         },
         {
           "model": "sunrise_rule",
@@ -1277,10 +1277,10 @@
     },
     {
       "bs_year": 2080,
-      "month": 1,
-      "month_name": "Baishakh",
-      "predicted_days": 30,
-      "actual_days": 31
+      "month": 2,
+      "month_name": "Jestha",
+      "predicted_days": 31,
+      "actual_days": 32
     },
     {
       "bs_year": 2080,
@@ -1388,7 +1388,7 @@
       "actual_days": 29
     }
   ],
-  "method_version": "parva_solar_ingress_calibrated_v2",
-  "calibration_version": "solar_ingress_civil_rule_ensemble_2000_2099_v1",
+  "method_version": "parva_solar_ingress_de440_calibrated_v3",
+  "calibration_version": "solar_ingress_de440s_civil_rule_ensemble_2000_2099_v1",
   "note": "Solar-ingress backtest is a computational validation aid, not official future publication."
 }
