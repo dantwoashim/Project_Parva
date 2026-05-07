@@ -707,7 +707,16 @@ def build_engine_headers(
 ):
     async def add_engine_headers(request: Request, call_next):
         response = await call_next(request)
-        response.headers["X-Parva-Ephemeris"] = ephemeris_header_value()
+        ephemeris_value = ephemeris_header_value()
+        if request.url.path.startswith("/v4/api/future-bs"):
+            try:
+                from app.future_bs.solar_ingress_engine import active_ephemeris_label
+
+                if active_ephemeris_label() == "jpl_de440":
+                    ephemeris_value = "jpl-de440s-lahiri-sidereal"
+            except Exception:
+                pass
+        response.headers["X-Parva-Ephemeris"] = ephemeris_value
         response.headers["X-Parva-License"] = license_mode
         response.headers["X-Parva-Engine"] = _engine_track_for_path(request.url.path)
 

@@ -22,6 +22,11 @@ def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
     assert body["status"] == "evaluation_ready"
     assert "external_sheet_comparison" in body["stable"]
     assert "official_future_publication" in body["not_claimed"]
+    jpl_adapter = next(
+        adapter for adapter in body["model_registry"]["ephemeris_adapters"] if adapter["name"] == "jpl_de440"
+    )
+    if jpl_adapter["available"]:
+        assert response.headers["X-Parva-Ephemeris"] == "jpl-de440s-lahiri-sidereal"
 
 
 def test_predict_2085_uses_computed_future_path_not_unverified_static_truth():
