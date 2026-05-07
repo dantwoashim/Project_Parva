@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download and verify the NAIF DE440 SPK kernel used by Parva."""
+"""Download and verify NAIF JPL SPK kernels used by Parva."""
 
 from __future__ import annotations
 
@@ -10,8 +10,23 @@ import tempfile
 import urllib.request
 from pathlib import Path
 
-DEFAULT_URL = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp"
-DEFAULT_MD5 = "c9d581bfd84209dbeee8b1583939b148"
+KERNELS = {
+    "de440": {
+        "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp",
+        "md5": "c9d581bfd84209dbeee8b1583939b148",
+        "output": Path("data/ephemeris/jpl/de440.bsp"),
+    },
+    "de441-part1": {
+        "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de441_part-1.bsp",
+        "md5": "7e5fcf9ecb5d08e1ab70c049baa60cd3",
+        "output": Path("data/ephemeris/jpl/de441_part-1.bsp"),
+    },
+    "de441-part2": {
+        "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de441_part-2.bsp",
+        "md5": "ad8dfa4e505ef0e3a5d587a5b4705632",
+        "output": Path("data/ephemeris/jpl/de441_part-2.bsp"),
+    },
+}
 
 
 def md5sum(path: Path) -> str:
@@ -54,13 +69,18 @@ def download(url: str, output: Path, expected_md5: str, quiet: bool = False) -> 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--url", default=DEFAULT_URL)
-    parser.add_argument("--md5", default=DEFAULT_MD5)
-    parser.add_argument("--output", type=Path, default=Path("data/ephemeris/jpl/de440.bsp"))
+    parser.add_argument("--kernel", choices=sorted(KERNELS), default="de440")
+    parser.add_argument("--url", default=None)
+    parser.add_argument("--md5", default=None)
+    parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--quiet", action="store_true")
     args = parser.parse_args()
+    preset = KERNELS[args.kernel]
+    url = args.url or str(preset["url"])
+    expected_md5 = args.md5 or str(preset["md5"])
+    output = args.output or preset["output"]
     try:
-        download(args.url, args.output, args.md5, quiet=args.quiet)
+        download(url, output, expected_md5, quiet=args.quiet)
     except Exception as exc:
         print(str(exc), file=sys.stderr)
         return 1

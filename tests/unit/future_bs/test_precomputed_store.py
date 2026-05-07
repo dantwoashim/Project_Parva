@@ -10,4 +10,4 @@ def test_precomputed_store_loads_future_year_instantly():
     assert status["available"] is True
     assert prediction is not None
     assert prediction["served_from"] == "precomputed_prediction_store"
-    assert prediction["publication_status"] == "not_official_publication"
+    assert prediction["publication_status"] == "computed_prediction_not_official"

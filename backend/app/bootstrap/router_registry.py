@@ -9,6 +9,7 @@ from fastapi import APIRouter, FastAPI
 from app.api import (
     billing_router,
     cache_router,
+    calendar_model_risk_router,
     calendar_router,
     engine_router,
     enterprise_router,
@@ -61,6 +62,14 @@ ROUTER_REGISTRATIONS = [
         "public",
         "public",
         "future_bs",
+        include_v3=False,
+        include_experimental_versions=False,
+    ),
+    RouterRegistration(
+        calendar_model_risk_router,
+        "public",
+        "public",
+        "calendar_model_risk",
         include_v3=False,
         include_experimental_versions=False,
     ),

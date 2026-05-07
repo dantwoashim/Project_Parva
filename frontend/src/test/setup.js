@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest';
 import { cleanup, configure } from '@testing-library/react';
-import { afterEach } from 'vitest';
+import { afterEach, beforeEach } from 'vitest';
 
 configure({
   asyncUtilTimeout: 5000,
@@ -44,10 +44,48 @@ function resetStorage(storage) {
   }
 }
 
+function createMemoryStorage() {
+  const store = new Map();
+  return {
+    get length() {
+      return store.size;
+    },
+    clear: () => store.clear(),
+    getItem: (key) => (store.has(String(key)) ? store.get(String(key)) : null),
+    key: (index) => Array.from(store.keys())[index] ?? null,
+    removeItem: (key) => store.delete(String(key)),
+    setItem: (key, value) => store.set(String(key), String(value)),
+  };
+}
+
+function ensureStorage(name) {
+  const storage = window[name];
+  if (
+    storage
+    && typeof storage.clear === 'function'
+    && typeof storage.getItem === 'function'
+    && typeof storage.setItem === 'function'
+    && typeof storage.removeItem === 'function'
+  ) {
+    return;
+  }
+  Object.defineProperty(window, name, {
+    configurable: true,
+    value: createMemoryStorage(),
+  });
+}
+
+beforeEach(() => {
+  ensureStorage('localStorage');
+  ensureStorage('sessionStorage');
+});
+
 afterEach(() => {
   cleanup();
   window.innerWidth = 1024;
   window.innerHeight = 768;
   resetStorage(window.localStorage);
   resetStorage(window.sessionStorage);
+  ensureStorage('localStorage');
+  ensureStorage('sessionStorage');
 });

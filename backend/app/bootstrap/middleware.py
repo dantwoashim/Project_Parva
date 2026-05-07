@@ -543,7 +543,10 @@ def build_rate_limit_guard(*, settings: AppSettings, backend: RateLimiterBackend
     return rate_limit_guard
 
 
-STABLE_PUBLIC_V4_PREFIXES = ("/v4/api/future-bs/",)
+STABLE_PUBLIC_V4_PREFIXES = (
+    "/v4/api/future-bs/",
+    "/v5/api/calendar-model-risk/",
+)
 
 
 def build_experimental_version_gate(*, enable_experimental_api: bool):

@@ -15,12 +15,16 @@ def _comparison_category(their_days: int, parva_days: int, detail: dict[str, Any
     high_confidence = confidence_score >= 0.95 and "manual_review_recommended" not in risk_flags
     low_confidence = confidence_score < 0.85 or "manual_review_recommended" in risk_flags
     if their_days == parva_days:
-        return "AGREE_HIGH_CONFIDENCE" if high_confidence else "AGREE_LOW_CONFIDENCE"
+        return "AGREE_GREEN" if high_confidence else "AGREE_YELLOW"
     if high_confidence:
         return "PARVA_HIGH_CONFIDENCE_DISAGREES"
     if low_confidence:
         return "BOTH_UNCERTAIN"
-    return "NEEDS_OFFICIAL_REVIEW"
+    probability = detail.get("probability") or {}
+    plausible_key = f"{their_days}_days"
+    if float(probability.get(plausible_key, 0.0)) >= 0.05:
+        return "THEIR_VALUE_PLAUSIBLE"
+    return "METHOD_REGIME_RISK"
 
 
 def external_year_map(years: list[dict[str, Any]]) -> dict[int, list[int]]:
@@ -92,4 +96,5 @@ def compare_external_sheet(
         },
         "mismatches": mismatches,
         "method_version": METHOD_VERSION,
+        "publication_status": "computed_prediction_not_official",
     }

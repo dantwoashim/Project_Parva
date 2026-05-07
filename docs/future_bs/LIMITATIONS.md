@@ -4,7 +4,7 @@ Parva Future BS is intentionally conservative about what it claims.
 
 ## Non-Official Status
 
-Future predictions return `publication_status: not_official_publication`. They are computational outputs, not government calendar publications and not legal/tax final authority.
+Future predictions return `publication_status: computed_prediction_not_official`. They are computational outputs, not government calendar publications and not legal/tax final authority.
 
 ## Source Quality
 
@@ -17,7 +17,7 @@ green-zone benchmark passes.
 
 ## Ephemeris Status
 
-The JPL DE440 adapter requires an installed `.bsp` kernel. Cloud Run builds download and verify `de440.bsp`; local development must run `scripts/download_jpl_kernel.py` or set `PARVA_JPL_DE440_KERNEL` manually. If the kernel is missing, the engine falls back to the available Swiss/Moshier-style path and labels results accordingly.
+The JPL DE440 adapter requires an installed `.bsp` kernel for live regeneration. Cloud Run builds download and verify `de440.bsp`; local development can run `scripts/download_jpl_kernel.py --kernel de440` or set `PARVA_JPL_DE440_KERNEL` manually. DE441 part kernels can be downloaded with `--kernel de441-part1` and `--kernel de441-part2` for cross-check work. Precomputed trusted artifacts may be served without live JPL regeneration.
 
 ## Civil-Date Uncertainty
 

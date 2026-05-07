@@ -24,6 +24,7 @@ from .run_registry import DEFAULT_RUN_ID
 from .solar_ingress_engine import active_ephemeris_label
 from .solar_ingress_predictor import DEFAULT_REFERENCE_TRAIN_END
 from .statistical_pattern_predictor import predict_stacked_year
+from .year_total_gate import apply_year_total_gate
 
 
 def _validate_year(bs_year: int) -> None:
@@ -132,10 +133,11 @@ def _known_year_payload(bs_year: int) -> dict[str, Any]:
             "known_static_lookup": corpus_range_label(),
             "prediction_range": f"{BS_MIN_YEAR}-{PREDICTION_MAX_YEAR} BS",
             "ephemeris_status": _ephemeris_status(),
-            "publication_status": "not_official_publication",
+            "publication_status": "computed_prediction_not_official",
         },
         "source_status": _source_payload(bs_year)["source_status"],
-        "publication_status": "not_official_publication",
+        "publication_status": "computed_prediction_not_official",
+        "legacy_publication_status": "not_official_publication",
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
 
@@ -199,7 +201,7 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
         )
 
     confidence_score = round(sum(row["confidence_score"] for row in details) / 12, 4)
-    return {
+    payload = {
         "bs_year": bs_year,
         "months": final_months,
         "month_details": details,
@@ -240,12 +242,14 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
             "known_static_lookup": corpus_range_label(),
             "prediction_range": f"{BS_MIN_YEAR}-{PREDICTION_MAX_YEAR} BS",
             "ephemeris_status": _ephemeris_status(),
-            "publication_status": "not_official_publication",
+            "publication_status": "computed_prediction_not_official",
         },
         "source_status": "computed_prediction",
-        "publication_status": "not_official_publication",
+        "publication_status": "computed_prediction_not_official",
+        "legacy_publication_status": "not_official_publication",
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
+    return apply_year_total_gate(payload)
 
 
 def compute_year_live(bs_year: int) -> dict[str, Any]:

@@ -47,7 +47,7 @@ def test_predict_2085_uses_computed_future_path_not_unverified_static_truth():
     assert body["source"]["type"] == "computed_prediction"
     assert body["source"]["supporting_corpus_source"]["type"] == "third_party_reference"
     assert body["source_status"] == "computed_prediction"
-    assert body["publication_status"] == "not_official_publication"
+    assert body["publication_status"] == "computed_prediction_not_official"
     assert body["confidence"].startswith("computed_")
     assert body["month_details"][4]["month_name"] == "Bhadra"
 
@@ -66,7 +66,7 @@ def test_predict_future_year_returns_probabilities_and_risk_flags():
     assert body["legacy_model_output"]
     assert body["source"]["type"] == "computed_prediction"
     assert body["source_status"] == "computed_prediction"
-    assert body["publication_status"] == "not_official_publication"
+    assert body["publication_status"] == "computed_prediction_not_official"
     assert body["run_id"]
     assert "outside_static_lookup" in body["risk_flags"]
     assert body["month_details"][0]["probability"]

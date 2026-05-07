@@ -10,6 +10,7 @@ from typing import Any
 
 from .models import METHOD_VERSION
 from .run_registry import DEFAULT_RUN_ID
+from .year_total_gate import apply_year_total_gate
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 PREDICTIONS_DIR = PROJECT_ROOT / "data" / "future_bs" / "predictions"
@@ -43,8 +44,9 @@ def get_precomputed_year(bs_year: int) -> dict[str, Any] | None:
     result = dict(year_payload)
     result["served_from"] = "precomputed_prediction_store"
     result.setdefault("run_id", payload.get("run_id", DEFAULT_RUN_ID))
-    result.setdefault("publication_status", "not_official_publication")
-    return result
+    result["publication_status"] = "computed_prediction_not_official"
+    result.setdefault("legacy_publication_status", "not_official_publication")
+    return apply_year_total_gate(result)
 
 
 def precomputed_store_status() -> dict[str, Any]:

@@ -2,6 +2,7 @@
 
 from .billing_routes import router as billing_router
 from .cache_routes import router as cache_router
+from .calendar_model_risk_routes import router as calendar_model_risk_router
 from .calendar_routes import router as calendar_router
 from .engine_routes import router as engine_router
 from .enterprise_routes import router as enterprise_router
@@ -32,6 +33,7 @@ from .temporal_compass_routes import router as temporal_compass_router
 
 __all__ = [
     "calendar_router",
+    "calendar_model_risk_router",
     "billing_router",
     "cache_router",
     "explain_router",

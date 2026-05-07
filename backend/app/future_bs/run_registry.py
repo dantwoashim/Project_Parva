@@ -49,7 +49,7 @@ def build_run_metadata(
         "rule_version": "civil_decision_knn_plus_pattern_stack_abstention_v4",
         "prediction_range": f"{start_bs}-{end_bs} BS",
         "created_at": created_at,
-        "publication_status": "not_official_publication",
+        "publication_status": "computed_prediction_not_official",
     }
     payload["hash"] = _stable_hash(payload)
     return payload

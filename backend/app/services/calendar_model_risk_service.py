@@ -1,0 +1,205 @@
+"""Calendar model-risk service layer built on the future-BS engine."""
+
+from __future__ import annotations
+
+from typing import Any
+
+from app.calendar.constants import BS_MONTH_NAMES
+from app.future_bs.calendar_var import calendar_var_payload
+from app.future_bs.claim_readiness import claim_readiness_report
+from app.future_bs.models import CALIBRATION_VERSION, METHOD_VERSION
+from app.future_bs.perturbation_robustness import perturbation_payload
+from app.future_bs.prediction_sets import prediction_set_payload
+from app.future_bs.red_team_2083 import replay_2083_ashwin
+from app.future_bs.source_trust import TRUST_LEVELS
+from app.services.future_bs_service import (
+    compare_external_sheet,
+    predict_bs_year,
+    simulate_loan_impact,
+)
+
+
+def _month_prediction(year: int, month: int) -> tuple[dict[str, Any], dict[str, Any]]:
+    if month < 1 or month > 12:
+        raise ValueError("month must be between 1 and 12.")
+    prediction = predict_bs_year(year)
+    return prediction, prediction["month_details"][month - 1]
+
+
+def _risk_label(detail: dict[str, Any], year_gate: dict[str, Any] | None = None) -> str:
+    if year_gate and not year_gate.get("valid_future_year_total", True):
+        return "RED"
+    flags = set(detail.get("risk_flags") or [])
+    if "manual_review_recommended" in flags:
+        return "YELLOW"
+    if float(detail.get("confidence_score", 0.0)) >= 0.95:
+        return "GREEN"
+    return "YELLOW"
+
+
+def prediction_payload(year: int, month: int) -> dict[str, Any]:
+    prediction, detail = _month_prediction(year, month)
+    sets = prediction_set_payload(detail)
+    perturbation = perturbation_payload(detail)
+    risk_label = _risk_label(detail, prediction.get("year_total_gate"))
+    return {
+        "bs_year": year,
+        "month": BS_MONTH_NAMES[month - 1].lower(),
+        "month_number": month,
+        "predicted_days": detail["final_days"],
+        **sets,
+        "risk_label": risk_label,
+        "risk_reasons": detail.get("risk_flags", []),
+        "physics_tower": {
+            "predicted_days": detail.get("computational_days", detail["final_days"]),
+            "confidence": detail.get("confidence_score"),
+        },
+        "precedent_tower": {
+            "predicted_days": detail.get("statistical_pattern_days", detail["final_days"]),
+            "confidence": detail.get("confidence_score"),
+            "nearest_cases": [],
+        },
+        "committee_model": committee_posterior_payload(year, month),
+        "perturbation_robustness": perturbation,
+        "calendar_var": {
+            "one_day_mismatch_impact_available": True,
+            "recommended_policy": (
+                "override_ready_until_official_publication"
+                if risk_label != "GREEN" or not perturbation["stable"]
+                else "normal_computed_schedule_with_reconciliation_marker"
+            ),
+        },
+        "year_total_gate": prediction.get("year_total_gate"),
+        "metadata": {
+            "run_id": prediction.get("run_id"),
+            "model_version": METHOD_VERSION,
+            "calibration_version": CALIBRATION_VERSION,
+            "publication_status": "computed_prediction_not_official",
+            "served_from": prediction.get("served_from", "computed_or_known_engine"),
+        },
+    }
+
+
+def committee_posterior_payload(year: int, month: int) -> dict[str, Any]:
+    prediction, detail = _month_prediction(year, month)
+    flags = set(detail.get("risk_flags") or [])
+    probabilities = {
+        "month_specific_cutoff": 0.44,
+        "precedent_rule": 0.26,
+        "same_day": 0.16,
+        "sunrise_rule": 0.14,
+    }
+    if "model_disagreement" in flags or "resolved_statistical_solar_disagreement" in flags:
+        probabilities = {
+            "month_specific_cutoff": 0.34,
+            "precedent_rule": 0.32,
+            "same_day": 0.14,
+            "sunrise_rule": 0.20,
+        }
+    entropy = 1.0 - max(probabilities.values())
+    return {
+        "bs_year": year,
+        "month": month,
+        "rule_entropy": round(entropy, 4),
+        "committee_rule_posterior": probabilities,
+        "method_regime_risk": "high" if _risk_label(detail, prediction.get("year_total_gate")) == "RED" else "medium",
+        "publication_status": "computed_prediction_not_official",
+    }
+
+
+def prediction_set_response(year: int, month: int) -> dict[str, Any]:
+    _, detail = _month_prediction(year, month)
+    return {
+        "bs_year": year,
+        "month": month,
+        **prediction_set_payload(detail),
+        "publication_status": "computed_prediction_not_official",
+    }
+
+
+def perturbation_response(year: int, month: int) -> dict[str, Any]:
+    _, detail = _month_prediction(year, month)
+    return {
+        "bs_year": year,
+        "month": month,
+        **perturbation_payload(detail),
+        "publication_status": "computed_prediction_not_official",
+    }
+
+
+def calendar_var_response(payload: dict[str, Any]) -> dict[str, Any]:
+    year = int(payload["bs_year"])
+    prediction = predict_bs_year(year)
+    result = calendar_var_payload(payload, prediction=prediction)
+    result["publication_status"] = "computed_prediction_not_official"
+    return result
+
+
+def stress_test_response(payload: dict[str, Any]) -> dict[str, Any]:
+    var = calendar_var_response(payload)
+    return {
+        "scenario_count": len(var["stress_scenarios"]),
+        "scenarios": var["stress_scenarios"],
+        "calendar_var": var,
+        "recommended_policy": var["recommended_policy"],
+        "publication_status": "computed_prediction_not_official",
+    }
+
+
+def audit_external_sheet_response(payload: dict[str, Any]) -> dict[str, Any]:
+    comparison = compare_external_sheet(
+        payload.get("source_name", "external_sheet"),
+        payload.get("years", []),
+    )
+    comparison["publication_status"] = "computed_prediction_not_official"
+    comparison["report_sections"] = [
+        "executive_summary",
+        "agreement_rate",
+        "high_confidence_disagreements",
+        "boundary_sensitive_months",
+        "financially_critical_mismatches",
+        "model_metadata",
+    ]
+    return comparison
+
+
+def capabilities_payload() -> dict[str, Any]:
+    return {
+        "surface": "calendar_model_risk",
+        "status": "evaluation_ready",
+        "capabilities": [
+            "future_bs_prediction_sets",
+            "committee_rule_posterior",
+            "perturbation_robustness",
+            "external_sheet_audit",
+            "calendar_var",
+            "stress_testing",
+            "claim_readiness",
+            "red_team_2083_ashwin",
+        ],
+        "source_trust_levels": TRUST_LEVELS,
+        "publication_status": "computed_prediction_not_official",
+        "method_version": METHOD_VERSION,
+        "calibration_version": CALIBRATION_VERSION,
+    }
+
+
+def loan_impact_model_risk_response(payload: dict[str, Any]) -> dict[str, Any]:
+    result = simulate_loan_impact(payload)
+    result["publication_status"] = "computed_prediction_not_official"
+    return result
+
+
+__all__ = [
+    "audit_external_sheet_response",
+    "calendar_var_response",
+    "capabilities_payload",
+    "claim_readiness_report",
+    "committee_posterior_payload",
+    "loan_impact_model_risk_response",
+    "perturbation_response",
+    "prediction_payload",
+    "prediction_set_response",
+    "replay_2083_ashwin",
+    "stress_test_response",
+]
