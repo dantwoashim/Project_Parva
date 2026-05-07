@@ -13,3 +13,4 @@ Publication status: `computed_prediction_not_official`.
 ## Blockers
 - official/printed final-test corpus has 72 month cases; target is 528
 - official_verified_cases_below_required_threshold
+- official_verified_cases_below_required_threshold

@@ -17,6 +17,7 @@
   },
   "claim_blockers": [
     "official/printed final-test corpus has 72 month cases; target is 528",
+    "official_verified_cases_below_required_threshold",
     "official_verified_cases_below_required_threshold"
   ],
   "safe_claims": [
@@ -41,6 +42,7 @@
   ],
   "blockers": [
     "official/printed final-test corpus has 72 month cases; target is 528",
+    "official_verified_cases_below_required_threshold",
     "official_verified_cases_below_required_threshold"
   ],
   "corpus": {
@@ -196,7 +198,19 @@
     "yellow_red_capture_rate": 1.0,
     "invalid_future_year_total_rate": 0.0,
     "mismatch_count": 0,
-    "claim_ready": true
+    "metric_threshold_passed": true,
+    "claim_ready_with_sufficient_corpus": false,
+    "claim_ready": false
   },
-  "future_invalid_year_totals_after_best_decoder": 0
+  "future_invalid_year_totals_after_best_decoder": 0,
+  "objective_score": 1375.0001,
+  "overall_top1_accuracy": 100.0,
+  "wrong_green_count": 0,
+  "yellow_red_capture_rate": 1.0,
+  "invalid_future_year_total_rate": 0.0,
+  "mismatch_count": 0,
+  "claim_ready": true,
+  "metric_threshold_passed": true,
+  "claim_ready_with_sufficient_corpus": false,
+  "publication_status": "computed_prediction_not_official"
 }

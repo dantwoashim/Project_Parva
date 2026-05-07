@@ -64,6 +64,7 @@ def prediction_payload(year: int, month: int) -> dict[str, Any]:
         "month": BS_MONTH_NAMES[month - 1].lower(),
         "month_number": month,
         "predicted_days": detail["final_days"],
+        "publication_status": "computed_prediction_not_official",
         **sets,
         "risk_label": risk_label,
         "risk_reasons": detail.get("risk_flags", []),

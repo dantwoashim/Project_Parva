@@ -4,6 +4,7 @@ Publication status: `computed_prediction_not_official`.
 
 - P0 source_expansion all: official/printed final-test corpus has 72 month cases; target is 528
 - P0 source_expansion all: official_verified_cases_below_required_threshold
+- P0 source_expansion all: official_verified_cases_below_required_threshold
 - P1 2084 1: sankranti_moderately_near_civil_assignment_boundary
 - P1 2084 2: manual_review_recommended|sankranti_near_civil_assignment_boundary
 - P1 2084 3: manual_review_recommended|sankranti_near_civil_assignment_boundary
@@ -41,4 +42,3 @@ Publication status: `computed_prediction_not_official`.
 - P1 2087 1: manual_review_recommended|sankranti_near_civil_assignment_boundary
 - P1 2087 2: manual_review_recommended|sankranti_near_civil_assignment_boundary
 - P1 2087 3: manual_review_recommended|sankranti_near_civil_assignment_boundary
-- P1 2087 4: manual_review_recommended|sankranti_near_civil_assignment_boundary

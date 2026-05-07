@@ -25,6 +25,14 @@ def objective_from_counts(
     green_coverage = _rate(green_cases, total_cases)
     false_green_rate = _rate(wrong_green_count, green_cases)
     invalid_rate = _rate(invalid_future_years, future_years)
+    metric_threshold_passed = bool(
+        green_cases > 0
+        and green_accuracy >= 0.99
+        and green_coverage >= 0.85
+        and false_green_rate <= 0.005
+        and wrong_green_count == 0
+        and invalid_rate == 0
+    )
     score = (
         1000 * green_accuracy
         + 300 * green_coverage
@@ -46,14 +54,9 @@ def objective_from_counts(
         "yellow_red_capture_rate": capture_rate,
         "invalid_future_year_total_rate": invalid_rate,
         "mismatch_count": mismatch_count if mismatch_count is not None else total_cases - top1_correct,
-        "claim_ready": bool(
-            green_cases > 0
-            and green_accuracy >= 0.99
-            and green_coverage >= 0.85
-            and false_green_rate <= 0.005
-            and wrong_green_count == 0
-            and invalid_rate == 0
-        ),
+        "metric_threshold_passed": metric_threshold_passed,
+        "claim_ready_with_sufficient_corpus": False,
+        "claim_ready": False,
     }
 
 

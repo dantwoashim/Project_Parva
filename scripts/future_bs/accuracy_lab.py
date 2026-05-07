@@ -16,9 +16,13 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 if os.getenv("PARVA_SCRIPT_REEXEC") != "1":
+    needs_python311 = sys.version_info < (3, 11)
     try:
+        import pydantic  # noqa: F401
         import swisseph  # noqa: F401
     except ModuleNotFoundError:
+        needs_python311 = True
+    if needs_python311:
         env = {**os.environ, "PARVA_SCRIPT_REEXEC": "1"}
         completed = subprocess.run(["py", "-3.11", *sys.argv], env=env)
         raise SystemExit(completed.returncode)

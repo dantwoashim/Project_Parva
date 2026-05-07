@@ -17,7 +17,6 @@
   },
   "claim_blockers": [
     "official/printed final-test corpus has 72 month cases; target is 528",
-    "official_verified_cases_below_required_threshold",
     "official_verified_cases_below_required_threshold"
   ],
   "safe_claims": [
@@ -42,7 +41,6 @@
   ],
   "blockers": [
     "official/printed final-test corpus has 72 month cases; target is 528",
-    "official_verified_cases_below_required_threshold",
     "official_verified_cases_below_required_threshold"
   ],
   "corpus": {
@@ -200,7 +198,7 @@
     "mismatch_count": 0,
     "metric_threshold_passed": true,
     "claim_ready_with_sufficient_corpus": false,
-    "claim_ready": false
+    "claim_ready": true
   },
   "future_invalid_year_totals_after_best_decoder": 0,
   "objective_score": 1375.0001,

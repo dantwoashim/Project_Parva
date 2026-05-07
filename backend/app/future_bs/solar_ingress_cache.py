@@ -46,6 +46,7 @@ def load_solar_ingress_cache(path: Path = DEFAULT_EVENTS_PATH) -> dict[str, Any]
         "available": True,
         "years": years,
         "path": str(path.relative_to(PROJECT_ROOT)),
+        "trusted_precomputed_jpl_cache": payload.get("ephemeris") == "jpl_de440",
     }
 
 
@@ -57,7 +58,9 @@ def cached_events_for_gregorian_year(
     payload = load_solar_ingress_cache()
     if not payload.get("available"):
         return None
-    if payload.get("ephemeris") != ephemeris_label:
+    cache_ephemeris = payload.get("ephemeris")
+    trusted_jpl_readonly = cache_ephemeris == "jpl_de440" and ephemeris_label == "swiss_moshier"
+    if cache_ephemeris != ephemeris_label and not trusted_jpl_readonly:
         return None
     events = payload.get("years", {}).get(gregorian_year)
     return events if events else None
@@ -74,4 +77,6 @@ def solar_ingress_cache_status() -> dict[str, Any]:
         "range": f"{years[0]}-{years[-1]} AD" if years else None,
         "generated_at": payload.get("generated_at"),
         "calculation_version": payload.get("calculation_version"),
+        "trusted_precomputed_jpl_cache": bool(payload.get("trusted_precomputed_jpl_cache")),
+        "served_from_trusted_precomputed_jpl_cache": bool(payload.get("trusted_precomputed_jpl_cache")),
     }

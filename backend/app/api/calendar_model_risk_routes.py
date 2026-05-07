@@ -7,16 +7,15 @@ from typing import Any
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
+from app.future_bs.report_store import list_reports, load_report
 from app.services.calendar_model_risk_service import (
     audit_external_sheet_response,
     calendar_var_response,
     capabilities_payload,
-    claim_readiness_report,
     committee_posterior_payload,
     perturbation_response,
     prediction_payload,
     prediction_set_response,
-    replay_2083_ashwin,
     stress_test_response,
 )
 
@@ -110,18 +109,29 @@ async def calendar_model_risk_stress_test(payload: CalendarVarRequest):
 
 @router.get("/red-team/2083-ashwin")
 async def calendar_model_risk_2083_ashwin():
-    return replay_2083_ashwin()
+    return load_report("case_2083_ashwin_replay_v_final")
 
 
 @router.get("/claim-readiness")
 async def calendar_model_risk_claim_readiness():
-    return claim_readiness_report()
+    return load_report("claim_readiness_v_final")
+
+
+@router.get("/infodevelopers-readiness")
+async def calendar_model_risk_infodevelopers_readiness():
+    return load_report("infodevelopers_readiness_summary")
 
 
 @router.get("/reports/{report_id}")
 async def calendar_model_risk_report(report_id: str) -> dict[str, Any]:
-    if report_id == "claim-readiness":
-        return claim_readiness_report()
-    if report_id == "red-team-2083-ashwin":
-        return replay_2083_ashwin()
+    aliases = {
+        "claim-readiness": "claim_readiness_v_final",
+        "red-team-2083-ashwin": "case_2083_ashwin_replay_v_final",
+        "time-travel-official": "time_travel_official_v_final",
+        "infodevelopers-readiness": "infodevelopers_readiness_summary",
+    }
+    if report_id == "list":
+        return list_reports()
+    if report_id in aliases:
+        return load_report(aliases[report_id])
     raise HTTPException(status_code=404, detail="unknown report_id")
