@@ -14,6 +14,7 @@ from .corpus import CorpusRow, corpus_rows, final_test_rows, get_corpus_row
 from .legacy_cycle_predictor import predict_from_training
 from .models import CALIBRATION_VERSION, METHOD_VERSION
 from .solar_ingress_predictor import predict_solar_ingress_year
+from .statistical_pattern_predictor import predict_stacked_year
 
 
 def _match_count(predicted: list[int], actual: list[int]) -> int:
@@ -132,6 +133,46 @@ def _month_diagnostics(
     }
 
 
+def _stacked_month_diagnostics(
+    *,
+    stacked: dict[str, Any],
+    solar: dict[str, Any],
+    month_index: int,
+    predicted_days: int,
+    actual_days: int,
+    row: CorpusRow,
+) -> dict[str, Any]:
+    diagnostics = _month_diagnostics(
+        solar=solar,
+        month_index=month_index,
+        predicted_days=solar["months"][month_index],
+        actual_days=actual_days,
+        row=row,
+    )
+    detail = stacked["month_details"][month_index]
+    diagnostics["confidence_score"] = detail["confidence_score"]
+    diagnostics["risk_label"] = detail["risk_label"]
+    diagnostics["risk_flags"] = sorted(
+        set([*diagnostics["risk_flags"], *detail.get("risk_flags", [])])
+    )
+    if diagnostics["boundary_risk"] in {"high", "critical"}:
+        diagnostics["risk_label"] = "RED"
+        diagnostics["risk_flags"] = sorted(
+            set(
+                [
+                    *diagnostics["risk_flags"],
+                    "sankranti_near_civil_assignment_boundary",
+                    "manual_review_recommended",
+                ]
+            )
+        )
+    diagnostics["model_agreement_ratio"] = 1.0 if detail.get("model_agreement") == "2/2" else 0.5
+    diagnostics["selected_rule"] = detail.get("final_source") or diagnostics["selected_rule"]
+    if predicted_days == actual_days:
+        diagnostics["alternative_rule_that_would_have_worked"] = detail.get("final_source")
+    return diagnostics
+
+
 def _boundary_bucket(distance: int | None) -> str:
     if distance is None:
         return "unknown"
@@ -151,10 +192,12 @@ def backtest_model(
     test_end: int,
     *,
     source_policy: str = "all_reference",
+    model: str = "parva_solar_civil_v1",
 ) -> dict[str, Any]:
     _validate_backtest_range(train_start, train_end, test_start, test_end)
 
     exact_matches = 0
+    exact_year_matches = 0
     legacy_exact_matches = 0
     months_tested = 0
     mismatches: list[dict[str, Any]] = []
@@ -164,25 +207,52 @@ def backtest_model(
     mismatch_by_ingress_hour: Counter[int] = Counter()
     mismatch_by_boundary_distance: Counter[str] = Counter()
     test_rows = _rows_for_range(test_start, test_end, source_policy)
+    use_stacked_model = "stack" in model or model.endswith("_v6")
 
     for row in test_rows:
         year = row.bs_year
-        solar = predict_solar_ingress_year(year, train_start=train_start, train_end=train_end)
+        stacked = (
+            predict_stacked_year(
+                year,
+                train_start=train_start,
+                train_end=train_end,
+                source_policy=source_policy,
+            )
+            if use_stacked_model
+            else None
+        )
+        solar = stacked["solar"] if stacked else predict_solar_ingress_year(
+            year,
+            train_start=train_start,
+            train_end=train_end,
+        )
         legacy_months, legacy_models = predict_from_training(year, train_start, train_end)
+        predicted_months = stacked["months"] if stacked else solar["months"]
         actual = row.months
-        solar_matches = _match_count(solar["months"], actual)
+        solar_matches = _match_count(predicted_months, actual)
         legacy_matches = _match_count(legacy_months, actual)
         exact_matches += solar_matches
+        exact_year_matches += int(solar_matches == 12)
         legacy_exact_matches += legacy_matches
         months_tested += 12
-        for index, (predicted_days, actual_days) in enumerate(zip(solar["months"], actual), start=1):
-            diagnostics = _month_diagnostics(
-                solar=solar,
-                month_index=index - 1,
-                predicted_days=predicted_days,
-                actual_days=actual_days,
-                row=row,
-            )
+        for index, (predicted_days, actual_days) in enumerate(zip(predicted_months, actual), start=1):
+            if stacked:
+                diagnostics = _stacked_month_diagnostics(
+                    stacked=stacked,
+                    solar=solar,
+                    month_index=index - 1,
+                    predicted_days=predicted_days,
+                    actual_days=actual_days,
+                    row=row,
+                )
+            else:
+                diagnostics = _month_diagnostics(
+                    solar=solar,
+                    month_index=index - 1,
+                    predicted_days=predicted_days,
+                    actual_days=actual_days,
+                    row=row,
+                )
             accuracy_cases.append(
                 AccuracyCase(
                     bs_year=year,
@@ -230,7 +300,7 @@ def backtest_model(
         yearly_predictions.append(
             {
                 "bs_year": year,
-                "predicted": solar["months"],
+                "predicted": predicted_months,
                 "actual": actual,
                 "matches": solar_matches,
                 "accuracy": round((solar_matches / 12) * 100, 2),
@@ -247,6 +317,8 @@ def backtest_model(
                     for output in solar["model_outputs"]
                 ],
                 "legacy_models": legacy_models,
+                "stacked_model": stacked["model"] if stacked else None,
+                "stacked_statistical": stacked.get("statistical") if stacked else None,
             }
         )
 
@@ -255,12 +327,18 @@ def backtest_model(
     return {
         "train_range": f"{train_start}-{train_end} BS",
         "test_range": f"{test_start}-{test_end} BS",
-        "mode": "computational_solar_ingress_holdout",
+        "mode": "solar_statistical_stack_holdout" if use_stacked_model else "computational_solar_ingress_holdout",
         "source_policy": source_policy,
+        "model": model,
         "months_tested": months_tested,
         "exact_matches": exact_matches,
+        "exact_year_matches": exact_year_matches,
+        "years_tested": len(test_rows),
         "mismatches": len(mismatches),
+        "mismatched_months": len(mismatches),
         "accuracy": round((exact_matches / months_tested) * 100, 2) if months_tested else 0.0,
+        "month_accuracy": round((exact_matches / months_tested) * 100, 2) if months_tested else 0.0,
+        "year_exact_accuracy": round((exact_year_matches / len(test_rows)) * 100, 2) if test_rows else 0.0,
         "overall_top1_accuracy": accuracy_metrics["overall_top1_accuracy"],
         "green_zone_accuracy": accuracy_metrics["green_zone_accuracy"],
         "green_zone_coverage": accuracy_metrics["green_zone_coverage"],
@@ -290,16 +368,20 @@ def full_replay_backtest(
         get_corpus_row(year)
     exact_matches = 0
     months_tested = 0
+    years_tested = 0
+    exact_year_matches = 0
     mismatch_cases: list[dict[str, Any]] = []
     rows = _rows_for_range(start, end, source_policy)
     for row in rows:
         year = row.bs_year
         solar = predict_solar_ingress_year(year, train_start=start, train_end=end)
         actual = row.months
+        year_matches = 0
         for index, (predicted_days, actual_days) in enumerate(zip(solar["months"], actual), start=1):
             months_tested += 1
             if predicted_days == actual_days:
                 exact_matches += 1
+                year_matches += 1
             else:
                 mismatch_cases.append(
                     {
@@ -313,6 +395,8 @@ def full_replay_backtest(
                         "verification_status": row.verification_status,
                     }
                 )
+        years_tested += 1
+        exact_year_matches += int(year_matches == 12)
     return {
         "model_version": METHOD_VERSION,
         "mode": "full_replay",
@@ -320,8 +404,13 @@ def full_replay_backtest(
         "range": f"{start}-{end} BS",
         "months_tested": months_tested,
         "exact_matches": exact_matches,
+        "years_tested": years_tested,
+        "exact_year_matches": exact_year_matches,
         "mismatches": len(mismatch_cases),
+        "mismatched_months": len(mismatch_cases),
         "accuracy": round((exact_matches / months_tested) * 100, 2) if months_tested else 0.0,
+        "month_accuracy": round((exact_matches / months_tested) * 100, 2) if months_tested else 0.0,
+        "year_exact_accuracy": round((exact_year_matches / years_tested) * 100, 2) if years_tested else 0.0,
         "mismatch_cases": mismatch_cases,
     }
 
@@ -332,25 +421,52 @@ def rolling_validation(
     predict_end: int,
     *,
     source_policy: str = "all_reference",
+    model: str = "parva_solar_civil_v1",
 ) -> dict[str, Any]:
     if initial_train_start >= predict_start:
         raise ValueError("initial_train_start must be earlier than predict_start.")
     runs: list[dict[str, Any]] = []
     total_matches = 0
     total_months = 0
+    total_green_cases = 0
+    total_green_passed = 0
     for year in range(predict_start, predict_end + 1):
-        run = backtest_model(initial_train_start, year - 1, year, year, source_policy=source_policy)
+        run = backtest_model(
+            initial_train_start,
+            year - 1,
+            year,
+            year,
+            source_policy=source_policy,
+            model=model,
+        )
         runs.append(run)
         total_matches += int(run["exact_matches"])
         total_months += int(run["months_tested"])
+        metrics = run.get("accuracy_metrics", {})
+        total_green_cases += int(metrics.get("green_zone_cases", 0))
+        total_green_passed += int(metrics.get("green_zone_passed", 0))
     return {
         "model_version": METHOD_VERSION,
         "mode": "rolling_validation",
         "source_policy": source_policy,
+        "model": model,
         "initial_train_start": initial_train_start,
         "predict_range": f"{predict_start}-{predict_end} BS",
         "months_tested": total_months,
         "exact_matches": total_matches,
         "accuracy": round((total_matches / total_months) * 100, 2) if total_months else 0.0,
+        "month_accuracy": round((total_matches / total_months) * 100, 2) if total_months else 0.0,
+        "green_zone_cases": total_green_cases,
+        "green_zone_passed": total_green_passed,
+        "green_zone_accuracy": (
+            round((total_green_passed / total_green_cases) * 100, 2)
+            if total_green_cases
+            else 0.0
+        ),
+        "green_zone_coverage": (
+            round((total_green_cases / total_months) * 100, 2)
+            if total_months
+            else 0.0
+        ),
         "runs": runs,
     }

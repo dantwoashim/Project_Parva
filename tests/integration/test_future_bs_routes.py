@@ -8,9 +8,16 @@ from io import BytesIO
 
 from app.future_bs.models import METHOD_VERSION
 from app.main import app
+from app.services.future_bs_service import predict_bs_year
 from fastapi.testclient import TestClient
 
 client = TestClient(app)
+
+
+def _single_mismatch_months(bs_year: int, month_index: int = 1) -> list[int]:
+    months = list(predict_bs_year(bs_year)["months"])
+    months[month_index] = 32 if months[month_index] != 32 else 31
+    return months
 
 
 def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
@@ -75,6 +82,7 @@ def test_predict_range_returns_requested_years():
 
 
 def test_compare_external_sheet_reports_mismatch():
+    external_months = _single_mismatch_months(2085)
     response = client.post(
         "/v4/api/future-bs/month-lengths/compare",
         json={
@@ -82,7 +90,7 @@ def test_compare_external_sheet_reports_mismatch():
             "years": [
                 {
                     "bs_year": 2085,
-                    "months": [31, 32, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+                    "months": external_months,
                 }
             ],
         },
@@ -93,8 +101,8 @@ def test_compare_external_sheet_reports_mismatch():
     assert body["summary"]["years_compared"] == 1
     assert body["summary"]["mismatches"] == 1
     assert body["mismatches"][0]["month_name"] == "Jestha"
-    assert body["mismatches"][0]["their_days"] == 32
-    assert body["mismatches"][0]["parva_days"] == 31
+    assert body["mismatches"][0]["their_days"] == external_months[1]
+    assert body["mismatches"][0]["parva_days"] == predict_bs_year(2085)["months"][1]
 
 
 def test_backtest_model_returns_accuracy_metrics():
@@ -149,8 +157,9 @@ def test_boundary_risk_route_returns_review_payload():
 
 
 def test_import_csv_and_compare_route_detects_mismatch():
+    external_months = _single_mismatch_months(2085)
     csv_body = "bs_year,baishakh,jestha,ashadh,shrawan,bhadra,ashwin,kartik,mangsir,poush,magh,falgun,chaitra\n"
-    csv_body += "2085,31,32,32,31,31,31,30,29,30,29,30,30\n"
+    csv_body += "2085," + ",".join(str(days) for days in external_months) + "\n"
     encoded = base64.b64encode(csv_body.encode("utf-8")).decode("ascii")
 
     response = client.post(
@@ -166,11 +175,12 @@ def test_import_csv_and_compare_route_detects_mismatch():
 
 def test_export_csv_contains_prediction_rows():
     response = client.get("/v4/api/future-bs/month-lengths/export.csv?start=2084&end=2085")
+    expected_2085_prefix = "2085," + ",".join(str(days) for days in predict_bs_year(2085)["months"][:6])
 
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/csv")
     assert "bs_year,baishakh,jestha" in response.text
-    assert "2085,31,31,32,31,31,31" in response.text
+    assert expected_2085_prefix in response.text
 
 
 def test_export_alias_routes_are_available():

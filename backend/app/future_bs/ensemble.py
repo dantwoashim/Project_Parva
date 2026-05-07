@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections import Counter
 from datetime import datetime, timezone
 from typing import Any
 
@@ -18,12 +17,13 @@ from .corpus import (
     known_months,
     source_label_for_year,
 )
-from .legacy_cycle_predictor import predict_legacy_cycle
+from .legacy_cycle_predictor import predict_from_training
 from .models import CALIBRATION_VERSION, METHOD_VERSION, MONTH_DAY_VALUES, PREDICTION_MAX_YEAR
 from .precomputed_store import get_precomputed_year, live_compute_enabled
 from .run_registry import DEFAULT_RUN_ID
 from .solar_ingress_engine import active_ephemeris_label
-from .solar_ingress_predictor import predict_solar_ingress_year
+from .solar_ingress_predictor import DEFAULT_REFERENCE_TRAIN_END
+from .statistical_pattern_predictor import predict_stacked_year
 
 
 def _validate_year(bs_year: int) -> None:
@@ -141,36 +141,38 @@ def _known_year_payload(bs_year: int) -> dict[str, Any]:
 
 
 def _future_year_payload(bs_year: int) -> dict[str, Any]:
-    solar = predict_solar_ingress_year(bs_year)
-    legacy = predict_legacy_cycle(bs_year)
+    stacked = predict_stacked_year(bs_year)
+    solar = stacked["solar"]
+    baseline_months, baseline_models = predict_from_training(
+        bs_year,
+        BS_MIN_YEAR,
+        DEFAULT_REFERENCE_TRAIN_END,
+    )
+    statistical = stacked.get("statistical")
+    statistical_months = statistical["months"] if statistical else baseline_months
     horizon = _horizon_factor(bs_year, BS_MAX_YEAR)
     details = []
     final_months: list[int] = []
-    all_risk_flags = set(solar["risk_flags"])
+    all_risk_flags = set([*solar["risk_flags"], *stacked.get("risk_flags", [])])
     all_risk_flags.add("outside_static_lookup")
     if bs_year > BS_MAX_YEAR + 50:
         all_risk_flags.add("long_horizon")
 
     for index in range(12):
         solar_days = solar["months"][index]
-        legacy_days = legacy.months[index]
-        votes: Counter[int] = Counter()
-        votes[solar_days] += 1.0
-        votes[legacy_days] += legacy.weight
-        final_days = votes.most_common(1)[0][0]
-        total_weight = sum(votes.values()) or 1.0
-        probability = {
-            f"{days}_days": round(votes.get(days, 0.0) / total_weight, 4)
-            for days in MONTH_DAY_VALUES
-        }
-        confidence_score = round(max(probability.values()) * horizon, 4)
-        risk_flags = []
+        baseline_days = baseline_months[index]
+        stacked_detail = stacked["month_details"][index]
+        statistical_days = statistical_months[index]
+        final_days = stacked_detail["final_days"]
+        probability = stacked_detail["probability"]
+        confidence_score = round(float(stacked_detail["confidence_score"]) * horizon, 4)
+        risk_flags = list(stacked_detail.get("risk_flags", []))
         if bs_year > BS_MAX_YEAR:
             risk_flags.append("outside_static_lookup")
         if bs_year > BS_MAX_YEAR + 50:
             risk_flags.append("long_horizon")
-        if solar_days != legacy_days:
-            risk_flags.extend(["model_disagreement", "manual_review_recommended"])
+        if solar_days != baseline_days:
+            risk_flags.extend(["diagnostic_baseline_disagreement", "manual_review_recommended"])
         if confidence_score < 0.65:
             risk_flags.append("manual_review_recommended")
         if index + 1 in {5, 8, 11} and confidence_score < 0.85:
@@ -185,12 +187,14 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
                 "probability": probability,
                 "confidence_score": confidence_score,
                 "confidence_label": _confidence_label(confidence_score),
-                "model_agreement": "2/2" if solar_days == legacy_days else "1/2",
+                "model_agreement": stacked_detail["model_agreement"],
                 "risk_flags": sorted(set(risk_flags)),
                 "computational_days": solar_days,
-                "legacy_days": legacy_days,
+                "statistical_pattern_days": statistical_days,
+                "diagnostic_baseline_days": baseline_days,
                 "computational_probability": solar["probabilities"][index],
                 "computational_model_agreement": solar["model_agreement"][index],
+                "final_source": stacked_detail["final_source"],
             }
         )
 
@@ -208,15 +212,27 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
         "calibration_version": CALIBRATION_VERSION,
         "run_id": DEFAULT_RUN_ID,
         "model_family": "computational_solar_ingress",
+        "model_subfamily": "solar_civil_plus_past_pattern_stack",
         "source": _computed_source_payload(bs_year),
         "computational_model_outputs": solar["model_outputs"],
-        "legacy_model_output": legacy.payload(),
+        "legacy_model_output": {
+            "model": "legacy_cycle_baseline_diagnostic",
+            "model_family": "diagnostic_baseline_not_product_output",
+            "months": baseline_months,
+            "year_total": sum(baseline_months),
+            "model_outputs": baseline_models,
+            "note": (
+                "This baseline is retained for disagreement/risk diagnostics only. "
+                "Future month lengths are generated by the solar-ingress civil-decision model."
+            ),
+        },
         "model_agreement": "ensemble",
         "engine_components": [
             "verified_month_length_corpus",
             "solar_ingress_computational_model",
             "civil_date_rule_calibration",
-            "legacy_cycle_fallback_model",
+            "past_only_statistical_pattern_model",
+            "legacy_cycle_diagnostic_model",
             "probabilistic_confidence_scoring",
             "loan_contract_risk_adapter",
         ],

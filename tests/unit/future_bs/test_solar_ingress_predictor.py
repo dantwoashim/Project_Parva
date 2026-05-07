@@ -5,7 +5,6 @@ from __future__ import annotations
 import pytest
 from app.future_bs import ensemble
 from app.future_bs.backtest import backtest_model
-from app.future_bs.models import LegacyPrediction
 from app.future_bs.solar_ingress_predictor import predict_solar_ingress_year
 
 
@@ -29,32 +28,32 @@ def test_known_year_backtest_runs_against_corpus():
     assert result["yearly_predictions"][0]["models"]
 
 
-def test_ensemble_flags_disagreement_when_legacy_model_differs(monkeypatch: pytest.MonkeyPatch):
+def test_ensemble_flags_disagreement_when_diagnostic_baseline_differs(monkeypatch: pytest.MonkeyPatch):
     bs_year = 2112
     solar_months = predict_solar_ingress_year(bs_year)["months"]
-    legacy_months = list(solar_months)
-    legacy_months[0] = 29 if legacy_months[0] != 29 else 30
+    baseline_months = list(solar_months)
+    baseline_months[0] = 29 if baseline_months[0] != 29 else 30
 
-    def fake_legacy_cycle(_bs_year: int) -> LegacyPrediction:
-        return LegacyPrediction(
-            model="injected_legacy_disagreement",
-            model_family="legacy_static_cycle_heuristic",
-            months=legacy_months,
-            weight=0.65,
-            model_outputs=[
+    def fake_baseline(_bs_year: int, _train_start: int, _train_end: int):
+        return (
+            baseline_months,
+            [
                 {
-                    "model": "injected_legacy_disagreement",
-                    "source_year": 2099,
+                    "model": "injected_diagnostic_baseline_disagreement",
+                    "source_year": 2077,
                     "training_score": 0.0,
-                    "months": legacy_months,
+                    "months": baseline_months,
                 }
             ],
         )
 
-    monkeypatch.setattr(ensemble, "predict_legacy_cycle", fake_legacy_cycle)
+    monkeypatch.setattr(ensemble, "predict_from_training", fake_baseline)
 
     prediction = ensemble.compute_year_live(bs_year)
 
-    assert "model_disagreement" in prediction["risk_flags"]
+    assert "diagnostic_baseline_disagreement" in prediction["risk_flags"]
     assert "manual_review_recommended" in prediction["month_details"][0]["risk_flags"]
-    assert prediction["month_details"][0]["computational_days"] != prediction["month_details"][0]["legacy_days"]
+    assert (
+        prediction["month_details"][0]["computational_days"]
+        != prediction["month_details"][0]["diagnostic_baseline_days"]
+    )

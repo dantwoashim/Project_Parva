@@ -134,9 +134,17 @@ def risk_label(
 ) -> str:
     if boundary_risk in {"critical", "high"}:
         return "RED"
-    if "manual_review_recommended" in risk_flags or "model_disagreement" in risk_flags:
+    if (
+        "manual_review_recommended" in risk_flags
+        or "model_disagreement" in risk_flags
+        or "diagnostic_baseline_disagreement" in risk_flags
+    ):
         return "YELLOW"
-    if confidence_score >= 0.985 and model_agreement_ratio >= 0.86 and boundary_risk == "low":
+    if (
+        confidence_score >= 0.985
+        and model_agreement_ratio >= 0.86
+        and boundary_risk in {"low", "medium"}
+    ):
         return "GREEN"
     if confidence_score >= 0.90 and boundary_risk in {"low", "medium"}:
         return "YELLOW"

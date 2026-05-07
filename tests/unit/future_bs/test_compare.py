@@ -6,9 +6,12 @@ from app.services.future_bs_service import predict_bs_year
 
 
 def test_compare_detects_mismatch_and_report_renders():
+    parva_months = predict_bs_year(2085)["months"]
+    external_months = list(parva_months)
+    external_months[1] = 32 if external_months[1] != 32 else 31
     comparison = compare_external_sheet(
         "infodev_excel",
-        [{"bs_year": 2085, "months": [31, 32, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30]}],
+        [{"bs_year": 2085, "months": external_months}],
         predict_fn=predict_bs_year,
     )
     report = comparison_report_markdown(comparison)

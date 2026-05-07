@@ -14,11 +14,11 @@ def explain_prediction_month(prediction: dict[str, Any], month: int) -> dict[str
     detail = prediction["month_details"][month - 1]
     votes: Counter[str] = Counter()
     computational_days = detail.get("computational_days")
-    legacy_days = detail.get("legacy_days")
+    baseline_days = detail.get("diagnostic_baseline_days", detail.get("legacy_days"))
     if computational_days is not None:
         votes[str(computational_days)] += 1
-    if legacy_days is not None:
-        votes[str(legacy_days)] += 1
+    if baseline_days is not None:
+        votes[str(baseline_days)] += 1
     if not votes:
         votes[str(detail["final_days"])] = 1
     boundary_risk = "high" if "sankranti_near_civil_assignment_boundary" in detail.get("risk_flags", []) else "low"

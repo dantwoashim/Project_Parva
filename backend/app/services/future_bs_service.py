@@ -173,7 +173,7 @@ def explain_month(year: int, month: int) -> dict[str, Any]:
         "computational_model_outputs": prediction.get("computational_model_outputs") or [],
         "legacy_model_output": prediction.get("legacy_model_output"),
         "computational_days": detail.get("computational_days"),
-        "legacy_days": detail.get("legacy_days"),
+        "diagnostic_baseline_days": detail.get("diagnostic_baseline_days"),
         "reasoning": explanation["reasoning"],
         "recommendation": explanation["recommendation"],
         "interpretation": _interpret_month_risk(detail),
@@ -226,11 +226,11 @@ def model_run(run_id: str) -> dict[str, Any]:
 def _interpret_month_risk(detail: dict[str, Any]) -> str:
     if "manual_review_recommended" in detail["risk_flags"]:
         return "Do not use this month in long-term loan contracts without manual review."
-    if "model_disagreement" in detail["risk_flags"]:
-        return "The computational and legacy fallback models disagree; treat this month as reviewable."
+    if "diagnostic_baseline_disagreement" in detail["risk_flags"]:
+        return "The computational model and diagnostic baseline disagree; treat this month as reviewable."
     if detail["confidence_label"] == "official_verified":
         return "Known structured corpus year, not a future computed prediction."
-    return "Prediction is internally consistent under the current solar-ingress calibrated ensemble."
+    return "Prediction is internally consistent under the current solar-ingress civil-decision model."
 
 
 def simulate_loan_impact(payload: dict[str, Any]) -> dict[str, Any]:

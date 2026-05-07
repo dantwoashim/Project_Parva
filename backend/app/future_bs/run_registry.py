@@ -13,7 +13,7 @@ from .models import CALIBRATION_VERSION, METHOD_VERSION
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 RUNS_DIR = PROJECT_ROOT / "data" / "future_bs" / "model_runs"
-DEFAULT_RUN_ID = "parva_solar_civil_accuracy_v4_2026_05_07_001"
+DEFAULT_RUN_ID = "parva_solar_civil_accuracy_v6_2026_05_07_001"
 
 
 def _stable_hash(payload: dict[str, Any]) -> str:
@@ -45,8 +45,8 @@ def build_run_metadata(
         "corpus_version": CORPUS_VERSION,
         "ephemeris_version": ephemeris_version,
         "ayanamsha_version": "lahiri_with_registered_sensitivity_candidates_v1",
-        "civil_rule_version": "month_boundary_risk_rule_ensemble_v2",
-        "rule_version": "month_boundary_risk_rule_ensemble_v2",
+        "civil_rule_version": "civil_decision_knn_plus_pattern_stack_abstention_v4",
+        "rule_version": "civil_decision_knn_plus_pattern_stack_abstention_v4",
         "prediction_range": f"{start_bs}-{end_bs} BS",
         "created_at": created_at,
         "publication_status": "not_official_publication",

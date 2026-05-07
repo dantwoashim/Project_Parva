@@ -41,6 +41,7 @@ def main() -> int:
     )
     parser.add_argument("--corpus", type=Path, default=PROJECT_ROOT / "data/future_bs/corpus/verified_month_lengths.csv")
     parser.add_argument("--out", type=Path, default=None)
+    parser.add_argument("--model", default="parva_solar_civil_v1")
     parser.add_argument("--train-start", type=int, default=2040)
     parser.add_argument("--train-end", type=int, default=2075)
     parser.add_argument("--test-start", type=int, default=2076)
@@ -69,6 +70,7 @@ def main() -> int:
                     year,
                     year,
                     source_policy=source_policy,
+                    model=args.model,
                 )
                 for year in range(args.test_start, args.test_end + 1)
                 if year > args.train_start
@@ -85,6 +87,7 @@ def main() -> int:
             args.test_start,
             args.test_end,
             source_policy=source_policy,
+            model=args.model,
         )
     else:
         payload = backtest_model(
@@ -93,7 +96,9 @@ def main() -> int:
             args.test_start,
             args.test_end,
             source_policy=source_policy,
+            model=args.model,
         )
+    payload["requested_model"] = args.model
     rendered = json.dumps(payload, indent=2, ensure_ascii=False)
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)

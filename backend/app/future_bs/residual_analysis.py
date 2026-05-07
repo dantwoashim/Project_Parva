@@ -14,8 +14,16 @@ def residual_summary(
     test_end: int,
     *,
     source_policy: str = "all_reference",
+    model: str = "parva_solar_civil_v1",
 ) -> dict[str, Any]:
-    backtest = backtest_model(train_start, train_end, test_start, test_end, source_policy=source_policy)
+    backtest = backtest_model(
+        train_start,
+        train_end,
+        test_start,
+        test_end,
+        source_policy=source_policy,
+        model=model,
+    )
     by_month: dict[int, int] = {}
     by_boundary: dict[str, int] = {}
     by_source: dict[str, int] = {}
@@ -34,6 +42,7 @@ def residual_summary(
         "train_range": backtest["train_range"],
         "test_range": backtest["test_range"],
         "source_policy": source_policy,
+        "model": model,
         "residual_count": backtest["mismatches"],
         "mismatches": backtest["mismatches"],
         "mismatches_by_month": by_month,

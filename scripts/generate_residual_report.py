@@ -43,6 +43,7 @@ Generated: {datetime.now(timezone.utc).isoformat()}
 - Train range: {payload["train_range"]}
 - Test range: {payload["test_range"]}
 - Source policy: {payload.get("source_policy", "all_reference")}
+- Model: {payload.get("model", "parva_solar_civil_v1")}
 - Method version: {payload["method_version"]}
 
 ## Month-Level Metrics
@@ -82,6 +83,7 @@ def main() -> int:
         choices=["all_reference", "official_only", "official_plus_printed", "train_allowed"],
         default="all_reference",
     )
+    parser.add_argument("--model", default="parva_solar_civil_v1")
     parser.add_argument("--output", type=Path, default=Path("data/future_bs/reports/residual_report.md"))
     args = parser.parse_args()
     payload = residual_summary(
@@ -90,6 +92,7 @@ def main() -> int:
         args.test_start,
         args.test_end,
         source_policy=args.source_policy,
+        model=args.model,
     )
     report = render_report(payload)
     args.output.parent.mkdir(parents=True, exist_ok=True)
