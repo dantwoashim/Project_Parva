@@ -1,0 +1,12 @@
+"""Disagreement class names for future-BS challenger audits."""
+
+DISAGREEMENT_CLASSES = [
+    "AGREE_GREEN",
+    "AGREE_YELLOW",
+    "PARVA_HIGH_CONFIDENCE_DISAGREES",
+    "BOTH_UNCERTAIN",
+    "THEIR_VALUE_PLAUSIBLE",
+    "PARVA_VALUE_PLAUSIBLE",
+    "METHOD_REGIME_RISK",
+    "FINANCIAL_CRITICAL",
+]

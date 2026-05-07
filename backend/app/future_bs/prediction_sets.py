@@ -6,6 +6,8 @@ from typing import Any
 
 from .models import MONTH_DAY_VALUES
 
+MIN_OFFICIAL_CLAIM_CASES = 528
+
 
 def normalize_probability_keys(probability: dict[str, float]) -> dict[str, float]:
     normalized: dict[str, float] = {}
@@ -39,13 +41,27 @@ def prediction_set(probability: dict[str, float], coverage: float) -> list[int]:
 
 def prediction_set_payload(detail: dict[str, Any]) -> dict[str, Any]:
     probability = normalize_probability_keys(detail.get("probability") or {})
+    official_cases = int(detail.get("calibration_official_cases", 0) or 0)
+    coverage_claim_ready = official_cases >= MIN_OFFICIAL_CLAIM_CASES
     return {
         "probabilities": probability,
         "prediction_set_80": prediction_set(probability, 0.80),
         "prediction_set_95": prediction_set(probability, 0.95),
+        "coverage_method": (
+            "split_conformal_if_available"
+            if coverage_claim_ready
+            else "calibrated_probability_set"
+        ),
+        "coverage_claim_ready": coverage_claim_ready,
+        "coverage_claim_reason": (
+            "sufficient_official_cases"
+            if coverage_claim_ready
+            else "insufficient_official_cases"
+        ),
         "point_prediction_claimable": (
             len(prediction_set(probability, 0.95)) == 1
             and float(detail.get("confidence_score", 0.0)) >= 0.95
             and "manual_review_recommended" not in set(detail.get("risk_flags") or [])
+            and coverage_claim_ready
         ),
     }

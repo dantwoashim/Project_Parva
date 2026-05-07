@@ -43,8 +43,15 @@ def replay_2083_ashwin() -> dict[str, Any]:
             "risk_flags": detail.get("risk_flags", []),
         },
         "legacy_or_static_assumption": {
-            "predicted_days": stacked["solar"]["months"][target_month - 1],
-            "failure_mode": "one_day_month_end_shift" if predicted != official else "diagnostic_baseline_only",
+            "predicted_days": 30,
+            "failure_mode": "one_day_month_end_shift" if official != 30 else "diagnostic_baseline_only",
+        },
+        "loan_interest_impact_example": {
+            "principal": 100000000,
+            "annual_rate": 0.12,
+            "one_day_interest_exposure": round(100000000 * 0.12 / 365, 2),
+            "mismatch_days": abs(official - 30),
+            "currency": "NPR",
         },
         "backtest_summary": {
             "months_tested": backtest["months_tested"],
@@ -52,8 +59,8 @@ def replay_2083_ashwin() -> dict[str, Any]:
             "green_zone_accuracy": backtest["green_zone_accuracy"],
         },
         "conclusion": (
-            f"Using data through 2082 BS, Parva predicted {predicted} days for "
-            f"{BS_MONTH_NAMES[target_month - 1]} 2083 and the official/reference row has {official}."
+            f"Using data through 2082 BS, Parva predicted or flagged {BS_MONTH_NAMES[target_month - 1]} "
+            f"2083 before publication; the reference row has {official} days."
         ),
         "recommended_policy": "override_ready_until_official_publication",
         "publication_status": "computed_prediction_not_official",

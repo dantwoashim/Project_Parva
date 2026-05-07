@@ -1,0 +1,573 @@
+{
+  "claim_ready_99_green_zone": false,
+  "claim_ready_99_overall": false,
+  "official_cases": 72,
+  "required_official_cases": 528,
+  "official_only_top1_accuracy": 100.0,
+  "green_zone_accuracy": 100.0,
+  "green_zone_coverage": 91.67,
+  "false_green_rate": 0.0,
+  "invalid_future_year_totals": {
+    "count": 48,
+    "years": [
+      {
+        "bs_year": 2089,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2093,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2115,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2119,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2120,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2123,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2124,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2128,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2131,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2132,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2136,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2138,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2140,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2142,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2143,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2146,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2147,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2148,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2150,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2151,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2155,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2158,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2159,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2162,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2163,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2165,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2167,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2169,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2170,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2171,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2173,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2174,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2175,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2177,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2178,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2179,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2181,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2182,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2185,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2186,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2187,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2189,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2190,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2192,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2194,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2196,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2198,
+        "total_days": 364,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      },
+      {
+        "bs_year": 2200,
+        "total_days": 367,
+        "risk_label": "RED",
+        "claimable": false,
+        "manual_review_required": true,
+        "reason": "invalid_or_exceptional_year_total"
+      }
+    ]
+  },
+  "active_learning_queue": {
+    "path": "data/future_bs/corpus/active_learning_queue.csv",
+    "rows": 120
+  },
+  "claim_blockers": [
+    "official/printed final-test corpus has 72 month cases; target is 528",
+    "48 future BS years have invalid/exceptional totals"
+  ],
+  "safe_claims": [
+    "Parva provides computed predictions, not official future publication.",
+    "Parva can separate high-confidence months from risky months.",
+    "Parva can audit an external future BS month-length sheet.",
+    "Parva can estimate financial exposure of one-day mismatches."
+  ],
+  "unsafe_claims": [
+    "Parva guarantees official future calendar to 2200 BS.",
+    "Parva replaces the Panchanga Nirnayak Samiti.",
+    "Parva's future predictions are official."
+  ],
+  "ready_for_blanket_99_percent_claim": false,
+  "ready_for_99_percent_green_zone_claim": false,
+  "publication_status_required": "computed_prediction_not_official",
+  "safe_claim": "Parva provides computed future BS month-length predictions with source-labeled confidence, risk flags, and claim-gated accuracy reporting.",
+  "disallowed_claims": [
+    "Parva guarantees official future calendar to 2200 BS.",
+    "Parva replaces the Panchanga Nirnayak Samiti.",
+    "Parva's future predictions are official."
+  ],
+  "blockers": [
+    "official/printed final-test corpus has 72 month cases; target is 528",
+    "48 future BS years have invalid/exceptional totals"
+  ],
+  "corpus": {
+    "corpus_id": "verified_month_lengths_2000_2099_v1",
+    "corpus_version": "verified_corpus_2000_2099_v1",
+    "range": "2000-2099 BS",
+    "years": 100,
+    "month_cases": 1200,
+    "source_type_counts": {
+      "third_party_reference": 92,
+      "approved_patro": 2,
+      "official_verified": 6
+    },
+    "verification_status_counts": {
+      "needs_review": 92,
+      "archived_unstructured_needs_review": 2,
+      "verified": 6
+    },
+    "source_quality_level_counts": {
+      "level_3": 92,
+      "level_2": 2,
+      "level_1": 6
+    },
+    "training_allowed_years": 6,
+    "training_allowed_month_cases": 72,
+    "final_test_allowed_years": 6,
+    "final_test_allowed_month_cases": 72,
+    "minimum_final_claim_month_cases": 528,
+    "ready_for_99_percent_claim": false,
+    "official_claim_boundary": "Only rows labeled official_verified/verified should be treated as official-source calibration evidence."
+  },
+  "strict_official_holdout": {
+    "total_month_cases": 72,
+    "passed_month_cases": 72,
+    "failed_month_cases": 0,
+    "overall_top1_accuracy": 100.0,
+    "green_zone_cases": 66,
+    "green_zone_passed": 66,
+    "green_zone_accuracy": 100.0,
+    "green_zone_coverage": 91.67,
+    "boundary_cases": 6,
+    "boundary_cases_flagged": 6,
+    "boundary_case_accuracy": 100.0,
+    "mismatch_by_bs_month": [
+      {
+        "month": 1,
+        "month_name": "Baishakh",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 2,
+        "month_name": "Jestha",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 3,
+        "month_name": "Ashadh",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 4,
+        "month_name": "Shrawan",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 5,
+        "month_name": "Bhadra",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 6,
+        "month_name": "Ashwin",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 7,
+        "month_name": "Kartik",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 8,
+        "month_name": "Mangsir",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 9,
+        "month_name": "Poush",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 10,
+        "month_name": "Magh",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 11,
+        "month_name": "Falgun",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      },
+      {
+        "month": 12,
+        "month_name": "Chaitra",
+        "total": 6,
+        "passed": 6,
+        "accuracy": 100.0
+      }
+    ],
+    "target_thresholds": {
+      "overall_top1_accuracy": 98.5,
+      "green_zone_accuracy": 99.3,
+      "green_zone_coverage": 90.0,
+      "minimum_official_month_cases": 528
+    },
+    "claim_readiness": {
+      "ready_for_99_percent_green_zone_claim": false,
+      "official_month_cases": 72,
+      "minimum_official_month_cases_required": 528,
+      "claim_boundary": "Only use the 99%+ claim for source-strict official/printed cases and GREEN months after this readiness flag is true."
+    }
+  },
+  "method_version": "parva_solar_civil_accuracy_v6",
+  "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4"
+}

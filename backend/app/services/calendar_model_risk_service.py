@@ -7,11 +7,14 @@ from typing import Any
 from app.calendar.constants import BS_MONTH_NAMES
 from app.future_bs.calendar_var import calendar_var_payload
 from app.future_bs.claim_readiness import claim_readiness_report
+from app.future_bs.committee_rule_posterior import committee_rule_posterior
 from app.future_bs.models import CALIBRATION_VERSION, METHOD_VERSION
 from app.future_bs.perturbation_robustness import perturbation_payload
+from app.future_bs.precedent_tower import precedent_tower
 from app.future_bs.prediction_sets import prediction_set_payload
 from app.future_bs.red_team_2083 import replay_2083_ashwin
 from app.future_bs.source_trust import TRUST_LEVELS
+from app.future_bs.year_total_reconciliation import reconcile_year_total
 from app.services.future_bs_service import (
     compare_external_sheet,
     predict_bs_year,
@@ -39,8 +42,10 @@ def _risk_label(detail: dict[str, Any], year_gate: dict[str, Any] | None = None)
 
 def prediction_payload(year: int, month: int) -> dict[str, Any]:
     prediction, detail = _month_prediction(year, month)
+    committee = committee_posterior_payload(year, month)
+    precedent = precedent_tower(year, month)
     sets = prediction_set_payload(detail)
-    perturbation = perturbation_payload(detail)
+    perturbation = perturbation_payload(detail, committee=committee, precedent=precedent)
     risk_label = _risk_label(detail, prediction.get("year_total_gate"))
     return {
         "bs_year": year,
@@ -54,12 +59,8 @@ def prediction_payload(year: int, month: int) -> dict[str, Any]:
             "predicted_days": detail.get("computational_days", detail["final_days"]),
             "confidence": detail.get("confidence_score"),
         },
-        "precedent_tower": {
-            "predicted_days": detail.get("statistical_pattern_days", detail["final_days"]),
-            "confidence": detail.get("confidence_score"),
-            "nearest_cases": [],
-        },
-        "committee_model": committee_posterior_payload(year, month),
+        "precedent_tower": precedent,
+        "committee_model": committee,
         "perturbation_robustness": perturbation,
         "calendar_var": {
             "one_day_mismatch_impact_available": True,
@@ -70,6 +71,7 @@ def prediction_payload(year: int, month: int) -> dict[str, Any]:
             ),
         },
         "year_total_gate": prediction.get("year_total_gate"),
+        "year_total_reconciliation": reconcile_year_total(prediction),
         "metadata": {
             "run_id": prediction.get("run_id"),
             "model_version": METHOD_VERSION,
@@ -82,27 +84,17 @@ def prediction_payload(year: int, month: int) -> dict[str, Any]:
 
 def committee_posterior_payload(year: int, month: int) -> dict[str, Any]:
     prediction, detail = _month_prediction(year, month)
-    flags = set(detail.get("risk_flags") or [])
-    probabilities = {
-        "month_specific_cutoff": 0.44,
-        "precedent_rule": 0.26,
-        "same_day": 0.16,
-        "sunrise_rule": 0.14,
-    }
-    if "model_disagreement" in flags or "resolved_statistical_solar_disagreement" in flags:
-        probabilities = {
-            "month_specific_cutoff": 0.34,
-            "precedent_rule": 0.32,
-            "same_day": 0.14,
-            "sunrise_rule": 0.20,
-        }
-    entropy = 1.0 - max(probabilities.values())
+    posterior = committee_rule_posterior(year, month)
+    method_risk = posterior["method_regime_risk"]
+    if _risk_label(detail, prediction.get("year_total_gate")) == "RED":
+        method_risk = "high"
     return {
         "bs_year": year,
         "month": month,
-        "rule_entropy": round(entropy, 4),
-        "committee_rule_posterior": probabilities,
-        "method_regime_risk": "high" if _risk_label(detail, prediction.get("year_total_gate")) == "RED" else "medium",
+        "rule_entropy": posterior["rule_entropy"],
+        "committee_rule_posterior": posterior["committee_rule_posterior"],
+        "method_regime_risk": method_risk,
+        "evidence": posterior["evidence"],
         "publication_status": "computed_prediction_not_official",
     }
 
@@ -119,10 +111,12 @@ def prediction_set_response(year: int, month: int) -> dict[str, Any]:
 
 def perturbation_response(year: int, month: int) -> dict[str, Any]:
     _, detail = _month_prediction(year, month)
+    committee = committee_posterior_payload(year, month)
+    precedent = precedent_tower(year, month)
     return {
         "bs_year": year,
         "month": month,
-        **perturbation_payload(detail),
+        **perturbation_payload(detail, committee=committee, precedent=precedent),
         "publication_status": "computed_prediction_not_official",
     }
 

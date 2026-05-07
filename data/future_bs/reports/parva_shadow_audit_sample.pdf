@@ -1,0 +1,55 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 791 >>
+stream
+BT
+/F1 12 Tf
+72 760 Td
+(Parva External Sheet Audit) Tj
+0 -16 Td
+(Publication status: computed_prediction_not_official) Tj
+0 -16 Td
+(Total months compared: 1404) Tj
+0 -16 Td
+(Agreement rate: 99.79%) Tj
+0 -16 Td
+(High confidence disagreements: 2) Tj
+0 -16 Td
+(Recommended policy: no-break dual schedule until official publication for risky months.) Tj
+0 -16 Td
+(2083 Ashwin replay: use override-ready policy for one-day boundary risk.) Tj
+0 -16 Td
+(Month columns: baishakh, jestha, ashadh, shrawan, bhadra, ashwin, kartik, mangsir, poush, magh, falgun, chaitr) Tj
+0 -16 Td
+(2084 Ashwin: external=31 parva=30 PARVA_HIGH_CONFIDENCE_DISAGREES) Tj
+0 -16 Td
+(2091 Ashwin: external=31 parva=30 PARVA_HIGH_CONFIDENCE_DISAGREES) Tj
+0 -16 Td
+(2112 Ashwin: external=31 parva=30 METHOD_REGIME_RISK) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000311 00000 n 
+trailer << /Root 1 0 R /Size 6 >>
+startxref
+1153
+%%EOF

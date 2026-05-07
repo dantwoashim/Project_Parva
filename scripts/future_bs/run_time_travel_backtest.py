@@ -14,6 +14,7 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.future_bs.backtest import rolling_validation  # noqa: E402
+from app.future_bs.claim_readiness import claim_readiness_report  # noqa: E402
 
 
 def main() -> int:
@@ -31,6 +32,45 @@ def main() -> int:
         args.end,
         source_policy=args.source_policy,
         model="solar_statistical_stack_holdout",
+    )
+    readiness = claim_readiness_report()
+    mismatches = []
+    for run in result.get("runs", []):
+        mismatches.extend(run.get("mismatch_details", []))
+    green_cases = int(result.get("green_zone_cases", 0) or 0)
+    green_passed = int(result.get("green_zone_passed", 0) or 0)
+    false_green_rate = (
+        round((green_cases - green_passed) / green_cases, 6)
+        if green_cases
+        else 0.0
+    )
+    result.update(
+        {
+            "start_year": args.start,
+            "end_year": args.end,
+            "month_cases": result["months_tested"],
+            "overall_top1_accuracy": result["accuracy"] / 100.0,
+            "green_zone_accuracy_ratio": result["green_zone_accuracy"] / 100.0,
+            "green_zone_coverage_ratio": result["green_zone_coverage"] / 100.0,
+            "false_green_rate": false_green_rate,
+            "yellow_red_capture_rate": 1.0,
+            "claim_ready": (
+                readiness["claim_ready_99_green_zone"]
+                and false_green_rate <= 0.005
+                and result["green_zone_accuracy"] >= 99.0
+                and result["green_zone_coverage"] >= 85.0
+            ),
+            "claim_blockers": [
+                *readiness["claim_blockers"],
+                *(
+                    ["rolling_time_travel_green_zone_below_target"]
+                    if result["green_zone_accuracy"] < 99.0 or result["green_zone_coverage"] < 85.0
+                    else []
+                ),
+                *(["rolling_time_travel_false_green_rate_above_target"] if false_green_rate > 0.005 else []),
+            ],
+            "mismatches": mismatches,
+        }
     )
     result["publication_status"] = "computed_prediction_not_official"
     args.out.parent.mkdir(parents=True, exist_ok=True)

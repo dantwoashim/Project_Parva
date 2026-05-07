@@ -1,0 +1,2315 @@
+{
+  "model_version": "parva_solar_civil_accuracy_v6",
+  "mode": "rolling_validation",
+  "source_policy": "official_only",
+  "model": "solar_statistical_stack_holdout",
+  "initial_train_start": 2000,
+  "predict_range": "2078-2083 BS",
+  "months_tested": 72,
+  "exact_matches": 63,
+  "accuracy": 87.5,
+  "month_accuracy": 87.5,
+  "green_zone_cases": 57,
+  "green_zone_passed": 54,
+  "green_zone_accuracy": 94.74,
+  "green_zone_coverage": 79.17,
+  "runs": [
+    {
+      "train_range": "2000-2077 BS",
+      "test_range": "2078-2078 BS",
+      "mode": "solar_statistical_stack_holdout",
+      "source_policy": "official_only",
+      "model": "solar_statistical_stack_holdout",
+      "months_tested": 12,
+      "exact_matches": 12,
+      "exact_year_matches": 1,
+      "years_tested": 1,
+      "mismatches": 0,
+      "mismatched_months": 0,
+      "accuracy": 100.0,
+      "month_accuracy": 100.0,
+      "year_exact_accuracy": 100.0,
+      "overall_top1_accuracy": 100.0,
+      "green_zone_accuracy": 100.0,
+      "green_zone_coverage": 91.67,
+      "boundary_case_accuracy": 100.0,
+      "accuracy_metrics": {
+        "total_month_cases": 12,
+        "passed_month_cases": 12,
+        "failed_month_cases": 0,
+        "overall_top1_accuracy": 100.0,
+        "green_zone_cases": 11,
+        "green_zone_passed": 11,
+        "green_zone_accuracy": 100.0,
+        "green_zone_coverage": 91.67,
+        "boundary_cases": 1,
+        "boundary_cases_flagged": 1,
+        "boundary_case_accuracy": 100.0,
+        "mismatch_by_bs_month": [
+          {
+            "month": 1,
+            "month_name": "Baishakh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 2,
+            "month_name": "Jestha",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 3,
+            "month_name": "Ashadh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 4,
+            "month_name": "Shrawan",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 5,
+            "month_name": "Bhadra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 6,
+            "month_name": "Ashwin",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 7,
+            "month_name": "Kartik",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 8,
+            "month_name": "Mangsir",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 9,
+            "month_name": "Poush",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 10,
+            "month_name": "Magh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 11,
+            "month_name": "Falgun",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 12,
+            "month_name": "Chaitra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          }
+        ],
+        "target_thresholds": {
+          "overall_top1_accuracy": 98.5,
+          "green_zone_accuracy": 99.3,
+          "green_zone_coverage": 90.0,
+          "minimum_official_month_cases": 528
+        },
+        "claim_readiness": {
+          "ready_for_99_percent_green_zone_claim": false,
+          "official_month_cases": 72,
+          "minimum_official_month_cases_required": 528,
+          "claim_boundary": "Only use the 99%+ claim for source-strict official/printed cases and GREEN months after this readiness flag is true."
+        }
+      },
+      "legacy_exact_matches": 12,
+      "legacy_accuracy": 100.0,
+      "yearly_predictions": [
+        {
+          "bs_year": 2078,
+          "predicted": [
+            31,
+            31,
+            31,
+            32,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "actual": [
+            31,
+            31,
+            31,
+            32,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "matches": 12,
+          "accuracy": 100.0,
+          "source_type": "official_verified",
+          "verification_status": "verified",
+          "legacy_predicted": [
+            31,
+            31,
+            31,
+            32,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "legacy_accuracy": 100.0,
+          "models": [
+            {
+              "model": "civil_decision_knn",
+              "model_family": "computational_solar_ingress",
+              "rule_weight": 0.8889
+            }
+          ],
+          "legacy_models": [
+            {
+              "model": "calibrated_cycle_27",
+              "training_score": 97.71,
+              "source_year": 2051,
+              "months": [
+                31,
+                31,
+                31,
+                32,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_54",
+              "training_score": 96.88,
+              "source_year": 2024,
+              "months": [
+                31,
+                31,
+                31,
+                32,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_58",
+              "training_score": 95.83,
+              "source_year": 2020,
+              "months": [
+                31,
+                31,
+                31,
+                32,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            }
+          ],
+          "stacked_model": "solar_statistical_stack_v1",
+          "stacked_statistical": null
+        }
+      ],
+      "mismatch_details": [],
+      "mismatch_by_ingress_hour": {},
+      "mismatch_by_boundary_distance": {},
+      "method_version": "parva_solar_civil_accuracy_v6",
+      "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4",
+      "note": "Solar-ingress backtest is a computational validation aid, not official future publication."
+    },
+    {
+      "train_range": "2000-2078 BS",
+      "test_range": "2079-2079 BS",
+      "mode": "solar_statistical_stack_holdout",
+      "source_policy": "official_only",
+      "model": "solar_statistical_stack_holdout",
+      "months_tested": 12,
+      "exact_matches": 12,
+      "exact_year_matches": 1,
+      "years_tested": 1,
+      "mismatches": 0,
+      "mismatched_months": 0,
+      "accuracy": 100.0,
+      "month_accuracy": 100.0,
+      "year_exact_accuracy": 100.0,
+      "overall_top1_accuracy": 100.0,
+      "green_zone_accuracy": 100.0,
+      "green_zone_coverage": 100.0,
+      "boundary_case_accuracy": 0.0,
+      "accuracy_metrics": {
+        "total_month_cases": 12,
+        "passed_month_cases": 12,
+        "failed_month_cases": 0,
+        "overall_top1_accuracy": 100.0,
+        "green_zone_cases": 12,
+        "green_zone_passed": 12,
+        "green_zone_accuracy": 100.0,
+        "green_zone_coverage": 100.0,
+        "boundary_cases": 0,
+        "boundary_cases_flagged": 0,
+        "boundary_case_accuracy": 0.0,
+        "mismatch_by_bs_month": [
+          {
+            "month": 1,
+            "month_name": "Baishakh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 2,
+            "month_name": "Jestha",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 3,
+            "month_name": "Ashadh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 4,
+            "month_name": "Shrawan",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 5,
+            "month_name": "Bhadra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 6,
+            "month_name": "Ashwin",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 7,
+            "month_name": "Kartik",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 8,
+            "month_name": "Mangsir",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 9,
+            "month_name": "Poush",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 10,
+            "month_name": "Magh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 11,
+            "month_name": "Falgun",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 12,
+            "month_name": "Chaitra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          }
+        ],
+        "target_thresholds": {
+          "overall_top1_accuracy": 98.5,
+          "green_zone_accuracy": 99.3,
+          "green_zone_coverage": 90.0,
+          "minimum_official_month_cases": 528
+        },
+        "claim_readiness": {
+          "ready_for_99_percent_green_zone_claim": false,
+          "official_month_cases": 72,
+          "minimum_official_month_cases_required": 528,
+          "claim_boundary": "Only use the 99%+ claim for source-strict official/printed cases and GREEN months after this readiness flag is true."
+        }
+      },
+      "legacy_exact_matches": 12,
+      "legacy_accuracy": 100.0,
+      "yearly_predictions": [
+        {
+          "bs_year": 2079,
+          "predicted": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "actual": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "matches": 12,
+          "accuracy": 100.0,
+          "source_type": "official_verified",
+          "verification_status": "verified",
+          "legacy_predicted": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "legacy_accuracy": 100.0,
+          "models": [
+            {
+              "model": "civil_decision_knn",
+              "model_family": "computational_solar_ingress",
+              "rule_weight": 0.8861
+            }
+          ],
+          "legacy_models": [
+            {
+              "model": "calibrated_cycle_27",
+              "training_score": 97.76,
+              "source_year": 2052,
+              "months": [
+                31,
+                31,
+                32,
+                31,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_54",
+              "training_score": 97.0,
+              "source_year": 2025,
+              "months": [
+                31,
+                31,
+                32,
+                31,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_58",
+              "training_score": 96.03,
+              "source_year": 2021,
+              "months": [
+                31,
+                31,
+                32,
+                31,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            }
+          ],
+          "stacked_model": "solar_statistical_stack_v1",
+          "stacked_statistical": {
+            "model": "past_only_statistical_pattern_stack",
+            "model_family": "past_only_statistical_pattern",
+            "primary_model": "statistical_cycle_ensemble",
+            "months": [
+              31,
+              31,
+              31,
+              32,
+              31,
+              31,
+              30,
+              29,
+              30,
+              29,
+              30,
+              30
+            ],
+            "year_total": 365,
+            "model_outputs": [
+              {
+                "model": "statistical_cycle_ensemble",
+                "model_family": "past_only_statistical_pattern",
+                "months": [
+                  31,
+                  31,
+                  31,
+                  32,
+                  31,
+                  31,
+                  30,
+                  29,
+                  30,
+                  29,
+                  30,
+                  30
+                ],
+                "model_outputs": [
+                  {
+                    "model": "training_tail_fallback",
+                    "source_year": 2078,
+                    "training_score": 0.0,
+                    "months": [
+                      31,
+                      31,
+                      31,
+                      32,
+                      31,
+                      31,
+                      30,
+                      29,
+                      30,
+                      29,
+                      30,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "mismatch_details": [],
+      "mismatch_by_ingress_hour": {},
+      "mismatch_by_boundary_distance": {},
+      "method_version": "parva_solar_civil_accuracy_v6",
+      "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4",
+      "note": "Solar-ingress backtest is a computational validation aid, not official future publication."
+    },
+    {
+      "train_range": "2000-2079 BS",
+      "test_range": "2080-2080 BS",
+      "mode": "solar_statistical_stack_holdout",
+      "source_policy": "official_only",
+      "model": "solar_statistical_stack_holdout",
+      "months_tested": 12,
+      "exact_matches": 9,
+      "exact_year_matches": 0,
+      "years_tested": 1,
+      "mismatches": 3,
+      "mismatched_months": 3,
+      "accuracy": 75.0,
+      "month_accuracy": 75.0,
+      "year_exact_accuracy": 0.0,
+      "overall_top1_accuracy": 75.0,
+      "green_zone_accuracy": 50.0,
+      "green_zone_coverage": 33.33,
+      "boundary_case_accuracy": 100.0,
+      "accuracy_metrics": {
+        "total_month_cases": 12,
+        "passed_month_cases": 9,
+        "failed_month_cases": 3,
+        "overall_top1_accuracy": 75.0,
+        "green_zone_cases": 4,
+        "green_zone_passed": 2,
+        "green_zone_accuracy": 50.0,
+        "green_zone_coverage": 33.33,
+        "boundary_cases": 2,
+        "boundary_cases_flagged": 2,
+        "boundary_case_accuracy": 100.0,
+        "mismatch_by_bs_month": [
+          {
+            "month": 1,
+            "month_name": "Baishakh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 2,
+            "month_name": "Jestha",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          },
+          {
+            "month": 3,
+            "month_name": "Ashadh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 4,
+            "month_name": "Shrawan",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 5,
+            "month_name": "Bhadra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 6,
+            "month_name": "Ashwin",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 7,
+            "month_name": "Kartik",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 8,
+            "month_name": "Mangsir",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          },
+          {
+            "month": 9,
+            "month_name": "Poush",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          },
+          {
+            "month": 10,
+            "month_name": "Magh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 11,
+            "month_name": "Falgun",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 12,
+            "month_name": "Chaitra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          }
+        ],
+        "target_thresholds": {
+          "overall_top1_accuracy": 98.5,
+          "green_zone_accuracy": 99.3,
+          "green_zone_coverage": 90.0,
+          "minimum_official_month_cases": 528
+        },
+        "claim_readiness": {
+          "ready_for_99_percent_green_zone_claim": false,
+          "official_month_cases": 72,
+          "minimum_official_month_cases_required": 528,
+          "claim_boundary": "Only use the 99%+ claim for source-strict official/printed cases and GREEN months after this readiness flag is true."
+        }
+      },
+      "legacy_exact_matches": 12,
+      "legacy_accuracy": 100.0,
+      "yearly_predictions": [
+        {
+          "bs_year": 2080,
+          "predicted": [
+            31,
+            31,
+            31,
+            32,
+            31,
+            30,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "actual": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            30
+          ],
+          "matches": 9,
+          "accuracy": 75.0,
+          "source_type": "official_verified",
+          "verification_status": "verified",
+          "legacy_predicted": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            30
+          ],
+          "legacy_accuracy": 100.0,
+          "models": [
+            {
+              "model": "civil_decision_knn",
+              "model_family": "computational_solar_ingress",
+              "rule_weight": 0.8875
+            }
+          ],
+          "legacy_models": [
+            {
+              "model": "calibrated_cycle_27",
+              "training_score": 97.8,
+              "source_year": 2053,
+              "months": [
+                31,
+                32,
+                31,
+                32,
+                31,
+                30,
+                30,
+                30,
+                29,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_54",
+              "training_score": 97.12,
+              "source_year": 2026,
+              "months": [
+                31,
+                32,
+                31,
+                32,
+                31,
+                30,
+                30,
+                30,
+                29,
+                29,
+                30,
+                31
+              ]
+            },
+            {
+              "model": "calibrated_cycle_58",
+              "training_score": 96.21,
+              "source_year": 2022,
+              "months": [
+                31,
+                32,
+                31,
+                32,
+                31,
+                30,
+                30,
+                30,
+                29,
+                29,
+                30,
+                30
+              ]
+            }
+          ],
+          "stacked_model": "solar_statistical_stack_v1",
+          "stacked_statistical": {
+            "model": "past_only_statistical_pattern_stack",
+            "model_family": "past_only_statistical_pattern",
+            "primary_model": "statistical_cycle_ensemble",
+            "months": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              31,
+              30,
+              29,
+              30,
+              29,
+              30,
+              30
+            ],
+            "year_total": 365,
+            "model_outputs": [
+              {
+                "model": "statistical_cycle_ensemble",
+                "model_family": "past_only_statistical_pattern",
+                "months": [
+                  31,
+                  31,
+                  32,
+                  31,
+                  31,
+                  31,
+                  30,
+                  29,
+                  30,
+                  29,
+                  30,
+                  30
+                ],
+                "model_outputs": [
+                  {
+                    "model": "past_cycle_1",
+                    "source_year": 2079,
+                    "training_score": 83.33,
+                    "months": [
+                      31,
+                      31,
+                      32,
+                      31,
+                      31,
+                      31,
+                      30,
+                      29,
+                      30,
+                      29,
+                      30,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "mismatch_details": [
+        {
+          "bs_year": 2080,
+          "month": 2,
+          "month_name": "Jestha",
+          "predicted_days": 31,
+          "actual_days": 32,
+          "predicted_start": "2023-05-15",
+          "official_start": "2023-05-15",
+          "ingress_time": "2023-05-15T11:59:57.765559+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 558,
+          "boundary_risk": "low",
+          "risk_label": "GREEN",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        },
+        {
+          "bs_year": 2080,
+          "month": 8,
+          "month_name": "Mangsir",
+          "predicted_days": 29,
+          "actual_days": 30,
+          "predicted_start": "2023-11-17",
+          "official_start": "2023-11-17",
+          "ingress_time": "2023-11-17T01:33:53.078810+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 664,
+          "boundary_risk": "low",
+          "risk_label": "GREEN",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        },
+        {
+          "bs_year": 2080,
+          "month": 9,
+          "month_name": "Poush",
+          "predicted_days": 30,
+          "actual_days": 29,
+          "predicted_start": "2023-12-17",
+          "official_start": "2023-12-17",
+          "ingress_time": "2023-12-16T16:13:33.481726+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 33,
+          "boundary_risk": "high",
+          "risk_label": "RED",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        }
+      ],
+      "mismatch_by_ingress_hour": {
+        "1": 1,
+        "11": 1,
+        "16": 1
+      },
+      "mismatch_by_boundary_distance": {
+        "30_to_119_min": 1,
+        "gte_360_min": 2
+      },
+      "method_version": "parva_solar_civil_accuracy_v6",
+      "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4",
+      "note": "Solar-ingress backtest is a computational validation aid, not official future publication."
+    },
+    {
+      "train_range": "2000-2080 BS",
+      "test_range": "2081-2081 BS",
+      "mode": "solar_statistical_stack_holdout",
+      "source_policy": "official_only",
+      "model": "solar_statistical_stack_holdout",
+      "months_tested": 12,
+      "exact_matches": 9,
+      "exact_year_matches": 0,
+      "years_tested": 1,
+      "mismatches": 3,
+      "mismatched_months": 3,
+      "accuracy": 75.0,
+      "month_accuracy": 75.0,
+      "year_exact_accuracy": 0.0,
+      "overall_top1_accuracy": 75.0,
+      "green_zone_accuracy": 100.0,
+      "green_zone_coverage": 75.0,
+      "boundary_case_accuracy": 100.0,
+      "accuracy_metrics": {
+        "total_month_cases": 12,
+        "passed_month_cases": 9,
+        "failed_month_cases": 3,
+        "overall_top1_accuracy": 75.0,
+        "green_zone_cases": 9,
+        "green_zone_passed": 9,
+        "green_zone_accuracy": 100.0,
+        "green_zone_coverage": 75.0,
+        "boundary_cases": 1,
+        "boundary_cases_flagged": 1,
+        "boundary_case_accuracy": 100.0,
+        "mismatch_by_bs_month": [
+          {
+            "month": 1,
+            "month_name": "Baishakh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 2,
+            "month_name": "Jestha",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 3,
+            "month_name": "Ashadh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 4,
+            "month_name": "Shrawan",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 5,
+            "month_name": "Bhadra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 6,
+            "month_name": "Ashwin",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 7,
+            "month_name": "Kartik",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 8,
+            "month_name": "Mangsir",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 9,
+            "month_name": "Poush",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 10,
+            "month_name": "Magh",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          },
+          {
+            "month": 11,
+            "month_name": "Falgun",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          },
+          {
+            "month": 12,
+            "month_name": "Chaitra",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          }
+        ],
+        "target_thresholds": {
+          "overall_top1_accuracy": 98.5,
+          "green_zone_accuracy": 99.3,
+          "green_zone_coverage": 90.0,
+          "minimum_official_month_cases": 528
+        },
+        "claim_readiness": {
+          "ready_for_99_percent_green_zone_claim": false,
+          "official_month_cases": 72,
+          "minimum_official_month_cases_required": 528,
+          "claim_boundary": "Only use the 99%+ claim for source-strict official/printed cases and GREEN months after this readiness flag is true."
+        }
+      },
+      "legacy_exact_matches": 12,
+      "legacy_accuracy": 100.0,
+      "yearly_predictions": [
+        {
+          "bs_year": 2081,
+          "predicted": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            29,
+            30,
+            30
+          ],
+          "actual": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            30,
+            29,
+            31
+          ],
+          "matches": 9,
+          "accuracy": 75.0,
+          "source_type": "official_verified",
+          "verification_status": "verified",
+          "legacy_predicted": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            30,
+            29,
+            31
+          ],
+          "legacy_accuracy": 100.0,
+          "models": [
+            {
+              "model": "civil_decision_knn",
+              "model_family": "computational_solar_ingress",
+              "rule_weight": 0.8848
+            }
+          ],
+          "legacy_models": [
+            {
+              "model": "calibrated_cycle_27",
+              "training_score": 97.84,
+              "source_year": 2054,
+              "months": [
+                31,
+                32,
+                31,
+                32,
+                31,
+                30,
+                30,
+                30,
+                29,
+                30,
+                29,
+                31
+              ]
+            },
+            {
+              "model": "calibrated_cycle_54",
+              "training_score": 96.91,
+              "source_year": 2027,
+              "months": [
+                30,
+                32,
+                31,
+                32,
+                31,
+                30,
+                30,
+                30,
+                29,
+                30,
+                29,
+                31
+              ]
+            },
+            {
+              "model": "calibrated_cycle_58",
+              "training_score": 96.38,
+              "source_year": 2023,
+              "months": [
+                31,
+                32,
+                31,
+                32,
+                31,
+                30,
+                30,
+                30,
+                29,
+                30,
+                29,
+                31
+              ]
+            }
+          ],
+          "stacked_model": "solar_statistical_stack_v1",
+          "stacked_statistical": {
+            "model": "past_only_statistical_pattern_stack",
+            "model_family": "past_only_statistical_pattern",
+            "primary_model": "statistical_cycle_ensemble",
+            "months": [
+              31,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              29,
+              30,
+              30
+            ],
+            "year_total": 365,
+            "model_outputs": [
+              {
+                "model": "statistical_cycle_ensemble",
+                "model_family": "past_only_statistical_pattern",
+                "months": [
+                  31,
+                  32,
+                  31,
+                  32,
+                  31,
+                  30,
+                  30,
+                  30,
+                  29,
+                  29,
+                  30,
+                  30
+                ],
+                "model_outputs": [
+                  {
+                    "model": "past_cycle_1",
+                    "source_year": 2080,
+                    "training_score": 66.67,
+                    "months": [
+                      31,
+                      32,
+                      31,
+                      32,
+                      31,
+                      30,
+                      30,
+                      30,
+                      29,
+                      29,
+                      30,
+                      30
+                    ]
+                  },
+                  {
+                    "model": "past_cycle_2",
+                    "source_year": 2079,
+                    "training_score": 66.67,
+                    "months": [
+                      31,
+                      31,
+                      32,
+                      31,
+                      31,
+                      31,
+                      30,
+                      29,
+                      30,
+                      29,
+                      30,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "mismatch_details": [
+        {
+          "bs_year": 2081,
+          "month": 10,
+          "month_name": "Magh",
+          "predicted_days": 29,
+          "actual_days": 30,
+          "predicted_start": "2025-01-14",
+          "official_start": "2025-01-14",
+          "ingress_time": "2025-01-14T09:10:42.520021+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 223,
+          "boundary_risk": "medium",
+          "risk_label": "YELLOW",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        },
+        {
+          "bs_year": 2081,
+          "month": 11,
+          "month_name": "Falgun",
+          "predicted_days": 30,
+          "actual_days": 29,
+          "predicted_start": "2025-02-13",
+          "official_start": "2025-02-13",
+          "ingress_time": "2025-02-12T22:11:13.062278+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 35,
+          "boundary_risk": "high",
+          "risk_label": "RED",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        },
+        {
+          "bs_year": 2081,
+          "month": 12,
+          "month_name": "Chaitra",
+          "predicted_days": 30,
+          "actual_days": 31,
+          "predicted_start": "2025-03-14",
+          "official_start": "2025-03-14",
+          "ingress_time": "2025-03-14T19:05:41.825844+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 256,
+          "boundary_risk": "medium",
+          "risk_label": "YELLOW",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        }
+      ],
+      "mismatch_by_ingress_hour": {
+        "9": 1,
+        "19": 1,
+        "22": 1
+      },
+      "mismatch_by_boundary_distance": {
+        "120_to_359_min": 2,
+        "30_to_119_min": 1
+      },
+      "method_version": "parva_solar_civil_accuracy_v6",
+      "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4",
+      "note": "Solar-ingress backtest is a computational validation aid, not official future publication."
+    },
+    {
+      "train_range": "2000-2081 BS",
+      "test_range": "2082-2082 BS",
+      "mode": "solar_statistical_stack_holdout",
+      "source_policy": "official_only",
+      "model": "solar_statistical_stack_holdout",
+      "months_tested": 12,
+      "exact_matches": 9,
+      "exact_year_matches": 0,
+      "years_tested": 1,
+      "mismatches": 3,
+      "mismatched_months": 3,
+      "accuracy": 75.0,
+      "month_accuracy": 75.0,
+      "year_exact_accuracy": 0.0,
+      "overall_top1_accuracy": 75.0,
+      "green_zone_accuracy": 88.89,
+      "green_zone_coverage": 75.0,
+      "boundary_case_accuracy": 100.0,
+      "accuracy_metrics": {
+        "total_month_cases": 12,
+        "passed_month_cases": 9,
+        "failed_month_cases": 3,
+        "overall_top1_accuracy": 75.0,
+        "green_zone_cases": 9,
+        "green_zone_passed": 8,
+        "green_zone_accuracy": 88.89,
+        "green_zone_coverage": 75.0,
+        "boundary_cases": 2,
+        "boundary_cases_flagged": 2,
+        "boundary_case_accuracy": 100.0,
+        "mismatch_by_bs_month": [
+          {
+            "month": 1,
+            "month_name": "Baishakh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 2,
+            "month_name": "Jestha",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          },
+          {
+            "month": 3,
+            "month_name": "Ashadh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 4,
+            "month_name": "Shrawan",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 5,
+            "month_name": "Bhadra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 6,
+            "month_name": "Ashwin",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 7,
+            "month_name": "Kartik",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 8,
+            "month_name": "Mangsir",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          },
+          {
+            "month": 9,
+            "month_name": "Poush",
+            "total": 1,
+            "passed": 0,
+            "accuracy": 0.0
+          },
+          {
+            "month": 10,
+            "month_name": "Magh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 11,
+            "month_name": "Falgun",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 12,
+            "month_name": "Chaitra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          }
+        ],
+        "target_thresholds": {
+          "overall_top1_accuracy": 98.5,
+          "green_zone_accuracy": 99.3,
+          "green_zone_coverage": 90.0,
+          "minimum_official_month_cases": 528
+        },
+        "claim_readiness": {
+          "ready_for_99_percent_green_zone_claim": false,
+          "official_month_cases": 72,
+          "minimum_official_month_cases_required": 528,
+          "claim_boundary": "Only use the 99%+ claim for source-strict official/printed cases and GREEN months after this readiness flag is true."
+        }
+      },
+      "legacy_exact_matches": 10,
+      "legacy_accuracy": 83.33,
+      "yearly_predictions": [
+        {
+          "bs_year": 2082,
+          "predicted": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            31,
+            30,
+            30,
+            29,
+            29,
+            30,
+            30
+          ],
+          "actual": [
+            31,
+            31,
+            31,
+            32,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "matches": 9,
+          "accuracy": 75.0,
+          "source_type": "official_verified",
+          "verification_status": "verified",
+          "legacy_predicted": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "legacy_accuracy": 83.33,
+          "models": [
+            {
+              "model": "civil_decision_knn",
+              "model_family": "computational_solar_ingress",
+              "rule_weight": 0.8821
+            }
+          ],
+          "legacy_models": [
+            {
+              "model": "calibrated_cycle_27",
+              "training_score": 97.88,
+              "source_year": 2055,
+              "months": [
+                31,
+                31,
+                32,
+                31,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_54",
+              "training_score": 96.73,
+              "source_year": 2028,
+              "months": [
+                31,
+                31,
+                32,
+                31,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_58",
+              "training_score": 96.53,
+              "source_year": 2024,
+              "months": [
+                31,
+                31,
+                31,
+                32,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            }
+          ],
+          "stacked_model": "solar_statistical_stack_v1",
+          "stacked_statistical": {
+            "model": "past_only_statistical_pattern_stack",
+            "model_family": "past_only_statistical_pattern",
+            "primary_model": "statistical_cycle_ensemble",
+            "months": [
+              31,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              29,
+              30,
+              30
+            ],
+            "year_total": 365,
+            "model_outputs": [
+              {
+                "model": "statistical_cycle_ensemble",
+                "model_family": "past_only_statistical_pattern",
+                "months": [
+                  31,
+                  32,
+                  31,
+                  32,
+                  31,
+                  30,
+                  30,
+                  30,
+                  29,
+                  29,
+                  30,
+                  30
+                ],
+                "model_outputs": [
+                  {
+                    "model": "past_cycle_1",
+                    "source_year": 2081,
+                    "training_score": 69.44,
+                    "months": [
+                      31,
+                      32,
+                      31,
+                      32,
+                      31,
+                      30,
+                      30,
+                      30,
+                      29,
+                      30,
+                      29,
+                      31
+                    ]
+                  },
+                  {
+                    "model": "past_cycle_2",
+                    "source_year": 2080,
+                    "training_score": 45.83,
+                    "months": [
+                      31,
+                      32,
+                      31,
+                      32,
+                      31,
+                      30,
+                      30,
+                      30,
+                      29,
+                      29,
+                      30,
+                      30
+                    ]
+                  },
+                  {
+                    "model": "past_cycle_3",
+                    "source_year": 2079,
+                    "training_score": 41.67,
+                    "months": [
+                      31,
+                      31,
+                      32,
+                      31,
+                      31,
+                      31,
+                      30,
+                      29,
+                      30,
+                      29,
+                      30,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "mismatch_details": [
+        {
+          "bs_year": 2082,
+          "month": 2,
+          "month_name": "Jestha",
+          "predicted_days": 32,
+          "actual_days": 31,
+          "predicted_start": "2025-05-15",
+          "official_start": "2025-05-15",
+          "ingress_time": "2025-05-15T00:27:02.279642+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 1250,
+          "boundary_risk": "low",
+          "risk_label": "GREEN",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        },
+        {
+          "bs_year": 2082,
+          "month": 8,
+          "month_name": "Mangsir",
+          "predicted_days": 30,
+          "actual_days": 29,
+          "predicted_start": "2025-11-17",
+          "official_start": "2025-11-17",
+          "ingress_time": "2025-11-16T13:52:38.118046+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 109,
+          "boundary_risk": "high",
+          "risk_label": "RED",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        },
+        {
+          "bs_year": 2082,
+          "month": 9,
+          "month_name": "Poush",
+          "predicted_days": 29,
+          "actual_days": 30,
+          "predicted_start": "2025-12-16",
+          "official_start": "2025-12-16",
+          "ingress_time": "2025-12-16T04:35:06.142620+05:45",
+          "selected_rule": "statistical_pattern",
+          "alternative_rule_that_would_have_worked": "civil_decision_knn",
+          "boundary_distance_minutes": 667,
+          "boundary_risk": "low",
+          "risk_label": "YELLOW",
+          "source_type": "official_verified",
+          "verification_status": "verified"
+        }
+      ],
+      "mismatch_by_ingress_hour": {
+        "0": 1,
+        "4": 1,
+        "13": 1
+      },
+      "mismatch_by_boundary_distance": {
+        "30_to_119_min": 1,
+        "gte_360_min": 2
+      },
+      "method_version": "parva_solar_civil_accuracy_v6",
+      "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4",
+      "note": "Solar-ingress backtest is a computational validation aid, not official future publication."
+    },
+    {
+      "train_range": "2000-2082 BS",
+      "test_range": "2083-2083 BS",
+      "mode": "solar_statistical_stack_holdout",
+      "source_policy": "official_only",
+      "model": "solar_statistical_stack_holdout",
+      "months_tested": 12,
+      "exact_matches": 12,
+      "exact_year_matches": 1,
+      "years_tested": 1,
+      "mismatches": 0,
+      "mismatched_months": 0,
+      "accuracy": 100.0,
+      "month_accuracy": 100.0,
+      "year_exact_accuracy": 100.0,
+      "overall_top1_accuracy": 100.0,
+      "green_zone_accuracy": 100.0,
+      "green_zone_coverage": 100.0,
+      "boundary_case_accuracy": 0.0,
+      "accuracy_metrics": {
+        "total_month_cases": 12,
+        "passed_month_cases": 12,
+        "failed_month_cases": 0,
+        "overall_top1_accuracy": 100.0,
+        "green_zone_cases": 12,
+        "green_zone_passed": 12,
+        "green_zone_accuracy": 100.0,
+        "green_zone_coverage": 100.0,
+        "boundary_cases": 0,
+        "boundary_cases_flagged": 0,
+        "boundary_case_accuracy": 0.0,
+        "mismatch_by_bs_month": [
+          {
+            "month": 1,
+            "month_name": "Baishakh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 2,
+            "month_name": "Jestha",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 3,
+            "month_name": "Ashadh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 4,
+            "month_name": "Shrawan",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 5,
+            "month_name": "Bhadra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 6,
+            "month_name": "Ashwin",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 7,
+            "month_name": "Kartik",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 8,
+            "month_name": "Mangsir",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 9,
+            "month_name": "Poush",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 10,
+            "month_name": "Magh",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 11,
+            "month_name": "Falgun",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          },
+          {
+            "month": 12,
+            "month_name": "Chaitra",
+            "total": 1,
+            "passed": 1,
+            "accuracy": 100.0
+          }
+        ],
+        "target_thresholds": {
+          "overall_top1_accuracy": 98.5,
+          "green_zone_accuracy": 99.3,
+          "green_zone_coverage": 90.0,
+          "minimum_official_month_cases": 528
+        },
+        "claim_readiness": {
+          "ready_for_99_percent_green_zone_claim": false,
+          "official_month_cases": 72,
+          "minimum_official_month_cases_required": 528,
+          "claim_boundary": "Only use the 99%+ claim for source-strict official/printed cases and GREEN months after this readiness flag is true."
+        }
+      },
+      "legacy_exact_matches": 10,
+      "legacy_accuracy": 83.33,
+      "yearly_predictions": [
+        {
+          "bs_year": 2083,
+          "predicted": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "actual": [
+            31,
+            31,
+            32,
+            31,
+            31,
+            31,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "matches": 12,
+          "accuracy": 100.0,
+          "source_type": "official_verified",
+          "verification_status": "verified",
+          "legacy_predicted": [
+            31,
+            31,
+            32,
+            31,
+            32,
+            30,
+            30,
+            29,
+            30,
+            29,
+            30,
+            30
+          ],
+          "legacy_accuracy": 83.33,
+          "models": [
+            {
+              "model": "civil_decision_knn",
+              "model_family": "computational_solar_ingress",
+              "rule_weight": 0.8835
+            }
+          ],
+          "legacy_models": [
+            {
+              "model": "calibrated_cycle_27",
+              "training_score": 97.62,
+              "source_year": 2056,
+              "months": [
+                31,
+                31,
+                32,
+                31,
+                32,
+                30,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_58",
+              "training_score": 96.67,
+              "source_year": 2025,
+              "months": [
+                31,
+                31,
+                32,
+                31,
+                31,
+                31,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            },
+            {
+              "model": "calibrated_cycle_54",
+              "training_score": 96.26,
+              "source_year": 2029,
+              "months": [
+                31,
+                31,
+                32,
+                31,
+                32,
+                30,
+                30,
+                29,
+                30,
+                29,
+                30,
+                30
+              ]
+            }
+          ],
+          "stacked_model": "solar_statistical_stack_v1",
+          "stacked_statistical": {
+            "model": "past_only_statistical_pattern_stack",
+            "model_family": "past_only_statistical_pattern",
+            "primary_model": "statistical_cycle_ensemble",
+            "months": [
+              31,
+              31,
+              31,
+              32,
+              31,
+              31,
+              30,
+              29,
+              30,
+              29,
+              30,
+              30
+            ],
+            "year_total": 365,
+            "model_outputs": [
+              {
+                "model": "statistical_cycle_ensemble",
+                "model_family": "past_only_statistical_pattern",
+                "months": [
+                  31,
+                  31,
+                  31,
+                  32,
+                  31,
+                  31,
+                  30,
+                  29,
+                  30,
+                  29,
+                  30,
+                  30
+                ],
+                "model_outputs": [
+                  {
+                    "model": "past_cycle_4",
+                    "source_year": 2079,
+                    "training_score": 100.0,
+                    "months": [
+                      31,
+                      31,
+                      32,
+                      31,
+                      31,
+                      31,
+                      30,
+                      29,
+                      30,
+                      29,
+                      30,
+                      30
+                    ]
+                  },
+                  {
+                    "model": "past_cycle_1",
+                    "source_year": 2082,
+                    "training_score": 62.5,
+                    "months": [
+                      31,
+                      31,
+                      31,
+                      32,
+                      31,
+                      31,
+                      30,
+                      29,
+                      30,
+                      29,
+                      30,
+                      30
+                    ]
+                  },
+                  {
+                    "model": "past_cycle_3",
+                    "source_year": 2080,
+                    "training_score": 62.5,
+                    "months": [
+                      31,
+                      32,
+                      31,
+                      32,
+                      31,
+                      30,
+                      30,
+                      30,
+                      29,
+                      29,
+                      30,
+                      30
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "mismatch_details": [],
+      "mismatch_by_ingress_hour": {},
+      "mismatch_by_boundary_distance": {},
+      "method_version": "parva_solar_civil_accuracy_v6",
+      "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4",
+      "note": "Solar-ingress backtest is a computational validation aid, not official future publication."
+    }
+  ],
+  "start_year": 2078,
+  "end_year": 2083,
+  "month_cases": 72,
+  "overall_top1_accuracy": 0.875,
+  "green_zone_accuracy_ratio": 0.9473999999999999,
+  "green_zone_coverage_ratio": 0.7917000000000001,
+  "false_green_rate": 0.052632,
+  "yellow_red_capture_rate": 1.0,
+  "claim_ready": false,
+  "claim_blockers": [
+    "official/printed final-test corpus has 72 month cases; target is 528",
+    "48 future BS years have invalid/exceptional totals",
+    "rolling_time_travel_green_zone_below_target",
+    "rolling_time_travel_false_green_rate_above_target"
+  ],
+  "mismatches": [
+    {
+      "bs_year": 2080,
+      "month": 2,
+      "month_name": "Jestha",
+      "predicted_days": 31,
+      "actual_days": 32,
+      "predicted_start": "2023-05-15",
+      "official_start": "2023-05-15",
+      "ingress_time": "2023-05-15T11:59:57.765559+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 558,
+      "boundary_risk": "low",
+      "risk_label": "GREEN",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    },
+    {
+      "bs_year": 2080,
+      "month": 8,
+      "month_name": "Mangsir",
+      "predicted_days": 29,
+      "actual_days": 30,
+      "predicted_start": "2023-11-17",
+      "official_start": "2023-11-17",
+      "ingress_time": "2023-11-17T01:33:53.078810+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 664,
+      "boundary_risk": "low",
+      "risk_label": "GREEN",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    },
+    {
+      "bs_year": 2080,
+      "month": 9,
+      "month_name": "Poush",
+      "predicted_days": 30,
+      "actual_days": 29,
+      "predicted_start": "2023-12-17",
+      "official_start": "2023-12-17",
+      "ingress_time": "2023-12-16T16:13:33.481726+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 33,
+      "boundary_risk": "high",
+      "risk_label": "RED",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    },
+    {
+      "bs_year": 2081,
+      "month": 10,
+      "month_name": "Magh",
+      "predicted_days": 29,
+      "actual_days": 30,
+      "predicted_start": "2025-01-14",
+      "official_start": "2025-01-14",
+      "ingress_time": "2025-01-14T09:10:42.520021+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 223,
+      "boundary_risk": "medium",
+      "risk_label": "YELLOW",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    },
+    {
+      "bs_year": 2081,
+      "month": 11,
+      "month_name": "Falgun",
+      "predicted_days": 30,
+      "actual_days": 29,
+      "predicted_start": "2025-02-13",
+      "official_start": "2025-02-13",
+      "ingress_time": "2025-02-12T22:11:13.062278+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 35,
+      "boundary_risk": "high",
+      "risk_label": "RED",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    },
+    {
+      "bs_year": 2081,
+      "month": 12,
+      "month_name": "Chaitra",
+      "predicted_days": 30,
+      "actual_days": 31,
+      "predicted_start": "2025-03-14",
+      "official_start": "2025-03-14",
+      "ingress_time": "2025-03-14T19:05:41.825844+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 256,
+      "boundary_risk": "medium",
+      "risk_label": "YELLOW",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    },
+    {
+      "bs_year": 2082,
+      "month": 2,
+      "month_name": "Jestha",
+      "predicted_days": 32,
+      "actual_days": 31,
+      "predicted_start": "2025-05-15",
+      "official_start": "2025-05-15",
+      "ingress_time": "2025-05-15T00:27:02.279642+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 1250,
+      "boundary_risk": "low",
+      "risk_label": "GREEN",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    },
+    {
+      "bs_year": 2082,
+      "month": 8,
+      "month_name": "Mangsir",
+      "predicted_days": 30,
+      "actual_days": 29,
+      "predicted_start": "2025-11-17",
+      "official_start": "2025-11-17",
+      "ingress_time": "2025-11-16T13:52:38.118046+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 109,
+      "boundary_risk": "high",
+      "risk_label": "RED",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    },
+    {
+      "bs_year": 2082,
+      "month": 9,
+      "month_name": "Poush",
+      "predicted_days": 29,
+      "actual_days": 30,
+      "predicted_start": "2025-12-16",
+      "official_start": "2025-12-16",
+      "ingress_time": "2025-12-16T04:35:06.142620+05:45",
+      "selected_rule": "statistical_pattern",
+      "alternative_rule_that_would_have_worked": "civil_decision_knn",
+      "boundary_distance_minutes": 667,
+      "boundary_risk": "low",
+      "risk_label": "YELLOW",
+      "source_type": "official_verified",
+      "verification_status": "verified"
+    }
+  ],
+  "publication_status": "computed_prediction_not_official"
+}

@@ -15,3 +15,5 @@ backend/project_parva.egg-info export-ignore
 docs/public_beta/release_candidate_dossier.md export-ignore
 **/__pycache__ export-ignore
 *.pyc export-ignore
+*.pdf binary
+*.xlsx binary
