@@ -13,6 +13,7 @@ from app.future_bs.perturbation_robustness import perturbation_payload
 from app.future_bs.precedent_tower import precedent_tower
 from app.future_bs.prediction_sets import prediction_set_payload
 from app.future_bs.red_team_2083 import replay_2083_ashwin
+from app.future_bs.risk_thresholds import classify_prediction_risk
 from app.future_bs.source_trust import TRUST_LEVELS
 from app.future_bs.year_total_reconciliation import reconcile_year_total
 from app.services.future_bs_service import (
@@ -29,15 +30,21 @@ def _month_prediction(year: int, month: int) -> tuple[dict[str, Any], dict[str, 
     return prediction, prediction["month_details"][month - 1]
 
 
-def _risk_label(detail: dict[str, Any], year_gate: dict[str, Any] | None = None) -> str:
+def _risk_label(
+    detail: dict[str, Any],
+    year_gate: dict[str, Any] | None = None,
+    *,
+    prediction_set_95: list[int] | None = None,
+    flip_rate: float = 0.0,
+) -> str:
     if year_gate and not year_gate.get("valid_future_year_total", True):
         return "RED"
-    flags = set(detail.get("risk_flags") or [])
-    if "manual_review_recommended" in flags:
-        return "YELLOW"
-    if float(detail.get("confidence_score", 0.0)) >= 0.95:
-        return "GREEN"
-    return "YELLOW"
+    return classify_prediction_risk(
+        detail,
+        prediction_set_95=prediction_set_95,
+        flip_rate=flip_rate,
+        year_total_valid=not year_gate or bool(year_gate.get("valid_future_year_total", True)),
+    )
 
 
 def prediction_payload(year: int, month: int) -> dict[str, Any]:
@@ -46,7 +53,12 @@ def prediction_payload(year: int, month: int) -> dict[str, Any]:
     precedent = precedent_tower(year, month)
     sets = prediction_set_payload(detail)
     perturbation = perturbation_payload(detail, committee=committee, precedent=precedent)
-    risk_label = _risk_label(detail, prediction.get("year_total_gate"))
+    risk_label = _risk_label(
+        detail,
+        prediction.get("year_total_gate"),
+        prediction_set_95=sets["prediction_set_95"],
+        flip_rate=float(perturbation["flip_rate"]),
+    )
     return {
         "bs_year": year,
         "month": BS_MONTH_NAMES[month - 1].lower(),

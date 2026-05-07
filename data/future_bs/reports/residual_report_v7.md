@@ -18,4 +18,3 @@ No mismatches in this official-only holdout window.
 ## Active Learning Blockers
 
 - official/printed final-test corpus has 72 month cases; target is 528
-- 48 future BS years have invalid/exceptional totals

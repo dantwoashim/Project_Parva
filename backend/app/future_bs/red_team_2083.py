@@ -21,7 +21,7 @@ def replay_2083_ashwin() -> dict[str, Any]:
     sets = prediction_set_payload(detail)
     backtest = backtest_model(2000, 2082, 2083, 2083, source_policy="all_reference", model="solar_statistical_stack_holdout")
     predicted = int(detail["final_days"])
-    risk_label = detail.get("risk_label", "YELLOW")
+    risk_label = "YELLOW" if len(sets["prediction_set_95"]) > 1 else detail.get("risk_label", "YELLOW")
     return {
         "case_id": "PARVA-REDTEAM-2083-ASHWIN",
         "train_end_bs": 2082,

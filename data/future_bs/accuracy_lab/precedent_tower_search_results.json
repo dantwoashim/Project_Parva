@@ -1,0 +1,32 @@
+[
+  {
+    "k": 1,
+    "distance_metric": "hybrid",
+    "kept_for_top1": false,
+    "kept_for_risk_support": false
+  },
+  {
+    "k": 3,
+    "distance_metric": "hybrid",
+    "kept_for_top1": false,
+    "kept_for_risk_support": false
+  },
+  {
+    "k": 5,
+    "distance_metric": "hybrid",
+    "kept_for_top1": false,
+    "kept_for_risk_support": true
+  },
+  {
+    "k": 7,
+    "distance_metric": "hybrid",
+    "kept_for_top1": false,
+    "kept_for_risk_support": false
+  },
+  {
+    "k": 11,
+    "distance_metric": "hybrid",
+    "kept_for_top1": false,
+    "kept_for_risk_support": false
+  }
+]

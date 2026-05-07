@@ -1,0 +1,7 @@
+{
+  "green_min_probability": 0.985,
+  "green_max_flip_rate": 0.01,
+  "green_max_prediction_set_95_width": 1,
+  "green_requires_valid_year_total": true,
+  "yellow_max_prediction_set_95_width": 2
+}

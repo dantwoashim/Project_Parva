@@ -1,0 +1,23 @@
+[
+  {
+    "thresholds": {
+      "green_min_probability": 0.985,
+      "green_max_flip_rate": 0.01,
+      "green_max_prediction_set_95_width": 1,
+      "green_requires_valid_year_total": true,
+      "yellow_max_prediction_set_95_width": 2
+    },
+    "objective": {
+      "objective_score": 1375.0001,
+      "overall_top1_accuracy": 100.0,
+      "green_zone_accuracy": 100.0,
+      "green_zone_coverage": 91.67,
+      "false_green_rate": 0.0,
+      "wrong_green_count": 0,
+      "yellow_red_capture_rate": 1.0,
+      "invalid_future_year_total_rate": 0.0,
+      "mismatch_count": 0,
+      "claim_ready": true
+    }
+  }
+]

@@ -23,6 +23,7 @@ def main() -> int:
     parser.add_argument("--train-start", type=int, default=2000)
     parser.add_argument("--start", type=int, default=2078)
     parser.add_argument("--end", type=int, default=2083)
+    parser.add_argument("--model", default="parva_solar_civil_v1")
     parser.add_argument("--out", type=Path, default=Path("data/future_bs/reports/time_travel_v7.json"))
     args = parser.parse_args()
 
@@ -31,7 +32,7 @@ def main() -> int:
         args.start,
         args.end,
         source_policy=args.source_policy,
-        model="solar_statistical_stack_holdout",
+        model=args.model,
     )
     readiness = claim_readiness_report()
     mismatches = []

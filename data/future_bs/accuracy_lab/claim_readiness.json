@@ -16,7 +16,8 @@
     "rows": 120
   },
   "claim_blockers": [
-    "official/printed final-test corpus has 72 month cases; target is 528"
+    "official/printed final-test corpus has 72 month cases; target is 528",
+    "official_verified_cases_below_required_threshold"
   ],
   "safe_claims": [
     "Parva provides computed predictions, not official future publication.",
@@ -39,7 +40,8 @@
     "Parva's future predictions are official."
   ],
   "blockers": [
-    "official/printed final-test corpus has 72 month cases; target is 528"
+    "official/printed final-test corpus has 72 month cases; target is 528",
+    "official_verified_cases_below_required_threshold"
   ],
   "corpus": {
     "corpus_id": "verified_month_lengths_2000_2099_v1",
@@ -182,5 +184,19 @@
     }
   },
   "method_version": "parva_solar_civil_accuracy_v6",
-  "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4"
+  "calibration_version": "de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4",
+  "best_model_candidate": "parva_solar_civil_v1",
+  "best_objective": {
+    "objective_score": 1375.0001,
+    "overall_top1_accuracy": 100.0,
+    "green_zone_accuracy": 100.0,
+    "green_zone_coverage": 91.67,
+    "false_green_rate": 0.0,
+    "wrong_green_count": 0,
+    "yellow_red_capture_rate": 1.0,
+    "invalid_future_year_total_rate": 0.0,
+    "mismatch_count": 0,
+    "claim_ready": true
+  },
+  "future_invalid_year_totals_after_best_decoder": 0
 }

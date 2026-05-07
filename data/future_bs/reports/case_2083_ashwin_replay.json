@@ -20,7 +20,7 @@
       30,
       31
     ],
-    "risk_label": "GREEN",
+    "risk_label": "YELLOW",
     "confidence": 0.992,
     "risk_flags": [
       "modern_solar_civil_override"

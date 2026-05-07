@@ -22,7 +22,7 @@ DEFAULT_PATTERN_SOURCE_POLICY = "all_reference"
 ANALOG_LOOKBACK_YEARS = 10
 MODERN_SOLAR_OVERRIDE_START = 2078
 MODERN_SOLAR_OVERRIDE_MONTHS = {3, 4, 5, 6}
-GREEN_STABLE_ANALOG_MONTHS = {2, 3, 7, 8}
+GREEN_STABLE_ANALOG_MONTHS: set[int] = set()
 
 
 def _month_match_count(left: list[int], right: list[int]) -> int:

@@ -15,6 +15,7 @@ from .year_total_gate import apply_year_total_gate
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 PREDICTIONS_DIR = PROJECT_ROOT / "data" / "future_bs" / "predictions"
 DEFAULT_PREDICTION_FILE = PREDICTIONS_DIR / f"{METHOD_VERSION}_2084_2200.json"
+BEST_ACCURACY_PREDICTION_FILE = PREDICTIONS_DIR / "parva_future_bs_accuracy_best_2084_2200.json"
 
 
 def live_compute_enabled() -> bool:
@@ -23,16 +24,18 @@ def live_compute_enabled() -> bool:
 
 @lru_cache(maxsize=1)
 def load_precomputed_predictions() -> dict[str, Any]:
-    if not DEFAULT_PREDICTION_FILE.exists():
+    prediction_file = BEST_ACCURACY_PREDICTION_FILE if BEST_ACCURACY_PREDICTION_FILE.exists() else DEFAULT_PREDICTION_FILE
+    if not prediction_file.exists():
         return {
             "available": False,
             "run_id": DEFAULT_RUN_ID,
             "years": {},
         }
-    payload = json.loads(DEFAULT_PREDICTION_FILE.read_text(encoding="utf-8"))
+    payload = json.loads(prediction_file.read_text(encoding="utf-8"))
     years = {int(year): value for year, value in payload.get("years", {}).items()}
     payload["years"] = years
     payload["available"] = True
+    payload["path"] = prediction_file
     return payload
 
 
@@ -54,7 +57,7 @@ def precomputed_store_status() -> dict[str, Any]:
     years = sorted(payload.get("years", {}))
     return {
         "available": payload.get("available", False),
-        "path": str(DEFAULT_PREDICTION_FILE.relative_to(PROJECT_ROOT)),
+        "path": str(Path(payload.get("path", DEFAULT_PREDICTION_FILE)).relative_to(PROJECT_ROOT)),
         "run_id": payload.get("run_id", DEFAULT_RUN_ID),
         "method_version": payload.get("method_version", METHOD_VERSION),
         "year_count": len(years),

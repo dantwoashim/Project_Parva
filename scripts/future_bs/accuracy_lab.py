@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the 2083 Ashwin red-team replay artifact."""
+"""Shared CLI entrypoint for the future-BS accuracy lab."""
 
 from __future__ import annotations
 
@@ -23,17 +23,15 @@ if os.getenv("PARVA_SCRIPT_REEXEC") != "1":
         completed = subprocess.run(["py", "-3.11", *sys.argv], env=env)
         raise SystemExit(completed.returncode)
 
-from app.future_bs.red_team_2083 import replay_2083_ashwin  # noqa: E402
+from app.future_bs.accuracy_lab import run_accuracy_loop  # noqa: E402
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out", type=Path, default=Path("data/future_bs/reports/case_2083_ashwin_replay.json"))
+    parser.add_argument("--final", action="store_true")
     args = parser.parse_args()
-    payload = replay_2083_ashwin()
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(json.dumps({"ok": True, "out": str(args.out), "predicted_days": payload["parva_prediction_before_publication"]["predicted_days"]}, indent=2))
+    payload = run_accuracy_loop(final=args.final)
+    print(json.dumps(payload, indent=2, ensure_ascii=False))
     return 0
 
 

@@ -1,0 +1,8 @@
+[
+  {
+    "config": "lahiri_baseline",
+    "offset_arcseconds": 0,
+    "selected": true,
+    "reason": "no heldout offset improvement proven"
+  }
+]
