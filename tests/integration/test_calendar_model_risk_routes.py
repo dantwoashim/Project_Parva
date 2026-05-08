@@ -1,4 +1,4 @@
-"""Integration tests for the calendar model-risk API."""
+"""Public-profile tests for the calendar model-risk route boundary."""
 
 from app.main import app
 from fastapi.testclient import TestClient
@@ -16,51 +16,53 @@ def test_calendar_model_risk_capabilities_are_public_v5():
     assert body["publication_status"] == "computed_prediction_not_official"
 
 
-def test_calendar_model_risk_prediction_shape():
-    response = client.get("/v5/api/calendar-model-risk/prediction/2089/6")
+def test_calendar_model_risk_private_routes_are_not_public_in_default_profile():
+    sensitive_gets = [
+        "/v5/api/calendar-model-risk/prediction/2089/6",
+        "/v5/api/calendar-model-risk/prediction-set/2089/6",
+        "/v5/api/calendar-model-risk/committee-posterior/2089/6",
+        "/v5/api/calendar-model-risk/perturbation-robustness/2089/6",
+        "/v5/api/calendar-model-risk/red-team/2083-ashwin",
+        "/v5/api/calendar-model-risk/claim-readiness",
+        "/v5/api/calendar-model-risk/external-audit-readiness",
+        "/v5/api/calendar-model-risk/reports/claim-readiness",
+    ]
 
-    assert response.status_code == 200
-    body = response.json()
-    assert body["bs_year"] == 2089
-    assert body["month"] == "ashwin"
-    assert body["predicted_days"] in {29, 30, 31, 32}
-    assert body["prediction_set_95"]
-    assert body["metadata"]["publication_status"] == "computed_prediction_not_official"
-    assert body["committee_model"]["committee_rule_posterior"]
-    assert "flip_rate" in body["perturbation_robustness"]
+    for path in sensitive_gets:
+        response = client.get(path)
+        assert response.status_code == 404
 
 
-def test_calendar_var_and_claim_readiness_routes():
-    var = client.post(
+def test_calendar_model_risk_private_post_routes_are_not_public_in_default_profile():
+    sensitive_posts = [
+        "/v5/api/calendar-model-risk/audit-external-sheet",
         "/v5/api/calendar-model-risk/calendar-var",
-        json={
-            "bs_year": 2089,
-            "month": 6,
-            "principal": 1_000_000,
-            "annual_rate": 12,
-            "affected_contracts": 10,
-        },
+        "/v5/api/calendar-model-risk/stress-test",
+    ]
+
+    for path in sensitive_posts:
+        response = client.post(path, json={})
+        assert response.status_code == 404
+
+
+def test_calendar_model_risk_private_routes_are_hidden_from_public_openapi():
+    schema = client.get("/openapi.json").json()
+    paths = set(schema["paths"])
+
+    assert "/v5/api/calendar-model-risk/capabilities" in paths
+    assert all(
+        path not in paths
+        for path in {
+            "/v5/api/calendar-model-risk/prediction/{bs_year}/{month}",
+            "/v5/api/calendar-model-risk/prediction-set/{bs_year}/{month}",
+            "/v5/api/calendar-model-risk/committee-posterior/{bs_year}/{month}",
+            "/v5/api/calendar-model-risk/perturbation-robustness/{bs_year}/{month}",
+            "/v5/api/calendar-model-risk/audit-external-sheet",
+            "/v5/api/calendar-model-risk/calendar-var",
+            "/v5/api/calendar-model-risk/stress-test",
+            "/v5/api/calendar-model-risk/red-team/2083-ashwin",
+            "/v5/api/calendar-model-risk/claim-readiness",
+            "/v5/api/calendar-model-risk/external-audit-readiness",
+            "/v5/api/calendar-model-risk/reports/{report_id}",
+        }
     )
-    assert var.status_code == 200
-    assert var.json()["publication_status"] == "computed_prediction_not_official"
-    assert var.json()["recommended_policy"]
-
-    readiness = client.get("/v5/api/calendar-model-risk/claim-readiness")
-    assert readiness.status_code == 200
-    readiness_body = readiness.json()
-    if readiness_body.get("error") == "report_not_generated":
-        assert readiness_body["publication_status"] == "computed_prediction_not_official"
-    else:
-        assert readiness_body["ready_for_blanket_99_percent_claim"] is False
-
-
-def test_2083_ashwin_red_team_route():
-    response = client.get("/v5/api/calendar-model-risk/red-team/2083-ashwin")
-
-    assert response.status_code == 200
-    body = response.json()
-    if body.get("error") == "report_not_generated":
-        assert body["publication_status"] == "computed_prediction_not_official"
-        return
-    assert body["case_id"] == "PARVA-REDTEAM-2083-ASHWIN"
-    assert body["publication_status"] == "computed_prediction_not_official"

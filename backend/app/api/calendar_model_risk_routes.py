@@ -19,7 +19,8 @@ from app.services.calendar_model_risk_service import (
     stress_test_response,
 )
 
-router = APIRouter(prefix="/v5/api/calendar-model-risk", tags=["calendar-model-risk"])
+public_router = APIRouter(prefix="/v5/api/calendar-model-risk", tags=["calendar-model-risk"])
+private_router = APIRouter(prefix="/v5/api/calendar-model-risk", tags=["calendar-model-risk-private"])
 
 
 class ExternalYear(BaseModel):
@@ -46,12 +47,12 @@ def _bad_request(exc: ValueError) -> HTTPException:
     return HTTPException(status_code=400, detail=str(exc))
 
 
-@router.get("/capabilities")
+@public_router.get("/capabilities")
 async def calendar_model_risk_capabilities():
     return capabilities_payload()
 
 
-@router.get("/prediction/{bs_year}/{month}")
+@private_router.get("/prediction/{bs_year}/{month}")
 async def calendar_model_risk_prediction(bs_year: int, month: int):
     try:
         return prediction_payload(bs_year, month)
@@ -59,7 +60,7 @@ async def calendar_model_risk_prediction(bs_year: int, month: int):
         raise _bad_request(exc) from exc
 
 
-@router.get("/prediction-set/{bs_year}/{month}")
+@private_router.get("/prediction-set/{bs_year}/{month}")
 async def calendar_model_risk_prediction_set(bs_year: int, month: int):
     try:
         return prediction_set_response(bs_year, month)
@@ -67,7 +68,7 @@ async def calendar_model_risk_prediction_set(bs_year: int, month: int):
         raise _bad_request(exc) from exc
 
 
-@router.get("/committee-posterior/{bs_year}/{month}")
+@private_router.get("/committee-posterior/{bs_year}/{month}")
 async def calendar_model_risk_committee_posterior(bs_year: int, month: int):
     try:
         return committee_posterior_payload(bs_year, month)
@@ -75,7 +76,7 @@ async def calendar_model_risk_committee_posterior(bs_year: int, month: int):
         raise _bad_request(exc) from exc
 
 
-@router.get("/perturbation-robustness/{bs_year}/{month}")
+@private_router.get("/perturbation-robustness/{bs_year}/{month}")
 async def calendar_model_risk_perturbation(bs_year: int, month: int):
     try:
         return perturbation_response(bs_year, month)
@@ -83,7 +84,7 @@ async def calendar_model_risk_perturbation(bs_year: int, month: int):
         raise _bad_request(exc) from exc
 
 
-@router.post("/audit-external-sheet")
+@private_router.post("/audit-external-sheet")
 async def calendar_model_risk_audit_external_sheet(payload: ExternalSheetAuditRequest):
     try:
         return audit_external_sheet_response(payload.model_dump())
@@ -91,7 +92,7 @@ async def calendar_model_risk_audit_external_sheet(payload: ExternalSheetAuditRe
         raise _bad_request(exc) from exc
 
 
-@router.post("/calendar-var")
+@private_router.post("/calendar-var")
 async def calendar_model_risk_calendar_var(payload: CalendarVarRequest):
     try:
         return calendar_var_response(payload.model_dump())
@@ -99,7 +100,7 @@ async def calendar_model_risk_calendar_var(payload: CalendarVarRequest):
         raise _bad_request(exc) from exc
 
 
-@router.post("/stress-test")
+@private_router.post("/stress-test")
 async def calendar_model_risk_stress_test(payload: CalendarVarRequest):
     try:
         return stress_test_response(payload.model_dump())
@@ -107,22 +108,22 @@ async def calendar_model_risk_stress_test(payload: CalendarVarRequest):
         raise _bad_request(exc) from exc
 
 
-@router.get("/red-team/2083-ashwin")
+@private_router.get("/red-team/2083-ashwin")
 async def calendar_model_risk_2083_ashwin():
     return load_report("case_2083_ashwin_replay_v_final")
 
 
-@router.get("/claim-readiness")
+@private_router.get("/claim-readiness")
 async def calendar_model_risk_claim_readiness():
     return load_report("claim_readiness_v_final")
 
 
-@router.get("/external-audit-readiness")
+@private_router.get("/external-audit-readiness")
 async def calendar_model_risk_external_audit_readiness():
     return load_report("external_audit_readiness_summary")
 
 
-@router.get("/reports/{report_id}")
+@private_router.get("/reports/{report_id}")
 async def calendar_model_risk_report(report_id: str) -> dict[str, Any]:
     aliases = {
         "claim-readiness": "claim_readiness_v_final",
@@ -135,3 +136,6 @@ async def calendar_model_risk_report(report_id: str) -> dict[str, Any]:
     if report_id in aliases:
         return load_report(aliases[report_id])
     raise HTTPException(status_code=404, detail="unknown report_id")
+
+
+router = public_router

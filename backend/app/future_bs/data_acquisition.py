@@ -214,24 +214,6 @@ def source_registry() -> dict[str, Any]:
                 "notes": "Archived but still manual-review required; not counted for official claims.",
             },
             {
-                "source_id": "hamropatro_public_daysInMonth_js",
-                "source_type": "third_party_reference",
-                "source_name": "HamroPatro public day mapping archive",
-                "source_url": "https://english.hamropatro.com/date/2082-1-1",
-                "source_file": "data/source_archive/hamropatro/hamropatro_bs_ad_2000_2099.csv",
-                "license_or_access": "public web archive already present in repo",
-                "notes": "Low-trust witness only; never official truth.",
-            },
-            {
-                "source_id": "ratopati_event_day_archive",
-                "source_type": "publisher_reference",
-                "source_name": "Ratopati calendar event-day archive",
-                "source_url": "https://calendar.ratopati.com/ad",
-                "source_file": "data/source_archive/ratopati/event_days_2000_2100.json",
-                "license_or_access": "public digital-provider archive already present in repo",
-                "notes": "Partial day witnesses from public decoded month payloads.",
-            },
-            {
                 "source_id": "rat32_public_calendar_pages",
                 "source_type": "publisher_reference",
                 "source_name": "Rat32 NepaliCalendar public month pages",
@@ -477,114 +459,6 @@ def extract_verified_repo_artifacts() -> tuple[list[dict[str, Any]], list[dict[s
             next_action="Manually review archived 2076-2077 PDF rows before counting them as official-grade.",
         )
     )
-    return witnesses, attempts
-
-
-def extract_hamropatro_archive() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    path = SOURCE_ARCHIVE / "hamropatro" / "hamropatro_bs_ad_2000_2099.csv"
-    rows = read_csv(path)
-    witnesses: list[dict[str, Any]] = []
-    months_seen: set[tuple[int, int]] = set()
-    for row in rows:
-        try:
-            if int(row["bs_day"]) != 1:
-                continue
-            year = int(row["bs_year"])
-            month = int(row["bs_month"])
-            ad = row["ad"]
-        except (KeyError, ValueError):
-            continue
-        months_seen.add((year, month))
-        witnesses.append(
-            make_witness(
-                source_id="hamropatro_public_daysInMonth_js",
-                source_type="third_party_reference",
-                source_name="HamroPatro public JS/day archive",
-                source_url="https://english.hamropatro.com/date/2082-1-1",
-                source_file="data/source_archive/hamropatro/hamropatro_bs_ad_2000_2099.csv",
-                extraction_method="local_public_archive_day1_filter",
-                extraction_confidence=0.8,
-                ad_date=ad,
-                bs_year=year,
-                bs_month=month,
-                raw_text=f"{row.get('bs')} -> {ad}",
-                raw_ref="data/source_archive/hamropatro/hamropatro_bs_ad_2000_2099.csv",
-                manual_review_status="machine_extracted_needs_review",
-                notes="Low-trust third-party public witness; not official.",
-            )
-        )
-    attempts = [
-        source_attempt(
-            source_name="HamroPatro local public day archive",
-            source_url="data/source_archive/hamropatro/hamropatro_bs_ad_2000_2099.csv",
-            status="success" if witnesses else "empty",
-            rows_extracted=len(witnesses),
-            years={item["bs_year"] for item in witnesses},
-            months=months_seen,
-            next_action="Use only as third-party witness and cross-check against stronger sources.",
-        )
-    ]
-    return witnesses, attempts
-
-
-def extract_ratopati_archive() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    path = SOURCE_ARCHIVE / "ratopati" / "event_days_2000_2100.json"
-    if not path.exists():
-        return [], [
-            source_attempt(
-                source_name="Ratopati event-day archive",
-                source_url=str(path),
-                status="failed",
-                rows_extracted=0,
-                years=[],
-                months=[],
-                error="local archive missing",
-                next_action="Re-run the Ratopati public provider harvest if legally acceptable.",
-            )
-        ]
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    witnesses: list[dict[str, Any]] = []
-    seen: set[tuple[int, int]] = set()
-    for row in payload.get("records", []):
-        try:
-            if int(row["bs_day"]) != 1:
-                continue
-            key = (int(row["bs_year"]), int(row["bs_month"]))
-            if key in seen:
-                continue
-            seen.add(key)
-            witnesses.append(
-                make_witness(
-                    source_id="ratopati_event_day_archive",
-                    source_type="publisher_reference",
-                    source_name="Ratopati public calendar event-day archive",
-                    source_url="https://calendar.ratopati.com/ad",
-                    source_file="data/source_archive/ratopati/event_days_2000_2100.json",
-                    extraction_method="local_event_day_bs_day_1_filter",
-                    extraction_confidence=0.7,
-                    ad_date=row["ad_date_en"],
-                    bs_year=key[0],
-                    bs_month=key[1],
-                    raw_text=json.dumps(row.get("events", [])[:2], ensure_ascii=False),
-                    raw_ref="data/source_archive/ratopati/event_days_2000_2100.json",
-                    weekday=row.get("day_en", ""),
-                    manual_review_status="machine_extracted_needs_review",
-                    notes="Partial public calendar event-day witness.",
-                )
-            )
-        except (KeyError, ValueError):
-            continue
-    attempts = [
-        source_attempt(
-            source_name="Ratopati event-day archive",
-            source_url="data/source_archive/ratopati/event_days_2000_2100.json",
-            status="success" if witnesses else "partial_empty",
-            rows_extracted=len(witnesses),
-            years={item["bs_year"] for item in witnesses},
-            months=seen,
-            next_action="Use as partial publisher-reference witness only.",
-        )
-    ]
     return witnesses, attempts
 
 
@@ -870,8 +744,6 @@ def collect_witnesses(fetch_rat32: bool = True) -> dict[str, Any]:
 
     source_functions = [
         extract_verified_repo_artifacts,
-        extract_hamropatro_archive,
-        extract_ratopati_archive,
         extract_open_source_converter_tables,
     ]
     for func in source_functions:

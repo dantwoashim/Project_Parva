@@ -100,40 +100,7 @@ Future-BS research capabilities:
 curl https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities
 ```
 
-External sheet comparison request shape:
-
-```bash
-curl -X POST https://api.prabinghimire1.com.np/v4/api/future-bs/month-lengths/compare \
-  -H "Content-Type: application/json" \
-  -d '{
-    "source_name": "external_reference_sheet",
-    "years": [
-      {
-        "bs_year": 2085,
-        "months": [31, 32, 31, 32, 31, 31, 30, 30, 29, 30, 30, 30]
-      }
-    ]
-  }'
-```
-
-The external-sheet example uses placeholder data for request-shape demonstration.
-
-Loan or schedule-impact analysis:
-
-```bash
-curl -X POST https://api.prabinghimire1.com.np/v4/api/future-bs/loan-impact/simulate \
-  -H "Content-Type: application/json" \
-  -d '{
-    "loan_start_bs": "2085-05-01",
-    "term_months": 240,
-    "principal": 1000000,
-    "annual_rate": 12,
-    "day_count_method": "actual_365",
-    "external_years": []
-  }'
-```
-
-This simulates how differences between two BS month-length assumptions may affect date-sensitive schedules. It is not a guarantee of financial loss or official calendar treatment.
+The public API intentionally exposes capability and claim-boundary information for the Future BS research layer. Direct future prediction values, export routes, model-run details, residuals, and operational audit tools belong behind private access controls.
 
 ## Local Development
 

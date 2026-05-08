@@ -57,6 +57,10 @@ data/future_bs/predictions/
 data/future_bs/model_runs/
 data/future_bs/external_audit_ready/
 data/future_bs/raw_sources/
+data/future_bs/calibration/final_selected_model.json
+data/future_bs/calibration/civil_rule_results.json
+data/future_bs/calibration/civil_rule_training_labels.json
+data/future_bs/calibration/ayanamsha_results.json
 data/future_bs/witnesses/*.csv
 data/future_bs/witnesses/*.json
 data/future_bs/witnesses/*.jsonl
@@ -71,7 +75,12 @@ data/future_bs/corpus/reconstructed_30_past_year_month_lengths.csv
 data/future_bs/corpus/reconstructed_month_lengths.csv
 data/future_bs/corpus/reconstructed_month_starts.csv
 data/future_bs/corpus/source_agreement_graph.json
+data/source_archive/hamropatro/
+data/source_archive/ratopati/
+data/source_inventory/hamropatro_calendar_sources.json
+data/source_inventory/ratopati_month_coverage_2000_2100.json
 docs/external_audit/
+docs/future_bs/RESIDUAL_ANALYSIS.md
 
 # Generated provenance artifacts
 backend/data/snapshots/
@@ -79,3 +88,8 @@ backend/data/traces/
 backend/data/traces/tr_*.json
 backend/data/snapshots/snap_*.json
 backend/data/snapshots/snap_*.festival_snapshot.json
+
+# Private source acquisition helpers
+backend/tools/harvest_hamropatro_calendar.py
+backend/tools/harvest_ratopati_calendar.py
+data/source_inventory/digital_calendar_providers.json

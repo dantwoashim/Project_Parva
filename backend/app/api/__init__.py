@@ -2,7 +2,8 @@
 
 from .billing_routes import router as billing_router
 from .cache_routes import router as cache_router
-from .calendar_model_risk_routes import router as calendar_model_risk_router
+from .calendar_model_risk_routes import private_router as calendar_model_risk_private_router
+from .calendar_model_risk_routes import public_router as calendar_model_risk_router
 from .calendar_routes import router as calendar_router
 from .engine_routes import router as engine_router
 from .enterprise_routes import router as enterprise_router
@@ -11,7 +12,8 @@ from .feed_routes import router as feed_router
 from .festival_routes import router as festival_router
 from .festival_timeline_routes import router as festival_timeline_router
 from .forecast_routes import router as forecast_router
-from .future_bs_routes import router as future_bs_router
+from .future_bs_routes import private_router as future_bs_private_router
+from .future_bs_routes import public_router as future_bs_router
 from .glossary_routes import router as glossary_router
 from .integration_feed_routes import router as integration_feed_router
 from .kundali_graph_routes import router as kundali_graph_router
@@ -34,6 +36,7 @@ from .temporal_compass_routes import router as temporal_compass_router
 __all__ = [
     "calendar_router",
     "calendar_model_risk_router",
+    "calendar_model_risk_private_router",
     "billing_router",
     "cache_router",
     "explain_router",
@@ -41,6 +44,7 @@ __all__ = [
     "festival_router",
     "forecast_router",
     "future_bs_router",
+    "future_bs_private_router",
     "locations_router",
     "observance_router",
     "policy_router",

@@ -15,13 +15,42 @@ def test_hamropatro_shadow_policy_is_not_official_claim_policy():
     assert "official claim-readiness" in policy["claim_scope"]
 
 
-def test_hamropatro_shadow_artifacts_are_generated_and_guarded():
-    subprocess.run(["python", "scripts/future_bs/run_hamropatro_shadow_evaluation.py"], check=True)
+def test_hamropatro_shadow_artifacts_are_generated_and_guarded(tmp_path: Path):
+    source_path = tmp_path / "shadow_source.json"
+    source_path.write_text(
+        json.dumps(
+            {
+                "years": [
+                    {
+                        "bs_year": 2000,
+                        "months": [
+                            {"month": month, "days": 29}
+                            for month in range(1, 13)
+                        ],
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    subprocess.run(
+        [
+            "python",
+            "scripts/future_bs/run_hamropatro_shadow_evaluation.py",
+            "--start",
+            "2000",
+            "--end",
+            "2000",
+            "--source",
+            str(source_path),
+        ],
+        check=True,
+    )
 
-    metrics_path = ROOT / "hamropatro_shadow_2000_2070_metrics.json"
-    md_path = ROOT / "hamropatro_shadow_2000_2070_metrics.md"
-    disagreements_path = ROOT / "hamropatro_shadow_2000_2070_disagreements.csv"
-    queue_path = ROOT / "hamropatro_shadow_2000_2070_verification_queue.csv"
+    metrics_path = ROOT / "hamropatro_shadow_2000_2000_metrics.json"
+    md_path = ROOT / "hamropatro_shadow_2000_2000_metrics.md"
+    disagreements_path = ROOT / "hamropatro_shadow_2000_2000_disagreements.csv"
+    queue_path = ROOT / "hamropatro_shadow_2000_2000_verification_queue.csv"
 
     for path in [metrics_path, md_path, disagreements_path, queue_path]:
         assert path.exists()
@@ -31,7 +60,7 @@ def test_hamropatro_shadow_artifacts_are_generated_and_guarded():
     assert metrics["evaluation_mode"] == "hamropatro_shadow_experimental"
     assert metrics["source_type"] == "third_party_reference"
     assert metrics["source_tier"] == 6
-    assert metrics["total_months_tested"] == 852
+    assert metrics["total_months_tested"] == 12
     assert metrics["calibration_policy"]["hamropatro_used_for_calibration"] is False
     assert metrics["calibration_policy"]["hamropatro_used_for_official_strict_metrics"] is False
     assert metrics["calibration_policy"]["hamropatro_used_for_official_claim_readiness"] is False

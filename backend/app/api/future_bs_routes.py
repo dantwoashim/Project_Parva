@@ -26,7 +26,8 @@ from app.services.future_bs_service import (
     simulate_loan_impact,
 )
 
-router = APIRouter(prefix="/v4/api/future-bs", tags=["future-bs"])
+public_router = APIRouter(prefix="/v4/api/future-bs", tags=["future-bs"])
+private_router = APIRouter(prefix="/v4/api/future-bs", tags=["future-bs-private"])
 
 
 class ExternalYear(BaseModel):
@@ -67,12 +68,12 @@ def _bad_request(exc: ValueError) -> HTTPException:
     return HTTPException(status_code=400, detail=str(exc))
 
 
-@router.get("/capabilities")
+@public_router.get("/capabilities")
 async def future_bs_capabilities():
     return future_bs_capabilities_payload()
 
 
-@router.get("/month-lengths/range")
+@private_router.get("/month-lengths/range")
 async def future_bs_month_lengths_range(start: int, end: int):
     try:
         return predict_bs_range(start, end)
@@ -80,7 +81,7 @@ async def future_bs_month_lengths_range(start: int, end: int):
         raise _bad_request(exc) from exc
 
 
-@router.post("/month-lengths/compare")
+@private_router.post("/month-lengths/compare")
 async def future_bs_compare_month_lengths(payload: CompareMonthLengthsRequest):
     try:
         return compare_external_sheet(
@@ -91,7 +92,7 @@ async def future_bs_compare_month_lengths(payload: CompareMonthLengthsRequest):
         raise _bad_request(exc) from exc
 
 
-@router.post("/month-lengths/import-excel")
+@private_router.post("/month-lengths/import-excel")
 async def future_bs_import_excel(payload: ImportExcelRequest):
     try:
         return import_excel_and_compare(payload.source_name, payload.content_base64, payload.file_format)
@@ -99,7 +100,7 @@ async def future_bs_import_excel(payload: ImportExcelRequest):
         raise _bad_request(exc) from exc
 
 
-@router.get("/month-lengths/backtest")
+@private_router.get("/month-lengths/backtest")
 async def future_bs_backtest(
     train_start: int,
     train_end: int,
@@ -118,7 +119,7 @@ async def future_bs_backtest(
         raise _bad_request(exc) from exc
 
 
-@router.get("/backtest")
+@private_router.get("/backtest")
 async def future_bs_backtest_v2(
     mode: Literal["holdout", "full", "rolling"] = "holdout",
     train_start: int = 2040,
@@ -142,7 +143,7 @@ async def future_bs_backtest_v2(
         raise _bad_request(exc) from exc
 
 
-@router.get("/backtest/residuals")
+@private_router.get("/backtest/residuals")
 async def future_bs_backtest_residuals(
     train_start: int,
     train_end: int,
@@ -161,7 +162,7 @@ async def future_bs_backtest_residuals(
         raise _bad_request(exc) from exc
 
 
-@router.get("/month-lengths/explain")
+@private_router.get("/month-lengths/explain")
 async def future_bs_explain_month(year: int, month: int):
     try:
         return explain_month(year, month)
@@ -169,7 +170,7 @@ async def future_bs_explain_month(year: int, month: int):
         raise _bad_request(exc) from exc
 
 
-@router.get("/boundary-risk")
+@private_router.get("/boundary-risk")
 async def future_bs_boundary_risk(year: int, month: int):
     try:
         return boundary_risk(year, month)
@@ -177,7 +178,7 @@ async def future_bs_boundary_risk(year: int, month: int):
         raise _bad_request(exc) from exc
 
 
-@router.get("/month-lengths/export.csv")
+@private_router.get("/month-lengths/export.csv")
 async def future_bs_export_csv(start: int, end: int):
     try:
         body = predictions_to_csv(start, end)
@@ -191,12 +192,12 @@ async def future_bs_export_csv(start: int, end: int):
     )
 
 
-@router.get("/export.csv")
+@private_router.get("/export.csv")
 async def future_bs_export_csv_alias(start: int, end: int):
     return await future_bs_export_csv(start, end)
 
 
-@router.get("/month-lengths/export.xlsx")
+@private_router.get("/month-lengths/export.xlsx")
 async def future_bs_export_xlsx(start: int, end: int):
     try:
         body = predictions_to_xlsx(start, end)
@@ -210,12 +211,12 @@ async def future_bs_export_xlsx(start: int, end: int):
     )
 
 
-@router.get("/export.xlsx")
+@private_router.get("/export.xlsx")
 async def future_bs_export_xlsx_alias(start: int, end: int):
     return await future_bs_export_xlsx(start, end)
 
 
-@router.get("/month-lengths/{bs_year}")
+@private_router.get("/month-lengths/{bs_year}")
 async def future_bs_month_lengths(bs_year: int):
     try:
         return predict_bs_year(bs_year)
@@ -223,7 +224,7 @@ async def future_bs_month_lengths(bs_year: int):
         raise _bad_request(exc) from exc
 
 
-@router.post("/loan-impact/simulate")
+@private_router.post("/loan-impact/simulate")
 async def future_bs_loan_impact(payload: LoanImpactRequest):
     raw_payload: dict[str, Any] = payload.model_dump()
     try:
@@ -232,14 +233,17 @@ async def future_bs_loan_impact(payload: LoanImpactRequest):
         raise _bad_request(exc) from exc
 
 
-@router.get("/model-runs")
+@private_router.get("/model-runs")
 async def future_bs_model_runs():
     return {"runs": model_runs()}
 
 
-@router.get("/model-runs/{run_id}")
+@private_router.get("/model-runs/{run_id}")
 async def future_bs_model_run(run_id: str):
     try:
         return model_run(run_id)
     except ValueError as exc:
         raise _bad_request(exc) from exc
+
+
+router = public_router

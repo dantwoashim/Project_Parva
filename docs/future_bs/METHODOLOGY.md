@@ -1,6 +1,6 @@
 # Future BS Methodology
 
-Parva Future BS is a computational validation engine for BS month-length risk. It does not publish official future calendars. It produces reproducible, source-labeled predictions that can be compared against internal sheets and reviewed before financial use.
+Parva Future BS is a computational validation engine for BS month-length risk. It does not publish official future calendars. Public material describes methodology, source policy, and claim boundaries. Direct future values and operational audit outputs are private deployment surfaces.
 
 ## Architecture
 
@@ -10,8 +10,7 @@ source-labeled corpus
   -> civil month-start rules
   -> calibrated ensemble
   -> probabilities and risk flags
-  -> external comparison
-  -> loan-impact simulation
+  -> private comparison and schedule-risk review
 ```
 
 ## Corpus
@@ -37,7 +36,7 @@ For each future BS year:
 5. Derive month lengths from consecutive month-start dates.
 6. Combine computational outputs with a weak legacy-cycle fallback.
 7. Assign probabilities, confidence, and risk flags.
-8. Serve the result from immutable precomputed prediction files.
+8. Keep direct prediction artifacts private unless an authorized deployment explicitly exposes them.
 
 ## Current Ephemeris Position
 

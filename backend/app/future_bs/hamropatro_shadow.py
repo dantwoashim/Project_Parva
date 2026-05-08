@@ -56,7 +56,8 @@ class ShadowCase:
         return self.legacy_days == self.hamropatro_days
 
 
-def _load_hamropatro_years(path: Path = HAMROPATRO_MONTH_LENGTHS_PATH) -> dict[int, list[int]]:
+def _load_hamropatro_years(path: Path | None = None) -> dict[int, list[int]]:
+    path = path or HAMROPATRO_MONTH_LENGTHS_PATH
     if not path.exists():
         raise FileNotFoundError(f"Missing HamroPatro source archive: {path}")
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -84,8 +85,8 @@ def _predict_legacy_shadow(bs_year: int) -> list[int]:
     return list(predict_legacy_cycle(bs_year).months)
 
 
-def _case_rows(start_year: int, end_year: int) -> list[ShadowCase]:
-    hamropatro = _load_hamropatro_years()
+def _case_rows(start_year: int, end_year: int, source_path: Path | None = None) -> list[ShadowCase]:
+    hamropatro = _load_hamropatro_years(source_path)
     cases: list[ShadowCase] = []
     missing_years = [year for year in range(start_year, end_year + 1) if year not in hamropatro]
     if missing_years:
@@ -247,8 +248,9 @@ def _verification_queue(
 def evaluate_hamropatro_shadow(
     start_year: int = EVALUATION_START_YEAR,
     end_year: int = EVALUATION_END_YEAR,
+    source_path: Path | None = None,
 ) -> dict[str, Any]:
-    cases = _case_rows(start_year, end_year)
+    cases = _case_rows(start_year, end_year, source_path)
     total = len(cases)
     solar_exact = sum(case.solar_match for case in cases)
     legacy_exact = sum(case.legacy_match for case in cases)
@@ -315,9 +317,10 @@ def write_hamropatro_shadow_artifacts(
     start_year: int = EVALUATION_START_YEAR,
     end_year: int = EVALUATION_END_YEAR,
     output_dir: Path = ACCURACY_LAB_DIR,
+    source_path: Path | None = None,
 ) -> dict[str, Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
-    metrics = evaluate_hamropatro_shadow(start_year, end_year)
+    metrics = evaluate_hamropatro_shadow(start_year, end_year, source_path)
     range_label = f"{start_year}_{end_year}"
 
     metrics_json = output_dir / f"hamropatro_shadow_{range_label}_metrics.json"

@@ -1,20 +1,15 @@
-# External Sheet Audit
+# External Sheet Audit Boundary
 
-Parva can compare external BS month-length sheets against its computed prediction artifacts.
+Parva can compare an external BS month-length sheet against a private computational risk model.
 
-Supported row shape:
+The public repository documents only the concept:
 
-```text
-bs_year, baishakh, jestha, ashadh, shrawan, bhadra, ashwin, kartik, mangsir, poush, magh, falgun, chaitra
-```
+- compare assumptions
+- identify agreement and disagreement counts
+- highlight boundary-sensitive review areas
+- separate official-grade evidence from market or reference witnesses
+- avoid treating any future prediction as official publication
 
-Disagreement classes include:
+Public documentation does not expose corrected future month values, private audit schemas, client-specific workflows, or full future vectors.
 
-- `AGREE_GREEN`
-- `AGREE_YELLOW`
-- `PARVA_HIGH_CONFIDENCE_DISAGREES`
-- `BOTH_UNCERTAIN`
-- `THEIR_VALUE_PLAUSIBLE`
-- `METHOD_REGIME_RISK`
-
-The audit is for review prioritization and financial model risk. It must not be used to label external future data as official.
+Default public positioning should describe this as calendar model-risk review, not official calendar correction.

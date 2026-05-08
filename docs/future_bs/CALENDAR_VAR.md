@@ -1,22 +1,13 @@
-# Calendar VaR
+# Schedule-Risk Methodology
 
-Calendar VaR estimates financial exposure from future BS month-length uncertainty.
+Future BS month-length uncertainty can affect date-sensitive operational schedules.
 
-Practical score:
+Public documentation should keep this at the model-risk level:
 
-```text
-probability_of_mismatch
-* one_day_interest_exposure
-* number_of_affected_contracts
-* operational_irreversibility_score
-* official_publication_delay_risk
-```
+- compare two calendar assumptions
+- count affected periods
+- flag boundary-sensitive months
+- preserve source and publication status
+- require reconciliation after official publication
 
-Risky months should use a no-break policy:
-
-- store `calendar_run_id`,
-- keep `publication_status`,
-- keep prediction sets,
-- mark reconciliation required,
-- keep dual schedules where impact is material,
-- recalculate after official publication.
+Private deployments can combine those signals with institution-specific financial or contractual logic. Public docs do not expose private future vectors, corrected values, or client-specific impact reports.

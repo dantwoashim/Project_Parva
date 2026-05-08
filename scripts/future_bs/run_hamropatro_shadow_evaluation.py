@@ -18,8 +18,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--start", type=int, default=2000)
     parser.add_argument("--end", type=int, default=2070)
+    parser.add_argument(
+        "--source",
+        type=Path,
+        default=None,
+        help="Optional local third-party shadow source JSON. The public repo does not ship this data.",
+    )
     args = parser.parse_args()
-    outputs = write_hamropatro_shadow_artifacts(args.start, args.end)
+    outputs = write_hamropatro_shadow_artifacts(args.start, args.end, source_path=args.source)
     for name, path in outputs.items():
         print(f"{name}: {path}")
 

@@ -543,17 +543,23 @@ def build_rate_limit_guard(*, settings: AppSettings, backend: RateLimiterBackend
     return rate_limit_guard
 
 
-STABLE_PUBLIC_V4_PREFIXES = (
-    "/v4/api/future-bs/",
-    "/v5/api/calendar-model-risk/",
+STABLE_PUBLIC_EXPERIMENTAL_PATHS = frozenset(
+    {
+        "/v4/api/future-bs/capabilities",
+        "/v5/api/calendar-model-risk/capabilities",
+    }
 )
+
+
+def _is_stable_public_experimental_path(path: str) -> bool:
+    return path in STABLE_PUBLIC_EXPERIMENTAL_PATHS
 
 
 def build_experimental_version_gate(*, enable_experimental_api: bool):
     blocked_prefixes = ("/v2/api/", "/v4/api/", "/v5/api/")
 
     async def version_gate(request: Request, call_next):
-        is_stable_public_v4 = request.url.path.startswith(STABLE_PUBLIC_V4_PREFIXES)
+        is_stable_public_v4 = _is_stable_public_experimental_path(request.url.path)
         if (
             not enable_experimental_api
             and not is_stable_public_v4
@@ -740,7 +746,7 @@ def build_engine_headers(
 
         if (
             not enable_experimental_api
-            and not request.url.path.startswith(STABLE_PUBLIC_V4_PREFIXES)
+            and not _is_stable_public_experimental_path(request.url.path)
             and request.url.path.startswith(("/v2/", "/v4/", "/v5/"))
         ):
             # Should not happen due to gate, but keep explicit.

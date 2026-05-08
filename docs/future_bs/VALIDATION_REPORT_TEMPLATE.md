@@ -1,36 +1,42 @@
 # Future BS Validation Report Template
 
+This public template is intentionally aggregate-first. It should not expose corrected future month values.
+
 ## Summary
 
 - Source name:
 - Years compared:
 - Months compared:
-- Matches:
-- Mismatches:
-- Match rate:
-- Highest-risk months:
+- Agreement count:
+- Disagreement count:
+- Risk-label distribution:
+- Boundary-sensitive disagreement count:
+- Manual-review count:
 
 ## Scope
 
-- Future BS month-length comparison
+- Future BS month-length assumption comparison
 - Corpus/source status review
-- Confidence and risk-flag review
-- Loan or interest impact screening
+- Confidence and risk-label review
+- Schedule-risk screening
 
 ## Method
 
-1. Import the external sheet.
-2. Compare external month lengths against Parva output.
-3. Review mismatches with confidence and risk flags.
-4. Run loan impact simulation on material mismatches.
-5. Decide which mismatches require manual review.
+1. Import the external sheet in a private deployment.
+2. Compare assumptions in aggregate.
+3. Review disagreements by risk category.
+4. Escalate high-risk periods for manual source review.
+5. Reconcile with official publication when available.
 
 ## Caveats
 
-Parva output is a computational prediction and validation aid. It is not an official future calendar publication or legal/tax authority.
+Parva output is a computational prediction and validation aid. It is not an official future calendar publication or legal, tax, banking-contract, or regulatory authority.
 
-## Mismatch Table
+## Aggregate Table
 
-| BS year | Month | External days | Parva days | Confidence | Risk flags | Recommendation |
-| --- | --- | ---: | ---: | --- | --- | --- |
-|  |  |  |  |  |  |  |
+| Category | Count | Notes |
+| --- | ---: | --- |
+| Agreements |  |  |
+| Disagreements |  |  |
+| Boundary-sensitive disagreements |  |  |
+| Manual review required |  |  |

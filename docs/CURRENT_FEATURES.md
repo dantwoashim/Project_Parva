@@ -11,13 +11,13 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 - Kundali and graph surfaces: kundali, lagna, kundali graph endpoints.
 - Reliability and trust: provenance, public artifacts, reliability status, metrics, boundary suite, differential manifest, spec conformance.
 - Billing and access: plans, checkout, API keys, usage, admin billing surfaces.
-- Future BS: `/v4/api/future-bs/*` month-length research payloads, explainability, backtests, residuals, external comparison, loan impact, and model-run metadata.
-- Calendar Model-Risk: `/v5/api/calendar-model-risk/*` prediction sets, committee posterior, perturbation robustness, external sheet audit, Calendar VaR, stress test, claim readiness, 2083 Ashwin replay.
+- Future BS: public capability and claim-boundary metadata, with direct prediction, export, backtest, residual, external comparison, schedule-impact, and model-run surfaces kept behind the private deployment profile.
+- Calendar Model-Risk: public capability metadata, with prediction sets, committee posterior, perturbation robustness, external audit, schedule-impact, stress-test, claim-readiness, and red-team report surfaces kept behind the private deployment profile.
 
 ## Backend Services
 
 - `calendar_conversion_service`, `calendar_surface_service`, `enterprise_calendar_service`.
-- `future_bs_service` for future month-length research payloads, comparison, residuals, and loan impact.
+- `future_bs_service` for private future month-length research payloads, comparison, residuals, and schedule-impact analysis.
 - Panchanga, muhurta, personal, trust, place search, timeline, feed, and kundali services.
 - Billing, reliability, provenance, cache, source review, and storage modules.
 
@@ -49,7 +49,7 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 ## Scripts and Deployment
 
 - Verification, golden journey, browser smoke, frontend accessibility, docs link, path leak, security, signing, and live smoke scripts.
-- Future BS scripts for public validation, backtesting, comparison, residual reporting, and JPL kernel download.
+- Future BS scripts for local validation, backtesting, comparison, residual reporting, and JPL kernel download.
 - Docker, Cloud Run, Render, Cloud Build, release, governance, and precompute support files.
 
 ## Tests

@@ -9,6 +9,7 @@ from fastapi import APIRouter, FastAPI
 from app.api import (
     billing_router,
     cache_router,
+    calendar_model_risk_private_router,
     calendar_model_risk_router,
     calendar_router,
     engine_router,
@@ -18,6 +19,7 @@ from app.api import (
     festival_router,
     festival_timeline_router,
     forecast_router,
+    future_bs_private_router,
     future_bs_router,
     glossary_router,
     integration_feed_router,
@@ -49,6 +51,8 @@ class RouterRegistration:
     policy_path: str | None = None
     include_v3: bool = True
     include_experimental_versions: bool = True
+    register_when_experimental_enabled: bool = False
+    include_in_policy_specs: bool = True
 
 
 ROUTER_REGISTRATIONS = [
@@ -62,16 +66,38 @@ ROUTER_REGISTRATIONS = [
         "public",
         "public",
         "future_bs",
+        policy_path="/v4/api/future-bs/capabilities",
         include_v3=False,
         include_experimental_versions=False,
+    ),
+    RouterRegistration(
+        future_bs_private_router,
+        "private",
+        "experimental_read",
+        "future_bs_private",
+        include_v3=False,
+        include_experimental_versions=False,
+        register_when_experimental_enabled=True,
+        include_in_policy_specs=False,
     ),
     RouterRegistration(
         calendar_model_risk_router,
         "public",
         "public",
         "calendar_model_risk",
+        policy_path="/v5/api/calendar-model-risk/capabilities",
         include_v3=False,
         include_experimental_versions=False,
+    ),
+    RouterRegistration(
+        calendar_model_risk_private_router,
+        "private",
+        "experimental_read",
+        "calendar_model_risk_private",
+        include_v3=False,
+        include_experimental_versions=False,
+        register_when_experimental_enabled=True,
+        include_in_policy_specs=False,
     ),
     RouterRegistration(billing_router, "public", "public", "billing", policy_path="/api/billing"),
     RouterRegistration(cache_router, "public", "public", "cache"),
@@ -113,6 +139,8 @@ def _is_dev_environment(environment: str) -> bool:
 def iter_route_policy_specs() -> list[dict[str, str]]:
     specs: list[dict[str, str]] = []
     for registration in ROUTER_REGISTRATIONS:
+        if not registration.include_in_policy_specs:
+            continue
         prefix = registration.policy_path or registration.router.prefix
         if not prefix:
             continue
@@ -145,7 +173,9 @@ def register_routers(
     registrations = [
         registration
         for registration in ROUTER_REGISTRATIONS
-        if registration.audience == "public" or include_trust
+        if registration.audience == "public"
+        or (include_trust and registration.audience == "trust")
+        or (enable_experimental_api and registration.register_when_experimental_enabled)
     ]
     routers = [registration.router for registration in registrations]
 
