@@ -1,16 +1,18 @@
 # Accuracy Readiness Final
 
-Publication status: `computed_prediction_not_official`.
+Publication status: `computed_prediction_not_official`
 
-- Best model: parva_solar_civil_v1
-- Top1 accuracy: 100.0%
+- Metric threshold passed: True
+- Claim ready with sufficient corpus: False
+- Claim ready 99 green-zone: False
+- Official strict cases: 62
+- Required official cases: 528
+- Wrong GREEN count: 0
 - Green-zone accuracy: 100.0%
 - Green-zone coverage: 91.67%
-- Wrong GREEN count: 0
-- Future invalid year totals: 0
-- Claim ready 99 green-zone: False
+- Invalid reconstructed rows excluded: 5
 
 ## Blockers
 - official/printed final-test corpus has 72 month cases; target is 528
-- official_verified_cases_below_required_threshold
+- official_strict_cases_below_required_threshold
 - official_verified_cases_below_required_threshold

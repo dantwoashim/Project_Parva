@@ -1,7 +1,7 @@
 {
   "claim_ready_99_green_zone": false,
   "claim_ready_99_overall": false,
-  "official_cases": 72,
+  "official_cases": 62,
   "required_official_cases": 528,
   "official_only_top1_accuracy": 100.0,
   "green_zone_accuracy": 100.0,
@@ -17,7 +17,7 @@
   },
   "claim_blockers": [
     "official/printed final-test corpus has 72 month cases; target is 528",
-    "official_verified_cases_below_required_threshold",
+    "official_strict_cases_below_required_threshold",
     "official_verified_cases_below_required_threshold"
   ],
   "safe_claims": [
@@ -212,5 +212,7 @@
   "claim_ready": true,
   "metric_threshold_passed": true,
   "claim_ready_with_sufficient_corpus": false,
-  "publication_status": "computed_prediction_not_official"
+  "publication_status": "computed_prediction_not_official",
+  "source_policy_metrics_path": "data/future_bs/accuracy_lab/source_policy_metrics.json",
+  "invalid_reconstructed_rows_excluded": 5
 }

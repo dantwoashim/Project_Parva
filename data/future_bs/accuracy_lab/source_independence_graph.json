@@ -1,0 +1,265 @@
+{
+  "publication_status": "computed_prediction_not_official",
+  "source_count": 7,
+  "edge_count": 20,
+  "copy_risk_edges": 1,
+  "nodes": [
+    {
+      "source_id": "hamropatro_public_daysInMonth_js",
+      "source_type": "third_party_reference",
+      "witness_count": 1200
+    },
+    {
+      "source_id": "medic_bikram_sambat_daysInMonth",
+      "source_type": "software_table_reference",
+      "witness_count": 1092
+    },
+    {
+      "source_id": "parva_archived_official_patro_2076_2077",
+      "source_type": "printed_verified",
+      "witness_count": 24
+    },
+    {
+      "source_id": "parva_structured_official_2078_2083",
+      "source_type": "official_verified",
+      "witness_count": 72
+    },
+    {
+      "source_id": "rat32_public_calendar_pages",
+      "source_type": "publisher_reference",
+      "witness_count": 240
+    },
+    {
+      "source_id": "ratopati_event_day_archive",
+      "source_type": "publisher_reference",
+      "witness_count": 326
+    },
+    {
+      "source_id": "sharingapples_nepali_date_config",
+      "source_type": "software_table_reference",
+      "witness_count": 1068
+    }
+  ],
+  "edges": [
+    {
+      "source_a": "hamropatro_public_daysInMonth_js",
+      "source_b": "medic_bikram_sambat_daysInMonth",
+      "source_type_a": "third_party_reference",
+      "source_type_b": "software_table_reference",
+      "overlap": 1048,
+      "agreement_jaccard": 0.842444,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.789389
+    },
+    {
+      "source_a": "hamropatro_public_daysInMonth_js",
+      "source_b": "parva_archived_official_patro_2076_2077",
+      "source_type_a": "third_party_reference",
+      "source_type_b": "printed_verified",
+      "overlap": 24,
+      "agreement_jaccard": 0.02,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.995
+    },
+    {
+      "source_a": "hamropatro_public_daysInMonth_js",
+      "source_b": "parva_structured_official_2078_2083",
+      "source_type_a": "third_party_reference",
+      "source_type_b": "official_verified",
+      "overlap": 72,
+      "agreement_jaccard": 0.06,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.985
+    },
+    {
+      "source_a": "hamropatro_public_daysInMonth_js",
+      "source_b": "rat32_public_calendar_pages",
+      "source_type_a": "third_party_reference",
+      "source_type_b": "publisher_reference",
+      "overlap": 239,
+      "agreement_jaccard": 0.199001,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.95025
+    },
+    {
+      "source_a": "hamropatro_public_daysInMonth_js",
+      "source_b": "ratopati_event_day_archive",
+      "source_type_a": "third_party_reference",
+      "source_type_b": "publisher_reference",
+      "overlap": 270,
+      "agreement_jaccard": 0.214968,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.946258
+    },
+    {
+      "source_a": "hamropatro_public_daysInMonth_js",
+      "source_b": "sharingapples_nepali_date_config",
+      "source_type_a": "third_party_reference",
+      "source_type_b": "software_table_reference",
+      "overlap": 1043,
+      "agreement_jaccard": 0.851429,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.787143
+    },
+    {
+      "source_a": "medic_bikram_sambat_daysInMonth",
+      "source_b": "parva_archived_official_patro_2076_2077",
+      "source_type_a": "software_table_reference",
+      "source_type_b": "printed_verified",
+      "overlap": 24,
+      "agreement_jaccard": 0.021978,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.994505
+    },
+    {
+      "source_a": "medic_bikram_sambat_daysInMonth",
+      "source_b": "parva_structured_official_2078_2083",
+      "source_type_a": "software_table_reference",
+      "source_type_b": "official_verified",
+      "overlap": 68,
+      "agreement_jaccard": 0.062044,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.984489
+    },
+    {
+      "source_a": "medic_bikram_sambat_daysInMonth",
+      "source_b": "rat32_public_calendar_pages",
+      "source_type_a": "software_table_reference",
+      "source_type_b": "publisher_reference",
+      "overlap": 237,
+      "agreement_jaccard": 0.216438,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.94589
+    },
+    {
+      "source_a": "medic_bikram_sambat_daysInMonth",
+      "source_b": "ratopati_event_day_archive",
+      "source_type_a": "software_table_reference",
+      "source_type_b": "publisher_reference",
+      "overlap": 265,
+      "agreement_jaccard": 0.229835,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.942541
+    },
+    {
+      "source_a": "medic_bikram_sambat_daysInMonth",
+      "source_b": "sharingapples_nepali_date_config",
+      "source_type_a": "software_table_reference",
+      "source_type_b": "software_table_reference",
+      "overlap": 1061,
+      "agreement_jaccard": 0.965423,
+      "same_source_family": true,
+      "copy_risk": true,
+      "independence_score": 0.1
+    },
+    {
+      "source_a": "parva_archived_official_patro_2076_2077",
+      "source_b": "rat32_public_calendar_pages",
+      "source_type_a": "printed_verified",
+      "source_type_b": "publisher_reference",
+      "overlap": 24,
+      "agreement_jaccard": 0.1,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.975
+    },
+    {
+      "source_a": "parva_archived_official_patro_2076_2077",
+      "source_b": "ratopati_event_day_archive",
+      "source_type_a": "printed_verified",
+      "source_type_b": "publisher_reference",
+      "overlap": 8,
+      "agreement_jaccard": 0.023392,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.994152
+    },
+    {
+      "source_a": "parva_archived_official_patro_2076_2077",
+      "source_b": "sharingapples_nepali_date_config",
+      "source_type_a": "printed_verified",
+      "source_type_b": "software_table_reference",
+      "overlap": 24,
+      "agreement_jaccard": 0.022472,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.994382
+    },
+    {
+      "source_a": "parva_structured_official_2078_2083",
+      "source_b": "rat32_public_calendar_pages",
+      "source_type_a": "official_verified",
+      "source_type_b": "publisher_reference",
+      "overlap": 71,
+      "agreement_jaccard": 0.294606,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.926349
+    },
+    {
+      "source_a": "parva_structured_official_2078_2083",
+      "source_b": "ratopati_event_day_archive",
+      "source_type_a": "official_verified",
+      "source_type_b": "publisher_reference",
+      "overlap": 57,
+      "agreement_jaccard": 0.167155,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.958211
+    },
+    {
+      "source_a": "parva_structured_official_2078_2083",
+      "source_b": "sharingapples_nepali_date_config",
+      "source_type_a": "official_verified",
+      "source_type_b": "software_table_reference",
+      "overlap": 63,
+      "agreement_jaccard": 0.058496,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.985376
+    },
+    {
+      "source_a": "rat32_public_calendar_pages",
+      "source_b": "ratopati_event_day_archive",
+      "source_type_a": "publisher_reference",
+      "source_type_b": "publisher_reference",
+      "overlap": 109,
+      "agreement_jaccard": 0.238512,
+      "same_source_family": true,
+      "copy_risk": false,
+      "independence_score": 0.940372
+    },
+    {
+      "source_a": "rat32_public_calendar_pages",
+      "source_b": "sharingapples_nepali_date_config",
+      "source_type_a": "publisher_reference",
+      "source_type_b": "software_table_reference",
+      "overlap": 230,
+      "agreement_jaccard": 0.213358,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.94666
+    },
+    {
+      "source_a": "ratopati_event_day_archive",
+      "source_b": "sharingapples_nepali_date_config",
+      "source_type_a": "publisher_reference",
+      "source_type_b": "software_table_reference",
+      "overlap": 248,
+      "agreement_jaccard": 0.216405,
+      "same_source_family": false,
+      "copy_risk": false,
+      "independence_score": 0.945899
+    }
+  ]
+}

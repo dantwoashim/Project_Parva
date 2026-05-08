@@ -1,0 +1,31 @@
+{
+  "publication_status": "computed_prediction_not_official",
+  "excluded_rows": [
+    {
+      "bs_year": 2091,
+      "bs_month": 8,
+      "reason": "invalid_or_fragile_reconstructed_row"
+    },
+    {
+      "bs_year": 2091,
+      "bs_month": 12,
+      "reason": "invalid_or_fragile_reconstructed_row"
+    },
+    {
+      "bs_year": 2092,
+      "bs_month": 9,
+      "reason": "invalid_or_fragile_reconstructed_row"
+    },
+    {
+      "bs_year": 2095,
+      "bs_month": 8,
+      "reason": "invalid_or_fragile_reconstructed_row"
+    },
+    {
+      "bs_year": 2095,
+      "bs_month": 12,
+      "reason": "invalid_or_fragile_reconstructed_row"
+    }
+  ],
+  "policy": "Excluded from training and claim metrics."
+}

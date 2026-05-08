@@ -1,0 +1,20 @@
+{
+  "publication_status": "computed_prediction_not_official",
+  "created_at": "2026-05-08T02:35:19Z",
+  "new_high_trust_rows": 0,
+  "new_tier_1_rows": 0,
+  "new_tier_2_rows": 0,
+  "new_tier_3_rows": 0,
+  "successful_cached_sources": 31,
+  "failed_or_blocked_sources": 21,
+  "families_attempted": [
+    "rajpatra",
+    "moha",
+    "gorkhapatra",
+    "archive_org_panchanga",
+    "public_notices",
+    "independent_newspapers"
+  ],
+  "source_attempts": 52,
+  "blocker": "No additional machine-clear high-trust AD/BS month-start pair was extracted from the bounded public attempts."
+}

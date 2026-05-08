@@ -1,0 +1,128 @@
+{
+  "publication_status": "computed_prediction_not_official",
+  "created_at": "2026-05-08T02:35:19Z",
+  "version": "high_trust_acquisition_v1",
+  "families_attempted": [
+    "rajpatra",
+    "moha",
+    "gorkhapatra",
+    "archive_org_panchanga",
+    "public_notices",
+    "independent_newspapers"
+  ],
+  "attempt_counts": {
+    "rajpatra": 1,
+    "moha": 5,
+    "gorkhapatra": 5,
+    "archive_org_panchanga": 1,
+    "public_notices": 20,
+    "independent_newspapers": 20
+  },
+  "new_rows_by_family": {},
+  "source_families": [
+    {
+      "family": "rajpatra",
+      "name": "Nepal Rajpatra / Department of Printing",
+      "tier": "official_verified",
+      "cache_dir": "rajpatra",
+      "urls": [
+        "https://rajpatra.dop.gov.np/"
+      ],
+      "report": "rajpatra_acquisition_report.md",
+      "keywords": [
+        "सार्वजनिक बिदा",
+        "सार्वजनिक विदा",
+        "Government/Public Holidays"
+      ]
+    },
+    {
+      "family": "moha",
+      "name": "Ministry of Home Affairs public holiday notices",
+      "tier": "official_verified",
+      "cache_dir": "moha",
+      "urls": [
+        "https://www.moha.gov.np/en/page/holidays",
+        "https://www.moha.gov.np/post/government-and-public-holidays-in-2080",
+        "https://www.moha.gov.np/post/government-and-public-holidays-in-2081-2",
+        "https://www.moha.gov.np/post/government-and-public-holidays-in-2082-2",
+        "https://www.moha.gov.np/post/government-and-public-holidays-in-2083"
+      ],
+      "report": "moha_acquisition_report.md",
+      "keywords": [
+        "public holiday",
+        "सार्वजनिक विदा",
+        "सार्वजनिक बिदा"
+      ]
+    },
+    {
+      "family": "gorkhapatra",
+      "name": "Gorkhapatra public daily mastheads",
+      "tier": "public_daily_witness",
+      "cache_dir": "gorkhapatra",
+      "urls": [
+        "https://gorkhapatraonline.com/",
+        "https://epaper.gorkhapatraonline.com/"
+      ],
+      "report": "gorkhapatra_acquisition_report.md",
+      "keywords": [
+        "masthead",
+        "epaper",
+        "गोरखापत्र"
+      ]
+    },
+    {
+      "family": "archive_org_panchanga",
+      "name": "Archive.org printed panchanga/patro scans",
+      "tier": "printed_verified",
+      "cache_dir": "archive_org_panchanga",
+      "urls": [
+        "https://archive.org/advancedsearch.php?q=title%3A%28Surya%20Panchanga%20OR%20Toyanath%20Panchanga%20OR%20Nepali%20Panchanga%20OR%20Nepali%20Patro%29&fl%5B%5D=identifier&fl%5B%5D=title&rows=25&output=json"
+      ],
+      "report": "archive_panchanga_acquisition_report.md",
+      "keywords": [
+        "Surya Panchanga",
+        "Toyanath Panchanga",
+        "Nepali Panchanga",
+        "नेपाली पात्रो"
+      ]
+    },
+    {
+      "family": "public_notices",
+      "name": "Public institution notice archives",
+      "tier": "official_verified",
+      "cache_dir": "public_notices",
+      "urls": [
+        "https://psc.gov.np/",
+        "https://supremecourt.gov.np/",
+        "https://www.nrb.org.np/",
+        "https://tu.edu.np/",
+        "https://election.gov.np/"
+      ],
+      "report": "public_notice_acquisition_report.md",
+      "keywords": [
+        "notice",
+        "सूचना",
+        "date"
+      ]
+    },
+    {
+      "family": "independent_newspapers",
+      "name": "Independent newspaper e-paper families",
+      "tier": "public_daily_witness",
+      "cache_dir": "independent_newspapers",
+      "urls": [
+        "https://risingnepaldaily.com/",
+        "https://ekantipur.com/",
+        "https://annapurnapost.com/",
+        "https://nagariknews.nagariknetwork.com/"
+      ],
+      "report": "newspaper_acquisition_report.md",
+      "keywords": [
+        "epaper",
+        "masthead",
+        "date"
+      ]
+    }
+  ],
+  "rule": "No source is promoted without a clear public AD/BS witness and provenance."
+}

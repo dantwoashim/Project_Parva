@@ -497,11 +497,17 @@ def run_accuracy_loop(*, final: bool = False) -> dict[str, Any]:
         readiness_md.append(f"- {blocker}")
     (LAB_DIR / "accuracy_readiness_final.md").write_text("\n".join(readiness_md) + "\n", encoding="utf-8")
     write_active_learning_outputs(readiness)
+    architecture = None
+    if final:
+        from .accuracy_architecture import run_full_accuracy_architecture
+
+        architecture = run_full_accuracy_architecture()
     return {
         "best_model": best["candidate_id"],
         "best_metrics": best_objective,
         "claim_ready": readiness["claim_ready_99_green_zone"],
         "future_invalid_year_totals": invalid_count,
+        "accuracy_architecture": architecture,
         "outputs_dir": str(LAB_DIR.relative_to(PROJECT_ROOT)),
         "publication_status": "computed_prediction_not_official",
     }

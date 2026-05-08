@@ -2,38 +2,171 @@
 
 Generated: 2026-05-08
 
-## 1. Existing Features Preserved
+## Existing Features Preserved
 
-Project Parva remains a complete Nepali calendar infrastructure project. The Future BS / Calendar Model-Risk work is additive and does not replace existing BS/AD conversion, fiscal year logic, known month-length lookup, holiday/calendar surfaces, panchanga-related routes, enterprise routes, frontend/demo files, SDK/client code, deployment files, or existing documentation.
+The new work is additive. Existing calendar conversion, fiscal-year logic, holiday/calendar routes, panchanga-related surfaces, enterprise routes, frontend/demo files, SDK/client code, deployment files, and existing docs were not removed.
 
-Current preservation evidence:
-
-- `python -m pytest tests/regression`
-- Result: 4 passed in 2.99s
-
-## 2. Operational Blockers Fixed
-
-- Added artifact-backed report loading in `backend/app/future_bs/report_store.py`.
-- Made claim readiness artifact-first by default in `backend/app/future_bs/claim_readiness.py`.
-- Made `/v5/api/calendar-model-risk/claim-readiness` artifact-first.
-- Made `/v5/api/calendar-model-risk/red-team/2083-ashwin` artifact-first.
-- Added `/v5/api/calendar-model-risk/infodevelopers-readiness`.
-- Updated 2083 replay script and backend logic so default execution uses cached/generated artifacts and only recomputes with an explicit force path.
-- Allowed read-only use of trusted precomputed JPL DE440 cache even when local live JPL kernels are unavailable.
-- Added top-level `publication_status: computed_prediction_not_official` to v5 prediction payloads.
-- Added repo-local Python 3.11 handoff in `sitecustomize.py` so bare `python` commands inside this repo use the Python version declared by `pyproject.toml`.
-
-## 3. Accuracy Loop Executed
-
-The final accuracy loop was run with:
+Verification run:
 
 ```powershell
-python scripts\future_bs\run_accuracy_loop.py --final
+python -m pytest tests/regression
 ```
 
-Selected model:
+Result: 4 passed.
 
-- `parva_solar_civil_v1`
+## High-Trust Source Acquisition Summary
+
+The high-trust acquisition pass attempted all requested source families and cached accessible public pages/files under `data/future_bs/raw_sources/`.
+
+Generated outputs include:
+
+- `data/future_bs/witnesses/new_high_trust_witnesses.csv`
+- `data/future_bs/witnesses/new_high_trust_witnesses.jsonl`
+- `data/future_bs/witnesses/rajpatra_witnesses.csv`
+- `data/future_bs/witnesses/moha_holiday_witnesses.csv`
+- `data/future_bs/witnesses/gorkhapatra_masthead_witnesses.csv`
+- `data/future_bs/witnesses/archive_panchanga_witnesses.csv`
+- `data/future_bs/witnesses/public_notice_witnesses.csv`
+- `data/future_bs/witnesses/independent_newspaper_witnesses.csv`
+- `data/future_bs/data_acquisition/high_trust_source_manifest.json`
+- `data/future_bs/data_acquisition/new_source_coverage_report.json`
+- `data/future_bs/data_acquisition/manual_acquisition_targets.csv`
+- `data/future_bs/data_acquisition/library_publisher_request_plan.md`
+- `data/future_bs/data_acquisition/request_email_nepali.md`
+- `data/future_bs/data_acquisition/request_email_english.md`
+
+Measured result:
+
+- Source families attempted: 6
+- Source attempts recorded: 52
+- Successful cached public sources/pages/files: 31
+- Failed or blocked attempts: 21
+- Machine-clear new high-trust AD/BS witness rows: 0
+- New Tier 1 rows: 0
+- New Tier 2 rows: 0
+- New Tier 3 rows: 0
+- Rows promoted: 0
+
+No source was promoted by inference. If a public page or PDF did not expose a machine-clear AD <-> BS month-start witness, it was cached/logged for manual review instead of being converted into calendar truth.
+
+## Sources Attempted And Blockers
+
+Attempted source families:
+
+- Nepal Rajpatra / Department of Printing
+- Ministry of Home Affairs public holiday notices
+- Gorkhapatra public daily mastheads
+- Archive.org printed panchanga/patro searches
+- Public institution notice archives
+- Independent newspaper e-paper families
+
+Key blocker:
+
+- The bounded public attempts did not yield additional machine-clear AD <-> BS month-start pairs. Several sources were accessible enough to cache, but the extracted text did not provide enough structured evidence to safely create new witness rows.
+
+The exact attempt log is in:
+
+- `data/future_bs/data_acquisition/source_attempts.jsonl`
+- `data/future_bs/data_acquisition/failed_sources.jsonl`
+- `data/future_bs/data_acquisition/new_source_coverage_report.md`
+
+## Corpus Merge And Reconstruction
+
+Merge result from `data/future_bs/data_acquisition/post_acquisition_delta_report.md`:
+
+- Existing witness rows before merge: 4,022
+- New high-trust rows available: 0
+- Rows after merge: 4,022
+- New rows added: 0
+- Conflicts resolved: 0
+- Conflicts after reconstruction: 83
+- Official-claim usable month rows after: 62
+- Printed verified witness rows after: 24
+- Public daily witness rows after: 0
+
+Reconstructed corpus state:
+
+- Reconstructed month starts: 1,205
+- Reconstructed month lengths: 1,200
+- Complete reconstructed BS years: 100
+- Medium/high complete years: 20
+- Human-review queue rows: 857
+
+Generated corpus outputs:
+
+- `data/future_bs/corpus/reconstructed_month_starts.csv`
+- `data/future_bs/corpus/reconstructed_month_lengths.csv`
+- `data/future_bs/corpus/source_agreement_graph.json`
+- `data/future_bs/corpus/month_start_confidence.csv`
+- `data/future_bs/corpus/human_review_queue.csv`
+- `data/future_bs/corpus/human_review_queue.md`
+- `data/future_bs/corpus/corpus_quality_report.json`
+- `data/future_bs/corpus/corpus_quality_report.md`
+
+## Source-Policy Separation
+
+Implemented strict source policies in `backend/app/future_bs/source_policy.py`.
+
+Generated metrics:
+
+- `data/future_bs/accuracy_lab/source_policy_metrics.json`
+- `data/future_bs/accuracy_lab/official_strict_metrics.json`
+- `data/future_bs/accuracy_lab/medium_high_training_metrics.json`
+- `data/future_bs/accuracy_lab/all_witness_experimental_metrics.json`
+
+Current policy cases:
+
+- `official_strict`: 62 month cases
+- `medium_high_training`: 391 month cases
+- `all_witness_experimental`: 1,112 month cases
+
+Tier 5/6 witnesses are excluded from `official_strict` claim-readiness.
+
+## Official Witness Mismatch Explanation
+
+The witness corpus contains 72 official witness rows, but the strict official claim policy currently admits 62 month cases. The gap comes from conflict handling, verification status, and invalid/fragile reconstructed rows. Weak or conflicted evidence is not counted as official-claim usable.
+
+Excluded reconstructed rows:
+
+- 2091-08
+- 2091-12
+- 2092-09
+- 2095-08
+- 2095-12
+
+Generated exclusion files:
+
+- `data/future_bs/accuracy_lab/excluded_rows.json`
+- `data/future_bs/accuracy_lab/excluded_rows.md`
+
+## Accuracy Architecture Executed
+
+The full architecture pass was wired into:
+
+```powershell
+python scripts/future_bs/run_accuracy_loop.py --final
+```
+
+It generated:
+
+- Weak-label fusion: `data/future_bs/accuracy_lab/weak_label_fusion_results.json`
+- Source independence graph: `data/future_bs/accuracy_lab/source_independence_graph.json`
+- Source-copy report: `data/future_bs/accuracy_lab/source_copy_detection_report.md`
+- Latent truth model: `data/future_bs/accuracy_lab/latent_truth_month_starts.json`
+- Month-start corpus/features: `data/future_bs/accuracy_lab/month_start_corpus.json`, `data/future_bs/accuracy_lab/month_start_features.json`
+- Hidden-rule inversion: `data/future_bs/accuracy_lab/hidden_rule_inversion.json`
+- Regime detection: `data/future_bs/accuracy_lab/regime_change_report.json`
+- Program synthesis: `data/future_bs/accuracy_lab/program_synthesis_results.json`, `data/future_bs/accuracy_lab/best_rule_program.json`
+- Precedent/witness report: `data/future_bs/accuracy_lab/precedent_tower_report.md`
+- Hard-case benchmark: `data/future_bs/accuracy_lab/hard_case_benchmark.json`
+- Month-start lattice decoder: `data/future_bs/accuracy_lab/month_start_lattice_decoding.json`
+- GREEN certification: `data/future_bs/accuracy_lab/green_certification_report.json`
+- Risk threshold report: `data/future_bs/accuracy_lab/risk_threshold_report.md`
+- Human review promotion plan: `data/future_bs/accuracy_lab/human_review_promotion_plan.csv`
+
+## Model Search And Metrics
+
+Selected model: `parva_solar_civil_v1`
 
 Best measured metrics from `data/future_bs/accuracy_lab/best_metrics.json`:
 
@@ -41,231 +174,90 @@ Best measured metrics from `data/future_bs/accuracy_lab/best_metrics.json`:
 - Overall top1 accuracy: 100.0%
 - Green-zone accuracy: 100.0%
 - Green-zone coverage: 91.67%
-- False-green rate: 0.0%
+- False-green rate: 0.0
 - Wrong GREEN count: 0
-- Invalid future year total rate: 0.0%
+- Invalid future year total rate: 0.0
 - Metric threshold passed: true
 - Claim ready with sufficient corpus: false
 
-Important interpretation: the metric target passes on the current strict official window, but the public 99%+ claim is not ready because the official verified corpus is too small.
+Interpretation: the current strict official window passes the metric threshold, but it is only 62 strict official month cases in the architecture output. The 99% public claim remains blocked by corpus size.
 
-## 4. Claim Readiness
+## Claim Readiness
 
-Final claim readiness artifacts:
-
-- `data/future_bs/reports/claim_readiness_v_final.json`
-- `data/future_bs/accuracy_lab/accuracy_readiness_final.json`
-- `data/future_bs/accuracy_lab/accuracy_readiness_final.md`
-
-Current state:
+Current final readiness from `data/future_bs/accuracy_lab/accuracy_readiness_final.json`:
 
 - Claim ready 99 green-zone: false
 - Claim ready 99 overall: false
-- Official cases: 72
+- Official strict cases: 62
 - Required official cases: 528
-- Official-only top1 accuracy: 100.0%
+- Wrong GREEN count: 0
 - Green-zone accuracy: 100.0%
 - Green-zone coverage: 91.67%
-- False-green rate: 0.0%
-- Invalid future year totals: 0
 
-Blocker:
+Blockers:
 
-- The verified official/printed final-test corpus has 72 month cases; target is 528.
+- Official strict cases are below the required threshold.
+- More Tier 1 or strong reviewed Tier 2 evidence is required before a public 99%+ claim is supportable.
 
-## 5. 2083 Ashwin Replay
+## Human Review Promotion Plan
 
-Final replay artifacts:
+Generated:
 
-- `data/future_bs/reports/case_2083_ashwin_replay_v_final.json`
-- `data/future_bs/reports/case_2083_ashwin_replay_v_final.md`
+- `data/future_bs/accuracy_lab/human_review_promotion_plan.csv`
+- `data/future_bs/accuracy_lab/human_review_promotion_plan.md`
 
-Replay result:
+The plan ranks the top 100 rows by expected accuracy and claim-readiness gain. Highest priority remains source disagreements, Ashwin/Kartik boundary rows, and weak/fragile reconstructed rows.
 
-- Train end: 2082 BS
-- Target: Ashwin 2083
-- Official/reference result: 31 days
-- Parva pre-publication computed prediction: 31 days
-- Prediction set 95: `[30, 31]`
-- Risk label: YELLOW
-- Static 30-day assumption failure mode: one-day month-end shift
-- Example one-day interest exposure: NPR 32,876.71 on NPR 100,000,000 at 12%
-- Recommended policy: `override_ready_until_official_publication`
-
-Because the 95% prediction set has two values, the replay is intentionally YELLOW, not GREEN.
-
-## 6. Future Year Totals
-
-Final future prediction artifacts:
-
-- `data/future_bs/predictions/parva_future_bs_accuracy_best_2084_2200.json`
-- `data/future_bs/predictions/parva_future_bs_accuracy_best_claimable_subset.json`
-- `data/future_bs/reports/invalid_year_total_reconciliation_v_final.json`
-
-Result:
-
-- Range: 2084-2200 BS
-- Invalid 364/367 future year totals: 0
-- Unsupported invalid totals would be marked RED/non-claimable by the verifier.
-
-## 7. External Sheet Audit Sample
-
-Generated files:
-
-- `data/future_bs/infodevelopers_ready/sample_infodev_input_sheet.xlsx`
-- `data/future_bs/reports/parva_shadow_audit_sample_v_final.xlsx`
-- `data/future_bs/reports/parva_shadow_audit_sample_v_final.md`
-
-The sample audit classifies agreements, disagreements, uncertain months, RED/non-claimable months, and review-needed cases. It does not claim the external sheet is wrong; it recommends review where model-risk evidence requires it.
-
-## 8. Calendar Impact Sample
-
-Generated files:
-
-- `data/future_bs/reports/parva_calendar_var_sample_v_final.json`
-- `data/future_bs/reports/parva_calendar_var_sample_v_final.md`
-
-The sample is framed as a one-day schedule-impact and operational exposure estimate, not a guaranteed financial loss.
-
-## 9. InfoDevelopers Package
-
-Generated files:
-
-- `data/future_bs/infodevelopers_ready/PARVA_INFODEVELOPERS_READINESS_SUMMARY.json`
-- `data/future_bs/infodevelopers_ready/PARVA_INFODEVELOPERS_READINESS_SUMMARY.md`
-- `docs/infodevelopers/INFODEVELOPERS_EXECUTIVE_SUMMARY.md`
-- `docs/infodevelopers/INFODEVELOPERS_DEMO_SCRIPT.md`
-- `docs/infodevelopers/SAFE_CLAIMS.md`
-- `docs/infodevelopers/LIMITATIONS.md`
-- `docs/infodevelopers/METHODOLOGY.md`
-
-No final PDF files are claimed in this report. The verified final package uses JSON, Markdown, and XLSX artifacts.
-
-## 10. Final Verification
-
-Artifact verification:
+## Commands Run
 
 ```powershell
-python scripts\future_bs\verify_final_artifacts.py
-```
-
-Result:
-
-- `ok: true`
-- Checked artifacts: 25
-- Publication status: `computed_prediction_not_official`
-
-Lint:
-
-```powershell
-py -3.11 -m ruff check backend\app scripts tests sitecustomize.py
-```
-
-Result:
-
-- All checks passed.
-
-Targeted required test command:
-
-```powershell
-python -m pytest tests/unit/future_bs tests/accuracy tests/artifacts tests/integration/test_calendar_model_risk_routes.py
-```
-
-Result:
-
-- 64 passed in 4.01s
-
-Existing route regression command:
-
-```powershell
+python scripts/future_bs/research_and_collect_high_trust_sources.py
+python scripts/future_bs/merge_high_trust_witnesses.py
+python scripts/future_bs/reconstruct_month_starts.py
+python scripts/future_bs/build_source_agreement_graph.py
+python scripts/future_bs/audit_witness_corpus.py
+python scripts/future_bs/run_accuracy_loop.py --final
+python scripts/future_bs/run_model_search.py
+python scripts/future_bs/tune_risk_thresholds.py
+python scripts/future_bs/generate_human_review_promotion_plan.py
+py -3.11 -m ruff check backend\app\future_bs scripts\future_bs tests\data_acquisition tests\accuracy tests\future_bs
+python -m pytest tests/data_acquisition
+python -m pytest tests/accuracy
+python -m pytest tests/future_bs/test_weak_label_fusion.py tests/future_bs/test_source_independence.py tests/future_bs/test_latent_truth_model.py tests/future_bs/test_regime_change_detection.py tests/future_bs/test_month_start_lattice_decoder.py tests/future_bs/test_green_certification.py tests/future_bs/test_human_review_promotion_plan.py
 python -m pytest tests/regression
 ```
 
-Result:
+One parallel run of `run_model_search.py` raced with `tune_risk_thresholds.py` while both wrote the same accuracy artifact and failed with a Windows replace permission error. The command was rerun alone and passed.
 
-- 4 passed in 2.99s
+## Test Results
 
-Focused Future BS helper scripts were also run successfully:
+- `tests/data_acquisition`: 12 passed
+- `tests/accuracy`: 24 passed
+- Focused `tests/future_bs` architecture tests: 7 passed
+- `tests/regression`: 4 passed
+- Ruff check: passed after import formatting fixes
 
-```powershell
-python scripts\future_bs\replay_2083_ashwin.py
-python scripts\future_bs\run_model_search.py
-python scripts\future_bs\search_civil_rules.py
-python scripts\future_bs\tune_precedent_tower.py
-python scripts\future_bs\train_sequence_model.py
-python scripts\future_bs\tune_risk_thresholds.py
-python scripts\future_bs\diagnose_mismatches.py
-python scripts\future_bs\generate_accuracy_candidate_report.py
-```
+Full repository `pytest` was not run in this final pass.
 
-Full pytest and frontend npm tests were not rerun in this final pass.
+## Known Limitations
 
-## 11. API Smoke Results
+- No additional machine-clear high-trust AD/BS witness rows were extracted from the bounded public source attempts.
+- Official-grade claim-readiness remains blocked by strict corpus size.
+- The current 100% green-zone result should be read as a measured result on the available strict window, not a broad official proof.
+- Public/weak sources help reconstruction, residual analysis, and active learning, but do not establish official future calendar truth.
+- Future outputs remain `computed_prediction_not_official` and must be reconciled when official publication arrives.
 
-Measured with FastAPI `TestClient` after final artifact generation:
+## Safe Claims
 
-- `/v5/api/calendar-model-risk/prediction/2089/6`: 200, 95.12 ms
-- `/v5/api/calendar-model-risk/claim-readiness`: 200, 6.85 ms
-- `/v5/api/calendar-model-risk/red-team/2083-ashwin`: 200, 6.49 ms
-- `/v5/api/calendar-model-risk/infodevelopers-readiness`: 200, 15.86 ms
+- Parva provides computed future BS predictions, not official future publication.
+- Parva separates official, medium/high, and weak experimental evidence.
+- Parva can identify high-confidence months, risky months, conflicts, and manual-review targets.
+- Parva can run an independent source-policy accuracy architecture over a source-labeled witness corpus.
+- Parva can show exactly why a 99%+ public claim is or is not supported.
 
-The artifact-backed routes are non-hanging under the final smoke test.
+## Unsafe Claims
 
-## 12. Commands To Regenerate
-
-```powershell
-python scripts\future_bs\run_accuracy_loop.py --final
-python scripts\future_bs\generate_all_final_artifacts.py
-python scripts\future_bs\verify_final_artifacts.py
-python -m pytest tests/unit/future_bs tests/accuracy tests/artifacts tests/integration/test_calendar_model_risk_routes.py
-```
-
-Additional focused commands:
-
-```powershell
-python scripts\future_bs\replay_2083_ashwin.py
-python scripts\future_bs\run_model_search.py
-python scripts\future_bs\search_civil_rules.py
-python scripts\future_bs\tune_precedent_tower.py
-python scripts\future_bs\train_sequence_model.py
-python scripts\future_bs\tune_risk_thresholds.py
-python scripts\future_bs\diagnose_mismatches.py
-python scripts\future_bs\generate_accuracy_candidate_report.py
-```
-
-## 13. Safe Claims
-
-- Parva provides computed predictions, not official future publication.
-- Parva can separate high-confidence months from risky months.
-- Parva can audit an external future BS month-length sheet.
-- Parva can estimate operational exposure from one-day month-length mismatches.
-- Parva can replay 2083 Ashwin-style risks and recommend an override-ready policy before official publication.
-
-## 14. Unsafe Claims
-
-- Parva guarantees the official future calendar to 2200 BS.
-- Parva replaces the Panchanga Nirnayak Samiti.
-- Parva's future predictions are official.
-- Parva has a public claim-ready 99%+ benchmark across a sufficiently large official corpus.
-
-## 15. Known Limitations
-
-- The official verified corpus remains too small for a broad public 99%+ accuracy claim.
-- The current 100% rolling official result covers 72 official month cases, not the required 528 cases.
-- Future outputs remain computed predictions and must be reconciled when official publication arrives.
-- Final PDF generation was not included in the verified package; Markdown/JSON/XLSX fallbacks were generated and verified.
-
-## 16. Remaining Work
-
-- Expand the official/printed corpus toward 528+ verified month cases.
-- Promote active-learning queue rows through source review.
-- Re-run the accuracy lab whenever new verified rows are added.
-- Add richer PDF rendering only after the data posture is stronger.
-
-## Safe InfoDevelopers Positioning
-
-Parva is not another copied future calendar table.
-Parva is a complete Nepali calendar infrastructure platform with an independent Calendar Model-Risk Engine.
-It computes future BS month lengths algorithmically, validates against source-labeled historical data, separates high-confidence predictions from risky months, compares against an external future month-length sheet, and estimates loan/interest exposure from one-day mismatches.
-The strongest benchmark is whether Parva can predict or flag 2083 Ashwin-style failures before official panchanga publication.
-All future outputs are computed_prediction_not_official and must be reconciled when official publication arrives.
+- Parva guarantees the official future calendar.
+- Parva replaces official panchanga publication.
+- Weak public/software witnesses prove official accuracy.
+- The current corpus supports a blanket public 99%+ future-calendar claim.
