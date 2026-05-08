@@ -29,8 +29,8 @@ REPORTS: dict[str, tuple[str, str]] = {
         "data/future_bs/reports/parva_calendar_var_sample_v_final.json",
         "python scripts/future_bs/generate_all_final_artifacts.py",
     ),
-    "infodevelopers_readiness_summary": (
-        "data/future_bs/infodevelopers_ready/PARVA_INFODEVELOPERS_READINESS_SUMMARY.json",
+    "external_audit_readiness_summary": (
+        "data/future_bs/external_audit_ready/PARVA_EXTERNAL_AUDIT_READINESS_SUMMARY.json",
         "python scripts/future_bs/generate_all_final_artifacts.py",
     ),
 }

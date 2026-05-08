@@ -75,5 +75,7 @@ def list_model_runs() -> list[dict[str, Any]]:
 def get_model_run(run_id: str) -> dict[str, Any]:
     path = RUNS_DIR / f"{run_id}.json"
     if not path.exists():
+        if run_id == DEFAULT_RUN_ID:
+            return build_run_metadata()
         raise ValueError(f"Unknown model run: {run_id}")
     return json.loads(path.read_text(encoding="utf-8"))

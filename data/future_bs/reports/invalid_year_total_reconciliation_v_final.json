@@ -1,9 +1,0 @@
-{
-  "publication_status": "computed_prediction_not_official",
-  "prediction_artifact": "data/future_bs/predictions/parva_future_bs_accuracy_best_2084_2200.json",
-  "invalid_future_year_totals": {
-    "count": 0,
-    "years": []
-  },
-  "rule": "valid totals must be 365/366 or RED/non-claimable"
-}

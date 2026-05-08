@@ -10,7 +10,7 @@ def test_compare_detects_mismatch_and_report_renders():
     external_months = list(parva_months)
     external_months[1] = 32 if external_months[1] != 32 else 31
     comparison = compare_external_sheet(
-        "infodev_excel",
+        "external_sheet",
         [{"bs_year": 2085, "months": external_months}],
         predict_fn=predict_bs_year,
     )

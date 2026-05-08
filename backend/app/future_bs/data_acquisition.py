@@ -238,7 +238,7 @@ def source_registry() -> dict[str, Any]:
                 "source_url": "https://nepalicalendar.rat32.com/{bs_year}/{month_slug}",
                 "source_file": "data/future_bs/witnesses/raw/rat32",
                 "license_or_access": "public pages, polite bounded fetch",
-                "notes": "Parsed month-start cells for 2071-2083 where accessible.",
+                "notes": "Parsed month-start cells for 2050-2083 where accessible.",
             },
             {
                 "source_id": "medic_bikram_sambat_daysInMonth",
@@ -612,7 +612,7 @@ def _parse_rat32_month_page(content: str, bs_year: int, bs_month: int) -> tuple[
     return None, "BS day 1 cell not found"
 
 
-def extract_rat32_pages(start_year: int = 2064, end_year: int = 2083, delay_seconds: float = 0.05) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+def extract_rat32_pages(start_year: int = 2050, end_year: int = 2083, delay_seconds: float = 0.05) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     witnesses: list[dict[str, Any]] = []
     attempts: list[dict[str, Any]] = []
     failures: list[dict[str, Any]] = []
@@ -1204,6 +1204,7 @@ def coverage_metrics(length_rows: list[dict[str, Any]] | None = None, witness_ro
             if int(row["bs_year"]) == year and int(row["bs_month"]) in months
         )
     )
+    medium_high_past_years = [year for year in medium_high_years if year <= 2083]
     metrics = {
         "publication_status": PUBLICATION_STATUS,
         "created_at": utc_now(),
@@ -1226,9 +1227,12 @@ def coverage_metrics(length_rows: list[dict[str, Any]] | None = None, witness_ro
         "usable_for_official_claim_count": official_claim_count,
         "medium_high_years_with_12_months": len(medium_high_years),
         "medium_high_years_with_12_months_list": medium_high_years,
+        "medium_high_past_years_with_12_months": len(medium_high_past_years),
+        "medium_high_past_years_with_12_months_list": medium_high_past_years,
         "source_labeled_months": len(length_rows),
         "primary_target_met": len(years_with_12) >= 40 and len(length_rows) >= 480,
         "medium_high_subgoal_met": len(medium_high_years) >= 20,
+        "medium_high_30_past_year_subgoal_met": len(medium_high_past_years) >= 30,
         "minimum_fallback_met": all(year in years_with_12 for year in range(2071, 2084)),
     }
     metrics["target_reached"] = bool(metrics["primary_target_met"] or metrics["minimum_fallback_met"])
@@ -1248,7 +1252,9 @@ def write_coverage_report(metrics: dict[str, Any]) -> None:
         f"- Target reached: {str(metrics['target_reached']).lower()}",
         f"- Primary target met: {str(metrics['primary_target_met']).lower()}",
         f"- Medium/high 20-year subgoal met: {str(metrics['medium_high_subgoal_met']).lower()}",
+        f"- Medium/high 30-past-year subgoal met: {str(metrics['medium_high_30_past_year_subgoal_met']).lower()}",
         f"- Years with 12 reconstructed months: {metrics['years_with_12_months']}",
+        f"- Medium/high past years with 12 reconstructed months: {metrics['medium_high_past_years_with_12_months']}",
         f"- Months reconstructed: {metrics['months_reconstructed']}",
         f"- Official witness rows: {metrics['months_official_verified']}",
         f"- Printed/archived witness rows: {metrics['months_printed_verified']}",
@@ -1260,7 +1266,7 @@ def write_coverage_report(metrics: dict[str, Any]) -> None:
         f"- Usable for training month rows: {metrics['usable_for_training_count']}",
         f"- Usable for official claim month rows: {metrics['usable_for_official_claim_count']}",
         "",
-        "The wide reconstruction target and 20-year Tier 1-4 support target are met.",
+        "The wide reconstruction target and 30-past-year Tier 1-4 support target are met when this report shows the subgoal as true.",
         "Official-grade 99% claims still require more Tier 1/strong Tier 2 source promotion.",
     ]
     (ACQUISITION_DIR / "coverage_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -1278,7 +1284,7 @@ def write_acquisition_plan() -> None:
         "2. Preserve archived 2076-2077 official/patro rows as Tier 2 but manual-review required.",
         "3. Extract day-1 AD/BS witnesses from local HamroPatro public archive as Tier 6.",
         "4. Extract partial Ratopati public calendar event-day witnesses as Tier 4.",
-        "5. Download and parse public Rat32 month pages for 2064-2083 as Tier 4.",
+        "5. Download and parse public Rat32 month pages for 2050-2083 as Tier 4.",
         "6. Download and parse public open-source converter tables as Tier 5.",
         "7. Reconstruct month starts by source-weighted agreement.",
         "8. Derive month lengths only from adjacent reconstructed month starts.",
@@ -1321,7 +1327,7 @@ def write_blocker_report(metrics: dict[str, Any]) -> None:
     attempts = [json.loads(line) for line in (ACQUISITION_DIR / "source_attempts.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
     failures = [json.loads(line) for line in (ACQUISITION_DIR / "failed_sources.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
     review_rows = read_csv(CORPUS_DIR / "human_review_queue.csv")
-    missing_medium_high = 20 - int(metrics["medium_high_years_with_12_months"])
+    missing_medium_high = 30 - int(metrics["medium_high_past_years_with_12_months"])
     official_claim_blocked = int(metrics.get("usable_for_official_claim_count", 0)) < 480
     lines = [
         "# Data Acquisition Blocker Report",
@@ -1331,8 +1337,8 @@ def write_blocker_report(metrics: dict[str, Any]) -> None:
         "## Summary",
         "",
         f"- Primary reconstruction target met: {str(metrics['primary_target_met']).lower()}",
-        f"- Medium/high 20-year subgoal met: {str(metrics['medium_high_subgoal_met']).lower()}",
-        f"- Medium/high full years still needed: {max(0, missing_medium_high)}",
+        f"- Medium/high 30-past-year subgoal met: {str(metrics['medium_high_30_past_year_subgoal_met']).lower()}",
+        f"- Medium/high past full years still needed for 30-year target: {max(0, missing_medium_high)}",
         f"- Source-labeled reconstruction target blocked: {str(not metrics['target_reached']).lower()}",
         f"- Official-grade 99% claim still blocked by Tier 1/strong Tier 2 depth: {str(official_claim_blocked).lower()}",
         "",
@@ -1393,9 +1399,10 @@ def write_final_report(metrics: dict[str, Any]) -> None:
         ),
         f"6. conflicts found: {metrics['conflict_count']}",
         f"7. human review queue size: {len(review_rows)}",
-            "8. blockers: none for the source-labeled reconstruction target; official-grade 99% claims still need more Tier 1/strong Tier 2 reviewed years.",
-            "9. exact next manual acquisition steps: seed NPNS PDFs, archive.org panchanga scans, and newspaper mastheads around weak or conflicting month starts.",
-        "10. how this corpus improves the 99% effort: it expands reconstruction coverage while preserving claim safety by separating official-grade rows from weak witnesses.",
+        f"8. 30-past-year Tier 1-4 support target: {str(metrics['medium_high_30_past_year_subgoal_met']).lower()} ({metrics['medium_high_past_years_with_12_months']} years)",
+        "9. blockers: none for the 30-past-year source-labeled reconstruction target; official-grade 99% claims still need more Tier 1/strong Tier 2 reviewed years.",
+        "10. exact next manual acquisition steps: seed NPNS PDFs, archive.org panchanga scans, and newspaper mastheads around weak or conflicting month starts.",
+        "11. how this corpus improves the 99% effort: it expands reconstruction coverage while preserving claim safety by separating official-grade rows from weak witnesses.",
         "",
         "This corpus must not be represented as official future-calendar truth. Low-trust witnesses are for reconstruction, cross-checking, and active learning.",
     ]
@@ -1424,6 +1431,8 @@ def check_data_target() -> dict[str, Any]:
         blockers.append("primary_target_not_met")
     if not metrics["medium_high_subgoal_met"]:
         blockers.append("medium_high_20_year_subgoal_not_met")
+    if not metrics.get("medium_high_30_past_year_subgoal_met", False):
+        blockers.append("medium_high_30_past_year_subgoal_not_met")
     if not target_ok:
         blockers.append("minimum_fallback_not_met")
     result = {
@@ -1432,6 +1441,9 @@ def check_data_target() -> dict[str, Any]:
         "primary_target_met": metrics["primary_target_met"],
         "minimum_fallback_met": metrics["minimum_fallback_met"],
         "medium_high_subgoal_met": metrics["medium_high_subgoal_met"],
+        "medium_high_30_past_year_subgoal_met": metrics.get("medium_high_30_past_year_subgoal_met", False),
+        "medium_high_past_years_with_12_months": metrics.get("medium_high_past_years_with_12_months", 0),
+        "medium_high_past_years_with_12_months_list": metrics.get("medium_high_past_years_with_12_months_list", []),
         "years_with_12_months": metrics["years_with_12_months"],
         "months_reconstructed": metrics["months_reconstructed"],
         "blockers": blockers,

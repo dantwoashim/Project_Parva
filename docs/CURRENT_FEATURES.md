@@ -11,13 +11,13 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 - Kundali and graph surfaces: kundali, lagna, kundali graph endpoints.
 - Reliability and trust: provenance, public artifacts, reliability status, metrics, boundary suite, differential manifest, spec conformance.
 - Billing and access: plans, checkout, API keys, usage, admin billing surfaces.
-- Future BS: `/v4/api/future-bs/*` month lengths, ranges, explainability, backtests, residuals, exports, external comparison, loan impact, model runs.
+- Future BS: `/v4/api/future-bs/*` month-length research payloads, explainability, backtests, residuals, external comparison, loan impact, and model-run metadata.
 - Calendar Model-Risk: `/v5/api/calendar-model-risk/*` prediction sets, committee posterior, perturbation robustness, external sheet audit, Calendar VaR, stress test, claim readiness, 2083 Ashwin replay.
 
 ## Backend Services
 
 - `calendar_conversion_service`, `calendar_surface_service`, `enterprise_calendar_service`.
-- `future_bs_service` for future month-length prediction, comparison, exports, residuals, and loan impact.
+- `future_bs_service` for future month-length research payloads, comparison, residuals, and loan impact.
 - Panchanga, muhurta, personal, trust, place search, timeline, feed, and kundali services.
 - Billing, reliability, provenance, cache, source review, and storage modules.
 
@@ -31,8 +31,8 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 ## Future BS and Model-Risk Assets
 
 - Source-labeled corpus: `data/future_bs/corpus/verified_month_lengths.csv`.
-- Source registry and audit log under `data/future_bs/corpus`.
-- Model runs, prediction JSON/CSV artifacts, calibration metadata, residual reports.
+- Source registry under `data/future_bs/corpus`.
+- Generated model runs, prediction artifacts, calibration metadata, and residual reports are local artifacts and are not public source fixtures.
 - Strict claim posture: future outputs are `computed_prediction_not_official`.
 
 ## Frontend
@@ -49,7 +49,7 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 ## Scripts and Deployment
 
 - Verification, golden journey, browser smoke, frontend accessibility, docs link, path leak, security, signing, and live smoke scripts.
-- Future BS scripts for corpus import/audit, backtesting, calibration, precompute, export, comparison, residual reporting, and JPL kernel download.
+- Future BS scripts for public validation, backtesting, comparison, residual reporting, and JPL kernel download.
 - Docker, Cloud Run, Render, Cloud Build, release, governance, and precompute support files.
 
 ## Tests

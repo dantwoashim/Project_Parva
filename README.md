@@ -1,180 +1,72 @@
 # Project Parva
 
-**Nepali temporal infrastructure for Bikram Sambat, fiscal logic, panchanga computation, festivals, developer APIs, and future BS month-length risk analysis.**
+Project Parva is an open-source Nepali temporal infrastructure project for Bikram Sambat conversion, fiscal-year logic, panchanga-related computation, festival intelligence, and source-aware calendar validation.
 
-Every serious Nepali software system eventually becomes a calendar system.
+It also includes an experimental future-BS risk research layer for evaluating month-length assumptions before they affect financial, contractual, reporting, or operational systems.
 
-A date in Nepal can decide a fiscal year, a loan schedule, an interest period, a payroll cycle, a festival feed, a contract boundary, an audit export, or a public-facing statement line. Project Parva treats those dates as infrastructure rather than display text.
+## Technical Thesis
 
-Parva brings together deterministic BS/AD conversion, fiscal-year rules, panchanga and tithi computation, festival data, public APIs, source-aware validation, and a research-grade future BS risk layer for systems that need evidence before they trust a calendar assumption.
+Nepali calendar logic is not just a formatting problem. In real systems, BS dates affect fiscal reports, contract schedules, renewal dates, interest periods, compliance exports, and audit trails.
 
----
+Parva treats calendar behavior as infrastructure. Every computed result should be explainable, source-aware, reproducible, and honest about its confidence.
 
 ## Live API
 
-- API documentation: <https://api.prabinghimire1.com.np/docs>
-- OpenAPI schema: <https://api.prabinghimire1.com.np/openapi.json>
-- Future-BS capability summary: <https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities>
+- API docs: [https://api.prabinghimire1.com.np/docs](https://api.prabinghimire1.com.np/docs)
+- OpenAPI JSON: [https://api.prabinghimire1.com.np/openapi.json](https://api.prabinghimire1.com.np/openapi.json)
+- Future-BS capabilities: [https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities](https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities)
 
----
-
-## What Parva Is Built To Do
-
-Project Parva is designed for Nepali products where calendar logic affects real operations.
-
-It supports:
+## What Parva Provides
 
 | Area | Purpose |
 | --- | --- |
-| BS/AD conversion | Convert between Bikram Sambat and Gregorian dates with validation and structured responses. |
-| Fiscal-year logic | Resolve Nepali fiscal years, fiscal boundaries, BS month ranges, and reporting periods. |
-| Panchanga computation | Provide tithi, nakshatra, yoga, karana, vaara, lunar phase, and related calendar signals. |
-| Sankranti and solar logic | Support solar-ingress aware calendar computation and future BS research. |
-| Festivals and observances | Serve structured festival, observance, rule, location, and feed data. |
-| Muhurta and timing | Provide auspicious-window and timing-related API surfaces. |
-| Kundali foundations | Expose horoscope and chart computation surfaces for astrology-facing products. |
-| Developer APIs | Offer public API routes, OpenAPI schema, examples, and integration-ready responses. |
-| Future BS risk analysis | Evaluate future BS month-length assumptions, source strength, model disagreement, and operational risk. |
-| Provenance and validation | Track source labels, reproducibility, model runs, benchmark limits, and claim boundaries. |
-
----
-
-## Why This Project Exists
-
-Most calendar libraries answer a narrow question:
-
-> What is the converted date?
-
-Parva answers a broader engineering question:
-
-> Can this date logic be trusted inside a real Nepali product?
-
-That difference matters.
-
-A payroll system needs valid month boundaries.  
-A loan system needs safe day counts.  
-A reporting system needs the correct fiscal year.  
-A festival product needs rule-aware observance data.  
-A financial platform needs a way to detect calendar assumptions that become fragile before official publication catches up.
-
-Parva is built around that reality.
-
----
-
-## Main API Surfaces
-
-| Surface | Status | Role |
-| --- | --- | --- |
-| `/v3/api/*` | Stable public API | BS/AD conversion, calendar helpers, panchanga, festivals, feeds, widgets, billing, and developer access. |
-| `/v4/api/future-bs/*` | Research and evaluation layer | Future BS month-length risk analysis, validation, backtesting, source-aware comparison, and operational impact checks. |
-| `/api/*` | Compatibility layer | Older route aliases for existing integrations. |
-| Frontend | Reference interface | Public-facing pages, demos, and developer discovery surfaces. |
-
----
-
-## Future BS Month-Length Risk Layer
-
-Future BS month lengths create a special problem.
-
-Many systems can store a table. Far fewer systems can explain where that table becomes fragile.
-
-Parva’s Future BS layer studies month-start behavior, solar-civil patterns, source strength, boundary-sensitive months, and disagreement between computational and legacy assumptions. The goal is risk detection, audit support, and controlled validation for future-dated systems.
-
-A simplified flow looks like this:
-
-```text
-BS year
-  -> predicted month starts
-  -> derived month lengths
-  -> source and model evidence
-  -> confidence and risk labels
-  -> disagreement report
-  -> operational impact
-```
-
-This layer is designed for teams that already maintain internal future BS month-length sheets and need an independent computational reference.
-
-It can support:
-
-- BS year month-length evaluation
-- source-aware confidence reporting
-- model disagreement detection
-- boundary-sensitive month flagging
-- external sheet comparison
-- holdout, rolling, and replay backtests
-- year-total consistency checks
-- reproducible model-run artifacts
-- loan, interest, contract, and schedule impact analysis
-- blinded audit workflows where aggregate risk is shared before corrected values
-
-Official Nepali publications remain the final authority for official dates. Parva’s future layer is an engineering and audit system for pre-publication risk, internal validation, and model-risk review.
-
----
+| Calendar conversion | BS/AD conversion, validation, today endpoints, and month metadata |
+| Enterprise date logic | Fiscal-year boundaries, date-range helpers, and business validation |
+| Panchanga and lunar logic | Tithi, nakshatra, yoga, karana, lunar phase, and paksha surfaces |
+| Festival intelligence | Festival catalog, observance rules, calendar feeds, and explanations |
+| Developer API | FastAPI endpoints, OpenAPI docs, examples, and integration-ready responses |
+| Future BS risk research | Experimental month-length risk analysis, confidence labels, and validation methodology |
+| Provenance and reliability | Source labels, claim boundaries, and reproducible artifacts |
 
 ## Current Research Result
 
-The strongest current Future BS result is a recent official-window validation.
+In the current Tier 1 official-verified validation window available to Parva, covering 2078-2083 BS, a reference-calibrated solar-civil computational path matched all 72 official month lengths in that window.
 
-Across the current Tier 1 official-verified validation window available to Parva, covering **2078-2083 BS**, the reference-calibrated solar-civil computational path matched **72 of 72 official month lengths**.
+A legacy/static baseline matched 68 out of 72 on the same window, with misses concentrated around boundary-sensitive months.
 
-On the same window, a legacy/static baseline matched **68 of 72**.
-
-The legacy/static misses were concentrated around boundary-sensitive months:
-
-- 2082 Ashadh
-- 2082 Shrawan
-- 2083 Bhadra
-- 2083 Ashwin
-
-This result supports the central thesis behind Parva’s Future BS layer: static or cycle-style assumptions can look stable for long periods and still fail around month-start boundary cases.
-
-This benchmark is a limited official-window result. It is useful evidence for audit design, model-risk testing, and future-BS validation workflows. Broader public accuracy claims require a larger official and printed-source validation set.
-
----
+This is a limited validation result. It supports the research direction, but it is not a claim of official authority or broad future-calendar certainty.
 
 ## Source Policy
 
-Parva treats source quality as part of the data model.
+Parva does not treat every calendar row as equal.
 
-Calendar data from different origins carries different authority. A government notice, a printed panchanga, a newspaper masthead, a public calendar site, a software lookup table, and a third-party app table belong in different evidence layers.
+Calendar evidence is classified by source strength:
 
-The Future BS research layer uses source policies such as:
-
-| Policy | Use |
+| Tier | Meaning |
 | --- | --- |
-| `official_strict` | Official-verified and strongly reviewed printed evidence for official-grade validation. |
-| `medium_high_training` | Higher-trust sources used for calibration and development, reported separately. |
-| `all_witness_experimental` | Broad witness evidence for weak-signal discovery, anomaly detection, and active learning. |
-| `market_shadow_experimental` | Market-table comparison, especially for public or third-party calendar behavior. |
+| Official verified | Government or official publication evidence |
+| Printed verified | Identifiable printed calendar or panchanga evidence |
+| Public witness | Public dated material that links AD and BS dates |
+| Publisher reference | Public calendar or publisher material |
+| Software/table reference | Open-source or static lookup references |
+| Third-party reference | App/site references used for comparison, not authority |
+| Needs review | Ambiguous, conflicting, or incomplete evidence |
 
-This separation keeps technical research, public behavior, and official claim-readiness from being mixed into one misleading number.
+Only strong official or reviewed printed evidence can support official-grade claims.
 
----
+## Claim Boundary
 
-## Public Claim Boundary
+Parva is not an official government calendar publication.
 
-Parva is built to be useful before it becomes flashy.
-
-The current public position is:
-
-- published/current BS/AD conversion APIs can be used for normal integration
-- fiscal-year and calendar validation APIs can support business workflows
-- panchanga, festival, feed, and timing surfaces can support calendar products
-- Future BS outputs belong in validation, audit, and risk-review workflows
-- GREEN/YELLOW/RED risk labeling is the preferred direction for future month-length claims
-- official-grade future accuracy claims require stronger official and printed validation coverage
-
-The most important target for Future BS research is selective reliability:
+Future outputs from the research layer are treated as:
 
 ```text
-High confidence only when the evidence supports high confidence.
+computed_prediction_not_official
 ```
 
-The long-term goal is **99%+ accuracy on GREEN predictions with zero wrong-GREEN cases**, rather than a broad top-line number across every source and every month.
+They are intended for validation, audit, comparison, and risk detection. Official publication, legal interpretation, tax treatment, banking-contract finalization, and production financial decisions require the relevant authority or institution's own approval.
 
----
-
-## Quick API Examples
+## API Examples
 
 Base URL:
 
@@ -202,72 +94,50 @@ curl -X POST https://api.prabinghimire1.com.np/v3/api/calendar/bs-to-gregorian \
   -d '{"year":2083,"month":1,"day":1}'
 ```
 
-Future-BS capabilities:
+Future-BS research capabilities:
 
 ```bash
 curl https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities
 ```
 
-Future-BS month explanation:
+External sheet comparison request shape:
 
 ```bash
-curl "https://api.prabinghimire1.com.np/v4/api/future-bs/month-lengths/explain?year=2083&month=6"
+curl -X POST https://api.prabinghimire1.com.np/v4/api/future-bs/month-lengths/compare \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source_name": "external_reference_sheet",
+    "years": [
+      {
+        "bs_year": 2085,
+        "months": [31, 32, 31, 32, 31, 31, 30, 30, 29, 30, 30, 30]
+      }
+    ]
+  }'
 ```
 
-Backtest summary:
+The external-sheet example uses placeholder data for request-shape demonstration.
+
+Loan or schedule-impact analysis:
 
 ```bash
-curl "https://api.prabinghimire1.com.np/v4/api/future-bs/backtest?mode=holdout&train_start=2070&train_end=2077&test_start=2078&test_end=2083"
+curl -X POST https://api.prabinghimire1.com.np/v4/api/future-bs/loan-impact/simulate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "loan_start_bs": "2085-05-01",
+    "term_months": 240,
+    "principal": 1000000,
+    "annual_rate": 12,
+    "day_count_method": "actual_365",
+    "external_years": []
+  }'
 ```
 
----
-
-## Repository Structure
-
-```text
-backend/
-  app/
-    calendar/
-    future_bs/
-    festivals/
-    panchanga/
-    muhurta/
-    kundali/
-    feeds/
-    reliability/
-
-frontend/
-  src/
-
-data/
-  festivals/
-  future_bs/
-  ephemeris/
-
-docs/
-  future_bs/
-  enterprise/
-  API_REFERENCE_V3.md
-  API_QUICKSTART.md
-
-scripts/
-  future_bs/
-  precompute/
-  validation/
-
-tests/
-  unit/
-  integration/
-```
-
-The repository includes backend services, frontend pages, data artifacts, validation scripts, future-BS research tooling, documentation, and test coverage.
-
----
+This simulates how differences between two BS month-length assumptions may affect date-sensitive schedules. It is not a guarantee of financial loss or official calendar treatment.
 
 ## Local Development
 
-Backend requires Python 3.11.  
-Frontend requires Node 20.x.
+Backend requires Python 3.11. Frontend requires Node 20.x.
 
 ```bash
 make install
@@ -283,87 +153,56 @@ python3.11 -m pip install -e .[test,dev]
 uvicorn app.main:app --app-dir backend --reload --port 8000
 ```
 
-Frontend setup:
+Frontend:
 
 ```bash
 npm --prefix frontend ci
 npm --prefix frontend run dev
 ```
 
----
+The `.env.example` file is kept as a local-development map. It contains blank placeholders and example defaults, not production secrets.
 
 ## Validation
 
-Focused Future BS tests:
+Focused checks:
 
 ```bash
-PYTHONPATH=backend pytest tests/integration/test_future_bs_routes.py tests/unit/future_bs -q
+pytest tests/regression tests/unit tests/integration -q
 ```
 
-Full backend test suite:
+Full test suite:
 
 ```bash
-PYTHONPATH=backend pytest -q
+pytest -q
 ```
 
 Repository verification:
 
 ```bash
 make verify
-make preflight-production
 ```
 
-Future BS claim-boundary checks:
+## Public Documentation
 
-```bash
-python scripts/audit_verified_corpus.py
+- [API quickstart](docs/API_QUICKSTART.md)
+- [API reference](docs/API_REFERENCE_V3.md)
+- [Stability policy](docs/STABILITY.md)
+- [Known limitations](docs/KNOWN_LIMITATIONS.md)
+- [Data sources and licenses](docs/DATA_SOURCES_AND_LICENSES.md)
+- [Future BS methodology](docs/future_bs/METHODOLOGY.md)
+- [Future BS limitations](docs/future_bs/LIMITATIONS.md)
+- [Future BS claims policy](docs/future_bs/CLAIMS_POLICY.md)
 
-python scripts/backtest_future_bs_model.py \
-  --validation-mode source_strict_official_only \
-  --train-start 2000 \
-  --train-end 2077 \
-  --test-start 2078 \
-  --test-end 2083
-```
+## What Parva Is Not
 
----
-
-## Key Documentation
-
-- [Future BS Methodology](docs/future_bs/METHODOLOGY.md)
-- [Future BS Limitations](docs/future_bs/LIMITATIONS.md)
-- [Future BS API](docs/future_bs/API.md)
-- [Confidence Model](docs/future_bs/CONFIDENCE_MODEL.md)
-- [Loan Impact](docs/future_bs/LOAN_IMPACT.md)
-- [Validation Report Template](docs/future_bs/VALIDATION_REPORT_TEMPLATE.md)
-- [Enterprise Validation](docs/enterprise/README_VALIDATION.md)
-- [API Quickstart](docs/API_QUICKSTART.md)
-- [API Reference V3](docs/API_REFERENCE_V3.md)
-- [Stability](docs/STABILITY.md)
-- [Known Limitations](docs/KNOWN_LIMITATIONS.md)
-- [Data Sources and Licenses](docs/DATA_SOURCES_AND_LICENSES.md)
-- [Cloud Run Deployment](docs/DEPLOY_CLOUD_RUN.md)
-
----
-
-## Commercial and Enterprise Use
-
-Parva is most useful when a team needs an independent calendar layer for:
-
-- BS/AD conversion validation
-- fiscal-year reporting checks
-- date-boundary regression tests
-- future BS month-length risk review
-- external sheet comparison
-- loan and interest schedule impact analysis
-- private deployment or internal validation workflows
-
-For production use in regulated, financial, legal, or contract-sensitive contexts, teams should pair Parva with their own official-source review and internal approval process.
-
----
+- Not an official government calendar publication.
+- Not legal, tax, or banking-contract final authority.
+- Not a replacement for an institution's production calendar approval process.
+- Not a claim that all historical rows in the corpus have equal source strength.
+- Not a blanket claim of future BS month-length certainty.
 
 ## License
 
-Project Parva is licensed under **AGPL-3.0-or-later**. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Project Parva is licensed under AGPL-3.0-or-later. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-This repository uses Swiss Ephemeris through `pyswisseph`. Hosted services based on this repository should publish the corresponding source for the deployed build and set `PARVA_SOURCE_URL` accordingly.
+This repository uses Swiss Ephemeris through `pyswisseph`. If you run a hosted service based on this repo, publish the corresponding source for the exact deployed build and set `PARVA_SOURCE_URL` accordingly.

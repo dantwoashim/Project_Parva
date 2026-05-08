@@ -1,7 +1,0 @@
-{
-  "publication_status": "computed_prediction_not_official",
-  "objective": "wrong_green_count_zero_first",
-  "wide_prediction_set_green_violation_count": 0,
-  "selected_thresholds_path": "data/future_bs/accuracy_lab/best_risk_thresholds.json",
-  "claim_ready_99_green_zone": false
-}

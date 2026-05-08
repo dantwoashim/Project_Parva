@@ -1,8 +1,0 @@
-{
-  "name": "recent_month_mode",
-  "description": "Use recent verified/publisher mode by month.",
-  "complexity": 1,
-  "validity_rate": 0.995833,
-  "manual_review_rate": 0.069167,
-  "score": 0.916667
-}

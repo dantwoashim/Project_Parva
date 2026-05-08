@@ -57,8 +57,8 @@ SECRET_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("private key block", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----")),
     ("aws access key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
     ("github token", re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{36,}\b")),
-    ("openai key", re.compile(r"\bsk-[A-Za-z0-9]{32,}\b")),
-    ("anthropic key", re.compile(r"\bsk-ant-[A-Za-z0-9_-]{32,}\b")),
+    ("sk-prefixed api key", re.compile(r"\bsk-[A-Za-z0-9]{32,}\b")),
+    ("sk-ant-prefixed api key", re.compile(r"\bsk-ant-[A-Za-z0-9_-]{32,}\b")),
     ("slack token", re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{20,}\b")),
     (
         "generic assigned secret",

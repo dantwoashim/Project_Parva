@@ -78,6 +78,7 @@ def _month_diagnostics(
     predicted_days: int,
     actual_days: int,
     row: CorpusRow,
+    source_policy: str = "all_reference",
 ) -> dict[str, Any]:
     selected = _selected_model_for_month(solar, month_index, predicted_days)
     selected_assignment = None
@@ -109,6 +110,7 @@ def _month_diagnostics(
         model_agreement_ratio=agreement_ratio,
         boundary_risk=boundary,
         risk_flags=sorted(risk_flags),
+        source_policy=source_policy,
     )
     alternatives = [
         model["model"]
@@ -141,6 +143,7 @@ def _stacked_month_diagnostics(
     predicted_days: int,
     actual_days: int,
     row: CorpusRow,
+    source_policy: str = "all_reference",
 ) -> dict[str, Any]:
     diagnostics = _month_diagnostics(
         solar=solar,
@@ -148,6 +151,7 @@ def _stacked_month_diagnostics(
         predicted_days=solar["months"][month_index],
         actual_days=actual_days,
         row=row,
+        source_policy=source_policy,
     )
     detail = stacked["month_details"][month_index]
     diagnostics["confidence_score"] = detail["confidence_score"]
@@ -244,6 +248,7 @@ def backtest_model(
                     predicted_days=predicted_days,
                     actual_days=actual_days,
                     row=row,
+                    source_policy=source_policy,
                 )
             else:
                 diagnostics = _month_diagnostics(
@@ -252,6 +257,7 @@ def backtest_model(
                     predicted_days=predicted_days,
                     actual_days=actual_days,
                     row=row,
+                    source_policy=source_policy,
                 )
             accuracy_cases.append(
                 AccuracyCase(

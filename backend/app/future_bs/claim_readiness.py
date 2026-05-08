@@ -131,8 +131,8 @@ def _normalize_report(payload: dict[str, Any]) -> dict[str, Any]:
 def _artifact_report() -> dict[str, Any] | None:
     if report_exists("claim_readiness_v_final"):
         return load_report("claim_readiness_v_final")
-    if report_exists("infodevelopers_readiness_summary"):
-        return load_report("infodevelopers_readiness_summary")
+    if report_exists("external_audit_readiness_summary"):
+        return load_report("external_audit_readiness_summary")
     readiness = load_report("claim_readiness_v_final")
     if readiness.get("error"):
         return None

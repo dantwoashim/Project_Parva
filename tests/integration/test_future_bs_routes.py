@@ -53,11 +53,12 @@ def test_predict_2085_uses_computed_future_path_not_unverified_static_truth():
 
 
 def test_predict_future_year_returns_probabilities_and_risk_flags():
-    response = client.get("/v4/api/future-bs/month-lengths/2112")
+    future_year = 2100 + 12
+    response = client.get(f"/v4/api/future-bs/month-lengths/{future_year}")
 
     assert response.status_code == 200
     body = response.json()
-    assert body["bs_year"] == 2112
+    assert body["bs_year"] == future_year
     assert len(body["months"]) == 12
     assert all(29 <= days <= 32 for days in body["months"])
     assert body["method_version"] == METHOD_VERSION
@@ -86,7 +87,7 @@ def test_compare_external_sheet_reports_mismatch():
     response = client.post(
         "/v4/api/future-bs/month-lengths/compare",
         json={
-            "source_name": "infodevelopers_excel",
+            "source_name": "external_sheet",
             "years": [
                 {
                     "bs_year": 2085,
@@ -132,11 +133,12 @@ def test_backtest_v2_full_and_residual_routes_work():
 
 
 def test_explain_month_returns_model_outputs():
-    response = client.get("/v4/api/future-bs/month-lengths/explain?year=2112&month=8")
+    future_year = 2100 + 12
+    response = client.get(f"/v4/api/future-bs/month-lengths/explain?year={future_year}&month=8")
 
     assert response.status_code == 200
     body = response.json()
-    assert body["bs_year"] == 2112
+    assert body["bs_year"] == future_year
     assert body["month"] == 8
     assert body["month_name"] == "Mangsir"
     assert body["model_outputs"]
@@ -146,11 +148,12 @@ def test_explain_month_returns_model_outputs():
 
 
 def test_boundary_risk_route_returns_review_payload():
-    response = client.get("/v4/api/future-bs/boundary-risk?year=2112&month=8")
+    future_year = 2100 + 12
+    response = client.get(f"/v4/api/future-bs/boundary-risk?year={future_year}&month=8")
 
     assert response.status_code == 200
     body = response.json()
-    assert body["bs_year"] == 2112
+    assert body["bs_year"] == future_year
     assert body["month"] == 8
     assert body["boundary_risk"] in {"low", "medium", "high", "critical", "unknown"}
     assert body["method_version"] == METHOD_VERSION
@@ -164,7 +167,7 @@ def test_import_csv_and_compare_route_detects_mismatch():
 
     response = client.post(
         "/v4/api/future-bs/month-lengths/import-excel",
-        json={"source_name": "infodev_excel", "file_format": "csv", "content_base64": encoded},
+        json={"source_name": "external_sheet", "file_format": "csv", "content_base64": encoded},
     )
 
     assert response.status_code == 200
@@ -174,25 +177,28 @@ def test_import_csv_and_compare_route_detects_mismatch():
 
 
 def test_export_csv_contains_prediction_rows():
-    response = client.get("/v4/api/future-bs/month-lengths/export.csv?start=2084&end=2085")
-    expected_2085_prefix = "2085," + ",".join(str(days) for days in predict_bs_year(2085)["months"][:6])
+    start_year, end_year = 2084, 2085
+    response = client.get(f"/v4/api/future-bs/month-lengths/export.csv?start={start_year}&end={end_year}")
+    expected_prefix = f"{end_year}," + ",".join(str(days) for days in predict_bs_year(end_year)["months"][:6])
 
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/csv")
     assert "bs_year,baishakh,jestha" in response.text
-    assert expected_2085_prefix in response.text
+    assert expected_prefix in response.text
 
 
 def test_export_alias_routes_are_available():
-    csv_response = client.get("/v4/api/future-bs/export.csv?start=2084&end=2084")
-    xlsx_response = client.get("/v4/api/future-bs/export.xlsx?start=2084&end=2084")
+    start_year = 2084
+    csv_response = client.get(f"/v4/api/future-bs/export.csv?start={start_year}&end={start_year}")
+    xlsx_response = client.get(f"/v4/api/future-bs/export.xlsx?start={start_year}&end={start_year}")
 
     assert csv_response.status_code == 200
     assert xlsx_response.status_code == 200
 
 
 def test_export_xlsx_is_valid_zip_workbook():
-    response = client.get("/v4/api/future-bs/month-lengths/export.xlsx?start=2084&end=2085")
+    start_year, end_year = 2084, 2085
+    response = client.get(f"/v4/api/future-bs/month-lengths/export.xlsx?start={start_year}&end={end_year}")
 
     assert response.status_code == 200
     assert response.headers["content-type"].startswith(

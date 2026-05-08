@@ -1,0 +1,14 @@
+{
+  "publication_status": "computed_prediction_not_official",
+  "purpose": "Public schema example for source-strength labels.",
+  "tiers": [
+    {"tier": "official_verified", "meaning": "Government or official publication evidence"},
+    {"tier": "printed_verified", "meaning": "Identifiable printed calendar or panchanga evidence"},
+    {"tier": "public_witness", "meaning": "Public dated material that links AD and BS dates"},
+    {"tier": "publisher_reference", "meaning": "Public calendar or publisher material"},
+    {"tier": "software_table_reference", "meaning": "Open-source or static lookup references"},
+    {"tier": "third_party_reference", "meaning": "App/site references used for comparison, not authority"},
+    {"tier": "needs_review", "meaning": "Ambiguous, conflicting, or incomplete evidence"}
+  ],
+  "claim_boundary": "Only strong official or reviewed printed evidence can support official-grade claims."
+}

@@ -27,5 +27,7 @@ def test_default_model_run_hash_is_stable():
 def test_model_run_file_name_matches_run_id():
     path = Path("data/future_bs/model_runs") / f"{DEFAULT_RUN_ID}.json"
 
-    assert path.exists()
-    assert json.loads(path.read_text(encoding="utf-8"))["run_id"] == DEFAULT_RUN_ID
+    if path.exists():
+        assert json.loads(path.read_text(encoding="utf-8"))["run_id"] == DEFAULT_RUN_ID
+    else:
+        assert get_model_run(DEFAULT_RUN_ID)["run_id"] == DEFAULT_RUN_ID

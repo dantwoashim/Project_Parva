@@ -30,6 +30,16 @@ def _source_type_from_id(source_id: str) -> str:
 
 def fuse_month_start_candidates(graph: dict[str, Any] | None = None) -> dict[str, Any]:
     if graph is None:
+        if not GRAPH_PATH.exists():
+            return {
+                "publication_status": PUBLICATION_STATUS,
+                "method": "source_reliability_weighted_candidate_fusion",
+                "case_count": 0,
+                "low_margin_count": 0,
+                "low_margin_cases": [],
+                "results": {},
+                "artifact_status": "source_agreement_graph_not_present",
+            }
         graph = json.loads(GRAPH_PATH.read_text(encoding="utf-8"))
     results = {}
     low_margin = []

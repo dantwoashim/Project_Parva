@@ -50,6 +50,29 @@ data/transparency/*.jsonl
 data/ephemeris/**/*.bsp
 data/ephemeris/**/*.bpc
 
+# Generated future-BS research artifacts and private review material
+data/future_bs/accuracy_lab/
+data/future_bs/reports/
+data/future_bs/predictions/
+data/future_bs/model_runs/
+data/future_bs/external_audit_ready/
+data/future_bs/raw_sources/
+data/future_bs/witnesses/*.csv
+data/future_bs/witnesses/*.json
+data/future_bs/witnesses/*.jsonl
+data/future_bs/witnesses/raw/
+data/future_bs/data_acquisition/
+data/future_bs/corpus/active_learning_queue.csv
+data/future_bs/corpus/audit_log.jsonl
+data/future_bs/corpus/corpus_quality_report.*
+data/future_bs/corpus/human_review_queue.*
+data/future_bs/corpus/month_start_confidence.csv
+data/future_bs/corpus/reconstructed_30_past_year_month_lengths.csv
+data/future_bs/corpus/reconstructed_month_lengths.csv
+data/future_bs/corpus/reconstructed_month_starts.csv
+data/future_bs/corpus/source_agreement_graph.json
+docs/external_audit/
+
 # Generated provenance artifacts
 backend/data/snapshots/
 backend/data/traces/

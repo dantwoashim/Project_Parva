@@ -117,9 +117,9 @@ async def calendar_model_risk_claim_readiness():
     return load_report("claim_readiness_v_final")
 
 
-@router.get("/infodevelopers-readiness")
-async def calendar_model_risk_infodevelopers_readiness():
-    return load_report("infodevelopers_readiness_summary")
+@router.get("/external-audit-readiness")
+async def calendar_model_risk_external_audit_readiness():
+    return load_report("external_audit_readiness_summary")
 
 
 @router.get("/reports/{report_id}")
@@ -128,7 +128,7 @@ async def calendar_model_risk_report(report_id: str) -> dict[str, Any]:
         "claim-readiness": "claim_readiness_v_final",
         "red-team-2083-ashwin": "case_2083_ashwin_replay_v_final",
         "time-travel-official": "time_travel_official_v_final",
-        "infodevelopers-readiness": "infodevelopers_readiness_summary",
+        "external-audit-readiness": "external_audit_readiness_summary",
     }
     if report_id == "list":
         return list_reports()

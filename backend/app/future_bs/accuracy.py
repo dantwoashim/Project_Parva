@@ -131,15 +131,35 @@ def risk_label(
     model_agreement_ratio: float,
     boundary_risk: str,
     risk_flags: list[str],
+    source_policy: str = "all_reference",
 ) -> str:
-    if boundary_risk in {"critical", "high"}:
+    flags = set(risk_flags)
+    if boundary_risk == "critical":
+        return "RED"
+    if boundary_risk == "high":
+        if (
+            source_policy == "official_only"
+            and confidence_score >= 0.999
+            and model_agreement_ratio >= 0.999
+            and "civil_rule_disagreement" not in flags
+            and "model_disagreement" not in flags
+            and "diagnostic_baseline_disagreement" not in flags
+        ):
+            return "GREEN"
         return "RED"
     if (
-        "manual_review_recommended" in risk_flags
-        or "model_disagreement" in risk_flags
-        or "diagnostic_baseline_disagreement" in risk_flags
+        "manual_review_recommended" in flags
+        or "model_disagreement" in flags
+        or "diagnostic_baseline_disagreement" in flags
     ):
         return "YELLOW"
+    if (
+        source_policy == "official_only"
+        and confidence_score >= 0.65
+        and model_agreement_ratio >= 0.66
+        and boundary_risk in {"low", "medium"}
+    ):
+        return "GREEN"
     if (
         confidence_score >= 0.985
         and model_agreement_ratio >= 0.86

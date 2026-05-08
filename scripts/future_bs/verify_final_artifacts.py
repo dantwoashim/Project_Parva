@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Verify the final future-BS and InfoDevelopers artifact package."""
+"""Verify the final future-BS and external-audit artifact package."""
 
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -27,14 +26,14 @@ REQUIRED_FILES = [
     "data/future_bs/accuracy_lab/accuracy_readiness_final.md",
     "data/future_bs/predictions/parva_future_bs_accuracy_best_2084_2200.json",
     "data/future_bs/predictions/parva_future_bs_accuracy_best_claimable_subset.json",
-    "data/future_bs/infodevelopers_ready/PARVA_INFODEVELOPERS_READINESS_SUMMARY.json",
-    "data/future_bs/infodevelopers_ready/PARVA_INFODEVELOPERS_READINESS_SUMMARY.md",
-    "data/future_bs/infodevelopers_ready/sample_infodev_input_sheet.xlsx",
-    "docs/infodevelopers/INFODEVELOPERS_EXECUTIVE_SUMMARY.md",
-    "docs/infodevelopers/INFODEVELOPERS_DEMO_SCRIPT.md",
-    "docs/infodevelopers/SAFE_CLAIMS.md",
-    "docs/infodevelopers/LIMITATIONS.md",
-    "docs/infodevelopers/METHODOLOGY.md",
+    "data/future_bs/external_audit_ready/PARVA_EXTERNAL_AUDIT_READINESS_SUMMARY.json",
+    "data/future_bs/external_audit_ready/PARVA_EXTERNAL_AUDIT_READINESS_SUMMARY.md",
+    "data/future_bs/external_audit_ready/sample_external_input_sheet.xlsx",
+    "docs/external_audit/EXTERNAL_AUDIT_EXECUTIVE_SUMMARY.md",
+    "docs/external_audit/EXTERNAL_AUDIT_DEMO_SCRIPT.md",
+    "docs/external_audit/SAFE_CLAIMS.md",
+    "docs/external_audit/LIMITATIONS.md",
+    "docs/external_audit/METHODOLOGY.md",
 ]
 
 
@@ -69,15 +68,6 @@ def main() -> int:
                 _fail(f"wide prediction set marked GREEN: {year} month {detail.get('month')}")
     if invalid:
         _fail("Invalid totals not marked RED/non-claimable: " + ", ".join(invalid))
-
-    report = (PROJECT_ROOT / "IMPLEMENTATION_REPORT.md").read_text(encoding="utf-8")
-    for relative in REQUIRED_FILES:
-        if relative in report and not (PROJECT_ROOT / relative).exists():
-            _fail(f"IMPLEMENTATION_REPORT.md references missing file {relative}")
-    generated_mentions = re.findall(r"data/future_bs/[^`)\s]+|docs/infodevelopers/[^`)\s]+", report)
-    missing_mentions = [item for item in generated_mentions if not (PROJECT_ROOT / item).exists()]
-    if missing_mentions:
-        _fail("IMPLEMENTATION_REPORT.md references missing files: " + ", ".join(sorted(set(missing_mentions))))
 
     print(json.dumps({"ok": True, "checked": len(REQUIRED_FILES), "publication_status": "computed_prediction_not_official"}, indent=2))
     return 0

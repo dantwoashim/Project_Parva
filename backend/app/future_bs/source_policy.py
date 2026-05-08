@@ -38,6 +38,16 @@ POLICIES: dict[str, dict[str, Any]] = {
         "claim_scope": "experimental weak-signal analysis only",
         "tier_5_6_allowed": True,
     },
+    "hamropatro_shadow_experimental": {
+        "allowed_best_tiers": {6},
+        "allowed_source_types": {"third_party_reference"},
+        "claim_scope": (
+            "HamroPatro shadow agreement only; never official_strict metrics, "
+            "official claim-readiness, or GREEN threshold tuning"
+        ),
+        "tier_5_6_allowed": True,
+        "shadow_only": True,
+    },
 }
 
 INVALID_RECONSTRUCTED_ROWS = {

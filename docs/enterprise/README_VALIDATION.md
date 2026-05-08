@@ -4,9 +4,9 @@ Run a CSV of known conversion cases against a local or hosted Parva API.
 
 ```bash
 python scripts/parva_validate.py \
-  --input docs/enterprise/infodev_validation_cases.csv \
+  --input docs/enterprise/external_validation_cases.csv \
   --base-url http://localhost:8000 \
-  --out-dir validation_reports/infodev
+  --out-dir validation_reports/external
 ```
 
 Outputs:

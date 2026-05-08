@@ -58,7 +58,7 @@ class LoanImpactRequest(BaseModel):
 
 
 class ImportExcelRequest(BaseModel):
-    source_name: str = Field(default="infodev_excel", min_length=1, max_length=120)
+    source_name: str = Field(default="external_sheet", min_length=1, max_length=120)
     file_format: Literal["csv", "xlsx"]
     content_base64: str = Field(..., min_length=1)
 

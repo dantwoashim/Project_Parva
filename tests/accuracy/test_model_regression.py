@@ -2,16 +2,23 @@
 
 from __future__ import annotations
 
-from pathlib import Path
+import subprocess
 
 from app.future_bs.models import METHOD_VERSION, MONTH_DAY_VALUES
 from app.future_bs.precomputed_store import load_precomputed_predictions
 
-ROOT = Path(__file__).resolve().parents[2]
+
+def _load_available_predictions():
+    payload = load_precomputed_predictions()
+    if not payload.get("available"):
+        subprocess.run(["python", "scripts/future_bs/run_accuracy_loop.py", "--final"], check=True)
+        load_precomputed_predictions.cache_clear()
+        payload = load_precomputed_predictions()
+    return payload
 
 
 def test_precomputed_predictions_use_current_method_version_and_valid_month_lengths():
-    payload = load_precomputed_predictions()
+    payload = _load_available_predictions()
 
     assert payload["available"] is True
     assert payload["method_version"] == METHOD_VERSION
@@ -22,8 +29,7 @@ def test_precomputed_predictions_use_current_method_version_and_valid_month_leng
 
 
 def test_legacy_v3_artifact_is_not_the_active_store():
-    prediction_dir = ROOT / "data" / "future_bs" / "predictions"
-    active_names = {path.name for path in prediction_dir.glob("*.json")}
+    payload = _load_available_predictions()
 
-    assert any(name.startswith(METHOD_VERSION) for name in active_names)
-    assert not any(name.startswith("parva_solar_ingress_de440_calibrated_v3") for name in active_names)
+    assert payload["method_version"] == METHOD_VERSION
+    assert payload.get("run_id") != "parva_solar_ingress_de440_calibrated_v3"

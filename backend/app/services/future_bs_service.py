@@ -122,7 +122,7 @@ def future_bs_capabilities_payload() -> dict[str, Any]:
         "source_registry": load_source_registry(),
         "recommended_use": [
             "technical validation",
-            "InfoDevelopers Excel comparison",
+            "external month-length sheet comparison",
             "loan-contract calendar-risk screening",
             "manual-review prioritization",
         ],

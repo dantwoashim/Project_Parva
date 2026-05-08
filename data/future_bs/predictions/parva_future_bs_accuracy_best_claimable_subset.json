@@ -1,7 +1,0 @@
-{
-  "run_id": "accuracy_lab_best_2026_05_08",
-  "method_version": "parva_solar_civil_accuracy_v6",
-  "publication_status": "computed_prediction_not_official",
-  "claimable_definition": "valid year total and every month currently GREEN under tuned thresholds",
-  "years": {}
-}

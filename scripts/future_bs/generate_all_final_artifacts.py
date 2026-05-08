@@ -41,8 +41,8 @@ from app.future_bs.year_total_gate import year_total_gate  # noqa: E402
 from app.services.future_bs_service import predict_bs_year  # noqa: E402
 
 REPORTS_DIR = PROJECT_ROOT / "data" / "future_bs" / "reports"
-INFO_DIR = PROJECT_ROOT / "data" / "future_bs" / "infodevelopers_ready"
-DOCS_DIR = PROJECT_ROOT / "docs" / "infodevelopers"
+INFO_DIR = PROJECT_ROOT / "data" / "future_bs" / "external_audit_ready"
+DOCS_DIR = PROJECT_ROOT / "docs" / "external_audit"
 
 
 def _write_text(path: Path, text: str) -> None:
@@ -113,8 +113,8 @@ def _external_audit() -> dict[str, Any]:
         years.append({"bs_year": year, "months": months})
     sample_rows = [["bs_year", "baishakh", "jestha", "ashadh", "shrawan", "bhadra", "ashwin", "kartik", "mangsir", "poush", "magh", "falgun", "chaitra"]]
     sample_rows.extend([[row["bs_year"], *row["months"]] for row in years])
-    write_simple_xlsx(INFO_DIR / "sample_infodev_input_sheet.xlsx", "sample_input", sample_rows)
-    report = compare_external_sheet("sample_infodev_style_future_month_lengths", years, predict_fn=predict_bs_year)
+    write_simple_xlsx(INFO_DIR / "sample_external_input_sheet.xlsx", "sample_input", sample_rows)
+    report = compare_external_sheet("sample_external_reference_month_lengths", years, predict_fn=predict_bs_year)
     audit_rows = [["section", "bs_year", "month", "external_days", "parva_days", "category"]]
     for mismatch in report.get("mismatches", []):
         audit_rows.append(
@@ -182,12 +182,12 @@ def _calendar_var() -> dict[str, Any]:
 def _write_info_docs(summary: dict[str, Any]) -> None:
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     _write_text(
-        DOCS_DIR / "INFODEVELOPERS_EXECUTIVE_SUMMARY.md",
+        DOCS_DIR / "EXTERNAL_AUDIT_EXECUTIVE_SUMMARY.md",
         "\n".join(
             [
-                "# InfoDevelopers Executive Summary",
+                "# External Audit Executive Summary",
                 "",
-                "Parva is ready for an independent benchmark against your future BS month-length sheet.",
+                "Parva is ready for an independent benchmark against an external future BS month-length sheet.",
                 "",
                 "Parva can test whether it strengthens or outperforms your current model by identifying high-confidence agreements/disagreements, uncertainty zones, 2083-style risks, and operational review months.",
                 "",
@@ -196,13 +196,13 @@ def _write_info_docs(summary: dict[str, Any]) -> None:
         ),
     )
     _write_text(
-        DOCS_DIR / "INFODEVELOPERS_DEMO_SCRIPT.md",
+        DOCS_DIR / "EXTERNAL_AUDIT_DEMO_SCRIPT.md",
         "\n".join(
             [
-                "# InfoDevelopers Demo Script",
+                "# External Audit Demo Script",
                 "",
                 "1. Run `python scripts/future_bs/generate_all_final_artifacts.py`.",
-                "2. Open `data/future_bs/infodevelopers_ready/PARVA_INFODEVELOPERS_READINESS_SUMMARY.md`.",
+                "2. Open `data/future_bs/external_audit_ready/PARVA_EXTERNAL_AUDIT_READINESS_SUMMARY.md`.",
                 "3. Review the 2083 Ashwin replay.",
                 "4. Compare the sample external sheet audit.",
                 "5. Discuss review policy for YELLOW/RED months.",
@@ -237,7 +237,7 @@ def main() -> int:
         REPORTS_DIR / "time_travel_mismatch_diagnosis_v_final.md",
         "# Time-Travel Mismatch Diagnosis\n\nPublication status: `computed_prediction_not_official`.\n\nNo mismatches for the selected official rolling candidate.\n",
     )
-    replay = replay_2083_ashwin()
+    replay = replay_2083_ashwin(force_recompute=True)
     save_report("case_2083_ashwin_replay_v_final", replay)
     _write_text(
         REPORTS_DIR / "case_2083_ashwin_replay_v_final.md",
@@ -277,15 +277,15 @@ def main() -> int:
         "limitations": [
             "Future predictions are computed, not official publication.",
             "Official verified corpus has fewer cases than the claim threshold.",
-            "Independent comparison against InfoDevelopers data is still required.",
+            "Independent comparison against external institutional data is still required.",
         ],
     }
-    write_json(INFO_DIR / "PARVA_INFODEVELOPERS_READINESS_SUMMARY.json", summary)
+    write_json(INFO_DIR / "PARVA_EXTERNAL_AUDIT_READINESS_SUMMARY.json", summary)
     _write_text(
-        INFO_DIR / "PARVA_INFODEVELOPERS_READINESS_SUMMARY.md",
+        INFO_DIR / "PARVA_EXTERNAL_AUDIT_READINESS_SUMMARY.md",
         "\n".join(
             [
-                "# Parva InfoDevelopers Readiness Summary",
+                "# Parva External Audit Readiness Summary",
                 "",
                 "Publication status: `computed_prediction_not_official`.",
                 "",

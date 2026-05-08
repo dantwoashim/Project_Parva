@@ -45,7 +45,7 @@ def main() -> int:
         raise SystemExit("Only --sample generation is supported by the reproducible audit script.")
 
     external = _sample_years(args.start, args.end)
-    report = compare_external_sheet("sample_infodev_style_future_month_lengths", external)
+    report = compare_external_sheet("sample_external_reference_month_lengths", external)
     rows = [
         ["section", "metric", "value"],
         ["executive_summary", "months_compared", report["summary"]["months_compared"]],

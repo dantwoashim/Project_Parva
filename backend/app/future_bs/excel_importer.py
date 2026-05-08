@@ -1,4 +1,4 @@
-"""Import InfoDevelopers-style month-length CSV/XLSX files."""
+"""Import external month-length CSV/XLSX files."""
 
 from __future__ import annotations
 
