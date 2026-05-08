@@ -13,9 +13,14 @@ def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
 
     assert response.status_code == 200
     body = response.json()
-    assert body["surface"] == "future_bs_month_length_validation"
-    assert body["status"] == "evaluation_ready"
+    assert body["surface"] == "future_bs_risk_research"
+    assert body["status"] == "research_preview"
+    assert body["publication_status"] == "computed_prediction_not_official"
     assert "official_future_publication" in body["not_claimed"]
+    assert "methodology_summary" in body["public_surface"]
+    assert "model_registry" not in body
+    assert "precomputed_store" not in body
+    assert "solar_ingress_cache" not in body
 
 
 def test_future_bs_private_routes_are_not_public_in_default_profile():
@@ -71,3 +76,18 @@ def test_future_bs_private_routes_are_hidden_from_public_openapi():
             "/v4/api/future-bs/month-lengths/compare",
         }
     )
+
+
+def test_future_bs_private_routes_are_hidden_from_schema_when_mounted(monkeypatch):
+    monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "true")
+    monkeypatch.setenv("PARVA_ADMIN_TOKEN", "test-token")
+    monkeypatch.delenv("PARVA_SHOW_PRIVATE_SCHEMA", raising=False)
+
+    from app.bootstrap.app_factory import create_app
+
+    private_client = TestClient(create_app())
+
+    assert private_client.get("/v4/api/future-bs/month-lengths/2085").status_code == 401
+    paths = set(private_client.get("/openapi.json").json()["paths"])
+    assert "/v4/api/future-bs/capabilities" in paths
+    assert "/v4/api/future-bs/month-lengths/{bs_year}" not in paths

@@ -429,6 +429,7 @@ def create_app() -> FastAPI:
     register_routers(
         app,
         enable_experimental_api=settings.enable_experimental_api,
+        show_private_schema=settings.show_private_schema,
         environment=settings.environment,
     )
     unclassified_routes = find_unclassified_api_routes(app.routes)

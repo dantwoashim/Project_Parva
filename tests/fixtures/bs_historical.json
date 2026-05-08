@@ -1,7 +1,7 @@
 {
   "metadata": {
     "description": "Historical sample conversions for extended estimated mode",
-    "note": "These are diagnostic samples, not official lookup truth outside 2070-2095 BS."
+    "note": "These are diagnostic samples, not official lookup truth outside their published source window."
   },
   "samples": [
     {

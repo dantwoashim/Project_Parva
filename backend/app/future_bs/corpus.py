@@ -18,9 +18,16 @@ from .accuracy import (
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-CORPUS_PATH = PROJECT_ROOT / "data" / "future_bs" / "corpus" / "verified_month_lengths.csv"
-CORPUS_ID = "verified_month_lengths_2000_2099_v1"
-CORPUS_VERSION = "verified_corpus_2000_2099_v1"
+PRIVATE_CORPUS_PATH = (
+    PROJECT_ROOT / "data" / "future_bs" / "private" / "verified_month_lengths_full.csv"
+)
+LEGACY_PRIVATE_CORPUS_PATH = (
+    PROJECT_ROOT / "data" / "future_bs" / "corpus" / "verified_month_lengths.csv"
+)
+PUBLIC_CORPUS_PATH = PROJECT_ROOT / "data" / "future_bs" / "public" / "official_holdout_2078_2083.csv"
+CORPUS_PATH = LEGACY_PRIVATE_CORPUS_PATH
+CORPUS_ID = "source_labeled_month_lengths"
+CORPUS_VERSION = "source_policy_public_or_private_v2"
 MONTH_COLUMNS = [name.lower() for name in BS_MONTH_NAMES]
 
 
@@ -108,11 +115,17 @@ def _fallback_row(bs_year: int) -> CorpusRow:
 
 @lru_cache(maxsize=1)
 def load_corpus() -> dict[int, CorpusRow]:
-    if not CORPUS_PATH.exists():
+    if PRIVATE_CORPUS_PATH.exists():
+        path = PRIVATE_CORPUS_PATH
+    elif LEGACY_PRIVATE_CORPUS_PATH.exists():
+        path = LEGACY_PRIVATE_CORPUS_PATH
+    else:
+        path = PUBLIC_CORPUS_PATH
+    if not path.exists():
         return {year: _fallback_row(year) for year in sorted(BS_MONTH_LENGTHS)}
 
     rows: dict[int, CorpusRow] = {}
-    with CORPUS_PATH.open(newline="", encoding="utf-8") as fh:
+    with path.open(newline="", encoding="utf-8") as fh:
         reader = csv.DictReader(fh)
         for raw in reader:
             bs_year = int(raw["bs_year"])

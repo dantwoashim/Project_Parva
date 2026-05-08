@@ -57,6 +57,8 @@ data/future_bs/predictions/
 data/future_bs/model_runs/
 data/future_bs/external_audit_ready/
 data/future_bs/raw_sources/
+data/future_bs/private/
+data/future_bs/astronomy/solar_ingress_events_1900_2200.*
 data/future_bs/calibration/final_selected_model.json
 data/future_bs/calibration/civil_rule_results.json
 data/future_bs/calibration/civil_rule_training_labels.json
@@ -75,6 +77,7 @@ data/future_bs/corpus/reconstructed_30_past_year_month_lengths.csv
 data/future_bs/corpus/reconstructed_month_lengths.csv
 data/future_bs/corpus/reconstructed_month_starts.csv
 data/future_bs/corpus/source_agreement_graph.json
+data/future_bs/corpus/verified_month_lengths.csv
 data/source_archive/hamropatro/
 data/source_archive/ratopati/
 data/source_inventory/hamropatro_calendar_sources.json

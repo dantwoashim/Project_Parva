@@ -11,6 +11,7 @@ def _settings(*, trusted_proxy_ips=frozenset()):
         license_mode="AGPL-3.0-or-later",
         source_url=None,
         enable_experimental_api=False,
+        show_private_schema=False,
         allow_experimental_in_prod=False,
         serve_frontend=False,
         frontend_dist=Path("."),

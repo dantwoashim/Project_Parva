@@ -12,8 +12,8 @@ def test_bs_overlap_fixture_exists_and_has_expected_window():
     data = json.loads(FIXTURE.read_text(encoding="utf-8"))
     meta = data["metadata"]
 
-    assert meta["official_bs_range"] == "2070-2095"
-    assert meta["total_days"] >= 9000
+    assert meta["fixture_kind"] == "public_shape_sample"
+    assert "future comparison table" in meta["note"]
     assert len(data["rows"]) == meta["total_days"]
 
 

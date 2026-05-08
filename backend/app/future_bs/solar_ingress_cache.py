@@ -12,7 +12,16 @@ from .models import SolarIngressEvent
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 ASTRONOMY_DIR = PROJECT_ROOT / "data" / "future_bs" / "astronomy"
-DEFAULT_EVENTS_PATH = ASTRONOMY_DIR / "solar_ingress_events_1900_2200.json"
+PRIVATE_EVENTS_PATH = (
+    PROJECT_ROOT
+    / "data"
+    / "future_bs"
+    / "private"
+    / "astronomy"
+    / "solar_ingress_events_1900_2200.json"
+)
+LEGACY_EVENTS_PATH = ASTRONOMY_DIR / "solar_ingress_events_1900_2200.json"
+DEFAULT_EVENTS_PATH = PRIVATE_EVENTS_PATH if PRIVATE_EVENTS_PATH.exists() else LEGACY_EVENTS_PATH
 
 
 def _parse_dt(value: str) -> datetime:
@@ -33,7 +42,8 @@ def _event_from_payload(payload: dict[str, Any]) -> SolarIngressEvent:
 
 
 @lru_cache(maxsize=1)
-def load_solar_ingress_cache(path: Path = DEFAULT_EVENTS_PATH) -> dict[str, Any]:
+def load_solar_ingress_cache(path: Path | None = None) -> dict[str, Any]:
+    path = path or DEFAULT_EVENTS_PATH
     if not path.exists():
         return {"available": False, "years": {}, "path": str(path.relative_to(PROJECT_ROOT))}
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -55,7 +65,7 @@ def cached_events_for_gregorian_year(
     *,
     ephemeris_label: str,
 ) -> tuple[SolarIngressEvent, ...] | None:
-    payload = load_solar_ingress_cache()
+    payload = load_solar_ingress_cache(None)
     if not payload.get("available"):
         return None
     cache_ephemeris = payload.get("ephemeris")

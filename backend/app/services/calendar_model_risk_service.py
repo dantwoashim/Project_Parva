@@ -14,7 +14,6 @@ from app.future_bs.precedent_tower import precedent_tower
 from app.future_bs.prediction_sets import prediction_set_payload
 from app.future_bs.red_team_2083 import replay_2083_ashwin
 from app.future_bs.risk_thresholds import classify_prediction_risk
-from app.future_bs.source_trust import TRUST_LEVELS
 from app.future_bs.year_total_reconciliation import reconcile_year_total
 from app.services.future_bs_service import (
     compare_external_sheet,
@@ -172,22 +171,27 @@ def audit_external_sheet_response(payload: dict[str, Any]) -> dict[str, Any]:
 
 def capabilities_payload() -> dict[str, Any]:
     return {
-        "surface": "calendar_model_risk",
-        "status": "evaluation_ready",
-        "capabilities": [
-            "future_bs_prediction_sets",
-            "committee_rule_posterior",
-            "perturbation_robustness",
-            "external_sheet_audit",
-            "calendar_var",
-            "stress_testing",
-            "claim_readiness",
-            "red_team_2083_ashwin",
-        ],
-        "source_trust_levels": TRUST_LEVELS,
+        "surface": "future_bs_risk_research",
+        "status": "research_preview",
         "publication_status": "computed_prediction_not_official",
-        "method_version": METHOD_VERSION,
-        "calibration_version": CALIBRATION_VERSION,
+        "public_surface": [
+            "methodology_summary",
+            "source_policy_summary",
+            "claim_boundary",
+            "aggregate_validation_posture",
+            "risk_label_taxonomy",
+        ],
+        "private_deployment_surfaces": [
+            "external_sheet_comparison",
+            "aggregate audit report",
+            "future month-length risk review",
+            "schedule impact screening",
+        ],
+        "not_claimed": [
+            "official_future_publication",
+            "legal_or_tax_final_authority",
+            "guaranteed_future_calendar_accuracy",
+        ],
     }
 
 

@@ -15,7 +15,9 @@ source-labeled corpus
 
 ## Corpus
 
-The corpus lives in `data/future_bs/corpus/verified_month_lengths.csv`.
+The public repository includes a source-policy schema and a narrow official
+holdout slice under `data/future_bs/public/`. Private deployments may load a
+larger ignored corpus from `data/future_bs/private/`.
 
 Each year carries:
 
@@ -23,7 +25,9 @@ Each year carries:
 - `source_reference`
 - `verification_status`
 
-The current corpus deliberately separates structured official rows from archived, third-party, and review-needed rows. Do not flatten these into one “official” label.
+Corpus processing deliberately separates structured official rows from archived,
+third-party, and review-needed rows. Do not flatten these into one "official"
+label.
 
 ## Prediction Flow
 
@@ -40,7 +44,12 @@ For each future BS year:
 
 ## Current Ephemeris Position
 
-Production builds download NASA NAIF `de440.bsp`, verify its published checksum, and expose it through `PARVA_JPL_DE440_KERNEL`. When that file is present, the future-BS solar-ingress path uses the JPL-backed adapter. Swiss Ephemeris and the built-in Moshier path remain fallback/cross-check layers. Normal API requests read precomputed prediction and solar-ingress cache artifacts instead of solving raw astronomy live.
+Production builds can download NASA NAIF `de440.bsp`, verify its published
+checksum, and expose it through `PARVA_JPL_DE440_KERNEL`. When that file is
+present, the future-BS solar-ingress path uses the JPL-backed adapter. Swiss
+Ephemeris and the built-in Moshier path remain fallback/cross-check layers. The
+public repository keeps only a small solar-ingress sample for parser and schema
+tests; full private caches are ignored deployment artifacts.
 
 ## Backtesting
 

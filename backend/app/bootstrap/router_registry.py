@@ -166,6 +166,7 @@ def register_routers(
     app: FastAPI,
     *,
     enable_experimental_api: bool,
+    show_private_schema: bool = False,
     environment: str = "development",
 ) -> None:
     """Register /api + /v3 routers, with optional experimental version tracks."""
@@ -177,17 +178,34 @@ def register_routers(
         or (include_trust and registration.audience == "trust")
         or (enable_experimental_api and registration.register_when_experimental_enabled)
     ]
-    routers = [registration.router for registration in registrations]
-
-    for router in routers:
-        app.include_router(router)
+    for registration in registrations:
+        app.include_router(
+            registration.router,
+            include_in_schema=(
+                show_private_schema if registration.register_when_experimental_enabled else True
+            ),
+        )
 
     for registration in registrations:
         if registration.include_v3:
-            app.include_router(registration.router, prefix="/v3")
+            app.include_router(
+                registration.router,
+                prefix="/v3",
+                include_in_schema=(
+                    show_private_schema if registration.register_when_experimental_enabled else True
+                ),
+            )
 
     if enable_experimental_api:
         for prefix in ("/v2", "/v4", "/v5"):
             for registration in registrations:
                 if registration.include_experimental_versions:
-                    app.include_router(registration.router, prefix=prefix)
+                    app.include_router(
+                        registration.router,
+                        prefix=prefix,
+                        include_in_schema=(
+                            show_private_schema
+                            if registration.register_when_experimental_enabled
+                            else True
+                        ),
+                    )

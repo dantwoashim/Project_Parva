@@ -5,13 +5,11 @@ from __future__ import annotations
 from typing import Any
 
 from app.calendar.constants import BS_MONTH_NAMES
-from app.future_bs.accuracy import TARGET_THRESHOLDS
 from app.future_bs.backtest import backtest_model as computational_backtest_model
 from app.future_bs.backtest import full_replay_backtest, rolling_validation
 from app.future_bs.boundary_risk import boundary_risk_payload
 from app.future_bs.compare import compare_external_sheet as future_compare_external_sheet
 from app.future_bs.compare import external_year_map as future_external_year_map
-from app.future_bs.corpus import corpus_summary
 from app.future_bs.ensemble import CALIBRATION_VERSION, METHOD_VERSION
 from app.future_bs.ensemble import predict_year as future_predict_year
 from app.future_bs.excel_importer import import_month_lengths_base64
@@ -19,13 +17,9 @@ from app.future_bs.explain import explain_prediction_month
 from app.future_bs.exports import predictions_to_csv as future_predictions_to_csv
 from app.future_bs.exports import predictions_to_xlsx as future_predictions_to_xlsx
 from app.future_bs.loan_impact import simulate_loan_impact as future_simulate_loan_impact
-from app.future_bs.model_registry import model_registry_payload
 from app.future_bs.models import PREDICTION_MAX_YEAR
-from app.future_bs.precomputed_store import precomputed_store_status
 from app.future_bs.residual_analysis import residual_summary
 from app.future_bs.run_registry import get_model_run, list_model_runs
-from app.future_bs.solar_ingress_cache import solar_ingress_cache_status
-from app.future_bs.source_registry import load_source_registry
 
 
 def _validate_month(month: int) -> None:
@@ -78,53 +72,27 @@ def backtest_model(
 
 
 def future_bs_capabilities_payload() -> dict[str, Any]:
-    registry = model_registry_payload()
-    jpl_available = any(
-        adapter.get("name") == "jpl_de440" and adapter.get("available")
-        for adapter in registry.get("ephemeris_adapters", [])
-    )
-    not_claimed = [
-        "official_future_publication",
-        "legal_or_tax_final_authority",
-    ]
-    if not jpl_available:
-        not_claimed.append("DE440 production certification until a kernel is configured")
     return {
-        "surface": "future_bs_month_length_validation",
-        "status": "evaluation_ready",
-        "core_product": "BS year -> 12 month lengths -> confidence -> mismatch report -> loan impact",
-        "stable": [
-            "source_labeled_corpus",
-            "precomputed_future_predictions",
-            "probabilistic_future_month_length_prediction",
+        "surface": "future_bs_risk_research",
+        "status": "research_preview",
+        "publication_status": "computed_prediction_not_official",
+        "public_surface": [
+            "methodology_summary",
+            "source_policy_summary",
+            "claim_boundary",
+            "aggregate_validation_posture",
+            "risk_label_taxonomy",
+        ],
+        "private_deployment_surfaces": [
             "external_sheet_comparison",
-            "month_level_explainability",
-            "loan_interest_impact_simulation",
-            "csv_export",
-            "xlsx_export",
-            "immutable_model_runs",
+            "aggregate audit report",
+            "future month-length risk review",
+            "schedule impact screening",
         ],
-        "computed": [
-            "future_month_lengths_beyond_static_lookup",
-            "confidence_scores",
-            "boundary_risk_flags",
-            "backtest_metrics",
-            "residual_analysis",
-        ],
-        "not_claimed": not_claimed,
-        "method_version": METHOD_VERSION,
-        "calibration_version": CALIBRATION_VERSION,
-        "corpus": corpus_summary(),
-        "accuracy_targets": TARGET_THRESHOLDS,
-        "precomputed_store": precomputed_store_status(),
-        "solar_ingress_cache": solar_ingress_cache_status(),
-        "model_registry": registry,
-        "source_registry": load_source_registry(),
-        "recommended_use": [
-            "technical validation",
-            "external month-length sheet comparison",
-            "loan-contract calendar-risk screening",
-            "manual-review prioritization",
+        "not_claimed": [
+            "official_future_publication",
+            "legal_or_tax_final_authority",
+            "guaranteed_future_calendar_accuracy",
         ],
     }
 

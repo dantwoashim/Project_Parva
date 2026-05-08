@@ -11,9 +11,12 @@ def test_calendar_model_risk_capabilities_are_public_v5():
 
     assert response.status_code == 200
     body = response.json()
-    assert body["surface"] == "calendar_model_risk"
-    assert "calendar_var" in body["capabilities"]
+    assert body["surface"] == "future_bs_risk_research"
+    assert body["status"] == "research_preview"
     assert body["publication_status"] == "computed_prediction_not_official"
+    assert "aggregate_validation_posture" in body["public_surface"]
+    assert "source_trust_levels" not in body
+    assert "capabilities" not in body
 
 
 def test_calendar_model_risk_private_routes_are_not_public_in_default_profile():
@@ -66,3 +69,18 @@ def test_calendar_model_risk_private_routes_are_hidden_from_public_openapi():
             "/v5/api/calendar-model-risk/reports/{report_id}",
         }
     )
+
+
+def test_calendar_model_risk_private_routes_are_hidden_from_schema_when_mounted(monkeypatch):
+    monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "true")
+    monkeypatch.setenv("PARVA_ADMIN_TOKEN", "test-token")
+    monkeypatch.delenv("PARVA_SHOW_PRIVATE_SCHEMA", raising=False)
+
+    from app.bootstrap.app_factory import create_app
+
+    private_client = TestClient(create_app())
+
+    assert private_client.get("/v5/api/calendar-model-risk/prediction/2089/6").status_code == 401
+    paths = set(private_client.get("/openapi.json").json()["paths"])
+    assert "/v5/api/calendar-model-risk/capabilities" in paths
+    assert "/v5/api/calendar-model-risk/prediction/{bs_year}/{month}" not in paths

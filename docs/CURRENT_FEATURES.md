@@ -30,9 +30,8 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 
 ## Future BS and Model-Risk Assets
 
-- Source-labeled corpus: `data/future_bs/corpus/verified_month_lengths.csv`.
-- Source registry under `data/future_bs/corpus`.
-- Generated model runs, prediction artifacts, calibration metadata, and residual reports are local artifacts and are not public source fixtures.
+- Public source-policy files and official holdout sample under `data/future_bs/public`.
+- Larger private corpus, model runs, prediction artifacts, calibration metadata, and residual reports are ignored deployment artifacts, not public source fixtures.
 - Strict claim posture: future outputs are `computed_prediction_not_official`.
 
 ## Frontend

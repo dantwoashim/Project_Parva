@@ -1,0 +1,144 @@
+{
+    "kind":  "solar_ingress_events_public_sample",
+    "range":  "2027 AD sample only",
+    "ephemeris":  "jpl_de440",
+    "calculation_version":  "solar_ingress_solver_v1",
+    "publication_status":  "public_sample_not_full_cache",
+    "note":  "Small public sample for parser and schema tests. The full 1900-2200 cache is private deployment data.",
+    "years":  {
+                  "2027":  [
+                               {
+                                   "bs_month":  1,
+                                   "bs_month_name":  "Baishakh",
+                                   "rashi_index":  0,
+                                   "rashi_name":  "Mesha",
+                                   "datetime_utc":  "2027-04-14T09:59:32+00:00",
+                                   "datetime_nepal":  "2027-04-14T15:44:32+05:45",
+                                   "nepal_date":  "2027-04-14",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  2,
+                                   "bs_month_name":  "Jestha",
+                                   "rashi_index":  1,
+                                   "rashi_name":  "Vrishabha",
+                                   "datetime_utc":  "2027-05-15T06:50:53+00:00",
+                                   "datetime_nepal":  "2027-05-15T12:35:53+05:45",
+                                   "nepal_date":  "2027-05-15",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  3,
+                                   "bs_month_name":  "Ashadh",
+                                   "rashi_index":  2,
+                                   "rashi_name":  "Mithuna",
+                                   "datetime_utc":  "2027-06-15T13:27:05+00:00",
+                                   "datetime_nepal":  "2027-06-15T19:12:05+05:45",
+                                   "nepal_date":  "2027-06-15",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  4,
+                                   "bs_month_name":  "Shrawan",
+                                   "rashi_index":  3,
+                                   "rashi_name":  "Karka",
+                                   "datetime_utc":  "2027-07-17T00:20:05+00:00",
+                                   "datetime_nepal":  "2027-07-17T06:05:05+05:45",
+                                   "nepal_date":  "2027-07-17",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  5,
+                                   "bs_month_name":  "Bhadra",
+                                   "rashi_index":  4,
+                                   "rashi_name":  "Simha",
+                                   "datetime_utc":  "2027-08-17T08:44:54+00:00",
+                                   "datetime_nepal":  "2027-08-17T14:29:54+05:45",
+                                   "nepal_date":  "2027-08-17",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  6,
+                                   "bs_month_name":  "Ashwin",
+                                   "rashi_index":  5,
+                                   "rashi_name":  "Kanya",
+                                   "datetime_utc":  "2027-09-17T08:41:43+00:00",
+                                   "datetime_nepal":  "2027-09-17T14:26:43+05:45",
+                                   "nepal_date":  "2027-09-17",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  7,
+                                   "bs_month_name":  "Kartik",
+                                   "rashi_index":  6,
+                                   "rashi_name":  "Tula",
+                                   "datetime_utc":  "2027-10-17T20:40:06+00:00",
+                                   "datetime_nepal":  "2027-10-18T02:25:06+05:45",
+                                   "nepal_date":  "2027-10-18",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  8,
+                                   "bs_month_name":  "Mangsir",
+                                   "rashi_index":  7,
+                                   "rashi_name":  "Vrishchika",
+                                   "datetime_utc":  "2027-11-16T20:29:44+00:00",
+                                   "datetime_nepal":  "2027-11-17T02:14:44+05:45",
+                                   "nepal_date":  "2027-11-17",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  9,
+                                   "bs_month_name":  "Poush",
+                                   "rashi_index":  8,
+                                   "rashi_name":  "Dhanu",
+                                   "datetime_utc":  "2027-12-16T11:10:06+00:00",
+                                   "datetime_nepal":  "2027-12-16T16:55:06+05:45",
+                                   "nepal_date":  "2027-12-16",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  10,
+                                   "bs_month_name":  "Magh",
+                                   "rashi_index":  9,
+                                   "rashi_name":  "Makara",
+                                   "datetime_utc":  "2028-01-14T21:55:10+00:00",
+                                   "datetime_nepal":  "2028-01-15T03:40:10+05:45",
+                                   "nepal_date":  "2028-01-15",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  11,
+                                   "bs_month_name":  "Falgun",
+                                   "rashi_index":  10,
+                                   "rashi_name":  "Kumbha",
+                                   "datetime_utc":  "2028-02-13T10:54:22+00:00",
+                                   "datetime_nepal":  "2028-02-13T16:39:22+05:45",
+                                   "nepal_date":  "2028-02-13",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               },
+                               {
+                                   "bs_month":  12,
+                                   "bs_month_name":  "Chaitra",
+                                   "rashi_index":  11,
+                                   "rashi_name":  "Meena",
+                                   "datetime_utc":  "2028-03-14T07:46:13+00:00",
+                                   "datetime_nepal":  "2028-03-14T13:31:13+05:45",
+                                   "nepal_date":  "2028-03-14",
+                                   "ephemeris":  "jpl_de440",
+                                   "calculation_version":  "solar_ingress_solver_v1"
+                               }
+                           ]
+              }
+}

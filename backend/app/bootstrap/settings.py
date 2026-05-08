@@ -45,6 +45,7 @@ class AppSettings:
     license_mode: str
     source_url: str | None
     enable_experimental_api: bool
+    show_private_schema: bool
     allow_experimental_in_prod: bool
     serve_frontend: bool
     frontend_dist: Path
@@ -241,6 +242,7 @@ def load_settings() -> AppSettings:
         enable_experimental_api=_parse_bool(
             os.getenv("PARVA_ENABLE_EXPERIMENTAL_API"), default=False
         ),
+        show_private_schema=_parse_bool(os.getenv("PARVA_SHOW_PRIVATE_SCHEMA"), default=False),
         allow_experimental_in_prod=_parse_bool(
             os.getenv("PARVA_ALLOW_EXPERIMENTAL_IN_PROD"), default=False
         ),
