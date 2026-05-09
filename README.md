@@ -12,9 +12,7 @@ Parva treats calendar behavior as infrastructure. Every computed result should b
 
 ## Live API
 
-- API docs: [https://api.prabinghimire1.com.np/docs](https://api.prabinghimire1.com.np/docs)
-- OpenAPI JSON: [https://api.prabinghimire1.com.np/openapi.json](https://api.prabinghimire1.com.np/openapi.json)
-- Future-BS capabilities: [https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities](https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities)
+- API documentation and demo deployment are being migrated.
 
 ## What Parva Provides
 
