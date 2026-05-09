@@ -10,20 +10,42 @@ Nepali calendar logic is not just a formatting problem. In real systems, BS date
 
 Parva treats calendar behavior as infrastructure. Every computed result should be explainable, source-aware, reproducible, and honest about its confidence.
 
-## Live API
+## Live Surfaces
 
-- API documentation and demo deployment are being migrated.
+- Website: [https://prabinghimire1.com.np](https://prabinghimire1.com.np)
+- API docs: [https://api.prabinghimire1.com.np/docs](https://api.prabinghimire1.com.np/docs)
+- OpenAPI schema: [https://api.prabinghimire1.com.np/openapi.json](https://api.prabinghimire1.com.np/openapi.json)
+- Source code: [https://github.com/dantwoashim/Project_Parva](https://github.com/dantwoashim/Project_Parva)
 
-## API Availability
+The public API demo is deployed as a lightweight public service. First requests may take a few seconds if the instance is waking up.
 
-The public API demo is currently being migrated from Cloud Run to a lighter public deployment.
+> Note: The public API demo is optimized for evaluation. Private deployments can be run from the Dockerized backend with controlled configuration.
 
-The repository, methodology, and public-safe API surface remain available here:
+## Public API Boundary
 
-- Source: [https://github.com/dantwoashim/Project_Parva](https://github.com/dantwoashim/Project_Parva)
-- API docs mirror: [https://dantwoashim.github.io/Project_Parva/api-docs/](https://dantwoashim.github.io/Project_Parva/api-docs/)
+The public deployment exposes stable calendar and documentation surfaces intended for technical evaluation.
 
-Production/private deployments can be run from the Dockerized backend with version-pinned config.
+Public surfaces include:
+
+| Surface | Purpose |
+| --- | --- |
+| `/v3/api/calendar/*` | BS/AD conversion, today, validation, calendar utilities, and enabled panchanga helpers |
+| `/v3/api/enterprise/*` | Nepali fiscal-year and business date validation logic |
+| `/v3/api/festivals/*` | Festival and observance APIs |
+| `/v4/api/future-bs/capabilities` | Public summary of the future-BS research layer |
+
+Private or experimental future-BS routes are not part of the public deployment. Future month-length prediction, exports, model runs, backtests, and client comparison workflows are intended for controlled evaluation or private deployment.
+
+## Deployment Model
+
+Project Parva is designed to run in two modes:
+
+| Mode | Purpose |
+| --- | --- |
+| Public demo | Lightweight API evaluation, documentation, stable calendar endpoints |
+| Private deployment | Version-pinned deployment for organizations that need controlled calendar validation, internal audits, or sensitive future-BS risk workflows |
+
+The public service is not the authority for legal, tax, regulatory, or banking-contract decisions. Production use should be validated against the organization's own requirements and source policy.
 
 ## What Parva Provides
 
@@ -165,7 +187,12 @@ make verify
 - [Stability policy](docs/STABILITY.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
 - [Data sources and licenses](docs/DATA_SOURCES_AND_LICENSES.md)
+- [Public API boundary](docs/PUBLIC_API_BOUNDARY.md)
+- [Deployment](docs/DEPLOYMENT.md)
 - [Future BS methodology](docs/future_bs/METHODOLOGY.md)
+- [Future BS research boundary](docs/future_bs/FUTURE_BS_RESEARCH.md)
+- [Future BS source policy](docs/future_bs/SOURCE_POLICY.md)
+- [Future BS claim boundary](docs/future_bs/CLAIM_BOUNDARY.md)
 - [Future BS limitations](docs/future_bs/LIMITATIONS.md)
 - [Future BS claims policy](docs/future_bs/CLAIMS_POLICY.md)
 

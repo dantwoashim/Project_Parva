@@ -2,10 +2,12 @@
 
 Project Parva's stable public-beta API lives under `/v3/api/*`.
 
+The lightweight public demo may expose a narrower subset for evaluation. Private or full deployments can enable the broader stable API surface with controlled configuration.
+
 Base URL (deployment example):
 
 ```text
-https://your-host.example/v3/api
+https://api.prabinghimire1.com.np/v3/api
 ```
 
 ## What is stable now
@@ -24,13 +26,13 @@ uvicorn app.main:app --app-dir backend --reload --port 8000
 ## 1. Calendar today
 
 ```bash
-curl https://your-host.example/v3/api/calendar/today
+curl https://api.prabinghimire1.com.np/v3/api/calendar/today
 ```
 
 ## 2. Gregorian to Bikram Sambat conversion
 
 ```bash
-curl "https://your-host.example/v3/api/calendar/convert?date=2026-10-21"
+curl "https://api.prabinghimire1.com.np/v3/api/calendar/convert?date=2026-10-21"
 ```
 
 ## 3. Personal Panchanga with POST JSON
@@ -38,7 +40,7 @@ curl "https://your-host.example/v3/api/calendar/convert?date=2026-10-21"
 Privacy-sensitive inputs should use POST bodies instead of query strings.
 
 ```bash
-curl -X POST https://your-host.example/v3/api/personal/panchanga ^
+curl -X POST https://api.prabinghimire1.com.np/v3/api/personal/panchanga ^
   -H "Content-Type: application/json" ^
   -d "{\"date\":\"2026-10-21\",\"lat\":\"27.7172\",\"lon\":\"85.3240\",\"tz\":\"Asia/Kathmandu\"}"
 ```
@@ -46,7 +48,7 @@ curl -X POST https://your-host.example/v3/api/personal/panchanga ^
 ## 4. Muhurta heatmap
 
 ```bash
-curl -X POST https://your-host.example/v3/api/muhurta/heatmap ^
+curl -X POST https://api.prabinghimire1.com.np/v3/api/muhurta/heatmap ^
   -H "Content-Type: application/json" ^
   -d "{\"date\":\"2026-10-21\",\"lat\":\"27.7172\",\"lon\":\"85.3240\",\"tz\":\"Asia/Kathmandu\",\"type\":\"travel\",\"assumption_set\":\"np-mainstream-v2\"}"
 ```
@@ -54,7 +56,7 @@ curl -X POST https://your-host.example/v3/api/muhurta/heatmap ^
 ## 5. Kundali
 
 ```bash
-curl -X POST https://your-host.example/v3/api/kundali ^
+curl -X POST https://api.prabinghimire1.com.np/v3/api/kundali ^
   -H "Content-Type: application/json" ^
   -d "{\"datetime\":\"2026-02-15T06:30:00+05:45\",\"lat\":\"27.7172\",\"lon\":\"85.3240\",\"tz\":\"Asia/Kathmandu\"}"
 ```
@@ -62,13 +64,13 @@ curl -X POST https://your-host.example/v3/api/kundali ^
 ## 6. Upcoming festivals
 
 ```bash
-curl "https://your-host.example/v3/api/festivals/upcoming?days=30&quality_band=computed"
+curl "https://api.prabinghimire1.com.np/v3/api/festivals/upcoming?days=30&quality_band=computed"
 ```
 
 ## JavaScript example
 
 ```js
-const response = await fetch('https://your-host.example/v3/api/temporal/compass', {
+const response = await fetch('https://api.prabinghimire1.com.np/v3/api/temporal/compass', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
@@ -90,7 +92,7 @@ console.log(payload.calculation_trace_id);
 ```python
 from parva_sdk import ParvaClient
 
-client = ParvaClient("https://your-host.example/v3/api")
+client = ParvaClient("https://api.prabinghimire1.com.np/v3/api")
 
 compass = client.temporal_compass(
     "2026-10-21",

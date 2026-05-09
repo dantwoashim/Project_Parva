@@ -1,12 +1,12 @@
 # Deploy on Cloudflare Pages
 
-Use Cloudflare Pages for the static frontend only. The backend API should run separately on Cloud Run or another container host.
+Use Cloudflare Pages for the static frontend only. The backend API should run separately on Render, Cloud Run, or another ASGI/container host.
 
 ## What this repo provides
 
 - a Vite frontend under `frontend/`
 - `frontend/public/_redirects` for SPA routing on Pages
-- `VITE_API_BASE` support for an absolute API hostname
+- `VITE_API_BASE_URL` support for an absolute API hostname
 
 ## Recommended Pages project settings
 
@@ -20,10 +20,11 @@ Use Cloudflare Pages for the static frontend only. The backend API should run se
 Set at least:
 
 - `NODE_VERSION=20`
-- `VITE_API_BASE=https://api.example.com/v3/api`
+- `VITE_API_BASE_URL=https://api.prabinghimire1.com.np`
 
 Optional:
 
+- `VITE_API_BASE=https://api.prabinghimire1.com.np/v3/api` for older path-based builds
 - `VITE_API_TIMEOUT_MS=10000`
 
 ## Preview deployments
@@ -45,5 +46,5 @@ For a typical production layout:
 After the domain is attached, confirm:
 
 - direct navigation to deep routes works
-- API requests reach the configured `VITE_API_BASE`
+- API requests reach the configured `VITE_API_BASE_URL`
 - static embed and developer pages under `frontend/public/` still resolve

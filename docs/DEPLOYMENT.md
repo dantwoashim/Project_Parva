@@ -16,7 +16,9 @@ npm --prefix frontend run dev
 
 ## Current build path
 - Parva's supported build and deploy path uses `backend/` and `frontend/`.
-- The current public demo backend path is Render using `PARVA_ROUTE_PROFILE=public_demo`.
+- The frontend is hosted on Cloudflare Pages.
+- The public backend API is served from `https://api.prabinghimire1.com.np`.
+- The backend can also be deployed privately using Docker or any ASGI-compatible host.
 
 ## Environment variables
 - `CORS_ALLOW_ORIGINS` (comma-separated)
@@ -65,7 +67,7 @@ make preflight-production
 
 ## Public demo backend on Render
 
-Use Render for the temporary public backend while Cloud Run billing is unavailable.
+Use Render for the lightweight public backend profile.
 
 - Blueprint: `render.yaml`
 - Start command: `uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT`
@@ -136,7 +138,7 @@ Reference docs:
 1. Deploy the backend on your chosen container/web-service runtime.
 2. Build the frontend with a production API base:
 ```bash
-set VITE_API_BASE=https://api.example.com/v3/api
+set VITE_API_BASE_URL=https://api.example.com
 set VITE_SOURCE_URL=https://github.com/<you>/<your-public-parva-fork>
 npm --prefix frontend run build
 ```
