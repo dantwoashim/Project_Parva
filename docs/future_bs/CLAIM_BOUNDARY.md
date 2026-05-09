@@ -2,7 +2,7 @@
 
 Project Parva is not an official government calendar publication.
 
-The future-BS research layer provides computational risk signals, validation posture, and source-aware comparison methods. It does not publish official future calendars.
+The future-BS research layer provides computational risk signals, validation posture, and source-aware comparison methods. It does not publish official future date authority.
 
 Every future output from this layer is treated as:
 
@@ -10,18 +10,20 @@ Every future output from this layer is treated as:
 computed_prediction_not_official
 ```
 
-Appropriate uses include:
+## Appropriate Uses
 
 - evaluating calendar assumptions before they enter operational systems
 - comparing external month-length assumptions against risk labels
 - identifying boundary-sensitive months for review
 - preparing controlled validation packages for private deployment
+- reconciling published official updates against internal systems
 
-Inappropriate uses include:
+## Not Claimed
 
-- treating Parva as a legal or tax authority
-- treating research outputs as official future publication
-- finalizing banking, contractual, or regulatory schedules without institutional approval
-- reporting experimental or weak-source agreement as official accuracy
+- official future publication
+- legal, tax, regulatory, or banking-contract final authority
+- guaranteed future calendar accuracy
+- broad future-date certainty
+- replacement for the relevant official institution or authority
 
-Official-grade claims require strong source policy, clear validation metadata, and enough official or reviewed printed evidence to support the stated claim.
+Official publication overrides computational predictions. Production use should follow the organization's own source policy, approval process, and legal requirements.

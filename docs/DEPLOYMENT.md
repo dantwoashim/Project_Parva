@@ -23,8 +23,9 @@ npm --prefix frontend run dev
 ## Environment variables
 - `CORS_ALLOW_ORIGINS` (comma-separated)
 - `PARVA_ENABLE_EXPERIMENTAL_API` (`true|false`, default `false`)
+- `PARVA_SHOW_PRIVATE_SCHEMA` (`true|false`, default `false`)
 - `PARVA_ALLOW_EXPERIMENTAL_IN_PROD` (`true|false`, default `false`)
-- `PARVA_ENV` (`development|production`)
+- `PARVA_ENV` (`development|public|production`)
 - `PARVA_ROUTE_PROFILE` (`full|public_demo`, default `full`)
 - `PARVA_MAX_REQUEST_BYTES` (default `1048576`)
 - `PARVA_MAX_QUERY_LENGTH` (default `4096`)
@@ -73,6 +74,18 @@ Use Render for the lightweight public backend profile.
 - Start command: `uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT`
 - Route profile: `PARVA_ROUTE_PROFILE=public_demo`
 - Experimental/private routes: disabled
+- Private schema visibility: disabled
+
+Recommended public environment:
+
+```text
+PARVA_ENV=public
+PARVA_ROUTE_PROFILE=public_demo
+PARVA_ENABLE_EXPERIMENTAL_API=false
+PARVA_SHOW_PRIVATE_SCHEMA=false
+PARVA_SOURCE_URL=https://github.com/dantwoashim/Project_Parva
+CORS_ALLOW_ORIGINS=https://prabinghimire1.com.np,https://www.prabinghimire1.com.np
+```
 
 The public-demo profile intentionally registers only:
 
@@ -136,13 +149,19 @@ Reference docs:
 ## Split frontend/backend deployment
 
 1. Deploy the backend on your chosen container/web-service runtime.
-2. Build the frontend with a production API base:
+2. Set the frontend API base in Cloudflare Pages:
+
+```text
+VITE_API_BASE_URL=https://api.prabinghimire1.com.np
+```
+
+3. Build the frontend with a production API base:
 ```bash
 set VITE_API_BASE_URL=https://api.example.com
 set VITE_SOURCE_URL=https://github.com/<you>/<your-public-parva-fork>
 npm --prefix frontend run build
 ```
-3. Publish the frontend on your static host of choice.
+4. Publish the frontend on your static host of choice.
 
 For Cloudflare Pages specifically, the repo already includes `frontend/public/_redirects` so client-side routing works after deploy.
 

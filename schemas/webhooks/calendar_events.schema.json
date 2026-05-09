@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/webhooks/calendar_events.schema.json",
+  "title": "Project Parva Calendar Webhook Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_type",
+    "release_version",
+    "source_tier",
+    "affected_bs_year",
+    "affected_months",
+    "requires_review",
+    "publication_status",
+    "signature"
+  ],
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "calendar.official_release.verified",
+        "calendar.risk_label.changed",
+        "calendar.client_sheet.disagreement_detected",
+        "calendar.month_boundary.review_required"
+      ]
+    },
+    "release_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_tier": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review"
+      ]
+    },
+    "affected_bs_year": {
+      "type": "integer",
+      "minimum": 1900,
+      "maximum": 2200
+    },
+    "affected_months": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "requires_review": {
+      "type": "boolean"
+    },
+    "publication_status": {
+      "const": "computed_prediction_not_official"
+    },
+    "signature": {
+      "type": "string",
+      "description": "Placeholder for deployment-specific event signing."
+    }
+  }
+}

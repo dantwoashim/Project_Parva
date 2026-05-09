@@ -30,7 +30,7 @@ This public template is intentionally aggregate-first. It should not expose corr
 
 ## Caveats
 
-Parva output is a computational prediction and validation aid. It is not an official future calendar publication or legal, tax, banking-contract, or regulatory authority.
+Parva output is a computational prediction and validation aid. It is not official publication or legal, tax, banking-contract, or regulatory authority.
 
 ## Aggregate Table
 

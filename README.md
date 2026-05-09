@@ -1,31 +1,44 @@
 # Project Parva
 
-Project Parva is an open-source Nepali temporal infrastructure project for Bikram Sambat conversion, fiscal-year logic, panchanga-related computation, festival intelligence, and source-aware calendar validation.
+Project Parva is open-source Nepali temporal infrastructure for Bikram Sambat conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation.
 
-It also includes an experimental future-BS risk research layer for evaluating month-length assumptions before they affect financial, contractual, reporting, or operational systems.
+It also includes a controlled future-BS risk research layer for evaluating month-length assumptions before they affect financial, contractual, reporting, or operational systems.
 
-## Technical Thesis
+## Why This Exists
 
-Nepali calendar logic is not just a formatting problem. In real systems, BS dates affect fiscal reports, contract schedules, renewal dates, interest periods, compliance exports, and audit trails.
+Nepali calendar logic is infrastructure, not decoration.
 
-Parva treats calendar behavior as infrastructure. Every computed result should be explainable, source-aware, reproducible, and honest about its confidence.
+BS dates affect fiscal reports, payroll, contracts, transaction records, holidays, reporting periods, renewals, interest periods, compliance exports, and audit trails. Fragile calendar tables can quietly become operational risk when they are copied, extended, or updated without source policy.
+
+Parva treats calendar behavior as something that should be explainable, source-aware, reproducible, and honest about confidence.
+
+## What Parva Provides
+
+| Area | Purpose |
+| --- | --- |
+| Calendar conversion | BS to AD, AD to BS, today endpoints, and month metadata |
+| Fiscal-year logic | Nepali fiscal boundaries, fiscal labels, periods, and date-range helpers |
+| Date validation | BS date validation and published-range checks |
+| Panchanga and lunar computation | Tithi, nakshatra, yoga, karana, paksha, and related computation where enabled |
+| Festival intelligence | Festival catalog, observance rules, calendar feeds, and explanations |
+| Developer API | FastAPI endpoints, OpenAPI docs, examples, and integration-ready responses |
+| Source policy | Source tiers, claim boundaries, and reliability metadata |
+| Future BS risk research | Experimental month-length risk analysis, source-aware validation, and review labels |
 
 ## Live Surfaces
 
 - Website: [https://prabinghimire1.com.np](https://prabinghimire1.com.np)
 - API docs: [https://api.prabinghimire1.com.np/docs](https://api.prabinghimire1.com.np/docs)
-- OpenAPI schema: [https://api.prabinghimire1.com.np/openapi.json](https://api.prabinghimire1.com.np/openapi.json)
-- Source code: [https://github.com/dantwoashim/Project_Parva](https://github.com/dantwoashim/Project_Parva)
+- OpenAPI: [https://api.prabinghimire1.com.np/openapi.json](https://api.prabinghimire1.com.np/openapi.json)
+- Source: [https://github.com/dantwoashim/Project_Parva](https://github.com/dantwoashim/Project_Parva)
 
-The public API demo is deployed as a lightweight public service. First requests may take a few seconds if the instance is waking up.
-
-> Note: The public API demo is optimized for evaluation. Private deployments can be run from the Dockerized backend with controlled configuration.
+The public API demo is optimized for evaluation. First requests may take a few seconds if the instance is waking up.
 
 ## Public API Boundary
 
-The public deployment exposes stable calendar and documentation surfaces intended for technical evaluation.
+The public deployment exposes stable calendar and documentation surfaces intended for technical evaluation. The lightweight Render demo may expose a narrower subset than a private or full public profile.
 
-Public surfaces include:
+Public surfaces in the full public profile include:
 
 | Surface | Purpose |
 | --- | --- |
@@ -34,30 +47,19 @@ Public surfaces include:
 | `/v3/api/festivals/*` | Festival and observance APIs |
 | `/v4/api/future-bs/capabilities` | Public summary of the future-BS research layer |
 
-Private or experimental future-BS routes are not part of the public deployment. Future month-length prediction, exports, model runs, backtests, and client comparison workflows are intended for controlled evaluation or private deployment.
+Private or experimental future-BS routes are not part of the public deployment by default. Future month-length prediction, exports, model runs, backtests, client comparison workflows, and schedule-impact simulations are intended for controlled evaluation or private deployment.
 
-## Deployment Model
+## Future BS Risk Research
 
-Project Parva is designed to run in two modes:
+Parva does not publish guaranteed future BS dates.
 
-| Mode | Purpose |
-| --- | --- |
-| Public demo | Lightweight API evaluation, documentation, stable calendar endpoints |
-| Private deployment | Version-pinned deployment for organizations that need controlled calendar validation, internal audits, or sensitive future-BS risk workflows |
+The research layer studies whether future BS month-length assumptions are stable, boundary-sensitive, source-conflicted, or review-worthy before they enter financial, contractual, reporting, or operational systems.
 
-The public service is not the authority for legal, tax, regulatory, or banking-contract decisions. Production use should be validated against the organization's own requirements and source policy.
+Future-BS outputs are labeled:
 
-## What Parva Provides
-
-| Area | Purpose |
-| --- | --- |
-| Calendar conversion | BS/AD conversion, validation, today endpoints, and month metadata |
-| Enterprise date logic | Fiscal-year boundaries, date-range helpers, and business validation |
-| Panchanga and lunar logic | Tithi, nakshatra, yoga, karana, lunar phase, and paksha surfaces |
-| Festival intelligence | Festival catalog, observance rules, calendar feeds, and explanations |
-| Developer API | FastAPI endpoints, OpenAPI docs, examples, and integration-ready responses |
-| Future BS risk research | Experimental month-length risk analysis, confidence labels, and validation methodology |
-| Provenance and reliability | Source labels, claim boundaries, and reproducible artifacts |
+```text
+computed_prediction_not_official
+```
 
 ## Current Research Result
 
@@ -65,7 +67,7 @@ In the current Tier 1 official-verified validation window available to Parva, co
 
 A legacy/static baseline matched 68 out of 72 on the same window, with misses concentrated around boundary-sensitive months.
 
-This is a limited validation result. It supports the research direction, but it is not a claim of official authority or broad future-calendar certainty.
+This is a limited validation result. It is not a claim of official authority, guaranteed future accuracy, or broad future-calendar certainty.
 
 ## Source Policy
 
@@ -80,24 +82,12 @@ Calendar evidence is classified by source strength:
 | Public witness | Public dated material that links AD and BS dates |
 | Publisher reference | Public calendar or publisher material |
 | Software/table reference | Open-source or static lookup references |
-| Third-party reference | App/site references used for comparison, not authority |
+| Third-party reference | App or site references used for comparison, not authority |
 | Needs review | Ambiguous, conflicting, or incomplete evidence |
 
-Only strong official or reviewed printed evidence can support official-grade claims.
+Weak third-party rows and software-table rows can help with comparison, disagreement detection, and review targeting. They do not support official-grade claims.
 
-## Claim Boundary
-
-Parva is not an official government calendar publication.
-
-Future outputs from the research layer are treated as:
-
-```text
-computed_prediction_not_official
-```
-
-They are intended for validation, audit, comparison, and risk detection. Official publication, legal interpretation, tax treatment, banking-contract finalization, and production financial decisions require the relevant authority or institution's own approval.
-
-## API Examples
+## Developer Quickstart
 
 Base URL:
 
@@ -131,7 +121,18 @@ Future-BS research capabilities:
 curl https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities
 ```
 
-The public API intentionally exposes capability and claim-boundary information for the Future BS research layer. Direct future prediction values, export routes, model-run details, residuals, and operational audit tools belong behind private access controls.
+Public examples intentionally avoid direct future month-length prediction, future exports, backtests, model runs, schedule-impact simulation, and private comparison workflows.
+
+## Deployment Model
+
+Project Parva is designed to run in two modes:
+
+| Mode | Purpose |
+| --- | --- |
+| Public demo | Lightweight API evaluation, documentation, stable calendar endpoints |
+| Private deployment | Version-pinned deployment for organizations that need controlled calendar validation, internal audits, or sensitive future-BS risk workflows |
+
+The public service is not the authority for legal, tax, regulatory, or banking-contract decisions. Production use should be validated against the organization's own requirements and source policy.
 
 ## Local Development
 
@@ -158,9 +159,9 @@ npm --prefix frontend ci
 npm --prefix frontend run dev
 ```
 
-The `.env.example` file is kept as a local-development map. It contains blank placeholders and example defaults, not production secrets.
+The `.env.example` file is a public-safe configuration map. It contains blank placeholders and example defaults, not production secrets.
 
-## Validation
+## Testing
 
 Focused checks:
 
@@ -184,25 +185,23 @@ make verify
 
 - [API quickstart](docs/API_QUICKSTART.md)
 - [API reference](docs/API_REFERENCE_V3.md)
+- [Public API boundary](docs/PUBLIC_API_BOUNDARY.md)
+- [Deployment](docs/DEPLOYMENT.md)
 - [Stability policy](docs/STABILITY.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
 - [Data sources and licenses](docs/DATA_SOURCES_AND_LICENSES.md)
-- [Public API boundary](docs/PUBLIC_API_BOUNDARY.md)
-- [Deployment](docs/DEPLOYMENT.md)
-- [Future BS methodology](docs/future_bs/METHODOLOGY.md)
-- [Future BS research boundary](docs/future_bs/FUTURE_BS_RESEARCH.md)
+- [Future BS research](docs/future_bs/FUTURE_BS_RESEARCH.md)
+- [Future BS risk labels](docs/future_bs/RISK_LABELS.md)
 - [Future BS source policy](docs/future_bs/SOURCE_POLICY.md)
 - [Future BS claim boundary](docs/future_bs/CLAIM_BOUNDARY.md)
-- [Future BS limitations](docs/future_bs/LIMITATIONS.md)
-- [Future BS claims policy](docs/future_bs/CLAIMS_POLICY.md)
+- [Future BS reconciliation workflow](docs/future_bs/RECONCILIATION_WORKFLOW.md)
+- [SDK roadmap](docs/SDK_ROADMAP.md)
 
-## What Parva Is Not
+## Claim Boundary
 
-- Not an official government calendar publication.
-- Not legal, tax, or banking-contract final authority.
-- Not a replacement for an institution's production calendar approval process.
-- Not a claim that all historical rows in the corpus have equal source strength.
-- Not a blanket claim of future BS month-length certainty.
+Parva is not an official government calendar publication.
+
+It is not legal, tax, banking-contract, or regulatory final authority. Official publication, legal interpretation, tax treatment, banking-contract finalization, and production financial decisions require the relevant authority or institution's own approval.
 
 ## License
 

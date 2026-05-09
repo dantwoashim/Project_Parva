@@ -88,6 +88,7 @@ def future_bs_capabilities_payload() -> dict[str, Any]:
             "aggregate audit report",
             "future month-length risk review",
             "schedule impact screening",
+            "controlled reconciliation workflow",
         ],
         "not_claimed": [
             "official_future_publication",

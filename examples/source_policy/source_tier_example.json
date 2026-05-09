@@ -1,0 +1,8 @@
+{
+  "source_id": "synthetic-public-example",
+  "source_tier": "printed_verified",
+  "manual_review_status": "reviewed_example",
+  "usable_for_official_claim": false,
+  "publication_status": "computed_prediction_not_official",
+  "note": "Synthetic example for source-policy shape only. This is not calendar evidence."
+}

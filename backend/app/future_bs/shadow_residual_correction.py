@@ -181,7 +181,7 @@ def predict_shadow_corrected_year(
         "official_claim_usable": False,
         "claim_boundary": (
             "Uses shadow/reference residual calibration for diagnostic agreement only; "
-            "not official future calendar proof."
+            "not official publication proof."
         ),
     }
 

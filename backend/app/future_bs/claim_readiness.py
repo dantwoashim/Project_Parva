@@ -53,7 +53,7 @@ def _safe_claims() -> list[str]:
 
 def _unsafe_claims() -> list[str]:
     return [
-        "Parva guarantees official future calendar to 2200 BS.",
+        "Parva guarantees future calendar authority.",
         "Parva replaces the Panchanga Nirnayak Samiti.",
         "Parva's future predictions are official.",
         "Parva has claim-ready 99%+ accuracy without sufficient verified source cases.",
