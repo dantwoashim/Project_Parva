@@ -91,3 +91,29 @@ def test_future_bs_private_routes_are_hidden_from_schema_when_mounted(monkeypatc
     paths = set(private_client.get("/openapi.json").json()["paths"])
     assert "/v4/api/future-bs/capabilities" in paths
     assert "/v4/api/future-bs/month-lengths/{bs_year}" not in paths
+
+
+def test_public_demo_profile_only_exposes_demo_api_paths(monkeypatch):
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "public_demo")
+    monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "false")
+    monkeypatch.setenv("PARVA_SHOW_PRIVATE_SCHEMA", "false")
+    monkeypatch.setenv("PARVA_ENV", "public")
+    monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
+    monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+
+    from app.bootstrap.app_factory import create_app
+
+    public_demo_client = TestClient(create_app())
+    paths = set(public_demo_client.get("/openapi.json").json()["paths"])
+
+    assert "/v3/api/calendar/today" in paths
+    assert "/v3/api/calendar/convert" in paths
+    assert "/v3/api/calendar/bs-to-gregorian" in paths
+    assert "/v4/api/future-bs/capabilities" in paths
+    assert "/v4/api/future-bs/month-lengths/{bs_year}" not in paths
+    assert "/v5/api/calendar-model-risk/capabilities" not in paths
+    assert "/v3/api/enterprise/capabilities" not in paths
+
+    assert public_demo_client.get("/v3/api/calendar/today").status_code == 200
+    assert public_demo_client.get("/v4/api/future-bs/capabilities").status_code == 200
+    assert public_demo_client.get("/v3/api/enterprise/capabilities").status_code == 404

@@ -16,12 +16,14 @@ npm --prefix frontend run dev
 
 ## Current build path
 - Parva's supported build and deploy path uses `backend/` and `frontend/`.
+- The current public demo backend path is Render using `PARVA_ROUTE_PROFILE=public_demo`.
 
 ## Environment variables
 - `CORS_ALLOW_ORIGINS` (comma-separated)
 - `PARVA_ENABLE_EXPERIMENTAL_API` (`true|false`, default `false`)
 - `PARVA_ALLOW_EXPERIMENTAL_IN_PROD` (`true|false`, default `false`)
 - `PARVA_ENV` (`development|production`)
+- `PARVA_ROUTE_PROFILE` (`full|public_demo`, default `full`)
 - `PARVA_MAX_REQUEST_BYTES` (default `1048576`)
 - `PARVA_MAX_QUERY_LENGTH` (default `4096`)
 - `PARVA_RATE_LIMIT_ENABLED` (`true|false`, default `true`)
@@ -61,10 +63,42 @@ Run the production preflight locally or in CI with:
 make preflight-production
 ```
 
+## Public demo backend on Render
+
+Use Render for the temporary public backend while Cloud Run billing is unavailable.
+
+- Blueprint: `render.yaml`
+- Start command: `uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT`
+- Route profile: `PARVA_ROUTE_PROFILE=public_demo`
+- Experimental/private routes: disabled
+
+The public-demo profile intentionally registers only:
+
+- `GET /v3/api/calendar/today`
+- `GET /v3/api/calendar/convert`
+- `POST /v3/api/calendar/bs-to-gregorian`
+- `GET /v3/api/calendar/panchanga`
+- `GET /v4/api/future-bs/capabilities`
+
+Direct future-BS predictions, exports, model runs, backtests, loan impact, Excel
+comparison, and sensitive future vectors are not registered in this profile.
+
+The static API docs mirror is generated under `docs/api-docs/`:
+
+```bash
+python scripts/release/generate_public_demo_openapi.py
+```
+
+Host the `docs/` folder through GitHub Pages to expose:
+
+```text
+https://dantwoashim.github.io/Project_Parva/api-docs/
+```
+
 ## Provider posture
 
 - Treat deployment as provider-neutral. The repo hardening gates validate runtime requirements, not just one host.
-- `render.yaml` may remain as a legacy example, but it is not the canonical production control surface.
+- `render.yaml` is the temporary public-demo control surface.
 - The recommended hosted split is:
   - Cloudflare Pages for `frontend/`
   - Cloud Run for the backend container
@@ -125,12 +159,11 @@ For Cloudflare Pages specifically, the repo already includes `frontend/public/_r
 - For serious production traffic, replace the public remote provider with a self-hosted or paid upstream.
 - Keep provider time budgets and retries conservative so place search cannot dominate request latency.
 
-## Legacy Render note
+## Render note
 
-- `render.yaml` is kept as a legacy deployment example only.
-- If you still use Render, validate it with `python scripts/release/check_render_blueprint.py`.
-- Do not treat Render-specific settings as the only supported production path.
-- The split-hosting path should also pass `python scripts/release/check_cloudrun_blueprint.py`.
+- Validate Render config with `python scripts/release/check_render_blueprint.py`.
+- Do not use the Render public-demo profile for private future-BS work.
+- The split-hosting Cloud Run path should also pass `python scripts/release/check_cloudrun_blueprint.py` when it is restored.
 
 ## CI gates
 ```bash

@@ -35,6 +35,7 @@ from app.api import (
     policy_router,
     provenance_router,
     public_artifacts_router,
+    public_demo_calendar_router,
     reliability_router,
     resolve_router,
     spec_router,
@@ -50,6 +51,7 @@ class RouterRegistration:
     policy_name: str
     policy_path: str | None = None
     include_v3: bool = True
+    include_base: bool = True
     include_experimental_versions: bool = True
     register_when_experimental_enabled: bool = False
     include_in_policy_specs: bool = True
@@ -128,6 +130,28 @@ ROUTER_REGISTRATIONS = [
 PUBLIC_ROUTERS = [registration.router for registration in ROUTER_REGISTRATIONS if registration.audience == "public"]
 TRUST_ROUTERS = [registration.router for registration in ROUTER_REGISTRATIONS if registration.audience == "trust"]
 
+PUBLIC_DEMO_ROUTE_REGISTRATIONS = [
+    RouterRegistration(
+        public_demo_calendar_router,
+        "public",
+        "public",
+        "calendar_public_demo",
+        policy_path="/v3/api/calendar",
+        include_v3=True,
+        include_base=False,
+        include_experimental_versions=False,
+    ),
+    RouterRegistration(
+        future_bs_router,
+        "public",
+        "public",
+        "future_bs_public_demo",
+        policy_path="/v4/api/future-bs/capabilities",
+        include_v3=False,
+        include_experimental_versions=False,
+    ),
+]
+
 
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
 
@@ -168,23 +192,28 @@ def register_routers(
     enable_experimental_api: bool,
     show_private_schema: bool = False,
     environment: str = "development",
+    route_profile: str = "full",
 ) -> None:
     """Register /api + /v3 routers, with optional experimental version tracks."""
     include_trust = True
-    registrations = [
-        registration
-        for registration in ROUTER_REGISTRATIONS
-        if registration.audience == "public"
-        or (include_trust and registration.audience == "trust")
-        or (enable_experimental_api and registration.register_when_experimental_enabled)
-    ]
+    if route_profile == "public_demo":
+        registrations = PUBLIC_DEMO_ROUTE_REGISTRATIONS
+    else:
+        registrations = [
+            registration
+            for registration in ROUTER_REGISTRATIONS
+            if registration.audience == "public"
+            or (include_trust and registration.audience == "trust")
+            or (enable_experimental_api and registration.register_when_experimental_enabled)
+        ]
     for registration in registrations:
-        app.include_router(
-            registration.router,
-            include_in_schema=(
-                show_private_schema if registration.register_when_experimental_enabled else True
-            ),
-        )
+        if registration.include_base:
+            app.include_router(
+                registration.router,
+                include_in_schema=(
+                    show_private_schema if registration.register_when_experimental_enabled else True
+                ),
+            )
 
     for registration in registrations:
         if registration.include_v3:

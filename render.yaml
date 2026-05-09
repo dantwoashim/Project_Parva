@@ -1,25 +1,35 @@
 services:
   - type: web
-    name: project-parva
-    env: docker
+    name: project-parva-public-demo
+    env: python
     plan: free
-    dockerfilePath: ./Dockerfile
+    buildCommand: pip install --upgrade pip setuptools wheel && pip install -c requirements/constraints.txt -e .
+    startCommand: uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health/ready
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.11"
+      - key: PYTHONPATH
+        value: backend
+      - key: PARVA_ROUTE_PROFILE
+        value: public_demo
       - key: PARVA_ENABLE_EXPERIMENTAL_API
         value: "false"
       - key: PARVA_ALLOW_EXPERIMENTAL_IN_PROD
         value: "false"
+      - key: PARVA_SHOW_PRIVATE_SCHEMA
+        value: "false"
       - key: PARVA_ENV
-        value: production
+        value: public
+      - key: PARVA_SOURCE_URL
+        value: https://github.com/dantwoashim/Project_Parva
       - key: PARVA_RATE_LIMIT_ENABLED
         value: "true"
       - key: PARVA_RATE_LIMIT_BACKEND
-        value: redis
-      - key: PARVA_REDIS_URL
-        sync: false
+        value: memory
+      - key: PARVA_REQUIRE_PRECOMPUTED
+        value: "false"
       - key: PARVA_SERVE_FRONTEND
-        value: "true"
-      - key: PARVA_SOURCE_URL
-        sync: false
+        value: "false"
       - key: CORS_ALLOW_ORIGINS
-        value: https://project-parva.onrender.com
+        value: https://dantwoashim.github.io

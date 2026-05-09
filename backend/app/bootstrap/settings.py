@@ -44,6 +44,7 @@ class AppSettings:
     environment: str
     license_mode: str
     source_url: str | None
+    route_profile: str
     enable_experimental_api: bool
     show_private_schema: bool
     allow_experimental_in_prod: bool
@@ -180,6 +181,12 @@ def _validate_experimental_settings(settings: AppSettings) -> list[str]:
     return errors
 
 
+def _validate_route_profile(settings: AppSettings) -> list[str]:
+    if settings.route_profile in {"full", "public_demo"}:
+        return []
+    return ["PARVA_ROUTE_PROFILE must be either 'full' or 'public_demo'."]
+
+
 def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
     if not settings.rate_limit_enabled:
         return []
@@ -239,6 +246,7 @@ def load_settings() -> AppSettings:
         license_mode=os.getenv("PARVA_LICENSE_MODE", "AGPL-3.0-or-later").strip()
         or "AGPL-3.0-or-later",
         source_url=_parse_optional_text(os.getenv("PARVA_SOURCE_URL")),
+        route_profile=(os.getenv("PARVA_ROUTE_PROFILE", "full").strip() or "full"),
         enable_experimental_api=_parse_bool(
             os.getenv("PARVA_ENABLE_EXPERIMENTAL_API"), default=False
         ),
@@ -290,6 +298,7 @@ def validate_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
     errors.extend(_validate_license_mode(settings))
     errors.extend(_validate_source_url(settings))
+    errors.extend(_validate_route_profile(settings))
     errors.extend(_validate_experimental_settings(settings))
     errors.extend(_validate_rate_limit_settings(settings))
     errors.extend(_validate_billing_settings(settings))

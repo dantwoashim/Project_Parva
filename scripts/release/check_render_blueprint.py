@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the zero-budget Render blueprint against current production expectations."""
+"""Validate the public-demo Render blueprint."""
 
 from __future__ import annotations
 
@@ -38,12 +38,17 @@ def main() -> int:
     failures: list[str] = []
 
     expected_values = {
+        "PARVA_ROUTE_PROFILE": "public_demo",
         "PARVA_ENABLE_EXPERIMENTAL_API": "false",
         "PARVA_ALLOW_EXPERIMENTAL_IN_PROD": "false",
-        "PARVA_ENV": "production",
+        "PARVA_SHOW_PRIVATE_SCHEMA": "false",
+        "PARVA_ENV": "public",
+        "PARVA_SOURCE_URL": "https://github.com/dantwoashim/Project_Parva",
         "PARVA_RATE_LIMIT_ENABLED": "true",
-        "PARVA_RATE_LIMIT_BACKEND": "redis",
-        "PARVA_SERVE_FRONTEND": "true",
+        "PARVA_RATE_LIMIT_BACKEND": "memory",
+        "PARVA_REQUIRE_PRECOMPUTED": "false",
+        "PARVA_SERVE_FRONTEND": "false",
+        "CORS_ALLOW_ORIGINS": "https://dantwoashim.github.io",
     }
 
     for key, expected in expected_values.items():
@@ -51,27 +56,11 @@ def main() -> int:
         if actual != expected:
             failures.append(f"{key} should be {expected!r} in render.yaml (found {actual!r}).")
 
-    source_url = envs.get("PARVA_SOURCE_URL")
-    if not source_url:
-        failures.append("PARVA_SOURCE_URL is missing from render.yaml.")
-    else:
-        source_value = source_url.get("value", "")
-        source_sync = source_url.get("sync", "")
-        if not source_value and source_sync.lower() != "false":
-            failures.append(
-                "PARVA_SOURCE_URL must either define a public repository/source archive URL or use sync: false for operator-supplied configuration."
-            )
-
-    redis_url = envs.get("PARVA_REDIS_URL")
-    if not redis_url:
-        failures.append("PARVA_REDIS_URL is missing from render.yaml.")
-    else:
-        redis_sync = redis_url.get("sync", "")
-        redis_value = redis_url.get("value", "")
-        if not redis_value and redis_sync.lower() != "false":
-            failures.append(
-                "PARVA_REDIS_URL must either define a value or use sync: false for operator-supplied configuration."
-            )
+    text = RENDER_BLUEPRINT.read_text(encoding="utf-8")
+    if "--port $PORT" not in text:
+        failures.append("Render startCommand must bind uvicorn to $PORT.")
+    if "PARVA_REDIS_URL" in envs:
+        failures.append("Public-demo Render blueprint should not require Redis.")
 
     admin_token = envs.get("PARVA_ADMIN_TOKEN", {}).get("value", "")
     if admin_token:

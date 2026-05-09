@@ -14,6 +14,17 @@ Parva treats calendar behavior as infrastructure. Every computed result should b
 
 - API documentation and demo deployment are being migrated.
 
+## API Availability
+
+The public API demo is currently being migrated from Cloud Run to a lighter public deployment.
+
+The repository, methodology, and public-safe API surface remain available here:
+
+- Source: [https://github.com/dantwoashim/Project_Parva](https://github.com/dantwoashim/Project_Parva)
+- API docs mirror: [https://dantwoashim.github.io/Project_Parva/api-docs/](https://dantwoashim.github.io/Project_Parva/api-docs/)
+
+Production/private deployments can be run from the Dockerized backend with version-pinned config.
+
 ## What Parva Provides
 
 | Area | Purpose |

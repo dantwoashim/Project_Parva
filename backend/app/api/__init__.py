@@ -28,6 +28,7 @@ from .place_routes import router as place_router
 from .policy_routes import router as policy_router
 from .provenance_routes import router as provenance_router
 from .public_artifacts_routes import router as public_artifacts_router
+from .public_demo_routes import router as public_demo_calendar_router
 from .reliability_routes import router as reliability_router
 from .resolve_routes import router as resolve_router
 from .spec_routes import router as spec_router
@@ -57,6 +58,7 @@ __all__ = [
     "spec_router",
     "integration_feed_router",
     "public_artifacts_router",
+    "public_demo_calendar_router",
     "personal_router",
     "muhurta_router",
     "muhurta_calendar_router",

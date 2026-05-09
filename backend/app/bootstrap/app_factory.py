@@ -165,6 +165,7 @@ def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, obje
     app.state.started_at = datetime.now(timezone.utc)
     app.state.enable_experimental_api = settings.enable_experimental_api
     app.state.environment = settings.environment
+    app.state.route_profile = settings.route_profile
     app.state.license_mode = settings.license_mode
     app.state.serve_frontend = settings.serve_frontend
     app.state.rate_limit_backend = settings.rate_limit_backend
@@ -431,6 +432,7 @@ def create_app() -> FastAPI:
         enable_experimental_api=settings.enable_experimental_api,
         show_private_schema=settings.show_private_schema,
         environment=settings.environment,
+        route_profile=settings.route_profile,
     )
     unclassified_routes = find_unclassified_api_routes(app.routes)
     if unclassified_routes:
