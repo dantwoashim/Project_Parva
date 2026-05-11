@@ -1,185 +1,59 @@
-# API Reference (v3 Public)
+# Deployment
 
-Base URL (deployment example): `https://your-host.example/v3/api`
+Project Parva is designed to run in two deployment profiles:
 
-Privacy-sensitive compute routes now support `POST` JSON bodies and should use
-that shape by default. Legacy `GET` query forms remain available for
-compatibility.
+1. A public demo profile for safe API evaluation.
+2. A private or full deployment profile for organizations that need controlled calendar validation, internal audit workflows, or sensitive future-BS research surfaces.
 
-Practical integration guides:
+The current public deployment uses:
 
-- `docs/API_QUICKSTART.md`
-- `docs/EMBED_GUIDE.md`
+| Layer | Platform | URL |
+|---|---|---|
+| Frontend | Cloudflare Pages | https://prabinghimire1.com.np |
+| Backend API | Render | https://api.prabinghimire1.com.np |
+| Source code | GitHub | https://github.com/dantwoashim/Project_Parva |
 
-Selected routes also support an additive envelope mode.
-Send header `X-Parva-Envelope: data-meta` to receive:
+The public backend is intentionally narrower than a full private deployment. It exposes stable public calendar and methodology surfaces, while private or experimental future-BS workflows stay disabled by default.
 
-```json
-{
-  "data": { "...": "route payload" },
-  "meta": {
-    "confidence": "computed",
-    "method": "ephemeris_udaya",
-    "provenance": {},
-    "uncertainty": {},
-    "trace_id": "trace_...",
-    "policy": {},
-    "degraded": { "active": false, "reasons": [], "defaults_applied": [] }
-  }
-}
-```
+## Public deployment boundary
 
-Without that header, the public v3 response shape remains unchanged.
+The public API demo is for technical evaluation, documentation, and public-safe calendar functionality.
 
-## Temporal Cartography Endpoints
-- `POST /temporal/compass` with JSON body `{ "date", "lat", "lon", "tz", "quality_band" }`
-- `GET /festivals/timeline?from=YYYY-MM-DD&to=YYYY-MM-DD&quality_band=&category=&region=&lang=en|ne`
-- `POST /muhurta/heatmap` with JSON body `{ "date", "lat", "lon", "tz", "type", "assumption_set" }`
-- `POST /kundali/graph` with JSON body `{ "datetime", "lat", "lon", "tz" }`
-- `GET /glossary?domain=panchanga|muhurta|kundali&lang=en|ne`
+Public surfaces may include:
 
-## Core Calendar
-- `GET /calendar/today`
-- `GET /calendar/convert?date=YYYY-MM-DD`
-- `GET /calendar/convert/compare?date=YYYY-MM-DD`
-- `GET /calendar/tithi?date=YYYY-MM-DD&latitude=&longitude=`
-- `GET /calendar/panchanga?date=YYYY-MM-DD`
-- `GET /calendar/panchanga/range?start=YYYY-MM-DD&days=7`
-- `GET /resolve?date=YYYY-MM-DD&profile=&latitude=&longitude=&include_trace=true|false`
+- health/status endpoints
+- BS/AD conversion
+- current Nepali date
+- BS date validation
+- fiscal-year helpers where enabled
+- public panchanga endpoints where enabled
+- public festival endpoints where enabled
+- future-BS capabilities summary
 
-## Enterprise Calendar Evaluation
-- `GET /enterprise/capabilities`
-- `GET /enterprise/fiscal-year/{bs_year}`
-- `GET /enterprise/bs-months/{bs_year}`
-- `POST /enterprise/business-days` with JSON body `{ "start_bs", "end_bs", "weekend", "include_start", "include_end", "holiday_policy" }`
-- `POST /enterprise/bulk-convert` with JSON body `{ "mode": "ad_to_bs|bs_to_ad", "dates": [] }`
-- `POST /enterprise/validate` with JSON body `{ "cases": [{ "id", "type", "input", "expected" }] }`
+Private or experimental surfaces must stay disabled by default on the public deployment:
 
-The enterprise surface is intended for technical evaluation, regression reference
-work, and private-deployment review. Business-day calculations are weekend-aware
-only unless a holiday policy profile is configured; Parva does not present these
-routes as legal, tax, or final financial authority without client validation.
+- direct future BS month-length prediction
+- future range prediction
+- CSV/XLSX future exports
+- model runs
+- backtests
+- residual analysis
+- client sheet comparison
+- loan-impact simulation
+- corrected future values
+- private audit workflows
 
-## Festivals
-- `GET /festivals?quality_band=computed|provisional|inventory|all&algorithmic_only=true|false`
-- `GET /festivals/upcoming?days=90&quality_band=computed|provisional|inventory|all`
-- `GET /festivals/{festival_id}?year=2026`
-- `GET /festivals/{festival_id}/explain?year=2026`
-- `GET /festivals/{festival_id}/dates?years=3`
-- `GET /festivals/on-date/{target_date}`
-- `GET /festivals/coverage`
-- `GET /festivals/coverage/scoreboard`
+Future-BS research outputs are treated as:
 
-### Festival detail ritual contract
-`GET /festivals/{festival_id}` includes canonical ritual shape:
-```json
-{
-  "festival": {
-    "ritual_sequence": {
-      "days": [
-        {
-          "name": "Ghatasthapana",
-          "events": [{ "title": "Kalash Sthapana" }]
-        }
-      ]
-    }
-  }
-}
-```
+`computed_prediction_not_official`
 
-Festival detail also includes additive `completeness` signals so clients can show
-truthful section-level status for narrative depth, ritual sequence coverage,
-date resolution, and related observances.
+Project Parva is not an official government calendar publication, legal authority, tax authority, banking-contract authority, or replacement for official Nepali calendar publication.
 
-## Personal Stack
-- `POST /personal/panchanga` with JSON body `{ "date", "lat", "lon", "tz" }`
-  - includes `sunrise`, `local_sunrise`, `local_sunset`, `timezone_source`, `method_profile`, `assumption_set_id`, `quality_band`.
-  - sunrise fields use the canonical time-reference object shape:
-  ```json
-  {
-    "local": "2026-02-15T06:44:00+05:45",
-    "utc": "2026-02-15T00:59:00Z",
-    "local_time": "06:44 AM"
-  }
-  ```
-- `POST /muhurta` with JSON body `{ "date", "lat", "lon", "tz", "birth_nakshatra" }`
-- `POST /muhurta/auspicious` with JSON body `{ "date", "type", "lat", "lon", "tz", "birth_nakshatra", "assumption_set" }`
-  - includes `reason_codes[]`, `rank_explanation`, `confidence_score`.
-- `POST /muhurta/rahu-kalam` with JSON body `{ "date", "lat", "lon", "tz" }`
-- `POST /kundali` with JSON body `{ "datetime", "lat", "lon", "tz" }`
-  - includes `insight_blocks[]` for plain-language sidebar mapping.
-- `POST /kundali/lagna` with JSON body `{ "datetime", "lat", "lon", "tz" }`
+## Frontend deployment
 
-## Feeds
-- `GET /feeds/all.ics?years=2&lang=en`
-- `GET /feeds/national.ics?years=2&lang=en`
-- `GET /feeds/newari.ics?years=2&lang=en`
-- `GET /feeds/custom.ics?festivals=dashain,tihar&years=2&lang=en`
+The frontend is hosted on Cloudflare Pages.
 
-## Engine Quality
-- `GET /engine/calendars`
-- `GET /engine/config`
-- `GET /engine/manifest`
-- `GET /engine/convert?date=YYYY-MM-DD&calendar=bs|ns|tibetan|islamic|hebrew|chinese|julian`
-- `GET /engine/plugins/quality`
+Production frontend URL:
 
-## Billing, Keys, and Webhooks
-- `GET /billing/plans`
-- `POST /billing/checkout`
-- `GET /billing/checkout/{checkout_id}`
-- `POST /billing/checkout/{checkout_id}/verify`
-- `POST /keys`
-- `DELETE /keys/{key_id}`
-- `GET /me/usage`
-- `GET /webhooks`
-- `POST /webhooks`
-
-Billing and key routes support the monetized API surface. Admin routes under
-`/admin` are protected operations for customer, invoice, subscription, usage, and
-API-key support workflows.
-
-## Operational + Provenance Routes
-- `GET /reliability/status`
-- `GET /reliability/metrics`
-- `GET /reliability/metrics.prom`
-- `GET /reliability/boundary-suite`
-- `GET /reliability/benchmark-manifest`
-- `GET /reliability/differential-manifest`
-- `GET /reliability/source-review-queue`
-- `GET /provenance/root`
-- `GET /provenance/proof`
-- `GET /public/artifacts/manifest`
-- `GET /explain/{trace_id}`
-- `GET /cache/stats`
-- `GET /cache/festivals/{year}`
-- `GET /cache/panchanga/{year}/{month}/{day}`
-- `GET /forecast/festivals`
-- `GET /forecast/error-curve`
-- `GET /integrations/feeds/*`
-- `GET /places/search`
-- `GET /spec/conformance`
-- `GET /temples`
-- `GET /temples/{temple_id}`
-- `GET /temples/{temple_id}/festivals`
-- `GET /temples/for-festival/{festival_id}`
-
-These read routes are part of the public v3 profile. Mutating provenance routes remain admin-only.
-
-## Metadata Expectations
-Integration-sensitive routes carry metadata fields that help clients render honest output:
-- `engine_version`
-- `calculation_trace_id`
-- `confidence`
-- `method`
-- `method_profile`
-- `quality_band`
-- `assumption_set_id`
-- `advisory_scope`
-- `policy`
-- `provenance`
-
-`provenance` includes explicit attestation metadata. When no signing key is configured, Parva returns `attestation.mode = "unsigned"` instead of presenting a plain hash as a signature.
-
-## Experimental API Tracks
-`/v2`, `/v4`, `/v5` are disabled by default.
-Set `PARVA_ENABLE_EXPERIMENTAL_API=true` to enable non-public tracks for development.
+```text
+https://prabinghimire1.com.np
