@@ -9,8 +9,12 @@ import { trackEvent } from './services/analytics';
 import {
   RedesignBestTime,
   RedesignBirthReading,
+  RedesignDevelopers,
+  RedesignEnterprise,
   RedesignFestivalDetail,
   RedesignFestivals,
+  RedesignFutureBsResearch,
+  RedesignHome,
   RedesignIntegrations,
   RedesignMyPlace,
   RedesignPanchanga,
@@ -30,6 +34,10 @@ import './styles/interactions.css';
 import './App.css';
 
 const routeSeo = {
+  '/': {
+    title: 'Project Parva - Nepali temporal infrastructure',
+    description: 'Project Parva provides BS/AD conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation for Nepali software systems.',
+  },
   '/today': {
     title: 'Today - Parva',
     description: 'Today on Parva: BS/AD context, panchanga signals, observances, timing windows, and visible source evidence.',
@@ -70,6 +78,18 @@ const routeSeo = {
     title: 'API Policy - Parva',
     description: 'Read Parva advisory policy, API posture, and usage boundaries.',
   },
+  '/developers': {
+    title: 'Developers - Project Parva',
+    description: 'API guidance for BS/AD conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation.',
+  },
+  '/enterprise': {
+    title: 'Enterprise - Project Parva',
+    description: 'Calendar-risk validation for fiscal reports, schedules, transaction records, and Nepali software systems.',
+  },
+  '/future-bs': {
+    title: 'Future BS Risk Research - Project Parva',
+    description: 'Public-safe methodology for controlled future-BS month-length risk research with computed_prediction_not_official claim boundaries.',
+  },
   '/pricing': {
     title: 'API Pricing - Parva',
     description: 'Create Parva API keys, start Khalti or eSewa checkout, request Payoneer invoices, and inspect quota usage.',
@@ -98,7 +118,7 @@ function AppRoutes() {
   return (
     <Suspense fallback={<div className="app-loading">Loading Parva...</div>}>
       <Routes>
-        <Route path="/" element={<Navigate to="/today" replace />} />
+        <Route path="/" element={<RedesignHome />} />
         <Route path="/today" element={<RedesignToday />} />
         <Route path="/best-time" element={<RedesignBestTime />} />
         <Route path="/festivals" element={<RedesignFestivals />} />
@@ -109,6 +129,9 @@ function AppRoutes() {
         <Route path="/saved" element={<RedesignProfileSaved />} />
         <Route path="/profile" element={<RedesignProfileSaved />} />
         <Route path="/integrations" element={<RedesignIntegrations />} />
+        <Route path="/developers" element={<RedesignDevelopers />} />
+        <Route path="/enterprise" element={<RedesignEnterprise />} />
+        <Route path="/future-bs" element={<RedesignFutureBsResearch />} />
         <Route path="/trust" element={<RedesignTrust />} />
         <Route path="/methodology" element={<RedesignMethodology />} />
         <Route path="/truth-lab" element={<RedesignTruthLab />} />

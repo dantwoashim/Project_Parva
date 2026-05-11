@@ -489,13 +489,13 @@ describe('visual regression harness', () => {
 
   it('consumer home visual baseline', async () => {
     const { container } = await renderRoute('/');
-    await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Nepali calendar infrastructure for software systems/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
   it('today page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/today', 390, 844);
-    await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
@@ -536,7 +536,7 @@ describe('visual regression harness', () => {
 
   it('today page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/today', 1440, 900);
-    await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 

@@ -511,7 +511,7 @@ describe('App routing', () => {
     vi.unstubAllGlobals();
   });
 
-  it('renders the editorial consumer home inside the unified shell', async () => {
+  it('renders the public infrastructure home inside the unified shell', async () => {
     setViewportWidth(1024);
     render(
       <MemoryRouter initialEntries={['/']}>
@@ -519,9 +519,9 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Nepali calendar infrastructure for software systems/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Open Best Time/i })).toHaveAttribute('href', '/best-time');
+    expect(screen.getByRole('link', { name: /Open API docs/i })).toHaveAttribute('href', 'https://api.prabinghimire1.com.np/docs');
   }, 30000);
 
   it('keeps the same consumer shell on desktop routes', async () => {
@@ -532,7 +532,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions)).toBeInTheDocument();
 
     const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
     expect(within(primaryNav).getByRole('link', { name: /^Today$/i })).toBeInTheDocument();
@@ -577,7 +577,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions)).toBeInTheDocument();
     const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
     expect(within(primaryNav).getByRole('link', { name: /^Today$/i })).toHaveAttribute('href', '/today');
     expect(within(primaryNav).getByRole('link', { name: /^My Place$/i })).toHaveAttribute('href', '/my-place');
@@ -594,7 +594,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions)).toBeInTheDocument();
     const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
     await userEvent.click(within(primaryNav).getByRole('link', { name: /^Festivals$/i }));
     expect(await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions)).toBeInTheDocument();

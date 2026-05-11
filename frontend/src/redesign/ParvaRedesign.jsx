@@ -33,6 +33,7 @@ const footerGroups = [
   {
     title: 'Product',
     links: [
+      { label: 'Home', to: '/' },
       { label: 'Today', to: '/today' },
       { label: 'My Place', to: '/my-place' },
       { label: 'Festivals', to: '/festivals' },
@@ -44,6 +45,8 @@ const footerGroups = [
   {
     title: 'Workspace',
     links: [
+      { label: 'Developers', to: '/developers' },
+      { label: 'Enterprise', to: '/enterprise' },
       { label: 'Saved', to: '/saved' },
       { label: 'Profile', to: '/profile' },
       { label: 'Integrations', to: '/integrations' },
@@ -421,7 +424,7 @@ function AppChrome({ children }) {
   return (
     <div className="parva-app">
       <header className="parva-topbar">
-        <Link className="brand-mark" to="/today" aria-label="Parva home">
+        <Link className="brand-mark" to="/" aria-label="Parva home">
           <span className="brand-symbol" aria-hidden="true"><span /></span>
           <span>Parva</span>
         </Link>
@@ -476,7 +479,7 @@ function AppChrome({ children }) {
       <footer className="parva-footer">
         <section className="footer-main" aria-label="Parva footer">
           <div className="footer-brand">
-            <Link className="brand-mark footer-logo" to="/today" aria-label="Parva home">
+            <Link className="brand-mark footer-logo" to="/" aria-label="Parva home">
               <span className="brand-symbol" aria-hidden="true"><span /></span>
               <span>Parva</span>
             </Link>
@@ -674,11 +677,6 @@ function SourceDots({ active = 5 }) {
       {sourceDots.map((dot) => <i key={dot} className={dot <= active ? 'is-active' : ''} />)}
     </span>
   );
-}
-
-function evidenceId(meta = {}) {
-  const raw = meta?.trace_id || meta?.traceId || meta?.request_id || meta?.requestId;
-  return raw ? String(raw).slice(0, 10) : 'local-ready';
 }
 
 function VerificationStrip({ items = [] }) {
@@ -1007,7 +1005,7 @@ export function RedesignMyPlace() {
           <section className="panel map-panel">
             <div className="workspace-title">
               <h1>Find your place</h1>
-              <p>Set the calculation place Parva should use for sunrise, panchanga, festivals, and timing windows.</p>
+              <p>Choose the calculation place for sunrise, panchanga, festivals, and timing windows.</p>
             </div>
             <label className="search-field">
               <span aria-hidden="true">⌕</span>
@@ -2416,12 +2414,12 @@ export function RedesignBestTime() {
           <aside className="selected-window">
             <button type="button" className="close-button" aria-label="Clear selected window" onClick={() => setSelectedId('')}>×</button>
             <p>Selected window</p>
-            <h2>{selected?.time || 'Pending'}</h2>
+            <h2>{selected?.time || 'Choose a window'}</h2>
             <ScoreRing value={selected?.score || 0} label={selected?.kind || 'API'} />
             <ul>
               <li>Intent: {readableCategory(intent)}</li>
               <li>Window: {selected?.name || 'No backend window selected'}</li>
-              <li>Class: {selected?.kind || 'Pending'}</li>
+              <li>Class: {selected?.kind || 'Not selected'}</li>
               <li>Confidence: {confidenceLabel}</li>
               <li>Reasons: {selected?.reasonCodes?.map(readableReason).join(', ') || 'Recommended for the selected intent.'}</li>
             </ul>
@@ -2724,7 +2722,7 @@ function PlanetTable({ payload, selected, onSelect }) {
                 <td><button type="button" onClick={() => onSelect({ type: 'graha', id, graha })}>{graha.name_english || titleCase(id)}</button></td>
                 <td>{graha.rashi_english}</td>
                 <td>{Number(graha.degree_in_rashi || 0).toFixed(2)}°</td>
-                <td>{payload?.d9?.[id]?.navamsa_rashi_english || '—'}</td>
+                <td>{payload?.d9?.[id]?.navamsa_rashi_english || 'Not listed'}</td>
                 <td>{titleCase(graha.dignity?.state || 'neutral')}</td>
               </tr>
             ))}
@@ -3235,6 +3233,143 @@ function TrustPageFrame({ current, eyebrow, title, body, action, children }) {
         {children}
       </main>
     </AppChrome>
+  );
+}
+
+const infrastructureFeatures = [
+  ['Calendar conversion', 'BS to AD, AD to BS, validation, today context, and calendar metadata for software systems.'],
+  ['Fiscal-year logic', 'Nepali fiscal boundaries, reporting periods, and date-range helpers for operational workflows.'],
+  ['Panchanga computation', 'Tithi, nakshatra, yoga, karana, sunrise basis, and timing signals with visible method context.'],
+  ['Festival intelligence', 'Festival catalogs, observance logic, calendar feeds, and source-aware public surfaces.'],
+  ['Source policy', 'Evidence tiers separate official, printed, publisher, software-table, third-party, and needs-review rows.'],
+  ['Future BS risk research', 'Controlled research on boundary-sensitive month-length assumptions, always computed_prediction_not_official.'],
+];
+
+function InfrastructureFeatureGrid() {
+  return (
+    <section className="infrastructure-grid" aria-label="Project Parva capabilities">
+      {infrastructureFeatures.map(([title, body]) => (
+        <article key={title}>
+          <span>{title}</span>
+          <p>{body}</p>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function PublicCtaRow() {
+  return (
+    <div className="public-cta-row">
+      <a className="primary-button" href="https://api.prabinghimire1.com.np/docs">Open API docs</a>
+      <a className="ghost-button" href="https://github.com/dantwoashim/Project_Parva">GitHub</a>
+      <Link className="ghost-button" to="/policy">Read API policy</Link>
+      <Link className="ghost-button" to="/trust">Review source posture</Link>
+    </div>
+  );
+}
+
+export function RedesignHome() {
+  return (
+    <AppChrome>
+      <main className="page-shell home-page">
+        <section className="infrastructure-hero">
+          <div>
+            <p className="eyebrow">Project Parva</p>
+            <h1>Nepali calendar infrastructure for software systems.</h1>
+            <p>
+              BS/AD conversion, fiscal-year logic, panchanga computation, festivals, source-aware validation, and controlled calendar-risk research for teams that need reliable Nepali temporal behavior.
+            </p>
+            <PublicCtaRow />
+          </div>
+          <aside className="infrastructure-proof panel">
+            <p className="eyebrow">Public boundary</p>
+            <h2>Computed results stay source-aware.</h2>
+            <dl>
+              <div><dt>Future outputs</dt><dd>computed_prediction_not_official</dd></div>
+              <div><dt>Public API</dt><dd>Stable calendar and documentation surfaces</dd></div>
+              <div><dt>Private deployment</dt><dd>Controlled audit and reconciliation workflows</dd></div>
+            </dl>
+          </aside>
+        </section>
+        <InfrastructureFeatureGrid />
+        <section className="trust-feature-band">
+          <div>
+            <p className="eyebrow">For financial and enterprise systems</p>
+            <h2>Calendar assumptions should be audited before they affect records.</h2>
+          </div>
+          <p>
+            Parva can work as a validation layer around existing calendar tables, fiscal logic, schedules, reporting exports, and customer-facing BS dates. It does not replace official publication or institutional approval.
+          </p>
+        </section>
+      </main>
+    </AppChrome>
+  );
+}
+
+function PublicBriefPage({ eyebrow, title, body, cards, action }) {
+  return (
+    <AppChrome>
+      <main className="page-shell public-brief-page">
+        <PageHero eyebrow={eyebrow} title={title} body={body} action={action || <PublicCtaRow />} />
+        <section className="infrastructure-grid">
+          {cards.map(([cardTitle, cardBody]) => (
+            <article key={cardTitle}>
+              <span>{cardTitle}</span>
+              <p>{cardBody}</p>
+            </article>
+          ))}
+        </section>
+      </main>
+    </AppChrome>
+  );
+}
+
+export function RedesignDevelopers() {
+  return (
+    <PublicBriefPage
+      eyebrow="Developers"
+      title="APIs for Nepali temporal logic."
+      body="Use Parva for calendar conversion, fiscal periods, panchanga signals, festivals, calendar feeds, and source-aware validation without scattering fragile date tables through your product."
+      cards={[
+        ['API mode', 'Call the public API for stable evaluation surfaces and private deployments for controlled internal validation.'],
+        ['Local integration', 'Use generated clients or simple HTTP calls for BS/AD conversion, date validation, and calendar feeds.'],
+        ['Source-aware responses', 'Responses are designed to carry method context, confidence, and claim boundaries where the backend exposes them.'],
+        ['Safe public research', 'Future-BS research is exposed publicly as methodology and risk posture, not as raw future month tables.'],
+      ]}
+    />
+  );
+}
+
+export function RedesignEnterprise() {
+  return (
+    <PublicBriefPage
+      eyebrow="Enterprise"
+      title="Calendar-risk validation for operational systems."
+      body="Project Parva helps teams review BS date behavior before it affects fiscal reports, payroll periods, renewal schedules, transaction records, or customer-facing dates."
+      cards={[
+        ['Validation layer', 'Compare existing calendar behavior against source-aware conversion and fiscal logic.'],
+        ['Controlled deployment', 'Run private deployments when sensitive audits, reconciliation workflows, or internal approval rules are required.'],
+        ['Review workflow', 'Use source policy, claim boundaries, and diff reports to decide which changes require human approval.'],
+        ['No silent authority', 'Official publication, institutional policy, and legal requirements remain the final authority.'],
+      ]}
+    />
+  );
+}
+
+export function RedesignFutureBsResearch() {
+  return (
+    <PublicBriefPage
+      eyebrow="Future BS risk research"
+      title="Risk labels for future calendar assumptions."
+      body="Parva studies whether future BS month-length assumptions are stable, boundary-sensitive, source-conflicted, or review-worthy before they enter financial, contractual, reporting, or operational systems."
+      cards={[
+        ['Claim boundary', 'Every future research output is treated as computed_prediction_not_official.'],
+        ['Risk posture', 'GREEN, YELLOW, and RED labels describe internal consistency and review need, not official publication.'],
+        ['Source separation', 'Weak third-party and software-table rows can support shadow comparison, but not official-grade claims.'],
+        ['Controlled audit', 'Full comparisons, exports, and schedule-impact workflows belong in private or controlled deployments.'],
+      ]}
+    />
   );
 }
 

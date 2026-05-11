@@ -493,8 +493,8 @@ describe('consumer route interactions', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Sunday, 2082 Falgun 3/i })).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: /Search Parva/i }));
+    expect(await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i })).toBeInTheDocument();
+    await userEvent.click(screen.getAllByRole('button', { name: /Search Parva/i })[0]);
     expect(screen.getByRole('dialog', { name: /Search Parva/i })).toBeInTheDocument();
     await userEvent.type(screen.getByPlaceholderText(/Search festivals/i), 'Dashain');
     expect(await screen.findByRole('link', { name: /Dashain/i })).toHaveAttribute('href', '/festivals/dashain');

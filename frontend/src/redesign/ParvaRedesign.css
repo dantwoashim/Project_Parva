@@ -150,9 +150,36 @@
 .mobile-date-card,
 .mobile-place-card,
 .mobile-search-button {
+  display: grid !important;
+  align-items: center !important;
   min-height: 48px !important;
+  padding: 8px 12px !important;
   border-radius: var(--radius-control) !important;
   box-shadow: none !important;
+}
+
+.mobile-date-card {
+  gap: 3px !important;
+}
+
+.mobile-date-card small,
+.mobile-date-card strong,
+.mobile-place-card strong {
+  display: block !important;
+}
+
+.mobile-date-card small {
+  margin: 0 !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.12em !important;
+}
+
+.mobile-date-card strong,
+.mobile-place-card strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mobile-place-card {
@@ -186,6 +213,15 @@
   margin-top: 4px;
   color: var(--muted);
   font-size: 0.82rem;
+}
+
+.location-mini {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+.location-mini::after {
+  display: block;
 }
 
 .place-search-helper {
@@ -267,8 +303,15 @@
 
   .top-nav {
     justify-content: start !important;
-    overflow-x: auto !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
     padding-bottom: 4px !important;
+  }
+
+  .top-nav a {
+    flex: 1 1 calc(33.333% - 8px) !important;
+    justify-content: center !important;
+    text-align: center !important;
   }
 
   .top-actions {
@@ -302,6 +345,10 @@
 
   .page-shell {
     width: min(100% - 28px, 720px) !important;
+  }
+
+  .today-page .location-mini {
+    display: none !important;
   }
 }
 
@@ -9098,5 +9145,204 @@ select:focus-visible {
 
   .page-shell {
     width: min(100% - 28px, 720px) !important;
+  }
+}
+
+/* Final mobile navigation and context spacing overrides. */
+.mobile-date-card,
+.mobile-place-card,
+.mobile-search-button {
+  display: grid !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+}
+
+.mobile-date-card {
+  gap: 3px !important;
+}
+
+.mobile-date-card small,
+.mobile-date-card strong,
+.mobile-place-card strong {
+  display: block !important;
+}
+
+.mobile-date-card small {
+  margin: 0 !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.12em !important;
+}
+
+.mobile-date-card strong,
+.mobile-place-card strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 982px) {
+  .top-nav {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+  }
+
+  .top-nav a {
+    flex: 1 1 calc(33.333% - 8px) !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
+
+/* Public infrastructure landing pages. */
+.infrastructure-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
+  gap: 24px;
+  align-items: stretch;
+  margin-bottom: 24px;
+}
+
+.infrastructure-hero h1 {
+  max-width: 860px;
+  margin: 0;
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-size: clamp(2.7rem, 6vw, 5.8rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 0.96;
+}
+
+.infrastructure-hero p {
+  max-width: 780px;
+  color: var(--muted);
+  font-size: 1.06rem;
+  line-height: 1.7;
+}
+
+.public-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.public-cta-row > * {
+  min-height: 44px;
+}
+
+.infrastructure-proof {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.infrastructure-proof h2 {
+  font-size: 1.7rem;
+}
+
+.infrastructure-proof dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.infrastructure-proof div {
+  display: grid;
+  gap: 4px;
+  padding: 13px;
+  border: 1px solid rgb(31 24 16 / 9%);
+  border-radius: var(--radius-card);
+  background: rgb(255 255 255 / 58%);
+}
+
+.infrastructure-proof dt,
+.infrastructure-grid span {
+  color: var(--gold);
+  font-size: 0.75rem;
+  font-weight: 820;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.infrastructure-proof dd {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 760;
+  overflow-wrap: anywhere;
+}
+
+.infrastructure-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.infrastructure-grid article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 170px;
+  padding: 20px;
+  border: 1px solid rgb(31 24 16 / 10%);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(180deg, rgb(255 253 248 / 92%), rgb(249 243 235 / 82%)),
+    var(--surface);
+  box-shadow: var(--soft-shadow);
+}
+
+.infrastructure-grid p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.62;
+}
+
+.public-brief-page .page-hero {
+  align-items: end;
+}
+
+@media (max-width: 982px) {
+  .infrastructure-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .infrastructure-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .infrastructure-hero h1 {
+    font-size: clamp(2.15rem, 12vw, 3.1rem);
+  }
+
+  .infrastructure-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-cta-row {
+    display: grid;
+  }
+
+  .public-cta-row > * {
+    width: 100%;
+  }
+}
+
+/* Final hero context cleanup. */
+.location-mini {
+  display: grid !important;
+  gap: 4px !important;
+}
+
+.location-mini::after {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .today-page .location-mini {
+    display: none !important;
   }
 }

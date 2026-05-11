@@ -89,7 +89,7 @@ export function RitualTimeline({ ritualSequence, onLocationClick }) {
                     >
                         {/* Time Marker */}
                         <div className="event-time">
-                            {event.time || '—'}
+                            {event.time || 'Not set'}
                         </div>
 
                         {/* Timeline Node */}

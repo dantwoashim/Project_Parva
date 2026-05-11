@@ -15,7 +15,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -668,7 +668,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -707,6 +707,12 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -750,6 +756,18 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -880,7 +898,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -1533,7 +1551,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -1572,6 +1590,12 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -1615,6 +1639,18 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -1745,7 +1781,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -1782,8 +1818,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
         class="top-nav"
       >
         <a
-          aria-current="page"
-          class="active"
+          class=""
           data-discover="true"
           href="/today"
         >
@@ -1983,670 +2018,162 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
       </button>
     </div>
     <main
-      class="page-shell today-page"
+      class="page-shell home-page"
     >
       <section
-        class="page-hero"
+        class="infrastructure-hero"
       >
         <div>
           <p
             class="eyebrow"
           >
-            Today
+            Project Parva
           </p>
           <h1>
-            Sunday, 2082 Falgun 3
+            Nepali calendar infrastructure for software systems.
           </h1>
           <p>
-            Nepal calendar, panchanga, festivals, and timing decisions with source evidence for Kathmandu, Nepal.
+            BS/AD conversion, fiscal-year logic, panchanga computation, festivals, source-aware validation, and controlled calendar-risk research for teams that need reliable Nepali temporal behavior.
           </p>
-        </div>
-        <div
-          class="hero-action"
-        >
-          <a
-            class="location-mini"
-            data-discover="true"
-            href="/my-place"
+          <div
+            class="public-cta-row"
           >
-            <span>
-              Kathmandu, Nepal
-            </span>
-            <small>
-              Feb 25, 2026
-               · 
-              Asia/Kathmandu
-            </small>
-          </a>
-        </div>
-      </section>
-      <section
-        aria-label="Verification summary"
-        class="verification-strip"
-      >
-        <div>
-          <span>
-            Answer
-          </span>
-          <strong>
-            Abhijit Muhurta
-          </strong>
-          <small>
-            11:48 AM - 12:36 PM
-          </small>
-        </div>
-        <div>
-          <span>
-            Place
-          </span>
-          <strong>
-            Kathmandu, Nepal
-          </strong>
-          <small>
-            Asia/Kathmandu
-          </small>
-        </div>
-        <div>
-          <span>
-            Source
-          </span>
-          <strong>
-            Sunrise-based panchanga
-          </strong>
-          <small>
-            Evidence tr_visual_
-          </small>
-        </div>
-        <div>
-          <span>
-            Action
-          </span>
-          <strong>
-            Plan or subscribe
-          </strong>
-          <small>
-            Calendar-ready
-          </small>
-        </div>
-      </section>
-      <section
-        class="today-main"
-      >
-        <div
-          class="today-stack"
-        >
-          <section
-            class="panel panchanga-panel"
-          >
-            <div
-              class="panel-heading"
-            >
-              <div>
-                <p
-                  class="eyebrow"
-                >
-                  Panchanga for 
-                  Kathmandu, Nepal
-                </p>
-              </div>
-              <a
-                class="text-link compact-link"
-                data-discover="true"
-                href="/panchanga"
-              >
-                View full panchanga ›
-              </a>
-            </div>
-            <div
-              class="panchanga-grid"
-            >
-              <article
-                class="info-cell"
-              >
-                <span
-                  aria-hidden="true"
-                  class="cell-icon"
-                >
-                  ☾
-                </span>
-                <small>
-                  Tithi
-                </small>
-                <strong>
-                  Chaturdashi
-                </strong>
-                <em>
-                  Krishna
-                </em>
-              </article>
-              <article
-                class="info-cell"
-              >
-                <span
-                  aria-hidden="true"
-                  class="cell-icon"
-                >
-                  ◐
-                </span>
-                <small>
-                  Paksha
-                </small>
-                <strong>
-                  Krishna
-                </strong>
-                <em>
-                  Computed for date
-                </em>
-              </article>
-              <article
-                class="info-cell"
-              >
-                <span
-                  aria-hidden="true"
-                  class="cell-icon"
-                >
-                  ✦
-                </span>
-                <small>
-                  Nakshatra
-                </small>
-                <strong>
-                  Shravana
-                </strong>
-                <em>
-                  Astronomical signal
-                </em>
-              </article>
-              <article
-                class="info-cell"
-              >
-                <span
-                  aria-hidden="true"
-                  class="cell-icon"
-                >
-                  ✣
-                </span>
-                <small>
-                  Yoga
-                </small>
-                <strong>
-                  Shubha
-                </strong>
-                <em>
-                  Astronomical signal
-                </em>
-              </article>
-              <article
-                class="info-cell"
-              >
-                <span
-                  aria-hidden="true"
-                  class="cell-icon"
-                >
-                  ❋
-                </span>
-                <small>
-                  Karana
-                </small>
-                <strong>
-                  Vishti
-                </strong>
-                <em>
-                  Astronomical signal
-                </em>
-              </article>
-            </div>
-            <div
-              class="fact-row"
-            >
-              <article
-                class="info-cell"
-              >
-                <small>
-                  Sunrise
-                </small>
-                <strong>
-                  06:42
-                </strong>
-              </article>
-              <article
-                class="info-cell"
-              >
-                <small>
-                  Sunset
-                </small>
-                <strong>
-                  05:53
-                </strong>
-              </article>
-              <article
-                class="info-cell"
-              >
-                <small>
-                  Rahu Kalam
-                </small>
-                <strong>
-                  04:12 PM - 05:00 PM
-                </strong>
-              </article>
-              <article
-                class="info-cell"
-              >
-                <small>
-                  Current window
-                </small>
-                <strong>
-                  Abhijit Muhurta
-                </strong>
-              </article>
-              <div
-                class="fact-confidence"
-              >
-                <span>
-                  Sunrise-based panchanga
-                </span>
-                <span
-                  aria-label="5 of 6 source checks passed"
-                  class="source-dots"
-                >
-                  <i
-                    class="is-active"
-                  />
-                  <i
-                    class="is-active"
-                  />
-                  <i
-                    class="is-active"
-                  />
-                  <i
-                    class="is-active"
-                  />
-                  <i
-                    class="is-active"
-                  />
-                  <i
-                    class=""
-                  />
-                </span>
-              </div>
-            </div>
-          </section>
-          <section
-            class="panel observance-panel"
-          >
-            <div
-              class="panel-heading"
-            >
-              <div>
-                <p
-                  class="eyebrow"
-                >
-                  Upcoming observances
-                </p>
-                <h2>
-                  Next on the calendar
-                </h2>
-              </div>
-              <a
-                class="ghost-button"
-                data-discover="true"
-                href="/festivals"
-              >
-                View all
-              </a>
-            </div>
-            <div
-              class="observance-row"
-            >
-              <a
-                class="observance-card tone-orange"
-                data-discover="true"
-                href="/festivals/dashain"
-              >
-                <span>
-                  ✣
-                </span>
-                <strong>
-                  Dashain
-                </strong>
-                <small>
-                  Observance
-                </small>
-              </a>
-            </div>
-          </section>
-          <section
-            class="panel best-overview"
-          >
-            <div
-              class="panel-heading"
-            >
-              <div>
-                <p
-                  class="eyebrow"
-                >
-                  Recommended window
-                </p>
-                <h2>
-                  Abhijit Muhurta
-                </h2>
-              </div>
-              <a
-                class="text-link compact-link"
-                data-discover="true"
-                href="/best-time"
-              >
-                How it works
-              </a>
-            </div>
-            <div
-              aria-label="Intent shortcuts"
-              class="window-tabs"
-            >
-              <a
-                data-discover="true"
-                href="/best-time"
-              >
-                All
-              </a>
-              <a
-                data-discover="true"
-                href="/best-time"
-              >
-                Worship
-              </a>
-              <a
-                data-discover="true"
-                href="/best-time"
-              >
-                Travel
-              </a>
-              <a
-                data-discover="true"
-                href="/best-time"
-              >
-                Business
-              </a>
-              <a
-                data-discover="true"
-                href="/best-time"
-              >
-                Learning
-              </a>
-            </div>
-            <div
-              class="best-window-row"
-            >
-              <a
-                class="mini-window is-good"
-                data-discover="true"
-                href="/best-time"
-              >
-                <span>
-                  ✣
-                </span>
-                <strong>
-                  Abhijit Muhurta
-                </strong>
-                <small>
-                  11:48 AM - 12:36 PM
-                </small>
-              </a>
-            </div>
             <a
-              class="primary-button best-time-cta"
-              data-discover="true"
-              href="/best-time"
+              class="primary-button"
+              href="https://api.prabinghimire1.com.np/docs"
             >
-              Open Best Time
+              Open API docs
             </a>
-            <p
-              class="panel-note"
+            <a
+              class="ghost-button"
+              href="https://github.com/dantwoashim/Project_Parva"
             >
-              Timings are ranked for the selected place and intent.
-            </p>
-          </section>
+              GitHub
+            </a>
+            <a
+              class="ghost-button"
+              data-discover="true"
+              href="/policy"
+            >
+              Read API policy
+            </a>
+            <a
+              class="ghost-button"
+              data-discover="true"
+              href="/trust"
+            >
+              Review source posture
+            </a>
+          </div>
         </div>
         <aside
-          class="side-rail"
+          class="infrastructure-proof panel"
         >
-          <section
-            class="panel timeline-panel"
+          <p
+            class="eyebrow"
           >
-            <div
-              class="panel-heading tight"
-            >
-              <p
-                class="eyebrow"
-              >
-                Day timeline
-              </p>
-              <strong>
-                2026-02-25
-              </strong>
-            </div>
-            <div
-              class="timeline-list compact"
-            >
-              <a
-                class="timeline-item tone-warm"
-                data-discover="true"
-                href="/best-time"
-              >
-                <span>
-                  06:42
-                </span>
-                <strong>
-                  Sunrise
-                </strong>
-                <i
-                  aria-hidden="true"
-                >
-                  ☼
-                </i>
-              </a>
-              <a
-                class="timeline-item tone-good"
-                data-discover="true"
-                href="/best-time"
-              >
-                <span>
-                  11:48 AM - 12:36 PM
-                </span>
-                <strong>
-                  Abhijit Muhurta
-                </strong>
-                <i
-                  aria-hidden="true"
-                >
-                  ✣
-                </i>
-              </a>
-              <a
-                class="timeline-item tone-warm"
-                data-discover="true"
-                href="/best-time"
-              >
-                <span>
-                  12:36 PM - 01:24 PM
-                </span>
-                <strong>
-                  Labh
-                </strong>
-                <i
-                  aria-hidden="true"
-                >
-                  ✣
-                </i>
-              </a>
-              <a
-                class="timeline-item tone-warm"
-                data-discover="true"
-                href="/best-time"
-              >
-                <span>
-                  05:53
-                </span>
-                <strong>
-                  Sunset
-                </strong>
-                <i
-                  aria-hidden="true"
-                >
-                  ☀
-                </i>
-              </a>
-            </div>
-          </section>
-          <section
-            class="panel quality-panel"
-          >
-            <p
-              class="eyebrow"
-            >
-              Day quality
-            </p>
-            <div
-              class="quality-row"
-            >
-              <div
-                class="score-ring"
-                style="--score: 88%;"
-              >
-                <strong>
-                  88
-                </strong>
-                <span>
-                  API
-                </span>
-              </div>
-              <ul
-                class="quality-legend"
-              >
-                <li>
-                  <span
-                    class="dot good"
-                  />
-                  Auspicious 
-                  <strong>
-                    1
-                  </strong>
-                </li>
-                <li>
-                  <span
-                    class="dot warm"
-                  />
-                  Neutral 
-                  <strong>
-                    1
-                  </strong>
-                </li>
-                <li>
-                  <span
-                    class="dot bad"
-                  />
-                  Avoid 
-                  <strong>
-                    0
-                  </strong>
-                </li>
-              </ul>
-            </div>
-          </section>
-          <section
-            class="panel source-panel"
-          >
-            <div
-              class="panel-heading tight"
-            >
-              <p
-                class="eyebrow"
-              >
-                Source & calculation
-              </p>
-            </div>
-            <dl
-              class="source-list"
-            >
-              <div>
-                <dt>
-                  Calendar system
-                </dt>
-                <dd>
-                  Parva daily model
-                </dd>
-              </div>
-              <div>
-                <dt>
-                  Calculation mode
-                </dt>
-                <dd>
-                  Sunrise-based panchanga
-                </dd>
-              </div>
-              <div>
-                <dt>
-                  Location
-                </dt>
-                <dd>
-                  Kathmandu, Nepal
-                </dd>
-              </div>
-              <div>
-                <dt>
-                  Evidence
-                </dt>
-                <dd>
-                  Ref applicat
-                </dd>
-              </div>
-            </dl>
-            <a
-              class="text-link"
-              data-discover="true"
-              href="/truth-lab"
-            >
-              Review evidence
-            </a>
-          </section>
-          <section
-            class="panel conversion-panel"
-          >
-            <p
-              class="eyebrow"
-            >
-              Use this day
-            </p>
-            <h2>
-              Turn the result into a plan.
-            </h2>
-            <p>
-              Every important result should be usable, portable, and source-aware.
-            </p>
+            Public boundary
+          </p>
+          <h2>
+            Computed results stay source-aware.
+          </h2>
+          <dl>
             <div>
-              <a
-                class="primary-button"
-                data-discover="true"
-                href="/best-time"
-              >
-                Choose safest window
-              </a>
-              <a
-                class="ghost-button"
-                href="/v3/api/feeds/all.ics?years=1&download=1"
-              >
-                Subscribe calendar
-              </a>
-              <a
-                class="ghost-button"
-                data-discover="true"
-                href="/truth-lab"
-              >
-                Export evidence
-              </a>
+              <dt>
+                Future outputs
+              </dt>
+              <dd>
+                computed_prediction_not_official
+              </dd>
             </div>
-          </section>
+            <div>
+              <dt>
+                Public API
+              </dt>
+              <dd>
+                Stable calendar and documentation surfaces
+              </dd>
+            </div>
+            <div>
+              <dt>
+                Private deployment
+              </dt>
+              <dd>
+                Controlled audit and reconciliation workflows
+              </dd>
+            </div>
+          </dl>
         </aside>
+      </section>
+      <section
+        aria-label="Project Parva capabilities"
+        class="infrastructure-grid"
+      >
+        <article>
+          <span>
+            Calendar conversion
+          </span>
+          <p>
+            BS to AD, AD to BS, validation, today context, and calendar metadata for software systems.
+          </p>
+        </article>
+        <article>
+          <span>
+            Fiscal-year logic
+          </span>
+          <p>
+            Nepali fiscal boundaries, reporting periods, and date-range helpers for operational workflows.
+          </p>
+        </article>
+        <article>
+          <span>
+            Panchanga computation
+          </span>
+          <p>
+            Tithi, nakshatra, yoga, karana, sunrise basis, and timing signals with visible method context.
+          </p>
+        </article>
+        <article>
+          <span>
+            Festival intelligence
+          </span>
+          <p>
+            Festival catalogs, observance logic, calendar feeds, and source-aware public surfaces.
+          </p>
+        </article>
+        <article>
+          <span>
+            Source policy
+          </span>
+          <p>
+            Evidence tiers separate official, printed, publisher, software-table, third-party, and needs-review rows.
+          </p>
+        </article>
+        <article>
+          <span>
+            Future BS risk research
+          </span>
+          <p>
+            Controlled research on boundary-sensitive month-length assumptions, always computed_prediction_not_official.
+          </p>
+        </article>
+      </section>
+      <section
+        class="trust-feature-band"
+      >
+        <div>
+          <p
+            class="eyebrow"
+          >
+            For financial and enterprise systems
+          </p>
+          <h2>
+            Calendar assumptions should be audited before they affect records.
+          </h2>
+        </div>
+        <p>
+          Parva can work as a validation layer around existing calendar tables, fiscal logic, schedules, reporting exports, and customer-facing BS dates. It does not replace official publication or institutional approval.
+        </p>
       </section>
     </main>
     <footer
@@ -2663,7 +2190,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -2702,6 +2229,12 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -2745,6 +2278,18 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -2820,8 +2365,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
       class="bottom-nav"
     >
       <a
-        aria-current="page"
-        class="active"
+        class=""
         data-discover="true"
         href="/today"
       >
@@ -2875,7 +2419,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -3580,7 +3124,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -3619,6 +3163,12 @@ exports[`visual regression harness > festival detail page visual baseline on des
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -3662,6 +3212,18 @@ exports[`visual regression harness > festival detail page visual baseline on des
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -3792,7 +3354,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -4497,7 +4059,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -4536,6 +4098,12 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -4579,6 +4147,18 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -4709,7 +4289,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -5357,7 +4937,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -5396,6 +4976,12 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -5439,6 +5025,18 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -5569,7 +5167,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -6217,7 +5815,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -6256,6 +5854,12 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -6299,6 +5903,18 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -6429,7 +6045,7 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -6997,7 +6613,7 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -7036,6 +6652,12 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -7079,6 +6701,18 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -7209,7 +6843,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -7504,7 +7138,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               Find your place
             </h1>
             <p>
-              Choose the place Parva should use for sunrise, panchanga, festivals, and timing windows.
+              Choose the calculation place for sunrise, panchanga, festivals, and timing windows.
             </p>
           </div>
           <label
@@ -7517,6 +7151,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             </span>
             <input
               aria-label="Search places"
+              placeholder="Search Kathmandu, Pokhara, Lalitpur, Biratnagar, or Janakpur"
               value=""
             />
             <button
@@ -7526,6 +7161,11 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               ×
             </button>
           </label>
+          <p
+            class="place-search-helper"
+          >
+            Search a city, town, or village in Nepal. Results only set the browser calculation context.
+          </p>
           <div
             class="place-suggestions"
           >
@@ -7543,13 +7183,20 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
               <p
                 class="eyebrow"
               >
-                Current calculation place
+                Selected place
               </p>
               <h2>
                 Kathmandu, Nepal
               </h2>
+              <p
+                class="place-context-meta"
+              >
+                27.7172 deg, 85.3240 deg
+                 - 
+                Asia/Kathmandu
+              </p>
               <p>
-                27.7172°, 85.3240°
+                27.7172 deg, 85.3240 deg
                  · 
                 Asia/Kathmandu
               </p>
@@ -7634,7 +7281,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
                 Sunset
               </dt>
               <dd>
-                Pending
+                Awaiting calculation
               </dd>
             </div>
             <div>
@@ -7642,7 +7289,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
                 Coordinates
               </dt>
               <dd>
-                27.7172°, 85.3240°
+                27.7172 deg, 85.3240 deg
               </dd>
             </div>
             <div>
@@ -7687,7 +7334,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -7726,6 +7373,12 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -7769,6 +7422,18 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -7899,7 +7564,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -8194,7 +7859,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
               Find your place
             </h1>
             <p>
-              Choose the place Parva should use for sunrise, panchanga, festivals, and timing windows.
+              Choose the calculation place for sunrise, panchanga, festivals, and timing windows.
             </p>
           </div>
           <label
@@ -8207,6 +7872,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             </span>
             <input
               aria-label="Search places"
+              placeholder="Search Kathmandu, Pokhara, Lalitpur, Biratnagar, or Janakpur"
               value=""
             />
             <button
@@ -8216,6 +7882,11 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
               ×
             </button>
           </label>
+          <p
+            class="place-search-helper"
+          >
+            Search a city, town, or village in Nepal. Results only set the browser calculation context.
+          </p>
           <div
             class="place-suggestions"
           >
@@ -8233,13 +7904,20 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
               <p
                 class="eyebrow"
               >
-                Current calculation place
+                Selected place
               </p>
               <h2>
                 Kathmandu, Nepal
               </h2>
+              <p
+                class="place-context-meta"
+              >
+                27.7172 deg, 85.3240 deg
+                 - 
+                Asia/Kathmandu
+              </p>
               <p>
-                27.7172°, 85.3240°
+                27.7172 deg, 85.3240 deg
                  · 
                 Asia/Kathmandu
               </p>
@@ -8324,7 +8002,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
                 Sunset
               </dt>
               <dd>
-                Pending
+                Awaiting calculation
               </dd>
             </div>
             <div>
@@ -8332,7 +8010,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
                 Coordinates
               </dt>
               <dd>
-                27.7172°, 85.3240°
+                27.7172 deg, 85.3240 deg
               </dd>
             </div>
             <div>
@@ -8377,7 +8055,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -8416,6 +8094,12 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -8459,6 +8143,18 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -8589,7 +8285,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -8839,10 +8535,10 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             Today
           </p>
           <h1>
-            Sunday, 2082 Falgun 3
+            Today in Kathmandu, Nepal
           </h1>
           <p>
-            Nepal calendar, panchanga, festivals, and timing decisions with source evidence for Kathmandu, Nepal.
+            2082 Falgun 3 - Sunday. Source-aware BS date logic, panchanga signals, festivals, and timing windows.
           </p>
         </div>
         <div
@@ -8870,7 +8566,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
       >
         <div>
           <span>
-            Answer
+            Current timing window
           </span>
           <strong>
             Abhijit Muhurta
@@ -8892,21 +8588,21 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
         </div>
         <div>
           <span>
-            Source
+            Calculation source
           </span>
           <strong>
             Sunrise-based panchanga
           </strong>
           <small>
-            Evidence tr_visual_
+            View evidence
           </small>
         </div>
         <div>
           <span>
-            Action
+            Next action
           </span>
           <strong>
-            Plan or subscribe
+            View full panchanga
           </strong>
           <small>
             Calendar-ready
@@ -8951,7 +8647,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ☾
+                  T
                 </span>
                 <small>
                   Tithi
@@ -8970,7 +8666,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ◐
+                  P
                 </span>
                 <small>
                   Paksha
@@ -8989,7 +8685,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ✦
+                  N
                 </span>
                 <small>
                   Nakshatra
@@ -8998,7 +8694,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   Shravana
                 </strong>
                 <em>
-                  Astronomical signal
+                  Computed lunar position
                 </em>
               </article>
               <article
@@ -9008,7 +8704,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ✣
+                  Y
                 </span>
                 <small>
                   Yoga
@@ -9017,7 +8713,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   Shubha
                 </strong>
                 <em>
-                  Astronomical signal
+                  Computed solar-lunar angle
                 </em>
               </article>
               <article
@@ -9027,7 +8723,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ❋
+                  K
                 </span>
                 <small>
                   Karana
@@ -9036,7 +8732,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   Vishti
                 </strong>
                 <em>
-                  Astronomical signal
+                  Derived from tithi state
                 </em>
               </article>
             </div>
@@ -9286,7 +8982,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                 <i
                   aria-hidden="true"
                 >
-                  ☼
+                  Sun
                 </i>
               </a>
               <a
@@ -9303,7 +8999,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                 <i
                   aria-hidden="true"
                 >
-                  ✣
+                  Window
                 </i>
               </a>
               <a
@@ -9320,7 +9016,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                 <i
                   aria-hidden="true"
                 >
-                  ✣
+                  Window
                 </i>
               </a>
               <a
@@ -9337,7 +9033,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                 <i
                   aria-hidden="true"
                 >
-                  ☀
+                  Set
                 </i>
               </a>
             </div>
@@ -9441,7 +9137,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
                   Evidence
                 </dt>
                 <dd>
-                  Ref applicat
+                  View evidence
                 </dd>
               </div>
             </dl>
@@ -9507,7 +9203,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -9546,6 +9242,12 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -9589,6 +9291,18 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"
@@ -9719,7 +9433,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
         aria-label="Parva home"
         class="brand-mark"
         data-discover="true"
-        href="/today"
+        href="/"
       >
         <span
           aria-hidden="true"
@@ -9969,10 +9683,10 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             Today
           </p>
           <h1>
-            Sunday, 2082 Falgun 3
+            Today in Kathmandu, Nepal
           </h1>
           <p>
-            Nepal calendar, panchanga, festivals, and timing decisions with source evidence for Kathmandu, Nepal.
+            2082 Falgun 3 - Sunday. Source-aware BS date logic, panchanga signals, festivals, and timing windows.
           </p>
         </div>
         <div
@@ -10000,7 +9714,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
       >
         <div>
           <span>
-            Answer
+            Current timing window
           </span>
           <strong>
             Abhijit Muhurta
@@ -10022,21 +9736,21 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
         </div>
         <div>
           <span>
-            Source
+            Calculation source
           </span>
           <strong>
             Sunrise-based panchanga
           </strong>
           <small>
-            Evidence tr_visual_
+            View evidence
           </small>
         </div>
         <div>
           <span>
-            Action
+            Next action
           </span>
           <strong>
-            Plan or subscribe
+            View full panchanga
           </strong>
           <small>
             Calendar-ready
@@ -10081,7 +9795,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ☾
+                  T
                 </span>
                 <small>
                   Tithi
@@ -10100,7 +9814,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ◐
+                  P
                 </span>
                 <small>
                   Paksha
@@ -10119,7 +9833,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ✦
+                  N
                 </span>
                 <small>
                   Nakshatra
@@ -10128,7 +9842,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   Shravana
                 </strong>
                 <em>
-                  Astronomical signal
+                  Computed lunar position
                 </em>
               </article>
               <article
@@ -10138,7 +9852,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ✣
+                  Y
                 </span>
                 <small>
                   Yoga
@@ -10147,7 +9861,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   Shubha
                 </strong>
                 <em>
-                  Astronomical signal
+                  Computed solar-lunar angle
                 </em>
               </article>
               <article
@@ -10157,7 +9871,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   aria-hidden="true"
                   class="cell-icon"
                 >
-                  ❋
+                  K
                 </span>
                 <small>
                   Karana
@@ -10166,7 +9880,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   Vishti
                 </strong>
                 <em>
-                  Astronomical signal
+                  Derived from tithi state
                 </em>
               </article>
             </div>
@@ -10416,7 +10130,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                 <i
                   aria-hidden="true"
                 >
-                  ☼
+                  Sun
                 </i>
               </a>
               <a
@@ -10433,7 +10147,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                 <i
                   aria-hidden="true"
                 >
-                  ✣
+                  Window
                 </i>
               </a>
               <a
@@ -10450,7 +10164,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                 <i
                   aria-hidden="true"
                 >
-                  ✣
+                  Window
                 </i>
               </a>
               <a
@@ -10467,7 +10181,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                 <i
                   aria-hidden="true"
                 >
-                  ☀
+                  Set
                 </i>
               </a>
             </div>
@@ -10571,7 +10285,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
                   Evidence
                 </dt>
                 <dd>
-                  Ref applicat
+                  View evidence
                 </dd>
               </div>
             </dl>
@@ -10637,7 +10351,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             aria-label="Parva home"
             class="brand-mark footer-logo"
             data-discover="true"
-            href="/today"
+            href="/"
           >
             <span
               aria-hidden="true"
@@ -10676,6 +10390,12 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             <h2>
               Product
             </h2>
+            <a
+              data-discover="true"
+              href="/"
+            >
+              Home
+            </a>
             <a
               data-discover="true"
               href="/today"
@@ -10719,6 +10439,18 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             <h2>
               Workspace
             </h2>
+            <a
+              data-discover="true"
+              href="/developers"
+            >
+              Developers
+            </a>
+            <a
+              data-discover="true"
+              href="/enterprise"
+            >
+              Enterprise
+            </a>
             <a
               data-discover="true"
               href="/saved"

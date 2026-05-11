@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 function fmt(iso) {
-  if (!iso) return '—';
+  if (!iso) return 'Unavailable';
   try {
     return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   } catch {
@@ -16,9 +16,9 @@ export function HorizonStrip({ sunrise, sunset, currentMuhurta }) {
       <p><span>Sunset</span> {fmt(sunset)}</p>
       <p>
         <span>Current Muhurta</span>{' '}
-        {currentMuhurta?.name || '—'}
+        {currentMuhurta?.name || 'Unavailable'}
       </p>
-      <p><span>Class</span> {currentMuhurta?.class || '—'}</p>
+      <p><span>Class</span> {currentMuhurta?.class || 'Unavailable'}</p>
     </div>
   );
 }

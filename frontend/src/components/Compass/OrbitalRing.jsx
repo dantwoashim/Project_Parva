@@ -20,7 +20,7 @@ export function OrbitalRing({ ratio = 0, label = 'Tithi Progress', number = null
         />
       </svg>
       <figcaption>
-        <strong>{number ?? '—'}</strong>
+        <strong>{number ?? 'N/A'}</strong>
         <span>{Math.round(clamped * 100)}%</span>
       </figcaption>
     </figure>

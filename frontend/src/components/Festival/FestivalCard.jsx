@@ -1,5 +1,5 @@
 /**
- * FestivalCard — Nepal × Ink Wash Edition
+ * FestivalCard - Nepal x Ink Wash Edition
  */
 
 import PropTypes from 'prop-types';
