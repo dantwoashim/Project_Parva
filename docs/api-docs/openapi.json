@@ -1,24 +1,78 @@
+
+---
+
+## `docs/api-docs/openapi.json`
+
+```json
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Project Parva API",
-    "description": "Nepal Festival Discovery System",
+    "title": "Project Parva Public API",
+    "summary": "Public-safe API surface for Nepali temporal infrastructure.",
+    "description": "Project Parva provides public-safe endpoints for Bikram Sambat and Gregorian conversion, current Nepali calendar context, panchanga-related computation where enabled, and a safe capability summary for future-BS risk research. Private future-BS prediction, export, model-run, backtest, loan-impact, and client audit workflows are not part of this public OpenAPI profile by default.",
     "version": "3.0.0"
   },
+  "servers": [
+    {
+      "url": "https://api.prabinghimire1.com.np",
+      "description": "Project Parva public API"
+    }
+  ],
   "paths": {
-    "/v4/api/future-bs/capabilities": {
+    "/health": {
       "get": {
-        "tags": [
-          "future-bs"
-        ],
-        "summary": "Future Bs Capabilities",
-        "operationId": "future_bs_capabilities_v4_api_future_bs_capabilities_get",
+        "tags": ["health"],
+        "summary": "Health check",
+        "description": "Returns basic API health status.",
+        "operationId": "getHealth",
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Service is healthy",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "tags": ["health"],
+        "summary": "Compatibility health check",
+        "description": "Compatibility health endpoint for deployment platforms.",
+        "operationId": "getHealthz",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readyz": {
+      "get": {
+        "tags": ["health"],
+        "summary": "Readiness check",
+        "description": "Returns readiness status for the public API service.",
+        "operationId": "getReadyz",
+        "responses": {
+          "200": {
+            "description": "Service is ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
               }
             }
           }
@@ -27,40 +81,17 @@
     },
     "/v3/api/calendar/today": {
       "get": {
-        "tags": [
-          "calendar"
-        ],
-        "summary": "Get Today",
-        "operationId": "get_today_v3_api_calendar_today_get",
-        "parameters": [
-          {
-            "name": "risk_mode",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "description": "standard|strict",
-              "default": "standard",
-              "title": "Risk Mode"
-            },
-            "description": "standard|strict"
-          }
-        ],
+        "tags": ["calendar"],
+        "summary": "Get today's Nepali calendar context",
+        "description": "Returns the current Nepali calendar context for public evaluation.",
+        "operationId": "getCalendarToday",
         "responses": {
           "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
+            "description": "Current calendar context",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/TodayResponse"
                 }
               }
             }
@@ -70,264 +101,177 @@
     },
     "/v3/api/calendar/convert": {
       "get": {
-        "tags": [
-          "calendar"
-        ],
-        "summary": "Convert Date",
-        "operationId": "convert_date_v3_api_calendar_convert_get",
+        "tags": ["calendar"],
+        "summary": "Convert Gregorian date to Bikram Sambat",
+        "description": "Converts an AD date in YYYY-MM-DD format to Bikram Sambat.",
+        "operationId": "convertAdToBs",
         "parameters": [
           {
             "name": "date",
             "in": "query",
             "required": true,
+            "description": "Gregorian date in YYYY-MM-DD format.",
             "schema": {
               "type": "string",
-              "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-04-14"
-                }
-              },
-              "title": "Date"
-            },
-            "description": "Gregorian date in YYYY-MM-DD format"
+              "example": "2026-04-14"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
+            "description": "Converted Bikram Sambat date",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ConversionResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid date input"
+          },
+          "422": {
+            "description": "Validation error"
           }
         }
       }
     },
     "/v3/api/calendar/bs-to-gregorian": {
       "post": {
-        "tags": [
-          "calendar"
-        ],
-        "summary": "Bs To Gregorian Convert",
-        "operationId": "bs_to_gregorian_convert_v3_api_calendar_bs_to_gregorian_post",
+        "tags": ["calendar"],
+        "summary": "Convert Bikram Sambat date to Gregorian",
+        "description": "Converts a Bikram Sambat date to a Gregorian date.",
+        "operationId": "convertBsToAd",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BSConversionRequest"
+                "$ref": "#/components/schemas/BsDateRequest"
+              },
+              "example": {
+                "year": 2083,
+                "month": 1,
+                "day": 1
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
+            "description": "Converted Gregorian date",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ConversionResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid BS date input"
+          },
+          "422": {
+            "description": "Validation error"
           }
         }
       }
     },
     "/v3/api/calendar/panchanga": {
       "get": {
-        "tags": [
-          "calendar"
-        ],
-        "summary": "Get Panchanga Endpoint",
-        "operationId": "get_panchanga_endpoint_v3_api_calendar_panchanga_get",
+        "tags": ["calendar"],
+        "summary": "Get panchanga context",
+        "description": "Returns public-safe panchanga-related context where enabled by deployment profile.",
+        "operationId": "getPanchanga",
         "parameters": [
           {
             "name": "date",
             "in": "query",
             "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-04-14"
-                }
-              },
-              "title": "Date"
-            },
-            "description": "Gregorian date in YYYY-MM-DD format"
-          },
-          {
-            "name": "risk_mode",
-            "in": "query",
-            "required": false,
+            "description": "Gregorian date in YYYY-MM-DD format.",
             "schema": {
               "type": "string",
-              "description": "standard|strict",
-              "default": "standard",
-              "title": "Risk Mode"
-            },
-            "description": "standard|strict"
+              "example": "2026-05-11"
+            }
+          },
+          {
+            "name": "place",
+            "in": "query",
+            "required": false,
+            "description": "Place name.",
+            "schema": {
+              "type": "string",
+              "example": "Kathmandu"
+            }
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "description": "Latitude.",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "example": 27.7172
+            }
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "description": "Longitude.",
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "example": 85.324
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "required": false,
+            "description": "IANA timezone.",
+            "schema": {
+              "type": "string",
+              "example": "Asia/Kathmandu"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
+            "description": "Panchanga context",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/PanchangaResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "422": {
+            "description": "Validation error"
           }
         }
       }
     },
-    "/v3/openapi.json": {
+    "/v4/api/future-bs/capabilities": {
       "get": {
-        "summary": "V3 Openapi",
-        "operationId": "v3_openapi_v3_openapi_json_get",
+        "tags": ["future-bs"],
+        "summary": "Get future-BS research capabilities",
+        "description": "Returns a public-safe summary of Project Parva's future-BS risk research layer. This endpoint does not expose future prediction vectors, full month-length tables, corrected future values, private model runs, backtests, exports, loan-impact simulations, or client audit outputs.",
+        "operationId": "getFutureBsCapabilities",
         "responses": {
           "200": {
-            "description": "Successful Response",
+            "description": "Public-safe future-BS capability summary",
             "content": {
               "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v3/docs": {
-      "get": {
-        "summary": "V3 Docs",
-        "operationId": "v3_docs_v3_docs_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/": {
-      "get": {
-        "summary": "Root",
-        "operationId": "root__get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health": {
-      "get": {
-        "summary": "Health",
-        "operationId": "health_health_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health/live": {
-      "get": {
-        "summary": "Health Live",
-        "operationId": "health_live_health_live_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health/startup": {
-      "get": {
-        "summary": "Health Startup",
-        "operationId": "health_startup_health_startup_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/health/ready": {
-      "get": {
-        "summary": "Health Ready",
-        "operationId": "health_ready_health_ready_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/FutureBsCapabilities"
+                }
               }
             }
           }
@@ -337,88 +281,197 @@
   },
   "components": {
     "schemas": {
-      "BSConversionRequest": {
+      "HealthResponse": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          }
+        }
+      },
+      "BsDateRequest": {
+        "type": "object",
+        "required": ["year", "month", "day"],
         "properties": {
           "year": {
             "type": "integer",
-            "title": "Year"
+            "example": 2083
           },
           "month": {
             "type": "integer",
-            "title": "Month"
+            "minimum": 1,
+            "maximum": 12,
+            "example": 1
           },
           "day": {
             "type": "integer",
-            "title": "Day"
+            "minimum": 1,
+            "maximum": 32,
+            "example": 1
           }
-        },
-        "type": "object",
-        "required": [
-          "year",
-          "month",
-          "day"
-        ],
-        "title": "BSConversionRequest"
+        }
       },
-      "HTTPValidationError": {
+      "TodayResponse": {
+        "type": "object",
+        "additionalProperties": true,
+        "description": "Current Nepali calendar context. Exact fields may vary by deployment profile.",
         "properties": {
-          "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "type": "array",
-            "title": "Detail"
+          "bs": {
+            "$ref": "#/components/schemas/BsDate"
+          },
+          "ad": {
+            "type": "string",
+            "example": "2026-05-11"
+          },
+          "weekday": {
+            "type": "string",
+            "example": "Monday"
+          },
+          "publication_status": {
+            "type": "string",
+            "example": "published_or_computed"
           }
-        },
-        "type": "object",
-        "title": "HTTPValidationError"
+        }
       },
-      "ValidationError": {
+      "BsDate": {
+        "type": "object",
         "properties": {
-          "loc": {
-            "items": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "integer"
-                }
-              ]
-            },
-            "type": "array",
-            "title": "Location"
+          "year": {
+            "type": "integer",
+            "example": 2083
           },
-          "msg": {
-            "type": "string",
-            "title": "Message"
+          "month": {
+            "type": "integer",
+            "example": 1
           },
-          "type": {
-            "type": "string",
-            "title": "Error Type"
-          },
+          "day": {
+            "type": "integer",
+            "example": 28
+          }
+        }
+      },
+      "ConversionResponse": {
+        "type": "object",
+        "additionalProperties": true,
+        "description": "Date conversion response. Exact fields may vary by deployment profile.",
+        "properties": {
           "input": {
-            "title": "Input"
-          },
-          "ctx": {
             "type": "object",
-            "title": "Context"
+            "additionalProperties": true
+          },
+          "result": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "publication_status": {
+            "type": "string",
+            "example": "published_or_computed"
+          }
+        }
+      },
+      "PanchangaResponse": {
+        "type": "object",
+        "additionalProperties": true,
+        "description": "Public-safe panchanga context. Computed results should be interpreted with source and method metadata where provided.",
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2026-05-11"
+          },
+          "place": {
+            "type": "string",
+            "example": "Kathmandu, Nepal"
+          },
+          "timezone": {
+            "type": "string",
+            "example": "Asia/Kathmandu"
+          },
+          "tithi": {
+            "type": "string",
+            "example": "Navami"
+          },
+          "nakshatra": {
+            "type": "string",
+            "example": "Shatabhisha"
+          },
+          "source": {
+            "type": "string",
+            "example": "sunrise_based_panchanga"
+          }
+        }
+      },
+      "FutureBsCapabilities": {
+        "type": "object",
+        "required": ["surface", "status", "publication_status", "not_claimed"],
+        "properties": {
+          "surface": {
+            "type": "string",
+            "example": "future_bs_risk_research"
+          },
+          "status": {
+            "type": "string",
+            "example": "research_preview"
+          },
+          "publication_status": {
+            "type": "string",
+            "example": "computed_prediction_not_official"
+          },
+          "public_surface": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "methodology_summary",
+              "source_policy_summary",
+              "claim_boundary",
+              "aggregate_validation_posture",
+              "risk_label_taxonomy"
+            ]
+          },
+          "private_deployment_surfaces": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "external_sheet_comparison",
+              "aggregate audit report",
+              "future month-length risk review",
+              "schedule impact screening",
+              "controlled reconciliation workflow"
+            ]
+          },
+          "not_claimed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "official_future_publication",
+              "legal_or_tax_final_authority",
+              "guaranteed_future_calendar_accuracy"
+            ]
           }
         },
-        "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
-        "title": "ValidationError"
+        "additionalProperties": true
       }
     }
   },
-  "servers": [
+  "tags": [
     {
-      "url": "https://project-parva-public-demo.onrender.com",
-      "description": "Render public demo backend"
+      "name": "health",
+      "description": "Health and readiness checks."
+    },
+    {
+      "name": "calendar",
+      "description": "Public Nepali calendar and conversion endpoints."
+    },
+    {
+      "name": "future-bs",
+      "description": "Public-safe future-BS research capability summary."
     }
   ]
 }
