@@ -40,6 +40,10 @@ function cleanSupportMessage(message, fallback = 'Something went wrong.') {
     return fallback;
   }
 
+  if (/timed out|failed to fetch|networkerror|load failed|request timeout/i.test(raw)) {
+    return `${fallback} The public API demo may be waking up, so retry in a few seconds.`;
+  }
+
   return raw
     .replace(/\s+/g, ' ')
     .replace(/`\/?v\d+\/api\/([^`]+)`/g, 'this data surface')

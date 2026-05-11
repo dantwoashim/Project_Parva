@@ -32,7 +32,7 @@ import './App.css';
 const routeSeo = {
   '/today': {
     title: 'Today - Parva',
-    description: 'Today on Parva: daily panchanga, observances, best-time guidance, place context, and visible source evidence.',
+    description: 'Today on Parva: BS/AD context, panchanga signals, observances, timing windows, and visible source evidence.',
   },
   '/my-place': {
     title: 'My Place - Parva',
@@ -52,7 +52,7 @@ const routeSeo = {
   },
   '/panchanga': {
     title: 'Panchanga - Parva',
-    description: 'Convert dates, inspect panchanga signals, and export source evidence from Parva.',
+    description: 'Convert dates, inspect panchanga signals, and review source-aware calendar evidence from Parva.',
   },
   '/trust': {
     title: 'Trust - Parva',
@@ -89,8 +89,8 @@ function setMetaDescription(description) {
 function seoForPath(pathname) {
   const festivalDetail = pathname.startsWith('/festivals/') ? routeSeo['/festivals'] : null;
   return routeSeo[pathname] || festivalDetail || {
-    title: 'Parva - Source-aware Nepal time',
-    description: 'Parva brings source-aware Nepal panchanga, festivals, best-time planning, place context, and trust-visible evidence into one calm product.',
+    title: 'Project Parva - Nepali temporal infrastructure',
+    description: 'Project Parva provides BS/AD conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation for Nepali software systems.',
   };
 }
 

@@ -222,9 +222,9 @@ function formatIsoDate(value, options = {}) {
 }
 
 function formatTimeReference(value) {
-  if (!value) return 'Pending';
+  if (!value) return 'Awaiting calculation';
   const candidate = typeof value === 'object' ? value.local_time || value.local || value.utc : value;
-  if (!candidate) return 'Pending';
+  if (!candidate) return 'Awaiting calculation';
   if (/^\d{2}:\d{2}/.test(candidate)) return candidate.slice(0, 5);
   try {
     return new Intl.DateTimeFormat('en', {
@@ -251,7 +251,7 @@ function formatCoordinates(location = {}) {
   const lat = Number(location.latitude);
   const lon = Number(location.longitude);
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return 'Coordinates pending';
-  return `${lat.toFixed(4)}°, ${lon.toFixed(4)}°`;
+  return `${lat.toFixed(4)} deg, ${lon.toFixed(4)} deg`;
 }
 
 function placeLabelFromLocation(location = {}) {
@@ -280,8 +280,8 @@ function humanMethodLabel(value, fallback = 'Verified calculation') {
 }
 
 function supportReference(value) {
-  if (typeof value !== 'string' || !value.trim()) return 'Available after calculation';
-  return `Ref ${value.trim().slice(0, 8)}`;
+  if (typeof value !== 'string' || !value.trim()) return 'Calculation evidence';
+  return 'View evidence';
 }
 
 function addDaysToIsoDate(value, offset) {
@@ -338,11 +338,11 @@ function buildPanchangaItems(compass = {}, panchangaPayload = null) {
   const panchanga = panchangaPayload?.panchanga || {};
   const primary = compassData.primary_readout || panchanga.tithi || {};
   return [
-    { icon: '☾', label: 'Tithi', value: primary.tithi_name || primary.name || 'Pending', meta: primary.paksha ? readableCategory(primary.paksha) : 'Computed for sunrise' },
-    { icon: '◐', label: 'Paksha', value: readableCategory(primary.paksha || panchanga.tithi?.paksha || 'Pending'), meta: primary.tithi_number || panchanga.tithi?.number ? `Tithi ${primary.tithi_number || panchanga.tithi.number}` : 'Computed for date' },
-    { icon: '✦', label: 'Nakshatra', value: signals.nakshatra?.name || panchanga.nakshatra?.name || 'Pending', meta: signals.nakshatra?.pada ? `Pada ${signals.nakshatra.pada}` : 'Astronomical signal' },
-    { icon: '✣', label: 'Yoga', value: signals.yoga?.name || panchanga.yoga?.name || 'Pending', meta: 'Astronomical signal' },
-    { icon: '❋', label: 'Karana', value: signals.karana?.name || panchanga.karana?.name || 'Pending', meta: 'Astronomical signal' },
+    { icon: 'T', label: 'Tithi', value: primary.tithi_name || primary.name || 'Awaiting calculation', meta: primary.paksha ? readableCategory(primary.paksha) : 'Computed for sunrise' },
+    { icon: 'P', label: 'Paksha', value: readableCategory(primary.paksha || panchanga.tithi?.paksha || 'Awaiting calculation'), meta: primary.tithi_number || panchanga.tithi?.number ? `Tithi ${primary.tithi_number || panchanga.tithi.number}` : 'Computed for date' },
+    { icon: 'N', label: 'Nakshatra', value: signals.nakshatra?.name || panchanga.nakshatra?.name || 'Awaiting calculation', meta: signals.nakshatra?.pada ? `Pada ${signals.nakshatra.pada}` : 'Computed lunar position' },
+    { icon: 'Y', label: 'Yoga', value: signals.yoga?.name || panchanga.yoga?.name || 'Awaiting calculation', meta: 'Computed solar-lunar angle' },
+    { icon: 'K', label: 'Karana', value: signals.karana?.name || panchanga.karana?.name || 'Awaiting calculation', meta: 'Derived from tithi state' },
   ];
 }
 
@@ -351,8 +351,8 @@ function buildDayFacts(compass = {}) {
   return [
     ['Sunrise', formatTimeReference(horizon.sunrise)],
     ['Sunset', formatTimeReference(horizon.sunset)],
-    ['Rahu Kalam', horizon.rahu_kalam ? formatTimeRange(horizon.rahu_kalam.start, horizon.rahu_kalam.end) : 'Pending'],
-    ['Current window', horizon.current_muhurta?.name || 'Pending'],
+    ['Rahu Kalam', horizon.rahu_kalam ? formatTimeRange(horizon.rahu_kalam.start, horizon.rahu_kalam.end) : 'Awaiting calculation'],
+    ['Current window', horizon.current_muhurta?.name || 'Awaiting calculation'],
   ];
 }
 
@@ -758,6 +758,10 @@ export function RedesignToday() {
     ...(liveWindows.slice(0, 3).map((window) => ({ time: window.time, title: window.name, type: window.type, icon: '✣' }))),
     compass?.horizon?.sunset ? { time: formatTimeReference(compass.horizon.sunset), title: 'Sunset', type: 'warm', icon: '☀' } : null,
   ].filter(Boolean);
+  const displayTimelineItems = timelineItems.map((item) => ({
+    ...item,
+    icon: item.title === 'Sunrise' ? 'Sun' : item.title === 'Sunset' ? 'Set' : 'Window',
+  }));
   const placeLabel = compass?.location_context?.place_title || placeLabelFromLocation(state.location);
   const qualityScore = Math.max(0, Math.min(100, Math.round(Number(muhurta?.best_window?.score ?? 0))));
   const sourceLabel = humanMethodLabel(compassMeta?.method || compass?.engine?.method || compass?.engine?.method_profile);
@@ -772,8 +776,8 @@ export function RedesignToday() {
       <main className="page-shell today-page">
         <PageHero
           eyebrow="Today"
-          title={`${weekday}, ${bsLabel}`}
-          body={`Nepal calendar, panchanga, festivals, and timing decisions with source evidence for ${placeLabel}.`}
+          title={`Today in ${placeLabel}`}
+          body={`${bsLabel} - ${weekday}. Source-aware BS date logic, panchanga signals, festivals, and timing windows.`}
           action={(
             <Link className="location-mini" to="/my-place">
               <span>{placeLabel}</span>
@@ -783,16 +787,17 @@ export function RedesignToday() {
         />
         <VerificationStrip
           items={[
-            { label: 'Answer', value: bestWindowLabel, meta: bestWindowTime },
+            { label: 'Current timing window', value: bestWindowLabel, meta: bestWindowTime },
             { label: 'Place', value: placeLabel, meta: state.timezone },
-            { label: 'Source', value: sourceLabel, meta: `Evidence ${evidenceId(compassMeta)}` },
-            { label: 'Action', value: 'Plan or subscribe', meta: 'Calendar-ready' },
+            { label: 'Calculation source', value: sourceLabel, meta: supportReference(compassMeta?.request_id) },
+            { label: 'Next action', value: 'View full panchanga', meta: 'Calendar-ready' },
           ]}
         />
         {error ? (
           <section className="festival-empty-state panel" role="alert">
             <p className="eyebrow">Today unavailable</p>
             <h2>{error}</h2>
+            <p>The public API demo may be waking up. Retry in a few seconds if the first request times out.</p>
           </section>
         ) : null}
         <section className="today-main">
@@ -869,7 +874,7 @@ export function RedesignToday() {
                 <p className="eyebrow">Day timeline</p>
                 <strong>{state.date}</strong>
               </div>
-              <TimelineList compact items={timelineItems} />
+              <TimelineList compact items={displayTimelineItems} />
             </section>
             <section className="panel quality-panel">
               <p className="eyebrow">Day quality</p>
@@ -1002,12 +1007,13 @@ export function RedesignMyPlace() {
           <section className="panel map-panel">
             <div className="workspace-title">
               <h1>Find your place</h1>
-              <p>Choose the place Parva should use for sunrise, panchanga, festivals, and timing windows.</p>
+              <p>Set the calculation place Parva should use for sunrise, panchanga, festivals, and timing windows.</p>
             </div>
             <label className="search-field">
               <span aria-hidden="true">⌕</span>
               <input
                 value={query}
+                placeholder="Search Kathmandu, Pokhara, Lalitpur, Biratnagar, or Janakpur"
                 onChange={(event) => {
                   const value = event.target.value;
                   setQuery(value);
@@ -1019,6 +1025,7 @@ export function RedesignMyPlace() {
               />
               <button type="button" onClick={() => setQuery('')} aria-label="Clear place search">×</button>
             </label>
+            <p className="place-search-helper">Search a city, town, or village in Nepal. Results only set the browser calculation context.</p>
             <div className="place-suggestions">
               {placesState.loading ? <p className="festival-muted-note">Searching places...</p> : null}
               {!placesState.loading && !queryReady ? <p className="festival-muted-note">Type at least two characters to search places.</p> : null}
@@ -1034,8 +1041,9 @@ export function RedesignMyPlace() {
             </div>
             <section className="place-context-card" aria-label={`${activePlaceName} calculation context`}>
               <div>
-                <p className="eyebrow">Current calculation place</p>
+                <p className="eyebrow">Selected place</p>
                 <h2>{activePlaceName}</h2>
+                <p className="place-context-meta">{coordinateStatus} - {activeLocation.timezone || state.timezone}</p>
                 <p>{coordinateStatus} · {activeLocation.timezone || state.timezone}</p>
               </div>
               <dl>

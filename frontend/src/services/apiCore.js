@@ -1,7 +1,6 @@
 import { ensureApiEnvelope } from './apiContracts';
+import { API_BASE } from './apiBase';
 
-const PUBLIC_API_HOST = (import.meta.env.VITE_API_BASE_URL || 'https://api.prabinghimire1.com.np').replace(/\/$/, '');
-const API_BASE = import.meta.env.VITE_API_BASE || `${PUBLIC_API_HOST}/v3/api`;
 const DEFAULT_REQUEST_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS || 10000);
 const ENVELOPE_HEADER_NAME = 'X-Parva-Envelope';
 const ENVELOPE_HEADER_VALUE = 'data-meta';
