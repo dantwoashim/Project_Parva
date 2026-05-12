@@ -295,7 +295,7 @@ def main() -> int:
                 f"- Wrong GREEN count: {summary['best_metrics']['wrong_green_count']}",
                 f"- Claim ready 99 green-zone: {claim['claim_ready_99_green_zone']}",
                 "",
-                "This package is ready for independent benchmark discussion, not an official future calendar claim.",
+                "This package is ready for independent benchmark discussion, not an official publication claim.",
             ]
         ),
     )

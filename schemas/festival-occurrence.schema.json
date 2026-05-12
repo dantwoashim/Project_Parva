@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/festival-occurrence.schema.json",
+  "title": "FestivalOccurrence",
+  "description": "A dated festival occurrence with source policy and publication status.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["festival_id", "name", "rule_id", "source_policy", "publication_status"],
+  "properties": {
+    "festival_id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "bs_date": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "year", "month", "day", "publication_status", "source_policy"],
+      "properties": {
+        "calendar": { "const": "BS" },
+        "year": { "type": "integer", "minimum": 1 },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "day": { "type": "integer", "minimum": 1, "maximum": 32 },
+        "publication_status": { "type": "string" },
+        "source_policy": { "type": "string" },
+        "release_id": { "type": "string" }
+      }
+    },
+    "ad_date": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "date"],
+      "properties": {
+        "calendar": { "const": "AD" },
+        "date": { "type": "string", "format": "date" },
+        "timezone": { "type": "string" },
+        "projection": { "type": "boolean" }
+      }
+    },
+    "rule_id": { "type": "string", "minLength": 1 },
+    "source_policy": {
+      "type": "string",
+      "enum": [
+        "official_strict",
+        "printed_reviewed",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "experimental_shadow",
+        "public_demo"
+      ]
+    },
+    "publication_status": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review",
+        "computed_prediction_not_official"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "festival_id": "synthetic-festival-example",
+      "name": "Synthetic Festival Example",
+      "bs_date": {
+        "calendar": "BS",
+        "year": 2080,
+        "month": 1,
+        "day": 1,
+        "publication_status": "publisher_reference",
+        "source_policy": "publisher_reference"
+      },
+      "ad_date": {
+        "calendar": "AD",
+        "date": "2023-04-14",
+        "timezone": "Asia/Kathmandu"
+      },
+      "rule_id": "synthetic-rule-example",
+      "source_policy": "publisher_reference",
+      "publication_status": "publisher_reference"
+    }
+  ]
+}

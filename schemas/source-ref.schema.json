@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/source-ref.schema.json",
+  "title": "SourceRef",
+  "description": "A public-safe source reference used by Parva temporal records.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source_id", "source_name", "source_tier"],
+  "properties": {
+    "source_id": { "type": "string", "minLength": 1 },
+    "source_name": { "type": "string", "minLength": 1 },
+    "source_tier": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review"
+      ]
+    },
+    "url": { "type": "string", "format": "uri" },
+    "archive_ref": { "type": "string", "minLength": 1 },
+    "reviewed_by": { "type": "string", "minLength": 1 },
+    "reviewed_at": { "type": "string", "format": "date-time" }
+  },
+  "examples": [
+    {
+      "source_id": "np-public-calendar-2080",
+      "source_name": "Public calendar evidence for BS 2080",
+      "source_tier": "official_verified",
+      "url": "https://example.gov.np/public-calendar-2080",
+      "reviewed_by": "source-review",
+      "reviewed_at": "2024-01-15T00:00:00Z"
+    }
+  ]
+}

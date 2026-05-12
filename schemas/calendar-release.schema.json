@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/calendar-release.schema.json",
+  "title": "CalendarRelease",
+  "description": "A versioned calendar data release with source policy and artifact hashes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "release_id",
+    "calendar",
+    "coverage",
+    "source_policy",
+    "artifact_hashes",
+    "publication_status",
+    "generated_at"
+  ],
+  "properties": {
+    "release_id": { "type": "string", "minLength": 1 },
+    "calendar": { "type": "string", "enum": ["BS", "AD", "mixed"] },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bs_year_start", "bs_year_end"],
+      "properties": {
+        "bs_year_start": { "type": "integer", "minimum": 1 },
+        "bs_year_end": { "type": "integer", "minimum": 1 },
+        "ad_date_start": { "type": "string", "format": "date" },
+        "ad_date_end": { "type": "string", "format": "date" }
+      }
+    },
+    "source_policy": {
+      "type": "string",
+      "enum": [
+        "official_strict",
+        "printed_reviewed",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "experimental_shadow",
+        "public_demo"
+      ]
+    },
+    "artifact_hashes": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "publication_status": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review",
+        "computed_prediction_not_official"
+      ]
+    },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "previous_release": { "type": "string", "minLength": 1 }
+  },
+  "examples": [
+    {
+      "release_id": "published-bs-2080",
+      "calendar": "BS",
+      "coverage": {
+        "bs_year_start": 2080,
+        "bs_year_end": 2080,
+        "ad_date_start": "2023-04-14",
+        "ad_date_end": "2024-04-12"
+      },
+      "source_policy": "official_strict",
+      "artifact_hashes": {
+        "month_starts": "sha256:public-example-hash"
+      },
+      "publication_status": "official_verified",
+      "generated_at": "2024-01-15T00:00:00Z"
+    }
+  ]
+}

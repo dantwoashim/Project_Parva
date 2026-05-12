@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/calculation-trace.schema.json",
+  "title": "CalculationTrace",
+  "description": "A public calculation trace for conversion, panchanga, fiscal, festival, or risk operations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "trace_id",
+    "operation",
+    "input",
+    "output",
+    "release_id",
+    "source_policy",
+    "steps",
+    "warnings",
+    "publication_status"
+  ],
+  "properties": {
+    "trace_id": { "type": "string", "minLength": 1 },
+    "operation": { "type": "string", "minLength": 1 },
+    "input": { "type": "object", "additionalProperties": true },
+    "output": { "type": "object", "additionalProperties": true },
+    "release_id": { "type": "string", "minLength": 1 },
+    "source_policy": {
+      "type": "string",
+      "enum": [
+        "official_strict",
+        "printed_reviewed",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "experimental_shadow",
+        "public_demo"
+      ]
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "status"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "enum": ["applied", "skipped", "warning"] },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "publication_status": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review",
+        "computed_prediction_not_official"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "trace_id": "trace-public-example-001",
+      "operation": "ad_to_bs",
+      "input": {
+        "calendar": "AD",
+        "date": "2023-04-14"
+      },
+      "output": {
+        "calendar": "BS",
+        "year": 2080,
+        "month": 1,
+        "day": 1
+      },
+      "release_id": "published-bs-2080",
+      "source_policy": "official_strict",
+      "steps": [
+        {
+          "name": "load_release",
+          "status": "applied",
+          "detail": "Loaded published release metadata."
+        }
+      ],
+      "warnings": [],
+      "publication_status": "official_verified"
+    }
+  ]
+}

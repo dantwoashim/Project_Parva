@@ -2,7 +2,7 @@
 
 The future-BS layer is an experimental calendar-risk research system. It studies how month-length assumptions behave before they affect fiscal reports, contracts, renewals, interest periods, exports, and audit trails.
 
-Parva does not publish guaranteed future BS dates.
+Parva does not publish assured future BS dates.
 
 ## Public Research Summary
 

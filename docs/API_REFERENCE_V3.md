@@ -1,6 +1,6 @@
-# Deployment
+# API Reference v3
 
-Project Parva is designed to run in two deployment profiles:
+Project Parva v3 APIs are designed to run in two deployment profiles:
 
 1. A public demo profile for safe API evaluation.
 2. A private or full deployment profile for organizations that need controlled calendar validation, internal audit workflows, or sensitive future-BS research surfaces.
@@ -49,11 +49,50 @@ Future-BS research outputs are treated as:
 
 Project Parva is not an official government calendar publication, legal authority, tax authority, banking-contract authority, or replacement for official Nepali calendar publication.
 
-## Frontend deployment
+## API host
 
-The frontend is hosted on Cloudflare Pages.
+The public frontend is hosted on Cloudflare Pages. The public backend API is hosted on Render.
 
-Production frontend URL:
+Production URLs:
 
 ```text
 https://prabinghimire1.com.np
+https://api.prabinghimire1.com.np
+```
+
+## Canonical route families
+
+The canonical route inventory is generated from the FastAPI app and checked in `docs/ROUTE_ACCESS.md`.
+
+Current v3 route families:
+
+- `admin`
+- `billing`
+- `cache`
+- `calendar`
+- `engine`
+- `enterprise`
+- `explain`
+- `feeds`
+- `festivals`
+- `forecast`
+- `glossary`
+- `integrations`
+- `keys`
+- `kundali`
+- `me`
+- `muhurta`
+- `observances`
+- `personal`
+- `places`
+- `policy`
+- `provenance`
+- `public`
+- `reliability`
+- `resolve`
+- `spec`
+- `temples`
+- `temporal`
+- `webhooks`
+
+Route presence in this reference does not mean every route is available on the lightweight public demo. Public and private deployment boundaries are documented in `docs/PUBLIC_API_BOUNDARY.md`.

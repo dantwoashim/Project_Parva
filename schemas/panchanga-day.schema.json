@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/panchanga-day.schema.json",
+  "title": "PanchangaDay",
+  "description": "A place-aware panchanga day summary.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["date", "place", "timezone", "calculation_source", "publication_status"],
+  "properties": {
+    "date": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "date"],
+      "properties": {
+        "calendar": { "const": "AD" },
+        "date": { "type": "string", "format": "date" },
+        "timezone": { "type": "string" },
+        "projection": { "type": "boolean" }
+      }
+    },
+    "place": { "type": "string", "minLength": 1 },
+    "timezone": { "type": "string", "minLength": 1 },
+    "tithi": { "type": "string", "minLength": 1 },
+    "paksha": { "type": "string", "minLength": 1 },
+    "nakshatra": { "type": "string", "minLength": 1 },
+    "yoga": { "type": "string", "minLength": 1 },
+    "karana": { "type": "string", "minLength": 1 },
+    "sunrise": { "type": "string", "minLength": 1 },
+    "sunset": { "type": "string", "minLength": 1 },
+    "calculation_source": { "type": "string", "minLength": 1 },
+    "publication_status": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review",
+        "computed_prediction_not_official"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "date": {
+        "calendar": "AD",
+        "date": "2023-04-14",
+        "timezone": "Asia/Kathmandu"
+      },
+      "place": "Kathmandu, Nepal",
+      "timezone": "Asia/Kathmandu",
+      "tithi": "Example Tithi",
+      "paksha": "Example Paksha",
+      "nakshatra": "Example Nakshatra",
+      "yoga": "Example Yoga",
+      "karana": "Example Karana",
+      "sunrise": "05:40",
+      "sunset": "18:25",
+      "calculation_source": "public_demo_calculation",
+      "publication_status": "computed_prediction_not_official"
+    }
+  ]
+}

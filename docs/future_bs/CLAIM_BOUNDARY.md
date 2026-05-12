@@ -22,7 +22,7 @@ computed_prediction_not_official
 
 - official future publication
 - legal, tax, regulatory, or banking-contract final authority
-- guaranteed future calendar accuracy
+- assured future calendar accuracy
 - broad future-date certainty
 - replacement for the relevant official institution or authority
 

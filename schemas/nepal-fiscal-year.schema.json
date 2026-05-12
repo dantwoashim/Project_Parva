@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/nepal-fiscal-year.schema.json",
+  "title": "NepalFiscalYear",
+  "description": "Nepali fiscal year boundaries in BS and AD calendars.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "label",
+    "start_bs",
+    "end_bs",
+    "start_ad",
+    "end_ad",
+    "source_policy",
+    "publication_status"
+  ],
+  "properties": {
+    "label": { "type": "string", "minLength": 1 },
+    "start_bs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "year", "month", "day", "publication_status", "source_policy"],
+      "properties": {
+        "calendar": { "const": "BS" },
+        "year": { "type": "integer", "minimum": 1 },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "day": { "type": "integer", "minimum": 1, "maximum": 32 },
+        "publication_status": { "type": "string" },
+        "source_policy": { "type": "string" },
+        "release_id": { "type": "string" }
+      }
+    },
+    "end_bs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "year", "month", "day", "publication_status", "source_policy"],
+      "properties": {
+        "calendar": { "const": "BS" },
+        "year": { "type": "integer", "minimum": 1 },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "day": { "type": "integer", "minimum": 1, "maximum": 32 },
+        "publication_status": { "type": "string" },
+        "source_policy": { "type": "string" },
+        "release_id": { "type": "string" }
+      }
+    },
+    "start_ad": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "date"],
+      "properties": {
+        "calendar": { "const": "AD" },
+        "date": { "type": "string", "format": "date" },
+        "timezone": { "type": "string" },
+        "projection": { "type": "boolean" }
+      }
+    },
+    "end_ad": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "date"],
+      "properties": {
+        "calendar": { "const": "AD" },
+        "date": { "type": "string", "format": "date" },
+        "timezone": { "type": "string" },
+        "projection": { "type": "boolean" }
+      }
+    },
+    "source_policy": {
+      "type": "string",
+      "enum": [
+        "official_strict",
+        "printed_reviewed",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "experimental_shadow",
+        "public_demo"
+      ]
+    },
+    "publication_status": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review",
+        "computed_prediction_not_official"
+      ]
+    }
+  },
+  "examples": [
+    {
+      "label": "FY 2080/81",
+      "start_bs": {
+        "calendar": "BS",
+        "year": 2080,
+        "month": 4,
+        "day": 1,
+        "publication_status": "official_verified",
+        "source_policy": "official_strict"
+      },
+      "end_bs": {
+        "calendar": "BS",
+        "year": 2081,
+        "month": 3,
+        "day": 31,
+        "publication_status": "official_verified",
+        "source_policy": "official_strict"
+      },
+      "start_ad": {
+        "calendar": "AD",
+        "date": "2023-07-17",
+        "timezone": "Asia/Kathmandu"
+      },
+      "end_ad": {
+        "calendar": "AD",
+        "date": "2024-07-15",
+        "timezone": "Asia/Kathmandu"
+      },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    }
+  ]
+}

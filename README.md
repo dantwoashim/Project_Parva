@@ -51,7 +51,7 @@ Private or experimental future-BS routes are not part of the public deployment b
 
 ## Future BS Risk Research
 
-Parva does not publish guaranteed future BS dates.
+Parva does not publish assured future BS dates.
 
 The research layer studies whether future BS month-length assumptions are stable, boundary-sensitive, source-conflicted, or review-worthy before they enter financial, contractual, reporting, or operational systems.
 
@@ -67,7 +67,7 @@ In the current Tier 1 official-verified validation window available to Parva, co
 
 A legacy/static baseline matched 68 out of 72 on the same window, with misses concentrated around boundary-sensitive months.
 
-This is a limited validation result. It is not a claim of official authority, guaranteed future accuracy, or broad future-calendar certainty.
+This is a limited validation result. It is not a claim of official authority, assured future accuracy, or broad future-calendar certainty.
 
 ## Source Policy
 

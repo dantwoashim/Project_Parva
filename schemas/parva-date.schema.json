@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/parva-date.schema.json",
+  "title": "ParvaDate",
+  "description": "Shared Parva date contracts for PlainBSDate, PlainADDate, BSYearMonth, and BSMonthStart.",
+  "oneOf": [
+    { "$ref": "#/$defs/PlainBSDate" },
+    { "$ref": "#/$defs/PlainADDate" },
+    { "$ref": "#/$defs/BSYearMonth" },
+    { "$ref": "#/$defs/BSMonthStart" }
+  ],
+  "$defs": {
+    "PublicationStatus": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review",
+        "computed_prediction_not_official"
+      ]
+    },
+    "SourcePolicy": {
+      "type": "string",
+      "enum": [
+        "official_strict",
+        "printed_reviewed",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "experimental_shadow",
+        "public_demo"
+      ]
+    },
+    "PlainBSDate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "year", "month", "day", "publication_status", "source_policy"],
+      "properties": {
+        "calendar": { "const": "BS" },
+        "year": { "type": "integer", "minimum": 1 },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "day": { "type": "integer", "minimum": 1, "maximum": 32 },
+        "publication_status": { "$ref": "#/$defs/PublicationStatus" },
+        "source_policy": { "$ref": "#/$defs/SourcePolicy" },
+        "release_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "PlainADDate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calendar", "date"],
+      "properties": {
+        "calendar": { "const": "AD" },
+        "date": { "type": "string", "format": "date" },
+        "timezone": { "type": "string", "minLength": 1 },
+        "projection": { "type": "boolean" }
+      }
+    },
+    "BSYearMonth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["year", "month"],
+      "properties": {
+        "year": { "type": "integer", "minimum": 1 },
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "month_name": { "type": "string", "minLength": 1 },
+        "release_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "BSMonthStart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bs_year", "bs_month", "start_ad", "publication_status", "source_refs", "source_policy"],
+      "properties": {
+        "bs_year": { "type": "integer", "minimum": 1 },
+        "bs_month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "start_ad": { "type": "string", "format": "date" },
+        "publication_status": { "$ref": "#/$defs/PublicationStatus" },
+        "source_refs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "source_policy": { "$ref": "#/$defs/SourcePolicy" }
+      }
+    }
+  },
+  "examples": [
+    {
+      "calendar": "BS",
+      "year": 2080,
+      "month": 1,
+      "day": 1,
+      "publication_status": "official_verified",
+      "source_policy": "official_strict",
+      "release_id": "published-bs-2080"
+    },
+    {
+      "calendar": "AD",
+      "date": "2023-04-14",
+      "timezone": "Asia/Kathmandu",
+      "projection": false
+    },
+    {
+      "year": 2080,
+      "month": 1,
+      "month_name": "Baisakh",
+      "release_id": "published-bs-2080"
+    },
+    {
+      "bs_year": 2080,
+      "bs_month": 1,
+      "start_ad": "2023-04-14",
+      "publication_status": "official_verified",
+      "source_refs": ["np-public-calendar-2080"],
+      "source_policy": "official_strict"
+    }
+  ]
+}
