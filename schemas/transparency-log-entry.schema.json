@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/transparency-log-entry.schema.json",
+  "title": "TransparencyLogEntry",
+  "description": "Append-only JSONL transparency-log event for public Project Parva release activity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event",
+    "release_id",
+    "artifact_hash",
+    "source_registry_hash",
+    "timestamp",
+    "signature_ref"
+  ],
+  "properties": {
+    "event": {
+      "type": "string",
+      "enum": [
+        "calendar.release.published",
+        "calendar.official_release.verified",
+        "calendar.release.diff_available",
+        "calendar.risk_label.changed",
+        "calendar.schedule.review_required",
+        "calendar.future_assumption.resolved"
+      ]
+    },
+    "release_id": { "type": "string", "minLength": 1 },
+    "artifact_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "source_registry_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "signature_ref": { "type": "string", "minLength": 1 }
+  },
+  "examples": [
+    {
+      "event": "calendar.release.published",
+      "release_id": "parva-bs-public-demo",
+      "artifact_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "source_registry_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "timestamp": "2026-05-12T00:00:00Z",
+      "signature_ref": "data/public/releases/parva-bs-public-demo.signature.json"
+    }
+  ]
+}

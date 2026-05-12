@@ -19,9 +19,10 @@
       "type": "string",
       "enum": [
         "calendar.official_release.verified",
+        "calendar.release.diff_available",
         "calendar.risk_label.changed",
-        "calendar.external_sheet.disagreement_detected",
-        "calendar.month_boundary.review_required"
+        "calendar.schedule.review_required",
+        "calendar.future_assumption.resolved"
       ]
     },
     "release_version": { "type": "string", "minLength": 1 },
@@ -56,13 +57,13 @@
   },
   "examples": [
     {
-      "event": "calendar.official_release.verified",
-      "release_version": "published-bs-2080-v1",
-      "affected_years": [2080],
-      "affected_months": ["2080-01"],
-      "requires_review": false,
+      "event": "calendar.schedule.review_required",
+      "release_version": "public-example-001",
+      "affected_years": [9000],
+      "affected_months": ["9000-01"],
+      "requires_review": true,
       "diff_available": true,
-      "publication_status": "official_verified",
+      "publication_status": "computed_prediction_not_official",
       "signature": "example-signature-placeholder"
     }
   ]

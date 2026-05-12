@@ -19,9 +19,10 @@
       "type": "string",
       "enum": [
         "calendar.official_release.verified",
+        "calendar.release.diff_available",
         "calendar.risk_label.changed",
-        "calendar.client_sheet.disagreement_detected",
-        "calendar.month_boundary.review_required"
+        "calendar.schedule.review_required",
+        "calendar.future_assumption.resolved"
       ]
     },
     "release_version": {

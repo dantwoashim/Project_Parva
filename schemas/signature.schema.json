@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/signature.schema.json",
+  "title": "ReleaseSignature",
+  "description": "Alpha release signature artifact for public Project Parva releases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "release_id",
+    "artifact_hash",
+    "signature_algorithm",
+    "signature",
+    "signed_at"
+  ],
+  "properties": {
+    "release_id": { "type": "string", "minLength": 1 },
+    "artifact_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "signature_algorithm": {
+      "type": "string",
+      "enum": ["alpha_hash_only_sha256"]
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "signed_at": { "type": "string", "format": "date-time" }
+  },
+  "examples": [
+    {
+      "release_id": "parva-bs-public-demo",
+      "artifact_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "signature_algorithm": "alpha_hash_only_sha256",
+      "signature": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "signed_at": "2026-05-12T00:00:00Z"
+    }
+  ]
+}
