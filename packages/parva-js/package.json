@@ -1,0 +1,23 @@
+{
+  "name": "@project-parva/parva-js",
+  "version": "0.1.0-alpha.0",
+  "description": "Public-safe JavaScript and TypeScript SDK for Project Parva calendar APIs.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
