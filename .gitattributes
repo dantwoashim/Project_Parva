@@ -17,5 +17,7 @@ docs/public_beta/release_candidate_dossier.md export-ignore
 *.pyc export-ignore
 *.pdf binary
 *.xlsx binary
+data/public/releases/*.json text eol=lf
+schemas/*.schema.json text eol=lf
 data/future_bs/raw_sources/** -diff -whitespace
 data/future_bs/witnesses/raw/** -diff -whitespace

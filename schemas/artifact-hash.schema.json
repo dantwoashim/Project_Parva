@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/artifact-hash.schema.json",
+  "title": "ArtifactHash",
+  "description": "A public artifact reference and SHA-256 digest used by Project Parva release manifests.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_id", "path", "sha256", "media_type"],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "media_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "examples": [
+    {
+      "artifact_id": "source-registry",
+      "path": "data/public/releases/parva-bs-public-demo.sources.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "media_type": "application/json",
+      "description": "Public-safe source registry for the demo release."
+    }
+  ]
+}

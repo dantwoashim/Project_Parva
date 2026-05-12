@@ -13,7 +13,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATHS = [
     ROOT / "schemas" / "parva-date.schema.json",
     ROOT / "schemas" / "calendar-release.schema.json",
+    ROOT / "schemas" / "release-manifest.schema.json",
     ROOT / "schemas" / "source-ref.schema.json",
+    ROOT / "schemas" / "source-registry.schema.json",
+    ROOT / "schemas" / "artifact-hash.schema.json",
     ROOT / "schemas" / "calculation-trace.schema.json",
     ROOT / "schemas" / "future-risk.schema.json",
     ROOT / "schemas" / "reconciliation-event.schema.json",

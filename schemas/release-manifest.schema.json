@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/release-manifest.schema.json",
+  "title": "ReleaseManifest",
+  "description": "A public Project Parva release manifest with source policy, artifact hashes, schemas, and claim boundary.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "release_id",
+    "calendar",
+    "coverage",
+    "source_policy",
+    "publication_status",
+    "artifact_hashes",
+    "generated_at",
+    "schemas_used",
+    "claim_boundary"
+  ],
+  "properties": {
+    "release_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calendar": {
+      "type": "string",
+      "enum": ["BS", "AD", "mixed"]
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bs_year_start",
+        "bs_year_end",
+        "ad_date_start",
+        "ad_date_end",
+        "scope",
+        "future_values_included"
+      ],
+      "properties": {
+        "bs_year_start": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "bs_year_end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ad_date_start": {
+          "type": "string",
+          "format": "date"
+        },
+        "ad_date_end": {
+          "type": "string",
+          "format": "date"
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "future_values_included": {
+          "type": "boolean"
+        }
+      }
+    },
+    "source_policy": {
+      "type": "string",
+      "enum": [
+        "official_strict",
+        "printed_reviewed",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "experimental_shadow",
+        "public_demo"
+      ]
+    },
+    "publication_status": {
+      "type": "string",
+      "enum": [
+        "official_verified",
+        "printed_verified",
+        "public_witness",
+        "publisher_reference",
+        "software_table_reference",
+        "third_party_reference",
+        "needs_review",
+        "computed_prediction_not_official"
+      ]
+    },
+    "artifact_hashes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifact_id", "path", "sha256", "media_type"],
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "media_type": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "previous_release": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schemas_used": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "claim_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "official_publication_override",
+        "future_outputs_status",
+        "not_legal_or_banking_authority"
+      ],
+      "properties": {
+        "official_publication_override": {
+          "type": "boolean"
+        },
+        "future_outputs_status": {
+          "type": "string",
+          "const": "computed_prediction_not_official"
+        },
+        "not_legal_or_banking_authority": {
+          "type": "boolean"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "release_id": "parva-bs-public-demo",
+      "calendar": "BS",
+      "coverage": {
+        "bs_year_start": 2078,
+        "bs_year_end": 2083,
+        "ad_date_start": "2021-04-14",
+        "ad_date_end": "2026-04-14",
+        "scope": "Public demo metadata and conformance cases only.",
+        "future_values_included": false
+      },
+      "source_policy": "public_demo",
+      "publication_status": "computed_prediction_not_official",
+      "artifact_hashes": [
+        {
+          "artifact_id": "source-registry",
+          "path": "data/public/releases/parva-bs-public-demo.sources.json",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "media_type": "application/json"
+        }
+      ],
+      "generated_at": "2026-05-12T00:00:00Z",
+      "schemas_used": [
+        "schemas/release-manifest.schema.json",
+        "schemas/source-registry.schema.json",
+        "schemas/artifact-hash.schema.json"
+      ],
+      "claim_boundary": {
+        "official_publication_override": true,
+        "future_outputs_status": "computed_prediction_not_official",
+        "not_legal_or_banking_authority": true,
+        "notes": "This release manifest is public metadata, not an official government calendar publication."
+      }
+    }
+  ]
+}

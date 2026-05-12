@@ -1,0 +1,64 @@
+{
+  "release_id": "parva-bs-public-demo",
+  "calendar": "BS",
+  "coverage": {
+    "bs_year_start": 2078,
+    "bs_year_end": 2083,
+    "ad_date_start": "2021-04-14",
+    "ad_date_end": "2026-04-14",
+    "scope": "Public demo metadata, schemas, and conformance-safe historical examples only.",
+    "future_values_included": false
+  },
+  "source_policy": "public_demo",
+  "publication_status": "computed_prediction_not_official",
+  "artifact_hashes": [
+    {
+      "artifact_id": "source-registry",
+      "path": "data/public/releases/parva-bs-public-demo.sources.json",
+      "sha256": "389b15457ca5276e7efa35fbcde3e83b4337ddaacba15c1643d253a77180609a",
+      "media_type": "application/json",
+      "description": "Public-safe source registry for this demo release."
+    },
+    {
+      "artifact_id": "release-manifest-schema",
+      "path": "schemas/release-manifest.schema.json",
+      "sha256": "43ca5a9d017b077909fab9b1797684e13d5a06334b4fc367d74329390343c6ac",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for public release manifests."
+    },
+    {
+      "artifact_id": "source-registry-schema",
+      "path": "schemas/source-registry.schema.json",
+      "sha256": "9df7e22e92d97de20a4916cf132a48fadf723d607e435274403e5130a982dae8",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for public source registries."
+    },
+    {
+      "artifact_id": "artifact-hash-schema",
+      "path": "schemas/artifact-hash.schema.json",
+      "sha256": "28bb0bd875b784f0e85d9e879e530725d6cb56cfe7302d9e3f5adacdb7347d89",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for artifact hash entries."
+    },
+    {
+      "artifact_id": "calculation-trace-schema",
+      "path": "schemas/calculation-trace.schema.json",
+      "sha256": "4caafb0abdede42711361f51ae462f0688e173495b75d26d725cf5e4984e82ad",
+      "media_type": "application/schema+json",
+      "description": "Existing public calculation trace schema used by this release layer."
+    }
+  ],
+  "generated_at": "2026-05-12T00:00:00Z",
+  "schemas_used": [
+    "schemas/release-manifest.schema.json",
+    "schemas/source-registry.schema.json",
+    "schemas/artifact-hash.schema.json",
+    "schemas/calculation-trace.schema.json"
+  ],
+  "claim_boundary": {
+    "official_publication_override": true,
+    "future_outputs_status": "computed_prediction_not_official",
+    "not_legal_or_banking_authority": true,
+    "notes": "This public demo release describes verifiable metadata and safe examples. It is not an official government calendar publication."
+  }
+}

@@ -118,3 +118,15 @@ python tools/conformance_runner/run.py
 ```
 
 Future SDK work should add language-specific conformance adapters that load the JSON cases under `conformance/` and compare SDK outputs against the same public-safe cases.
+
+## Release And Trace Metadata
+
+API responses may include optional metadata such as `release_id`, `calculation_trace_id`, `source_policy`, or `publication_status`.
+
+SDK consumers should preserve this metadata when storing or forwarding calendar results. A release identifier explains which public artifact set was used. A trace identifier explains which calculation steps produced the result.
+
+Future-BS metadata still remains:
+
+```text
+computed_prediction_not_official
+```

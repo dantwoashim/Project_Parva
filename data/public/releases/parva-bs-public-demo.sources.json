@@ -1,0 +1,42 @@
+{
+  "registry_id": "parva-bs-public-demo-sources",
+  "version": "0.1.0",
+  "generated_at": "2026-05-12T00:00:00Z",
+  "sources": [
+    {
+      "source_id": "parva-temporal-spec-v0-1",
+      "source_name": "Project Parva Temporal Specification v0.1",
+      "source_tier": "publisher_reference",
+      "description": "Public specification defining temporal contracts, release metadata, trace metadata, and claim boundaries.",
+      "claim_support_level": "public_demo",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-12T00:00:00Z",
+      "notes": "Contract metadata only. Not an official government calendar publication."
+    },
+    {
+      "source_id": "parva-public-conformance-v0-1",
+      "source_name": "Project Parva public conformance suite v0.1",
+      "source_tier": "publisher_reference",
+      "description": "Public-safe historical, current, and synthetic shape cases used to verify SDK and runner behavior.",
+      "claim_support_level": "public_demo",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-12T00:00:00Z",
+      "notes": "Does not include private future month values or corrected future outputs."
+    },
+    {
+      "source_id": "parva-public-api-contract",
+      "source_name": "Project Parva public API contract",
+      "source_tier": "publisher_reference",
+      "description": "Public API and schema contract for calendar conversion, panchanga shape, source metadata, and future-BS capabilities.",
+      "claim_support_level": "public_demo",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-12T00:00:00Z",
+      "notes": "Future-BS capability output is metadata and must preserve computed_prediction_not_official."
+    }
+  ],
+  "claim_boundary": {
+    "official_publication_override": true,
+    "future_outputs_status": "computed_prediction_not_official",
+    "notes": "Official publication overrides public demo metadata and any computed future-BS output."
+  }
+}
