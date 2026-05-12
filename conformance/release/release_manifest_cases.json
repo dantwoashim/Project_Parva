@@ -1,0 +1,40 @@
+{
+  "version": "0.1",
+  "case_set": "calendar_release_manifest_shape",
+  "description": "Public-safe release manifest shape cases aligned with the v0.1 temporal spec.",
+  "cases": [
+    {
+      "case_id": "release-manifest-public-shape",
+      "operation": "release_manifest_shape",
+      "input": {
+        "release_id": "published-bs-2080",
+        "calendar": "BS",
+        "coverage": {
+          "bs_year_start": 2080,
+          "bs_year_end": 2080,
+          "ad_date_start": "2023-04-14",
+          "ad_date_end": "2024-04-12"
+        },
+        "source_policy": "official_strict",
+        "artifact_hashes": {
+          "month_starts": "sha256:public-example-hash"
+        },
+        "publication_status": "official_verified",
+        "generated_at": "2024-01-15T00:00:00Z"
+      },
+      "expected": {
+        "required_fields": [
+          "release_id",
+          "calendar",
+          "coverage",
+          "source_policy",
+          "artifact_hashes",
+          "publication_status",
+          "generated_at"
+        ]
+      },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "version": "0.1",
+  "case_set": "round_trip_conversion",
+  "description": "Published-range round-trip conversion cases.",
+  "cases": [
+    {
+      "case_id": "round-trip-bs-ad-bs-2080-new-year",
+      "operation": "round_trip_bs_ad_bs",
+      "input": { "year": 2080, "month": 1, "day": 1 },
+      "expected": { "year": 2080, "month": 1, "day": 1 },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "round-trip-bs-ad-bs-2082-known-date",
+      "operation": "round_trip_bs_ad_bs",
+      "input": { "year": 2082, "month": 11, "day": 3 },
+      "expected": { "year": 2082, "month": 11, "day": 3 },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "round-trip-ad-bs-ad-2023-07-17",
+      "operation": "round_trip_ad_bs_ad",
+      "input": { "date": "2023-07-17" },
+      "expected": { "date": "2023-07-17" },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "round-trip-ad-bs-ad-2026-04-14",
+      "operation": "round_trip_ad_bs_ad",
+      "input": { "date": "2026-04-14" },
+      "expected": { "date": "2026-04-14" },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    }
+  ]
+}

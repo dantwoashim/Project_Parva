@@ -1,0 +1,52 @@
+{
+  "version": "0.1",
+  "case_set": "future_bs_risk_public_shape",
+  "description": "Synthetic future-risk shape cases. These do not include private future month values.",
+  "cases": [
+    {
+      "case_id": "future-risk-public-shape-yellow",
+      "operation": "future_risk_shape",
+      "input": {
+        "bs_year": 9000,
+        "bs_month": 1,
+        "synthetic_example": true,
+        "publication_status": "computed_prediction_not_official",
+        "risk_label": "YELLOW",
+        "corrected_value_included": false,
+        "reason_codes": ["boundary_sensitive", "review_recommended"],
+        "source_policy": "public_demo",
+        "trace_id": "trace-risk-public-example-001"
+      },
+      "expected": {
+        "publication_status": "computed_prediction_not_official",
+        "corrected_value_included": false,
+        "risk_label_present": true,
+        "sensitive_value_fields_absent": true
+      },
+      "source_policy": "public_demo",
+      "publication_status": "computed_prediction_not_official"
+    },
+    {
+      "case_id": "future-risk-public-shape-red",
+      "operation": "future_risk_shape",
+      "input": {
+        "bs_year": 9001,
+        "bs_month": 2,
+        "synthetic_example": true,
+        "publication_status": "computed_prediction_not_official",
+        "risk_label": "RED",
+        "corrected_value_included": false,
+        "reason_codes": ["source_conflict", "non_claimable"],
+        "source_policy": "public_demo"
+      },
+      "expected": {
+        "publication_status": "computed_prediction_not_official",
+        "corrected_value_included": false,
+        "risk_label_present": true,
+        "sensitive_value_fields_absent": true
+      },
+      "source_policy": "public_demo",
+      "publication_status": "computed_prediction_not_official"
+    }
+  ]
+}

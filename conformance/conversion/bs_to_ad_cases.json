@@ -1,0 +1,47 @@
+{
+  "version": "0.1",
+  "case_set": "bs_to_ad_conversion",
+  "description": "Published-range BS to AD conversion cases.",
+  "cases": [
+    {
+      "case_id": "bs-to-ad-2078-new-year",
+      "operation": "bs_to_ad",
+      "input": { "year": 2078, "month": 1, "day": 1 },
+      "expected": { "date": "2021-04-14" },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "bs-to-ad-2080-new-year",
+      "operation": "bs_to_ad",
+      "input": { "year": 2080, "month": 1, "day": 1 },
+      "expected": { "date": "2023-04-14" },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "bs-to-ad-2080-fiscal-start",
+      "operation": "bs_to_ad",
+      "input": { "year": 2080, "month": 4, "day": 1 },
+      "expected": { "date": "2023-07-17" },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "bs-to-ad-2082-known-date",
+      "operation": "bs_to_ad",
+      "input": { "year": 2082, "month": 11, "day": 3 },
+      "expected": { "date": "2026-02-15" },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "bs-to-ad-2083-new-year",
+      "operation": "bs_to_ad",
+      "input": { "year": 2083, "month": 1, "day": 1 },
+      "expected": { "date": "2026-04-14" },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    }
+  ]
+}

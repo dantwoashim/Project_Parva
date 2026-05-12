@@ -1,0 +1,49 @@
+{
+  "version": "0.1",
+  "case_set": "nepal_fiscal_boundaries",
+  "description": "Nepal fiscal-year boundary cases derived from published-range BS dates.",
+  "cases": [
+    {
+      "case_id": "fiscal-2078-79-boundary",
+      "operation": "fiscal_year_boundary",
+      "input": { "fiscal_year_start": 2078 },
+      "expected": {
+        "label": "2078/79",
+        "start_bs": "2078-04-01",
+        "start_ad": "2021-07-16",
+        "end_bs": "2079-03-32",
+        "end_ad": "2022-07-16"
+      },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "fiscal-2080-81-boundary",
+      "operation": "fiscal_year_boundary",
+      "input": { "fiscal_year_start": 2080 },
+      "expected": {
+        "label": "2080/81",
+        "start_bs": "2080-04-01",
+        "start_ad": "2023-07-17",
+        "end_bs": "2081-03-31",
+        "end_ad": "2024-07-15"
+      },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    },
+    {
+      "case_id": "fiscal-2082-83-boundary",
+      "operation": "fiscal_year_boundary",
+      "input": { "fiscal_year_start": 2082 },
+      "expected": {
+        "label": "2082/83",
+        "start_bs": "2082-04-01",
+        "start_ad": "2025-07-16",
+        "end_bs": "2083-03-32",
+        "end_ad": "2026-07-16"
+      },
+      "source_policy": "official_strict",
+      "publication_status": "official_verified"
+    }
+  ]
+}

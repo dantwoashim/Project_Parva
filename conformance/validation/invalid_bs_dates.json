@@ -1,0 +1,55 @@
+{
+  "version": "0.1",
+  "case_set": "invalid_bs_dates",
+  "description": "Invalid BS date cases for validation behavior.",
+  "cases": [
+    {
+      "case_id": "invalid-bs-month-zero",
+      "operation": "validate_bs_date",
+      "input": { "year": 2080, "month": 0, "day": 1 },
+      "expected": { "valid": false, "reason": "invalid_month" },
+      "source_policy": "official_strict",
+      "publication_status": "needs_review"
+    },
+    {
+      "case_id": "invalid-bs-month-thirteen",
+      "operation": "validate_bs_date",
+      "input": { "year": 2080, "month": 13, "day": 1 },
+      "expected": { "valid": false, "reason": "invalid_month" },
+      "source_policy": "official_strict",
+      "publication_status": "needs_review"
+    },
+    {
+      "case_id": "invalid-bs-day-zero",
+      "operation": "validate_bs_date",
+      "input": { "year": 2080, "month": 1, "day": 0 },
+      "expected": { "valid": false, "reason": "invalid_day" },
+      "source_policy": "official_strict",
+      "publication_status": "needs_review"
+    },
+    {
+      "case_id": "invalid-bs-day-too-high",
+      "operation": "validate_bs_date",
+      "input": { "year": 2080, "month": 1, "day": 33 },
+      "expected": { "valid": false, "reason": "invalid_day" },
+      "source_policy": "official_strict",
+      "publication_status": "needs_review"
+    },
+    {
+      "case_id": "invalid-bs-year-too-low",
+      "operation": "validate_bs_date",
+      "input": { "year": 1800, "month": 1, "day": 1 },
+      "expected": { "valid": false, "reason": "out_of_range_year" },
+      "source_policy": "official_strict",
+      "publication_status": "needs_review"
+    },
+    {
+      "case_id": "invalid-bs-malformed-string",
+      "operation": "validate_bs_date_string",
+      "input": { "value": "2080/01/01" },
+      "expected": { "valid": false, "reason": "malformed_string" },
+      "source_policy": "official_strict",
+      "publication_status": "needs_review"
+    }
+  ]
+}

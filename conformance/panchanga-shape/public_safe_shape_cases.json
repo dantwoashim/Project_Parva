@@ -1,0 +1,26 @@
+{
+  "version": "0.1",
+  "case_set": "panchanga_public_shape",
+  "description": "Panchanga response shape cases. These validate shape, not exact astronomical values.",
+  "cases": [
+    {
+      "case_id": "panchanga-shape-kathmandu-2026-02-15",
+      "operation": "panchanga_shape",
+      "input": {
+        "date": "2026-02-15",
+        "place": "Kathmandu, Nepal",
+        "timezone": "Asia/Kathmandu"
+      },
+      "expected": {
+        "required_fields": ["date", "sunrise", "sunset", "tithi", "nakshatra", "yoga", "karana", "vaara"],
+        "nested_required": {
+          "tithi": ["number", "display_number", "name", "paksha"],
+          "sunrise": ["local_time", "timezone"],
+          "sunset": ["local_time", "timezone"]
+        }
+      },
+      "source_policy": "public_demo",
+      "publication_status": "computed_prediction_not_official"
+    }
+  ]
+}
