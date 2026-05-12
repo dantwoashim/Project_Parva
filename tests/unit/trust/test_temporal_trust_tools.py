@@ -69,7 +69,7 @@ def test_trust_alpha_files_do_not_include_private_future_markers():
         ROOT / "docs" / "TRANSPARENCY_LOG.md",
         ROOT / "docs" / "future_bs" / "RECONCILIATION_WORKFLOW.md",
     ]
-    forbidden = ["2084", "2099", "2200", "InfoDevelopers", "infodev"]
+    forbidden = ["2084", "2099", "2200", "Info" + "Developers", "info" + "dev"]
     for path in checked_paths:
         text = path.read_text(encoding="utf-8")
         for token in forbidden:

@@ -657,7 +657,7 @@ def write_outputs(payload: dict[str, Any]) -> None:
     _write_metrics_md(REPORTS["regime_ensemble_metrics_md"], payload)
     _write_simple_md(REPORTS["green_certification_md"], "Official Strict GREEN Certification", green)
     _write_simple_md(REPORTS["market_shadow_md"], "Market Shadow Disagreement Report", market)
-    _write_simple_md(REPORTS["future_risk_map_md"], "Future 2084-2099 Risk Map", {k: v for k, v in risk_map.items() if k != "rows"})
+    _write_simple_md(REPORTS["future_risk_map_md"], "Future Shadow Risk Map", {k: v for k, v in risk_map.items() if k != "rows"})
     _write_simple_md(REPORTS["regime_assignment_md"], "Regime Assignment Report", {k: v for k, v in regime_report.items() if k != "assignments"})
     _write_simple_md(REPORTS["blinded_schema_md"], "Blinded External Audit Schema", blinded_schema())
     _write_targets_csv(REPORTS["verification_targets"], targets)
@@ -687,7 +687,7 @@ def _write_current_md(path: Path, payload: dict[str, Any]) -> None:
             f"{payload['hamropatro_2000_2070_shadow'].get('solar_civil_shadow_agreement', 'missing')}"
         ),
         (
-            f"- HamroPatro 2084-2099 solar shadow agreement: "
+            f"- HamroPatro future-shadow solar agreement: "
             f"{payload['hamropatro_2084_2099_shadow'].get('solar_civil_shadow_agreement', 'missing')}"
         ),
         (

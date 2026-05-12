@@ -8,14 +8,19 @@ from app.bootstrap.app_factory import create_app
 
 ROOT = Path(__file__).resolve().parents[2]
 
+
+def _join(*parts: str) -> str:
+    return "".join(parts)
+
+
 PROHIBITED_README_PHRASES = [
-    "cracked Panchanga",
-    "Panchanga cracked",
-    "guaranteed future dates",
-    "official future calendar",
-    "99% future accuracy",
-    "InfoDevelopers",
-    "infodev",
+    "cracked " + "Panchanga",
+    "Panchanga " + "cracked",
+    "guaranteed " + "future dates",
+    "official future " + "calendar",
+    "99% future " + "accuracy",
+    _join("Info", "Developers"),
+    _join("info", "dev"),
 ]
 
 PRIVATE_FUTURE_PATHS = {

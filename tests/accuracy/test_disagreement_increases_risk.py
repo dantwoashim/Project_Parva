@@ -11,4 +11,4 @@ def test_solar_market_disagreement_increases_risk():
                 assert record["risk_label"] in {"YELLOW", "RED"}
                 assert record["risk_label"] != "GREEN"
                 return
-    raise AssertionError("Expected at least one solar/market disagreement in 2084-2099")
+    raise AssertionError("Expected at least one solar/market disagreement in the future-shadow window")

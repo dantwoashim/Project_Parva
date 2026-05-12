@@ -102,11 +102,11 @@ Select-String targeted Phase 6 files for deployment leaks, client names, overcla
 
 ## Repo-Wide Search Results
 
-Stale deployment pattern search found existing archived Cloud Run documentation:
+Stale deployment pattern search found archived Cloud Run documentation during Phase 6:
 
-- `docs/archive/DEPLOY_CLOUD_RUN.md`
+- `docs/archive/DEPLOY_CLOUD_RUN.md`, removed during final integration because the public deployment moved to Render.
 
-Classification: archived historical deployment reference. It is not a live route, config, or Phase 6 artifact.
+Classification: historical deployment reference. It is not a live route, config, or Phase 6 artifact.
 
 Overclaim and client-name pattern search found existing public-safety guard-test literals:
 

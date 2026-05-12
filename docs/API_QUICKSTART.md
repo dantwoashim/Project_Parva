@@ -87,21 +87,35 @@ console.log(payload.primary_readout.tithi_name);
 console.log(payload.calculation_trace_id);
 ```
 
+## Future-BS capabilities summary
+
+The public future-BS route returns capability metadata only. It does not return direct future month lengths or private audit outputs.
+
+```bash
+curl https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities
+```
+
+Future-BS research outputs are labeled:
+
+```text
+computed_prediction_not_official
+```
+
 ## Python SDK example
 
 ```python
-from parva_sdk import ParvaClient
+from parva import ParvaClient
 
 client = ParvaClient("https://api.prabinghimire1.com.np/v3/api")
 
-compass = client.temporal_compass(
-    "2026-10-21",
-    latitude=27.7172,
-    longitude=85.3240,
-)
+today = client.get_today()
+ad_to_bs = client.ad_to_bs("2026-04-14")
+bs_to_ad = client.bs_to_ad(2083, 1, 1)
+validation = client.validate_bs_date(2083, 1, 32)
+future_bs_capabilities = client.get_future_bs_capabilities()
 
-print(compass.data["primary_readout"]["tithi_name"])
-print(compass.meta.trace_id)
+print(today["publication_status"] if "publication_status" in today else "calendar_payload")
+print(future_bs_capabilities["publication_status"])
 ```
 
 ## Metadata to preserve

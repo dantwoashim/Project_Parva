@@ -94,11 +94,11 @@ Select-String targeted Phase 5 files for deployment leaks, client names, overcla
 
 ## Repo-Wide Search Results
 
-Deployment pattern search found existing archived Cloud Run documentation:
+Deployment pattern search found archived Cloud Run documentation during Phase 5:
 
-- `docs/archive/DEPLOY_CLOUD_RUN.md`
+- `docs/archive/DEPLOY_CLOUD_RUN.md`, removed during final integration because the public deployment moved to Render.
 
-Classification: archived historical deployment reference. It is not a live frontend config, public route, or Phase 5 artifact.
+Classification: historical deployment reference. It is not a live frontend config, public route, or Phase 5 artifact.
 
 Overclaim and client-name pattern search found existing guard-test literals:
 

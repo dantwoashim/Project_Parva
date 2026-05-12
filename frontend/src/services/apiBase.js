@@ -10,11 +10,6 @@ export function resolveApiBase(env = import.meta.env) {
     return explicitBase;
   }
 
-  const legacyHost = trimSlash(env?.VITE_API_BASE_URL);
-  if (legacyHost) {
-    return legacyHost.endsWith('/v3/api') ? legacyHost : `${legacyHost}/v3/api`;
-  }
-
   return DEFAULT_API_BASE;
 }
 

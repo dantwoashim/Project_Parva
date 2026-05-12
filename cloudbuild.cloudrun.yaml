@@ -14,5 +14,5 @@ images:
   - ${_IMAGE}
 
 substitutions:
-  _IMAGE: asia-southeast1-docker.pkg.dev/${PROJECT_ID}/parva/project-parva-api:latest
+  _IMAGE: parva-backend-public-demo:latest
   _PARVA_PRECOMPUTE: "0"

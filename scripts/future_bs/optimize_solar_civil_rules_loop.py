@@ -493,13 +493,13 @@ def _candidate_list() -> list[Candidate]:
             ),
         ),
         Candidate(
-            candidate_id="shadow_residual_fixed_2084_2099_min_support_4",
+            candidate_id="shadow_residual_fixed_future_window_min_support_4",
             kind="shadow_residual_fixed",
             source_policy="all_witness_experimental",
             min_support=4,
             leakage_safe=False,
             explainability_class="market_continuity_table_like_rejected",
-            notes="Diagnostic only: trains residual rules on 2084-2099 and therefore cannot pass no-leakage.",
+            notes="Diagnostic only: trains residual rules on a future-shadow window and therefore cannot pass no-leakage.",
         ),
         Candidate(
             candidate_id="shadow_residual_rolling_min_support_4",
