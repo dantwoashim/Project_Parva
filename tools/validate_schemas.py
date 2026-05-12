@@ -19,6 +19,7 @@ SCHEMA_PATHS = [
     ROOT / "schemas" / "artifact-hash.schema.json",
     ROOT / "schemas" / "calculation-trace.schema.json",
     ROOT / "schemas" / "future-risk.schema.json",
+    ROOT / "schemas" / "blinded-audit-report.schema.json",
     ROOT / "schemas" / "reconciliation-event.schema.json",
     ROOT / "schemas" / "festival-occurrence.schema.json",
     ROOT / "schemas" / "panchanga-day.schema.json",

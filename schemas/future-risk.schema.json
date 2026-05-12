@@ -42,7 +42,7 @@
   },
   "examples": [
     {
-      "bs_year": 2090,
+      "bs_year": 9000,
       "bs_month": 7,
       "publication_status": "computed_prediction_not_official",
       "risk_label": "YELLOW",

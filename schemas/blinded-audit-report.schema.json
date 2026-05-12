@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dantwoashim/Project_Parva/schemas/blinded-audit-report.schema.json",
+  "title": "BlindedAuditReport",
+  "description": "Aggregate-only blinded audit report. It does not include corrected future month values.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "publication_status",
+    "audit_mode",
+    "agreement_definition",
+    "total_months_checked",
+    "agreement_count",
+    "disagreement_count",
+    "disagreement_distribution_by_year",
+    "boundary_sensitive_count",
+    "year_total_anomaly_count",
+    "high_risk_month_count",
+    "risk_label_distribution",
+    "corrected_values_included",
+    "input_rows_loaded"
+  ],
+  "properties": {
+    "publication_status": { "const": "computed_prediction_not_official" },
+    "audit_mode": { "const": "blinded_aggregate" },
+    "agreement_definition": { "type": "string", "minLength": 1 },
+    "total_months_checked": { "type": "integer", "minimum": 0 },
+    "agreement_count": { "type": "integer", "minimum": 0 },
+    "disagreement_count": { "type": "integer", "minimum": 0 },
+    "disagreement_distribution_by_year": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "boundary_sensitive_count": { "type": "integer", "minimum": 0 },
+    "year_total_anomaly_count": { "type": "integer", "minimum": 0 },
+    "high_risk_month_count": { "type": "integer", "minimum": 0 },
+    "risk_label_distribution": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "corrected_values_included": { "const": false },
+    "input_rows_loaded": { "type": "integer", "minimum": 0 }
+  },
+  "examples": [
+    {
+      "publication_status": "computed_prediction_not_official",
+      "audit_mode": "blinded_aggregate",
+      "agreement_definition": "compatible_with_public_risk_alpha_not_a_private_value_match",
+      "total_months_checked": 24,
+      "agreement_count": 19,
+      "disagreement_count": 5,
+      "disagreement_distribution_by_year": {
+        "9000": 2,
+        "9001": 3
+      },
+      "boundary_sensitive_count": 5,
+      "year_total_anomaly_count": 0,
+      "high_risk_month_count": 0,
+      "risk_label_distribution": {
+        "GREEN": 19,
+        "YELLOW": 5
+      },
+      "corrected_values_included": false,
+      "input_rows_loaded": 24
+    }
+  ]
+}
