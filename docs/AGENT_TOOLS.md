@@ -18,3 +18,5 @@ Public preview tools include:
 - `parva.get_capabilities`
 
 All tools are allowlisted. The public run-tool endpoint cannot execute arbitrary code or arbitrary routes.
+
+Agent tool responses preserve a top-level `evidence` block with available evidence packet, fact, and source identifiers. Empty evidence arrays mean the public tool did not need or generate a supporting packet for that request.

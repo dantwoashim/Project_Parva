@@ -33,6 +33,16 @@ def main() -> int:
     assert "parva_core" in [level["level"] for level in compatibility_levels_payload()["levels"]]
     report = run_conformance_payload(target="local", level="parva_core")
     assert report["status"] == "pass"
+    invalid_report = run_conformance_payload(
+        target="local",
+        level="parva_core",
+        artifact={
+            "case_id": "invalid_bs_ad_001",
+            "input": {"bs_date": "2083-13-99"},
+            "expected": {"status": "fail"},
+        },
+    )
+    assert invalid_report["status"] == "fail"
     credential = issue_calendar_credential_payload({"claim_type": "date_conversion", "bs_date": "2083-01-01"})["credential"]
     assert verify_calendar_credential_payload(credential)["valid"] is True
     tampered = json.loads(json.dumps(credential))

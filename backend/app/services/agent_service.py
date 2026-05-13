@@ -484,6 +484,7 @@ def run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str,
         "tool_name": tool_name,
         "result": result,
         "decision": _decision("approved", False, ["TOOL_EXECUTED"]),
+        "evidence": _extract_evidence(result),
         "meta": _agent_meta()["meta"],
     }
 
@@ -521,6 +522,17 @@ def _unsupported_claim(claim: str, status: str, codes: list[str], *, warning: st
     }
 
 
+def _extract_evidence(result: Any) -> dict[str, Any]:
+    if not isinstance(result, dict):
+        return {"evidence_packet_id": None, "fact_ids": [], "source_ids": []}
+    evidence = result.get("evidence") if isinstance(result.get("evidence"), dict) else {}
+    return {
+        "evidence_packet_id": result.get("evidence_packet_id") or evidence.get("evidence_packet_id"),
+        "fact_ids": list(result.get("fact_ids") or evidence.get("fact_ids") or []),
+        "source_ids": list(result.get("source_ids") or evidence.get("source_ids") or []),
+    }
+
+
 def _tool(name: str, description: str, input_schema: dict[str, Any], mode: str) -> dict[str, Any]:
     return {
         "name": name,
@@ -528,7 +540,7 @@ def _tool(name: str, description: str, input_schema: dict[str, Any], mode: str) 
         "input_schema": {"type": "object", "properties": {key: {"type": value} for key, value in input_schema.items()}},
         "output_schema": {
             "type": "object",
-            "required": ["result", "decision", "meta"],
+            "required": ["result", "decision", "meta", "evidence"],
             "properties": {
                 "result": {"type": "object"},
                 "decision": {"type": "object"},

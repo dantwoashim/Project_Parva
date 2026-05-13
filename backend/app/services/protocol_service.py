@@ -130,12 +130,17 @@ def compatibility_levels_payload() -> dict[str, Any]:
     }
 
 
-def run_conformance_payload(*, target: str = "local", level: str = "parva_core") -> dict[str, Any]:
+def run_conformance_payload(
+    *,
+    target: str = "local",
+    level: str = "parva_core",
+    artifact: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     if target != "local":
         raise ProtocolError("public preview conformance supports target=local only", code="UNSUPPORTED_TARGET")
     if level not in COMPATIBILITY_LEVELS:
         raise ProtocolError(f"unknown compatibility level: {level}", code="INVALID_COMPATIBILITY_LEVEL")
-    tests = _conformance_tests_for(level)
+    tests = _conformance_tests_for(level, artifact=artifact)
     passed = sum(1 for test in tests if test["status"] == "pass")
     failed = len(tests) - passed
     report = {
@@ -257,12 +262,14 @@ def offline_bundle_manifest_payload() -> dict[str, Any]:
     }
 
 
-def _conformance_tests_for(level: str) -> list[dict[str, Any]]:
+def _conformance_tests_for(level: str, *, artifact: dict[str, Any] | None = None) -> list[dict[str, Any]]:
     tests = [
         _test("core.date_conversion", "pass", "BS 2083-01-01 converts deterministically."),
         _test("core.metadata", "pass", "Protocol metadata and claim boundary are present."),
         _test("source.fixture_not_official", "pass", "Fixture/research sources cannot claim official authority."),
     ]
+    if artifact is not None:
+        tests.append(_conformance_artifact_test(artifact))
     if level in {"parva_trust", "parva_full"}:
         tests.append(_test("trust.release_manifest_exists", "pass", "Public release manifest exists."))
     if level in {"parva_rulelang", "parva_full"}:
@@ -271,6 +278,24 @@ def _conformance_tests_for(level: str) -> list[dict[str, Any]]:
         manifest = offline_bundle_manifest_payload()
         tests.append(_test("offline.manifest_checksums", "pass" if manifest["checksums"] else "fail", "Offline manifest has checksums."))
     return tests
+
+
+def _conformance_artifact_test(artifact: dict[str, Any]) -> dict[str, Any]:
+    case_id = str(artifact.get("case_id") or "artifact.case")
+    input_payload = artifact.get("input") if isinstance(artifact.get("input"), dict) else {}
+    expected = artifact.get("expected") if isinstance(artifact.get("expected"), dict) else {}
+    bs_date = str(input_payload.get("bs_date") or "")
+    try:
+        year, month, day = _parse_bs_date(bs_date)
+        ad_date = bs_to_gregorian(year, month, day).isoformat()
+    except Exception as exc:
+        return _test(case_id, "fail", f"Artifact rejected: {exc}")
+    expected_ad = expected.get("ad_date")
+    if expected_ad and expected_ad == ad_date:
+        return _test(case_id, "pass", "Artifact conversion matched expected AD date.")
+    if expected_ad:
+        return _test(case_id, "fail", f"Expected {expected_ad}, got {ad_date}.")
+    return _test(case_id, "fail", "Artifact does not define an expected AD date.")
 
 
 def _credential_hash(credential: dict[str, Any]) -> str:

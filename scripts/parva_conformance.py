@@ -20,9 +20,21 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--target", default="local")
     parser.add_argument("--level", default="parva_core")
+    parser.add_argument("--artifact", help="Optional conformance fixture JSON to evaluate.")
     args = parser.parse_args()
+    artifact = None
+    if args.artifact:
+        artifact_path = Path(args.artifact)
+        try:
+            artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
+        except OSError as exc:
+            print(json.dumps({"status": "fail", "error": str(exc), "code": "ARTIFACT_READ_FAILED"}, indent=2))
+            return 1
+        except json.JSONDecodeError as exc:
+            print(json.dumps({"status": "fail", "error": str(exc), "code": "ARTIFACT_JSON_INVALID"}, indent=2))
+            return 1
     try:
-        report = run_conformance_payload(target=args.target, level=args.level)
+        report = run_conformance_payload(target=args.target, level=args.level, artifact=artifact)
     except ProtocolError as exc:
         print(json.dumps({"status": "fail", "error": str(exc), "code": exc.code}, indent=2))
         return 1

@@ -7,6 +7,7 @@ from typing import Any
 from uuid import uuid4
 
 from app.core.source_metadata import PUBLIC_RELEASE_ID
+from app.services.compliance_service import PROFILES
 from app.services.rulelang_service import RuleLangError, evaluate_rule_payload, load_rules
 from app.services.timegraph_service import build_public_timegraph
 from app.services.trust_infrastructure_service import (
@@ -16,6 +17,7 @@ from app.services.trust_infrastructure_service import (
     now_utc,
     resolve_release_id,
 )
+from app.timegraph.fact_ids import profile_policy_fact_id
 
 IMPACT_CLAIM_BOUNDARY = "impact_simulation_not_legal_authority"
 MAX_CHANGES = 500
@@ -46,6 +48,16 @@ CHANGE_TYPES = {
     "CONFLICT_DISCOVERED",
     "CONFLICT_RESOLVED",
     "EVIDENCE_SCHEMA_CHANGED",
+}
+CHANGE_SET_TYPES = {
+    "release_diff",
+    "source_change",
+    "fact_change",
+    "rule_change",
+    "profile_change",
+    "confidence_change",
+    "conflict_change",
+    "manual_hypothetical",
 }
 SEVERITIES = ("info", "low", "medium", "high", "critical")
 REASON_CODES = {
@@ -99,16 +111,7 @@ def impact_capabilities_payload() -> dict[str, Any]:
         "surface": "temporal_impact_simulator",
         "status": "public_preview",
         "active_release_id": resolve_release_id(None),
-        "supported_change_set_types": [
-            "release_diff",
-            "source_change",
-            "fact_change",
-            "rule_change",
-            "profile_change",
-            "confidence_change",
-            "conflict_change",
-            "manual_hypothetical",
-        ],
+        "supported_change_set_types": sorted(CHANGE_SET_TYPES),
         "supported_dependency_types": [
             "evidence_packet",
             "rule_execution",
@@ -295,6 +298,7 @@ def build_dependency_registry(*, release_id: str | None = None) -> list[dict[str
         )
     dependencies.extend(_sample_evidence_dependencies(selected))
     dependencies.extend(_sample_rule_dependencies(selected))
+    dependencies.extend(_profile_decision_dependencies(selected))
     return dependencies[:MAX_DEPENDENCIES]
 
 
@@ -436,6 +440,37 @@ def _sample_rule_dependencies(release_id: str) -> list[dict[str, Any]]:
     return dependencies
 
 
+def _profile_decision_dependencies(release_id: str) -> list[dict[str, Any]]:
+    dependencies: list[dict[str, Any]] = []
+    for profile in PROFILES.values():
+        profile_fact_id = profile_policy_fact_id(profile.profile_id)
+        dependencies.append(
+            {
+                "dependency_id": f"dep_profile_decision_{profile.profile_id}",
+                "dependency_type": "profile_decision",
+                "owner_type": "profile",
+                "owner_id": profile.profile_id,
+                "depends_on": [
+                    {"entity_type": "profile", "entity_id": profile.profile_id},
+                    {"entity_type": "temporal_fact", "entity_id": profile_fact_id},
+                    {"entity_type": "release", "entity_id": release_id},
+                ],
+                "result_ref": {"type": "profile_decision", "id": f"profile_decision_{profile.profile_id}"},
+                "risk_policy": {
+                    "requires_review_on_conflict": True,
+                    "requires_review_on_confidence_below": "source_backed",
+                },
+                "metadata": {
+                    "profile_id": profile.profile_id,
+                    "profile_status": profile.status,
+                    "confidence": "fixture_only" if profile.status == "synthetic_demo" else "source_backed",
+                    "warnings": list(profile.warnings),
+                },
+            }
+        )
+    return dependencies
+
+
 def _matching_dependencies(change: dict[str, Any], dependencies: list[dict[str, Any]]) -> list[dict[str, Any]]:
     entity = {"entity_type": change["entity_type"], "entity_id": change["entity_id"]}
     aliases = [entity]
@@ -460,6 +495,12 @@ def _impact_item(change: dict[str, Any], dependency: dict[str, Any]) -> dict[str
     elif dependency_type == "rule_execution":
         impact_type = "rule_execution_may_change"
         reason_codes.append("RULE_RESULT_MAY_CHANGE")
+    elif dependency_type == "profile_decision":
+        impact_type = "profile_decision_review_required"
+        reason_codes.extend(["PROFILE_POLICY_CHANGED", "HUMAN_REVIEW_REQUIRED"])
+    new_result = _rerun_rule_if_possible(dependency) if dependency_type == "rule_execution" else None
+    if dependency_type == "rule_execution" and new_result is not None and new_result != dependency.get("metadata", {}).get("old_output"):
+        reason_codes.append("RULE_RESULT_CHANGED")
     return {
         "impact_id": f"impact_item_{uuid4().hex[:12]}",
         "impact_type": impact_type,
@@ -470,7 +511,7 @@ def _impact_item(change: dict[str, Any], dependency: dict[str, Any]) -> dict[str
         },
         "triggering_change_ids": [change["change_id"]],
         "old_result": dependency.get("metadata", {}).get("old_output"),
-        "new_result": None,
+        "new_result": new_result,
         "reason_codes": _dedupe(reason_codes),
         "requires_human_review": severity in {"medium", "high", "critical"},
         "recommended_actions": actions,
@@ -508,6 +549,8 @@ def _impact_reason_codes(change: dict[str, Any], dependency: dict[str, Any]) -> 
 def _impact_severity(change: dict[str, Any], dependency: dict[str, Any]) -> str:
     if change["change_type"] == "CONFLICT_DISCOVERED":
         return "critical"
+    if dependency["dependency_type"] == "profile_decision":
+        return "high"
     if dependency["dependency_type"] == "rule_execution":
         rule_id = str(dependency.get("metadata", {}).get("rule_id") or "")
         if "payroll" in rule_id or "working_day" in rule_id:
@@ -529,6 +572,8 @@ def _impact_actions(change: dict[str, Any], dependency: dict[str, Any], severity
         actions.append("PIN_OLD_RELEASE_FOR_HISTORICAL_RECORD")
     if dependency["dependency_type"] == "rule_execution":
         actions.append("RERUN_RULE")
+    if dependency["dependency_type"] == "profile_decision":
+        actions.append("RERUN_COMPLIANCE_DECISION")
     if severity in {"high", "critical"}:
         actions.append("ESCALATE_TO_HUMAN_REVIEW")
     if "payroll" in str(dependency.get("owner_id", "")):
@@ -544,10 +589,13 @@ def _normalize_change_set(change_set: dict[str, Any]) -> dict[str, Any]:
         raise ImpactError("change_set.changes must be a list")
     if len(changes) > MAX_CHANGES:
         raise ImpactError(f"change set exceeds max changes: {MAX_CHANGES}")
+    change_set_type = str(change_set.get("change_set_type") or "manual_hypothetical")
+    if change_set_type not in CHANGE_SET_TYPES:
+        raise ImpactError(f"unsupported change_set_type: {change_set_type}")
     normalized_changes = [_normalize_change(change, index) for index, change in enumerate(changes, start=1)]
     return {
         "change_set_id": str(change_set.get("change_set_id") or f"changeset_{uuid4().hex[:12]}"),
-        "change_set_type": str(change_set.get("change_set_type") or "manual_hypothetical"),
+        "change_set_type": change_set_type,
         "from_release_id": change_set.get("from_release_id") or PUBLIC_RELEASE_ID,
         "to_release_id": change_set.get("to_release_id") or change_set.get("from_release_id") or PUBLIC_RELEASE_ID,
         "created_at": change_set.get("created_at") or now_utc(),
@@ -632,6 +680,19 @@ def _impact_meta(*, confidence: str = "source_backed") -> dict[str, Any]:
             "data_mode": "public",
         }
     }
+
+
+def _rerun_rule_if_possible(dependency: dict[str, Any]) -> Any:
+    metadata = dependency.get("metadata", {})
+    rule_id = metadata.get("rule_id")
+    input_payload = metadata.get("input")
+    if not rule_id or not isinstance(input_payload, dict):
+        return None
+    try:
+        result = evaluate_rule_payload(str(rule_id), input_payload, include_evidence=False)
+    except (RuleLangError, ValueError):
+        return None
+    return result.get("output")
 
 
 def _confidence_rank(confidence: str) -> int:

@@ -31,6 +31,18 @@ def test_conformance_runner_passes_core_and_report_has_hash() -> None:
     assert report["report_hash"].startswith("sha256:")
 
 
+def test_conformance_runner_fails_invalid_artifact() -> None:
+    invalid = {
+        "case_id": "invalid_bs_ad_001",
+        "level": "parva_core",
+        "input": {"bs_date": "2083-13-99"},
+        "expected": {"status": "fail"},
+    }
+    report = run_conformance_payload(target="local", level="parva_core", artifact=invalid)
+    assert report["status"] == "fail"
+    assert report["failed"] >= 1
+
+
 def test_calendar_credential_issue_verify_and_tamper_detection() -> None:
     credential = issue_calendar_credential_payload({"claim_type": "date_conversion", "bs_date": "2083-01-01"})["credential"]
     assert verify_calendar_credential_payload(credential)["valid"] is True

@@ -49,6 +49,22 @@ def main() -> int:
         }
     )
     assert manual["summary"]["changes_analyzed"] == 1
+    profile = simulate_change_set_payload(
+        {
+            "change_set_id": "manual_profile_change",
+            "change_set_type": "profile_change",
+            "changes": [
+                {
+                    "change_type": "PROFILE_POLICY_CHANGED",
+                    "entity_type": "profile",
+                    "entity_id": "nepal_private_company_default",
+                    "reason_codes": ["PROFILE_POLICY_CHANGED"],
+                }
+            ],
+        }
+    )
+    assert profile["summary"]["high"] >= 1
+    assert "RERUN_COMPLIANCE_DECISION" in profile["recommendations"]
     assert event_schema_payload()["schema"]["properties"]["signature_status"]
     assert "REGENERATE_EVIDENCE_PACKET" in recommended_actions_payload()["recommended_actions"]
     print("Project Parva impact verification")

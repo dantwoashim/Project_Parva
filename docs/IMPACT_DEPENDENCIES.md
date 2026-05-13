@@ -8,5 +8,6 @@ Public extraction currently covers:
 - release and source dependencies
 - public evidence packet seeds
 - public RuleLang execution seeds
+- public compliance profile decision seeds
 
 Private customer dependencies are not included in public mode.

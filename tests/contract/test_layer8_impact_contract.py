@@ -45,6 +45,43 @@ def test_stale_evidence_is_historically_valid_not_false() -> None:
     assert "EVIDENCE_PACKET_HISTORICALLY_VALID" in stale[0]["reason_codes"]
 
 
+def test_profile_policy_change_marks_profile_decision_for_review() -> None:
+    run = simulate_change_set_payload(
+        {
+            "change_set_id": "profile_policy_change",
+            "change_set_type": "profile_change",
+            "changes": [
+                {
+                    "change_type": "PROFILE_POLICY_CHANGED",
+                    "entity_type": "profile",
+                    "entity_id": "nepal_private_company_default",
+                }
+            ],
+        }
+    )
+    assert run["summary"]["human_review_required"] >= 1
+    assert "RERUN_COMPLIANCE_DECISION" in run["recommendations"]
+
+
+def test_rule_execution_dependency_reruns_when_input_is_available() -> None:
+    run = simulate_change_set_payload(
+        {
+            "change_set_id": "rule_fact_change",
+            "change_set_type": "fact_change",
+            "changes": [
+                {
+                    "change_type": "FACT_CHANGED",
+                    "entity_type": "temporal_fact",
+                    "entity_id": "fact_month_length_bs_2082_04",
+                }
+            ],
+        }
+    )
+    rule_impacts = [item for item in run["impacts"] if item["impact_type"] == "rule_execution_may_change"]
+    assert rule_impacts
+    assert rule_impacts[0]["new_result"] is not None
+
+
 def test_impact_event_schema_is_unsigned_preview() -> None:
     schema = event_schema_payload()["schema"]
     assert "unsigned_preview" in schema["properties"]["signature_status"]["enum"]

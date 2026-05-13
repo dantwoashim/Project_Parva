@@ -51,6 +51,7 @@ def test_rule_draft_is_validated_and_review_required() -> None:
 def test_run_tool_is_allowlisted() -> None:
     result = run_tool_payload("parva.verify_temporal_claim", {"claim": "2083-01-01 BS maps to 2026-04-14 AD."})
     assert result["decision"]["status"] == "approved"
+    assert result["evidence"]["fact_ids"]
 
 
 def test_agent_api_endpoints() -> None:
