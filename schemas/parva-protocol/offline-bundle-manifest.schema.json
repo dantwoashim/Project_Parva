@@ -8,11 +8,41 @@
     "bundle_id": {"type": "string"},
     "protocol_version": {"type": "string"},
     "created_at": {"type": "string"},
-    "contents": {"type": "array", "items": {"type": "object"}},
-    "checksums": {"type": "object"},
+    "contents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "required"],
+        "properties": {
+          "path": {"type": "string"},
+          "required": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "checksums": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "pattern": "^sha256:"}
+    },
     "signature": {"type": ["string", "null"]},
     "signature_status": {"type": "string", "enum": ["unsigned_preview", "signed", "unverified"]},
     "claim_boundary": {"type": "string"}
   },
-  "additionalProperties": true
+  "additionalProperties": false,
+  "examples": [
+    {
+      "bundle_id": "parva-public-offline-0.1.0",
+      "protocol_version": "parva-protocol-0.1.0",
+      "created_at": "2026-05-12T00:00:00Z",
+      "contents": [
+        {"path": "specs/parva-protocol/VERSION", "required": true}
+      ],
+      "checksums": {
+        "specs/parva-protocol/VERSION": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "signature": null,
+      "signature_status": "unsigned_preview",
+      "claim_boundary": "offline_bundle_not_legal_authority"
+    }
+  ]
 }

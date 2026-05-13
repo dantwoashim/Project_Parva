@@ -13,5 +13,14 @@
     "claim_support_level": {"type": "string"},
     "url": {"type": ["string", "null"]}
   },
-  "additionalProperties": true
+  "additionalProperties": false,
+  "examples": [
+    {
+      "source_id": "parva_public_bs_ad_corpus",
+      "source_name": "Project Parva public BS AD corpus",
+      "source_tier": "public_corpus",
+      "claim_support_level": "source_backed",
+      "url": null
+    }
+  ]
 }

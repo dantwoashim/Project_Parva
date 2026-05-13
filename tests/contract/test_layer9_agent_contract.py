@@ -32,6 +32,8 @@ def test_claim_checker_verifies_false_and_unsupported_cases() -> None:
     assert false_result["decision"]["requires_human_review"] is True
     unsupported = verify_temporal_claim_payload("This unsupported legal claim is official.")
     assert unsupported["status"] in {"unsupported", "needs_review"}
+    assert unsupported["decision"]["requires_human_review"] is True
+    assert unsupported["decision"]["status"] == "review_required"
 
 
 def test_schedule_planner_uses_rulelang_and_review_gates() -> None:

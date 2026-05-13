@@ -9,5 +9,16 @@
     "jurisdiction": {"type": "string"},
     "risk_policy": {"type": "object"}
   },
-  "additionalProperties": true
+  "additionalProperties": false,
+  "examples": [
+    {
+      "profile_id": "nepal_private_company_default",
+      "label": "Nepal private company default",
+      "jurisdiction": "NP",
+      "risk_policy": {
+        "future_date_action": "human_review_required",
+        "unsupported_result_action": "human_review_required"
+      }
+    }
+  ]
 }

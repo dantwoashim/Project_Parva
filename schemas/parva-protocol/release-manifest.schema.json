@@ -1,5 +1,41 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Parva Protocol Release Manifest",
-  "allOf": [{"$ref": "../release-manifest.schema.json"}]
+  "allOf": [{"$ref": "../release-manifest.schema.json"}],
+  "examples": [
+    {
+      "release_id": "parva-bs-public-demo",
+      "release_type": "public_calendar",
+      "status": "active",
+      "calendar": "BS",
+      "coverage": {
+        "bs_year_start": 2078,
+        "bs_year_end": 2083,
+        "ad_date_start": "2021-04-14",
+        "ad_date_end": "2026-04-14",
+        "scope": "Public demo metadata and conformance cases only.",
+        "future_values_included": false
+      },
+      "source_policy": "public_demo",
+      "publication_status": "computed_prediction_not_official",
+      "artifact_hashes": [
+        {
+          "artifact_id": "source-registry",
+          "path": "data/public/releases/parva-bs-public-demo.sources.json",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "media_type": "application/json"
+        }
+      ],
+      "generated_at": "2026-05-12T00:00:00Z",
+      "schemas_used": ["schemas/release-manifest.schema.json"],
+      "capabilities": ["today", "bs_to_ad", "ad_to_bs"],
+      "default_confidence": "source_backed",
+      "warnings": ["Public demo release metadata only. Not legal authority."],
+      "claim_boundary": {
+        "official_publication_override": true,
+        "future_outputs_status": "computed_prediction_not_official",
+        "not_legal_or_banking_authority": true
+      }
+    }
+  ]
 }

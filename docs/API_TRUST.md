@@ -56,3 +56,5 @@ Compliance packets preserve `requires_human_review` and reason codes from the co
 ## Boundary
 
 The Trust API is audit infrastructure. It is not a legal, tax, payroll, banking-contract, or regulatory final authority.
+
+Public trust records support reproducibility and review. They do not promote weak, third-party, software-table, or research-preview evidence into official-grade claims.

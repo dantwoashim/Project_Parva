@@ -27,6 +27,9 @@ from app.services.calendar_presenters import present_calendar_payload
 from app.services.trust_surface_service import build_surface_meta, build_surface_provenance
 from app.uncertainty import build_bs_uncertainty
 
+PUBLIC_VERIFIED_BS_MAX_YEAR = 2083
+PUBLIC_RESTRICTED_ENVIRONMENTS = {"public", "production"}
+
 
 def parse_iso_date(date_str: str) -> date:
     try:
@@ -54,6 +57,48 @@ def _bs_support_meta(
         quality_band=quality_band,
         uncertainty=uncertainty,
         fallback_used=fallback_used,
+    )
+
+
+def _setting_value(settings: Any | None, name: str, default: Any = None) -> Any:
+    return getattr(settings, name, default) if settings is not None else default
+
+
+def _public_future_conversion_restricted(settings: Any | None) -> bool:
+    environment = str(_setting_value(settings, "environment", "") or "").strip().lower()
+    if environment not in PUBLIC_RESTRICTED_ENVIRONMENTS:
+        return False
+    return not bool(_setting_value(settings, "allow_public_unverified_future_conversion", False))
+
+
+def _enforce_public_bs_to_ad_policy(
+    *,
+    year: int,
+    confidence: str,
+    settings: Any | None,
+) -> None:
+    if not _public_future_conversion_restricted(settings):
+        return
+    if year <= PUBLIC_VERIFIED_BS_MAX_YEAR or confidence == "official":
+        return
+    raise HTTPException(
+        status_code=403,
+        detail={
+            "code": "UNVERIFIED_FUTURE_BS_CONVERSION_BLOCKED",
+            "message": (
+                "Exact BS-to-AD conversion for unverified future BS years is not exposed "
+                "by the public deployment."
+            ),
+            "publication_status": "computed_prediction_not_official",
+            "policy": "public_future_conversion_blocked",
+            "bs_year": year,
+            "verified_bs_year_max": PUBLIC_VERIFIED_BS_MAX_YEAR,
+            "private_deployment_flag": "PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION",
+            "risk_only": {
+                "requires_human_review": True,
+                "reason": "future BS conversion needs an official, printed, or private source policy before exact public output",
+            },
+        },
     )
 
 
@@ -312,9 +357,11 @@ def build_bs_to_gregorian_payload(
     day: int,
     *,
     trace_id: str | None = None,
+    settings: Any | None = None,
 ) -> dict[str, Any]:
-    gregorian_date = bs_to_gregorian(year, month, day)
     confidence = get_bs_year_confidence(year)
+    _enforce_public_bs_to_ad_policy(year=year, confidence=confidence, settings=settings)
+    gregorian_date = bs_to_gregorian(year, month, day)
     estimated_error_days = "0-1" if confidence == "estimated" else None
     uncertainty = build_bs_uncertainty(confidence, estimated_error_days)
     return {

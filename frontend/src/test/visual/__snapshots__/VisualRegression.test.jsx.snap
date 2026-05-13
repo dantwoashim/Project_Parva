@@ -2691,7 +2691,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
             <img
               alt=""
               loading="eager"
-              src="/festival-images/dashain.png"
+              src="/festival-images/dashain.webp"
             />
             <span
               class="festival-art__glyph"
@@ -3003,7 +3003,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
                 <img
                   alt=""
                   loading="lazy"
-                  src="/festival-images/indra-jatra.png"
+                  src="/festival-images/indra-jatra.webp"
                 />
                 <span
                   class="festival-art__glyph"
@@ -3067,7 +3067,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
                 <img
                   alt=""
                   loading="lazy"
-                  src="/festival-images/tihar.png"
+                  src="/festival-images/tihar.webp"
                 />
                 <span
                   class="festival-art__glyph"
@@ -3626,7 +3626,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             <img
               alt=""
               loading="eager"
-              src="/festival-images/dashain.png"
+              src="/festival-images/dashain.webp"
             />
             <span
               class="festival-art__glyph"
@@ -3938,7 +3938,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
                 <img
                   alt=""
                   loading="lazy"
-                  src="/festival-images/indra-jatra.png"
+                  src="/festival-images/indra-jatra.webp"
                 />
                 <span
                   class="festival-art__glyph"
@@ -4002,7 +4002,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
                 <img
                   alt=""
                   loading="lazy"
-                  src="/festival-images/tihar.png"
+                  src="/festival-images/tihar.webp"
                 />
                 <span
                   class="festival-art__glyph"
@@ -4674,7 +4674,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
                     <img
                       alt=""
                       loading="eager"
-                      src="/festival-images/dashain.png"
+                      src="/festival-images/dashain.webp"
                     />
                     <span
                       class="festival-art__glyph"
@@ -4818,7 +4818,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
                     <img
                       alt=""
                       loading="eager"
-                      src="/festival-images/tihar.png"
+                      src="/festival-images/tihar.webp"
                     />
                     <span
                       class="festival-art__glyph"
@@ -5552,7 +5552,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
                     <img
                       alt=""
                       loading="eager"
-                      src="/festival-images/dashain.png"
+                      src="/festival-images/dashain.webp"
                     />
                     <span
                       class="festival-art__glyph"
@@ -5696,7 +5696,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
                     <img
                       alt=""
                       loading="eager"
-                      src="/festival-images/tihar.png"
+                      src="/festival-images/tihar.webp"
                     />
                     <span
                       class="festival-art__glyph"

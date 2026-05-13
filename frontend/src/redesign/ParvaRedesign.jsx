@@ -1214,9 +1214,9 @@ function resolveFestivalVisual(festival = {}) {
 }
 
 function festivalImageSrc(festival = {}) {
-  if (Array.isArray(festival.images) && festival.images[0]) return festival.images[0];
-  if (festival.image) return festival.image;
-  if (festival.id) return `/festival-images/${festival.id}.png`;
+  if (Array.isArray(festival.images) && festival.images[0]) return normalizeFestivalImagePath(festival.images[0]);
+  if (festival.image) return normalizeFestivalImagePath(festival.image);
+  if (festival.id) return `/festival-images/${festival.id}.webp`;
   return '';
 }
 
@@ -1224,8 +1224,12 @@ function festivalFallbackImageSrc(festival = {}, primary = '') {
   if (!festival.id) return '';
   const id = String(festival.id);
   const primaryString = String(primary || '');
-  if (!primaryString.includes(`/festival-images/${id}.png`)) return '';
+  if (!primaryString.includes(`/festival-images/${id}.webp`)) return '';
   return `/festival-images/${id}.svg`;
+}
+
+function normalizeFestivalImagePath(src = '') {
+  return String(src || '').replace(/^\/festival-images\/([^/]+)\.png$/i, '/festival-images/$1.webp');
 }
 
 function addDaysIso(baseIso, days) {

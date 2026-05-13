@@ -32,6 +32,7 @@ jobs:
           python -m ruff check backend tests scripts sdk
           python scripts/release/check_repo_hygiene.py
           python scripts/security/scan_repo_secrets.py
+          python scripts/release/check_public_safety_gate.py
           python scripts/release/check_render_blueprint.py
           python scripts/release/check_cloudrun_blueprint.py
           python scripts/validate_festival_catalog.py

@@ -15,9 +15,9 @@ The public deployment is intentionally narrower than a private deployment. Sensi
 | `/v3/api/trust/*` | Public-safe source registry, release manifest, release diff, trust log, and evidence packet metadata |
 | `/v3/api/timegraph/*` | Public-safe temporal fact graph, relationship, trace, and conflict metadata |
 | `/v3/api/rules/*` | Public-safe RuleLang registry, validation, bounded execution, tests, and explanation traces |
-| `/v3/api/impact/*` | Public-safe bounded temporal impact simulation and reason-code metadata |
-| `/v3/api/agent/*` | Agent-safe deterministic temporal tools, claim checks, schedule plans, and human-review gates |
-| `/v3/api/protocol/*` | Parva Protocol public preview metadata, conformance, compatibility, credentials, and offline bundle manifest |
+| `/v3/api/impact/*` | Bounded temporal impact simulation in full or private profiles, excluded from the lightweight public demo |
+| `/v3/api/agent/*` | Agent-safe deterministic temporal tools in full or private profiles, excluded from the lightweight public demo |
+| `/v3/api/protocol/*` | Protocol draft metadata and alpha conformance in full or private profiles, excluded from the lightweight public demo |
 | `/v3/api/festivals/*` | Festival and observance APIs |
 | `/v4/api/future-bs/capabilities` | Public summary of the future-BS research layer |
 | `/v5/api/calendar-model-risk/capabilities` | Public summary of model-risk methodology when the full public profile is enabled |
@@ -40,6 +40,7 @@ These surfaces are not part of the public deployment by default:
 - private model internals
 - private TimeGraph facts, private archive paths, and unpublished source contents
 - private RuleLang rules and private source-backed rule registries
+- unverified future BS-to-AD conversion through public calendar routes unless an operator explicitly accepts that exposure
 
 ## Required Public Settings
 
@@ -49,7 +50,10 @@ Public deployments should keep:
 PARVA_ENABLE_EXPERIMENTAL_API=false
 PARVA_SHOW_PRIVATE_SCHEMA=false
 PARVA_ROUTE_PROFILE=public_demo
+PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION=false
 ```
+
+With this policy, `/v3/api/calendar/bs-to-gregorian` serves verified public calendar ranges but blocks exact public output for unverified future BS years. A private deployment may set `PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION=true` only if the operator intentionally accepts that exact future conversion outputs are public for that deployment.
 
 Future outputs are treated as:
 

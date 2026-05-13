@@ -167,9 +167,6 @@ PUBLIC_DEMO_ROUTE_REGISTRATIONS = [
     RouterRegistration(trust_router, "trust", "trust_read", "trust"),
     RouterRegistration(timegraph_router, "trust", "timegraph_read", "timegraph"),
     RouterRegistration(rules_router, "trust", "rules_read", "rules"),
-    RouterRegistration(impact_router, "trust", "impact_read", "impact"),
-    RouterRegistration(agent_router, "trust", "agent_read", "agent"),
-    RouterRegistration(protocol_router, "trust", "protocol_read", "protocol"),
 ]
 
 

@@ -1,7 +1,7 @@
 {
-  "artifact_hash": "sha256:9cfe713e67f98557b8d5d7ee45ac203b363a5bd9b490829ca9c162297d34f75c",
+  "artifact_hash": "sha256:8460e4e9b1e083bedb9e02508344de614bf115a43182866ceee53313fd5578f6",
   "release_id": "parva-bs-public-demo",
-  "signature": "sha256:8d070e3d7cf5de6e15e01ab56ac9ce36981d8f45e88981d6b43f483dda5dcc55",
+  "signature": "sha256:db55f78dd1cec8332551478b193f010010bf54d1c17725bb747e1a1d0166570e",
   "signature_algorithm": "alpha_hash_only_sha256",
   "signed_at": "2026-05-13T11:26:24.671212Z"
 }

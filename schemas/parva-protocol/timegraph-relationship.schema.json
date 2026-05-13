@@ -10,5 +10,14 @@
     "type": {"type": "string"},
     "release_id": {"type": "string"}
   },
-  "additionalProperties": true
+  "additionalProperties": false,
+  "examples": [
+    {
+      "relationship_id": "rel_example_001",
+      "from_id": "fact_bs_ad_2083_01_01",
+      "to_id": "source_parva_public_bs_ad_corpus",
+      "type": "supported_by",
+      "release_id": "parva-bs-public-demo"
+    }
+  ]
 }

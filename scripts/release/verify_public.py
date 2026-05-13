@@ -96,6 +96,7 @@ def main() -> int:
         ("repository hygiene", [*python, "scripts/release/check_repo_hygiene.py"]),
         ("secret scan", [*python, "scripts/security/scan_repo_secrets.py"]),
         ("path leak scan", [*python, "scripts/check_path_leaks.py"]),
+        ("public safety gate", [*python, "scripts/release/check_public_safety_gate.py"]),
         ("documentation links", [*python, "scripts/check_docs_links.py"]),
         ("Render public blueprint", [*python, "scripts/release/check_render_blueprint.py"]),
         ("temporal trust verification", [*python, "scripts/parva_trust_verify.py"]),

@@ -54,23 +54,20 @@ export const CHRONOLOGY_HORIZONS = {
 const ANCHOR_GREGORIAN = { astronomicalYear: 2026, month: 4, day: 14 };
 const ANCHOR_BS = { astronomicalYear: 2083, month: 1, day: 1 };
 const BS_CYCLE_ANCHOR_YEAR = 2093;
-const BS_CYCLE_TEMPLATES = [
-  [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
-  [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
-  [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
-];
 const ANCHOR_JDN = gregorianToJdn(
   ANCHOR_GREGORIAN.astronomicalYear,
   ANCHOR_GREGORIAN.month,
   ANCHOR_GREGORIAN.day,
 );
+const PUBLIC_FUTURE_BS_REVIEW_START_YEAR = 2084;
+const PUBLIC_FUTURE_GREGORIAN_REVIEW_START_JDN = gregorianToJdn(2027, 4, 14);
 
 const OFFICIAL_GREGORIAN_MIN_YEAR = 2013;
-const OFFICIAL_GREGORIAN_MAX_YEAR = 2039;
+const OFFICIAL_GREGORIAN_MAX_YEAR = 2027;
 const ESTIMATED_GREGORIAN_MIN_YEAR = 1813;
 const ESTIMATED_GREGORIAN_MAX_YEAR = 2239;
 const OFFICIAL_BS_MIN_YEAR = 2070;
-const OFFICIAL_BS_MAX_YEAR = 2095;
+const OFFICIAL_BS_MAX_YEAR = 2083;
 const ESTIMATED_BS_MIN_YEAR = 1870;
 const ESTIMATED_BS_MAX_YEAR = 2295;
 
@@ -152,18 +149,22 @@ export function jdnToGregorian(jdn) {
 }
 
 export function getProjectedBsMonthPattern(astronomicalYear) {
-  return BS_CYCLE_TEMPLATES[modulo(astronomicalYear - BS_CYCLE_ANCHOR_YEAR, BS_CYCLE_TEMPLATES.length)];
+  return Array.from({ length: 12 }, (_, index) => daysInSyntheticBsMonth(astronomicalYear, index + 1));
 }
 
 export function daysInProjectedBsMonth(astronomicalYear, month) {
   if (!Number.isInteger(month) || month < 1 || month > 12) {
     throw new Error('BS month must be between 1 and 12.');
   }
-  return getProjectedBsMonthPattern(astronomicalYear)[month - 1];
+  return daysInSyntheticBsMonth(astronomicalYear, month);
 }
 
 export function daysInProjectedBsYear(astronomicalYear) {
-  return getProjectedBsMonthPattern(astronomicalYear).reduce((total, days) => total + days, 0);
+  let total = 0;
+  for (let month = 1; month <= 12; month += 1) {
+    total += daysInProjectedBsMonth(astronomicalYear, month);
+  }
+  return total;
 }
 
 export function projectedBsToJdn(astronomicalYear, month, day) {
@@ -183,9 +184,8 @@ export function projectedBsToJdn(astronomicalYear, month, day) {
     }
   }
 
-  const monthPattern = getProjectedBsMonthPattern(astronomicalYear);
   for (let index = 0; index < month - 1; index += 1) {
-    dayOffset += monthPattern[index];
+    dayOffset += daysInProjectedBsMonth(astronomicalYear, index + 1);
   }
   dayOffset += day - 1;
 
@@ -208,10 +208,9 @@ export function jdnToProjectedBs(jdn) {
     }
   }
 
-  const monthPattern = getProjectedBsMonthPattern(astronomicalYear);
   let month = 1;
-  while (offset >= monthPattern[month - 1]) {
-    offset -= monthPattern[month - 1];
+  while (offset >= daysInProjectedBsMonth(astronomicalYear, month)) {
+    offset -= daysInProjectedBsMonth(astronomicalYear, month);
     month += 1;
   }
 
@@ -225,6 +224,10 @@ export function jdnToProjectedBs(jdn) {
 }
 
 export function projectGregorianToBs({ year, era = 'AD', month, day }) {
+  const query = { system: 'gregorian', year, era, month, day };
+  if (isPublicFutureBsRiskOnlyQuery(query)) {
+    return buildRiskOnlyConversion(query);
+  }
   const astronomicalYear = historicalYearToAstronomical(year, era);
   const monthLength = daysInGregorianMonth(astronomicalYear, month);
   if (!Number.isInteger(day) || day < 1 || day > monthLength) {
@@ -250,6 +253,10 @@ export function projectGregorianToBs({ year, era = 'AD', month, day }) {
 }
 
 export function projectBsToGregorian({ year, era = 'BS', month, day }) {
+  const query = { system: 'bs', year, era, month, day };
+  if (isPublicFutureBsRiskOnlyQuery(query)) {
+    return buildRiskOnlyConversion(query);
+  }
   const astronomicalYear = historicalYearToAstronomical(year, era);
   const jdn = projectedBsToJdn(astronomicalYear, month, day);
   return {
@@ -270,10 +277,55 @@ export function projectBsToGregorian({ year, era = 'BS', month, day }) {
 }
 
 export function buildExperimentalConversion(query) {
+  if (isPublicFutureBsRiskOnlyQuery(query)) {
+    return buildRiskOnlyConversion(query);
+  }
   if (query.system === 'gregorian') {
     return projectGregorianToBs(query);
   }
   return projectBsToGregorian(query);
+}
+
+export function isPublicFutureBsRiskOnlyQuery(query = {}) {
+  if (query.system === 'bs' && query.era === 'BS') {
+    return Number(query.year) >= PUBLIC_FUTURE_BS_REVIEW_START_YEAR;
+  }
+  if (query.system === 'gregorian' && query.era === 'AD') {
+    try {
+      const jdn = gregorianToJdn(Number(query.year), Number(query.month), Number(query.day));
+      return jdn >= PUBLIC_FUTURE_GREGORIAN_REVIEW_START_JDN;
+    } catch {
+      return false;
+    }
+  }
+  return false;
+}
+
+function buildRiskOnlyConversion(query = {}) {
+  return {
+    input: {
+      calendar: query.system === 'gregorian' ? 'gregorian' : 'bs',
+      astronomicalYear: historicalYearToAstronomical(query.year, query.era),
+      month: query.month,
+      day: query.day,
+      monthName: query.system === 'gregorian' ? GREGORIAN_MONTHS[query.month - 1] : BS_MONTHS[query.month - 1],
+      ...astronomicalYearToHistorical(
+        historicalYearToAstronomical(query.year, query.era),
+        query.system === 'gregorian' ? 'AD' : 'BS',
+        query.system === 'gregorian' ? 'BC' : 'PRE_BS',
+      ),
+    },
+    output: {
+      calendar: query.system === 'gregorian' ? 'bs' : 'gregorian',
+      riskOnly: true,
+      label: 'Risk review required',
+    },
+    model: 'risk_only_public_future_bs',
+    risk_only: true,
+    requires_human_review: true,
+    publication_status: 'computed_prediction_not_official',
+    reason: 'The public frontend does not expose exact unverified future BS conversions.',
+  };
 }
 
 export function buildHorizonDescriptor(query) {
@@ -298,6 +350,22 @@ export function buildHorizonDescriptor(query) {
     return CHRONOLOGY_HORIZONS.experimental;
   }
   return CHRONOLOGY_HORIZONS.deep_time;
+}
+
+function daysInSyntheticBsMonth(astronomicalYear, month) {
+  const cycle = modulo(astronomicalYear - BS_CYCLE_ANCHOR_YEAR, 3);
+  if (month === 1) return 31;
+  if (month === 2) return cycle === 1 ? 32 : 31;
+  if (month === 3) return cycle === 1 ? 31 : 32;
+  if (month === 4) return cycle === 2 ? 31 : 32;
+  if (month === 5) return 31;
+  if (month === 6) return cycle === 2 ? 31 : 30;
+  if (month === 7) return 30;
+  if (month === 8) return cycle === 1 ? 30 : 29;
+  if (month === 9) return cycle === 1 ? 29 : 30;
+  if (month === 10) return 29;
+  if (month === 11) return 30;
+  return cycle === 1 ? 31 : 30;
 }
 
 export function formatHistoricalYear(year, era) {

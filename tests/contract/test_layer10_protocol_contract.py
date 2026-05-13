@@ -31,6 +31,19 @@ def test_conformance_runner_passes_core_and_report_has_hash() -> None:
     assert report["report_hash"].startswith("sha256:")
 
 
+def test_full_alpha_conformance_exercises_real_artifacts() -> None:
+    report = run_conformance_payload(target="local", level="parva_full")
+    assert report["status"] == "pass"
+    assert report["tests_run"] >= 12
+    test_ids = {item["test_id"] for item in report["test_results"]}
+    assert "trust.release_manifest_exists" in test_ids
+    assert "trust.trust_log_exists" in test_ids
+    assert "offline.manifest_checksums" in test_ids
+    assert "agent.sdk_python_exists" in test_ids
+    assert "agent.sdk_javascript_exists" in test_ids
+    assert "protocol.negative_artifact_rejected" in test_ids
+
+
 def test_conformance_runner_fails_invalid_artifact() -> None:
     invalid = {
         "case_id": "invalid_bs_ad_001",

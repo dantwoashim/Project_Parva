@@ -13,5 +13,17 @@
     "claim_boundary": {"type": "string"},
     "integrity": {"type": "object"}
   },
-  "additionalProperties": true
+  "additionalProperties": false,
+  "examples": [
+    {
+      "packet_id": "evidence_example_001",
+      "packet_type": "date_conversion",
+      "input": {"bs_date": "2083-01-01"},
+      "result": {"ad_date": "2026-04-14"},
+      "release": {"release_id": "parva-bs-public-demo"},
+      "confidence": "source_backed",
+      "claim_boundary": "not_legal_or_banking_authority",
+      "integrity": {"hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}
+    }
+  ]
 }

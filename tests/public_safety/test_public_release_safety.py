@@ -83,6 +83,20 @@ def test_public_capabilities_are_metadata_only(monkeypatch):
         assert "export.csv" not in str(body)
 
 
+def test_public_demo_blocks_exact_unverified_future_conversion(monkeypatch):
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "public_demo")
+    monkeypatch.setenv("PARVA_ENV", "public")
+    monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
+    monkeypatch.setenv("PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION", "false")
+    client = _public_client(monkeypatch)
+    response = client.post(
+        "/v3/api/calendar/bs-to-gregorian",
+        json={"year": 2084, "month": 1, "day": 1},
+    )
+    assert response.status_code == 403
+    assert "gregorian" not in response.json()
+
+
 def test_private_schema_requires_explicit_flag(monkeypatch):
     monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "true")
     monkeypatch.setenv("PARVA_ADMIN_TOKEN", "test-token")

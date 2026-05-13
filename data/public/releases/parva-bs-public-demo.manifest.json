@@ -73,21 +73,21 @@
     {
       "artifact_id": "calendar-credential-schema",
       "path": "schemas/parva-protocol/calendar-credential.schema.json",
-      "sha256": "16c55ad1e792cdc9565e463f9a3f0a3d18fc1fd550bdf3f9779e7c716a751b86",
+      "sha256": "a26b1ea9bac2f11d95e5cabec8c7d24ebafbe542badf98e2e6f93866a3d00311",
       "media_type": "application/schema+json",
       "description": "JSON schema for Parva Protocol calendar credentials."
     },
     {
       "artifact_id": "conformance-report-schema",
       "path": "schemas/parva-protocol/conformance-report.schema.json",
-      "sha256": "cd9d59c204a1c338e1921794fdb185fb0ac0a592b79e76c255a30bf3c6cbfcc0",
+      "sha256": "9a37fa07ffa3d4a6692f3c326f0f3c3154aebf648b21a13de6635ba568ff4007",
       "media_type": "application/schema+json",
       "description": "JSON schema for Parva Protocol conformance reports."
     },
     {
       "artifact_id": "offline-bundle-manifest-schema",
       "path": "schemas/parva-protocol/offline-bundle-manifest.schema.json",
-      "sha256": "876c7694e530923c37540d0da7ad538ae62073f040b6217e867570ca811840a6",
+      "sha256": "1b367eb5f188edfa40876be8514f3752ba0acec1c2c8397f7b3b4cd048dc80db",
       "media_type": "application/schema+json",
       "description": "JSON schema for Parva Protocol offline bundle manifests."
     }

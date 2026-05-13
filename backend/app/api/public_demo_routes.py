@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel
 
 from app.services.calendar_conversion_service import (
@@ -42,9 +42,14 @@ async def convert_date(
 
 
 @router.post("/bs-to-gregorian")
-async def bs_to_gregorian_convert(request: BSConversionRequest):
+async def bs_to_gregorian_convert(payload: BSConversionRequest, request: Request):
     try:
-        return build_bs_to_gregorian_payload(request.year, request.month, request.day)
+        return build_bs_to_gregorian_payload(
+            payload.year,
+            payload.month,
+            payload.day,
+            settings=getattr(request.app.state, "settings", None),
+        )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

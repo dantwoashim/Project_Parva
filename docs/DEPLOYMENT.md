@@ -90,6 +90,7 @@ PARVA_ENV=public
 PARVA_ROUTE_PROFILE=public_demo
 PARVA_ENABLE_EXPERIMENTAL_API=false
 PARVA_SHOW_PRIVATE_SCHEMA=false
+PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION=false
 PARVA_SOURCE_URL=https://github.com/dantwoashim/Project_Parva
 PARVA_RATE_LIMIT_BACKEND=memory
 PARVA_REQUIRE_PRECOMPUTED=false
@@ -108,6 +109,7 @@ Recommended private controls:
 
 - keep production and public demo configuration separate
 - require admin tokens for private or experimental routes
+- decide and document whether unverified future BS-to-AD conversion is allowed before setting `PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION=true`
 - keep generated future-BS artifacts outside public source control
 - preserve `computed_prediction_not_official` on future-BS research outputs
 - validate any organizational update policy against official publications before production use

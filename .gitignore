@@ -18,6 +18,9 @@ frontend/.vite/
 dist/
 frontend/dist/
 
+# Public festival art is served as compressed WebP plus SVG fallback.
+frontend/public/festival-images/*.png
+
 # Local env
 .env
 .env.*

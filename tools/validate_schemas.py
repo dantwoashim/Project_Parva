@@ -7,7 +7,6 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 SCHEMA_PATHS = [
@@ -28,6 +27,7 @@ SCHEMA_PATHS = [
     ROOT / "schemas" / "panchanga-day.schema.json",
     ROOT / "schemas" / "nepal-fiscal-year.schema.json",
 ]
+SCHEMA_PATHS.extend(sorted((ROOT / "schemas" / "parva-protocol").glob("*.schema.json")))
 
 PUBLIC_SAFETY_PATTERNS = [
     re.compile("cracked" + r"\s+Panchanga", re.IGNORECASE),
@@ -67,16 +67,36 @@ def _type_matches(instance: Any, expected: str | list[str]) -> bool:
     return actual in allowed
 
 
-def _resolve_ref(root_schema: dict[str, Any], ref: str) -> dict[str, Any]:
+def _load_ref_schema(root_path: Path, ref: str) -> tuple[dict[str, Any], Path, str]:
+    if "#" in ref:
+        file_part, pointer = ref.split("#", 1)
+        pointer = f"#{pointer}"
+    else:
+        file_part, pointer = ref, "#"
+    target_path = root_path if not file_part else (root_path.parent / file_part).resolve()
+    if not target_path.exists():
+        raise SchemaValidationError(f"Reference file not found: {ref}")
+    with target_path.open("r", encoding="utf-8") as handle:
+        return json.load(handle), target_path, pointer
+
+
+def _resolve_ref(root_schema: dict[str, Any], root_path: Path, ref: str) -> tuple[dict[str, Any], dict[str, Any], Path]:
+    if not ref.startswith("#"):
+        ref_schema, ref_path, pointer = _load_ref_schema(root_path, ref)
+        if pointer == "#":
+            return ref_schema, ref_schema, ref_path
+        return _resolve_ref(ref_schema, ref_path, pointer)
     if not ref.startswith("#/"):
-        raise SchemaValidationError(f"Only local refs are supported by this validator: {ref}")
+        if ref == "#":
+            return root_schema, root_schema, root_path
+        raise SchemaValidationError(f"Unsupported ref pointer: {ref}")
     node: Any = root_schema
     for part in ref[2:].split("/"):
         part = part.replace("~1", "/").replace("~0", "~")
         node = node[part]
     if not isinstance(node, dict):
         raise SchemaValidationError(f"Reference does not resolve to a schema object: {ref}")
-    return node
+    return node, root_schema, root_path
 
 
 def _check_format(value: str, fmt: str, path: str) -> None:
@@ -96,9 +116,21 @@ def _check_format(value: str, fmt: str, path: str) -> None:
             raise SchemaValidationError(f"{path}: URI must start with http or https")
 
 
-def _validate(instance: Any, schema: dict[str, Any], root_schema: dict[str, Any], path: str) -> None:
+def _validate(
+    instance: Any,
+    schema: dict[str, Any],
+    root_schema: dict[str, Any],
+    root_path: Path,
+    path: str,
+) -> None:
     if "$ref" in schema:
-        _validate(instance, _resolve_ref(root_schema, schema["$ref"]), root_schema, path)
+        ref_schema, next_root, next_root_path = _resolve_ref(root_schema, root_path, schema["$ref"])
+        _validate(instance, ref_schema, next_root, next_root_path, path)
+        return
+
+    if "allOf" in schema:
+        for index, option in enumerate(schema["allOf"]):
+            _validate(instance, option, root_schema, root_path, f"{path}.allOf[{index}]")
         return
 
     if "oneOf" in schema:
@@ -106,7 +138,7 @@ def _validate(instance: Any, schema: dict[str, Any], root_schema: dict[str, Any]
         matches = 0
         for option in schema["oneOf"]:
             try:
-                _validate(instance, option, root_schema, path)
+                _validate(instance, option, root_schema, root_path, path)
                 matches += 1
             except SchemaValidationError as exc:
                 errors.append(str(exc))
@@ -144,7 +176,7 @@ def _validate(instance: Any, schema: dict[str, Any], root_schema: dict[str, Any]
         item_schema = schema.get("items")
         if isinstance(item_schema, dict):
             for index, item in enumerate(instance):
-                _validate(item, item_schema, root_schema, f"{path}[{index}]")
+                _validate(item, item_schema, root_schema, root_path, f"{path}[{index}]")
 
     if isinstance(instance, dict):
         required = schema.get("required", [])
@@ -155,13 +187,13 @@ def _validate(instance: Any, schema: dict[str, Any], root_schema: dict[str, Any]
         properties = schema.get("properties", {})
         for key, value in instance.items():
             if key in properties:
-                _validate(value, properties[key], root_schema, f"{path}.{key}")
+                _validate(value, properties[key], root_schema, root_path, f"{path}.{key}")
             else:
                 additional = schema.get("additionalProperties", True)
                 if additional is False:
                     raise SchemaValidationError(f"{path}: unexpected key {key!r}")
                 if isinstance(additional, dict):
-                    _validate(value, additional, root_schema, f"{path}.{key}")
+                    _validate(value, additional, root_schema, root_path, f"{path}.{key}")
 
 
 def _check_public_safety(path: Path, schema: dict[str, Any]) -> None:
@@ -192,7 +224,7 @@ def validate_schema_file(path: Path) -> None:
         raise SchemaValidationError(f"{path}: missing non-empty examples array")
 
     for index, example in enumerate(examples):
-        _validate(example, schema, schema, f"{path.name}.examples[{index}]")
+        _validate(example, schema, schema, path, f"{path.name}.examples[{index}]")
 
     _check_public_safety(path, schema)
 

@@ -17,7 +17,7 @@ describe('chronologyProjection', () => {
     expect(result.output.day).toBe(1);
   });
 
-  it('supports far historical and far future coordinates in experimental mode', () => {
+  it('supports far historical coordinates and blocks exact public future BS output', () => {
     const ancient = buildExperimentalConversion({
       system: 'gregorian',
       era: 'BC',
@@ -36,6 +36,9 @@ describe('chronologyProjection', () => {
     expect(ancient.output.calendar).toBe('bs');
     expect(buildHorizonDescriptor({ system: 'gregorian', era: 'BC', year: 10000 }).band).toBe('experimental');
     expect(farFuture.output.calendar).toBe('gregorian');
+    expect(farFuture.output.riskOnly).toBe(true);
+    expect(farFuture.requires_human_review).toBe(true);
+    expect(farFuture.publication_status).toBe('computed_prediction_not_official');
     expect(buildHorizonDescriptor({ system: 'bs', era: 'BS', year: 10000 }).band).toBe('experimental');
   });
 });

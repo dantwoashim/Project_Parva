@@ -1,5 +1,7 @@
 # Protocol Conformance
 
+Parva Protocol conformance is currently alpha conformance for a protocol draft. It is intended to make public behavior reproducible and inspectable. It is not third-party certification and it does not create official calendar authority.
+
 Compatibility levels:
 
 - `parva_core`
@@ -13,6 +15,23 @@ Compatibility levels:
 - `parva_full`
 
 A conformance report includes implementation name, protocol version, level, pass/fail status, test counts, test results, warnings, and report hash.
+
+## What `parva_full` Checks
+
+`parva_full` must be more than a smoke test. It checks:
+
+- deterministic route-adjacent conversion behavior for a published validation case
+- protocol metadata and claim boundary presence
+- source registry readability
+- public release manifest readability
+- non-empty public trust log
+- RuleLang schema presence
+- preview offline bundle checksums for required contents
+- Python and JavaScript SDK entrypoints
+- protocol schema index coverage
+- rejection of an invalid artifact
+
+The public CI also runs a separate safety gate for OpenAPI exposure, public route profiles, unverified future conversion blocking, schema validation, and public text scans.
 
 The CLI can also evaluate an explicit fixture artifact:
 

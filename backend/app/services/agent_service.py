@@ -259,7 +259,7 @@ def verify_temporal_claim_payload(
             "decision": _decision("approved" if not requires_review else "review_required", requires_review, codes),
             "meta": _agent_meta(confidence=result.get("meta", {}).get("confidence", "source_backed"))["meta"],
         }
-    return _unsupported_claim(claim, "unsupported", ["CLAIM_UNSUPPORTED"])
+    return _unsupported_claim(claim, "unsupported", ["CLAIM_UNSUPPORTED", "HUMAN_REVIEW_REQUIRED"])
 
 
 def plan_schedule_payload(
@@ -510,6 +510,8 @@ def _convert_tool(input_payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def _unsupported_claim(claim: str, status: str, codes: list[str], *, warning: str | None = None) -> dict[str, Any]:
+    requires_review = True
+    decision_status = "review_required"
     return {
         "claim": claim,
         "status": status,
@@ -517,7 +519,7 @@ def _unsupported_claim(claim: str, status: str, codes: list[str], *, warning: st
         "result": {},
         "correction": None,
         "evidence": {"evidence_packet_id": None, "fact_ids": [], "source_ids": []},
-        "decision": _decision("review_required" if status == "needs_review" else "unsupported", status != "unsupported", codes),
+        "decision": _decision(decision_status, requires_review, _dedupe([*codes, "HUMAN_REVIEW_REQUIRED"])),
         "meta": _agent_meta(warnings=[warning] if warning else [])["meta"],
     }
 

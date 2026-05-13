@@ -159,6 +159,6 @@ describe('TimeLabPage', () => {
       expect(screen.getByDisplayValue('2026')).toBeInTheDocument();
     });
     expect(screen.getByDisplayValue('14')).toBeInTheDocument();
-    expect(screen.getAllByText(/April 14, .*AD/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Baisakh 1, .*BS/i).length).toBeGreaterThan(0);
   });
 });

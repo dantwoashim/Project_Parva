@@ -2,5 +2,19 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://project-parva.example/schemas/parva-protocol/impact-report.schema.json",
   "title": "Parva Protocol Impact Report",
-  "allOf": [{"$ref": "../impact-report.schema.json"}]
+  "allOf": [{"$ref": "../impact-report.schema.json"}],
+  "examples": [
+    {
+      "impact_run_id": "impact_example_001",
+      "created_at": "2026-05-12T00:00:00Z",
+      "change_set_id": "change_example_001",
+      "mode": "public_demo",
+      "summary": {"affected_records": 1, "requires_review": 1},
+      "impacts": [
+        {"record_id": "synthetic_record_001", "requires_human_review": true}
+      ],
+      "recommendations": ["Review affected schedules before operational use."],
+      "meta": {"claim_boundary": "impact_simulation_not_legal_authority"}
+    }
+  ]
 }

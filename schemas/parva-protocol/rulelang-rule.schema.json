@@ -2,5 +2,26 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://project-parva.example/schemas/parva-protocol/rulelang-rule.schema.json",
   "title": "Parva Protocol RuleLang Rule",
-  "allOf": [{"$ref": "../rulelang-rule.schema.json"}]
+  "allOf": [{"$ref": "../rulelang-rule.schema.json"}],
+  "examples": [
+    {
+      "rule_id": "next_working_day_if_holiday",
+      "version": "0.1.0",
+      "label": "Next working day if holiday",
+      "description": "Synthetic public example rule.",
+      "status": "fixture_only",
+      "inputs": {"date": {"type": "date", "required": true}},
+      "outputs": {"working_date": {"type": "date"}},
+      "steps": [{"return": {"working_date": "$input.date"}}],
+      "risk_policy": {
+        "require_confidence_at_least": "source_backed",
+        "block_research_preview": true,
+        "block_disputed_facts": true,
+        "unsupported_result_action": "human_review_required",
+        "future_date_action": "human_review_required"
+      },
+      "claim_boundary": "enterprise_decision_support_not_legal_authority",
+      "tests": []
+    }
+  ]
 }

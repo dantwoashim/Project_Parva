@@ -11,6 +11,7 @@ from typing import Final
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
 PRODUCTION_ENV_VALUES: Final[frozenset[str]] = frozenset({"production"})
+PUBLIC_ENV_VALUES: Final[frozenset[str]] = frozenset({"public", "production"})
 TEST_ENV_VALUES: Final[frozenset[str]] = frozenset({"test"})
 DEFAULT_TEST_ADMIN_TOKEN = "-".join(("parva", "test", "admin", "token"))
 DEFAULT_TEST_READ_KEY = "-".join(("parva", "test", "read", "key"))
@@ -73,6 +74,7 @@ class AppSettings:
     esewa_secret: str | None = None
     esewa_base_url: str = "https://rc.esewa.com.np"
     esewa_return_url: str | None = None
+    allow_public_unverified_future_conversion: bool = False
 
     @property
     def is_dev_environment(self) -> bool:
@@ -262,6 +264,9 @@ def load_settings() -> AppSettings:
         show_private_schema=_parse_bool(os.getenv("PARVA_SHOW_PRIVATE_SCHEMA"), default=False),
         allow_experimental_in_prod=_parse_bool(
             os.getenv("PARVA_ALLOW_EXPERIMENTAL_IN_PROD"), default=False
+        ),
+        allow_public_unverified_future_conversion=_parse_bool(
+            os.getenv("PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION"), default=False
         ),
         serve_frontend=_parse_bool(os.getenv("PARVA_SERVE_FRONTEND"), default=False),
         frontend_dist=_frontend_dist_from_env(),

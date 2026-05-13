@@ -12,9 +12,39 @@
     "tests_run": {"type": "integer", "minimum": 0},
     "passed": {"type": "integer", "minimum": 0},
     "failed": {"type": "integer", "minimum": 0},
-    "test_results": {"type": "array", "items": {"type": "object"}},
+    "test_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["test_id", "status", "note"],
+        "properties": {
+          "test_id": {"type": "string"},
+          "status": {"type": "string", "enum": ["pass", "fail"]},
+          "note": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
     "warnings": {"type": "array", "items": {"type": "string"}},
-    "report_hash": {"type": "string", "pattern": "^sha256:"}
+    "report_hash": {"type": "string", "pattern": "^sha256:"},
+    "meta": {"type": "object"}
   },
-  "additionalProperties": true
+  "additionalProperties": false,
+  "examples": [
+    {
+      "implementation": "project-parva-reference",
+      "protocol_version": "parva-protocol-0.1.0",
+      "level": "parva_core",
+      "status": "pass",
+      "tests_run": 1,
+      "passed": 1,
+      "failed": 0,
+      "test_results": [
+        {"test_id": "core.metadata", "status": "pass", "note": "Claim boundary present."}
+      ],
+      "warnings": [],
+      "report_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "meta": {"data_mode": "public"}
+    }
+  ]
 }

@@ -175,6 +175,7 @@ async def bs_to_gregorian_convert(payload: BSConversionRequest, request: Request
             payload.month,
             payload.day,
             trace_id=_trace_id(request),
+            settings=getattr(request.app.state, "settings", None),
         )
     except ValueError as e:
         from fastapi import HTTPException

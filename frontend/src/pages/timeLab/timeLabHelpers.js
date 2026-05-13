@@ -100,6 +100,7 @@ export function dayLimitForQuery(query) {
 
 export function formatOutputCoordinate(result) {
   if (!result) return '';
+  if (result.riskOnly) return result.label || 'Risk review required';
   return result.calendar === 'gregorian'
     ? formatGregorianCoordinate(result)
     : formatBsCoordinate(result);
@@ -193,6 +194,7 @@ export async function resolveAnchoredConversion(query, calendarAPI) {
 }
 
 export function computeDriftDays(experimental, anchored) {
+  if (experimental?.risk_only || experimental?.output?.riskOnly) return null;
   if (!experimental?.output || !anchored?.output) return null;
 
   if (anchored.output.calendar === 'gregorian') {

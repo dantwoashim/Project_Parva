@@ -113,7 +113,63 @@ def test_public_demo_profile_only_exposes_demo_api_paths(monkeypatch):
     assert "/v4/api/future-bs/month-lengths/{bs_year}" not in paths
     assert "/v5/api/calendar-model-risk/capabilities" not in paths
     assert "/v3/api/enterprise/capabilities" not in paths
+    assert "/v3/api/impact/simulate" not in paths
+    assert "/v3/api/agent/capabilities" not in paths
+    assert "/v3/api/protocol/version" not in paths
 
     assert public_demo_client.get("/v3/api/calendar/today").status_code == 200
     assert public_demo_client.get("/v4/api/future-bs/capabilities").status_code == 200
     assert public_demo_client.get("/v3/api/enterprise/capabilities").status_code == 404
+    assert public_demo_client.get("/v3/api/agent/capabilities").status_code == 404
+    assert public_demo_client.get("/v3/api/protocol/version").status_code == 404
+
+
+def test_public_demo_blocks_unverified_future_bs_to_ad_by_default(monkeypatch):
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "public_demo")
+    monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "false")
+    monkeypatch.setenv("PARVA_SHOW_PRIVATE_SCHEMA", "false")
+    monkeypatch.setenv("PARVA_ENV", "public")
+    monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
+    monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    monkeypatch.delenv("PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION", raising=False)
+
+    from app.bootstrap.app_factory import create_app
+
+    public_demo_client = TestClient(create_app())
+
+    verified = public_demo_client.post(
+        "/v3/api/calendar/bs-to-gregorian",
+        json={"year": 2083, "month": 1, "day": 1},
+    )
+    assert verified.status_code == 200
+
+    blocked = public_demo_client.post(
+        "/v3/api/calendar/bs-to-gregorian",
+        json={"year": 2084, "month": 1, "day": 1},
+    )
+    assert blocked.status_code == 403
+    body = blocked.json()
+    text = str(body)
+    assert "UNVERIFIED_FUTURE_BS_CONVERSION_BLOCKED" in text
+    assert "computed_prediction_not_official" in text
+    assert "gregorian" not in body
+
+
+def test_public_unverified_future_bs_to_ad_requires_explicit_flag(monkeypatch):
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "public_demo")
+    monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "false")
+    monkeypatch.setenv("PARVA_SHOW_PRIVATE_SCHEMA", "false")
+    monkeypatch.setenv("PARVA_ENV", "public")
+    monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
+    monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    monkeypatch.setenv("PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION", "true")
+
+    from app.bootstrap.app_factory import create_app
+
+    public_demo_client = TestClient(create_app())
+    response = public_demo_client.post(
+        "/v3/api/calendar/bs-to-gregorian",
+        json={"year": 2084, "month": 1, "day": 1},
+    )
+    assert response.status_code == 200
+    assert response.json()["bs"]["confidence"] in {"static_lookup", "estimated"}

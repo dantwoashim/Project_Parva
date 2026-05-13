@@ -104,6 +104,7 @@ function dayLimitForQuery(query) {
 
 function formatOutputCoordinate(result) {
   if (!result) return '';
+  if (result.riskOnly) return result.label || 'Risk review required';
   return result.calendar === 'gregorian'
     ? formatGregorianCoordinate(result)
     : formatBsCoordinate(result);
@@ -197,6 +198,7 @@ async function resolveAnchoredConversion(query) {
 }
 
 function computeDriftDays(experimental, anchored) {
+  if (experimental?.risk_only || experimental?.output?.riskOnly) return null;
   if (!experimental?.output || !anchored?.output) return null;
 
   if (anchored.output.calendar === 'gregorian') {
@@ -594,10 +596,12 @@ export function TimeLabPage() {
             )}
 
             <article className="time-lab-result-card time-lab-result-card--projected ink-card">
-              <p className="time-lab-page__eyebrow">Experimental horizon answer</p>
+              <p className="time-lab-page__eyebrow">{result.experimental.risk_only ? 'Risk-only public posture' : 'Experimental horizon answer'}</p>
               <h3>{formatOutputCoordinate(result.experimental.output)}</h3>
               <p>
-                Anchored to BS 2083 / April 14, 2026, then extended with the repeating synthetic BS cadence used for the long-range mirror.
+                {result.experimental.risk_only
+                  ? 'The public frontend does not expose exact unverified future BS conversions. Treat this request as computed_prediction_not_official and review it in a controlled deployment.'
+                  : 'Anchored to BS 2083 / April 14, 2026, then extended with a synthetic chronology model for lab comparison.'}
               </p>
               <dl>
                 <div>
@@ -606,11 +610,11 @@ export function TimeLabPage() {
                 </div>
                 <div>
                   <dt>Target era</dt>
-                  <dd>{formatHistoricalYear(result.experimental.output.year, result.experimental.output.era)}</dd>
+                  <dd>{result.experimental.risk_only ? 'Not exposed publicly' : formatHistoricalYear(result.experimental.output.year, result.experimental.output.era)}</dd>
                 </div>
                 <div>
                   <dt>Month span</dt>
-                  <dd>{result.experimental.output.monthName}</dd>
+                  <dd>{result.experimental.risk_only ? 'Human review required' : result.experimental.output.monthName}</dd>
                 </div>
               </dl>
             </article>

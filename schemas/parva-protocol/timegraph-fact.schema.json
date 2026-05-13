@@ -12,5 +12,16 @@
     "release_id": {"type": "string"},
     "confidence": {"type": "string"}
   },
-  "additionalProperties": true
+  "additionalProperties": false,
+  "examples": [
+    {
+      "fact_id": "fact_bs_ad_2083_01_01",
+      "fact_type": "date_conversion",
+      "subject": {"calendar": "BS", "date": "2083-01-01"},
+      "predicate": "maps_to",
+      "object": {"calendar": "AD", "date": "2026-04-14"},
+      "release_id": "parva-bs-public-demo",
+      "confidence": "source_backed"
+    }
+  ]
 }
