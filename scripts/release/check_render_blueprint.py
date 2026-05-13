@@ -48,7 +48,12 @@ def main() -> int:
         "PARVA_RATE_LIMIT_BACKEND": "memory",
         "PARVA_REQUIRE_PRECOMPUTED": "false",
         "PARVA_SERVE_FRONTEND": "false",
-        "CORS_ALLOW_ORIGINS": "https://dantwoashim.github.io",
+        "CORS_ALLOW_ORIGINS": (
+            "https://prabinghimire1.com.np,"
+            "https://www.prabinghimire1.com.np,"
+            "https://project-parva.pages.dev,"
+            "https://dantwoashim.github.io"
+        ),
     }
 
     for key, expected in expected_values.items():

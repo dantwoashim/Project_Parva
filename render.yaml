@@ -32,4 +32,4 @@ services:
       - key: PARVA_SERVE_FRONTEND
         value: "false"
       - key: CORS_ALLOW_ORIGINS
-        value: https://dantwoashim.github.io
+        value: https://prabinghimire1.com.np,https://www.prabinghimire1.com.np,https://project-parva.pages.dev,https://dantwoashim.github.io

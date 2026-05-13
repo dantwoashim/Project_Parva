@@ -87,13 +87,18 @@ Public-safe backend environment:
 
 ```text
 PARVA_ENV=public
+PARVA_ROUTE_PROFILE=public_demo
 PARVA_ENABLE_EXPERIMENTAL_API=false
 PARVA_SHOW_PRIVATE_SCHEMA=false
 PARVA_SOURCE_URL=https://github.com/dantwoashim/Project_Parva
+PARVA_RATE_LIMIT_BACKEND=memory
+PARVA_REQUIRE_PRECOMPUTED=false
 PARVA_CORS_ORIGINS=https://prabinghimire1.com.np,https://www.prabinghimire1.com.np,https://project-parva.pages.dev
 ```
 
-If the backend uses `CORS_ALLOW_ORIGINS` instead of `PARVA_CORS_ORIGINS` in a specific deployment profile, use the same comma-separated origin list.
+The backend accepts either `CORS_ALLOW_ORIGINS` or `PARVA_CORS_ORIGINS`. Use the same comma-separated origin list.
+
+Do not set the public Render demo to `PARVA_ENV=production` unless Redis-backed rate limiting and all production checks are configured. `production` is the strict private or hardened deployment profile. The public demo profile is `public`.
 
 ## Private deployment
 

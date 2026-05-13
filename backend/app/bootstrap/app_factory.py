@@ -69,7 +69,7 @@ def _is_immutable_frontend_asset(path: str) -> bool:
 def _cors_origins_from_env() -> list[str]:
     import os
 
-    raw = os.getenv("CORS_ALLOW_ORIGINS", "").strip()
+    raw = os.getenv("CORS_ALLOW_ORIGINS", "").strip() or os.getenv("PARVA_CORS_ORIGINS", "").strip()
     if not raw:
         return list(DEFAULT_CORS_ORIGINS)
     origins = [item.strip() for item in raw.split(",") if item.strip()]
@@ -111,7 +111,8 @@ def _build_startup_checks(settings) -> dict[str, object]:
         "source_code": {
             "required": settings.environment.lower() == "production",
             "ok": bool(settings.source_url),
-            "detail": settings.source_url or "Set PARVA_SOURCE_URL to a public repository or source archive.",
+            "detail": settings.source_url
+            or "Set PARVA_SOURCE_URL to a public repository or source archive.",
         },
         "precomputed": {
             "required": settings.require_precomputed,
@@ -196,9 +197,7 @@ def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
         ExperimentalEnvelopeMiddleware,
         enable_experimental_api=settings.enable_experimental_api,
     )
-    app.middleware("http")(
-        build_rate_limit_guard(settings=settings, backend=rate_limit_backend)
-    )
+    app.middleware("http")(build_rate_limit_guard(settings=settings, backend=rate_limit_backend))
     app.middleware("http")(build_access_control_guard(settings=settings))
     app.middleware("http")(
         build_experimental_version_gate(enable_experimental_api=settings.enable_experimental_api)
@@ -439,8 +438,7 @@ def create_app() -> FastAPI:
         rendered = ", ".join(unclassified_routes[:10])
         suffix = " ..." if len(unclassified_routes) > 10 else ""
         raise RuntimeError(
-            "Startup validation failed: unclassified API routes detected: "
-            f"{rendered}{suffix}"
+            "Startup validation failed: unclassified API routes detected: " f"{rendered}{suffix}"
         )
     _register_version_docs_routes(app, enable_experimental_api=settings.enable_experimental_api)
     _register_source_route(app, settings)

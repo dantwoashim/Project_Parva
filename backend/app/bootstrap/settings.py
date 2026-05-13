@@ -10,6 +10,7 @@ from typing import Final
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
+PRODUCTION_ENV_VALUES: Final[frozenset[str]] = frozenset({"production"})
 TEST_ENV_VALUES: Final[frozenset[str]] = frozenset({"test"})
 DEFAULT_TEST_ADMIN_TOKEN = "-".join(("parva", "test", "admin", "token"))
 DEFAULT_TEST_READ_KEY = "-".join(("parva", "test", "read", "key"))
@@ -147,6 +148,10 @@ def _default_environment() -> str:
     return "development"
 
 
+def _is_production_environment(environment: str) -> bool:
+    return environment.strip().lower() in PRODUCTION_ENV_VALUES
+
+
 def _validate_license_mode(settings: AppSettings) -> list[str]:
     normalized_license = settings.license_mode.strip().lower()
     if normalized_license in {"agpl-3.0-only", "agpl-3.0-or-later"}:
@@ -162,16 +167,17 @@ def _validate_source_url(settings: AppSettings) -> list[str]:
         errors.append("PARVA_SOURCE_URL must be an absolute http(s) URL or an absolute site path.")
     if settings.source_url == "/source":
         errors.append("PARVA_SOURCE_URL cannot point to /source itself.")
-    if settings.environment.lower() == "production" and not settings.source_url:
+    if _is_production_environment(settings.environment) and not settings.source_url:
         errors.append(
-            "Production deployments must publish corresponding source code via PARVA_SOURCE_URL."
+            "Production deployments must publish corresponding source code via PARVA_SOURCE_URL. "
+            "Use PARVA_ENV=public for the public Render demo profile."
         )
     return errors
 
 
 def _validate_experimental_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
-    if settings.environment.lower() == "production" and settings.enable_experimental_api:
+    if _is_production_environment(settings.environment) and settings.enable_experimental_api:
         if not settings.allow_experimental_in_prod:
             errors.append(
                 "Experimental routes require PARVA_ALLOW_EXPERIMENTAL_IN_PROD=true in production."
@@ -197,9 +203,10 @@ def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
         errors.append("PARVA_RATE_LIMIT_BACKEND must be either memory or redis.")
     if backend == "redis" and not settings.redis_url:
         errors.append("PARVA_REDIS_URL is required when PARVA_RATE_LIMIT_BACKEND=redis.")
-    if settings.environment.lower() == "production" and backend == "memory":
+    if _is_production_environment(settings.environment) and backend == "memory":
         errors.append(
-            "Production deployments must use PARVA_RATE_LIMIT_BACKEND=redis for distributed throttling."
+            "Production deployments must use PARVA_RATE_LIMIT_BACKEND=redis for distributed throttling. "
+            "Use PARVA_ENV=public for the public Render demo profile."
         )
     return errors
 
@@ -211,8 +218,10 @@ def _validate_billing_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
     if not settings.database_url:
         errors.append("PARVA_DATABASE_URL is required when PARVA_BILLING_ENABLED=true.")
-    if settings.environment.lower() == "production":
-        if settings.database_url and not settings.database_url.startswith(("postgres://", "postgresql://")):
+    if _is_production_environment(settings.environment):
+        if settings.database_url and not settings.database_url.startswith(
+            ("postgres://", "postgresql://")
+        ):
             errors.append("Production billing requires a Postgres PARVA_DATABASE_URL.")
         if settings.api_key_pepper == "parva-local-development-pepper":
             errors.append("Production billing requires PARVA_API_KEY_PEPPER to be set.")
@@ -220,7 +229,7 @@ def _validate_billing_settings(settings: AppSettings) -> list[str]:
 
 
 def _validate_frontend_settings(settings: AppSettings) -> list[str]:
-    if not settings.serve_frontend or settings.environment.lower() != "production":
+    if not settings.serve_frontend or not _is_production_environment(settings.environment):
         return []
 
     index_path = settings.frontend_dist / "index.html"
@@ -238,7 +247,7 @@ def load_settings() -> AppSettings:
     require_precomputed = (
         require_precomputed_override
         if require_precomputed_override is not None
-        else environment.strip().lower() == "production"
+        else _is_production_environment(environment)
     )
 
     return AppSettings(
@@ -269,7 +278,7 @@ def load_settings() -> AppSettings:
         require_precomputed=require_precomputed,
         prewarm_hotset=_parse_bool(
             os.getenv("PARVA_PREWARM_HOTSET"),
-            default=environment.strip().lower() == "production",
+            default=_is_production_environment(environment),
         ),
         precomputed_stale_hours=int(os.getenv("PARVA_PRECOMPUTED_STALE_HOURS", str(24 * 30))),
         trusted_proxy_ips=_parse_csv_set(os.getenv("PARVA_TRUSTED_PROXY_IPS", "")),

@@ -1,7 +1,8 @@
 """Settings validation tests."""
 
 import pytest
-from app.bootstrap.settings import load_settings
+from app.bootstrap.app_factory import _cors_origins_from_env
+from app.bootstrap.settings import load_settings, validate_settings
 
 
 def test_load_settings_parses_trusted_proxy_ips(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -56,13 +57,41 @@ def test_load_settings_allows_explicit_precomputed_override_in_production(
     assert settings.require_precomputed is False
 
 
+def test_public_render_profile_allows_memory_rate_limiter_without_source_url(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("PARVA_ENV", "public")
+    monkeypatch.delenv("PARVA_SOURCE_URL", raising=False)
+    monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "memory")
+    monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
+
+    settings = load_settings()
+
+    assert settings.environment == "public"
+    assert settings.require_precomputed is False
+    assert validate_settings(settings) == []
+
+
+def test_cors_origins_accept_parva_prefixed_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("CORS_ALLOW_ORIGINS", raising=False)
+    monkeypatch.setenv(
+        "PARVA_CORS_ORIGINS",
+        "https://prabinghimire1.com.np, https://project-parva.pages.dev",
+    )
+
+    assert _cors_origins_from_env() == [
+        "https://prabinghimire1.com.np",
+        "https://project-parva.pages.dev",
+    ]
+
+
 def test_create_app_requires_source_url_in_production(monkeypatch: pytest.MonkeyPatch) -> None:
     from app.bootstrap.app_factory import create_app
 
     monkeypatch.setenv("PARVA_ENV", "production")
     monkeypatch.delenv("PARVA_SOURCE_URL", raising=False)
 
-    with pytest.raises(RuntimeError, match="PARVA_SOURCE_URL"):
+    with pytest.raises(RuntimeError, match="PARVA_SOURCE_URL.*PARVA_ENV=public"):
         create_app()
 
 
@@ -75,7 +104,7 @@ def test_create_app_requires_distributed_rate_limiting_in_production(
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
     monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "memory")
 
-    with pytest.raises(RuntimeError, match="PARVA_RATE_LIMIT_BACKEND=redis"):
+    with pytest.raises(RuntimeError, match="PARVA_RATE_LIMIT_BACKEND=redis.*PARVA_ENV=public"):
         create_app()
 
 
