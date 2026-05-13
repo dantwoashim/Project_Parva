@@ -9,10 +9,15 @@ from typing import Dict, List
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-PRECOMPUTED_DIR = PROJECT_ROOT / "output" / "precomputed"
-REPORTS_DIR = PROJECT_ROOT / "reports"
-PUBLIC_ARTIFACTS_DIR = PROJECT_ROOT / "backend" / "data" / "public_artifacts"
+from app.core.paths import data_dir, output_dir, project_root, resolve_resource_path
+
+PROJECT_ROOT = project_root()
+PRECOMPUTED_DIR = output_dir() / "precomputed"
+REPORTS_DIR = resolve_resource_path("PARVA_REPORTS_DIR", "reports")
+PUBLIC_ARTIFACTS_DIR = resolve_resource_path(
+    "PARVA_PUBLIC_ARTIFACTS_DIR",
+    Path("backend") / "data" / "public_artifacts",
+)
 
 router = APIRouter(prefix="/api/public", tags=["public-artifacts"])
 
@@ -68,7 +73,7 @@ async def get_artifacts_manifest() -> Dict[str, object]:
     if boundary_suite.exists():
         files.append(_artifact_row(boundary_suite, "boundary-suite"))
 
-    differential = PROJECT_ROOT / "data" / "differential" / "disagreements.json"
+    differential = data_dir() / "differential" / "disagreements.json"
     if differential.exists():
         files.append(_artifact_row(differential, "differential"))
 
@@ -123,7 +128,7 @@ async def get_boundary_suite_artifact():
 
 @router.get("/artifacts/differential")
 async def get_differential_artifact():
-    path = PROJECT_ROOT / "data" / "differential" / "disagreements.json"
+    path = data_dir() / "differential" / "disagreements.json"
     if not path.exists():
         raise HTTPException(status_code=404, detail="Differential artifact not generated yet")
     return FileResponse(path, media_type="application/json", filename=path.name)

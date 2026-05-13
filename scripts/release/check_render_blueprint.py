@@ -38,7 +38,7 @@ def main() -> int:
     failures: list[str] = []
 
     expected_values = {
-        "PARVA_ROUTE_PROFILE": "public_demo",
+        "PARVA_ROUTE_PROFILE": "developer_preview",
         "PARVA_ENABLE_EXPERIMENTAL_API": "false",
         "PARVA_ALLOW_EXPERIMENTAL_IN_PROD": "false",
         "PARVA_SHOW_PRIVATE_SCHEMA": "false",

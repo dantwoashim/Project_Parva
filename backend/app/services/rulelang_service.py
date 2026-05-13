@@ -16,6 +16,7 @@ from app.calendar.bikram_sambat import (
     get_bs_month_name,
     gregorian_to_bs,
 )
+from app.core.paths import project_root, rules_dir
 from app.core.source_metadata import (
     COMPLIANCE_BOUNDARY,
     ENTERPRISE_COMPLIANCE_PROFILES,
@@ -43,14 +44,15 @@ from app.timegraph.fact_ids import (
     weekday_fact_id,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-PUBLIC_RULE_DIR = PROJECT_ROOT / "data" / "rules" / "public"
-PRIVATE_RULE_DIR = PROJECT_ROOT / "data" / "rules" / "private"
+PROJECT_ROOT = project_root()
+PUBLIC_RULE_DIR = rules_dir() / "public"
+PRIVATE_RULE_DIR = rules_dir() / "private"
 RULELANG_CLAIM_BOUNDARY = COMPLIANCE_BOUNDARY
 DEFAULT_RULELANG_MODE = "public"
 DEFAULT_LOOP_MAX_ITERATIONS = 32
 ABSOLUTE_LOOP_MAX_ITERATIONS = 366
 MAX_STEPS = 128
+MAX_FUNCTION_CALLS = 256
 MAX_TRACE_STEPS = 256
 MAX_CONDITION_DEPTH = 16
 MAX_INPUT_BYTES = 8192
@@ -152,6 +154,7 @@ class RuleExecutionContext:
     fact_ids: list[str] = field(default_factory=list)
     confidences: list[str] = field(default_factory=list)
     step_counter: int = 0
+    function_call_counter: int = 0
 
 
 def rulelang_capabilities_payload() -> dict[str, Any]:
@@ -177,6 +180,7 @@ def rulelang_capabilities_payload() -> dict[str, Any]:
         "builtins": sorted(ALLOWED_FUNCTIONS),
         "safety_limits": {
             "max_steps": MAX_STEPS,
+            "max_function_calls": MAX_FUNCTION_CALLS,
             "default_loop_max_iterations": DEFAULT_LOOP_MAX_ITERATIONS,
             "absolute_loop_max_iterations": ABSOLUTE_LOOP_MAX_ITERATIONS,
             "max_trace_steps": MAX_TRACE_STEPS,
@@ -421,6 +425,8 @@ def execute_rule(
             "steps": context.trace_steps,
             "bounded": True,
             "max_trace_steps": MAX_TRACE_STEPS,
+            "function_calls": context.function_call_counter,
+            "max_function_calls": MAX_FUNCTION_CALLS,
         },
         "fact_ids": _dedupe(context.fact_ids),
         "evidence_packet_id": evidence_packet_id,
@@ -667,6 +673,12 @@ def _compare_values(operator: str, left: Any, right: Any) -> bool:
 
 
 def _call_function(context: RuleExecutionContext, function_name: str, args: dict[str, Any]) -> FunctionOutcome:
+    context.function_call_counter += 1
+    if context.function_call_counter > MAX_FUNCTION_CALLS:
+        raise RuleLangError(
+            "Rule exceeded max function call count.",
+            code="MAX_FUNCTION_CALLS_EXCEEDED",
+        )
     if function_name in FORBIDDEN_FUNCTIONS:
         raise RuleLangError(
             f"Function is forbidden: {function_name}",
@@ -1683,6 +1695,7 @@ REASON_CODE_CATALOG = {
     "HOLIDAY_SKIPPED": "A public-corpus holiday was skipped during a bounded working-day search.",
     "BANKING_HOLIDAY_SKIPPED": "A banking holiday placeholder was considered but requires institutional source review.",
     "MAX_ITERATIONS_EXCEEDED": "A loop or search exceeded its configured safety bound.",
+    "MAX_FUNCTION_CALLS_EXCEEDED": "A rule exceeded its independent function-call safety bound.",
     "OUTSIDE_SUPPORTED_RANGE": "The requested date falls outside the supported public calendar range.",
     "SOURCE_CONFIDENCE_TOO_LOW": "The source confidence did not satisfy the rule risk policy.",
     "DISPUTED_FACT_BLOCKED": "The rule referenced a TimeGraph fact currently represented as disputed.",
@@ -1700,6 +1713,7 @@ __all__ = [
     "ABSOLUTE_LOOP_MAX_ITERATIONS",
     "ALLOWED_FUNCTIONS",
     "DEFAULT_LOOP_MAX_ITERATIONS",
+    "MAX_FUNCTION_CALLS",
     "MAX_STEPS",
     "MAX_TRACE_STEPS",
     "REASON_CODE_CATALOG",

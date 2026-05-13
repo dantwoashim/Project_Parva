@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from app.core.paths import data_dir, project_root
 from app.core.source_metadata import NOT_LEGAL_AUTHORITY, PUBLIC_DATA_VERSION
 from app.services.calendar_conversion_service import (
     build_bs_to_gregorian_payload,
@@ -18,12 +19,12 @@ from app.services.calendar_conversion_service import (
 )
 from app.services.compliance_service import evaluate_date_payload
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-PUBLIC_RELEASE_DIR = PROJECT_ROOT / "data" / "public" / "releases"
+PROJECT_ROOT = project_root()
+PUBLIC_RELEASE_DIR = data_dir() / "public" / "releases"
 DEFAULT_RELEASE_ID = "parva-bs-public-demo"
 DEFAULT_MANIFEST_PATH = PUBLIC_RELEASE_DIR / f"{DEFAULT_RELEASE_ID}.manifest.json"
 DEFAULT_SOURCE_REGISTRY_PATH = PUBLIC_RELEASE_DIR / f"{DEFAULT_RELEASE_ID}.sources.json"
-DEFAULT_TRUST_LOG_PATH = PROJECT_ROOT / "data" / "public" / "trust" / "parva-trust-log.jsonl"
+DEFAULT_TRUST_LOG_PATH = data_dir() / "public" / "trust" / "parva-trust-log.jsonl"
 PUBLIC_SIGNATURE_STATUS = "unsigned_public_preview"
 ALLOWED_SOURCE_TIERS = {
     "official",

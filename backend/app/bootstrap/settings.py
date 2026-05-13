@@ -8,11 +8,25 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Final
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+from app.core.paths import frontend_dist_dir, project_root
+
+PROJECT_ROOT = project_root()
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
 PRODUCTION_ENV_VALUES: Final[frozenset[str]] = frozenset({"production"})
+DEPLOYED_ENV_VALUES: Final[frozenset[str]] = frozenset({"production", "staging"})
 PUBLIC_ENV_VALUES: Final[frozenset[str]] = frozenset({"public", "production"})
 TEST_ENV_VALUES: Final[frozenset[str]] = frozenset({"test"})
+VALID_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
+    {
+        "minimal_public",
+        "public_demo",
+        "public_reference",
+        "developer_preview",
+        "enterprise_preview",
+        "full",
+        "full_dev",
+    }
+)
 DEFAULT_TEST_ADMIN_TOKEN = "-".join(("parva", "test", "admin", "token"))
 DEFAULT_TEST_READ_KEY = "-".join(("parva", "test", "read", "key"))
 
@@ -94,7 +108,7 @@ def _frontend_dist_from_env() -> Path:
     configured = os.getenv("PARVA_FRONTEND_DIST", "").strip()
     if configured:
         return Path(configured).expanduser().resolve()
-    return (PROJECT_ROOT / "frontend" / "dist").resolve()
+    return frontend_dist_dir()
 
 
 def _default_database_url(environment: str) -> str:
@@ -154,6 +168,10 @@ def _is_production_environment(environment: str) -> bool:
     return environment.strip().lower() in PRODUCTION_ENV_VALUES
 
 
+def _is_deployed_environment(environment: str) -> bool:
+    return environment.strip().lower() in DEPLOYED_ENV_VALUES
+
+
 def _is_local_environment(environment: str) -> bool:
     return environment.strip().lower() in DEV_ENV_VALUES | TEST_ENV_VALUES
 
@@ -194,9 +212,18 @@ def _validate_experimental_settings(settings: AppSettings) -> list[str]:
 
 
 def _validate_route_profile(settings: AppSettings) -> list[str]:
-    if settings.route_profile in {"full", "public_demo"}:
+    if settings.route_profile in VALID_ROUTE_PROFILES:
         return []
-    return ["PARVA_ROUTE_PROFILE must be either 'full' or 'public_demo'."]
+    supported = ", ".join(sorted(VALID_ROUTE_PROFILES))
+    return [f"PARVA_ROUTE_PROFILE must be one of: {supported}."]
+
+
+def _validate_trusted_proxy_settings(settings: AppSettings) -> list[str]:
+    if "*" not in settings.trusted_proxy_ips:
+        return []
+    if _is_deployed_environment(settings.environment):
+        return ["PARVA_TRUSTED_PROXY_IPS=* is not allowed in production or staging."]
+    return []
 
 
 def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
@@ -320,6 +347,7 @@ def validate_settings(settings: AppSettings) -> list[str]:
     errors.extend(_validate_license_mode(settings))
     errors.extend(_validate_source_url(settings))
     errors.extend(_validate_route_profile(settings))
+    errors.extend(_validate_trusted_proxy_settings(settings))
     errors.extend(_validate_experimental_settings(settings))
     errors.extend(_validate_rate_limit_settings(settings))
     errors.extend(_validate_billing_settings(settings))

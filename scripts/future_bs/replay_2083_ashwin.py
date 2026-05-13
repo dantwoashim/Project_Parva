@@ -24,7 +24,8 @@ if os.getenv("PARVA_SCRIPT_REEXEC") != "1":
         needs_python311 = True
     if needs_python311:
         env = {**os.environ, "PARVA_SCRIPT_REEXEC": "1"}
-        completed = subprocess.run(["py", "-3.11", *sys.argv], env=env)
+        python_executable = os.getenv("PARVA_PYTHON", sys.executable)
+        completed = subprocess.run([python_executable, *sys.argv], env=env)
         raise SystemExit(completed.returncode)
 
 from app.future_bs.red_team_2083 import replay_2083_ashwin  # noqa: E402

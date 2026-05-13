@@ -13,6 +13,27 @@ def test_load_settings_parses_trusted_proxy_ips(monkeypatch: pytest.MonkeyPatch)
     assert settings.trusted_proxy_ips == frozenset({"127.0.0.1", "10.0.0.5"})
 
 
+def test_production_rejects_wildcard_trusted_proxy(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("PARVA_ENV", "production")
+    monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
+    monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
+    monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
+    monkeypatch.setenv("PARVA_TRUSTED_PROXY_IPS", "*")
+
+    settings = load_settings()
+
+    assert any("PARVA_TRUSTED_PROXY_IPS=*" in error for error in validate_settings(settings))
+
+
+def test_staging_rejects_wildcard_trusted_proxy(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("PARVA_ENV", "staging")
+    monkeypatch.setenv("PARVA_TRUSTED_PROXY_IPS", "*")
+
+    settings = load_settings()
+
+    assert any("PARVA_TRUSTED_PROXY_IPS=*" in error for error in validate_settings(settings))
+
+
 def test_load_settings_defaults_to_agpl_license_mode(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("PARVA_LICENSE_MODE", raising=False)
 

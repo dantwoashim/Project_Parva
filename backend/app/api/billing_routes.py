@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import json
+import logging
 import secrets
 from asyncio import to_thread
+from datetime import datetime, timezone
 from typing import Any, Literal
 
 from fastapi import APIRouter, HTTPException, Request
@@ -13,6 +16,7 @@ from app.billing import BillingAuthError, get_billing_service
 from app.billing.plans import FREE_DAILY_LIMIT
 
 router = APIRouter(prefix="/api", tags=["billing"])
+audit_logger = logging.getLogger("parva.billing.audit")
 
 
 class CheckoutRequest(BaseModel):
@@ -81,6 +85,36 @@ def _require_api_key(request: Request):
     if getattr(principal, "principal_type", None) != "api_key":
         raise HTTPException(status_code=401, detail="Valid API key required.")
     return principal
+
+
+def _admin_audit_event(
+    request: Request,
+    *,
+    action_type: str,
+    invoice_id: str | None = None,
+    subscription_id: str | None = None,
+    key_id: str | None = None,
+    provider: str | None = None,
+    provider_reference: str | None = None,
+) -> None:
+    principal = _principal(request)
+    audit_logger.info(
+        json.dumps(
+            {
+                "event": "billing.admin_action",
+                "action_type": action_type,
+                "admin_principal": getattr(principal, "principal_id", None),
+                "invoice_id": invoice_id,
+                "subscription_id": subscription_id,
+                "key_id": key_id,
+                "provider": provider,
+                "provider_reference": provider_reference,
+                "request_id": getattr(request.state, "request_id", None),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            },
+            sort_keys=True,
+        )
+    )
 
 
 async def _billing_call(request: Request, method_name: str, *args, **kwargs):
@@ -242,6 +276,13 @@ async def admin_mark_invoice_paid(invoice_id: str, payload: MarkInvoicePaidReque
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    _admin_audit_event(
+        request,
+        action_type="invoice.mark_paid",
+        invoice_id=invoice_id,
+        provider=invoice.get("provider") if isinstance(invoice, dict) else None,
+        provider_reference=payload.provider_reference,
+    )
     return invoice
 
 
@@ -257,6 +298,11 @@ async def admin_extend_subscription(subscription_id: str, payload: ExtendSubscri
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    _admin_audit_event(
+        request,
+        action_type="subscription.extend",
+        subscription_id=subscription_id,
+    )
     return subscription
 
 
@@ -264,9 +310,11 @@ async def admin_extend_subscription(subscription_id: str, payload: ExtendSubscri
 async def admin_revoke_key(key_id: str, request: Request):
     _require_admin(request)
     try:
-        return await _billing_call(request, "revoke_key", key_id)
+        result = await _billing_call(request, "revoke_key", key_id)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    _admin_audit_event(request, action_type="api_key.revoke", key_id=key_id)
+    return result
 
 
 @router.get("/admin/usage/anomalies")

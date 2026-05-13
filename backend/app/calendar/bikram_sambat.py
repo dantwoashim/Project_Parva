@@ -25,6 +25,7 @@ Usage:
 from __future__ import annotations
 
 import json
+from bisect import bisect_right
 from datetime import date, datetime, timedelta
 from functools import lru_cache
 from pathlib import Path
@@ -42,6 +43,16 @@ from .ephemeris.swiss_eph import calculate_sunrise
 from .ephemeris.time_utils import to_nepal_time
 from .provenance import get_bs_year_confidence_from_provenance, get_bs_year_provenance
 from .sankranti import find_mesh_sankranti, get_sankrantis_in_year
+
+_OFFICIAL_YEAR_RANGES: tuple[tuple[date, date, int], ...] = tuple(
+    (
+        start_date,
+        start_date + timedelta(days=sum(month_lengths)),
+        year,
+    )
+    for year, (month_lengths, start_date) in sorted(BS_CALENDAR_DATA.items())
+)
+_OFFICIAL_YEAR_STARTS: tuple[date, ...] = tuple(row[0] for row in _OFFICIAL_YEAR_RANGES)
 
 
 class BSDate(NamedTuple):
@@ -278,19 +289,16 @@ def _gregorian_to_bs_official(gregorian_date: date) -> tuple[int, int, int]:
         >>> gregorian_to_bs(date(2023, 12, 25))  # Christmas 2023
         (2080, 9, 10)
     """
-    # Find which BS year this falls in (static lookup)
+    # Find the candidate BS year in O(log n) so widening the official table does
+    # not turn Gregorian conversion into a full-table scan.
+    range_index = bisect_right(_OFFICIAL_YEAR_STARTS, gregorian_date) - 1
     bs_year = None
     year_start = None
-
-    for year, (month_lengths, start_date) in sorted(BS_CALENDAR_DATA.items()):
-        # Calculate end of this BS year (exclusive - first day of next year)
-        year_end_exclusive = start_date + timedelta(days=sum(month_lengths))
-
-        # Use exclusive comparison for end to avoid overlap with next year
+    if range_index >= 0:
+        start_date, year_end_exclusive, candidate_year = _OFFICIAL_YEAR_RANGES[range_index]
         if start_date <= gregorian_date < year_end_exclusive:
-            bs_year = year
+            bs_year = candidate_year
             year_start = start_date
-            break
 
     if bs_year is None:
         # Check if it's before our range

@@ -70,14 +70,16 @@ class BillingStore:
                 if self._memory_sqlite is None:
                     self._memory_sqlite = sqlite3.connect(":memory:", check_same_thread=False)
                     self._memory_sqlite.row_factory = sqlite3.Row
+                    self._configure_sqlite_connection(self._memory_sqlite, persistent=False)
                 yield self._memory_sqlite
                 self._memory_sqlite.commit()
                 return
 
             path = Path(self.config.url)
             path.parent.mkdir(parents=True, exist_ok=True)
-            conn = sqlite3.connect(path)
+            conn = sqlite3.connect(path, timeout=5.0)
             conn.row_factory = sqlite3.Row
+            self._configure_sqlite_connection(conn, persistent=True)
             try:
                 yield conn
                 conn.commit()
@@ -93,6 +95,13 @@ class BillingStore:
 
         with psycopg.connect(self.config.url, row_factory=dict_row) as pg_conn:
             yield pg_conn
+
+    @staticmethod
+    def _configure_sqlite_connection(conn: sqlite3.Connection, *, persistent: bool) -> None:
+        conn.execute("PRAGMA foreign_keys=ON")
+        conn.execute("PRAGMA busy_timeout=5000")
+        if persistent:
+            conn.execute("PRAGMA journal_mode=WAL")
 
     def execute(self, sql: str, params: tuple[Any, ...] = ()) -> None:
         with self.connect() as conn:

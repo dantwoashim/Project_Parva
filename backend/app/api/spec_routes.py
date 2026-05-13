@@ -8,12 +8,23 @@ from pathlib import Path
 
 from fastapi import APIRouter
 
+from app.core.paths import project_root, resolve_resource_path
+
 router = APIRouter(prefix="/api/spec", tags=["spec"])
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
-CONFORMANCE_REPORT = PROJECT_ROOT / "reports" / "conformance_report.json"
-SPEC_DOC = PROJECT_ROOT / "docs" / "spec" / "PARVA_TEMPORAL_SPEC_V1.md"
-CONFORMANCE_CASES = PROJECT_ROOT / "tests" / "conformance" / "conformance_cases.v1.json"
+PROJECT_ROOT = project_root()
+CONFORMANCE_REPORT = resolve_resource_path(
+    "PARVA_CONFORMANCE_REPORT",
+    Path("reports") / "conformance_report.json",
+)
+SPEC_DOC = resolve_resource_path(
+    "PARVA_TEMPORAL_SPEC_DOC",
+    Path("docs") / "spec" / "PARVA_TEMPORAL_SPEC_V1.md",
+)
+CONFORMANCE_CASES = resolve_resource_path(
+    "PARVA_CONFORMANCE_CASES",
+    Path("tests") / "conformance" / "conformance_cases.v1.json",
+)
 
 
 @router.get("/conformance")

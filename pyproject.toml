@@ -14,7 +14,6 @@ dependencies = [
     "uvicorn>=0.23.0",
     "pydantic>=2.0.0",
     "pyswisseph>=2.10.0",
-    "numpy>=1.26.0",
     "redis==7.4.0",
     "psycopg[binary]==3.3.4",
     "timezonefinder==8.2.0",
@@ -38,10 +37,18 @@ ops = [
 data = [
     "pyarrow>=16.0.0",
 ]
+research = [
+    "numpy>=1.26.0",
+]
 
 [tool.pytest.ini_options]
 pythonpath = [".", "backend"]
 testpaths = ["tests", "backend/tests"]
+markers = [
+    "private_source: requires private source archives that are intentionally absent from public clones",
+    "wide_corpus: requires the wide BS corpus or source-rich historical fixtures",
+    "research_artifact: requires generated research artifacts outside the public verification lane",
+]
 
 [tool.ruff]
 line-length = 100
@@ -61,9 +68,15 @@ files = [
     "backend/app/storage/file_stores.py",
     "backend/app/reliability",
     "backend/app/cache/precomputed.py",
+    "backend/app/core/paths.py",
     "backend/app/api/public_artifacts_routes.py",
     "backend/app/api/spec_routes.py",
+    "backend/app/services/rulelang_service.py",
+    "backend/app/services/trust_infrastructure_service.py",
+    "backend/app/services/protocol_service.py",
+    "backend/app/services/impact_service.py",
     "backend/app/calendar/tithi/tithi_core.py",
+    "backend/app/calendar/bikram_sambat.py",
     "backend/app/future_bs/rule_inversion",
     "backend/app/future_bs/truth_fusion/consensus_truth_selector.py",
     "backend/app/future_bs/active_learning/promotion_plan.py",

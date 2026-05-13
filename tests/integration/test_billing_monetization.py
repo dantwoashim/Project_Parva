@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+import logging
+
 from app.billing import reset_billing_service_cache
 from app.bootstrap.app_factory import create_app
 from fastapi.testclient import TestClient
@@ -13,7 +16,8 @@ def _client(monkeypatch):
     return TestClient(create_app())
 
 
-def test_billing_checkout_activation_and_api_key_usage(monkeypatch):
+def test_billing_checkout_activation_and_api_key_usage(monkeypatch, caplog):
+    caplog.set_level(logging.INFO, logger="parva.billing.audit")
     client = _client(monkeypatch)
 
     checkout_response = client.post(
@@ -42,6 +46,17 @@ def test_billing_checkout_activation_and_api_key_usage(monkeypatch):
     )
     assert verify_response.status_code == 200
     assert verify_response.json()["status"] == "paid"
+    audit_entries = [
+        json.loads(record.message)
+        for record in caplog.records
+        if record.name == "parva.billing.audit"
+    ]
+    assert any(
+        entry["action_type"] == "invoice.mark_paid"
+        and entry["invoice_id"] == checkout_payload["invoice_id"]
+        and entry["provider_reference"] == "manual-qr-paid"
+        for entry in audit_entries
+    )
 
     key_response = client.post("/v3/api/keys", json={"checkout_id": checkout_id})
     assert key_response.status_code == 200

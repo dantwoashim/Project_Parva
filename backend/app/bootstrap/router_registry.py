@@ -144,6 +144,50 @@ ROUTER_REGISTRATIONS = [
 PUBLIC_ROUTERS = [registration.router for registration in ROUTER_REGISTRATIONS if registration.audience == "public"]
 TRUST_ROUTERS = [registration.router for registration in ROUTER_REGISTRATIONS if registration.audience == "trust"]
 
+PUBLIC_REFERENCE_POLICY_NAMES = {
+    "festivals_timeline",
+    "festivals",
+    "calendar",
+    "enterprise",
+    "compliance",
+    "future_bs",
+    "calendar_model_risk",
+    "locations",
+    "observances",
+    "places",
+    "policy",
+    "feeds",
+    "engine",
+    "forecast",
+    "muhurta",
+    "muhurta_calendar",
+    "temporal",
+    "glossary",
+    "reliability",
+    "spec",
+    "public_artifacts",
+    "trust",
+    "protocol",
+}
+
+DEVELOPER_PREVIEW_POLICY_NAMES = PUBLIC_REFERENCE_POLICY_NAMES | {
+    "cache",
+    "explain",
+    "resolve",
+    "integrations_feeds",
+    "personal",
+    "kundali",
+    "muhurta_heatmap",
+    "kundali_graph",
+    "provenance",
+    "timegraph",
+    "rules",
+    "impact",
+    "agent",
+}
+
+ENTERPRISE_PREVIEW_POLICY_NAMES = DEVELOPER_PREVIEW_POLICY_NAMES | {"billing"}
+
 PUBLIC_DEMO_ROUTE_REGISTRATIONS = [
     RouterRegistration(
         public_demo_calendar_router,
@@ -203,6 +247,44 @@ def iter_route_policy_specs() -> list[dict[str, str]]:
     return specs
 
 
+def _registrations_for_profile(
+    *,
+    route_profile: str,
+    enable_experimental_api: bool,
+) -> list[RouterRegistration]:
+    if route_profile in {"full", "full_dev"}:
+        return [
+            registration
+            for registration in ROUTER_REGISTRATIONS
+            if registration.audience in {"public", "trust"}
+            or (enable_experimental_api and registration.register_when_experimental_enabled)
+        ]
+    if route_profile in {"minimal_public", "public_demo"}:
+        return PUBLIC_DEMO_ROUTE_REGISTRATIONS
+
+    if route_profile == "public_reference":
+        policy_names = PUBLIC_REFERENCE_POLICY_NAMES
+    elif route_profile == "developer_preview":
+        policy_names = DEVELOPER_PREVIEW_POLICY_NAMES
+    elif route_profile == "enterprise_preview":
+        policy_names = ENTERPRISE_PREVIEW_POLICY_NAMES
+    else:
+        policy_names = DEVELOPER_PREVIEW_POLICY_NAMES
+
+    registrations = [
+        registration
+        for registration in ROUTER_REGISTRATIONS
+        if registration.policy_name in policy_names
+    ]
+    if enable_experimental_api:
+        registrations.extend(
+            registration
+            for registration in ROUTER_REGISTRATIONS
+            if registration.register_when_experimental_enabled
+        )
+    return registrations
+
+
 def register_routers(
     app: FastAPI,
     *,
@@ -212,17 +294,10 @@ def register_routers(
     route_profile: str = "full",
 ) -> None:
     """Register /api + /v3 routers, with optional experimental version tracks."""
-    include_trust = True
-    if route_profile == "public_demo":
-        registrations = PUBLIC_DEMO_ROUTE_REGISTRATIONS
-    else:
-        registrations = [
-            registration
-            for registration in ROUTER_REGISTRATIONS
-            if registration.audience == "public"
-            or (include_trust and registration.audience == "trust")
-            or (enable_experimental_api and registration.register_when_experimental_enabled)
-        ]
+    registrations = _registrations_for_profile(
+        route_profile=route_profile,
+        enable_experimental_api=enable_experimental_api,
+    )
     for registration in registrations:
         if registration.include_base:
             app.include_router(

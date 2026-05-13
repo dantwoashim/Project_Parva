@@ -39,7 +39,9 @@ def _python_version(command: list[str]) -> tuple[int, int] | None:
 
 
 def _resolve_python311() -> list[str]:
-    candidates: list[list[str]] = [[sys.executable]]
+    configured = os.getenv("PARVA_PYTHON", "").strip()
+    candidates: list[list[str]] = [[configured]] if configured else []
+    candidates.append([sys.executable])
 
     py_launcher = shutil.which("py")
     if py_launcher:
@@ -55,7 +57,7 @@ def _resolve_python311() -> list[str]:
             return command
 
     raise SystemExit(
-        "Unable to find Python 3.11. Install Python 3.11 or run with the py -3.11 launcher."
+        "Unable to find Python 3.11. Set PARVA_PYTHON to a Python 3.11 executable or install Python 3.11 on PATH."
     )
 
 
@@ -112,7 +114,17 @@ def main() -> int:
         ("backend smoke", [*python, "scripts/release/check_backend_smoke.py"]),
         ("Python SDK import smoke", [*python, "scripts/release/check_sdk_install.py"]),
         ("backend lint", [*python, "-m", "ruff", "check", "backend", "tests", "scripts", "sdk", "packages/parva-python"]),
-        ("backend public tests", [*python, "-m", "pytest", "-q"]),
+        (
+            "backend public tests",
+            [
+                *python,
+                "-m",
+                "pytest",
+                "-q",
+                "-m",
+                "not private_source and not wide_corpus and not research_artifact",
+            ],
+        ),
         ("Python package SDK tests", [*python, "-m", "pytest", "packages/parva-python/tests", "-q"]),
         ("frontend lint", build_npm_command(["--prefix", "frontend", "run", "lint"], node_runtime)),
         ("frontend tests", build_npm_command(["--prefix", "frontend", "test", "--", "--run"], node_runtime)),

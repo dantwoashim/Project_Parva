@@ -8,6 +8,7 @@ from typing import Any
 from uuid import uuid4
 
 from app.calendar.bikram_sambat import bs_to_gregorian
+from app.core.paths import data_dir, project_root, schema_dir
 from app.core.source_metadata import NOT_LEGAL_AUTHORITY
 from app.services.trust_infrastructure_service import (
     canonical_json,
@@ -17,12 +18,12 @@ from app.services.trust_infrastructure_service import (
     sha256_text,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = project_root()
 PROTOCOL_VERSION = "parva-protocol-0.1.0"
 PROTOCOL_SEMVER = "0.1.0"
 PROTOCOL_CLAIM_BOUNDARY = "parva_protocol_preview_not_legal_authority"
 SPEC_DIR = PROJECT_ROOT / "specs" / "parva-protocol"
-PROTOCOL_SCHEMA_DIR = PROJECT_ROOT / "schemas" / "parva-protocol"
+PROTOCOL_SCHEMA_DIR = schema_dir() / "parva-protocol"
 
 COMPATIBILITY_LEVELS = [
     "parva_core",
@@ -268,10 +269,10 @@ def offline_bundle_manifest_payload() -> dict[str, Any]:
 
 
 def _conformance_tests_for(level: str, *, artifact: dict[str, Any] | None = None) -> list[dict[str, Any]]:
-    manifest_path = PROJECT_ROOT / "data" / "public" / "releases" / "parva-bs-public-demo.manifest.json"
-    source_path = PROJECT_ROOT / "data" / "public" / "releases" / "parva-bs-public-demo.sources.json"
-    trust_log_path = PROJECT_ROOT / "data" / "public" / "trust" / "parva-trust-log.jsonl"
-    rule_schema_path = PROJECT_ROOT / "schemas" / "rulelang-rule.schema.json"
+    manifest_path = data_dir() / "public" / "releases" / "parva-bs-public-demo.manifest.json"
+    source_path = data_dir() / "public" / "releases" / "parva-bs-public-demo.sources.json"
+    trust_log_path = data_dir() / "public" / "trust" / "parva-trust-log.jsonl"
+    rule_schema_path = schema_dir() / "rulelang-rule.schema.json"
     protocol_schemas = sorted(PROTOCOL_SCHEMA_DIR.glob("*.schema.json"))
     js_sdk_path = PROJECT_ROOT / "packages" / "parva-js" / "src" / "index.ts"
     py_sdk_path = PROJECT_ROOT / "packages" / "parva-python" / "parva" / "client.py"

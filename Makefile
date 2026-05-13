@@ -1,4 +1,4 @@
-PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3.11; fi)
+PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; elif command -v python3.11 >/dev/null 2>&1; then echo python3.11; else echo python; fi)
 NPM ?= npx -y -p node@20 -p npm@10 npm
 
 .PHONY: install install-backend install-sdk install-frontend dev dev-backend dev-frontend dev-local \
