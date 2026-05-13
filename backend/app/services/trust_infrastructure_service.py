@@ -8,7 +8,7 @@ import os
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from app.core.paths import data_dir, project_root
 from app.core.source_metadata import NOT_LEGAL_AUTHORITY, PUBLIC_DATA_VERSION
@@ -442,7 +442,8 @@ def build_evidence_packet(
     generated_at: str | None = None,
 ) -> dict[str, Any]:
     manifest = _load_manifest(release_id)
-    meta = result.get("meta") if isinstance(result.get("meta"), dict) else {}
+    raw_meta = result.get("meta")
+    meta = cast(dict[str, Any], raw_meta) if isinstance(raw_meta, dict) else {}
     from app.services.timegraph_service import (  # noqa: PLC0415
         fact_ids_for_compliance_result,
         fact_ids_for_date_conversion_result,

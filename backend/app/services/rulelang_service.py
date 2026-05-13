@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass, field
 from datetime import date, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 from uuid import uuid4
 
 from app.calendar.bikram_sambat import (
@@ -892,10 +892,11 @@ def _builtin_subtract_days(context: RuleExecutionContext, args: dict[str, Any]) 
 def _builtin_add_working_days(context: RuleExecutionContext, args: dict[str, Any]) -> FunctionOutcome:
     date_block = _date_from_arg(args.get("date"))
     profile_id = _profile_arg(context, args)
+    working_days_raw = args.get("working_days") if "working_days" in args else args.get("n", 0)
     result = add_working_days_payload(
         profile_id=profile_id,
         bs_date=date_block["bs"],
-        working_days=int(args.get("working_days") if "working_days" in args else args.get("n", 0)),
+        working_days=int(working_days_raw or 0),
         trace_id=context.trace_id,
     )
     return _compliance_outcome("add_working_days", args, result, value=result["date"])
@@ -1395,8 +1396,10 @@ def _compliance_outcome(
     value: Any,
     reason_codes: list[str] | None = None,
 ) -> FunctionOutcome:
-    meta = result.get("meta") if isinstance(result.get("meta"), dict) else {}
-    decision = result.get("decision") if isinstance(result.get("decision"), dict) else {}
+    raw_meta = result.get("meta")
+    raw_decision = result.get("decision")
+    meta = cast(dict[str, Any], raw_meta) if isinstance(raw_meta, dict) else {}
+    decision = cast(dict[str, Any], raw_decision) if isinstance(raw_decision, dict) else {}
     codes = list(reason_codes or [])
     codes.extend(str(code) for code in decision.get("reason_codes", []))
     if decision.get("requires_human_review"):

@@ -309,6 +309,8 @@ def _gregorian_to_bs_official(gregorian_date: date) -> tuple[int, int, int]:
         raise ValueError(
             f"Date {gregorian_date} is outside supported range " f"({min_start} to {max_end})"
         )
+    if year_start is None:
+        raise ValueError(f"Date {gregorian_date} did not resolve to a BS year start")
 
     # Calculate days from start of BS year
     days_from_year_start = (gregorian_date - year_start).days
@@ -477,6 +479,8 @@ def _bs_to_gregorian_estimated(year: int, month: int, day: int) -> date:
 
     if start_date is None:
         raise ValueError(f"Could not determine month start for {year}-{month:02d}")
+    if next_start is None:
+        raise ValueError(f"Could not determine next month start for {year}-{month:02d}")
 
     month_length = (next_start - start_date).days
     if day > month_length:

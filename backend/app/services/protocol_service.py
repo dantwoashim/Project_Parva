@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 from uuid import uuid4
 
 from app.calendar.bikram_sambat import bs_to_gregorian
@@ -169,6 +169,7 @@ def issue_calendar_credential_payload(payload: dict[str, Any]) -> dict[str, Any]
     ad_date = bs_to_gregorian(year, month, day).isoformat()
     release_id = resolve_release_id(payload.get("release_id"))
     source_ids = ["parva_public_bs_ad_corpus"]
+    proof: dict[str, Any] = {"type": "sha256_content_hash", "hash": ""}
     credential = {
         "credential_id": f"pvc_{uuid4().hex[:16]}",
         "type": ["ParvaCalendarCredential"],
@@ -192,10 +193,10 @@ def issue_calendar_credential_payload(payload: dict[str, Any]) -> dict[str, Any]
         "claim_boundary": NOT_LEGAL_AUTHORITY,
         "evidence_packet_id": payload.get("evidence_packet_id"),
         "status": "hash_only_preview",
-        "proof": {"type": "sha256_content_hash", "hash": ""},
+        "proof": proof,
         "warnings": ["hash_only_preview_not_production_signature"],
     }
-    credential["proof"]["hash"] = _credential_hash(credential)
+    proof["hash"] = _credential_hash(credential)
     return {"credential": credential, "meta": _protocol_meta()}
 
 
@@ -203,9 +204,12 @@ def verify_calendar_credential_payload(credential: dict[str, Any]) -> dict[str, 
     issues: list[str] = []
     if credential.get("protocol_version") != PROTOCOL_VERSION:
         issues.append("protocol_version_mismatch")
-    claim = credential.get("claim") if isinstance(credential.get("claim"), dict) else {}
-    subject = claim.get("subject") if isinstance(claim.get("subject"), dict) else {}
-    obj = claim.get("object") if isinstance(claim.get("object"), dict) else {}
+    raw_claim = credential.get("claim")
+    claim = cast(dict[str, Any], raw_claim) if isinstance(raw_claim, dict) else {}
+    raw_subject = claim.get("subject")
+    raw_object = claim.get("object")
+    subject = cast(dict[str, Any], raw_subject) if isinstance(raw_subject, dict) else {}
+    obj = cast(dict[str, Any], raw_object) if isinstance(raw_object, dict) else {}
     if claim.get("claim_type") != "date_conversion":
         issues.append("unsupported_claim_type")
     try:
@@ -421,13 +425,15 @@ def _agent_tool_count() -> int:
 
 def _conformance_artifact_test(artifact: dict[str, Any]) -> dict[str, Any]:
     case_id = str(artifact.get("case_id") or "artifact.case")
-    input_payload = artifact.get("input") if isinstance(artifact.get("input"), dict) else {}
-    expected = artifact.get("expected") if isinstance(artifact.get("expected"), dict) else {}
+    raw_input = artifact.get("input")
+    raw_expected = artifact.get("expected")
+    input_payload = cast(dict[str, Any], raw_input) if isinstance(raw_input, dict) else {}
+    expected = cast(dict[str, Any], raw_expected) if isinstance(raw_expected, dict) else {}
     bs_date = str(input_payload.get("bs_date") or "")
     try:
         year, month, day = _parse_bs_date(bs_date)
         ad_date = bs_to_gregorian(year, month, day).isoformat()
-    except Exception as exc:
+    except (ProtocolError, TypeError, ValueError) as exc:
         return _test(case_id, "fail", f"Artifact rejected: {exc}")
     expected_ad = expected.get("ad_date")
     if expected_ad and expected_ad == ad_date:
