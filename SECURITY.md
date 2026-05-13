@@ -31,6 +31,10 @@ Include:
 - rate limiting with production validation for Redis-backed distributed mode
 - startup validation for risky deployment flags
 - repo hygiene and secret scanning in CI
+- structured audit logs for admin billing actions
+- explicit production/staging rejection of wildcard trusted proxy headers
+
+Additional deployment security notes are maintained in [docs/SECURITY.md](docs/SECURITY.md).
 
 ## Access model
 

@@ -1,3 +1,5 @@
+Historical snapshot. Not necessarily current verification status. Run the current verification commands before treating any pass/fail claim here as current.
+
 # Parva Temporal Trust Alpha Report
 
 Date: 2026-05-13

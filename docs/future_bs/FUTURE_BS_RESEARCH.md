@@ -29,6 +29,32 @@ The public deployment exposes only:
 
 The public deployment does not expose direct future month-length prediction, full-range exports, model runs, backtests, residual analysis, client sheet comparison, or schedule-impact simulation by default.
 
+## Module Classification
+
+Future-BS code is classified by public-safety level:
+
+| Class | Meaning |
+|---|---|
+| Production/core | Stable calendar conversion policy, public capability summaries, and claim-boundary enforcement |
+| Public preview | Risk-label vocabulary, source-policy summaries, and aggregate validation posture |
+| Research/private | Month-start inversion, model runs, residual analysis, calibration artifacts, wide-corpus evaluation, and generated future vectors |
+| Experimental | Shadow-source comparison, candidate-rule scoring, weak-label fusion, and active-learning queues |
+
+Public APIs must not present research/private or experimental outputs as
+official. Any future-dated output stays `computed_prediction_not_official`
+unless a future source-policy decision explicitly says otherwise.
+
+## Naming Honesty
+
+Some research modules use ambitious historical names because they started as
+research prototypes. Public documentation should describe their current
+behavior precisely:
+
+- fixed rule-grid scoring should be described as candidate rule selection
+- weighted source consensus should be described as consensus truth selection
+- ayanamsha candidates should be described as candidate evaluation unless a real calibration run is present
+- heuristic forecast scores should be labeled `heuristic_accuracy_estimate` or `heuristic_not_empirically_calibrated`
+
 ## Evidence Boundary
 
 The official-strict evidence window remains limited. Strong results inside a narrow official window support the research direction, but they do not prove broad future-calendar certainty.

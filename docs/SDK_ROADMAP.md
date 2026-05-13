@@ -34,3 +34,29 @@ SDK examples should call only public-safe surfaces:
 SDK examples should not call private future-BS predictions, exports, model runs, backtests, client comparison workflows, corrected-value outputs, or schedule-impact simulations.
 
 The goal is a drop-in replacement path for existing fragile calendar logic while preserving claim boundaries and source policy.
+
+## Canonical SDKs
+
+The canonical Python SDK is:
+
+```text
+packages/parva-python
+```
+
+The older path is retained only as compatibility scaffolding:
+
+```text
+sdk/python
+```
+
+New examples, tests, and package documentation should point to
+`packages/parva-python`. The compatibility path should not gain new public API
+surface unless it is mirroring the canonical package.
+
+Both Python and JavaScript SDKs must keep:
+
+- explicit API base override
+- retry disabling
+- bounded exponential backoff
+- `Retry-After` handling for HTTP 429
+- source, trust, agent, protocol, and claim-boundary metadata preserved in responses

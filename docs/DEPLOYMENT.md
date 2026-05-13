@@ -87,7 +87,7 @@ Public-safe backend environment:
 
 ```text
 PARVA_ENV=public
-PARVA_ROUTE_PROFILE=public_demo
+PARVA_ROUTE_PROFILE=developer_preview
 PARVA_ENABLE_EXPERIMENTAL_API=false
 PARVA_SHOW_PRIVATE_SCHEMA=false
 PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION=false
@@ -159,3 +159,43 @@ Use these endpoints where available:
 ```
 
 The public API demo may sleep when idle. First requests can take a few seconds while the instance wakes up.
+
+## Route profiles
+
+Route profiles keep public deployment, developer preview, enterprise preview,
+and local development behavior explicit.
+
+| Profile | Purpose |
+|---|---|
+| `minimal_public` | Health, public calendar demo routes, and safe capability summaries |
+| `public_demo` | Compatibility alias for the narrow public demo profile |
+| `public_reference` | Calendar, festivals, feeds, panchanga-style public surfaces, trust capabilities, and protocol capabilities |
+| `developer_preview` | Public reference routes plus trust, TimeGraph, RuleLang, impact, agent, and protocol preview routes |
+| `enterprise_preview` | Developer preview plus billing and monetization routes |
+| `full_dev` | Full local development route set |
+| `full` | Legacy full route profile for local or controlled deployments |
+
+The Render public service currently uses `developer_preview` because the
+frontend and public docs advertise trust, protocol, impact, and agent
+capability surfaces. Private future-BS prediction, export, backtest, model-run,
+and corrected-value routes still require explicit experimental flags and are not
+part of the public profile.
+
+## Python runner
+
+Public verification is Python 3.11-only. The Makefile accepts an explicit
+runner:
+
+```bash
+make verify-public PYTHON=/path/to/python3.11
+```
+
+Scripts that need to re-execute Python also honor:
+
+```text
+PARVA_PYTHON=/path/to/python3.11
+```
+
+On Windows, the Python launcher is acceptable for manual use. CI and
+cross-platform scripts should prefer `python` from a configured Python 3.11
+environment or `PARVA_PYTHON`.

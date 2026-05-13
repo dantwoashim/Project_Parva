@@ -1,3 +1,5 @@
+Historical snapshot. Not necessarily current verification status. Run the current verification commands before treating any pass/fail claim here as current.
+
 # Phase 5 Future-BS Risk Alpha Audit
 
 ## Phase Goal

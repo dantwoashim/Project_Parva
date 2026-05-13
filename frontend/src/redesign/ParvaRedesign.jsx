@@ -39,151 +39,31 @@ import {
   signShort,
   sourceDots,
 } from './redesignStaticData';
+import {
+  addDaysToIsoDate as addDaysWithFallback,
+  formatBsDate,
+  formatCoordinates,
+  formatDateTime,
+  formatIsoDate,
+  formatTimeRange,
+  formatTimeReference,
+  humanMethodLabel,
+  normalizeMuhurtaWindow,
+  placeLabelFromLocation,
+  readableCategory,
+  sourceFreshness,
+  supportReference,
+  titleCase,
+} from './formatters';
 import './ParvaRedesign.css';
 
-function titleCase(value) {
-  return String(value || '')
-    .replace(/[_-]+/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-}
-
-function formatDateTime(value) {
-  if (!value) return 'Unknown';
-  try {
-    return new Intl.DateTimeFormat('en', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(new Date(value));
-  } catch {
-    return String(value).slice(0, 10);
-  }
-}
-
-function formatIsoDate(value, options = {}) {
-  if (!value) return 'Date pending';
-  try {
-    return new Intl.DateTimeFormat('en', {
-      weekday: options.weekday,
-      month: options.month || 'short',
-      day: 'numeric',
-      year: options.year || 'numeric',
-      timeZone: options.timeZone,
-    }).format(new Date(`${String(value).slice(0, 10)}T00:00:00`));
-  } catch {
-    return String(value);
-  }
-}
-
-function formatTimeReference(value) {
-  if (!value) return 'Awaiting calculation';
-  const candidate = typeof value === 'object' ? value.local_time || value.local || value.utc : value;
-  if (!candidate) return 'Awaiting calculation';
-  if (/^\d{2}:\d{2}/.test(candidate)) return candidate.slice(0, 5);
-  try {
-    return new Intl.DateTimeFormat('en', {
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(candidate));
-  } catch {
-    return String(candidate);
-  }
-}
-
-function formatTimeRange(start, end) {
-  return `${formatTimeReference(start)} - ${formatTimeReference(end)}`;
-}
-
-function formatBsDate(bs = {}) {
-  if (bs.formatted) return bs.formatted;
-  if (bs.year && bs.month_name && bs.day) return `${bs.year} ${bs.month_name} ${bs.day}`;
-  if (bs.year && bs.month && bs.day) return `${bs.year}-${String(bs.month).padStart(2, '0')}-${String(bs.day).padStart(2, '0')} BS`;
-  return 'BS date pending';
-}
-
-function formatCoordinates(location = {}) {
-  const lat = Number(location.latitude);
-  const lon = Number(location.longitude);
-  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return 'Coordinates pending';
-  return `${lat.toFixed(4)} deg, ${lon.toFixed(4)} deg`;
-}
-
-function placeLabelFromLocation(location = {}) {
-  if (location.label || location.place_title || location.name) {
-    return location.label || location.place_title || location.name;
-  }
-  const lat = Number(location.latitude);
-  const lon = Number(location.longitude);
-  if (Number.isFinite(lat) && Number.isFinite(lon) && Math.abs(lat - 27.7172) < 0.03 && Math.abs(lon - 85.3240) < 0.03) {
-    return 'Kathmandu, Nepal';
-  }
-  return `${formatCoordinates(location)}`;
-}
-
-function humanMethodLabel(value, fallback = 'Verified calculation') {
-  const normalized = String(value || '').toLowerCase();
-  if (!normalized) return fallback;
-  if (normalized.includes('temporal_compass')) return 'Parva daily model';
-  if (normalized.includes('rule_ranked_muhurta')) return 'Ranked muhurta model';
-  if (normalized.includes('swiss_moshier') || normalized.includes('swiss') || normalized.includes('pyswisseph')) return 'Swiss Ephemeris';
-  if (normalized.includes('ephemeris_udaya')) return 'Sunrise-based panchanga';
-  if (normalized.includes('np-mainstream')) return 'Nepal mainstream rules';
-  if (normalized.includes('official')) return 'Official calendar source';
-  if (normalized.includes('astronomical')) return 'Astronomical calculation';
-  return readableCategory(value);
-}
-
-function supportReference(value) {
-  if (typeof value !== 'string' || !value.trim()) return 'Calculation evidence';
-  return 'View evidence';
-}
-
 function addDaysToIsoDate(value, offset) {
-  const date = new Date(`${String(value || todayIso()).slice(0, 10)}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return todayIso();
-  date.setDate(date.getDate() + offset);
-  return date.toISOString().slice(0, 10);
-}
-
-function sourceFreshness(meta = {}, fallback = 'Checked on demand') {
-  const safeMeta = meta || {};
-  const candidate = safeMeta.generated_at || safeMeta.created_at || safeMeta.updated_at || safeMeta.requested_at || safeMeta.as_of;
-  if (!candidate) return fallback;
-  return `Checked ${formatDateTime(candidate)}`;
+  return addDaysWithFallback(value, offset, todayIso());
 }
 
 function panchangaProofUrl(date) {
   const params = new URLSearchParams({ date: String(date || todayIso()).slice(0, 10), risk_mode: 'strict' });
   return apiHref(`/calendar/panchanga/proof-capsule?${params.toString()}`);
-}
-
-function scoreTone(scoreOrClass) {
-  const normalized = String(scoreOrClass || '').toLowerCase();
-  if (normalized.includes('avoid') || normalized.includes('inauspicious')) return 'bad';
-  if (normalized.includes('neutral') || normalized.includes('mixed')) return 'warm';
-  const score = Number(scoreOrClass);
-  if (Number.isFinite(score)) {
-    if (score < 25) return 'bad';
-    if (score < 55) return 'warm';
-  }
-  return 'good';
-}
-
-function normalizeMuhurtaWindow(block = {}, index = 0) {
-  const score = Number(block.score ?? block.top_score ?? 0);
-  return {
-    id: String(block.id ?? block.index ?? block.name ?? index),
-    name: block.name || block.best_window?.name || 'Time window',
-    time: block.start && block.end ? formatTimeRange(block.start, block.end) : 'Window pending',
-    start: block.start,
-    end: block.end,
-    score: Number.isFinite(score) ? Math.max(0, Math.min(100, Math.round(score))) : 0,
-    kind: readableCategory(block.class || block.quality || block.tone || 'timing'),
-    type: scoreTone(block.class || score),
-    left: Math.max(0, Math.min(90, index * 8)),
-    width: 8,
-    reasonCodes: block.reason_codes || [],
-  };
 }
 
 function buildPanchangaItems(compass = {}, panchangaPayload = null) {
@@ -1130,12 +1010,6 @@ function countdownText(startDate) {
   if (days === 0) return 'Today';
   if (days === 1) return 'Tomorrow';
   return `In ${days} days`;
-}
-
-function readableCategory(value) {
-  return String(value || 'observance')
-    .replace(/[_-]+/g, ' ')
-    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function readableReason(value) {

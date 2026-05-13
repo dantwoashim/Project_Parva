@@ -13,6 +13,7 @@ guessing.
 - [Public API Boundary](PUBLIC_API_BOUNDARY.md)
 - [Known Limitations](KNOWN_LIMITATIONS.md)
 - [Security Policy](../SECURITY.md)
+- [Security Engineering Notes](SECURITY.md)
 - [Versioning](VERSIONING.md)
 
 ## Trust, Source Policy, and Protocol

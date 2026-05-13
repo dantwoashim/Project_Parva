@@ -1,3 +1,5 @@
+Historical snapshot. Not necessarily current verification status. Run the current verification commands before treating any pass/fail claim here as current.
+
 # Phase 1 Spec And Schemas Audit
 
 Date: 2026-05-12
