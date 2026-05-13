@@ -63,6 +63,7 @@ data/future_bs/external_audit_ready/
 data/future_bs/raw_sources/
 data/future_bs/private/
 !data/future_bs/private/
+data/future_bs/private/*
 !data/future_bs/private/README.md
 data/future_bs/astronomy/solar_ingress_events_1900_2200.*
 data/future_bs/calibration/final_selected_model.json
@@ -88,6 +89,7 @@ data/source_archive/hamropatro/
 data/source_archive/ratopati/
 data/source_archive/
 !data/source_archive/
+data/source_archive/*
 !data/source_archive/README.md
 data/source_inventory/
 data/source_inventory/hamropatro_calendar_sources.json
