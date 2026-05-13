@@ -94,6 +94,7 @@ PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION=false
 PARVA_SOURCE_URL=https://github.com/dantwoashim/Project_Parva
 PARVA_RATE_LIMIT_BACKEND=memory
 PARVA_REQUIRE_PRECOMPUTED=false
+PARVA_PREWARM_HOTSET=true
 PARVA_CORS_ORIGINS=https://prabinghimire1.com.np,https://www.prabinghimire1.com.np,https://project-parva.pages.dev
 ```
 

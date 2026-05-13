@@ -168,9 +168,9 @@ function AppChrome({ children }) {
         </button>
         <nav className="top-nav" aria-label="Primary navigation">
           {navItems.map((item) => (
-            <NavLink key={item.to} to={item.to}>
+            <NavLink key={item.to} to={item.to} aria-label={item.label}>
               <span className="nav-label-full">{item.label}</span>
-              <span className="nav-label-short">{item.shortLabel || item.label}</span>
+              <span className="nav-label-short" aria-hidden="true">{item.shortLabel || item.label}</span>
             </NavLink>
           ))}
         </nav>

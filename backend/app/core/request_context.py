@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from math import isfinite
 from typing import Any, Dict, List, Optional, Tuple, Union
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from fastapi import HTTPException
 
@@ -60,7 +60,7 @@ def parse_datetime(datetime_str: str, *, tz_name: str) -> datetime:
     if dt.tzinfo is None:
         try:
             dt = dt.replace(tzinfo=ZoneInfo(tz_name))
-        except Exception:
+        except ZoneInfoNotFoundError:
             dt = dt.replace(tzinfo=ZoneInfo(DEFAULT_TZ))
     return dt
 
@@ -71,7 +71,7 @@ def normalize_timezone(tz_name: Optional[str]) -> Tuple[str, List[str]]:
     try:
         ZoneInfo(tz_candidate)
         return tz_candidate, warnings
-    except Exception:
+    except ZoneInfoNotFoundError:
         warnings.append(f"Invalid timezone '{tz_candidate}', using {DEFAULT_TZ}.")
         return DEFAULT_TZ, warnings
 

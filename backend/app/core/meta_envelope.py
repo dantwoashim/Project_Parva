@@ -98,6 +98,12 @@ def normalize_degraded(payload: Any) -> dict[str, Any]:
     }
 
 
+def _dict_or_empty(value: Any) -> dict[str, Any]:
+    if isinstance(value, dict):
+        return value
+    return {}
+
+
 def merge_meta_defaults(defaults: dict[str, Any], provided: dict[str, Any]) -> dict[str, Any]:
     merged: dict[str, Any] = dict(defaults)
     for key, value in provided.items():
@@ -118,12 +124,10 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
             "trace_id": None,
         }
 
-    tithi_block = payload.get("tithi") if isinstance(payload.get("tithi"), dict) else {}
-    bs_block = (
-        payload.get("bikram_sambat") if isinstance(payload.get("bikram_sambat"), dict) else {}
-    )
-    panchanga_block = payload.get("panchanga") if isinstance(payload.get("panchanga"), dict) else {}
-    source_meta = payload.get("meta") if isinstance(payload.get("meta"), dict) else {}
+    tithi_block = _dict_or_empty(payload.get("tithi"))
+    bs_block = _dict_or_empty(payload.get("bikram_sambat"))
+    panchanga_block = _dict_or_empty(payload.get("panchanga"))
+    source_meta = _dict_or_empty(payload.get("meta"))
 
     confidence_level_raw = (
         payload.get("confidence")
@@ -145,16 +149,14 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
     else:
         verify_url = "/v3/api/provenance/root"
     fallback_provenance = get_provenance_payload(verify_url=verify_url, create_if_missing=True)
-    raw_provenance = (
-        payload.get("provenance") if isinstance(payload.get("provenance"), dict) else {}
-    )
+    raw_provenance = _dict_or_empty(payload.get("provenance"))
     provenance = merge_meta_defaults(fallback_provenance, raw_provenance)
 
     if "attestation" not in provenance:
         provenance = {**provenance, "attestation": normalize_attestation(provenance)}
 
-    uncertainty = payload.get("uncertainty")
-    if not isinstance(uncertainty, dict):
+    uncertainty = _dict_or_empty(payload.get("uncertainty"))
+    if not uncertainty:
         uncertainty = {"interval_hours": None, "boundary_risk": derive_boundary_risk(payload)}
 
     trace_id = (

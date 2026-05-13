@@ -458,7 +458,7 @@ def _file_sha(relative_path: str) -> str:
 def _safe_json(path: Path) -> bool:
     try:
         json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError):
         return False
     return True
 

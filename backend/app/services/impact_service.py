@@ -358,7 +358,7 @@ def _sample_evidence_dependencies(release_id: str) -> list[dict[str, Any]]:
             bs_date="2082-01-01",
             trace_id="impact_dependency_seed",
         )
-    except Exception:
+    except (KeyError, TrustInfrastructureError, TypeError, ValueError):
         return []
     return [
         {

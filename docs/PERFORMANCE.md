@@ -17,4 +17,4 @@ The current regression test enforces warm-cache latency under 300 ms:
 python -m pytest tests/performance/test_festival_upcoming_cache.py -q
 ```
 
-The remaining optimization target is cold-start precomputation. A production deployment can warm this cache during startup or after release-artifact publication, while keeping the public API response source-aware and non-authoritative.
+The public Render blueprint enables `PARVA_PREWARM_HOTSET=true`, and startup prewarming now warms the same upcoming-festival cache path used by the public route. The remaining optimization target is moving that warmup into a release-artifact job or startup task with observable timing by environment, while keeping the public API response source-aware and non-authoritative.

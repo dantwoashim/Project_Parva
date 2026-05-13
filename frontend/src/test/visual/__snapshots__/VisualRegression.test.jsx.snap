@@ -52,6 +52,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -62,12 +63,14 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -78,12 +81,14 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
           </span>
         </a>
         <a
+          aria-label="Festivals"
           class=""
           data-discover="true"
           href="/festivals"
@@ -94,6 +99,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
@@ -101,6 +107,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
         </a>
         <a
           aria-current="page"
+          aria-label="Best Time"
           class="active"
           data-discover="true"
           href="/best-time"
@@ -111,12 +118,14 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -127,12 +136,14 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -143,6 +154,7 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -935,6 +947,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -945,12 +958,14 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -961,12 +976,14 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
           </span>
         </a>
         <a
+          aria-label="Festivals"
           class=""
           data-discover="true"
           href="/festivals"
@@ -977,6 +994,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
@@ -984,6 +1002,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
         </a>
         <a
           aria-current="page"
+          aria-label="Best Time"
           class="active"
           data-discover="true"
           href="/best-time"
@@ -994,12 +1013,14 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -1010,12 +1031,14 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -1026,6 +1049,7 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -1818,6 +1842,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -1828,12 +1853,14 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -1844,12 +1871,14 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
           </span>
         </a>
         <a
+          aria-label="Festivals"
           class=""
           data-discover="true"
           href="/festivals"
@@ -1860,12 +1889,14 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -1876,12 +1907,14 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -1892,12 +1925,14 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -1908,6 +1943,7 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -2456,6 +2492,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -2466,12 +2503,14 @@ exports[`visual regression harness > festival detail page visual baseline on des
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -2482,6 +2521,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
@@ -2489,6 +2529,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
         </a>
         <a
           aria-current="page"
+          aria-label="Festivals"
           class="active"
           data-discover="true"
           href="/festivals"
@@ -2499,12 +2540,14 @@ exports[`visual regression harness > festival detail page visual baseline on des
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -2515,12 +2558,14 @@ exports[`visual regression harness > festival detail page visual baseline on des
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -2531,12 +2576,14 @@ exports[`visual regression harness > festival detail page visual baseline on des
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -2547,6 +2594,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -3391,6 +3439,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -3401,12 +3450,14 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -3417,6 +3468,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
@@ -3424,6 +3476,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
         </a>
         <a
           aria-current="page"
+          aria-label="Festivals"
           class="active"
           data-discover="true"
           href="/festivals"
@@ -3434,12 +3487,14 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -3450,12 +3505,14 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -3466,12 +3523,14 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -3482,6 +3541,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -4326,6 +4386,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -4336,12 +4397,14 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -4352,6 +4415,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
@@ -4359,6 +4423,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
         </a>
         <a
           aria-current="page"
+          aria-label="Festivals"
           class="active"
           data-discover="true"
           href="/festivals"
@@ -4369,12 +4434,14 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -4385,12 +4452,14 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -4401,12 +4470,14 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -4417,6 +4488,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -5204,6 +5276,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -5214,12 +5287,14 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -5230,6 +5305,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
@@ -5237,6 +5313,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
         </a>
         <a
           aria-current="page"
+          aria-label="Festivals"
           class="active"
           data-discover="true"
           href="/festivals"
@@ -5247,12 +5324,14 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -5263,12 +5342,14 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -5279,12 +5360,14 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -5295,6 +5378,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -6082,6 +6166,7 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -6092,12 +6177,14 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -6108,12 +6195,14 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
           </span>
         </a>
         <a
+          aria-label="Festivals"
           class=""
           data-discover="true"
           href="/festivals"
@@ -6124,12 +6213,14 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -6140,6 +6231,7 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
@@ -6147,6 +6239,7 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
         </a>
         <a
           aria-current="page"
+          aria-label="Birth Reading"
           class="active"
           data-discover="true"
           href="/birth-reading"
@@ -6157,12 +6250,14 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -6173,6 +6268,7 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -6880,6 +6976,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -6890,6 +6987,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
@@ -6897,6 +6995,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
         </a>
         <a
           aria-current="page"
+          aria-label="My Place"
           class="active"
           data-discover="true"
           href="/my-place"
@@ -6907,12 +7006,14 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
           </span>
         </a>
         <a
+          aria-label="Festivals"
           class=""
           data-discover="true"
           href="/festivals"
@@ -6923,12 +7024,14 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -6939,12 +7042,14 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -6955,12 +7060,14 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -6971,6 +7078,7 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -7601,6 +7709,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
         class="top-nav"
       >
         <a
+          aria-label="Today"
           class=""
           data-discover="true"
           href="/today"
@@ -7611,6 +7720,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
@@ -7618,6 +7728,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
         </a>
         <a
           aria-current="page"
+          aria-label="My Place"
           class="active"
           data-discover="true"
           href="/my-place"
@@ -7628,12 +7739,14 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
           </span>
         </a>
         <a
+          aria-label="Festivals"
           class=""
           data-discover="true"
           href="/festivals"
@@ -7644,12 +7757,14 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -7660,12 +7775,14 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -7676,12 +7793,14 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -7692,6 +7811,7 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -8323,6 +8443,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
       >
         <a
           aria-current="page"
+          aria-label="Today"
           class="active"
           data-discover="true"
           href="/today"
@@ -8333,12 +8454,14 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -8349,12 +8472,14 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
           </span>
         </a>
         <a
+          aria-label="Festivals"
           class=""
           data-discover="true"
           href="/festivals"
@@ -8365,12 +8490,14 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -8381,12 +8508,14 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -8397,12 +8526,14 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -8413,6 +8544,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates
@@ -9471,6 +9603,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
       >
         <a
           aria-current="page"
+          aria-label="Today"
           class="active"
           data-discover="true"
           href="/today"
@@ -9481,12 +9614,14 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             Today
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Today
           </span>
         </a>
         <a
+          aria-label="My Place"
           class=""
           data-discover="true"
           href="/my-place"
@@ -9497,12 +9632,14 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             My Place
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             My Place
           </span>
         </a>
         <a
+          aria-label="Festivals"
           class=""
           data-discover="true"
           href="/festivals"
@@ -9513,12 +9650,14 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             Festivals
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Festivals
           </span>
         </a>
         <a
+          aria-label="Best Time"
           class=""
           data-discover="true"
           href="/best-time"
@@ -9529,12 +9668,14 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             Best Time
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Best Time
           </span>
         </a>
         <a
+          aria-label="Birth Reading"
           class=""
           data-discover="true"
           href="/birth-reading"
@@ -9545,12 +9686,14 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             Birth Reading
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Birth
           </span>
         </a>
         <a
+          aria-label="Panchanga"
           class=""
           data-discover="true"
           href="/panchanga"
@@ -9561,6 +9704,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             Panchanga
           </span>
           <span
+            aria-hidden="true"
             class="nav-label-short"
           >
             Dates

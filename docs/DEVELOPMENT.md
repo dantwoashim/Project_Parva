@@ -70,6 +70,12 @@ Windows equivalent:
 py -3.11 scripts/release/verify_public.py
 ```
 
+Windows wrapper when GNU Make is unavailable:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/release/verify-public.ps1
+```
+
 With GNU Make:
 
 ```bash
@@ -174,11 +180,12 @@ Recommended public demo environment:
 
 ```text
 PARVA_ENV=public
-PARVA_ROUTE_PROFILE=public_demo
+PARVA_ROUTE_PROFILE=developer_preview
 PARVA_ENABLE_EXPERIMENTAL_API=false
 PARVA_SHOW_PRIVATE_SCHEMA=false
 PARVA_RATE_LIMIT_BACKEND=memory
 PARVA_REQUIRE_PRECOMPUTED=false
+PARVA_PREWARM_HOTSET=true
 ```
 
 Production is stricter. If `PARVA_ENV=production`, the backend requires a source URL and Redis-backed rate limiting.

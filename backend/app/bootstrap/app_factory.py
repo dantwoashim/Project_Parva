@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+import time
+from datetime import date, datetime, timezone
 from importlib import metadata
+from json import JSONDecodeError
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
@@ -30,6 +32,7 @@ from app.cache.precomputed import get_cache_stats, prewarm_hot_set
 from app.core.errors import build_error_payload
 from app.engine.ephemeris_config import get_ephemeris_config
 from app.festivals.repository import validate_festival_catalog
+from app.festivals.use_cases import upcoming_festivals_payload
 from app.policy import get_route_access_manifest
 
 try:
@@ -113,7 +116,7 @@ def _build_startup_checks(settings) -> dict[str, Any]:
             "ok": True,
             "detail": festival_catalog,
         }
-    except Exception as exc:
+    except (FileNotFoundError, JSONDecodeError, OSError, TypeError, UnicodeDecodeError, ValueError) as exc:
         festival_catalog_check = {
             "required": True,
             "ok": False,
@@ -445,11 +448,32 @@ def _register_frontend_spa_route(app: FastAPI, settings) -> None:
 def _prewarm_runtime_hotset(app: FastAPI, settings) -> None:
     if not settings.prewarm_hotset:
         return
+    prewarm: dict[str, Any] = {}
     try:
-        app.state.prewarm = prewarm_hot_set()
-    except Exception as exc:
-        logger.warning("Hot-set prewarm failed: %s", exc)
-        app.state.prewarm = {"status": "failed", "detail": str(exc)}
+        prewarm["precomputed"] = prewarm_hot_set()
+    except (OSError, TypeError, ValueError) as exc:
+        logger.warning("Precomputed hot-set prewarm failed: %s", exc)
+        prewarm["precomputed"] = {"status": "failed", "detail": str(exc)}
+
+    festival_start = time.perf_counter()
+    try:
+        festival_payload = upcoming_festivals_payload(
+            days=30,
+            from_date=date.today(),
+            quality_band="all",
+            profile=None,
+        )
+        prewarm["festival_upcoming"] = {
+            "status": "ok",
+            "days": 30,
+            "festival_count": len(festival_payload.festivals),
+            "elapsed_ms": round((time.perf_counter() - festival_start) * 1000.0, 3),
+        }
+    except (OSError, TypeError, ValueError) as exc:
+        logger.warning("Festival upcoming prewarm failed: %s", exc)
+        prewarm["festival_upcoming"] = {"status": "failed", "detail": str(exc)}
+
+    app.state.prewarm = prewarm
 
 
 def create_app() -> FastAPI:
