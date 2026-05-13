@@ -6,6 +6,7 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import FastAPI, HTTPException
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
@@ -24,6 +25,7 @@ from app.bootstrap.rate_limit import create_rate_limiter_backend
 from app.bootstrap.router_registry import register_routers
 from app.bootstrap.settings import load_settings, validate_settings
 from app.cache.precomputed import get_cache_stats, prewarm_hot_set
+from app.core.errors import build_error_payload
 from app.engine.ephemeris_config import get_ephemeris_config
 from app.festivals.repository import validate_festival_catalog
 from app.policy import get_route_access_manifest
@@ -215,26 +217,32 @@ def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
 def _register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(HTTPException)
     async def http_exception_handler(request, exc: HTTPException):
+        request_id = getattr(request.state, "request_id", None)
         return JSONResponse(
             status_code=exc.status_code,
             headers=exc.headers,
-            content={
-                "detail": exc.detail,
-                "request_id": getattr(request.state, "request_id", None),
-                "version": PRODUCT_VERSION,
-            },
+            content=build_error_payload(
+                status_code=exc.status_code,
+                detail=exc.detail,
+                request_id=request_id,
+                version=PRODUCT_VERSION,
+            ),
         )
 
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(request, exc: RequestValidationError):
+        request_id = getattr(request.state, "request_id", None)
+        errors = jsonable_encoder(exc.errors())
         return JSONResponse(
             status_code=422,
-            content={
-                "detail": "Request validation failed",
-                "errors": exc.errors(),
-                "request_id": getattr(request.state, "request_id", None),
-                "version": PRODUCT_VERSION,
-            },
+            content=build_error_payload(
+                status_code=422,
+                detail="Request validation failed",
+                request_id=request_id,
+                version=PRODUCT_VERSION,
+                details={"errors": errors},
+                extra={"errors": errors},
+            ),
         )
 
     @app.exception_handler(Exception)
@@ -248,11 +256,12 @@ def _register_exception_handlers(app: FastAPI) -> None:
         )
         return JSONResponse(
             status_code=500,
-            content={
-                "detail": "Internal Server Error",
-                "request_id": getattr(request.state, "request_id", None),
-                "version": PRODUCT_VERSION,
-            },
+            content=build_error_payload(
+                status_code=500,
+                detail="Internal Server Error",
+                request_id=getattr(request.state, "request_id", None),
+                version=PRODUCT_VERSION,
+            ),
         )
 
 

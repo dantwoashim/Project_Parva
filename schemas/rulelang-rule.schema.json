@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-parva.local/schemas/rulelang-rule.schema.json",
+  "title": "Parva RuleLang Rule",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "rule_id",
+    "version",
+    "label",
+    "description",
+    "status",
+    "inputs",
+    "outputs",
+    "steps",
+    "risk_policy",
+    "claim_boundary"
+  ],
+  "properties": {
+    "rule_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_]{2,95}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "public_preview",
+        "enterprise_preview",
+        "active",
+        "deprecated",
+        "private",
+        "fixture_only"
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/input_schema"
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/output_schema"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    },
+    "risk_policy": {
+      "$ref": "#/$defs/risk_policy"
+    },
+    "claim_boundary": {
+      "type": "string",
+      "const": "enterprise_decision_support_not_legal_authority"
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "owner": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "input_schema": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "bs_date",
+            "ad_date",
+            "date",
+            "bs_month",
+            "ad_month",
+            "profile_id",
+            "integer",
+            "string",
+            "boolean",
+            "enum"
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "default": {},
+        "values": {
+          "type": "array"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "date",
+            "object",
+            "string",
+            "integer",
+            "boolean",
+            "fiscal_period"
+          ]
+        }
+      }
+    },
+    "risk_policy": {
+      "type": "object",
+      "properties": {
+        "require_confidence_at_least": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "unsupported",
+            "fixture",
+            "research_preview",
+            "calculated",
+            "source_backed",
+            "official_verified"
+          ]
+        },
+        "block_research_preview": {
+          "type": "boolean"
+        },
+        "block_disputed_facts": {
+          "type": "boolean"
+        },
+        "unsupported_result_action": {
+          "type": "string",
+          "enum": [
+            "human_review_required",
+            "blocked",
+            "allow"
+          ]
+        },
+        "future_date_action": {
+          "type": "string",
+          "enum": [
+            "human_review_required",
+            "blocked",
+            "allow"
+          ]
+        },
+        "payroll_requires_official_or_source_backed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "step": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 1,
+      "properties": {
+        "set": {
+          "type": "object"
+        },
+        "if": {
+          "type": "object"
+        },
+        "while": {
+          "type": "object",
+          "required": [
+            "condition",
+            "max_iterations",
+            "do"
+          ]
+        },
+        "return": {
+          "type": "object"
+        },
+        "call": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "case_id": "core_bs_ad_001",
+  "level": "parva_core",
+  "input": {"bs_date": "2083-01-01"},
+  "expected": {"ad_date": "2026-04-14"}
+}

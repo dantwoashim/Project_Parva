@@ -31,6 +31,14 @@ const today = await parva.getToday();
 const adToBs = await parva.adToBs("2026-04-14");
 const bsToAd = await parva.bsToAd({ year: 2083, month: 1, day: 1 });
 const validation = await parva.validateBsDate({ year: 2083, month: 1, day: 32 });
+const rule = await parva.evaluateRule("last_working_day_of_nepali_month", {
+  input: { bs_month: "2082-04", profile_id: "nepal_private_company_default" },
+});
+const impact = await parva.simulateChangeSet({ changes: [] });
+const claim = await parva.verifyTemporalClaim({
+  claim: "2083-01-01 BS maps to 2026-04-14 AD.",
+});
+const protocol = await parva.getProtocolVersion();
 const futureBsCapabilities = await parva.getFutureBsCapabilities();
 ```
 
@@ -53,6 +61,16 @@ today = parva.get_today()
 ad_to_bs = parva.ad_to_bs("2026-04-14")
 bs_to_ad = parva.bs_to_ad(2083, 1, 1)
 validation = parva.validate_bs_date(2083, 1, 32)
+rule = parva.evaluate_rule(
+    "last_working_day_of_nepali_month",
+    input_payload={
+        "bs_month": "2082-04",
+        "profile_id": "nepal_private_company_default",
+    },
+)
+impact = parva.simulate_change_set({"changes": []})
+claim = parva.verify_temporal_claim("2083-01-01 BS maps to 2026-04-14 AD.")
+protocol = parva.get_protocol_version()
 future_bs_capabilities = parva.get_future_bs_capabilities()
 ```
 
@@ -68,6 +86,28 @@ python tools/parva-cli/parva_cli.py convert bs 2083-01-01
 python tools/parva-cli/parva_cli.py validate bs 2083-01-32
 python tools/parva-cli/parva_cli.py capabilities future-bs
 ```
+
+RuleLang SDK helpers include:
+
+- `getRuleCapabilities` / `get_rule_capabilities`
+- `listRules` / `list_rules`
+- `getRule` / `get_rule`
+- `validateRule` / `validate_rule`
+- `evaluateRule` / `evaluate_rule`
+- `testRule` / `test_rule`
+- `evaluateCustomRule` / `evaluate_custom_rule`
+- `explainRule` / `explain_rule`
+
+Layer 8, 9, and 10 SDK helpers include:
+
+- impact simulation: `simulateChangeSet` / `simulate_change_set`
+- impact release diff: `simulateReleaseDiff` / `simulate_release_diff`
+- agent claim checks: `verifyTemporalClaim` / `verify_temporal_claim`
+- agent schedule plans: `planSchedule` / `plan_schedule`
+- Parva Protocol version and capabilities: `getProtocolVersion` / `get_protocol_version`
+- Parva Protocol conformance: `runConformance` / `run_conformance`
+- hash-only preview credentials: `issueCalendarCredential` / `issue_calendar_credential`
+- offline bundle manifest: `getOfflineBundleManifest` / `get_offline_bundle_manifest`
 
 ## API Base Configuration
 
@@ -93,6 +133,10 @@ Public SDK methods in this alpha:
 - `adToBs` or `ad_to_bs`
 - `bsToAd` or `bs_to_ad`
 - `validateBsDate` or `validate_bs_date`
+- `simulateChangeSet` or `simulate_change_set`
+- `verifyTemporalClaim` or `verify_temporal_claim`
+- `planSchedule` or `plan_schedule`
+- `getProtocolVersion` or `get_protocol_version`
 - `getFutureBsCapabilities` or `get_future_bs_capabilities`
 
 The SDKs do not call private future-BS month-length prediction, full-range export, model-run, backtest, residual, external comparison, corrected-value, or schedule-impact endpoints.

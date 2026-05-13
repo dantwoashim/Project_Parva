@@ -1,5 +1,7 @@
 {
   "release_id": "parva-bs-public-demo",
+  "release_type": "public_calendar",
+  "status": "active",
   "calendar": "BS",
   "coverage": {
     "bs_year_start": 2078,
@@ -15,21 +17,21 @@
     {
       "artifact_id": "source-registry",
       "path": "data/public/releases/parva-bs-public-demo.sources.json",
-      "sha256": "389b15457ca5276e7efa35fbcde3e83b4337ddaacba15c1643d253a77180609a",
+      "sha256": "bcb7478ea06d23ab6ef066cc1ac6f53cb78194ca00fa18b670c19c27e72ab157",
       "media_type": "application/json",
       "description": "Public-safe source registry for this demo release."
     },
     {
       "artifact_id": "release-manifest-schema",
       "path": "schemas/release-manifest.schema.json",
-      "sha256": "43ca5a9d017b077909fab9b1797684e13d5a06334b4fc367d74329390343c6ac",
+      "sha256": "b0730312118f859758a8a6c48499222c213c61c500bbde0d087e90d13237c68c",
       "media_type": "application/schema+json",
       "description": "JSON schema for public release manifests."
     },
     {
       "artifact_id": "source-registry-schema",
       "path": "schemas/source-registry.schema.json",
-      "sha256": "9df7e22e92d97de20a4916cf132a48fadf723d607e435274403e5130a982dae8",
+      "sha256": "c644696514cfc26fb852bef0e1caacde2ddb39682422e19451a7be71a6f983ec",
       "media_type": "application/schema+json",
       "description": "JSON schema for public source registries."
     },
@@ -46,14 +48,98 @@
       "sha256": "4caafb0abdede42711361f51ae462f0688e173495b75d26d725cf5e4984e82ad",
       "media_type": "application/schema+json",
       "description": "Existing public calculation trace schema used by this release layer."
+    },
+    {
+      "artifact_id": "rulelang-rule-schema",
+      "path": "schemas/rulelang-rule.schema.json",
+      "sha256": "e46bcf5036c965c10551a57dac22cf7de47750dafe3e1709220c2e4c3a3047d3",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for public RuleLang rule definitions."
+    },
+    {
+      "artifact_id": "impact-report-schema",
+      "path": "schemas/impact-report.schema.json",
+      "sha256": "234df60827aef31031fb3bb67cc903f943fbf7cddbf3c92f3f5f7b4a8db83eb6",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for public temporal impact reports."
+    },
+    {
+      "artifact_id": "agent-tool-schema",
+      "path": "schemas/agent-tool.schema.json",
+      "sha256": "7637bd79174b89c2403cd1fa01d126074a282801907afb432fd3914e2300a2d1",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for public agent-safe temporal tool definitions."
+    },
+    {
+      "artifact_id": "calendar-credential-schema",
+      "path": "schemas/parva-protocol/calendar-credential.schema.json",
+      "sha256": "16c55ad1e792cdc9565e463f9a3f0a3d18fc1fd550bdf3f9779e7c716a751b86",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for Parva Protocol calendar credentials."
+    },
+    {
+      "artifact_id": "conformance-report-schema",
+      "path": "schemas/parva-protocol/conformance-report.schema.json",
+      "sha256": "cd9d59c204a1c338e1921794fdb185fb0ac0a592b79e76c255a30bf3c6cbfcc0",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for Parva Protocol conformance reports."
+    },
+    {
+      "artifact_id": "offline-bundle-manifest-schema",
+      "path": "schemas/parva-protocol/offline-bundle-manifest.schema.json",
+      "sha256": "876c7694e530923c37540d0da7ad538ae62073f040b6217e867570ca811840a6",
+      "media_type": "application/schema+json",
+      "description": "JSON schema for Parva Protocol offline bundle manifests."
     }
   ],
-  "generated_at": "2026-05-12T00:00:00Z",
+  "generated_at": "2026-05-13T00:00:00Z",
   "schemas_used": [
     "schemas/release-manifest.schema.json",
     "schemas/source-registry.schema.json",
     "schemas/artifact-hash.schema.json",
-    "schemas/calculation-trace.schema.json"
+    "schemas/calculation-trace.schema.json",
+    "schemas/rulelang-rule.schema.json",
+    "schemas/impact-report.schema.json",
+    "schemas/agent-tool.schema.json",
+    "schemas/parva-protocol/calendar-credential.schema.json",
+    "schemas/parva-protocol/conformance-report.schema.json",
+    "schemas/parva-protocol/offline-bundle-manifest.schema.json"
+  ],
+  "capabilities": [
+    "today",
+    "ad_to_bs",
+    "bs_to_ad",
+    "month_calendar",
+    "fiscal_year",
+    "bs_month_metadata",
+    "business_day_count",
+    "compliance_profile_preview",
+    "trust_source_registry",
+    "trust_release_manifest",
+    "trust_release_diff",
+    "trust_log",
+    "trust_evidence_packets",
+    "timegraph_public_facts",
+    "timegraph_fact_trace",
+    "timegraph_conflict_fixture",
+    "rulelang_public_registry",
+    "rulelang_structured_validation",
+    "rulelang_bounded_execution",
+    "rulelang_evidence_packets",
+    "impact_simulator_preview",
+    "impact_change_set_simulation",
+    "agent_safe_temporal_tools",
+    "agent_temporal_claim_checker",
+    "agent_schedule_planner",
+    "parva_protocol_preview",
+    "parva_protocol_conformance",
+    "parva_protocol_credentials",
+    "parva_protocol_offline_bundle_manifest"
+  ],
+  "default_confidence": "source_backed",
+  "warnings": [
+    "Public release metadata is not legal, tax, payroll, or banking-contract authority.",
+    "Private source archives are not required for public verification and are not included here."
   ],
   "claim_boundary": {
     "official_publication_override": true,

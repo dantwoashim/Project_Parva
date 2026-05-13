@@ -6,7 +6,7 @@
     {
       "source_id": "parva-temporal-spec-v0-1",
       "source_name": "Project Parva Temporal Specification v0.1",
-      "source_tier": "publisher_reference",
+      "source_tier": "publisher",
       "description": "Public specification defining temporal contracts, release metadata, trace metadata, and claim boundaries.",
       "claim_support_level": "public_demo",
       "url": "https://github.com/dantwoashim/Project_Parva",
@@ -16,7 +16,7 @@
     {
       "source_id": "parva-public-conformance-v0-1",
       "source_name": "Project Parva public conformance suite v0.1",
-      "source_tier": "publisher_reference",
+      "source_tier": "publisher",
       "description": "Public-safe historical, current, and synthetic shape cases used to verify SDK and runner behavior.",
       "claim_support_level": "public_demo",
       "url": "https://github.com/dantwoashim/Project_Parva",
@@ -26,12 +26,92 @@
     {
       "source_id": "parva-public-api-contract",
       "source_name": "Project Parva public API contract",
-      "source_tier": "publisher_reference",
+      "source_tier": "publisher",
       "description": "Public API and schema contract for calendar conversion, panchanga shape, source metadata, and future-BS capabilities.",
       "claim_support_level": "public_demo",
       "url": "https://github.com/dantwoashim/Project_Parva",
       "reviewed_at": "2026-05-12T00:00:00Z",
       "notes": "Future-BS capability output is metadata and must preserve computed_prediction_not_official."
+    },
+    {
+      "source_id": "parva_structured_official_bs_window",
+      "source_name": "Parva structured official BS window",
+      "source_tier": "official",
+      "description": "Structured public calendar evidence used for the current official-verified overlap window.",
+      "claim_support_level": "official_interpretation_not_legal_authority",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-13T00:00:00Z",
+      "notes": "Official-source-backed rows may support source-aware validation, but Project Parva is not an official government calendar publication."
+    },
+    {
+      "source_id": "parva_static_lookup_table",
+      "source_name": "Parva static BS/AD lookup table",
+      "source_tier": "public_corpus",
+      "description": "Public deterministic BS/AD lookup data used outside the structured official overlap window.",
+      "claim_support_level": "public_corpus_reference_only",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-13T00:00:00Z",
+      "notes": "Static lookup rows must not be labeled official without stronger source review."
+    },
+    {
+      "source_id": "parva_public_bs_ad_corpus",
+      "source_name": "Parva public BS/AD corpus",
+      "source_tier": "public_corpus",
+      "description": "Public reproducible BS/AD corpus used by deterministic public calendar conversion surfaces.",
+      "claim_support_level": "public_corpus_reference_only",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-13T00:00:00Z",
+      "notes": "Derived public corpus evidence is useful for reproducible computation but is not legal, tax, payroll, or banking-contract authority."
+    },
+    {
+      "source_id": "parva_estimated_calendar_model",
+      "source_name": "Parva estimated BS/AD calendar model",
+      "source_tier": "calculated",
+      "description": "Deterministic fallback model used only where static public lookup coverage is unavailable.",
+      "claim_support_level": "calendar_computation_not_legal_authority",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-13T00:00:00Z",
+      "notes": "Estimated rows must carry calculated confidence and unsupported-range warnings when applicable."
+    },
+    {
+      "source_id": "parva_astronomical_engine",
+      "source_name": "Parva astronomical calculation engine",
+      "source_tier": "calculated",
+      "description": "Declared astronomical calculation path for panchanga and tithi surfaces.",
+      "claim_support_level": "astronomical_calculation_subject_to_source_model",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-13T00:00:00Z",
+      "notes": "Computed panchanga outputs are calculation results, not legal or official authority."
+    },
+    {
+      "source_id": "parva_public_festival_rules",
+      "source_name": "Parva public festival rule set",
+      "source_tier": "calculated",
+      "description": "Public festival and observance rule set used for non-authoritative festival API surfaces.",
+      "claim_support_level": "public_corpus_reference_only",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-13T00:00:00Z",
+      "notes": "Festival calculations are source-aware public computations and official publication overrides them."
+    },
+    {
+      "source_id": "parva_enterprise_compliance_profiles",
+      "source_name": "Parva enterprise compliance profile definitions",
+      "source_tier": "public_corpus",
+      "description": "Public preview compliance profiles for weekend, fixed-date public corpus observance, fiscal-period, and review-required decision support.",
+      "claim_support_level": "enterprise_decision_support_not_legal_authority",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-13T00:00:00Z",
+      "notes": "Compliance profiles are decision support and do not replace official holiday notices, institutional policy, payroll approval, or legal review."
+    },
+    {
+      "source_id": "parva_future_bs_risk_research",
+      "source_name": "Parva future-BS risk research layer",
+      "source_tier": "research",
+      "description": "Public-safe future-BS capability metadata for research-preview risk review.",
+      "claim_support_level": "research_preview_not_safe_for_legal_or_payroll_use",
+      "url": "https://github.com/dantwoashim/Project_Parva",
+      "reviewed_at": "2026-05-13T00:00:00Z",
+      "notes": "Does not publish direct future month-length vectors in the public profile."
     }
   ],
   "claim_boundary": {

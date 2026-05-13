@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import os
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -30,13 +31,9 @@ from app.calendar.fiscal import (
 from app.calendar.provenance import get_bs_year_provenance
 
 FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "bs_overlap_comparison.json"
-HAMRO_CSV = (
-    Path(__file__).resolve().parents[3]
-    / "data"
-    / "source_archive"
-    / "hamropatro"
-    / "hamropatro_bs_ad_2000_2099.csv"
-)
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+SOURCE_ARCHIVE_DIR = Path(os.getenv("PARVA_SOURCE_ARCHIVE_DIR", PROJECT_ROOT / "data" / "source_archive"))
+HAMRO_CSV = SOURCE_ARCHIVE_DIR / "hamropatro" / "hamropatro_bs_ad_2000_2099.csv"
 
 
 def _all_static_lookup_bs_dates():
@@ -49,6 +46,17 @@ def _all_static_lookup_bs_dates():
 def _parse_bs(value: str) -> tuple[int, int, int]:
     year, month, day = value.split("-")
     return int(year), int(month), int(day)
+
+
+def _require_private_source_archive() -> Path:
+    if os.getenv("PARVA_ENABLE_PRIVATE_SOURCE_TESTS") != "1":
+        pytest.skip(
+            "requires private HamroPatro source archive; set "
+            "PARVA_ENABLE_PRIVATE_SOURCE_TESTS=1 and PARVA_SOURCE_ARCHIVE_DIR to run"
+        )
+    if not HAMRO_CSV.exists():
+        pytest.fail(f"private source archive file is missing: {HAMRO_CSV}")
+    return HAMRO_CSV
 
 
 def test_static_lookup_table_shape_is_complete_and_bounded():
@@ -100,7 +108,9 @@ def test_every_static_lookup_bs_date_round_trips_without_gap_overlap_or_confiden
 
 
 def test_every_static_lookup_gregorian_date_matches_hamropatro_harvest_rows():
-    with HAMRO_CSV.open(encoding="utf-8", newline="") as handle:
+    hamro_csv = _require_private_source_archive()
+
+    with hamro_csv.open(encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
 
     assert len(rows) == 36526

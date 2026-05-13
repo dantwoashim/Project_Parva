@@ -7,6 +7,8 @@
   "additionalProperties": false,
   "required": [
     "release_id",
+    "release_type",
+    "status",
     "calendar",
     "coverage",
     "source_policy",
@@ -14,12 +16,23 @@
     "artifact_hashes",
     "generated_at",
     "schemas_used",
+    "capabilities",
+    "default_confidence",
+    "warnings",
     "claim_boundary"
   ],
   "properties": {
     "release_id": {
       "type": "string",
       "minLength": 1
+    },
+    "release_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "superseded", "draft", "archived"]
     },
     "calendar": {
       "type": "string",
@@ -134,6 +147,23 @@
         "minLength": 1
       }
     },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "default_confidence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "claim_boundary": {
       "type": "object",
       "additionalProperties": false,
@@ -162,6 +192,8 @@
   "examples": [
     {
       "release_id": "parva-bs-public-demo",
+      "release_type": "public_calendar",
+      "status": "active",
       "calendar": "BS",
       "coverage": {
         "bs_year_start": 2078,
@@ -186,6 +218,16 @@
         "schemas/release-manifest.schema.json",
         "schemas/source-registry.schema.json",
         "schemas/artifact-hash.schema.json"
+      ],
+      "capabilities": [
+        "today",
+        "bs_to_ad",
+        "ad_to_bs",
+        "trust_capabilities"
+      ],
+      "default_confidence": "source_backed",
+      "warnings": [
+        "Public demo release metadata only. Not legal authority."
       ],
       "claim_boundary": {
         "official_publication_override": true,

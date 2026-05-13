@@ -120,7 +120,7 @@ Loop 5:
 
 Stale deployment reference grep:
 
-- `docs/archive/DEPLOY_CLOUD_RUN.md`: removed during final integration because the public deployment moved to Render.
+- Removed historical path: docs/archive/DEPLOY_CLOUD_RUN.md, removed during final integration because the public deployment moved to Render.
 - `cloudbuild.cloudrun.yaml`: legacy deployment blueprint, not frontend public runtime.
 - `parva_codex_phase_files/*`: untracked local phase prompt files, not staged for public commit.
 

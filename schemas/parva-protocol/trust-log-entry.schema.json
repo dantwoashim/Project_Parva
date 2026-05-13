@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Parva Trust Log Entry",
+  "type": "object",
+  "required": ["entry_hash", "release_id", "event_type"],
+  "properties": {
+    "entry_hash": {"type": "string"},
+    "previous_hash": {"type": ["string", "null"]},
+    "release_id": {"type": "string"},
+    "event_type": {"type": "string"},
+    "created_at": {"type": "string"}
+  },
+  "additionalProperties": true
+}

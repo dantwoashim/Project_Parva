@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-parva.example/schemas/parva-protocol/impact-report.schema.json",
+  "title": "Parva Protocol Impact Report",
+  "allOf": [{"$ref": "../impact-report.schema.json"}]
+}

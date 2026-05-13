@@ -36,7 +36,7 @@ Scope: final integration hardening for Parva Temporal Trust Infrastructure Alpha
 
 Searches performed:
 
-- `git grep -n -I -E "project-parva-api|run\\.app|asia-south1|VITE_API_BASE_URL|InfoDevelopers|infodev|cracked Panchanga|guaranteed future|official future calendar|99% future accuracy" -- frontend docs README.md .`
+- repo-wide grep for stale backend-host markers, deprecated frontend API env names, client/prospect names, and prohibited public-claim phrases
 - `git grep -n -I -E "2084-2099|2084-2200|2200.*export|export.*2200|corrected future values|private future values|full future vectors" -- frontend docs README.md examples schemas tests tools backend scripts data .`
 - tracked public docs and frontend source were searched for em dash characters
 

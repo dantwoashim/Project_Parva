@@ -2814,7 +2814,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
           </p>
           <a
             class="primary-button"
-            href="/v3/api/feeds/custom.ics?festivals=dashain&years=1&download=1"
+            href="https://api.prabinghimire1.com.np/v3/api/feeds/custom.ics?festivals=dashain&years=1&download=1"
           >
             Add to calendar
           </a>
@@ -2941,7 +2941,7 @@ exports[`visual regression harness > festival detail page visual baseline on des
             </p>
             <a
               class="text-link"
-              href="/v3/api/festivals/dashain/proof-capsule?year=2026&authority_mode=authority_compare&risk_mode=strict"
+              href="https://api.prabinghimire1.com.np/v3/api/festivals/dashain/proof-capsule?year=2026&authority_mode=authority_compare&risk_mode=strict"
             >
               Export evidence capsule
             </a>
@@ -3749,7 +3749,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
           </p>
           <a
             class="primary-button"
-            href="/v3/api/feeds/custom.ics?festivals=dashain&years=1&download=1"
+            href="https://api.prabinghimire1.com.np/v3/api/feeds/custom.ics?festivals=dashain&years=1&download=1"
           >
             Add to calendar
           </a>
@@ -3876,7 +3876,7 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             </p>
             <a
               class="text-link"
-              href="/v3/api/festivals/dashain/proof-capsule?year=2026&authority_mode=authority_compare&risk_mode=strict"
+              href="https://api.prabinghimire1.com.np/v3/api/festivals/dashain/proof-capsule?year=2026&authority_mode=authority_compare&risk_mode=strict"
             >
               Export evidence capsule
             </a>
@@ -4565,7 +4565,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             </button>
             <a
               class="primary-button subscribe-calendar-button"
-              href="/v3/api/feeds/all.ics?years=1&download=1"
+              href="https://api.prabinghimire1.com.np/v3/api/feeds/all.ics?years=1&download=1"
             >
               Subscribe calendar
             </a>
@@ -4774,7 +4774,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
                   Follow
                 </button>
                 <a
-                  href="/v3/api/feeds/custom.ics?festivals=dashain&years=1&download=1"
+                  href="https://api.prabinghimire1.com.np/v3/api/feeds/custom.ics?festivals=dashain&years=1&download=1"
                 >
                   Calendar
                 </a>
@@ -4907,7 +4907,7 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
                   Follow
                 </button>
                 <a
-                  href="/v3/api/feeds/custom.ics?festivals=tihar&years=1&download=1"
+                  href="https://api.prabinghimire1.com.np/v3/api/feeds/custom.ics?festivals=tihar&years=1&download=1"
                 >
                   Calendar
                 </a>
@@ -5443,7 +5443,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             </button>
             <a
               class="primary-button subscribe-calendar-button"
-              href="/v3/api/feeds/all.ics?years=1&download=1"
+              href="https://api.prabinghimire1.com.np/v3/api/feeds/all.ics?years=1&download=1"
             >
               Subscribe calendar
             </a>
@@ -5652,7 +5652,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
                   Follow
                 </button>
                 <a
-                  href="/v3/api/feeds/custom.ics?festivals=dashain&years=1&download=1"
+                  href="https://api.prabinghimire1.com.np/v3/api/feeds/custom.ics?festivals=dashain&years=1&download=1"
                 >
                   Calendar
                 </a>
@@ -5785,7 +5785,7 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
                   Follow
                 </button>
                 <a
-                  href="/v3/api/feeds/custom.ics?festivals=tihar&years=1&download=1"
+                  href="https://api.prabinghimire1.com.np/v3/api/feeds/custom.ics?festivals=tihar&years=1&download=1"
                 >
                   Calendar
                 </a>
@@ -9173,7 +9173,7 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
               </a>
               <a
                 class="ghost-button"
-                href="/v3/api/feeds/all.ics?years=1&download=1"
+                href="https://api.prabinghimire1.com.np/v3/api/feeds/all.ics?years=1&download=1"
               >
                 Subscribe calendar
               </a>
@@ -10321,7 +10321,7 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
               </a>
               <a
                 class="ghost-button"
-                href="/v3/api/feeds/all.ics?years=1&download=1"
+                href="https://api.prabinghimire1.com.np/v3/api/feeds/all.ics?years=1&download=1"
               >
                 Subscribe calendar
               </a>

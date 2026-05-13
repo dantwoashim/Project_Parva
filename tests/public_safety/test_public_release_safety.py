@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi.testclient import TestClient
-
 from app.bootstrap.app_factory import create_app
+from fastapi.testclient import TestClient
 
 ROOT = Path(__file__).resolve().parents[2]
 

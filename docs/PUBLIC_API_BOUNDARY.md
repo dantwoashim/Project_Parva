@@ -11,6 +11,13 @@ The public deployment is intentionally narrower than a private deployment. Sensi
 | `/health/*` | Service health and readiness checks |
 | `/v3/api/calendar/*` | BS/AD conversion, today, validation, calendar utilities, and enabled panchanga helpers |
 | `/v3/api/enterprise/*` | Nepali fiscal-year and business date validation logic |
+| `/v3/api/compliance/*` | Compliance-preview profile decisions in full/private profiles, excluded from the lightweight public demo |
+| `/v3/api/trust/*` | Public-safe source registry, release manifest, release diff, trust log, and evidence packet metadata |
+| `/v3/api/timegraph/*` | Public-safe temporal fact graph, relationship, trace, and conflict metadata |
+| `/v3/api/rules/*` | Public-safe RuleLang registry, validation, bounded execution, tests, and explanation traces |
+| `/v3/api/impact/*` | Public-safe bounded temporal impact simulation and reason-code metadata |
+| `/v3/api/agent/*` | Agent-safe deterministic temporal tools, claim checks, schedule plans, and human-review gates |
+| `/v3/api/protocol/*` | Parva Protocol public preview metadata, conformance, compatibility, credentials, and offline bundle manifest |
 | `/v3/api/festivals/*` | Festival and observance APIs |
 | `/v4/api/future-bs/capabilities` | Public summary of the future-BS research layer |
 | `/v5/api/calendar-model-risk/capabilities` | Public summary of model-risk methodology when the full public profile is enabled |
@@ -31,6 +38,8 @@ These surfaces are not part of the public deployment by default:
 - external sheet import or comparison workflows
 - corrected-value outputs
 - private model internals
+- private TimeGraph facts, private archive paths, and unpublished source contents
+- private RuleLang rules and private source-backed rule registries
 
 ## Required Public Settings
 

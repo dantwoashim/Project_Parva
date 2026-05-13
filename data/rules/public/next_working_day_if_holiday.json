@@ -1,0 +1,92 @@
+{
+  "rule_id": "next_working_day_if_holiday",
+  "version": "1.0.0",
+  "label": "Move to the next working day if needed",
+  "description": "Returns the input date when it is working, otherwise shifts forward to the next working day.",
+  "profile_id": "nepal_private_company_default",
+  "status": "public_preview",
+  "inputs": {
+    "bs_date": {
+      "type": "bs_date",
+      "required": true
+    },
+    "profile_id": {
+      "type": "profile_id",
+      "required": false,
+      "default": "nepal_private_company_default"
+    }
+  },
+  "outputs": {
+    "working_date": {
+      "type": "date"
+    }
+  },
+  "steps": [
+    {
+      "if": {
+        "condition": {
+          "call": "is_working_day",
+          "args": {
+            "date": "$input.bs_date",
+            "profile_id": "$input.profile_id"
+          }
+        },
+        "then": [
+          {
+            "return": {
+              "working_date": "$input.bs_date"
+            }
+          }
+        ],
+        "else": [
+          {
+            "set": {
+              "name": "working_date",
+              "value": {
+                "call": "next_working_day",
+                "args": {
+                  "date": "$input.bs_date",
+                  "profile_id": "$input.profile_id",
+                  "include_input": false
+                }
+              }
+            }
+          },
+          {
+            "return": {
+              "working_date": "$var.working_date"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "risk_policy": {
+    "require_confidence_at_least": "source_backed",
+    "block_research_preview": true,
+    "block_disputed_facts": true,
+    "unsupported_result_action": "human_review_required",
+    "future_date_action": "human_review_required"
+  },
+  "claim_boundary": "enterprise_decision_support_not_legal_authority",
+  "tests": [
+    {
+      "name": "moves_fixed_public_observance_forward",
+      "input": {
+        "bs_date": "2082-01-01",
+        "profile_id": "nepal_private_company_default"
+      },
+      "expect": {
+        "output.working_date": {
+          "exists": true
+        },
+        "decision.status": "approved"
+      }
+    }
+  ],
+  "tags": [
+    "working_day",
+    "holiday"
+  ],
+  "owner": "Project Parva"
+}

@@ -20,6 +20,7 @@ from app.calendar.bikram_sambat import (
 )
 from app.calendar.nepal_sambat import format_ns_date, get_current_ns_year
 from app.calendar.provenance import get_bs_year_provenance
+from app.core.source_metadata import build_bs_claim_meta
 from app.domain.temporal_context import CalendarContext
 from app.policy import get_policy_metadata
 from app.services.calendar_presenters import present_calendar_payload
@@ -139,7 +140,7 @@ def build_tithi_payload(gregorian_date: date) -> dict[str, Any]:
         }
 
 
-def build_conversion_payload(gregorian_date: date) -> dict[str, Any]:
+def build_conversion_payload(gregorian_date: date, *, trace_id: str | None = None) -> dict[str, Any]:
     bs_payload = build_bs_date_payload(gregorian_date)
     tithi_payload = build_tithi_payload(gregorian_date)
     meta = build_surface_meta(
@@ -163,11 +164,16 @@ def build_conversion_payload(gregorian_date: date) -> dict[str, Any]:
             "engine_version": "v3",
             "provenance": build_surface_provenance(calendar_context=context),
             "policy": get_policy_metadata(),
+            "meta": build_bs_claim_meta(
+                int(bs_payload["year"]),
+                trace_id=trace_id,
+                result_class="ad_to_bs_conversion",
+            ),
         },
     )
 
 
-def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
+def build_compare_conversion_payload(gregorian_date: date, *, trace_id: str | None = None) -> dict[str, Any]:
     official = None
     static_lookup = None
     try:
@@ -235,11 +241,16 @@ def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
             "engine_version": "v3",
             "provenance": build_surface_provenance(calendar_context=context),
             "policy": get_policy_metadata(),
+            "meta": build_bs_claim_meta(
+                int((official or static_lookup or estimated)["year"]),
+                trace_id=trace_id,
+                result_class="ad_to_bs_comparison",
+            ),
         },
     )
 
 
-def build_dual_month_payload(year: int, month: int) -> dict[str, Any]:
+def build_dual_month_payload(year: int, month: int, *, trace_id: str | None = None) -> dict[str, Any]:
     current_year = date.today().year
     min_year = current_year - 200
     max_year = current_year + 200
@@ -287,10 +298,21 @@ def build_dual_month_payload(year: int, month: int) -> dict[str, Any]:
             calendar_context=_calendar_context(month_start, surface="dual_month")
         ),
         "policy": get_policy_metadata(),
+        "meta": build_bs_claim_meta(
+            int(rows[0]["bikram_sambat"]["year"]) if rows else year,
+            trace_id=trace_id,
+            result_class="month_calendar",
+        ),
     }
 
 
-def build_bs_to_gregorian_payload(year: int, month: int, day: int) -> dict[str, Any]:
+def build_bs_to_gregorian_payload(
+    year: int,
+    month: int,
+    day: int,
+    *,
+    trace_id: str | None = None,
+) -> dict[str, Any]:
     gregorian_date = bs_to_gregorian(year, month, day)
     confidence = get_bs_year_confidence(year)
     estimated_error_days = "0-1" if confidence == "estimated" else None
@@ -318,4 +340,9 @@ def build_bs_to_gregorian_payload(year: int, month: int, day: int) -> dict[str, 
             calendar_context=_calendar_context(gregorian_date, surface="bs_to_gregorian")
         ),
         "policy": get_policy_metadata(),
+        "meta": build_bs_claim_meta(
+            year,
+            trace_id=trace_id,
+            result_class="bs_to_ad_conversion",
+        ),
     }

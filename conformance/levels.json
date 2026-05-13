@@ -1,0 +1,14 @@
+{
+  "protocol_version": "parva-protocol-0.1.0",
+  "levels": [
+    "parva_core",
+    "parva_source_aware",
+    "parva_trust",
+    "parva_timegraph",
+    "parva_rulelang",
+    "parva_impact",
+    "parva_agent_safe",
+    "parva_offline",
+    "parva_full"
+  ]
+}

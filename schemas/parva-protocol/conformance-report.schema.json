@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-parva.example/schemas/parva-protocol/conformance-report.schema.json",
+  "title": "Parva Conformance Report",
+  "type": "object",
+  "required": ["implementation", "protocol_version", "level", "status", "tests_run", "passed", "failed", "report_hash"],
+  "properties": {
+    "implementation": {"type": "string"},
+    "protocol_version": {"type": "string"},
+    "level": {"type": "string"},
+    "status": {"type": "string", "enum": ["pass", "fail"]},
+    "tests_run": {"type": "integer", "minimum": 0},
+    "passed": {"type": "integer", "minimum": 0},
+    "failed": {"type": "integer", "minimum": 0},
+    "test_results": {"type": "array", "items": {"type": "object"}},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "report_hash": {"type": "string", "pattern": "^sha256:"}
+  },
+  "additionalProperties": true
+}

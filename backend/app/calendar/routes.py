@@ -8,9 +8,10 @@ Endpoints for calendar conversion and tithi information.
 from datetime import date, datetime
 from typing import Optional
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Request
 from pydantic import BaseModel
 
+from app.core.source_metadata import build_calculated_claim_meta
 from app.policy import get_policy_metadata
 from app.services.calendar_conversion_service import (
     build_bs_to_gregorian_payload,
@@ -78,6 +79,7 @@ class ConversionResult(BaseModel):
     engine_version: str = "v3"
     provenance: Optional[dict] = None
     policy: Optional[dict] = None
+    meta: Optional[dict] = None
 
 
 class BSConversionRequest(BaseModel):
@@ -102,12 +104,17 @@ def _parse_iso_date(date_str: str) -> date:
     return service_parse_iso_date(date_str)
 
 
-def _build_conversion_payload(gregorian_date: date) -> dict:
-    return build_conversion_payload(gregorian_date)
+def _trace_id(request: Request) -> str | None:
+    return getattr(request.state, "request_id", None)
+
+
+def _build_conversion_payload(gregorian_date: date, *, trace_id: str | None = None) -> dict:
+    return build_conversion_payload(gregorian_date, trace_id=trace_id)
 
 
 @router.get("/convert", response_model=ConversionResult)
 async def convert_date(
+    request: Request,
     date_str: str = Query(
         ...,
         alias="date",
@@ -121,11 +128,12 @@ async def convert_date(
     Returns complete calendar information for the given date.
     """
     gregorian_date = _parse_iso_date(date_str)
-    return _build_conversion_payload(gregorian_date)
+    return _build_conversion_payload(gregorian_date, trace_id=_trace_id(request))
 
 
 @router.get("/convert/compare")
 async def compare_convert(
+    request: Request,
     date_str: str = Query(
         ...,
         alias="date",
@@ -139,11 +147,12 @@ async def compare_convert(
     Returns both conversions when available.
     """
     gregorian_date = _parse_iso_date(date_str)
-    return build_compare_conversion_payload(gregorian_date)
+    return build_compare_conversion_payload(gregorian_date, trace_id=_trace_id(request))
 
 
 @router.get("/dual-month")
 async def get_dual_month(
+    request: Request,
     year: int = Query(..., ge=1600, le=2600, description="Gregorian year"),
     month: int = Query(..., ge=1, le=12, description="Gregorian month 1-12"),
 ):
@@ -152,16 +161,21 @@ async def get_dual_month(
 
     Supports a dynamic ±200 year browsing window around the current Gregorian year.
     """
-    return build_dual_month_payload(year, month)
+    return build_dual_month_payload(year, month, trace_id=_trace_id(request))
 
 
 @router.post("/bs-to-gregorian")
-async def bs_to_gregorian_convert(request: BSConversionRequest):
+async def bs_to_gregorian_convert(payload: BSConversionRequest, request: Request):
     """
     Convert a Bikram Sambat date to Gregorian.
     """
     try:
-        return build_bs_to_gregorian_payload(request.year, request.month, request.day)
+        return build_bs_to_gregorian_payload(
+            payload.year,
+            payload.month,
+            payload.day,
+            trace_id=_trace_id(request),
+        )
     except ValueError as e:
         from fastapi import HTTPException
         raise HTTPException(status_code=400, detail=str(e))
@@ -169,20 +183,22 @@ async def bs_to_gregorian_convert(request: BSConversionRequest):
 
 @router.get("/today")
 async def get_today(
+    request: Request,
     risk_mode: str = Query("standard", description="standard|strict"),
 ):
     """
     Get calendar information for today.
     Uses udaya tithi (official sunrise-based) for accuracy.
     """
-    return build_today_payload(risk_mode=risk_mode)
+    return build_today_payload(risk_mode=risk_mode, trace_id=_trace_id(request))
 
 
 @router.get("/today/proof-capsule")
 async def get_today_proof_capsule(
+    request: Request,
     risk_mode: str = Query("strict", description="standard|strict"),
 ):
-    payload = build_today_payload(risk_mode=risk_mode)
+    payload = build_today_payload(risk_mode=risk_mode, trace_id=_trace_id(request))
     return build_calendar_proof_capsule(
         surface="today",
         payload=payload,
@@ -192,6 +208,7 @@ async def get_today_proof_capsule(
 
 @router.get("/tithi")
 async def get_tithi_endpoint(
+    request: Request,
     date_str: str = Query(
         ...,
         alias="date",
@@ -211,11 +228,13 @@ async def get_tithi_endpoint(
         latitude=latitude,
         longitude=longitude,
         risk_mode=risk_mode,
+        trace_id=_trace_id(request),
     )
 
 
 @router.get("/tithi/proof-capsule")
 async def get_tithi_proof_capsule(
+    request: Request,
     date_str: str = Query(
         ...,
         alias="date",
@@ -231,6 +250,7 @@ async def get_tithi_proof_capsule(
         latitude=latitude,
         longitude=longitude,
         risk_mode=risk_mode,
+        trace_id=_trace_id(request),
     )
     return build_calendar_proof_capsule(
         surface="tithi",
@@ -250,6 +270,7 @@ async def get_tithi_proof_capsule(
 
 @router.get("/panchanga")
 async def get_panchanga_endpoint(
+    request: Request,
     date_str: Optional[str] = Query(
         None,
         alias="date",
@@ -265,11 +286,12 @@ async def get_panchanga_endpoint(
     Includes: Tithi, Nakshatra, Yoga, Karana, Vaara (weekday).
     """
     target_date = _parse_iso_date(date_str) if date_str else datetime.now().date()
-    return build_panchanga_payload(target_date, risk_mode=risk_mode)
+    return build_panchanga_payload(target_date, risk_mode=risk_mode, trace_id=_trace_id(request))
 
 
 @router.get("/panchanga/proof-capsule")
 async def get_panchanga_proof_capsule(
+    request: Request,
     date_str: str = Query(
         ...,
         alias="date",
@@ -278,7 +300,7 @@ async def get_panchanga_proof_capsule(
     risk_mode: str = Query("strict", description="standard|strict"),
 ):
     target_date = _parse_iso_date(date_str)
-    payload = build_panchanga_payload(target_date, risk_mode=risk_mode)
+    payload = build_panchanga_payload(target_date, risk_mode=risk_mode, trace_id=_trace_id(request))
     return build_calendar_proof_capsule(
         surface="panchanga",
         payload=payload,
@@ -288,6 +310,7 @@ async def get_panchanga_proof_capsule(
 
 @router.get("/panchanga/range")
 async def get_panchanga_range_endpoint(
+    request: Request,
     start_date: str = Query(..., alias="start", description="Start date YYYY-MM-DD"),
     days: int = Query(7, description="Number of days", ge=1, le=31)
 ):
@@ -295,7 +318,7 @@ async def get_panchanga_range_endpoint(
     Get panchanga for a range of dates.
     """
     start = _parse_iso_date(start_date)
-    return build_panchanga_range_payload(start, days)
+    return build_panchanga_range_payload(start, days, trace_id=_trace_id(request))
 
 
 # =============================================================================
@@ -304,6 +327,7 @@ async def get_panchanga_range_endpoint(
 
 @router.get("/festivals/calculate/{festival_id}")
 async def calculate_festival_endpoint(
+    request: Request,
     festival_id: str,
     year: int = Query(..., description="Gregorian year", ge=2000, le=2100)
 ):
@@ -342,22 +366,27 @@ async def calculate_festival_endpoint(
         "engine_version": "v3",
         "provenance": build_provenance(festival_id=festival_id, year=year),
         "policy": get_policy_metadata(),
+        "meta": build_calculated_claim_meta(
+            trace_id=_trace_id(request),
+            result_class="festival_calculation",
+        ),
     }
 
 
 @router.get("/festivals/upcoming")
 async def get_upcoming_festivals_endpoint(
+    request: Request,
     days: int = Query(30, description="Days to look ahead", ge=1, le=365)
 ):
     """
     Get all festivals occurring within the next N days.
     Uses V2 calculator with correct lunar month model.
     """
-    return build_upcoming_festivals_payload(days, today=date.today())
+    return build_upcoming_festivals_payload(days, today=date.today(), trace_id=_trace_id(request))
 
 
 @router.get("/sankranti/{year}")
-async def get_sankrantis_endpoint(year: int):
+async def get_sankrantis_endpoint(request: Request, year: int):
     """
     Get all 12 sankrantis (solar transits) for a Gregorian year.
     """
@@ -378,4 +407,8 @@ async def get_sankrantis_endpoint(year: int):
         "engine_version": "v3",
         "provenance": build_provenance(),
         "policy": get_policy_metadata(),
+        "meta": build_calculated_claim_meta(
+            trace_id=_trace_id(request),
+            result_class="sankranti",
+        ),
     }

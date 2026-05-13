@@ -8,6 +8,16 @@ The first registry is:
 data/public/releases/parva-bs-public-demo.sources.json
 ```
 
+The public API response metadata uses matching source IDs where practical, including:
+
+- `parva_structured_official_bs_window`
+- `parva_public_bs_ad_corpus`
+- `parva_static_lookup_table`
+- `parva_astronomical_engine`
+- `parva_public_festival_rules`
+- `parva_enterprise_compliance_profiles`
+- `parva_future_bs_risk_research`
+
 ## Why The Registry Exists
 
 Not every calendar source has the same claim strength. A source registry keeps source identity, source tier, claim support level, and review notes explicit instead of hiding them inside code or data tables.
@@ -29,15 +39,37 @@ Each source entry includes:
 
 The public registry schema supports:
 
-- `official_verified`
-- `printed_verified`
-- `public_witness`
-- `publisher_reference`
-- `software_table_reference`
-- `third_party_reference`
-- `needs_review`
+- `official`
+- `semi_official`
+- `public_corpus`
+- `publisher`
+- `calculated`
+- `fixture`
+- `research`
+- `private`
+- `unknown`
 
 Weak or convenience references must not be treated as official proof.
+
+## API Metadata Relationship
+
+Public API responses may include:
+
+```json
+{
+  "meta": {
+    "source": {
+      "id": "parva_static_lookup_table",
+      "tier": "public_corpus",
+      "authority": "derived_reference_not_legal_authority"
+    },
+    "confidence": "source_backed",
+    "claim_boundary": "public_corpus_reference_only"
+  }
+}
+```
+
+The registry identifies the source family. The response metadata tells clients how strong the current result claim is.
 
 ## Public Safety Boundary
 

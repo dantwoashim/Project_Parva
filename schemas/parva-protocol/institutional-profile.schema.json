@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Parva Institutional Profile",
+  "type": "object",
+  "required": ["profile_id", "label", "jurisdiction", "risk_policy"],
+  "properties": {
+    "profile_id": {"type": "string"},
+    "label": {"type": "string"},
+    "jurisdiction": {"type": "string"},
+    "risk_policy": {"type": "object"}
+  },
+  "additionalProperties": true
+}

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.calendar.constants import BS_MONTH_NAMES
+from app.core.source_metadata import build_research_claim_meta
 from app.future_bs.backtest import backtest_model as computational_backtest_model
 from app.future_bs.backtest import full_replay_backtest, rolling_validation
 from app.future_bs.boundary_risk import boundary_risk_payload
@@ -71,11 +72,12 @@ def backtest_model(
     )
 
 
-def future_bs_capabilities_payload() -> dict[str, Any]:
+def future_bs_capabilities_payload(*, trace_id: str | None = None) -> dict[str, Any]:
     return {
         "surface": "future_bs_risk_research",
         "status": "research_preview",
         "publication_status": "computed_prediction_not_official",
+        "meta": build_research_claim_meta(trace_id=trace_id),
         "public_surface": [
             "methodology_summary",
             "source_policy_summary",

@@ -1,0 +1,93 @@
+{
+  "rule_id": "payroll_previous_working_day_if_non_working",
+  "version": "1.0.0",
+  "label": "Move payroll backward from a non-working day",
+  "description": "Moves a proposed BS payroll date backward until it reaches a working day for the selected profile.",
+  "profile_id": "nepal_private_company_default",
+  "status": "public_preview",
+  "inputs": {
+    "bs_date": {
+      "type": "bs_date",
+      "required": true
+    },
+    "profile_id": {
+      "type": "profile_id",
+      "required": false,
+      "default": "nepal_private_company_default"
+    }
+  },
+  "outputs": {
+    "payroll_date": {
+      "type": "date"
+    }
+  },
+  "steps": [
+    {
+      "set": {
+        "name": "candidate",
+        "value": "$input.bs_date"
+      }
+    },
+    {
+      "while": {
+        "condition": {
+          "not": {
+            "call": "is_working_day",
+            "args": {
+              "date": "$var.candidate",
+              "profile_id": "$input.profile_id"
+            }
+          }
+        },
+        "max_iterations": 10,
+        "do": [
+          {
+            "set": {
+              "name": "candidate",
+              "value": {
+                "call": "subtract_days",
+                "args": {
+                  "date": "$var.candidate",
+                  "days": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "return": {
+        "payroll_date": "$var.candidate"
+      }
+    }
+  ],
+  "risk_policy": {
+    "require_confidence_at_least": "source_backed",
+    "block_research_preview": true,
+    "block_disputed_facts": true,
+    "unsupported_result_action": "human_review_required",
+    "future_date_action": "human_review_required",
+    "payroll_requires_official_or_source_backed": true
+  },
+  "claim_boundary": "enterprise_decision_support_not_legal_authority",
+  "tests": [
+    {
+      "name": "moves_saturday_to_previous_working_day",
+      "input": {
+        "bs_date": "2082-04-04",
+        "profile_id": "nepal_private_company_default"
+      },
+      "expect": {
+        "output.payroll_date.bs": "2082-04-03",
+        "decision.status": "approved"
+      }
+    }
+  ],
+  "tags": [
+    "payroll",
+    "while_loop",
+    "working_day"
+  ],
+  "owner": "Project Parva"
+}

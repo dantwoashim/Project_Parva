@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Parva TimeGraph Relationship",
+  "type": "object",
+  "required": ["relationship_id", "from_id", "to_id", "type", "release_id"],
+  "properties": {
+    "relationship_id": {"type": "string"},
+    "from_id": {"type": "string"},
+    "to_id": {"type": "string"},
+    "type": {"type": "string"},
+    "release_id": {"type": "string"}
+  },
+  "additionalProperties": true
+}

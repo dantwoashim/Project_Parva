@@ -15,6 +15,11 @@ from app.calendar.bikram_sambat import (
     get_bs_source_range,
     gregorian_to_bs,
 )
+from app.core.source_metadata import (
+    PUBLIC_FESTIVAL_RULES,
+    build_bs_claim_meta,
+    build_calculated_claim_meta,
+)
 from app.domain.temporal_context import CalendarContext, LocationContext
 from app.policy import get_policy_metadata
 from app.services import calendar_conversion_service as conversion_service
@@ -144,15 +149,15 @@ def build_tithi_payload(gregorian_date: date) -> dict[str, Any]:
     return conversion_service.build_tithi_payload(gregorian_date)
 
 
-def build_conversion_payload(gregorian_date: date) -> dict[str, Any]:
-    return conversion_service.build_conversion_payload(gregorian_date)
+def build_conversion_payload(gregorian_date: date, *, trace_id: str | None = None) -> dict[str, Any]:
+    return conversion_service.build_conversion_payload(gregorian_date, trace_id=trace_id)
 
 
-def build_compare_conversion_payload(gregorian_date: date) -> dict[str, Any]:
-    return conversion_service.build_compare_conversion_payload(gregorian_date)
+def build_compare_conversion_payload(gregorian_date: date, *, trace_id: str | None = None) -> dict[str, Any]:
+    return conversion_service.build_compare_conversion_payload(gregorian_date, trace_id=trace_id)
 
 
-def build_today_payload(*, risk_mode: str = "standard") -> dict[str, Any]:
+def build_today_payload(*, risk_mode: str = "standard", trace_id: str | None = None) -> dict[str, Any]:
     today = date.today()
     bs_payload = build_bs_date_payload(today)
     tithi_payload = build_tithi_payload(today)
@@ -184,10 +189,20 @@ def build_today_payload(*, risk_mode: str = "standard") -> dict[str, Any]:
         "engine_version": "v3",
         "provenance": build_provenance(calendar_context=context),
         "policy": get_policy_metadata(),
+        "meta": build_bs_claim_meta(
+            int(bs_payload["year"]),
+            trace_id=trace_id,
+            result_class="today_calendar_context",
+        ),
     }
 
 
-def build_panchanga_payload(target_date: date, *, risk_mode: str = "standard") -> dict[str, Any]:
+def build_panchanga_payload(
+    target_date: date,
+    *,
+    risk_mode: str = "standard",
+    trace_id: str | None = None,
+) -> dict[str, Any]:
     from app.calendar.panchanga import get_panchanga
 
     cached_payload = load_precomputed_panchanga(target_date)
@@ -229,6 +244,11 @@ def build_panchanga_payload(target_date: date, *, risk_mode: str = "standard") -
                 risk_mode=risk_mode,
                 support_tier=str(meta["support_tier"]),
             )
+        )
+        response["meta"] = build_calculated_claim_meta(
+            trace_id=trace_id,
+            result_class="panchanga",
+            warnings=["precomputed_panchanga_cache_used"],
         )
         return response
 
@@ -327,10 +347,11 @@ def build_panchanga_payload(target_date: date, *, risk_mode: str = "standard") -
             )
         ),
         "policy": get_policy_metadata(),
+        "meta": build_calculated_claim_meta(trace_id=trace_id, result_class="panchanga"),
     }
 
 
-def build_panchanga_range_payload(start: date, days: int) -> dict[str, Any]:
+def build_panchanga_range_payload(start: date, days: int, *, trace_id: str | None = None) -> dict[str, Any]:
     from app.calendar.panchanga import get_panchanga
 
     results = []
@@ -393,15 +414,26 @@ def build_panchanga_range_payload(start: date, days: int) -> dict[str, Any]:
             calendar_context=_calendar_context(start, surface="panchanga_range")
         ),
         "policy": get_policy_metadata(),
+        "meta": build_calculated_claim_meta(
+            trace_id=trace_id,
+            result_class="panchanga_range",
+            warnings=["range_payload_summarizes_multiple_daily_calculations"],
+        ),
     }
 
 
-def build_dual_month_payload(year: int, month: int) -> dict[str, Any]:
-    return conversion_service.build_dual_month_payload(year, month)
+def build_dual_month_payload(year: int, month: int, *, trace_id: str | None = None) -> dict[str, Any]:
+    return conversion_service.build_dual_month_payload(year, month, trace_id=trace_id)
 
 
-def build_bs_to_gregorian_payload(year: int, month: int, day: int) -> dict[str, Any]:
-    return conversion_service.build_bs_to_gregorian_payload(year, month, day)
+def build_bs_to_gregorian_payload(
+    year: int,
+    month: int,
+    day: int,
+    *,
+    trace_id: str | None = None,
+) -> dict[str, Any]:
+    return conversion_service.build_bs_to_gregorian_payload(year, month, day, trace_id=trace_id)
 
 
 def build_tithi_detail_payload(
@@ -410,6 +442,7 @@ def build_tithi_detail_payload(
     latitude: float,
     longitude: float,
     risk_mode: str = "standard",
+    trace_id: str | None = None,
 ) -> dict[str, Any]:
     from app.calendar.tithi import calculate_tithi, get_moon_phase_name, get_udaya_tithi
     from app.calendar.tithi.tithi_udaya import detect_ksheepana, detect_vriddhi
@@ -496,10 +529,16 @@ def build_tithi_detail_payload(
             )
         ),
         "policy": get_policy_metadata(),
+        "meta": build_calculated_claim_meta(trace_id=trace_id, result_class="tithi"),
     }
 
 
-def build_upcoming_festivals_payload(days: int, *, today: Optional[date] = None) -> dict[str, Any]:
+def build_upcoming_festivals_payload(
+    days: int,
+    *,
+    today: Optional[date] = None,
+    trace_id: str | None = None,
+) -> dict[str, Any]:
     from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
 
     today = today or date.today()
@@ -551,6 +590,12 @@ def build_upcoming_festivals_payload(days: int, *, today: Optional[date] = None)
                 calendar_context=_calendar_context(today, surface="upcoming_festivals")
             ),
             "policy": get_policy_metadata(),
+            "meta": build_calculated_claim_meta(
+                trace_id=trace_id,
+                result_class="upcoming_festivals",
+                source=PUBLIC_FESTIVAL_RULES,
+                warnings=["precomputed_festival_cache_used"],
+            ),
         }
 
     for festival_id in list_festivals_v2():
@@ -597,6 +642,11 @@ def build_upcoming_festivals_payload(days: int, *, today: Optional[date] = None)
             calendar_context=_calendar_context(today, surface="upcoming_festivals")
         ),
         "policy": get_policy_metadata(),
+        "meta": build_calculated_claim_meta(
+            trace_id=trace_id,
+            result_class="upcoming_festivals",
+            source=PUBLIC_FESTIVAL_RULES,
+        ),
     }
 
 

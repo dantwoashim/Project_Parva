@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Parva TimeGraph Fact",
+  "type": "object",
+  "required": ["fact_id", "fact_type", "subject", "predicate", "object", "release_id", "confidence"],
+  "properties": {
+    "fact_id": {"type": "string"},
+    "fact_type": {"type": "string"},
+    "subject": {"type": "object"},
+    "predicate": {"type": "string"},
+    "object": {"type": "object"},
+    "release_id": {"type": "string"},
+    "confidence": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 from tools.trust.append_log_entry import append_log_entry
 from tools.trust.common import DEFAULT_MANIFEST_PATH, DEFAULT_SIGNATURE_PATH, ROOT

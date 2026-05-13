@@ -1,0 +1,74 @@
+{
+  "rule_id": "last_working_day_of_nepali_month",
+  "version": "1.0.0",
+  "label": "Last working day of a Nepali month",
+  "description": "Selects the last working day of a BS month for a public compliance profile.",
+  "profile_id": "nepal_private_company_default",
+  "status": "public_preview",
+  "inputs": {
+    "bs_month": {
+      "type": "bs_month",
+      "required": true
+    },
+    "profile_id": {
+      "type": "profile_id",
+      "required": false,
+      "default": "nepal_private_company_default"
+    }
+  },
+  "outputs": {
+    "payroll_date": {
+      "type": "date"
+    }
+  },
+  "steps": [
+    {
+      "set": {
+        "name": "payroll_date",
+        "value": {
+          "call": "last_working_day_of_nepali_month",
+          "args": {
+            "bs_month": "$input.bs_month",
+            "profile_id": "$input.profile_id"
+          }
+        }
+      }
+    },
+    {
+      "return": {
+        "payroll_date": "$var.payroll_date"
+      }
+    }
+  ],
+  "risk_policy": {
+    "require_confidence_at_least": "source_backed",
+    "block_research_preview": true,
+    "block_disputed_facts": true,
+    "unsupported_result_action": "human_review_required",
+    "future_date_action": "human_review_required",
+    "payroll_requires_official_or_source_backed": true
+  },
+  "claim_boundary": "enterprise_decision_support_not_legal_authority",
+  "tests": [
+    {
+      "name": "returns_last_working_day_for_public_fixture_month",
+      "input": {
+        "bs_month": "2082-04",
+        "profile_id": "nepal_private_company_default"
+      },
+      "expect": {
+        "output.payroll_date": {
+          "exists": true
+        },
+        "decision.status": "approved",
+        "decision.requires_human_review": false
+      }
+    }
+  ],
+  "tags": [
+    "payroll",
+    "working_day",
+    "public_preview"
+  ],
+  "owner": "Project Parva"
+}

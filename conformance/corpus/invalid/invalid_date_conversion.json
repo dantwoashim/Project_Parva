@@ -1,0 +1,6 @@
+{
+  "case_id": "invalid_bs_ad_001",
+  "level": "parva_core",
+  "input": {"bs_date": "2083-13-99"},
+  "expected": {"status": "fail"}
+}

@@ -33,13 +33,15 @@ SOURCE_POLICIES = {
     "public_demo",
 }
 SOURCE_TIERS = {
-    "official_verified",
-    "printed_verified",
-    "public_witness",
-    "publisher_reference",
-    "software_table_reference",
-    "third_party_reference",
-    "needs_review",
+    "official",
+    "semi_official",
+    "public_corpus",
+    "publisher",
+    "calculated",
+    "fixture",
+    "research",
+    "private",
+    "unknown",
 }
 FORBIDDEN_TEXT = [
     re.compile("Info" + r"Developers", re.IGNORECASE),
@@ -120,6 +122,8 @@ def validate_manifest(path: Path) -> dict[str, Any]:
         payload,
         [
             "release_id",
+            "release_type",
+            "status",
             "calendar",
             "coverage",
             "source_policy",
@@ -127,6 +131,9 @@ def validate_manifest(path: Path) -> dict[str, Any]:
             "artifact_hashes",
             "generated_at",
             "schemas_used",
+            "capabilities",
+            "default_confidence",
+            "warnings",
             "claim_boundary",
         ],
         str(path),

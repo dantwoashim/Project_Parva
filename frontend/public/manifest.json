@@ -1,16 +1,16 @@
 {
-  "name": "Parva - Source-aware Nepal time",
+  "name": "Project Parva - Nepali temporal infrastructure",
   "short_name": "Parva",
-  "description": "A calm, premium guide to Nepal's sacred time with daily guidance, observances, and personal timing.",
+  "description": "BS/AD conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#faf7f2",
   "theme_color": "#2d2a26",
   "orientation": "any",
   "categories": [
-    "lifestyle",
+    "utilities",
     "education",
-    "utilities"
+    "productivity"
   ],
   "lang": "en",
   "icons": [
@@ -25,13 +25,13 @@
     {
       "name": "Festivals",
       "short_name": "Festivals",
-      "description": "Browse upcoming observances and seasonal rhythm",
+      "description": "Browse upcoming observances and source-aware festival data",
       "url": "/festivals"
     },
     {
       "name": "Today",
       "short_name": "Today",
-      "description": "See today's guidance for your place",
+      "description": "See today's BS/AD, panchanga, and timing context"
       "url": "/today"
     }
   ]

@@ -19,6 +19,8 @@ from app.calendar.provenance import (
     STRUCTURED_OFFICIAL_RANGE_LABEL,
     get_bs_year_provenance,
 )
+from app.core.source_metadata import build_bs_claim_meta
+from app.policy import get_policy_metadata
 
 ENGINE_FISCAL_YEAR = "parva_enterprise_fiscal_year_v1"
 SOURCE_RANGE = STATIC_LOOKUP_RANGE_LABEL
@@ -98,7 +100,38 @@ def _provenance_payload(bs_year: int) -> dict[str, Any]:
     }
 
 
-def fiscal_year_payload(bs_year: int) -> dict[str, Any]:
+def _claim_meta_for_year(
+    bs_year: int,
+    *,
+    trace_id: str | None,
+    result_class: str,
+) -> dict[str, Any]:
+    return build_bs_claim_meta(bs_year, trace_id=trace_id, result_class=result_class)
+
+
+def _bulk_claim_meta(
+    *,
+    mode: str,
+    dates: list[str],
+    results: list[dict[str, Any]],
+    trace_id: str | None,
+    result_class: str,
+) -> dict[str, Any]:
+    bs_year = 0
+    try:
+        first_success = next((row for row in results if row.get("success")), None)
+        if first_success and mode == "ad_to_bs":
+            bs_year = parse_bs_date(str(first_success["output"]))[0]
+        elif first_success and mode == "bs_to_ad":
+            bs_year = parse_bs_date(str(first_success["input"]))[0]
+        elif dates and mode == "bs_to_ad":
+            bs_year = parse_bs_date(str(dates[0]))[0]
+    except (KeyError, StopIteration, TypeError, ValueError):
+        bs_year = 0
+    return _claim_meta_for_year(bs_year, trace_id=trace_id, result_class=result_class)
+
+
+def fiscal_year_payload(bs_year: int, *, trace_id: str | None = None) -> dict[str, Any]:
     start_bs = (bs_year, 4, 1)
     end_year = bs_year + 1
     end_day = days_in_bs_month(end_year, 3)
@@ -120,10 +153,12 @@ def fiscal_year_payload(bs_year: int) -> dict[str, Any]:
         "source_range": _confidence_for_bs_year(bs_year)[1],
         **_provenance_payload(bs_year),
         "engine": ENGINE_FISCAL_YEAR,
+        "policy": get_policy_metadata(),
+        "meta": _claim_meta_for_year(bs_year, trace_id=trace_id, result_class="fiscal_year"),
     }
 
 
-def bs_months_payload(bs_year: int) -> dict[str, Any]:
+def bs_months_payload(bs_year: int, *, trace_id: str | None = None) -> dict[str, Any]:
     months = [
         {
             "month": month,
@@ -139,6 +174,8 @@ def bs_months_payload(bs_year: int) -> dict[str, Any]:
         "confidence": _confidence_for_bs_year(bs_year)[0],
         "source_range": _confidence_for_bs_year(bs_year)[1],
         **_provenance_payload(bs_year),
+        "policy": get_policy_metadata(),
+        "meta": _claim_meta_for_year(bs_year, trace_id=trace_id, result_class="bs_month_metadata"),
     }
 
 
@@ -150,6 +187,7 @@ def business_days_payload(
     include_start: bool = True,
     include_end: bool = True,
     holiday_policy: str = "none",
+    trace_id: str | None = None,
 ) -> dict[str, Any]:
     weekend_key = weekend.strip().lower()
     if weekend_key not in WEEKDAY_INDEX:
@@ -192,6 +230,12 @@ def business_days_payload(
         "note": "Holiday exclusion disabled unless a holiday policy is configured.",
         "confidence": _derived_confidence_for_bs_year(start_tuple[0]),
         **_provenance_payload(start_tuple[0]),
+        "policy": get_policy_metadata(),
+        "meta": _claim_meta_for_year(
+            start_tuple[0],
+            trace_id=trace_id,
+            result_class="business_day_count",
+        ),
     }
 
 
@@ -221,7 +265,7 @@ def convert_one(mode: str, value: str) -> dict[str, Any]:
     raise ValueError("mode must be 'ad_to_bs' or 'bs_to_ad'.")
 
 
-def bulk_convert_payload(mode: str, dates: list[str]) -> dict[str, Any]:
+def bulk_convert_payload(mode: str, dates: list[str], *, trace_id: str | None = None) -> dict[str, Any]:
     results = []
     success = 0
     for value in dates:
@@ -244,10 +288,18 @@ def bulk_convert_payload(mode: str, dates: list[str]) -> dict[str, Any]:
         "success": success,
         "failed": total - success,
         "results": results,
+        "policy": get_policy_metadata(),
+        "meta": _bulk_claim_meta(
+            mode=mode,
+            dates=dates,
+            results=results,
+            trace_id=trace_id,
+            result_class="bulk_conversion",
+        ),
     }
 
 
-def validate_cases_payload(cases: list[dict[str, Any]]) -> dict[str, Any]:
+def validate_cases_payload(cases: list[dict[str, Any]], *, trace_id: str | None = None) -> dict[str, Any]:
     results = []
     passed = 0
     failed = 0
@@ -308,13 +360,16 @@ def validate_cases_payload(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "generated_reference": generated_reference,
         "pass_rate": round((passed / total) * 100.0, 2) if total else 0.0,
         "results": results,
+        "policy": get_policy_metadata(),
+        "meta": _claim_meta_for_year(0, trace_id=trace_id, result_class="validation_suite"),
     }
 
 
-def capabilities_payload() -> dict[str, Any]:
+def capabilities_payload(*, trace_id: str | None = None) -> dict[str, Any]:
     return {
         "surface": "enterprise_calendar",
         "status": "evaluation_ready",
+        "publication_status": "computed_prediction_not_official",
         "stable": [
             "bs_to_ad",
             "ad_to_bs",
@@ -322,6 +377,7 @@ def capabilities_payload() -> dict[str, Any]:
             "fiscal_year_boundaries",
             "bulk_conversion",
             "validation_suite",
+            "compliance_profile_preview",
         ],
         "experimental": [
             "business_days_weekend_only",
@@ -346,6 +402,8 @@ def capabilities_payload() -> dict[str, Any]:
                 "2078-2083 BS currently has structured official source backing."
             ),
         },
+        "policy": get_policy_metadata(),
+        "meta": _claim_meta_for_year(2078, trace_id=trace_id, result_class="enterprise_capabilities"),
     }
 
 

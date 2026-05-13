@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-parva.example/schemas/agent-tool.schema.json",
+  "title": "Parva Agent Tool Definition",
+  "type": "object",
+  "required": ["name", "description", "input_schema", "output_schema", "supported_mode", "claim_boundary"],
+  "properties": {
+    "name": {"type": "string", "pattern": "^parva\\.[a-z0-9_]+$"},
+    "description": {"type": "string"},
+    "input_schema": {"type": "object"},
+    "output_schema": {"type": "object"},
+    "supported_mode": {"type": "string", "enum": ["public", "private", "enterprise"]},
+    "risk_behavior": {"type": "string"},
+    "evidence_behavior": {"type": "string"},
+    "claim_boundary": {"type": "string"}
+  },
+  "additionalProperties": true
+}

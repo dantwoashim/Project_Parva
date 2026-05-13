@@ -1,0 +1,69 @@
+{
+  "rule_id": "fiscal_period_for_date",
+  "version": "1.0.0",
+  "label": "Fiscal period for a BS date",
+  "description": "Classifies a BS date into Nepal fiscal year, fiscal month, and fiscal quarter.",
+  "profile_id": "nepal_private_company_default",
+  "status": "public_preview",
+  "inputs": {
+    "bs_date": {
+      "type": "bs_date",
+      "required": true
+    },
+    "profile_id": {
+      "type": "profile_id",
+      "required": false,
+      "default": "nepal_private_company_default"
+    }
+  },
+  "outputs": {
+    "fiscal_period": {
+      "type": "fiscal_period"
+    }
+  },
+  "steps": [
+    {
+      "set": {
+        "name": "period",
+        "value": {
+          "call": "get_fiscal_period",
+          "args": {
+            "date": "$input.bs_date",
+            "profile_id": "$input.profile_id"
+          }
+        }
+      }
+    },
+    {
+      "return": {
+        "fiscal_period": "$var.period"
+      }
+    }
+  ],
+  "risk_policy": {
+    "require_confidence_at_least": "source_backed",
+    "block_research_preview": true,
+    "block_disputed_facts": true,
+    "unsupported_result_action": "human_review_required",
+    "future_date_action": "human_review_required"
+  },
+  "claim_boundary": "enterprise_decision_support_not_legal_authority",
+  "tests": [
+    {
+      "name": "classifies_first_fiscal_month",
+      "input": {
+        "bs_date": "2082-04-02",
+        "profile_id": "nepal_private_company_default"
+      },
+      "expect": {
+        "output.fiscal_period.fiscal_month": 1,
+        "decision.status": "approved"
+      }
+    }
+  ],
+  "tags": [
+    "fiscal",
+    "period"
+  ],
+  "owner": "Project Parva"
+}

@@ -10,7 +10,20 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 - Admin, billing, partner, and internal routes may require authentication or private deployment policy.
 - Experimental future-BS prediction and export surfaces remain gated outside the public profile.
 
-## Canonical v3 Routes (152)
+## Canonical v3 Routes (217)
+
+### agent
+
+- `GET /v3/api/agent/capabilities`
+- `POST /v3/api/agent/check-human-review`
+- `POST /v3/api/agent/draft-rule`
+- `POST /v3/api/agent/explain`
+- `GET /v3/api/agent/manifest`
+- `POST /v3/api/agent/plan-schedule`
+- `POST /v3/api/agent/resolve-intent`
+- `POST /v3/api/agent/run-tool`
+- `GET /v3/api/agent/tools`
+- `POST /v3/api/agent/verify-claim`
 
 ### admin
 
@@ -50,6 +63,17 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 - `GET /v3/api/calendar/tithi/proof-capsule`
 - `GET /v3/api/calendar/today`
 - `GET /v3/api/calendar/today/proof-capsule`
+
+### compliance
+
+- `POST /v3/api/compliance/add-working-days`
+- `POST /v3/api/compliance/evaluate-date`
+- `POST /v3/api/compliance/fiscal-period`
+- `POST /v3/api/compliance/month-closing-day`
+- `POST /v3/api/compliance/next-working-day`
+- `GET /v3/api/compliance/profiles`
+- `GET /v3/api/compliance/profiles/{profile_id}`
+- `POST /v3/api/compliance/previous-working-day`
 
 ### engine
 
@@ -113,6 +137,17 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 ### glossary
 
 - `GET /v3/api/glossary`
+
+### impact
+
+- `GET /v3/api/impact/capabilities`
+- `POST /v3/api/impact/diff-releases`
+- `GET /v3/api/impact/event-schema`
+- `GET /v3/api/impact/reason-codes`
+- `GET /v3/api/impact/recommended-actions`
+- `GET /v3/api/impact/runs/{impact_run_id}`
+- `POST /v3/api/impact/simulate-change-set`
+- `POST /v3/api/impact/simulate-release-diff`
 
 ### integrations
 
@@ -200,6 +235,19 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 - `GET /v3/api/provenance/verify/trace/{trace_id}`
 - `GET /v3/api/provenance/verify/{festival_id}`
 
+### protocol
+
+- `GET /v3/api/protocol/capabilities`
+- `GET /v3/api/protocol/compatibility-levels`
+- `POST /v3/api/protocol/conformance/run`
+- `POST /v3/api/protocol/credentials/issue`
+- `GET /v3/api/protocol/credentials/schema`
+- `POST /v3/api/protocol/credentials/verify`
+- `GET /v3/api/protocol/offline-bundle/manifest`
+- `GET /v3/api/protocol/schemas`
+- `GET /v3/api/protocol/specs`
+- `GET /v3/api/protocol/version`
+
 ### public
 
 - `GET /v3/api/public/artifacts/boundary-suite`
@@ -225,6 +273,17 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 
 - `GET /v3/api/resolve`
 
+### rules
+
+- `GET /v3/api/rules`
+- `GET /v3/api/rules/capabilities`
+- `POST /v3/api/rules/evaluate`
+- `POST /v3/api/rules/explain`
+- `POST /v3/api/rules/validate`
+- `GET /v3/api/rules/{rule_id}`
+- `POST /v3/api/rules/{rule_id}/evaluate`
+- `POST /v3/api/rules/{rule_id}/test`
+
 ### spec
 
 - `GET /v3/api/spec/conformance`
@@ -242,6 +301,33 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 - `POST /v3/api/temporal/compass`
 - `GET /v3/api/temporal/compass/proof-capsule`
 - `POST /v3/api/temporal/compass/proof-capsule`
+
+### timegraph
+
+- `GET /v3/api/timegraph/capabilities`
+- `GET /v3/api/timegraph/conflicts`
+- `GET /v3/api/timegraph/date/{calendar}/{date_value}`
+- `GET /v3/api/timegraph/entities/{entity_id}/relationships`
+- `GET /v3/api/timegraph/facts`
+- `GET /v3/api/timegraph/facts/{fact_id}`
+- `GET /v3/api/timegraph/facts/{fact_id}/trace`
+- `POST /v3/api/timegraph/query`
+- `GET /v3/api/timegraph/profiles/{profile_id}/facts`
+- `GET /v3/api/timegraph/releases/{release_id}/facts`
+- `GET /v3/api/timegraph/sources/{source_id}/facts`
+
+### trust
+
+- `POST /v3/api/trust/evidence/compliance-decision`
+- `POST /v3/api/trust/evidence/date-conversion`
+- `POST /v3/api/trust/evidence/rule-execution`
+- `GET /v3/api/trust/capabilities`
+- `GET /v3/api/trust/log`
+- `GET /v3/api/trust/releases`
+- `GET /v3/api/trust/releases/{from_release}/diff/{to_release}`
+- `GET /v3/api/trust/releases/{release_id}`
+- `GET /v3/api/trust/sources`
+- `GET /v3/api/trust/sources/{source_id}`
 
 ### webhooks
 

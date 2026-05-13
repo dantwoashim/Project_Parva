@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Parva Evidence Packet",
+  "type": "object",
+  "required": ["packet_id", "packet_type", "input", "result", "release", "confidence", "claim_boundary", "integrity"],
+  "properties": {
+    "packet_id": {"type": "string"},
+    "packet_type": {"type": "string"},
+    "input": {"type": "object"},
+    "result": {"type": "object"},
+    "release": {"type": "object"},
+    "confidence": {"type": "string"},
+    "claim_boundary": {"type": "string"},
+    "integrity": {"type": "object"}
+  },
+  "additionalProperties": true
+}

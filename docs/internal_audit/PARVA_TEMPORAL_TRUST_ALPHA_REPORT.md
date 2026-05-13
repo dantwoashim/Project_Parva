@@ -1,131 +1,190 @@
 # Parva Temporal Trust Alpha Report
 
-Date: 2026-05-12
+Date: 2026-05-13
 
-## What Was Built
+## Layer 5 Status
 
-Project Parva now presents as a source-aware Nepali temporal infrastructure alpha with:
+Layer 5 is complete for the public alpha scope.
 
-- public-safe BS/AD conversion and calendar APIs
-- formal temporal schemas
-- conformance fixtures and runner
-- release manifest verification
-- source registry and calculation trace documentation
-- public-safe JavaScript and Python SDK alpha surfaces
-- public-safe CLI alpha
-- future-BS risk discipline with `computed_prediction_not_official`
-- blinded audit protocol documentation
-- temporal trust alpha artifacts, signature shape, SBOM shape, and transparency log verification
+Project Parva now has a public-safe temporal trust foundation for source registry inspection, release manifest inspection, trust log verification, release diffing, evidence packets, release-id metadata, API trust routes, SDK trust helpers, and fresh-clone public verification.
 
-This final pass tightened integration issues rather than adding a new product surface.
+This layer does not claim legal authority, government publication authority, broad future-calendar certainty, or production-grade signing. Public future-BS research remains labeled `computed_prediction_not_official`.
 
-## Architecture Summary
+## Source Registry
 
-The release story is now consistent:
+The public source registry at `data/public/releases/parva-bs-public-demo.sources.json` was strengthened with Layer 5 source tiers:
 
-1. Public users get stable calendar, fiscal, festival, panchanga, source-policy, and capability metadata surfaces.
-2. Private or experimental future-BS prediction, export, backtest, model-run, corrected-value, client comparison, and schedule-impact workflows stay gated.
-3. Public SDKs call only stable public calendar endpoints and the public future-BS capabilities summary.
-4. Release manifests, source registries, calculation traces, and trust artifacts provide reproducible public proof without exposing private future vectors.
-5. Future-BS research remains clearly labeled as `computed_prediction_not_official`.
+- `official`
+- `semi_official`
+- `public_corpus`
+- `publisher`
+- `calculated`
+- `fixture`
+- `research`
+- `private`
+- `unknown`
 
-## Files Created
+The current public registry contains 11 public-safe sources. Public corpus, calculated, publisher, official-overlap, and research records are kept separate. Weak or research sources are not promoted into official authority.
 
-- `docs/internal_audit/ALPHA_RELEASE_CHECKLIST.md`
-- `docs/internal_audit/PARVA_TEMPORAL_TRUST_ALPHA_REPORT.md`
+## Release Manifest And Trust Log
 
-## Files Modified
+The public release manifest at `data/public/releases/parva-bs-public-demo.manifest.json` now includes:
 
-- `frontend/src/services/apiBase.js`
-- `cloudbuild.cloudrun.yaml`
+- release id
+- release type
+- status
+- source policy
+- artifact hashes
+- capabilities
+- default confidence
+- claim boundary
+- warnings
+
+The alpha signature file was regenerated at `data/public/releases/parva-bs-public-demo.signature.json` using the existing hash-only public-preview signing path. This is intentionally `unsigned_public_preview` style trust infrastructure, not a production signature.
+
+The trust log at `data/public/trust/parva-trust-log.jsonl` records the public release event with a stable SHA-256 entry hash and artifact checksums. The existing transparency log at `data/public/transparency-log/parva-log.jsonl` also verifies.
+
+## Evidence Packets
+
+Evidence packet generation now works for:
+
+- date conversion
+- compliance decision evidence
+
+Packets include:
+
+- packet id
+- packet type
+- generated timestamp
+- input
+- result
+- release id
+- source records
+- confidence
+- claim boundary
+- warnings
+- trace id
+- packet hash
+- signature status
+
+Evidence packets wrap existing service logic rather than duplicating calendar conversion or compliance logic.
+
+## Release Diff And Version Pinning
+
+Release diff works at the manifest, source, artifact, and capability metadata level.
+
+Version pinning behavior is explicit:
+
+- missing release id uses the active public release
+- valid release id works through query, body, or header where applicable
+- unknown release id returns a clear 404-style trust error
+- response metadata includes the active release id
+
+Only one public release currently exists, so semantic release-to-release calendar impact is not claimed.
+
+## API Endpoints
+
+Public-safe trust endpoints are available under `/v3/api/trust/*`:
+
+- `GET /v3/api/trust/capabilities`
+- `GET /v3/api/trust/sources`
+- `GET /v3/api/trust/sources/{source_id}`
+- `GET /v3/api/trust/releases`
+- `GET /v3/api/trust/releases/{release_id}`
+- `GET /v3/api/trust/releases/{from_release}/diff/{to_release}`
+- `GET /v3/api/trust/log`
+- `POST /v3/api/trust/evidence/date-conversion`
+- `POST /v3/api/trust/evidence/compliance-decision`
+
+The public route inventory verifies 169 canonical v3 routes.
+
+## SDKs
+
+JavaScript and Python SDKs now expose trust helpers for:
+
+- list sources
+- get source
+- list releases
+- get release
+- diff releases
+- get trust log
+- create date conversion evidence
+- create compliance decision evidence
+
+SDK tests verify these helpers preserve release, source, confidence, warning, trace, and packet integrity fields.
+
+## Documentation And OpenAPI
+
+Layer 5 added or updated:
+
+- `docs/TRUST_INFRASTRUCTURE.md`
+- `docs/SOURCE_REGISTRY.md`
+- `docs/RELEASES.md`
+- `docs/EVIDENCE_PACKETS.md`
+- `docs/API_TRUST.md`
 - `docs/API_QUICKSTART.md`
-- `docs/DEPLOYMENT.md`
-- `scripts/future_bs/optimize_regime_aware_accuracy_loop.py`
-- `scripts/future_bs/optimize_solar_civil_rules_loop.py`
-- `tests/accuracy/test_disagreement_increases_risk.py`
-- `tests/public_safety/test_public_release_safety.py`
-- `tests/unit/trust/test_temporal_trust_tools.py`
+- `docs/API_REFERENCE_V3.md`
+- `docs/PUBLIC_API_BOUNDARY.md`
+- `docs/ROUTE_ACCESS.md`
+- `docs/api-docs/openapi.json`
 
-## Files Removed
-
-- `docs/archive/DEPLOY_CLOUD_RUN.md`
-
-The archived Cloud Run guide was stale for the current public Render deployment and contained old public deployment host guidance. The backend Cloud Run Docker path remains available as an optional deployment asset, but it no longer advertises the old image path.
+The static public OpenAPI artifact was regenerated from the public demo route profile and contains 30 public-safe paths. It includes the source-aware metadata schema required by the public contract tests.
 
 ## Commands Run
 
 | Command | Result |
 |---|---:|
-| `npm --prefix frontend run build` | Pass |
-| `python tools/validate_schemas.py` | Pass, 16 schemas validated |
-| `python tools/conformance_runner/run.py` | Pass, 27 of 27 cases |
-| `python tools/release/verify_release.py data/public/releases/parva-bs-public-demo.manifest.json` | Pass |
-| `python tools/trust/verify_log.py` | Pass |
-| `$env:PYTHONPATH='backend'; python -m pytest -q` | Pass, 672 passed, 7 skipped |
-| `npm --prefix packages/parva-js install` | Pass |
-| `npm --prefix packages/parva-js test` | Pass, 3 tests |
-| `python -m pip install -e packages/parva-python` | Pass |
-| `python -m pytest -q packages/parva-python/tests` | Pass, 4 tests |
-| `python tools/parva-cli/parva_cli.py --help` | Pass |
-| `npm --prefix frontend run lint` | Pass |
-| `npm --prefix frontend run test` | Pass, 109 tests |
-| `$env:PYTHONPATH='backend'; python -m pytest -q tests/accuracy/test_disagreement_increases_risk.py` | Pass, 1 test |
-| `$env:PYTHONPATH='backend'; python -m pytest -q` after final audit fix | Pass, 672 passed, 7 skipped |
+| `py -3.11 -m pytest tests\contract\test_layer5_trust_contract.py -q` | Pass, 12 tests |
+| `py -3.11 scripts\parva_trust_verify.py` | Pass |
+| `py -3.11 scripts\parva_release_diff.py --from parva-bs-public-demo --to parva-bs-public-demo` | Pass |
+| `py -3.11 scripts\parva_evidence_packet.py --type date_conversion --ad-date 2026-04-14` | Pass |
+| `py -3.11 -m ruff check backend\app\api\trust_routes.py backend\app\services\trust_infrastructure_service.py scripts\parva_trust_verify.py scripts\parva_release_diff.py scripts\parva_evidence_packet.py packages\parva-python\parva\__init__.py packages\parva-python\parva\client.py tests\contract\test_layer5_trust_contract.py` | Pass |
+| `py -3.11 scripts\release\generate_public_demo_openapi.py` | Pass, 30 paths |
+| `py -3.11 -m json.tool docs\api-docs\openapi.json` | Pass |
+| `py -3.11 scripts\release\check_documented_routes.py` | Pass, 169 canonical v3 routes |
+| `py -3.11 -m pytest tests\contract\test_layer3_source_metadata_contract.py::test_static_openapi_docs_include_source_aware_metadata_schema -q` | Pass |
+| `py -3.11 -m pytest tests\contract\test_layer5_trust_contract.py tests\contract\test_layer4_compliance_contract.py tests\contract\test_layer3_source_metadata_contract.py tests\contract\test_layer2_public_api_contract.py -q` | Pass, 33 tests |
+| `npm --prefix packages/parva-js test` | Pass, 8 tests |
+| `py -3.11 -m pytest packages\parva-python\tests -q` | Pass, 9 tests |
+| `py -3.11 scripts\check_docs_links.py` | Pass |
+| public-safety prohibited phrase grep across README, docs, backend, packages, frontend, and tests | Pass, no matches |
+| `rg -n "project-parva-api\|run\.app\|asia-south1" frontend README.md docs backend packages .env.example` | Pass, no matches |
+| em dash grep across checked public docs, frontend, and SDK README files | Pass, no matches |
+| `py -3.11 scripts\release\verify_public.py` | Pass |
+| `git diff --check` | Pass with line-ending warnings only |
+
+The public reproducibility gate reported:
+
+- backend tests: 706 passed, 8 skipped
+- Python SDK tests: 9 passed
+- frontend tests: 112 passed
+- JavaScript SDK tests: 8 passed
+- frontend lint: pass
+- frontend build: pass
+- backend lint: pass
+- secret scan: pass
+- path leak scan: pass
+- documentation links: pass
+- trust verification: pass
 
 ## Public Safety Checks
 
-Public route check:
+Verified:
 
-- `PARVA_ENABLE_EXPERIMENTAL_API=false`
-- `PARVA_SHOW_PRIVATE_SCHEMA=false`
-- public OpenAPI returned no private future-BS prediction, export, backtest, model-run, loan-impact, external audit, or corrected-value routes
-- `/v4/api/future-bs/capabilities` returned metadata only
-- `/v5/api/calendar-model-risk/capabilities` returned metadata only
-
-Repo searches:
-
-- no old Cloud Run URL markers remain in tracked repo search scope
-- no stale `VITE_API_BASE_URL` remains
-- no client-specific names remain in public docs, frontend, examples, or test literals
-- no prohibited broad-claim phrases remain
-- no em dash remains in tracked README, AGENTS, docs, or frontend source
-- exact public-facing future-shadow range labels were de-identified in internal script/report labels where doing so did not remove internal capability
-
-Classified safe matches:
-
-- Public docs mention corrected values only as negative boundary language, such as "does not expose corrected future values".
-- Internal ignored-artifact paths still reference future prediction file names required by private tooling. Generated artifacts remain ignored and untracked.
-
-## What Is Not Claimed
-
-Project Parva does not claim:
-
-- official government calendar publication authority
-- legal, tax, regulatory, or banking-contract final authority
-- guaranteed future dates
-- broad future-calendar certainty
-- broad 99 percent future accuracy
-- replacement of official Nepali calendar publication
-
-Official publication overrides computed output.
+- no prohibited client or prospect names in checked public scope
+- no old Cloud Run host references in checked public scope
+- no em dashes in checked public README, docs, frontend, or SDK README files
+- public trust verification does not require private archives
+- trust packets do not use production signatures
+- private future-BS prediction and export surfaces remain gated outside the public trust surface
 
 ## Remaining Risks
 
-- Private future-BS tooling remains powerful and must stay gated in public deployments.
-- Platform environment variables on Cloudflare Pages and Render still need to match `docs/DEPLOYMENT.md`.
-- Generated private future-BS artifacts are ignored, but a future force-add could still leak them. Public-safety tests and release grep checks should stay in CI.
-- Frontend tests passed with non-fatal Node test-environment warnings. No functional failure was observed.
+- The alpha signature is hash-only preview infrastructure. A production signing key backend is still a future operational task.
+- Only one public release currently exists, so release diff is metadata-level and same-release diff has no changed artifacts.
+- Evidence packets are public-safe explanations, not legal certificates.
+- Public verification passes locally on this Windows environment. CI should run `py -3.11 scripts\release\verify_public.py` or equivalent on every release.
 
-## Next 7-Day Roadmap
+## Recommended Layer 6 Start
 
-1. Verify Render production environment values against `docs/DEPLOYMENT.md`.
-2. Verify Cloudflare Pages uses `VITE_API_BASE=https://api.prabinghimire1.com.np/v3/api`.
-3. Generate a static public OpenAPI mirror from the public route profile.
-4. Add SDK conformance adapters that consume the existing JSON conformance cases.
-5. Add a CI check that fails on stale deployment URL markers and public route leakage.
-6. Add release signing with a real key backend when operationally ready.
-7. Keep future-BS private artifacts out of public tracking and rerun public-safety grep before every release.
-
-## Final Status
-
-The alpha release hardening pass is complete. Required commands passed, public route boundary is verified, SDK and CLI alpha surfaces are usable, docs are coherent, stale deployment guidance was removed, and release checklist artifacts exist.
+Layer 6 should start with production-grade release signing policy, CI enforcement for trust artifact drift, and private-source extension hooks that do not affect public reproducibility.

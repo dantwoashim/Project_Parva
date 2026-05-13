@@ -123,6 +123,7 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
         payload.get("bikram_sambat") if isinstance(payload.get("bikram_sambat"), dict) else {}
     )
     panchanga_block = payload.get("panchanga") if isinstance(payload.get("panchanga"), dict) else {}
+    source_meta = payload.get("meta") if isinstance(payload.get("meta"), dict) else {}
 
     confidence_level_raw = (
         payload.get("confidence")
@@ -157,7 +158,8 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
         uncertainty = {"interval_hours": None, "boundary_risk": derive_boundary_risk(payload)}
 
     trace_id = (
-        payload.get("calculation_trace_id")
+        source_meta.get("trace_id")
+        or payload.get("calculation_trace_id")
         or payload.get("trace_id")
         or (
             payload.get("trace", {}).get("trace_id")
@@ -174,6 +176,10 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
         }
         return {
             "confidence": confidence,
+            "source": source_meta.get("source"),
+            "data_version": source_meta.get("data_version"),
+            "claim_boundary": source_meta.get("claim_boundary"),
+            "warnings": source_meta.get("warnings", []),
             "method": method,
             "provenance": provenance,
             "uncertainty": {
@@ -191,6 +197,10 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
     if track == "v3":
         return {
             "confidence": confidence_level,
+            "source": source_meta.get("source"),
+            "data_version": source_meta.get("data_version"),
+            "claim_boundary": source_meta.get("claim_boundary"),
+            "warnings": source_meta.get("warnings", []),
             "method": method,
             "provenance": provenance,
             "uncertainty": uncertainty,
@@ -201,6 +211,10 @@ def extract_meta(payload: Any, *, track: str = "v4") -> dict[str, Any]:
 
     return {
         "confidence": confidence_level,
+        "source": source_meta.get("source"),
+        "data_version": source_meta.get("data_version"),
+        "claim_boundary": source_meta.get("claim_boundary"),
+        "warnings": source_meta.get("warnings", []),
         "method": method,
         "provenance": provenance,
         "uncertainty": uncertainty,

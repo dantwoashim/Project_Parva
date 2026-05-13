@@ -104,7 +104,7 @@ Select-String targeted Phase 6 files for deployment leaks, client names, overcla
 
 Stale deployment pattern search found archived Cloud Run documentation during Phase 6:
 
-- `docs/archive/DEPLOY_CLOUD_RUN.md`, removed during final integration because the public deployment moved to Render.
+- Removed historical path: docs/archive/DEPLOY_CLOUD_RUN.md, removed during final integration because the public deployment moved to Render.
 
 Classification: historical deployment reference. It is not a live route, config, or Phase 6 artifact.
 

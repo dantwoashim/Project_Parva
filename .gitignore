@@ -37,6 +37,7 @@ reports/
 benchmark/results/
 tmp/
 *.zip
+parva_codex_phase_files/
 evaluation.csv
 backend/evaluation.csv
 sdk/python/build/

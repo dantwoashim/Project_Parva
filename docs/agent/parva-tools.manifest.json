@@ -1,0 +1,13 @@
+{
+  "manifest_version": "parva-agent-tools-0.1.0",
+  "name": "Parva agent-safe temporal tools",
+  "claim_boundary": "agent_temporal_reasoning_not_legal_authority",
+  "tools": [
+    {"name": "parva.convert_date", "endpoint": "/v3/api/agent/run-tool", "risk_behavior": "deterministic_conversion"},
+    {"name": "parva.verify_temporal_claim", "endpoint": "/v3/api/agent/verify-claim", "risk_behavior": "unsupported_claims_not_verified"},
+    {"name": "parva.plan_schedule", "endpoint": "/v3/api/agent/plan-schedule", "risk_behavior": "review_gated_schedule"},
+    {"name": "parva.simulate_impact", "endpoint": "/v3/api/impact/simulate-change-set", "risk_behavior": "public_dependency_scope_only"}
+  ],
+  "authentication": "Public preview routes are unauthenticated. Private deployments may require tokens.",
+  "warnings": ["not_legal_tax_payroll_or_banking_contract_authority"]
+}

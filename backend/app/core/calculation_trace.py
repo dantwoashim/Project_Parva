@@ -6,7 +6,6 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
-
 SourcePolicy = Literal[
     "official_strict",
     "printed_reviewed",

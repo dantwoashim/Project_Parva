@@ -64,3 +64,357 @@ test("validateBsDate converts public 400 responses into a validation result", as
   assert.equal(result.publication_status, "computed_prediction_not_official");
   assert.match(result.error, /Invalid BS date/);
 });
+
+test("covers public month, fiscal, business-day, and policy endpoints", async () => {
+  const calls = [];
+  const client = new ParvaClient({
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      return jsonResponse({ ok: true });
+    },
+  });
+
+  await client.getMonthCalendar(2026, 4);
+  await client.getFiscalYear(2082);
+  await client.getBsMonths(2082);
+  await client.getBusinessDays({
+    start_bs: "2082-01-01",
+    end_bs: "2082-01-07",
+  });
+  await client.getEnterpriseCapabilities();
+  await client.getPolicy();
+
+  assert.equal(calls[0].url, `${DEFAULT_API_BASE}/calendar/dual-month?year=2026&month=4`);
+  assert.equal(calls[1].url, `${DEFAULT_API_BASE}/enterprise/fiscal-year/2082`);
+  assert.equal(calls[2].url, `${DEFAULT_API_BASE}/enterprise/bs-months/2082`);
+  assert.equal(calls[3].url, `${DEFAULT_API_BASE}/enterprise/business-days`);
+  assert.equal(calls[3].init.method, "POST");
+  assert.equal(calls[4].url, `${DEFAULT_API_BASE}/enterprise/capabilities`);
+  assert.equal(calls[5].url, `${DEFAULT_API_BASE}/policy`);
+});
+
+test("covers compliance profile and decision support endpoints", async () => {
+  const calls = [];
+  const meta = {
+    source: {
+      id: "parva_enterprise_compliance_profiles",
+      label: "Parva enterprise compliance profile definitions",
+      tier: "public_corpus",
+      authority: "derived_reference_not_legal_authority",
+    },
+    confidence: "source_backed",
+    data_version: "parva-public-calendar-v1",
+    claim_boundary: "enterprise_decision_support_not_legal_authority",
+    warnings: ["not_legal_tax_or_banking_contract_authority"],
+    trace_id: "trace",
+  };
+  const client = new ParvaClient({
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      return jsonResponse({ ok: true, meta });
+    },
+  });
+
+  await client.listProfiles();
+  await client.getProfile("nepal_private_company_default");
+  const evaluated = await client.evaluateDate({
+    profile_id: "nepal_private_company_default",
+    bs_date: "2082-04-02",
+  });
+  await client.nextWorkingDay({ profile_id: "nepal_private_company_default", bs_date: "2082-04-04" });
+  await client.previousWorkingDay({ profile_id: "nepal_private_company_default", bs_date: "2082-04-04" });
+  await client.addWorkingDays({
+    profile_id: "nepal_private_company_default",
+    bs_date: "2082-04-02",
+    working_days: 2,
+  });
+  await client.monthClosingDay({
+    profile_id: "nepal_private_company_default",
+    bs_year: 2082,
+    bs_month: 4,
+  });
+  await client.fiscalPeriod({
+    profile_id: "nepal_private_company_default",
+    bs_date: "2082-04-02",
+  });
+
+  assert.equal(calls[0].url, `${DEFAULT_API_BASE}/compliance/profiles`);
+  assert.equal(calls[1].url, `${DEFAULT_API_BASE}/compliance/profiles/nepal_private_company_default`);
+  assert.equal(calls[2].url, `${DEFAULT_API_BASE}/compliance/evaluate-date`);
+  assert.equal(calls[2].init.method, "POST");
+  assert.deepEqual(JSON.parse(calls[2].init.body), {
+    profile_id: "nepal_private_company_default",
+    bs_date: "2082-04-02",
+  });
+  assert.equal(calls[3].url, `${DEFAULT_API_BASE}/compliance/next-working-day`);
+  assert.equal(calls[4].url, `${DEFAULT_API_BASE}/compliance/previous-working-day`);
+  assert.equal(calls[5].url, `${DEFAULT_API_BASE}/compliance/add-working-days`);
+  assert.equal(calls[6].url, `${DEFAULT_API_BASE}/compliance/month-closing-day`);
+  assert.equal(calls[7].url, `${DEFAULT_API_BASE}/compliance/fiscal-period`);
+  assert.deepEqual(evaluated.meta, meta);
+});
+
+test("covers temporal trust helper endpoints", async () => {
+  const calls = [];
+  const packet = {
+    packet_type: "date_conversion",
+    release: { release_id: "parva-bs-public-demo" },
+    integrity: {
+      packet_hash: "sha256:abc",
+      signature_status: "unsigned_public_preview",
+    },
+  };
+  const client = new ParvaClient({
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      return jsonResponse(url.includes("/evidence/") ? packet : { ok: true });
+    },
+  });
+
+  await client.getTrustCapabilities();
+  await client.listSources({ release_id: "parva-bs-public-demo" });
+  await client.getSource("parva_public_bs_ad_corpus");
+  await client.listReleases();
+  await client.getRelease("parva-bs-public-demo");
+  await client.diffReleases("parva-bs-public-demo", "parva-bs-public-demo");
+  await client.getTrustLog();
+  const evidence = await client.createDateConversionEvidence({ ad_date: "2026-04-14" });
+  await client.createComplianceDecisionEvidence({
+    profile_id: "nepal_private_company_default",
+    bs_date: "2082-04-02",
+  });
+
+  assert.equal(calls[0].url, `${DEFAULT_API_BASE}/trust/capabilities`);
+  assert.equal(
+    calls[1].url,
+    `${DEFAULT_API_BASE}/trust/sources?release_id=parva-bs-public-demo`,
+  );
+  assert.equal(calls[2].url, `${DEFAULT_API_BASE}/trust/sources/parva_public_bs_ad_corpus`);
+  assert.equal(calls[3].url, `${DEFAULT_API_BASE}/trust/releases`);
+  assert.equal(calls[4].url, `${DEFAULT_API_BASE}/trust/releases/parva-bs-public-demo`);
+  assert.equal(
+    calls[5].url,
+    `${DEFAULT_API_BASE}/trust/releases/parva-bs-public-demo/diff/parva-bs-public-demo`,
+  );
+  assert.equal(calls[6].url, `${DEFAULT_API_BASE}/trust/log`);
+  assert.equal(calls[7].url, `${DEFAULT_API_BASE}/trust/evidence/date-conversion`);
+  assert.equal(calls[7].init.method, "POST");
+  assert.deepEqual(JSON.parse(calls[7].init.body), { ad_date: "2026-04-14" });
+  assert.equal(calls[8].url, `${DEFAULT_API_BASE}/trust/evidence/compliance-decision`);
+  assert.equal(evidence.integrity.packet_hash, "sha256:abc");
+});
+
+test("covers TimeGraph helper endpoints", async () => {
+  const calls = [];
+  const client = new ParvaClient({
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      return jsonResponse({
+        items: [],
+        fact: { fact_id: "fact_bs_ad_2083_01_01" },
+        trace: { fact: { fact_id: "fact_bs_ad_2083_01_01" } },
+        meta: { claim_boundary: "timegraph_query_not_legal_authority" },
+      });
+    },
+  });
+
+  await client.getTimeGraphCapabilities();
+  await client.listFacts({ fact_type: "bs_ad_mapping", limit: 5, has_conflicts: false });
+  await client.getFact("fact_bs_ad_2083_01_01");
+  await client.queryFacts({ calendar: "BS", date: "2083-01-01" });
+  await client.getFactsForDate("BS", "2083-01-01", { limit: 3 });
+  await client.getFactsForSource("parva_public_bs_ad_corpus");
+  await client.getFactsForRelease("parva-bs-public-demo", { limit: 2 });
+  await client.getFactsForProfile("nepal_private_company_default");
+  await client.getRelationships("fact_bs_ad_2083_01_01");
+  await client.traceFact("fact_bs_ad_2083_01_01", { depth: 2 });
+  await client.listConflicts();
+
+  assert.equal(calls[0].url, `${DEFAULT_API_BASE}/timegraph/capabilities`);
+  assert.equal(
+    calls[1].url,
+    `${DEFAULT_API_BASE}/timegraph/facts?fact_type=bs_ad_mapping&limit=5&has_conflicts=false`,
+  );
+  assert.equal(calls[2].url, `${DEFAULT_API_BASE}/timegraph/facts/fact_bs_ad_2083_01_01`);
+  assert.equal(calls[3].url, `${DEFAULT_API_BASE}/timegraph/query`);
+  assert.equal(calls[3].init.method, "POST");
+  assert.deepEqual(JSON.parse(calls[3].init.body), { calendar: "BS", date: "2083-01-01" });
+  assert.equal(calls[4].url, `${DEFAULT_API_BASE}/timegraph/date/BS/2083-01-01?limit=3`);
+  assert.equal(
+    calls[5].url,
+    `${DEFAULT_API_BASE}/timegraph/sources/parva_public_bs_ad_corpus/facts`,
+  );
+  assert.equal(
+    calls[6].url,
+    `${DEFAULT_API_BASE}/timegraph/releases/parva-bs-public-demo/facts?limit=2`,
+  );
+  assert.equal(
+    calls[7].url,
+    `${DEFAULT_API_BASE}/timegraph/profiles/nepal_private_company_default/facts`,
+  );
+  assert.equal(
+    calls[8].url,
+    `${DEFAULT_API_BASE}/timegraph/entities/fact_bs_ad_2083_01_01/relationships`,
+  );
+  assert.equal(
+    calls[9].url,
+    `${DEFAULT_API_BASE}/timegraph/facts/fact_bs_ad_2083_01_01/trace?depth=2`,
+  );
+  assert.equal(calls[10].url, `${DEFAULT_API_BASE}/timegraph/conflicts`);
+});
+
+test("covers RuleLang helper endpoints", async () => {
+  const calls = [];
+  const client = new ParvaClient({
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      return jsonResponse({
+        rule_id: "last_working_day_of_nepali_month",
+        decision: { status: "approved", reason_codes: ["RULE_VALIDATED"] },
+        trace: { steps: [] },
+      });
+    },
+  });
+
+  await client.getRuleCapabilities();
+  await client.listRules();
+  await client.getRule("last_working_day_of_nepali_month");
+  await client.validateRule({ rule_id: "demo_rule" });
+  await client.evaluateRule("last_working_day_of_nepali_month", {
+    input: { bs_month: "2082-04" },
+  });
+  await client.testRule("last_working_day_of_nepali_month");
+  await client.evaluateCustomRule({
+    rule: { rule_id: "demo_rule" },
+    input: { bs_date: "2082-04-02" },
+  });
+  await client.explainRule({
+    rule_id: "last_working_day_of_nepali_month",
+    input: { bs_month: "2082-04" },
+  });
+
+  assert.equal(calls[0].url, `${DEFAULT_API_BASE}/rules/capabilities`);
+  assert.equal(calls[1].url, `${DEFAULT_API_BASE}/rules`);
+  assert.equal(calls[2].url, `${DEFAULT_API_BASE}/rules/last_working_day_of_nepali_month`);
+  assert.equal(calls[3].url, `${DEFAULT_API_BASE}/rules/validate`);
+  assert.equal(calls[3].init.method, "POST");
+  assert.deepEqual(JSON.parse(calls[3].init.body), { rule: { rule_id: "demo_rule" } });
+  assert.equal(
+    calls[4].url,
+    `${DEFAULT_API_BASE}/rules/last_working_day_of_nepali_month/evaluate`,
+  );
+  assert.deepEqual(JSON.parse(calls[4].init.body), {
+    input: { bs_month: "2082-04" },
+    include_evidence: false,
+  });
+  assert.equal(calls[5].url, `${DEFAULT_API_BASE}/rules/last_working_day_of_nepali_month/test`);
+  assert.equal(calls[6].url, `${DEFAULT_API_BASE}/rules/evaluate`);
+  assert.equal(calls[7].url, `${DEFAULT_API_BASE}/rules/explain`);
+});
+
+test("covers impact, agent, and protocol helper endpoints", async () => {
+  const calls = [];
+  const client = new ParvaClient({
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      return jsonResponse({ ok: true });
+    },
+  });
+
+  await client.getImpactCapabilities();
+  await client.diffReleasesForImpact();
+  await client.simulateChangeSet({ changes: [] });
+  await client.simulateReleaseDiff();
+  await client.getImpactRun("impact_run_demo");
+  await client.listImpactReasonCodes();
+  await client.listImpactRecommendedActions();
+  await client.getImpactEventSchema();
+  await client.getAgentCapabilities();
+  await client.listAgentTools();
+  await client.getAgentManifest();
+  await client.resolveTemporalIntent("2083-01-01 BS maps to 2026-04-14 AD.");
+  await client.verifyTemporalClaim({ claim: "2083-01-01 BS maps to 2026-04-14 AD." });
+  await client.planSchedule({ schedule_type: "payroll", bs_year: 2082, months: [4] });
+  await client.explainTemporalDecision({ type: "claim", claim: "demo" });
+  await client.checkHumanReview({ requires_human_review: true });
+  await client.draftRule("move payroll to next working day");
+  await client.runAgentTool({ tool_name: "parva.get_capabilities", input: {} });
+  await client.getProtocolVersion();
+  await client.getProtocolCapabilities();
+  await client.listProtocolSpecs();
+  await client.listProtocolSchemas();
+  await client.listCompatibilityLevels();
+  await client.runConformance();
+  await client.issueCalendarCredential({
+    subject: { type: "date_conversion" },
+    claims: { bs_date: "2083-01-01", ad_date: "2026-04-14" },
+  });
+  await client.verifyCalendarCredential({ credential_id: "demo" });
+  await client.getOfflineBundleManifest();
+
+  assert.equal(calls[0].url, `${DEFAULT_API_BASE}/impact/capabilities`);
+  assert.equal(calls[1].url, `${DEFAULT_API_BASE}/impact/diff-releases`);
+  assert.deepEqual(JSON.parse(calls[1].init.body), {
+    from_release_id: "parva-bs-public-demo",
+    to_release_id: "parva-bs-public-demo",
+    include_fixture: false,
+  });
+  assert.equal(calls[2].url, `${DEFAULT_API_BASE}/impact/simulate-change-set`);
+  assert.deepEqual(JSON.parse(calls[2].init.body), { change_set: { changes: [] } });
+  assert.equal(calls[3].url, `${DEFAULT_API_BASE}/impact/simulate-release-diff`);
+  assert.equal(calls[8].url, `${DEFAULT_API_BASE}/agent/capabilities`);
+  assert.equal(calls[11].url, `${DEFAULT_API_BASE}/agent/resolve-intent`);
+  assert.equal(calls[17].url, `${DEFAULT_API_BASE}/agent/run-tool`);
+  assert.equal(calls[18].url, `${DEFAULT_API_BASE}/protocol/version`);
+  assert.equal(calls[23].url, `${DEFAULT_API_BASE}/protocol/conformance/run`);
+  assert.equal(calls[24].url, `${DEFAULT_API_BASE}/protocol/credentials/issue`);
+  assert.equal(calls[25].url, `${DEFAULT_API_BASE}/protocol/credentials/verify`);
+  assert.equal(calls[26].url, `${DEFAULT_API_BASE}/protocol/offline-bundle/manifest`);
+});
+
+test("prefers structured public error messages", async () => {
+  const client = new ParvaClient({
+    fetchImpl: async () => jsonResponse({
+      error: {
+        code: "BAD_REQUEST",
+        message: "Use YYYY-MM-DD",
+        details: {},
+        trace_id: "test",
+      },
+    }, {
+      ok: false,
+      status: 400,
+      statusText: "Bad Request",
+    }),
+  });
+
+  const result = await client.validateBsDate({ year: 2083, month: 1, day: 32 });
+
+  assert.equal(result.valid, false);
+  assert.match(result.error, /Use YYYY-MM-DD/);
+});
+
+test("preserves source-aware metadata from public responses", async () => {
+  const meta = {
+    source: {
+      id: "parva_public_bs_ad_corpus",
+      label: "Parva public BS/AD corpus",
+      tier: "public_corpus",
+      authority: "derived_reference_not_legal_authority",
+      version: "parva-public-calendar-v1",
+    },
+    confidence: "source_backed",
+    data_version: "parva-public-calendar-v1",
+    claim_boundary: "public_corpus_reference_only",
+    warnings: ["not_legal_tax_or_banking_contract_authority"],
+    trace_id: "trace",
+    result_class: "ad_to_bs_conversion",
+  };
+  const client = new ParvaClient({
+    fetchImpl: async () => jsonResponse({ gregorian: "2026-04-14", meta }),
+  });
+
+  const payload = await client.adToBs("2026-04-14");
+
+  assert.deepEqual(payload.meta, meta);
+});

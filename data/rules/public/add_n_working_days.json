@@ -1,0 +1,75 @@
+{
+  "rule_id": "add_n_working_days",
+  "version": "1.0.0",
+  "label": "Add N working days",
+  "description": "Adds a bounded number of working days to a BS date for the selected compliance profile.",
+  "profile_id": "nepal_private_company_default",
+  "status": "public_preview",
+  "inputs": {
+    "bs_date": {
+      "type": "bs_date",
+      "required": true
+    },
+    "working_days": {
+      "type": "integer",
+      "required": true
+    },
+    "profile_id": {
+      "type": "profile_id",
+      "required": false,
+      "default": "nepal_private_company_default"
+    }
+  },
+  "outputs": {
+    "target_date": {
+      "type": "date"
+    }
+  },
+  "steps": [
+    {
+      "set": {
+        "name": "target_date",
+        "value": {
+          "call": "add_working_days",
+          "args": {
+            "date": "$input.bs_date",
+            "working_days": "$input.working_days",
+            "profile_id": "$input.profile_id"
+          }
+        }
+      }
+    },
+    {
+      "return": {
+        "target_date": "$var.target_date"
+      }
+    }
+  ],
+  "risk_policy": {
+    "require_confidence_at_least": "source_backed",
+    "block_research_preview": true,
+    "block_disputed_facts": true,
+    "unsupported_result_action": "human_review_required",
+    "future_date_action": "human_review_required"
+  },
+  "claim_boundary": "enterprise_decision_support_not_legal_authority",
+  "tests": [
+    {
+      "name": "adds_two_working_days_over_weekend",
+      "input": {
+        "bs_date": "2082-04-02",
+        "working_days": 2,
+        "profile_id": "nepal_private_company_default"
+      },
+      "expect": {
+        "output.target_date.bs": "2082-04-05",
+        "decision.status": "approved"
+      }
+    }
+  ],
+  "tags": [
+    "working_day",
+    "bounded_search"
+  ],
+  "owner": "Project Parva"
+}

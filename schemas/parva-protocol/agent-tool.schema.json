@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-parva.example/schemas/parva-protocol/agent-tool.schema.json",
+  "title": "Parva Protocol Agent Tool",
+  "allOf": [{"$ref": "../agent-tool.schema.json"}]
+}

@@ -6,7 +6,6 @@ from pathlib import Path
 
 from tools.conformance_runner import run as conformance_run
 
-
 ROOT = Path(__file__).resolve().parents[2]
 
 

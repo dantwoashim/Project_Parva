@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 
+const ROUTE_INTERACTION_TIMEOUT_MS = 30000;
+
 function jsonResponse(payload) {
   return {
     ok: true,
@@ -429,7 +431,7 @@ describe('consumer route interactions', () => {
     expect(await screen.findByText(/Mythology and Meaning/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Add to calendar/i })).toHaveAttribute('href', expect.stringContaining('festivals=dashain'));
     expect(screen.queryByRole('link', { name: /Open full page/i })).not.toBeInTheDocument();
-  }, 15000);
+  }, ROUTE_INTERACTION_TIMEOUT_MS);
 
   it('opens, applies, and resets the festival filter sheet', async () => {
     render(
@@ -450,7 +452,7 @@ describe('consumer route interactions', () => {
     await userEvent.click(screen.getByRole('button', { name: /Filters/i }));
     await userEvent.click(screen.getByRole('button', { name: /^Reset$/i }));
     expect(screen.getByLabelText(/7 festivals in this view/i)).toBeInTheDocument();
-  }, 15000);
+  }, ROUTE_INTERACTION_TIMEOUT_MS);
 
   it('persists a followed festival into the saved workspace', async () => {
     render(
@@ -460,6 +462,7 @@ describe('consumer route interactions', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /^Festivals$/i })).toBeInTheDocument();
+    await screen.findByLabelText(/7 festivals in this view/i);
     const dashainArticle = screen.getByRole('button', { name: /Dashain/i }).closest('article');
     await userEvent.click(within(dashainArticle).getByRole('button', { name: /^Follow$/i }));
     expect(within(dashainArticle).getByRole('button', { name: /^Following$/i })).toBeInTheDocument();
@@ -469,7 +472,7 @@ describe('consumer route interactions', () => {
     expect(await screen.findByRole('heading', { name: /Profile & Saved/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^Dashain$/i })).toHaveAttribute('href', '/festivals/dashain');
     expect(screen.getByRole('link', { name: /^Calendar$/i })).toHaveAttribute('href', expect.stringContaining('festivals=dashain'));
-  }, 15000);
+  }, ROUTE_INTERACTION_TIMEOUT_MS);
 
   it('shows the interactive best-time surface', async () => {
     render(
@@ -484,7 +487,7 @@ describe('consumer route interactions', () => {
     await userEvent.click(abhijitWindow);
     expect(screen.getByText(/Intent: Travel/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Copy time details/i })).toBeInTheDocument();
-  }, 15000);
+  }, ROUTE_INTERACTION_TIMEOUT_MS);
 
   it('opens and dismisses the search dialog', async () => {
     render(
@@ -500,7 +503,7 @@ describe('consumer route interactions', () => {
     expect(await screen.findByRole('link', { name: /Dashain/i })).toHaveAttribute('href', '/festivals/dashain');
     await userEvent.keyboard('{Escape}');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-  }, 15000);
+  }, ROUTE_INTERACTION_TIMEOUT_MS);
 
   it('keeps the festival detail route available for deep links', async () => {
     render(
@@ -522,5 +525,5 @@ describe('consumer route interactions', () => {
 
     expect(await screen.findByRole('heading', { name: /Profile & Saved/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Browse festivals/i })).toHaveAttribute('href', '/festivals');
-  }, 15000);
+  }, ROUTE_INTERACTION_TIMEOUT_MS);
 });

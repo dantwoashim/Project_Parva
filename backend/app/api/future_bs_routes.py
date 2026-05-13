@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Request, Response
 from pydantic import BaseModel, Field
 
 from app.services.future_bs_service import (
@@ -69,8 +69,8 @@ def _bad_request(exc: ValueError) -> HTTPException:
 
 
 @public_router.get("/capabilities")
-async def future_bs_capabilities():
-    return future_bs_capabilities_payload()
+async def future_bs_capabilities(request: Request):
+    return future_bs_capabilities_payload(trace_id=getattr(request.state, "request_id", None))
 
 
 @private_router.get("/month-lengths/range")

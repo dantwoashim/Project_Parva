@@ -24,7 +24,7 @@ Created under `packages/parva-js/`:
 - `package-lock.json`
 - `tsconfig.json`
 - `src/index.ts`
-- `tests/client.test.mjs`
+- `packages/parva-js/tests/client.test.mjs`
 - `README.md`
 
 Exports:
@@ -43,7 +43,7 @@ Created under `packages/parva-python/`:
 - `pyproject.toml`
 - `parva/__init__.py`
 - `parva/client.py`
-- `tests/test_client.py`
+- `packages/parva-python/tests/test_client.py`
 - `README.md`
 
 Exports:

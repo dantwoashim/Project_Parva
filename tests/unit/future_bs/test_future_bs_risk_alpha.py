@@ -3,10 +3,14 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from fastapi.testclient import TestClient
-
 from app.bootstrap.app_factory import create_app
-from app.future_bs.risk import FutureBSRiskInput, RiskLabel, assess_month_assumption, risk_label_values
+from app.future_bs.risk import (
+    FutureBSRiskInput,
+    RiskLabel,
+    assess_month_assumption,
+    risk_label_values,
+)
+from fastapi.testclient import TestClient
 
 ROOT = Path(__file__).resolve().parents[3]
 

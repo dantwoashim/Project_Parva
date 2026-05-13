@@ -23,8 +23,90 @@ today = client.get_today()
 ad_to_bs = client.ad_to_bs("2026-04-14")
 bs_to_ad = client.bs_to_ad(2083, 1, 1)
 validation = client.validate_bs_date(2083, 1, 32)
+month = client.get_month_calendar(2026, 4)
+fiscal_year = client.get_fiscal_year(2082)
+bs_months = client.get_bs_months(2082)
+business_days = client.get_business_days("2082-01-01", "2082-01-07")
+enterprise = client.get_enterprise_capabilities()
+compliance = client.evaluate_date(
+    profile_id="nepal_private_company_default",
+    bs_date="2082-04-02",
+)
+trust = client.get_trust_capabilities()
+evidence = client.create_date_conversion_evidence(ad_date="2026-04-14")
+timegraph = client.get_timegraph_capabilities()
+facts = client.get_facts_for_date("BS", "2083-01-01")
+trace = client.trace_fact("fact_bs_ad_2083_01_01")
+rule = client.evaluate_rule(
+    "last_working_day_of_nepali_month",
+    input_payload={
+        "bs_month": "2082-04",
+        "profile_id": "nepal_private_company_default",
+    },
+)
+policy = client.get_policy()
 capabilities = client.get_future_bs_capabilities()
 ```
+
+## Covered Public Surfaces
+
+- current calendar context
+- AD to BS conversion
+- BS to AD conversion
+- BS date validation through conversion
+- month calendar
+- fiscal-year boundaries
+- BS month metadata
+- weekend-rule business-day helper
+- enterprise capability metadata
+- compliance profile listing and decision support helpers
+- trust source, release, diff, log, and evidence packet helpers
+- TimeGraph fact, relationship, trace, and conflict helpers
+- RuleLang registry, validation, execution, test, and explanation helpers
+- public policy metadata
+- future-BS capabilities summary
+
+## TimeGraph
+
+TimeGraph helpers expose public-safe temporal facts and traces. They preserve fact ids,
+relationships, source ids, release ids, confidence, warnings, trace ids, and conflict
+metadata.
+
+```python
+date_facts = client.get_facts_for_date("BS", "2083-01-01", limit=10)
+fact = client.get_fact("fact_bs_ad_2083_01_01")
+trace = client.trace_fact("fact_bs_ad_2083_01_01", depth=2)
+conflicts = client.list_conflicts()
+```
+
+TimeGraph responses are audit support and not legal, tax, payroll, banking-contract,
+or government authority.
+
+## RuleLang
+
+RuleLang helpers evaluate structured temporal rules with bounded execution, reason
+codes, traces, metadata, and fact ids.
+
+```python
+rules = client.list_rules()
+result = client.evaluate_rule(
+    "last_working_day_of_nepali_month",
+    input_payload={
+        "bs_month": "2082-04",
+        "profile_id": "nepal_private_company_default",
+    },
+)
+explanation = client.explain_rule(
+    rule_id="last_working_day_of_nepali_month",
+    input_payload={
+        "bs_month": "2082-04",
+        "profile_id": "nepal_private_company_default",
+    },
+)
+```
+
+RuleLang is decision support and not legal, tax, payroll, banking-contract, or
+government authority.
 
 ## API Base
 

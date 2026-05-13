@@ -7,7 +7,6 @@ import pytest
 
 from tools.release.verify_release import ReleaseVerificationError, verify_release
 
-
 MANIFEST = Path("data/public/releases/parva-bs-public-demo.manifest.json")
 
 

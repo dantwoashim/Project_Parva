@@ -496,6 +496,8 @@ describe('visual regression harness', () => {
   it('today page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/today', 390, 844);
     await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions);
+    await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
+    await screen.findAllByText(/Abhijit Muhurta/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
@@ -531,12 +533,15 @@ describe('visual regression harness', () => {
   it('kundali page visual baseline', async () => {
     const { container } = await renderRoute('/kundali');
     await screen.findByRole('heading', { name: /Birth Reading/i }, routeLoadOptions);
+    await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 20000);
 
   it('today page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/today', 1440, 900);
     await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions);
+    await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
+    await screen.findAllByText(/Abhijit Muhurta/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 

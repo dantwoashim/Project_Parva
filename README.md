@@ -23,6 +23,11 @@ Parva treats calendar behavior as something that should be explainable, source-a
 | Festival intelligence | Festival catalog, observance rules, calendar feeds, and explanations |
 | Developer API | FastAPI endpoints, OpenAPI docs, examples, and integration-ready responses |
 | Source policy | Source tiers, claim boundaries, and reliability metadata |
+| TimeGraph | Public-safe fact graph for tracing temporal facts to sources, releases, profiles, evidence, and conflicts |
+| RuleLang | Structured institutional temporal rules with bounded execution, reason codes, and audit traces |
+| Impact simulator | Bounded release and change-set impact analysis for public-safe temporal changes |
+| Agent-safe tools | Deterministic temporal tool registry, claim checks, schedule plans, and review gates |
+| Parva Protocol | Public preview schemas, conformance, credentials, compatibility levels, and offline bundle metadata |
 | Future BS risk research | Experimental month-length risk analysis, source-aware validation, and review labels |
 
 ## Live Surfaces
@@ -45,6 +50,12 @@ Public surfaces in the full public profile include:
 | `/v3/api/calendar/*` | BS/AD conversion, today, validation, calendar utilities, and enabled panchanga helpers |
 | `/v3/api/enterprise/*` | Nepali fiscal-year and business date validation logic |
 | `/v3/api/festivals/*` | Festival and observance APIs |
+| `/v3/api/trust/*` | Public-safe source registry, release, trust log, and evidence packet metadata |
+| `/v3/api/timegraph/*` | Public-safe temporal fact graph, trace, relationship, and conflict metadata |
+| `/v3/api/rules/*` | Public-safe structured temporal rule registry and bounded rule execution |
+| `/v3/api/impact/*` | Public-safe bounded impact simulation |
+| `/v3/api/agent/*` | Agent-safe deterministic temporal tools and review gates |
+| `/v3/api/protocol/*` | Parva Protocol public preview metadata, conformance, and credential helpers |
 | `/v4/api/future-bs/capabilities` | Public summary of the future-BS research layer |
 
 Private or experimental future-BS routes are not part of the public deployment by default. Future month-length prediction, exports, model runs, backtests, client comparison workflows, and schedule-impact simulations are intended for controlled evaluation or private deployment.
@@ -121,6 +132,18 @@ Future-BS research capabilities:
 curl https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities
 ```
 
+RuleLang capabilities:
+
+```bash
+curl https://api.prabinghimire1.com.np/v3/api/rules/capabilities
+```
+
+Parva Protocol version:
+
+```bash
+curl https://api.prabinghimire1.com.np/v3/api/protocol/version
+```
+
 Public examples intentionally avoid direct future month-length prediction, future exports, backtests, model runs, schedule-impact simulation, and private comparison workflows.
 
 ## Deployment Model
@@ -163,6 +186,18 @@ The `.env.example` file is a public-safe configuration map. It contains blank pl
 
 ## Testing
 
+Public reproducibility gate:
+
+```bash
+python3.11 scripts/release/verify_public.py
+```
+
+Windows:
+
+```powershell
+py -3.11 scripts/release/verify_public.py
+```
+
 Focused checks:
 
 ```bash
@@ -178,6 +213,7 @@ pytest -q
 Repository verification:
 
 ```bash
+make verify-public
 make verify
 ```
 
@@ -185,7 +221,13 @@ make verify
 
 - [API quickstart](docs/API_QUICKSTART.md)
 - [API reference](docs/API_REFERENCE_V3.md)
+- [Development](docs/DEVELOPMENT.md)
 - [Public API boundary](docs/PUBLIC_API_BOUNDARY.md)
+- [TimeGraph](docs/TIMEGRAPH.md)
+- [RuleLang](docs/RULELANG.md)
+- [Impact simulator](docs/IMPACT_SIMULATOR.md)
+- [Agent-safe temporal tools](docs/AGENTIC_TEMPORAL_INTELLIGENCE.md)
+- [Parva Protocol](docs/PARVA_PROTOCOL.md)
 - [Deployment](docs/DEPLOYMENT.md)
 - [Stability policy](docs/STABILITY.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)

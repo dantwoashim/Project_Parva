@@ -17,6 +17,7 @@ import { useTemporalContext } from '../context/useTemporalContext';
 import { useFestivalDetail } from '../hooks/useFestivals';
 import usePersonalPlaceBundle from '../hooks/usePersonalPlaceBundle';
 import useTodayBundle from '../hooks/useTodayBundle';
+import { apiHref } from '../services/apiBase';
 import { describeSupportError } from '../services/errorFormatting';
 import './ParvaRedesign.css';
 
@@ -303,7 +304,7 @@ function sourceFreshness(meta = {}, fallback = 'Checked on demand') {
 
 function panchangaProofUrl(date) {
   const params = new URLSearchParams({ date: String(date || todayIso()).slice(0, 10), risk_mode: 'strict' });
-  return `/v3/api/calendar/panchanga/proof-capsule?${params.toString()}`;
+  return apiHref(`/calendar/panchanga/proof-capsule?${params.toString()}`);
 }
 
 function scoreTone(scoreOrClass) {
@@ -903,7 +904,7 @@ export function RedesignToday() {
               <p>Every important result should be usable, portable, and source-aware.</p>
               <div>
                 <Link className="primary-button" to="/best-time">Choose safest window</Link>
-                <a className="ghost-button" href="/v3/api/feeds/all.ics?years=1&download=1">Subscribe calendar</a>
+                <a className="ghost-button" href={apiHref('/feeds/all.ics?years=1&download=1')}>Subscribe calendar</a>
                 <Link className="ghost-button" to="/truth-lab">Export evidence</Link>
               </div>
             </section>
@@ -1439,7 +1440,7 @@ function buildExpandedFestivalStory(festival = {}, detailData = {}) {
 }
 
 function buildCalendarFeedUrl(festivalId) {
-  return `/v3/api/feeds/custom.ics?festivals=${encodeURIComponent(festivalId)}&years=1&download=1`;
+  return apiHref(`/feeds/custom.ics?festivals=${encodeURIComponent(festivalId)}&years=1&download=1`);
 }
 
 const savedFestivalStorageKey = 'parva.savedFestivalIds.v1';
@@ -1461,7 +1462,7 @@ function writeSavedFestivalIds(ids) {
 
 function buildFestivalEvidenceUrl(festival = {}) {
   const year = festival.start_date ? new Date(`${festival.start_date}T00:00:00`).getFullYear() : new Date().getFullYear();
-  return `/v3/api/festivals/${encodeURIComponent(festival.id || 'dashain')}/proof-capsule?year=${year}&authority_mode=authority_compare&risk_mode=strict`;
+  return apiHref(`/festivals/${encodeURIComponent(festival.id || 'dashain')}/proof-capsule?year=${year}&authority_mode=authority_compare&risk_mode=strict`);
 }
 
 function festivalOccurrenceKey(festival = {}) {
@@ -1664,7 +1665,7 @@ export function RedesignFestivals() {
               <button type="button" className="filter-open-button" onClick={openFilters}>
                 Filters {activeFilterCount ? <b>{activeFilterCount}</b> : null}
               </button>
-              <a className="primary-button subscribe-calendar-button" href="/v3/api/feeds/all.ics?years=1&download=1">Subscribe calendar</a>
+              <a className="primary-button subscribe-calendar-button" href={apiHref('/feeds/all.ics?years=1&download=1')}>Subscribe calendar</a>
               <label className="sort-control">
                 <span>Sort by</span>
                 <select
@@ -3524,7 +3525,7 @@ export function RedesignTruthLab() {
       eyebrow="Truth Lab"
       title="Live evidence from the backend."
       body="Reliability status, benchmark manifests, source review queues, and endpoint health in one inspectable surface."
-      action={<a className="ghost-button" href="/v3/api/reliability/status">Open JSON</a>}
+      action={<a className="ghost-button" href={apiHref('/reliability/status')}>Open JSON</a>}
     >
       <TrustLoading loading={trust.loading} error={trust.error} />
       <section className="truth-dashboard">
@@ -3628,7 +3629,7 @@ export function RedesignApiPolicy() {
       eyebrow="API Policy"
       title="The contract should be visible before anyone builds on it."
       body="This page mirrors the backend policy endpoint and shows how Parva frames usage, advisory limits, and operational recovery."
-      action={<a className="primary-button" href="/v3/api/policy">Open policy JSON</a>}
+      action={<a className="primary-button" href={apiHref('/policy')}>Open policy JSON</a>}
     >
       <TrustLoading loading={trust.loading} error={trust.error} />
       <section className="policy-contract">
@@ -3826,7 +3827,7 @@ export function RedesignApiPricing() {
                 <div><dt>Auth</dt><dd>{plan.slug === 'free' ? 'IP-based' : 'API key'}</dd></div>
               </dl>
               {plan.slug === 'free' ? (
-                <a className="ghost-button" href="/v3/api/calendar/today">Try free API</a>
+                <a className="ghost-button" href={apiHref('/calendar/today')}>Try free API</a>
               ) : (
                 <button type="button" onClick={() => setSelectedTier(plan.slug)}>Select {plan.name}</button>
               )}

@@ -28,6 +28,7 @@ SDK examples should call only public-safe surfaces:
 - AD to BS conversion
 - BS to AD conversion
 - fiscal-year logic where public
+- RuleLang public rule capabilities and bounded public rule evaluation
 - future-BS capabilities summary
 
 SDK examples should not call private future-BS predictions, exports, model runs, backtests, client comparison workflows, corrected-value outputs, or schedule-impact simulations.

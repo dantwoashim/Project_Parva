@@ -7,11 +7,13 @@ from dataclasses import dataclass
 from fastapi import APIRouter, FastAPI
 
 from app.api import (
+    agent_router,
     billing_router,
     cache_router,
     calendar_model_risk_private_router,
     calendar_model_risk_router,
     calendar_router,
+    compliance_router,
     engine_router,
     enterprise_router,
     explain_router,
@@ -22,6 +24,7 @@ from app.api import (
     future_bs_private_router,
     future_bs_router,
     glossary_router,
+    impact_router,
     integration_feed_router,
     kundali_graph_router,
     kundali_router,
@@ -33,13 +36,17 @@ from app.api import (
     personal_router,
     place_router,
     policy_router,
+    protocol_router,
     provenance_router,
     public_artifacts_router,
     public_demo_calendar_router,
     reliability_router,
     resolve_router,
+    rules_router,
     spec_router,
     temporal_compass_router,
+    timegraph_router,
+    trust_router,
 )
 
 
@@ -63,6 +70,7 @@ ROUTER_REGISTRATIONS = [
     RouterRegistration(festival_router, "public", "public", "festivals"),
     RouterRegistration(calendar_router, "public", "public", "calendar"),
     RouterRegistration(enterprise_router, "public", "public", "enterprise"),
+    RouterRegistration(compliance_router, "public", "public", "compliance"),
     RouterRegistration(
         future_bs_router,
         "public",
@@ -125,6 +133,12 @@ ROUTER_REGISTRATIONS = [
     RouterRegistration(reliability_router, "trust", "reliability_read", "reliability"),
     RouterRegistration(spec_router, "trust", "spec_read", "spec"),
     RouterRegistration(public_artifacts_router, "trust", "public_artifacts_read", "public_artifacts"),
+    RouterRegistration(timegraph_router, "trust", "timegraph_read", "timegraph"),
+    RouterRegistration(trust_router, "trust", "trust_read", "trust"),
+    RouterRegistration(rules_router, "trust", "rules_read", "rules"),
+    RouterRegistration(impact_router, "trust", "impact_read", "impact"),
+    RouterRegistration(agent_router, "trust", "agent_read", "agent"),
+    RouterRegistration(protocol_router, "trust", "protocol_read", "protocol"),
 ]
 
 PUBLIC_ROUTERS = [registration.router for registration in ROUTER_REGISTRATIONS if registration.audience == "public"]
@@ -150,6 +164,12 @@ PUBLIC_DEMO_ROUTE_REGISTRATIONS = [
         include_v3=False,
         include_experimental_versions=False,
     ),
+    RouterRegistration(trust_router, "trust", "trust_read", "trust"),
+    RouterRegistration(timegraph_router, "trust", "timegraph_read", "timegraph"),
+    RouterRegistration(rules_router, "trust", "rules_read", "rules"),
+    RouterRegistration(impact_router, "trust", "impact_read", "impact"),
+    RouterRegistration(agent_router, "trust", "agent_read", "agent"),
+    RouterRegistration(protocol_router, "trust", "protocol_read", "protocol"),
 ]
 
 
