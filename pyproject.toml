@@ -30,10 +30,10 @@ dev = [
 ]
 test = [
     "httpx>=0.27.0",
-    "pytest>=9.0.2",
+    "pytest>=9.0.3",
 ]
 ops = [
-    "aiohttp>=3.9.0",
+    "aiohttp>=3.13.5",
 ]
 data = [
     "pyarrow>=16.0.0",
