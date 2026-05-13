@@ -21,5 +21,7 @@ def test_latent_truth_model_marks_review_cases():
         }
     )
     assert payload["publication_status"] == "computed_prediction_not_official"
+    assert payload["algorithm_claim"] == "consensus_selector_not_bayesian_latent_variable_model"
+    assert payload["method"] == "reliability_weighted_consensus_selector_v1"
     assert payload["case_count"] > 0
     assert payload["manual_review_required_count"] >= 0

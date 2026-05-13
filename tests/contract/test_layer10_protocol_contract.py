@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 from app.bootstrap.app_factory import create_app
@@ -81,7 +82,7 @@ def test_protocol_api_endpoints() -> None:
 def test_offline_bundle_generation_and_verification(tmp_path: Path) -> None:
     output = tmp_path / "bundle"
     bundle = subprocess.run(
-        ["py", "-3.11", "scripts/parva_offline_bundle.py", "--output", str(output)],
+        [sys.executable, "scripts/parva_offline_bundle.py", "--output", str(output)],
         cwd=PROJECT_ROOT,
         capture_output=True,
         text=True,
@@ -89,7 +90,7 @@ def test_offline_bundle_generation_and_verification(tmp_path: Path) -> None:
     )
     assert bundle.returncode == 0, bundle.stderr
     verify = subprocess.run(
-        ["py", "-3.11", "scripts/parva_offline_verify.py", str(output)],
+        [sys.executable, "scripts/parva_offline_verify.py", str(output)],
         cwd=PROJECT_ROOT,
         capture_output=True,
         text=True,

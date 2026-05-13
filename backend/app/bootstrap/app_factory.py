@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime, timezone
+from importlib import metadata
+from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.encoders import jsonable_encoder
@@ -30,12 +32,23 @@ from app.engine.ephemeris_config import get_ephemeris_config
 from app.festivals.repository import validate_festival_catalog
 from app.policy import get_route_access_manifest
 
-PRODUCT_VERSION = "3.0.0"
+try:
+    PRODUCT_VERSION = metadata.version("project-parva")
+except metadata.PackageNotFoundError:  # pragma: no cover - source checkout without install.
+    PRODUCT_VERSION = "0+local"
 logger = logging.getLogger(__name__)
 DEFAULT_CORS_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
     "http://127.0.0.1:5173",
+]
+DEFAULT_CORS_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+DEFAULT_CORS_HEADERS = [
+    "Authorization",
+    "Content-Type",
+    "X-API-Key",
+    "X-Parva-Envelope",
+    "X-Request-ID",
 ]
 RESERVED_FRONTEND_PREFIXES = (
     "api",
@@ -90,7 +103,7 @@ def _is_reserved_frontend_path(path: str) -> bool:
     )
 
 
-def _build_startup_checks(settings) -> dict[str, object]:
+def _build_startup_checks(settings) -> dict[str, Any]:
     cache_stats = get_cache_stats()
     frontend_index = settings.frontend_dist / "index.html"
     try:
@@ -142,7 +155,7 @@ def _service_metadata(settings) -> dict[str, object]:
     }
 
 
-def _validate_startup(settings) -> tuple[dict[str, object], object]:
+def _validate_startup(settings) -> tuple[dict[str, Any], object]:
     validation_errors = validate_settings(settings)
     if validation_errors:
         raise RuntimeError("Startup validation failed: " + " ".join(validation_errors))
@@ -179,12 +192,23 @@ def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, obje
 
 
 def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
+    cors_origins = _cors_origins_from_env()
+    if settings.environment.strip().lower() == "production":
+        localhost_origins = [
+            origin
+            for origin in cors_origins
+            if "localhost" in origin or "127.0.0.1" in origin
+        ]
+        if localhost_origins:
+            raise RuntimeError(
+                "Startup validation failed: production CORS origins cannot include localhost."
+            )
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=_cors_origins_from_env(),
+        allow_origins=cors_origins,
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=DEFAULT_CORS_METHODS,
+        allow_headers=DEFAULT_CORS_HEADERS,
     )
 
     app.middleware("http")(
@@ -214,10 +238,15 @@ def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
     )
 
 
+def _request_id_for_error(request) -> str:
+    request_id = getattr(request.state, "request_id", None)
+    return str(request_id) if request_id else "unknown"
+
+
 def _register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(HTTPException)
     async def http_exception_handler(request, exc: HTTPException):
-        request_id = getattr(request.state, "request_id", None)
+        request_id = _request_id_for_error(request)
         return JSONResponse(
             status_code=exc.status_code,
             headers=exc.headers,
@@ -231,7 +260,7 @@ def _register_exception_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(request, exc: RequestValidationError):
-        request_id = getattr(request.state, "request_id", None)
+        request_id = _request_id_for_error(request)
         errors = jsonable_encoder(exc.errors())
         return JSONResponse(
             status_code=422,
@@ -251,15 +280,15 @@ def _register_exception_handlers(app: FastAPI) -> None:
             "Unhandled exception for %s %s request_id=%s",
             getattr(request, "method", "UNKNOWN"),
             getattr(getattr(request, "url", None), "path", "unknown"),
-            getattr(request.state, "request_id", None),
-            exc_info=exc,
+            _request_id_for_error(request),
+            exc_info=True,
         )
         return JSONResponse(
             status_code=500,
             content=build_error_payload(
                 status_code=500,
                 detail="Internal Server Error",
-                request_id=getattr(request.state, "request_id", None),
+                request_id=_request_id_for_error(request),
                 version=PRODUCT_VERSION,
             ),
         )

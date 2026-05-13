@@ -2,28 +2,62 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Parva Evidence Packet",
   "type": "object",
-  "required": ["packet_id", "packet_type", "input", "result", "release", "confidence", "claim_boundary", "integrity"],
+  "required": [
+    "packet_id",
+    "packet_type",
+    "input",
+    "result",
+    "release",
+    "confidence",
+    "claim_boundary",
+    "integrity"
+  ],
   "properties": {
-    "packet_id": {"type": "string"},
-    "packet_type": {"type": "string"},
-    "input": {"type": "object"},
-    "result": {"type": "object"},
-    "release": {"type": "object"},
-    "confidence": {"type": "string"},
-    "claim_boundary": {"type": "string"},
-    "integrity": {"type": "object"}
+    "packet_id": {
+      "type": "string"
+    },
+    "packet_type": {
+      "type": "string"
+    },
+    "input": {
+      "type": "object"
+    },
+    "result": {
+      "type": "object"
+    },
+    "release": {
+      "type": "object"
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "claim_boundary": {
+      "type": "string"
+    },
+    "integrity": {
+      "type": "object"
+    }
   },
   "additionalProperties": false,
   "examples": [
     {
       "packet_id": "evidence_example_001",
       "packet_type": "date_conversion",
-      "input": {"bs_date": "2083-01-01"},
-      "result": {"ad_date": "2026-04-14"},
-      "release": {"release_id": "parva-bs-public-demo"},
+      "input": {
+        "bs_date": "2083-01-01"
+      },
+      "result": {
+        "ad_date": "2026-04-14"
+      },
+      "release": {
+        "release_id": "parva-bs-public-demo"
+      },
       "confidence": "source_backed",
       "claim_boundary": "not_legal_or_banking_authority",
-      "integrity": {"hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"}
+      "integrity": {
+        "hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      }
     }
-  ]
+  ],
+  "$id": "https://api.prabinghimire1.com.np/schemas/parva-protocol/evidence-packet.schema.json"
 }

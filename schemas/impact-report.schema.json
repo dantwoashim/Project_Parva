@@ -1,24 +1,46 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://project-parva.example/schemas/impact-report.schema.json",
+  "$id": "https://api.prabinghimire1.com.np/schemas/impact-report.schema.json",
   "title": "Parva Temporal Impact Run",
   "type": "object",
-  "required": ["impact_run_id", "change_set_id", "summary", "impacts", "meta"],
+  "required": [
+    "impact_run_id",
+    "change_set_id",
+    "summary",
+    "impacts",
+    "meta"
+  ],
   "properties": {
-    "impact_run_id": {"type": "string"},
-    "created_at": {"type": "string"},
-    "change_set_id": {"type": "string"},
-    "mode": {"type": "string"},
-    "summary": {"type": "object"},
+    "impact_run_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "change_set_id": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "object"
+    },
     "impacts": {
       "type": "array",
-      "items": {"type": "object"}
+      "items": {
+        "type": "object"
+      }
     },
     "recommendations": {
       "type": "array",
-      "items": {"type": "string"}
+      "items": {
+        "type": "string"
+      }
     },
-    "meta": {"type": "object"}
+    "meta": {
+      "type": "object"
+    }
   },
   "additionalProperties": true
 }

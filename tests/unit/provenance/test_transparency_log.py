@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from app.provenance import transparency
@@ -59,3 +60,24 @@ def test_transparency_log_uses_hmac_attestation_when_key_configured(tmp_path: Pa
     assert audit["valid"] is True
     assert audit["checks"][0]["attestation_mode"] == "hmac-sha256"
     assert audit["checks"][0]["attestation_ok"] is True
+
+
+def test_transparency_log_concurrent_appends_keep_linear_chain(tmp_path: Path, monkeypatch):
+    monkeypatch.setattr(transparency, "TRANSPARENCY_DIR", tmp_path)
+    monkeypatch.setattr(transparency, "TRANSPARENCY_LOG", tmp_path / "log.jsonl")
+    monkeypatch.setattr(transparency, "ANCHOR_LOG", tmp_path / "anchors.jsonl")
+    monkeypatch.delenv("PARVA_PROVENANCE_ATTESTATION_KEY", raising=False)
+
+    def append(index: int):
+        return transparency.append_entry("concurrent_event", {"index": index})
+
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        rows = list(pool.map(append, range(100)))
+
+    entry_ids = [row.entry_id for row in rows]
+    assert len(entry_ids) == len(set(entry_ids))
+
+    audit = transparency.verify_log_integrity()
+    assert audit["valid"] is True
+    assert audit["total_entries"] == 100
+    assert all(check["chain_ok"] is True for check in audit["checks"])

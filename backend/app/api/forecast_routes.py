@@ -32,7 +32,7 @@ async def forecast_festival_dates(
         "year": year,
         "count": len(items),
         "festivals": [item.__dict__ for item in items],
-        "note": "Forecast outputs include confidence decay metadata for long-horizon planning.",
+        "note": "Forecast outputs include heuristic confidence decay metadata for long-horizon planning.",
         "policy": get_policy_metadata(),
     }
 

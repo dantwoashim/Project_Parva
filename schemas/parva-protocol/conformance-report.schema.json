@@ -1,33 +1,87 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://project-parva.example/schemas/parva-protocol/conformance-report.schema.json",
+  "$id": "https://api.prabinghimire1.com.np/schemas/parva-protocol/conformance-report.schema.json",
   "title": "Parva Conformance Report",
   "type": "object",
-  "required": ["implementation", "protocol_version", "level", "status", "tests_run", "passed", "failed", "report_hash"],
+  "required": [
+    "implementation",
+    "protocol_version",
+    "level",
+    "status",
+    "tests_run",
+    "passed",
+    "failed",
+    "report_hash"
+  ],
   "properties": {
-    "implementation": {"type": "string"},
-    "protocol_version": {"type": "string"},
-    "level": {"type": "string"},
-    "status": {"type": "string", "enum": ["pass", "fail"]},
-    "tests_run": {"type": "integer", "minimum": 0},
-    "passed": {"type": "integer", "minimum": 0},
-    "failed": {"type": "integer", "minimum": 0},
+    "implementation": {
+      "type": "string"
+    },
+    "protocol_version": {
+      "type": "string"
+    },
+    "level": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail"
+      ]
+    },
+    "tests_run": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "passed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "failed": {
+      "type": "integer",
+      "minimum": 0
+    },
     "test_results": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["test_id", "status", "note"],
+        "required": [
+          "test_id",
+          "status",
+          "note"
+        ],
         "properties": {
-          "test_id": {"type": "string"},
-          "status": {"type": "string", "enum": ["pass", "fail"]},
-          "note": {"type": "string"}
+          "test_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail"
+            ]
+          },
+          "note": {
+            "type": "string"
+          }
         },
         "additionalProperties": false
       }
     },
-    "warnings": {"type": "array", "items": {"type": "string"}},
-    "report_hash": {"type": "string", "pattern": "^sha256:"},
-    "meta": {"type": "object"}
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "report_hash": {
+      "type": "string",
+      "pattern": "^sha256:"
+    },
+    "meta": {
+      "type": "object"
+    }
   },
   "additionalProperties": false,
   "examples": [
@@ -40,11 +94,17 @@
       "passed": 1,
       "failed": 0,
       "test_results": [
-        {"test_id": "core.metadata", "status": "pass", "note": "Claim boundary present."}
+        {
+          "test_id": "core.metadata",
+          "status": "pass",
+          "note": "Claim boundary present."
+        }
       ],
       "warnings": [],
       "report_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
-      "meta": {"data_mode": "public"}
+      "meta": {
+        "data_mode": "public"
+      }
     }
   ]
 }

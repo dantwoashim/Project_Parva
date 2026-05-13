@@ -276,32 +276,71 @@ def _conformance_tests_for(level: str, *, artifact: dict[str, Any] | None = None
     js_sdk_path = PROJECT_ROOT / "packages" / "parva-js" / "src" / "index.ts"
     py_sdk_path = PROJECT_ROOT / "packages" / "parva-python" / "parva" / "client.py"
     actual_ad = bs_to_gregorian(2083, 1, 1).isoformat()
+    source_payload = list_sources_payload()
     tests = [
         _test(
             "core.date_conversion",
             "pass" if actual_ad == "2026-04-14" else "fail",
             "BS 2083-01-01 converts through the reference calendar route logic.",
         ),
-        _test("core.metadata", "pass", "Protocol metadata and claim boundary are present."),
+        _test(
+            "core.protocol_version",
+            "pass" if PROTOCOL_VERSION == "parva-protocol-0.1.0" and PROTOCOL_SEMVER == "0.1.0" else "fail",
+            "Protocol version and semver are published.",
+        ),
+        _test(
+            "core.claim_boundary",
+            "pass" if PROTOCOL_CLAIM_BOUNDARY.endswith("not_legal_authority") else "fail",
+            "Protocol claim boundary states the preview is not legal authority.",
+        ),
+        _test(
+            "core.spec_index",
+            "pass" if spec_index_payload()["specs"] else "fail",
+            "Protocol specs are discoverable from the public spec index.",
+        ),
+        _test(
+            "core.schema_index",
+            "pass" if len(schema_index_payload()["schemas"]) >= 10 else "fail",
+            "Protocol schemas are discoverable from the public schema index.",
+        ),
+        _test(
+            "core.credential_hash_preview",
+            "pass" if _credential_smoke_passes() else "fail",
+            "Hash-only preview credentials issue and verify for a public historical date.",
+        ),
         _test("source.fixture_not_official", "pass", "Fixture/research sources cannot claim official authority."),
         _test(
             "source.registry_readable",
             "pass" if source_path.exists() and _safe_json(source_path) else "fail",
             "Public source registry exists and is readable.",
         ),
+        _test(
+            "source.registry_claim_boundaries",
+            "pass" if _sources_have_claim_boundaries(source_payload.get("sources", [])) else "fail",
+            "Public source records include claim boundary metadata.",
+        ),
     ]
     if artifact is not None:
         tests.append(_conformance_artifact_test(artifact))
     if level in {"parva_source_aware", "parva_trust", "parva_timegraph", "parva_rulelang", "parva_impact", "parva_agent_safe", "parva_offline", "parva_full"}:
-        tests.append(_test("source.registry_has_entries", "pass" if list_sources_payload()["sources"] else "fail", "Public source registry has at least one source."))
+        tests.append(_test("source.registry_has_entries", "pass" if source_payload["sources"] else "fail", "Public source registry has at least one source."))
+        tests.append(_test("source.no_private_tier_in_public_registry", "pass" if not _public_sources_include_private(source_payload["sources"]) else "fail", "Public source registry does not expose private-tier sources."))
     if level in {"parva_trust", "parva_timegraph", "parva_rulelang", "parva_impact", "parva_agent_safe", "parva_offline", "parva_full"}:
         tests.append(_test("trust.release_manifest_exists", "pass" if manifest_path.exists() and _safe_json(manifest_path) else "fail", "Public release manifest exists and is readable."))
         tests.append(_test("trust.trust_log_exists", "pass" if trust_log_path.exists() and trust_log_path.read_text(encoding="utf-8").strip() else "fail", "Public trust log exists and is non-empty."))
+        tests.append(_test("trust.release_manifest_hashes", "pass" if _manifest_artifact_hashes_exist(manifest_path) else "fail", "Public release manifest declares artifact hashes."))
+    if level in {"parva_timegraph", "parva_rulelang", "parva_impact", "parva_agent_safe", "parva_full"}:
+        tests.append(_test("timegraph.public_graph_has_facts", "pass" if _timegraph_has_facts() else "fail", "Public TimeGraph exposes traceable facts."))
     if level in {"parva_rulelang", "parva_agent_safe", "parva_full"}:
         tests.append(_test("rulelang.schema_exists", "pass" if rule_schema_path.exists() else "fail", "RuleLang schema exists."))
+        tests.append(_test("rulelang.public_rules_exist", "pass" if _public_rules_exist() else "fail", "Public RuleLang registry has executable public rules."))
+    if level in {"parva_impact", "parva_agent_safe", "parva_full"}:
+        dependencies = _impact_dependency_types()
+        tests.append(_test("impact.real_dependencies_extracted", "pass" if {"timegraph_fact", "evidence_packet", "rule_execution", "profile_decision"}.issubset(dependencies) else "fail", "Impact simulator extracts dependencies from TimeGraph facts, evidence packets, rules, and profiles."))
     if level in {"parva_agent_safe", "parva_full"}:
         tests.append(_test("agent.sdk_python_exists", "pass" if py_sdk_path.exists() else "fail", "Python SDK client file exists for local agent/protocol use."))
         tests.append(_test("agent.sdk_javascript_exists", "pass" if js_sdk_path.exists() else "fail", "JavaScript SDK entrypoint exists for public integration use."))
+        tests.append(_test("agent.tool_registry_broad", "pass" if _agent_tool_count() >= 10 else "fail", "Agent-safe deterministic tool registry includes broad public temporal tools."))
     if level in {"parva_offline", "parva_full"}:
         manifest = offline_bundle_manifest_payload()
         expected_paths = [item["path"] for item in manifest["contents"] if item["required"]]
@@ -312,6 +351,71 @@ def _conformance_tests_for(level: str, *, artifact: dict[str, Any] | None = None
         negative = _conformance_artifact_test({"case_id": "negative.bad_date", "input": {"bs_date": "2083-13-99"}, "expected": {"ad_date": "never"}})
         tests.append(_test("protocol.negative_artifact_rejected", "pass" if negative["status"] == "fail" else "fail", "Invalid conformance artifact is rejected."))
     return tests
+
+
+def _credential_smoke_passes() -> bool:
+    try:
+        credential = issue_calendar_credential_payload(
+            {"claim_type": "date_conversion", "bs_date": "2083-01-01"}
+        )["credential"]
+        return bool(verify_calendar_credential_payload(credential).get("valid"))
+    except (ProtocolError, KeyError, TypeError, ValueError):
+        return False
+
+
+def _sources_have_claim_boundaries(sources: list[dict[str, Any]]) -> bool:
+    return bool(sources) and all(source.get("authority") or source.get("claim_boundary") or source.get("notes") for source in sources)
+
+
+def _public_sources_include_private(sources: list[dict[str, Any]]) -> bool:
+    return any(str(source.get("source_tier") or source.get("tier") or "").lower() == "private" for source in sources)
+
+
+def _manifest_artifact_hashes_exist(manifest_path: Path) -> bool:
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    artifacts = manifest.get("artifacts") or manifest.get("artifact_hashes")
+    if not isinstance(artifacts, list) or not artifacts:
+        return False
+    return all(len(str(artifact.get("sha256") or artifact.get("hash") or "")) >= 64 for artifact in artifacts)
+
+
+def _timegraph_has_facts() -> bool:
+    try:
+        from app.services.timegraph_service import build_public_timegraph
+
+        return bool(build_public_timegraph(resolve_release_id(None)).facts)
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+
+
+def _public_rules_exist() -> bool:
+    try:
+        from app.services.rulelang_service import load_rules
+
+        return bool(load_rules(include_private=False))
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+
+
+def _impact_dependency_types() -> set[str]:
+    try:
+        from app.services.impact_service import build_dependency_registry
+
+        return {str(dependency.get("dependency_type")) for dependency in build_dependency_registry()}
+    except (OSError, ValueError, KeyError, TypeError):
+        return set()
+
+
+def _agent_tool_count() -> int:
+    try:
+        from app.services.agent_service import agent_tools_payload
+
+        return len(agent_tools_payload().get("tools") or [])
+    except (OSError, ValueError, KeyError, TypeError):
+        return 0
 
 
 def _conformance_artifact_test(artifact: dict[str, Any]) -> dict[str, Any]:

@@ -25,6 +25,8 @@ def test_forecast_festivals_contract_shape():
             "estimated_accuracy",
         } <= set(row.keys())
         assert 0 <= row["estimated_accuracy"] <= 1
+        assert row["accuracy_estimate_type"] == "heuristic_not_empirically_calibrated"
+        assert row["accuracy_warning"]
         assert row["confidence_interval_days"] >= 0
 
 
@@ -41,6 +43,7 @@ def test_forecast_error_curve_contract_shape():
     assert len(body["points"]) == 6
     assert body["points"][0]["year"] == 2030
     assert 0 <= body["points"][0]["estimated_accuracy"] <= 1
+    assert body["points"][0]["accuracy_estimate_type"] == "heuristic_not_empirically_calibrated"
 
 
 def test_forecast_v2_alias_available():

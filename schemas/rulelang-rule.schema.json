@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://project-parva.local/schemas/rulelang-rule.schema.json",
+  "$id": "https://api.prabinghimire1.com.np/schemas/rulelang-rule.schema.json",
   "title": "Parva RuleLang Rule",
   "type": "object",
   "additionalProperties": true,

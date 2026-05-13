@@ -1,4 +1,4 @@
-"""Program scoring for minimal rule synthesis."""
+"""Candidate rule scoring for a bounded DSL search."""
 
 from __future__ import annotations
 

@@ -13,6 +13,9 @@ RUN npm run build
 FROM python:3.11.11-slim-bookworm
 WORKDIR /app
 
+ARG PARVA_DOWNLOAD_JPL_KERNEL=0
+ARG PARVA_JPL_DE440_MD5=c9d581bfd84209dbeee8b1583939b148
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=backend \
@@ -37,9 +40,16 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel \
     && pip install --no-cache-dir -c requirements/constraints.txt -e .
 
 COPY data /app/data
-RUN python /app/scripts/download_jpl_kernel.py \
-        --output /app/data/ephemeris/jpl/de440.bsp \
-        --quiet
+RUN mkdir -p /app/data/ephemeris/jpl \
+    && if [ "$PARVA_DOWNLOAD_JPL_KERNEL" = "1" ]; then \
+         python /app/scripts/download_jpl_kernel.py \
+           --kernel de440 \
+           --md5 "$PARVA_JPL_DE440_MD5" \
+           --output /app/data/ephemeris/jpl/de440.bsp \
+           --quiet; \
+       else \
+         echo "Skipping JPL kernel download. Set PARVA_DOWNLOAD_JPL_KERNEL=1 to fetch and checksum-verify de440.bsp during build."; \
+       fi
 RUN mkdir -p /app/output/precomputed \
     && START_YEAR="$(date -u +%Y)" \
     && END_YEAR="$((START_YEAR + 2))" \

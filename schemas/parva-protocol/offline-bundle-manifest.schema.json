@@ -1,32 +1,69 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://project-parva.example/schemas/parva-protocol/offline-bundle-manifest.schema.json",
+  "$id": "https://api.prabinghimire1.com.np/schemas/parva-protocol/offline-bundle-manifest.schema.json",
   "title": "Parva Offline Bundle Manifest",
   "type": "object",
-  "required": ["bundle_id", "protocol_version", "contents", "checksums", "signature_status", "claim_boundary"],
+  "required": [
+    "bundle_id",
+    "protocol_version",
+    "contents",
+    "checksums",
+    "signature_status",
+    "claim_boundary"
+  ],
   "properties": {
-    "bundle_id": {"type": "string"},
-    "protocol_version": {"type": "string"},
-    "created_at": {"type": "string"},
+    "bundle_id": {
+      "type": "string"
+    },
+    "protocol_version": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
     "contents": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["path", "required"],
+        "required": [
+          "path",
+          "required"
+        ],
         "properties": {
-          "path": {"type": "string"},
-          "required": {"type": "boolean"}
+          "path": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          }
         },
         "additionalProperties": false
       }
     },
     "checksums": {
       "type": "object",
-      "additionalProperties": {"type": "string", "pattern": "^sha256:"}
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^sha256:"
+      }
     },
-    "signature": {"type": ["string", "null"]},
-    "signature_status": {"type": "string", "enum": ["unsigned_preview", "signed", "unverified"]},
-    "claim_boundary": {"type": "string"}
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "signature_status": {
+      "type": "string",
+      "enum": [
+        "unsigned_preview",
+        "signed",
+        "unverified"
+      ]
+    },
+    "claim_boundary": {
+      "type": "string"
+    }
   },
   "additionalProperties": false,
   "examples": [
@@ -35,7 +72,10 @@
       "protocol_version": "parva-protocol-0.1.0",
       "created_at": "2026-05-12T00:00:00Z",
       "contents": [
-        {"path": "specs/parva-protocol/VERSION", "required": true}
+        {
+          "path": "specs/parva-protocol/VERSION",
+          "required": true
+        }
       ],
       "checksums": {
         "specs/parva-protocol/VERSION": "sha256:0000000000000000000000000000000000000000000000000000000000000000"

@@ -41,3 +41,8 @@ def test_human_review_promotion_plan_has_top_rows(tmp_path, monkeypatch):
     assert len(rows) == 100
     assert rows[0]["rank"] == 1
     assert rows[0]["recommended_manual_action"]
+    assert not (lab_dir / "human_review_promotion_plan.csv").exists()
+
+    paths = promotion_plan.write_human_review_promotion_plan(rows, output_dir=lab_dir)
+    assert paths["csv"].exists()
+    assert paths["markdown"].exists()

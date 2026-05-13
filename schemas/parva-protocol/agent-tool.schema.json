@@ -1,8 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://project-parva.example/schemas/parva-protocol/agent-tool.schema.json",
+  "$id": "https://api.prabinghimire1.com.np/schemas/parva-protocol/agent-tool.schema.json",
   "title": "Parva Protocol Agent Tool",
-  "allOf": [{"$ref": "../agent-tool.schema.json"}],
+  "allOf": [
+    {
+      "$ref": "../agent-tool.schema.json"
+    }
+  ],
   "examples": [
     {
       "name": "parva.convert_date",
@@ -10,16 +14,28 @@
       "input_schema": {
         "type": "object",
         "properties": {
-          "date": {"type": "string"}
+          "date": {
+            "type": "string"
+          }
         }
       },
       "output_schema": {
         "type": "object",
-        "required": ["result", "decision", "meta"],
+        "required": [
+          "result",
+          "decision",
+          "meta"
+        ],
         "properties": {
-          "result": {"type": "object"},
-          "decision": {"type": "object"},
-          "meta": {"type": "object"}
+          "result": {
+            "type": "object"
+          },
+          "decision": {
+            "type": "object"
+          },
+          "meta": {
+            "type": "object"
+          }
         }
       },
       "supported_mode": "public",

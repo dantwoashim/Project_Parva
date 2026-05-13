@@ -65,6 +65,56 @@ test("validateBsDate converts public 400 responses into a validation result", as
   assert.match(result.error, /Invalid BS date/);
 });
 
+test("retries 429 responses using Retry-After", async () => {
+  const calls = [];
+  const sleeps = [];
+  const client = new ParvaClient({
+    sleep: async (ms) => {
+      sleeps.push(ms);
+    },
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      if (calls.length === 1) {
+        return {
+          ok: false,
+          status: 429,
+          statusText: "Too Many Requests",
+          headers: { get: (name) => (name === "Retry-After" ? "0.25" : null) },
+          text: async () => JSON.stringify({ detail: "slow down" }),
+        };
+      }
+      return jsonResponse({ gregorian: "2026-04-14" });
+    },
+  });
+
+  const payload = await client.bsToAd({ year: 2083, month: 1, day: 1 });
+
+  assert.equal(payload.gregorian, "2026-04-14");
+  assert.equal(calls.length, 2);
+  assert.deepEqual(sleeps, [250]);
+});
+
+test("can disable retries", async () => {
+  let calls = 0;
+  const client = new ParvaClient({
+    maxRetries: 0,
+    fetchImpl: async () => {
+      calls += 1;
+      return jsonResponse({ detail: "slow down" }, {
+        ok: false,
+        status: 429,
+        statusText: "Too Many Requests",
+      });
+    },
+  });
+
+  await assert.rejects(
+    () => client.bsToAd({ year: 2083, month: 1, day: 1 }),
+    /status 429/,
+  );
+  assert.equal(calls, 1);
+});
+
 test("covers public month, fiscal, business-day, and policy endpoints", async () => {
   const calls = [];
   const client = new ParvaClient({

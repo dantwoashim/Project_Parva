@@ -131,6 +131,20 @@ client = ParvaClient(
 )
 ```
 
+The default base is the public demo service, not a required production host.
+Private deployments should pass their own `base_url`.
+
+## Retry Behavior
+
+The SDK retries `429`, `500`, `502`, `503`, and `504` responses with conservative
+backoff. `Retry-After` is honored for `429` responses.
+
+```python
+client = ParvaClient(max_retries=2, retry_base_delay=0.25)
+```
+
+Set `max_retries=0` to disable retries.
+
 ## Claim Boundary
 
 Future-BS capabilities describe a research surface. They are not official calendar publication and must preserve:

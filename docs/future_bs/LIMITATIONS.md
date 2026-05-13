@@ -17,7 +17,7 @@ green-zone benchmark passes.
 
 ## Ephemeris Status
 
-The JPL DE440 adapter requires an installed `.bsp` kernel for live regeneration. Cloud Run builds download and verify `de440.bsp`; local development can run `scripts/download_jpl_kernel.py --kernel de440` or set `PARVA_JPL_DE440_KERNEL` manually. DE441 part kernels can be downloaded with `--kernel de441-part1` and `--kernel de441-part2` for cross-check work. Precomputed trusted artifacts may be served without live JPL regeneration.
+The JPL DE440 adapter requires an installed `.bsp` kernel for live regeneration. Public Docker builds do not fetch that large third-party file by default. Operators can either mount a preverified kernel and set `PARVA_JPL_DE440_KERNEL`, or opt in to a checksum-verified build-time download with `PARVA_DOWNLOAD_JPL_KERNEL=1`. Local development can run `scripts/download_jpl_kernel.py --kernel de440`. DE441 part kernels can be downloaded with `--kernel de441-part1` and `--kernel de441-part2` for cross-check work. Precomputed trusted artifacts may be served without live JPL regeneration.
 
 ## Civil-Date Uncertainty
 

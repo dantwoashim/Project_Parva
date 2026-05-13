@@ -67,6 +67,11 @@
       return new URLSearchParams(window.location.search);
     }
 
+    function apiBase(query) {
+      const configured = document.body.dataset.apiBase || query.get('api_base');
+      return (configured || 'https://api.prabinghimire1.com.np/v3/api').replace(/\/+$/, '');
+    }
+
     function text(id, value) {
       document.getElementById(id).textContent = value || '-';
     }
@@ -93,6 +98,7 @@
 
     async function loadWidget() {
       const query = params();
+      const base = apiBase(query);
       const tz = query.get('tz') || 'Asia/Kathmandu';
       const payload = {
         date: query.get('date') || todayIso(tz),
@@ -103,7 +109,7 @@
       };
 
       try {
-        const response = await fetch('/v3/api/temporal/compass', {
+        const response = await fetch(base + '/temporal/compass', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),

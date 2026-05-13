@@ -6,6 +6,7 @@ import json
 import logging
 import time
 import uuid
+from asyncio import to_thread
 from collections.abc import Callable
 from typing import Any
 
@@ -409,7 +410,7 @@ def _rate_policy_for_request(path: str, principal_type: str | None) -> tuple[str
     return "public", RatePolicy(limit=120, window_seconds=60)
 
 
-def _billing_quota_for_request(request: Request, settings: AppSettings):
+async def _billing_quota_for_request(request: Request, settings: AppSettings):
     if not settings.billing_enabled:
         return None
     if request.url.path.startswith(
@@ -434,22 +435,25 @@ def _billing_quota_for_request(request: Request, settings: AppSettings):
         from app.billing import get_billing_service
         from app.billing.plans import FREE_DAILY_LIMIT
 
-        service = get_billing_service(settings)
-        if principal.principal_type == "api_key":
+        def _check_quota():
+            service = get_billing_service(settings)
+            if principal.principal_type == "api_key":
+                return service.check_quota(
+                    subject_type="api_key",
+                    subject_id=principal.principal_id,
+                    tier=principal.tier or "paid",
+                    limit=int(principal.monthly_limit or 0),
+                    bucket="monthly",
+                )
             return service.check_quota(
-                subject_type="api_key",
+                subject_type="ip",
                 subject_id=principal.principal_id,
-                tier=principal.tier or "paid",
-                limit=int(principal.monthly_limit or 0),
-                bucket="monthly",
+                tier="free",
+                limit=FREE_DAILY_LIMIT,
+                bucket="daily",
             )
-        return service.check_quota(
-            subject_type="ip",
-            subject_id=principal.principal_id,
-            tier="free",
-            limit=FREE_DAILY_LIMIT,
-            bucket="daily",
-        )
+
+        return await to_thread(_check_quota)
     except Exception as exc:
         logger.exception("Billing quota check failed", exc_info=exc)
         raise
@@ -506,7 +510,7 @@ def build_rate_limit_guard(*, settings: AppSettings, backend: RateLimiterBackend
                 },
             )
 
-        billing_decision = _billing_quota_for_request(request, settings)
+        billing_decision = await _billing_quota_for_request(request, settings)
         if billing_decision is not None and not billing_decision.allowed:
             metrics.record_throttle(request.url.path)
             return JSONResponse(
@@ -723,8 +727,8 @@ def build_engine_headers(
 
                 if active_ephemeris_label() == "jpl_de440":
                     ephemeris_value = "jpl-de440-lahiri-sidereal"
-            except Exception:
-                pass
+            except Exception as exc:  # noqa: BLE001
+                logger.warning("Unable to resolve active future-BS ephemeris label: %s", exc)
         response.headers["X-Parva-Ephemeris"] = ephemeris_value
         response.headers["X-Parva-License"] = license_mode
         response.headers["X-Parva-Engine"] = _engine_track_for_path(request.url.path)
@@ -732,6 +736,9 @@ def build_engine_headers(
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "no-referrer"
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
+        )
         if request.url.path.startswith(_PRIVATE_RESPONSE_PREFIXES):
             response.headers["Cache-Control"] = "no-store"
             response.headers["Pragma"] = "no-cache"

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import secrets
+from asyncio import to_thread
 from typing import Any, Literal
 
 from fastapi import APIRouter, HTTPException, Request
@@ -82,15 +83,26 @@ def _require_api_key(request: Request):
     return principal
 
 
+async def _billing_call(request: Request, method_name: str, *args, **kwargs):
+    # Billing storage is intentionally synchronous today, so route handlers
+    # offload service creation and DB work to keep the FastAPI event loop free.
+    def _invoke():
+        service = _service(request)
+        method = getattr(service, method_name)
+        return method(*args, **kwargs)
+
+    return await to_thread(_invoke)
+
+
 @router.get("/billing/plans")
 async def billing_plans(request: Request):
-    return {"plans": _service(request).list_plans(), "free_daily_limit": FREE_DAILY_LIMIT}
+    return {"plans": await _billing_call(request, "list_plans"), "free_daily_limit": FREE_DAILY_LIMIT}
 
 
 @router.post("/billing/checkout")
 async def create_billing_checkout(payload: CheckoutRequest, request: Request):
     try:
-        checkout = _service(request).create_checkout(**payload.model_dump())
+        checkout = await _billing_call(request, "create_checkout", **payload.model_dump())
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return checkout
@@ -98,7 +110,7 @@ async def create_billing_checkout(payload: CheckoutRequest, request: Request):
 
 @router.get("/billing/checkout/{checkout_id}")
 async def get_billing_checkout(checkout_id: str, request: Request):
-    checkout = _service(request).get_checkout(checkout_id)
+    checkout = await _billing_call(request, "get_checkout", checkout_id)
     if not checkout:
         raise HTTPException(status_code=404, detail="Checkout not found.")
     return checkout
@@ -117,7 +129,9 @@ async def verify_billing_checkout(checkout_id: str, payload: VerifyCheckoutReque
             detail="Production payment activation requires admin confirmation.",
         )
     try:
-        checkout = _service(request).verify_checkout(
+        checkout = await _billing_call(
+            request,
+            "verify_checkout",
             checkout_id,
             status=payload.status,
             provider_reference=payload.provider_reference,
@@ -131,7 +145,12 @@ async def verify_billing_checkout(checkout_id: str, payload: VerifyCheckoutReque
 @router.post("/keys")
 async def create_api_key(payload: CreateKeyRequest, request: Request):
     try:
-        return _service(request).create_api_key_for_checkout(payload.checkout_id, name=payload.name)
+        return await _billing_call(
+            request,
+            "create_api_key_for_checkout",
+            payload.checkout_id,
+            name=payload.name,
+        )
     except BillingAuthError as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
     except ValueError as exc:
@@ -146,17 +165,18 @@ async def revoke_api_key(key_id: str, request: Request):
     if getattr(principal, "principal_type", None) == "api_key" and getattr(principal, "principal_id", None) != key_id:
         raise HTTPException(status_code=403, detail="API keys can only revoke themselves.")
     try:
-        return _service(request).revoke_key(key_id)
+        return await _billing_call(request, "revoke_key", key_id)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @router.get("/me/usage")
 async def my_usage(request: Request):
-    service = _service(request)
     principal = _principal(request)
     if getattr(principal, "principal_type", None) == "api_key":
-        return service.usage_for_subject(
+        return await _billing_call(
+            request,
+            "usage_for_subject",
             subject_type="api_key",
             subject_id=principal.principal_id,
             bucket="monthly",
@@ -164,7 +184,9 @@ async def my_usage(request: Request):
             tier=principal.tier or "paid",
         )
     client_ip = getattr(request.state, "client_ip", "unknown")
-    return service.usage_for_subject(
+    return await _billing_call(
+        request,
+        "usage_for_subject",
         subject_type="ip",
         subject_id=client_ip,
         bucket="daily",
@@ -184,7 +206,9 @@ async def create_webhook(payload: WebhookRequest, request: Request):
     if principal.tier not in {"professional", "enterprise"}:
         raise HTTPException(status_code=403, detail="Webhook notifications require Professional or Enterprise.")
     secret = f"parva_whsec_{secrets.token_urlsafe(32)}"
-    return _service(request).create_webhook_subscription(
+    return await _billing_call(
+        request,
+        "create_webhook_subscription",
         api_key_id=principal.principal_id,
         customer_id=principal.customer_id or "",
         url=str(payload.url),
@@ -196,20 +220,22 @@ async def create_webhook(payload: WebhookRequest, request: Request):
 @router.get("/admin/customers")
 async def admin_customers(request: Request):
     _require_admin(request)
-    return {"customers": _service(request).admin_customers()}
+    return {"customers": await _billing_call(request, "admin_customers")}
 
 
 @router.get("/admin/subscriptions")
 async def admin_subscriptions(request: Request):
     _require_admin(request)
-    return {"subscriptions": _service(request).admin_subscriptions()}
+    return {"subscriptions": await _billing_call(request, "admin_subscriptions")}
 
 
 @router.post("/admin/invoices/{invoice_id}/mark-paid")
 async def admin_mark_invoice_paid(invoice_id: str, payload: MarkInvoicePaidRequest, request: Request):
     _require_admin(request)
     try:
-        invoice = _service(request).mark_invoice_paid(
+        invoice = await _billing_call(
+            request,
+            "mark_invoice_paid",
             invoice_id,
             provider_reference=payload.provider_reference,
             notes=payload.notes,
@@ -223,7 +249,12 @@ async def admin_mark_invoice_paid(invoice_id: str, payload: MarkInvoicePaidReque
 async def admin_extend_subscription(subscription_id: str, payload: ExtendSubscriptionRequest, request: Request):
     _require_admin(request)
     try:
-        subscription = _service(request).extend_subscription(subscription_id, days=payload.days)
+        subscription = await _billing_call(
+            request,
+            "extend_subscription",
+            subscription_id,
+            days=payload.days,
+        )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     return subscription
@@ -233,7 +264,7 @@ async def admin_extend_subscription(subscription_id: str, payload: ExtendSubscri
 async def admin_revoke_key(key_id: str, request: Request):
     _require_admin(request)
     try:
-        return _service(request).revoke_key(key_id)
+        return await _billing_call(request, "revoke_key", key_id)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -241,4 +272,4 @@ async def admin_revoke_key(key_id: str, request: Request):
 @router.get("/admin/usage/anomalies")
 async def admin_usage_anomalies(request: Request):
     _require_admin(request)
-    return {"anomalies": _service(request).usage_anomalies()}
+    return {"anomalies": await _billing_call(request, "usage_anomalies")}

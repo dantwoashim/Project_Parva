@@ -57,11 +57,16 @@ ignore_missing_imports = true
 follow_imports = "silent"
 files = [
     "backend/app/bootstrap",
+    "backend/app/billing",
+    "backend/app/storage/file_stores.py",
     "backend/app/reliability",
     "backend/app/cache/precomputed.py",
     "backend/app/api/public_artifacts_routes.py",
     "backend/app/api/spec_routes.py",
     "backend/app/calendar/tithi/tithi_core.py",
+    "backend/app/future_bs/rule_inversion",
+    "backend/app/future_bs/truth_fusion/consensus_truth_selector.py",
+    "backend/app/future_bs/active_learning/promotion_plan.py",
 ]
 
 [tool.setuptools]

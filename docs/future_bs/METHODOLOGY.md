@@ -44,12 +44,15 @@ For each future BS year:
 
 ## Current Ephemeris Position
 
-Production builds can download NASA NAIF `de440.bsp`, verify its published
-checksum, and expose it through `PARVA_JPL_DE440_KERNEL`. When that file is
-present, the future-BS solar-ingress path uses the JPL-backed adapter. Swiss
-Ephemeris and the built-in Moshier path remain fallback/cross-check layers. The
-public repository keeps only a small solar-ingress sample for parser and schema
-tests; full private caches are ignored deployment artifacts.
+Production builds can use NASA NAIF `de440.bsp` when the operator provides a
+preverified file through `PARVA_JPL_DE440_KERNEL` or opts in to the Docker
+build argument `PARVA_DOWNLOAD_JPL_KERNEL=1`. The download path verifies the
+published checksum before storing the file, and the default public Docker build
+does not depend on live NASA availability. When the file is present, the
+future-BS solar-ingress path uses the JPL-backed adapter. Swiss Ephemeris and
+the built-in Moshier path remain fallback/cross-check layers. The public
+repository keeps only a small solar-ingress sample for parser and schema tests;
+full private caches are ignored deployment artifacts.
 
 ## Backtesting
 

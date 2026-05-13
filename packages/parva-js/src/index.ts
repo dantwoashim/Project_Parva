@@ -35,6 +35,9 @@ export interface ParvaClientOptions {
   futureBsCapabilitiesUrl?: string;
   timeoutMs?: number;
   fetchImpl?: typeof fetch;
+  maxRetries?: number;
+  retryBaseDelayMs?: number;
+  sleep?: (ms: number) => Promise<void>;
 }
 
 export interface ValidateBsDateResult {
@@ -178,12 +181,14 @@ export interface ProtocolCredentialIssueInput {
 export class ParvaApiError extends Error {
   readonly status?: number;
   readonly body?: unknown;
+  readonly retryAfterMs?: number;
 
-  constructor(message: string, status?: number, body?: unknown) {
+  constructor(message: string, status?: number, body?: unknown, retryAfterMs?: number) {
     super(message);
     this.name = "ParvaApiError";
     this.status = status;
     this.body = body;
+    this.retryAfterMs = retryAfterMs;
   }
 }
 
@@ -191,14 +196,20 @@ export class ParvaClient {
   readonly baseUrl: string;
   readonly futureBsCapabilitiesUrl: string;
   readonly timeoutMs: number;
+  readonly maxRetries: number;
+  readonly retryBaseDelayMs: number;
   private readonly fetchImpl: typeof fetch;
+  private readonly sleep: (ms: number) => Promise<void>;
 
   constructor(options: ParvaClientOptions = {}) {
     this.baseUrl = trimTrailingSlash(options.baseUrl ?? DEFAULT_API_BASE);
     this.futureBsCapabilitiesUrl =
       options.futureBsCapabilitiesUrl ?? DEFAULT_FUTURE_BS_CAPABILITIES_URL;
     this.timeoutMs = options.timeoutMs ?? 10_000;
+    this.maxRetries = Math.max(0, options.maxRetries ?? 2);
+    this.retryBaseDelayMs = Math.max(0, options.retryBaseDelayMs ?? 250);
     this.fetchImpl = options.fetchImpl ?? globalThis.fetch;
+    this.sleep = options.sleep ?? sleepMs;
     if (!this.fetchImpl) {
       throw new ParvaApiError("No fetch implementation is available for ParvaClient");
     }
@@ -603,6 +614,24 @@ export class ParvaClient {
     url: string,
     jsonBody?: unknown,
   ): Promise<JsonObject> {
+    for (let attempt = 0; attempt <= this.maxRetries; attempt += 1) {
+      try {
+        return await this.requestOnce(method, url, jsonBody);
+      } catch (error) {
+        if (!isRetryable(error) || attempt >= this.maxRetries) {
+          throw error;
+        }
+        await this.sleep(retryDelayMs(error, attempt, this.retryBaseDelayMs));
+      }
+    }
+    throw new ParvaApiError("Parva API request failed after retry attempts");
+  }
+
+  private async requestOnce(
+    method: "GET" | "POST",
+    url: string,
+    jsonBody?: unknown,
+  ): Promise<JsonObject> {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), this.timeoutMs);
     try {
@@ -622,10 +651,12 @@ export class ParvaClient {
       const parsed = parseJsonSafely(text);
       if (!response.ok) {
         const detail = extractErrorDetail(parsed) ?? response.statusText;
+        const retryAfterMs = parseRetryAfterMs(response.headers?.get("Retry-After") ?? null);
         throw new ParvaApiError(
           `Parva API request failed with status ${response.status}: ${detail}`,
           response.status,
           parsed ?? text,
+          retryAfterMs,
         );
       }
       if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
@@ -645,6 +676,35 @@ export class ParvaClient {
       clearTimeout(timeout);
     }
   }
+}
+
+const RETRYABLE_STATUSES = new Set([429, 500, 502, 503, 504]);
+
+function isRetryable(error: unknown): boolean {
+  return error instanceof ParvaApiError && RETRYABLE_STATUSES.has(error.status ?? 0);
+}
+
+function retryDelayMs(error: unknown, attempt: number, baseDelayMs: number): number {
+  if (error instanceof ParvaApiError && error.status === 429 && error.retryAfterMs !== undefined) {
+    return error.retryAfterMs;
+  }
+  const jitter = baseDelayMs > 0 ? Math.floor(Math.random() * baseDelayMs) : 0;
+  return baseDelayMs * 2 ** attempt + jitter;
+}
+
+function parseRetryAfterMs(value: string | null): number | undefined {
+  if (!value) {
+    return undefined;
+  }
+  const seconds = Number(value);
+  if (!Number.isFinite(seconds)) {
+    return undefined;
+  }
+  return Math.max(0, seconds * 1000);
+}
+
+function sleepMs(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export function getToday(options: { riskMode?: string } = {}, clientOptions?: ParvaClientOptions) {

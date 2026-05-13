@@ -154,6 +154,10 @@ def _is_production_environment(environment: str) -> bool:
     return environment.strip().lower() in PRODUCTION_ENV_VALUES
 
 
+def _is_local_environment(environment: str) -> bool:
+    return environment.strip().lower() in DEV_ENV_VALUES | TEST_ENV_VALUES
+
+
 def _validate_license_mode(settings: AppSettings) -> list[str]:
     normalized_license = settings.license_mode.strip().lower()
     if normalized_license in {"agpl-3.0-only", "agpl-3.0-or-later"}:
@@ -225,8 +229,11 @@ def _validate_billing_settings(settings: AppSettings) -> list[str]:
             ("postgres://", "postgresql://")
         ):
             errors.append("Production billing requires a Postgres PARVA_DATABASE_URL.")
+    if not _is_local_environment(settings.environment):
         if settings.api_key_pepper == "parva-local-development-pepper":
-            errors.append("Production billing requires PARVA_API_KEY_PEPPER to be set.")
+            errors.append(
+                "Billing requires PARVA_API_KEY_PEPPER outside local, test, or development."
+            )
     return errors
 
 

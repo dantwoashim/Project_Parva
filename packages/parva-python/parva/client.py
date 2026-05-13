@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import random
 import socket
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -15,13 +17,24 @@ DEFAULT_FUTURE_BS_CAPABILITIES_URL = (
 
 JsonObject = dict[str, Any]
 Transport = Callable[[str, str, dict[str, str] | None, JsonObject | None, float], JsonObject]
+Sleep = Callable[[float], None]
+
+_RETRYABLE_STATUSES = {429, 500, 502, 503, 504}
 
 
 class ParvaAPIError(RuntimeError):
-    def __init__(self, message: str, *, status: int | None = None, body: Any = None):
+    def __init__(
+        self,
+        message: str,
+        *,
+        status: int | None = None,
+        body: Any = None,
+        headers: dict[str, str] | None = None,
+    ):
         super().__init__(message)
         self.status = status
         self.body = body
+        self.headers = headers or {}
 
 
 class ParvaNetworkError(RuntimeError):
@@ -43,11 +56,17 @@ class ParvaClient:
         future_bs_capabilities_url: str = DEFAULT_FUTURE_BS_CAPABILITIES_URL,
         timeout: float = 10.0,
         transport: Transport | None = None,
+        max_retries: int = 2,
+        retry_base_delay: float = 0.25,
+        retry_sleep: Sleep | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.future_bs_capabilities_url = future_bs_capabilities_url
         self.timeout = timeout
         self._transport = transport
+        self.max_retries = max(0, max_retries)
+        self.retry_base_delay = max(0.0, retry_base_delay)
+        self._retry_sleep = retry_sleep or time.sleep
 
     def get_today(self, risk_mode: str | None = None) -> JsonObject:
         params = {"risk_mode": risk_mode} if risk_mode else None
@@ -721,6 +740,26 @@ class ParvaClient:
         *,
         json_body: JsonObject | None = None,
     ) -> JsonObject:
+        for attempt in range(self.max_retries + 1):
+            try:
+                return self._request_once(method, url, json_body=json_body)
+            except ParvaAPIError as exc:
+                if not _is_retryable_error(exc) or attempt >= self.max_retries:
+                    raise
+                self._retry_sleep(_retry_delay_seconds(exc, attempt, self.retry_base_delay))
+            except ParvaNetworkError:
+                if attempt >= self.max_retries:
+                    raise
+                self._retry_sleep(_retry_delay_seconds(None, attempt, self.retry_base_delay))
+        raise ParvaNetworkError("Parva API request failed after retry attempts")
+
+    def _request_once(
+        self,
+        method: str,
+        url: str,
+        *,
+        json_body: JsonObject | None = None,
+    ) -> JsonObject:
         if self._transport is not None:
             return self._transport(method, url, None, json_body, self.timeout)
 
@@ -742,9 +781,34 @@ class ParvaClient:
                 f"Parva API request failed with status {exc.code}: {detail}",
                 status=exc.code,
                 body=parsed,
+                headers={key: value for key, value in exc.headers.items()},
             ) from exc
         except (urllib.error.URLError, TimeoutError, socket.timeout) as exc:
             raise ParvaNetworkError(f"Parva API request failed: {exc}") from exc
+
+
+def _is_retryable_error(exc: ParvaAPIError) -> bool:
+    return exc.status in _RETRYABLE_STATUSES
+
+
+def _retry_delay_seconds(exc: ParvaAPIError | None, attempt: int, base_delay: float) -> float:
+    if exc is not None and exc.status == 429:
+        retry_after = _parse_retry_after_seconds(exc.headers.get("Retry-After"))
+        if retry_after is not None:
+            return retry_after
+    exponential = base_delay * (2**attempt)
+    jitter = random.uniform(0.0, base_delay) if base_delay > 0 else 0.0
+    return exponential + jitter
+
+
+def _parse_retry_after_seconds(value: str | None) -> float | None:
+    if not value:
+        return None
+    try:
+        seconds = float(value)
+    except ValueError:
+        return None
+    return max(0.0, seconds)
 
 
 def get_today(*, client: ParvaClient | None = None, risk_mode: str | None = None) -> JsonObject:

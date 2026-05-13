@@ -1,7 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Parva Protocol Release Manifest",
-  "allOf": [{"$ref": "../release-manifest.schema.json"}],
+  "allOf": [
+    {
+      "$ref": "../release-manifest.schema.json"
+    }
+  ],
   "examples": [
     {
       "release_id": "parva-bs-public-demo",
@@ -27,15 +31,24 @@
         }
       ],
       "generated_at": "2026-05-12T00:00:00Z",
-      "schemas_used": ["schemas/release-manifest.schema.json"],
-      "capabilities": ["today", "bs_to_ad", "ad_to_bs"],
+      "schemas_used": [
+        "schemas/release-manifest.schema.json"
+      ],
+      "capabilities": [
+        "today",
+        "bs_to_ad",
+        "ad_to_bs"
+      ],
       "default_confidence": "source_backed",
-      "warnings": ["Public demo release metadata only. Not legal authority."],
+      "warnings": [
+        "Public demo release metadata only. Not legal authority."
+      ],
       "claim_boundary": {
         "official_publication_override": true,
         "future_outputs_status": "computed_prediction_not_official",
         "not_legal_or_banking_authority": true
       }
     }
-  ]
+  ],
+  "$id": "https://api.prabinghimire1.com.np/schemas/parva-protocol/release-manifest.schema.json"
 }

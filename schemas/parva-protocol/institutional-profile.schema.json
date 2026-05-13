@@ -2,12 +2,25 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Parva Institutional Profile",
   "type": "object",
-  "required": ["profile_id", "label", "jurisdiction", "risk_policy"],
+  "required": [
+    "profile_id",
+    "label",
+    "jurisdiction",
+    "risk_policy"
+  ],
   "properties": {
-    "profile_id": {"type": "string"},
-    "label": {"type": "string"},
-    "jurisdiction": {"type": "string"},
-    "risk_policy": {"type": "object"}
+    "profile_id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "risk_policy": {
+      "type": "object"
+    }
   },
   "additionalProperties": false,
   "examples": [
@@ -20,5 +33,6 @@
         "unsupported_result_action": "human_review_required"
       }
     }
-  ]
+  ],
+  "$id": "https://api.prabinghimire1.com.np/schemas/parva-protocol/institutional-profile.schema.json"
 }

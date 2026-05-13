@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate long-horizon forecast report (Year 3 Week 14-16)."""
+"""Generate long-horizon forecast report with heuristic confidence metadata."""
 
 from __future__ import annotations
 
@@ -45,13 +45,13 @@ def main() -> int:
         "range": {"start_year": start_year, "end_year": end_year},
         "festival_count": len(festivals),
         "forecast_rows": len(rows),
-        "average_estimated_accuracy": avg_accuracy,
-        "near_term_average_accuracy": near_term_avg,
+        "average_heuristic_accuracy_estimate": avg_accuracy,
+        "near_term_heuristic_accuracy_estimate": near_term_avg,
         "error_curve": curve,
         "forecasts": rows,
         "methodology": {
-            "type": "confidence_decay",
-            "note": "Accuracy decays with forecast horizon; intervals widen for long-range outputs.",
+            "type": "heuristic_confidence_decay",
+            "note": "Accuracy estimates are heuristic planning signals, not empirical accuracy claims.",
         },
     }
 
@@ -63,15 +63,15 @@ def main() -> int:
         "# Forecast Report",
         "",
         f"- Generated: `{payload['generated_at']}`",
-        f"- Horizon: **{start_year}–{end_year}**",
+        f"- Horizon: **{start_year}-{end_year}**",
         f"- Festivals per year: **{len(festivals)}**",
         f"- Forecast rows: **{len(rows)}**",
-        f"- Average estimated accuracy: **{avg_accuracy}**",
-        f"- Near-term (<=5y) average: **{near_term_avg}**",
+        f"- Average heuristic accuracy estimate: **{avg_accuracy}**",
+        f"- Near-term (<=5y) heuristic estimate: **{near_term_avg}**",
         "",
         "## Confidence Curve (Sample)",
         "",
-        "| Year | Horizon | Estimated Accuracy | CI Days |",
+        "| Year | Horizon | Heuristic Accuracy Estimate | CI Days |",
         "|---|---:|---:|---:|",
     ]
     for point in curve[:10]:
@@ -83,7 +83,8 @@ def main() -> int:
             "",
             "## Notes",
             "",
-            "- Forecast outputs are computed using the v2 festival engine with confidence decay metadata.",
+            "- Forecast outputs are computed using the v2 festival engine with heuristic confidence decay metadata.",
+            "- Accuracy estimates are not empirically calibrated accuracy claims.",
             "- Consumers should use confidence interval and horizon fields for planning UI.",
         ]
     )

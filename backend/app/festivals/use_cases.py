@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
+from functools import lru_cache
 from typing import Optional
 
 from fastapi import HTTPException
@@ -233,9 +234,25 @@ def upcoming_festivals_payload(
     quality_band: str,
     profile: Optional[str],
 ) -> UpcomingFestivalsResponse:
-    repo = get_repository()
     start = from_date or date.today()
-    quality_band = quality_band.lower().strip()
+    return _cached_upcoming_festivals_payload(
+        days=days,
+        start_iso=start.isoformat(),
+        quality_band=quality_band.lower().strip(),
+        profile=profile,
+    )
+
+
+@lru_cache(maxsize=256)
+def _cached_upcoming_festivals_payload(
+    *,
+    days: int,
+    start_iso: str,
+    quality_band: str,
+    profile: Optional[str],
+) -> UpcomingFestivalsResponse:
+    repo = get_repository()
+    start = date.fromisoformat(start_iso)
     if quality_band not in QUALITY_BAND_CHOICES:
         raise HTTPException(status_code=400, detail=f"Invalid quality_band '{quality_band}'")
 

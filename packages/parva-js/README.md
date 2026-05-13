@@ -131,6 +131,23 @@ const parva = new ParvaClient({
 });
 ```
 
+The default base is the public demo service, not a required production host.
+Private deployments should pass their own `baseUrl`.
+
+## Retry Behavior
+
+The SDK retries `429`, `500`, `502`, `503`, and `504` responses with conservative
+backoff. `Retry-After` is honored for `429` responses.
+
+```ts
+const parva = new ParvaClient({
+  maxRetries: 2,
+  retryBaseDelayMs: 250,
+});
+```
+
+Set `maxRetries: 0` to disable retries.
+
 ## Claim Boundary
 
 Future-BS capability responses are metadata about a research layer. They are not official calendar publication and must preserve:

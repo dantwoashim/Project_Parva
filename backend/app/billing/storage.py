@@ -91,8 +91,8 @@ class BillingStore:
         except ImportError as exc:  # pragma: no cover - only hit in Postgres deployments.
             raise RuntimeError("Postgres billing requires psycopg[binary].") from exc
 
-        with psycopg.connect(self.config.url, row_factory=dict_row) as conn:
-            yield conn
+        with psycopg.connect(self.config.url, row_factory=dict_row) as pg_conn:
+            yield pg_conn
 
     def execute(self, sql: str, params: tuple[Any, ...] = ()) -> None:
         with self.connect() as conn:

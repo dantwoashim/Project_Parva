@@ -13,6 +13,7 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.services.impact_service import (  # noqa: E402
+    build_dependency_registry,
     event_schema_payload,
     impact_capabilities_payload,
     recommended_actions_payload,
@@ -25,6 +26,11 @@ from app.services.impact_service import (  # noqa: E402
 def main() -> int:
     capabilities = impact_capabilities_payload()
     assert capabilities["surface"] == "temporal_impact_simulator"
+    dependency_types = {
+        dependency["dependency_type"]
+        for dependency in build_dependency_registry(release_id="parva-bs-public-demo")
+    }
+    assert {"timegraph_fact", "evidence_packet", "rule_execution", "profile_decision"}.issubset(dependency_types)
     diff = semantic_release_diff_payload("parva-bs-public-demo", "parva-bs-public-demo")
     assert diff["summary"]["facts_changed"] == 0
     fixture = simulate_release_diff_payload(

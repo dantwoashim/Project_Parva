@@ -101,6 +101,41 @@ The backend accepts either `CORS_ALLOW_ORIGINS` or `PARVA_CORS_ORIGINS`. Use the
 
 Do not set the public Render demo to `PARVA_ENV=production` unless Redis-backed rate limiting and all production checks are configured. `production` is the strict private or hardened deployment profile. The public demo profile is `public`.
 
+## Rate limits, metrics, and security headers
+
+The public demo may use the in-process rate limiter because it is a lightweight
+evaluation service. Production-like deployments must use:
+
+```text
+PARVA_RATE_LIMIT_BACKEND=redis
+PARVA_REDIS_URL=rediss://...
+```
+
+In-process metrics are process-local. Treat them as local health telemetry, not
+as global multi-worker business metrics.
+
+The backend sets conservative API security headers, including:
+
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+- `Referrer-Policy: no-referrer`
+- `Content-Security-Policy: default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'`
+
+Cloudflare Pages should also define its own frontend CSP if custom scripts,
+analytics, or embedded widgets are added.
+
+## Static embeds
+
+Static embed pages under `frontend/public/embed/` can run from a static host and
+call the public API directly. They accept either:
+
+```text
+?api_base=https://api.prabinghimire1.com.np/v3/api
+```
+
+or a host-provided `data-api-base` value on the document body. If no value is
+provided, they default to the public Render API base.
+
 ## Private deployment
 
 Private deployments may enable broader route profiles, private schema visibility, or experimental future-BS workflows only with explicit operator configuration.

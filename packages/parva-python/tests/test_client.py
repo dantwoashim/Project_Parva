@@ -53,6 +53,43 @@ def test_validate_bs_date_returns_false_for_public_400() -> None:
     assert payload["publication_status"] == "computed_prediction_not_official"
 
 
+def test_retries_retry_after_for_429() -> None:
+    calls = []
+    sleeps = []
+
+    def transport(method, url, params, json_body, timeout):
+        calls.append((method, url, params, json_body, timeout))
+        if len(calls) == 1:
+            raise ParvaAPIError(
+                "rate limited",
+                status=429,
+                body={"detail": "slow down"},
+                headers={"Retry-After": "0.5"},
+            )
+        return {"gregorian": "2026-04-14"}
+
+    client = ParvaClient(transport=transport, retry_sleep=sleeps.append)
+    payload = client.bs_to_ad(2083, 1, 1)
+
+    assert payload["gregorian"] == "2026-04-14"
+    assert len(calls) == 2
+    assert sleeps == [0.5]
+
+
+def test_retries_can_be_disabled() -> None:
+    calls = []
+
+    def transport(method, url, params, json_body, timeout):
+        calls.append(url)
+        raise ParvaAPIError("rate limited", status=429, body={"detail": "slow down"})
+
+    client = ParvaClient(transport=transport, max_retries=0)
+    with pytest.raises(ParvaAPIError):
+        client.bs_to_ad(2083, 1, 1)
+
+    assert len(calls) == 1
+
+
 def test_public_month_fiscal_business_and_policy_methods() -> None:
     calls = []
 

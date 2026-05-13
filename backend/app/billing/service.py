@@ -10,10 +10,10 @@ from datetime import timedelta
 from typing import Any
 
 from .keys import (
-    constant_time_hash_match,
     generate_api_key,
     hash_api_key_secret,
     parse_api_key,
+    verify_api_key_secret,
 )
 from .storage import BillingStore, day_period, iso_now, month_period, utc_now
 
@@ -384,7 +384,6 @@ class BillingService:
         parsed = parse_api_key(raw_key)
         if not parsed:
             raise BillingAuthError(401, "Invalid API key.")
-        candidate_hash = hash_api_key_secret(parsed.secret, self.settings.api_key_pepper)
         row = self.store.fetchone(
             f"""
             SELECT api_keys.*, subscriptions.status AS subscription_status,
@@ -398,7 +397,11 @@ class BillingService:
             """,
             (parsed.key_prefix,),
         )
-        if not row or not constant_time_hash_match(candidate_hash, row["key_hash"]):
+        if not row or not verify_api_key_secret(
+            parsed.secret,
+            self.settings.api_key_pepper,
+            row["key_hash"],
+        ):
             raise BillingAuthError(401, "Invalid API key.")
         if not _bool(row["active"]) or row["revoked_at"]:
             raise BillingAuthError(403, "API key is inactive or revoked.")
@@ -580,7 +583,7 @@ class BillingService:
         if current_renews:
             try:
                 base = max(now_dt, utc_now().fromisoformat(current_renews))
-            except Exception:
+            except (TypeError, ValueError):
                 base = now_dt
         renews_at = (base + timedelta(days=max(1, min(days, 366)))).isoformat()
         self.store.execute(

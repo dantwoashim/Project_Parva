@@ -20,6 +20,8 @@ class ForecastItem:
     method: str
     horizon_years: int
     estimated_accuracy: float
+    accuracy_estimate_type: str
+    accuracy_warning: str
     confidence_interval_days: int
 
 
@@ -83,6 +85,8 @@ def forecast_festivals(target_year: int, festival_ids: Iterable[str]) -> list[Fo
                 method=result.method,
                 horizon_years=horizon,
                 estimated_accuracy=round(_estimated_accuracy(horizon), 4),
+                accuracy_estimate_type="heuristic_not_empirically_calibrated",
+                accuracy_warning="Forecast accuracy is a planning heuristic pending empirical calibration.",
                 confidence_interval_days=_confidence_interval_days(horizon),
             )
         )
@@ -102,6 +106,8 @@ def build_error_curve(start_year: int, end_year: int) -> list[dict]:
                 "year": year,
                 "horizon_years": horizon,
                 "estimated_accuracy": round(_estimated_accuracy(horizon), 4),
+                "accuracy_estimate_type": "heuristic_not_empirically_calibrated",
+                "accuracy_warning": "Forecast accuracy is a planning heuristic pending empirical calibration.",
                 "confidence_interval_days": _confidence_interval_days(horizon),
             }
         )

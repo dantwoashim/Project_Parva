@@ -32,7 +32,7 @@ def _evaluate_tithi_boundaries() -> dict[str, Any]:
     data = _read_json(TITHI_FIXTURE)
     samples = data.get("samples", []) if isinstance(data.get("samples"), list) else []
     mismatches: list[dict[str, Any]] = []
-    radar = Counter()
+    radar: Counter[str] = Counter()
 
     for row in samples:
         target_date = date.fromisoformat(row["date"])

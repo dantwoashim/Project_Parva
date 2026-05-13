@@ -12,7 +12,10 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .active_learning.promotion_plan import build_human_review_promotion_plan
+from .active_learning.promotion_plan import (
+    build_human_review_promotion_plan,
+    write_human_review_promotion_plan,
+)
 from .hard_cases.hard_case_benchmark import build_hard_case_benchmark
 from .month_start.month_start_corpus import build_month_start_corpus
 from .month_start.month_start_features import build_month_start_features
@@ -28,7 +31,7 @@ from .source_policy import (
     policy_metrics,
     read_reconstructed_lengths,
 )
-from .truth_fusion.latent_truth_model import infer_latent_truth
+from .truth_fusion.consensus_truth_selector import infer_consensus_truth
 from .truth_fusion.source_copy_detection import detect_source_copy_patterns
 from .truth_fusion.source_independence import build_source_independence_graph
 from .truth_fusion.weak_label_fusion import fuse_month_start_candidates
@@ -112,7 +115,7 @@ def _truth_fusion_outputs() -> dict[str, Any]:
     fusion = fuse_month_start_candidates()
     independence = build_source_independence_graph()
     copy = detect_source_copy_patterns(independence)
-    latent = infer_latent_truth(fusion)
+    latent = infer_consensus_truth(fusion)
     _write_json(LAB_DIR / "weak_label_fusion_results.json", fusion)
     _write_md(
         LAB_DIR / "weak_label_fusion_summary.md",
@@ -144,12 +147,13 @@ def _truth_fusion_outputs() -> dict[str, Any]:
     _write_md(
         LAB_DIR / "latent_truth_summary.md",
         [
-            "# Latent Truth Summary",
+            "# Consensus Truth Selector Summary",
             "",
             f"Publication status: `{PUBLICATION_STATUS}`",
             "",
             f"- Month-start cases: {latent['case_count']}",
             f"- Manual review required: {latent['manual_review_required_count']}",
+            "- Method: reliability-weighted consensus selector, not a full Bayesian latent-variable model.",
         ],
     )
     return {"fusion": fusion, "independence": independence, "copy": copy, "latent": latent}
@@ -341,6 +345,7 @@ def run_full_accuracy_architecture() -> dict[str, Any]:
     month_rule = _month_rule_outputs()
     risk = _risk_outputs()
     promotion = build_human_review_promotion_plan()
+    write_human_review_promotion_plan(promotion)
     readiness = _final_metrics_outputs(source_metrics, risk)
     residual_path = LAB_DIR / "residual_analysis.md"
     if not residual_path.exists():

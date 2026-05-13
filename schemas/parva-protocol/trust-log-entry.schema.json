@@ -2,13 +2,31 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Parva Trust Log Entry",
   "type": "object",
-  "required": ["entry_hash", "release_id", "event_type"],
+  "required": [
+    "entry_hash",
+    "release_id",
+    "event_type"
+  ],
   "properties": {
-    "entry_hash": {"type": "string"},
-    "previous_hash": {"type": ["string", "null"]},
-    "release_id": {"type": "string"},
-    "event_type": {"type": "string"},
-    "created_at": {"type": "string", "format": "date-time"}
+    "entry_hash": {
+      "type": "string"
+    },
+    "previous_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "release_id": {
+      "type": "string"
+    },
+    "event_type": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
   },
   "additionalProperties": false,
   "examples": [
@@ -19,5 +37,6 @@
       "event_type": "release_created",
       "created_at": "2026-05-12T00:00:00Z"
     }
-  ]
+  ],
+  "$id": "https://api.prabinghimire1.com.np/schemas/parva-protocol/trust-log-entry.schema.json"
 }

@@ -2,26 +2,55 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Parva TimeGraph Fact",
   "type": "object",
-  "required": ["fact_id", "fact_type", "subject", "predicate", "object", "release_id", "confidence"],
+  "required": [
+    "fact_id",
+    "fact_type",
+    "subject",
+    "predicate",
+    "object",
+    "release_id",
+    "confidence"
+  ],
   "properties": {
-    "fact_id": {"type": "string"},
-    "fact_type": {"type": "string"},
-    "subject": {"type": "object"},
-    "predicate": {"type": "string"},
-    "object": {"type": "object"},
-    "release_id": {"type": "string"},
-    "confidence": {"type": "string"}
+    "fact_id": {
+      "type": "string"
+    },
+    "fact_type": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "object"
+    },
+    "predicate": {
+      "type": "string"
+    },
+    "object": {
+      "type": "object"
+    },
+    "release_id": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "string"
+    }
   },
   "additionalProperties": false,
   "examples": [
     {
       "fact_id": "fact_bs_ad_2083_01_01",
       "fact_type": "date_conversion",
-      "subject": {"calendar": "BS", "date": "2083-01-01"},
+      "subject": {
+        "calendar": "BS",
+        "date": "2083-01-01"
+      },
       "predicate": "maps_to",
-      "object": {"calendar": "AD", "date": "2026-04-14"},
+      "object": {
+        "calendar": "AD",
+        "date": "2026-04-14"
+      },
       "release_id": "parva-bs-public-demo",
       "confidence": "source_backed"
     }
-  ]
+  ],
+  "$id": "https://api.prabinghimire1.com.np/schemas/parva-protocol/timegraph-fact.schema.json"
 }

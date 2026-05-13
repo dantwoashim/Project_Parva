@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run civil-rule and ayanamsha calibration artifact generation."""
+"""Run civil-rule cutoff and ayanamsha candidate artifact generation."""
 
 from __future__ import annotations
 

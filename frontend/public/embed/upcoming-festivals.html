@@ -31,6 +31,11 @@
       return new URLSearchParams(window.location.search);
     }
 
+    function apiBase(query) {
+      const configured = document.body.dataset.apiBase || query.get('api_base');
+      return (configured || 'https://api.prabinghimire1.com.np/v3/api').replace(/\/+$/, '');
+    }
+
     function festivalRange(item) {
       if (!item) return '-';
       if (!item.end_date || item.end_date === item.start_date) {
@@ -51,6 +56,7 @@
 
     async function loadWidget() {
       const query = params();
+      const base = apiBase(query);
       const days = query.get('days') || '30';
       const limit = Number(query.get('limit') || '5');
       const qualityBand = query.get('quality_band') || 'computed';
@@ -58,7 +64,8 @@
 
       try {
         const response = await fetch(
-          '/v3/api/festivals/upcoming?days='
+          base
+            + '/festivals/upcoming?days='
             + encodeURIComponent(days)
             + '&quality_band='
             + encodeURIComponent(qualityBand)

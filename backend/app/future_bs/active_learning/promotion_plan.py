@@ -51,22 +51,32 @@ def build_human_review_promotion_plan(limit: int = 100) -> list[dict[str, Any]]:
                 "page_or_crop_if_available": row.get("page_number_or_crop_if_available", ""),
             }
         )
-    LAB_DIR.mkdir(parents=True, exist_ok=True)
-    with (LAB_DIR / "human_review_promotion_plan.csv").open("w", newline="", encoding="utf-8") as fh:
+    return selected
+
+
+def write_human_review_promotion_plan(
+    rows: list[dict[str, Any]],
+    *,
+    output_dir: Path = LAB_DIR,
+) -> dict[str, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    csv_path = output_dir / "human_review_promotion_plan.csv"
+    md_path = output_dir / "human_review_promotion_plan.md"
+    with csv_path.open("w", newline="", encoding="utf-8") as fh:
         writer = csv.DictWriter(fh, fieldnames=PROMOTION_FIELDS)
         writer.writeheader()
-        writer.writerows(selected)
+        writer.writerows(rows)
     lines = [
         "# Human Review Promotion Plan",
         "",
         f"Publication status: `{PUBLICATION_STATUS}`",
         "",
-        f"Rows: {len(selected)}",
+        f"Rows: {len(rows)}",
         "",
     ]
-    for row in selected[:30]:
+    for row in rows[:30]:
         lines.append(
             f"- #{row['rank']} {row['bs_year']}-{int(row['bs_month']):02d}: {row['issue_type']} - {row['recommended_manual_action']}"
         )
-    (LAB_DIR / "human_review_promotion_plan.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return selected
+    md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return {"csv": csv_path, "markdown": md_path}

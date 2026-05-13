@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import os
 import shutil
 import subprocess
@@ -30,6 +31,8 @@ from app.provenance.attestation import (
     verify_attestation,
 )
 from app.storage.interfaces import SnapshotStore
+
+logger = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 BACKEND_ROOT = Path(__file__).resolve().parents[2]
@@ -328,7 +331,8 @@ class FileSnapshotStore(SnapshotStore):
                 if create_if_missing and _snapshot_requires_refresh(snapshot):
                     return create_snapshot()
                 return snapshot
-            except Exception:
+            except (FileNotFoundError, OSError, json.JSONDecodeError, KeyError, ValueError) as exc:
+                logger.warning("Unable to load latest provenance snapshot %s: %s", sid, exc)
                 sid = None
         if create_if_missing:
             return create_snapshot()

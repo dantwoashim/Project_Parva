@@ -19,7 +19,8 @@ def run_program_synthesis(features_payload: dict[str, Any] | None = None) -> dic
     scored.sort(key=lambda row: (row["score"], -row["complexity"]), reverse=True)
     return {
         "publication_status": PUBLICATION_STATUS,
-        "synthesis_mode": "minimal_viable_rule_dsl_grid",
+        "synthesis_mode": "bounded_candidate_rule_selection_v1",
+        "algorithm_claim": "scored_candidate_dsl_search_not_open_ended_program_synthesis",
         "case_count": len(features),
         "selected_program": scored[0] if scored else None,
         "programs": scored,

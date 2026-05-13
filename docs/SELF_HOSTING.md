@@ -26,6 +26,22 @@ Build:
 docker build -t project-parva .
 ```
 
+The default Docker build does not fetch the JPL DE440 kernel from NASA during
+image construction. That keeps a fresh public clone reproducible without a live
+third-party download. If you need live JPL-backed regeneration inside the image,
+opt in explicitly:
+
+```bash
+docker build \
+  --build-arg PARVA_DOWNLOAD_JPL_KERNEL=1 \
+  --build-arg PARVA_JPL_DE440_MD5=c9d581bfd84209dbeee8b1583939b148 \
+  -t project-parva .
+```
+
+The download script verifies the kernel checksum before storing it. Deployments
+can also mount a preverified `.bsp` file and set `PARVA_JPL_DE440_KERNEL` to
+that path.
+
 Run a low-friction local container:
 
 ```bash
@@ -61,6 +77,11 @@ docker run --rm -p 8080:8080 \
   -e PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only \
   project-parva-cloudrun
 ```
+
+For Cloud Run builds that require JPL-backed precompute, pass both
+`PARVA_DOWNLOAD_JPL_KERNEL=1` and `PARVA_PRECOMPUTE=1` at build time. Without
+those build args, the container remains backend-only and serves public runtime
+surfaces from checked-in public artifacts and runtime computation.
 
 That image is intended for Cloud Run or another container host where the frontend is published separately on a static host such as Cloudflare Pages.
 

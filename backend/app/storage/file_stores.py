@@ -5,6 +5,8 @@ from __future__ import annotations
 import hashlib
 import json
 import secrets
+import threading
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -12,6 +14,8 @@ from typing import Any, Dict, Optional
 from app.provenance.attestation import build_attestation, verify_attestation
 
 from .interfaces import TraceStore, TransparencyLogStore
+
+_TRANSPARENCY_APPEND_LOCK = threading.Lock()
 
 
 def _canonical(value: dict[str, Any]) -> str:
@@ -149,24 +153,25 @@ class FileTransparencyLogStore(TransparencyLogStore):
 
     def append_entry(self, event_type: str, payload: dict[str, Any]) -> dict[str, Any]:
         self._ensure_dir()
-        entries = self.load_entries()
-        now = datetime.now(timezone.utc)
-        entry_id = f"tle_{now.strftime('%Y%m%dT%H%M%S%fZ')}"
-        timestamp = now.isoformat()
-        prev_hash = str(entries[-1].get("entry_hash") if entries else "GENESIS")
-        body = {
-            "entry_id": entry_id,
-            "timestamp": timestamp,
-            "event_type": event_type,
-            "payload": payload,
-            "prev_hash": prev_hash,
-        }
-        entry_hash = _sha256_hex(_canonical(body))
-        attestation = build_attestation({**body, "entry_hash": entry_hash})
-        entry = {**body, "entry_hash": entry_hash, "attestation": attestation}
-        with self.log_path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
-        return entry
+        with _TRANSPARENCY_APPEND_LOCK:
+            entries = self.load_entries()
+            now = datetime.now(timezone.utc)
+            entry_id = f"tle_{uuid.uuid4().hex}"
+            timestamp = now.isoformat()
+            prev_hash = str(entries[-1].get("entry_hash") if entries else "GENESIS")
+            body = {
+                "entry_id": entry_id,
+                "timestamp": timestamp,
+                "event_type": event_type,
+                "payload": payload,
+                "prev_hash": prev_hash,
+            }
+            entry_hash = _sha256_hex(_canonical(body))
+            attestation = build_attestation({**body, "entry_hash": entry_hash})
+            entry = {**body, "entry_hash": entry_hash, "attestation": attestation}
+            with self.log_path.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            return entry
 
     def verify_integrity(self) -> dict[str, Any]:
         entries = self.load_entries()

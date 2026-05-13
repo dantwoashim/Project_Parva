@@ -1,4 +1,4 @@
-"""Minimal viable program synthesis for calendar decision rules."""
+"""Bounded candidate rule selection for calendar decision-rule research."""
 
 from .program_search import run_program_synthesis
 
