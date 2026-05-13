@@ -10,6 +10,7 @@ guessing.
 - [API Quickstart](API_QUICKSTART.md)
 - [API Reference v3](API_REFERENCE_V3.md)
 - [Deployment](DEPLOYMENT.md)
+- [Performance Notes](PERFORMANCE.md)
 - [Public API Boundary](PUBLIC_API_BOUNDARY.md)
 - [Known Limitations](KNOWN_LIMITATIONS.md)
 - [Security Policy](../SECURITY.md)
