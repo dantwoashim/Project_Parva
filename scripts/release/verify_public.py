@@ -111,6 +111,7 @@ def main() -> int:
         ("protocol conformance core", [*python, "scripts/parva_conformance.py", "--target", "local", "--level", "parva_core"]),
         ("protocol conformance full", [*python, "scripts/parva_conformance.py", "--target", "local", "--level", "parva_full"]),
         ("documented route inventory", [*python, "scripts/release/check_documented_routes.py"]),
+        ("public OpenAPI drift", [*python, "scripts/release/check_public_openapi_drift.py"]),
         ("backend smoke", [*python, "scripts/release/check_backend_smoke.py"]),
         ("Python SDK import smoke", [*python, "scripts/release/check_sdk_install.py"]),
         ("backend lint", [*python, "-m", "ruff", "check", "backend", "tests", "scripts", "sdk", "packages/parva-python"]),

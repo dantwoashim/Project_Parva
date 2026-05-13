@@ -8,11 +8,17 @@ import os
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-OUTPUT_PATH = PROJECT_ROOT / "docs" / "api-docs" / "openapi.json"
+
+
+def _output_path() -> Path:
+    configured = os.getenv("PARVA_OPENAPI_OUTPUT", "").strip()
+    if configured:
+        return Path(configured).expanduser().resolve()
+    return PROJECT_ROOT / "docs" / "api-docs" / "openapi.json"
 
 
 def main() -> int:
-    os.environ["PARVA_ROUTE_PROFILE"] = "public_demo"
+    os.environ["PARVA_ROUTE_PROFILE"] = os.getenv("PARVA_ROUTE_PROFILE", "developer_preview")
     os.environ["PARVA_ENABLE_EXPERIMENTAL_API"] = "false"
     os.environ["PARVA_SHOW_PRIVATE_SCHEMA"] = "false"
     os.environ["PARVA_ENV"] = "public"
@@ -484,9 +490,14 @@ def main() -> int:
             "description": "Render public demo backend",
         }
     ]
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(json.dumps(schema, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"Wrote {OUTPUT_PATH.relative_to(PROJECT_ROOT)} with {len(schema.get('paths', {}))} paths.")
+    output_path = _output_path()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(schema, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    try:
+        rendered_path = output_path.relative_to(PROJECT_ROOT)
+    except ValueError:
+        rendered_path = output_path
+    print(f"Wrote {rendered_path} with {len(schema.get('paths', {}))} paths.")
     return 0
 
 
