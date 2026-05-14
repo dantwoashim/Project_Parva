@@ -1,5 +1,7 @@
 # Future BS Research Layer
 
+Status: Phase 04 research-private boundary.
+
 The future-BS layer is an experimental calendar-risk research system. It studies how month-length assumptions behave before they affect fiscal reports, contracts, renewals, interest periods, exports, and audit trails.
 
 Parva does not publish assured future BS dates.
@@ -64,3 +66,5 @@ All future outputs are labeled:
 ```text
 computed_prediction_not_official
 ```
+
+See [../FUTURE_BS_RESEARCH_BOUNDARY.md](../FUTURE_BS_RESEARCH_BOUNDARY.md) for the current public/private exposure policy.

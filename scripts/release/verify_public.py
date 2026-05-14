@@ -101,6 +101,7 @@ def main() -> int:
         ("public safety gate", [*python, "scripts/release/check_public_safety_gate.py"]),
         ("documentation links", [*python, "scripts/check_docs_links.py"]),
         ("canonical runtime registry", [*python, "scripts/check_canonical_runtime.py"]),
+        ("maturity lanes", [*python, "scripts/check_maturity_lanes.py"]),
         ("Render public blueprint", [*python, "scripts/release/check_render_blueprint.py"]),
         ("temporal trust verification", [*python, "scripts/parva_trust_verify.py"]),
         ("timegraph verification", [*python, "scripts/parva_timegraph_verify.py"]),

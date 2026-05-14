@@ -1,0 +1,424 @@
+{
+  "schema_version": "2026-05-14.phase04",
+  "registry_format": "json_subset_of_yaml",
+  "generated_by_phase": "phase_04_maturity_lanes_and_exposure_control",
+  "lanes": {
+    "stable_core": {
+      "description": "Production-intended public core with strict verification.",
+      "public": true,
+      "allowed_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "full_dev"]
+    },
+    "public_preview": {
+      "description": "Public but clearly preview; not legal or official authority.",
+      "public": true,
+      "allowed_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "full_dev"]
+    },
+    "developer_preview": {
+      "description": "Developer-facing preview with draft APIs and possible changes.",
+      "public": "partial",
+      "allowed_profiles": ["developer_preview", "enterprise_preview", "full_dev"]
+    },
+    "enterprise_preview": {
+      "description": "Authenticated or controlled enterprise workflows.",
+      "public": false,
+      "allowed_profiles": ["enterprise_preview", "full_dev"]
+    },
+    "research_private": {
+      "description": "Research and private data surfaces; never public by default.",
+      "public": false,
+      "allowed_profiles": ["research_private", "internal_lab", "full_dev"]
+    },
+    "protocol_draft": {
+      "description": "Draft protocol, schema, and conformance surfaces.",
+      "public": true,
+      "allowed_profiles": ["public_reference", "developer_preview", "full_dev"]
+    },
+    "deprecated_compatibility": {
+      "description": "Compatibility aliases with sunset plan.",
+      "public": "partial",
+      "allowed_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"]
+    },
+    "historical": {
+      "description": "Archived docs and artifacts that do not describe current behavior.",
+      "public": "docs_only",
+      "allowed_profiles": []
+    }
+  },
+  "subsystems": {
+    "core_calendar": {
+      "lane": "stable_core",
+      "maturity": "stable",
+      "public_exposure": true,
+      "canonical_runtime": "bs_ad_conversion",
+      "route_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["verify_public", "calendar_contract", "canonical_runtime"],
+      "docs": ["docs/SUBSYSTEM_MATURITY.md", "docs/API_REFERENCE_V3.md", "docs/PUBLIC_API_BOUNDARY.md"],
+      "allowed_claims": ["source-backed BS/AD conversion within supported range"],
+      "forbidden_claims": ["legal authority", "official government calendar source", "assured future calendar accuracy"]
+    },
+    "panchanga": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "tithi_panchanga",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["backend_smoke", "tithi_contract"],
+      "docs": ["docs/CONSUMER_PANCHANGA_KUNDALI_BOUNDARY.md", "docs/SUBSYSTEM_MATURITY.md"],
+      "allowed_claims": ["computed panchanga signals with method and confidence metadata"],
+      "forbidden_claims": ["religious authority", "legal authority", "unbounded production compute"]
+    },
+    "tithi": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "tithi_panchanga",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["tithi_contract", "canonical_runtime"],
+      "docs": ["docs/CONSUMER_PANCHANGA_KUNDALI_BOUNDARY.md"],
+      "allowed_claims": ["computed tithi with source and method metadata"],
+      "forbidden_claims": ["doctrinal authority", "official civil authority"]
+    },
+    "nakshatra_yoga_karana": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "tithi_panchanga",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["backend_smoke"],
+      "docs": ["docs/CONSUMER_PANCHANGA_KUNDALI_BOUNDARY.md"],
+      "allowed_claims": ["computed astronomical indicators"],
+      "forbidden_claims": ["ritual final authority"]
+    },
+    "festivals_observances": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "festivals_observances",
+      "route_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["festival_catalog", "verify_public"],
+      "docs": ["docs/API_REFERENCE_V3.md", "docs/PUBLIC_API_BOUNDARY.md"],
+      "allowed_claims": ["source-aware festival and observance metadata"],
+      "forbidden_claims": ["official festival calendar authority"]
+    },
+    "holidays": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "source_confidence_taxonomy",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["trust_verify", "docs_links"],
+      "docs": ["docs/TRUST_INFRASTRUCTURE.md", "docs/PUBLIC_API_BOUNDARY.md"],
+      "allowed_claims": ["public-safe holiday and release metadata"],
+      "forbidden_claims": ["MoHA endorsement", "official holiday publication authority"]
+    },
+    "fiscal_working_day": {
+      "lane": "stable_core",
+      "maturity": "stable",
+      "public_exposure": true,
+      "canonical_runtime": "bs_ad_conversion",
+      "route_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["enterprise_contract", "verify_public"],
+      "docs": ["docs/API_REFERENCE_V3.md", "docs/ENTERPRISE_COMPLIANCE.md"],
+      "allowed_claims": ["decision-support fiscal and working-day logic"],
+      "forbidden_claims": ["legal authority", "tax authority", "payroll final approval"]
+    },
+    "rulelang": {
+      "lane": "developer_preview",
+      "maturity": "developer_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["rulelang_verify", "architecture"],
+      "docs": ["docs/RULELANG_API.md", "docs/ROUTE_PROFILES.md"],
+      "allowed_claims": ["bounded structured temporal rule execution"],
+      "forbidden_claims": ["legal or payroll approval", "arbitrary code execution"]
+    },
+    "trust_provenance": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "source_confidence_taxonomy",
+      "route_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["trust_verify", "path_leaks", "maturity_lanes"],
+      "docs": ["docs/TRUST_INFRASTRUCTURE.md", "docs/API_TRUST.md"],
+      "allowed_claims": ["public-safe trust metadata and evidence packets"],
+      "forbidden_claims": ["third-party certification", "production signature authority"]
+    },
+    "source_registry": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "source_confidence_taxonomy",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["trust_verify", "source_policy"],
+      "docs": ["docs/TRUST_INFRASTRUCTURE.md", "docs/SOURCE_REGISTRY.md"],
+      "allowed_claims": ["source tier metadata"],
+      "forbidden_claims": ["private source publication"]
+    },
+    "release_manifests": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "source_confidence_taxonomy",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["trust_verify"],
+      "docs": ["docs/TRUST_INFRASTRUCTURE.md"],
+      "allowed_claims": ["hashable public release metadata"],
+      "forbidden_claims": ["official publication status"]
+    },
+    "evidence_packets": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "source_confidence_taxonomy",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["trust_verify"],
+      "docs": ["docs/EVIDENCE_PACKETS.md", "docs/API_TRUST.md"],
+      "allowed_claims": ["hashable explanation packet"],
+      "forbidden_claims": ["legal certificate", "third-party attestation"]
+    },
+    "transparency_logs": {
+      "lane": "public_preview",
+      "maturity": "hash_only_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "source_confidence_taxonomy",
+      "route_profiles": ["developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["trust_verify"],
+      "docs": ["docs/TRUST_INFRASTRUCTURE.md"],
+      "allowed_claims": ["hash-linked public log metadata"],
+      "forbidden_claims": ["signed transparency service"]
+    },
+    "offline_bundles": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "public_validation_artifacts",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["protocol_verify", "trust_verify"],
+      "docs": ["docs/PROTOCOL_OFFLINE_BUNDLES.md", "docs/PARVA_PROTOCOL.md"],
+      "allowed_claims": ["offline bundle manifest preview"],
+      "forbidden_claims": ["certified external bundle"]
+    },
+    "timegraph": {
+      "lane": "developer_preview",
+      "maturity": "developer_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["timegraph_verify"],
+      "docs": ["docs/TIMEGRAPH_API.md", "docs/ROUTE_PROFILES.md"],
+      "allowed_claims": ["bounded public temporal fact graph"],
+      "forbidden_claims": ["private fact disclosure", "legal authority"]
+    },
+    "impact_simulator": {
+      "lane": "developer_preview",
+      "maturity": "developer_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["impact_verify"],
+      "docs": ["docs/IMPACT_API.md", "docs/ROUTE_PROFILES.md"],
+      "allowed_claims": ["bounded impact simulation"],
+      "forbidden_claims": ["financial approval", "unbounded simulation"]
+    },
+    "agent_tools": {
+      "lane": "developer_preview",
+      "maturity": "developer_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["agent_verify", "agent_benchmark"],
+      "docs": ["docs/AGENT_API.md", "docs/AGENT_SAFETY.md"],
+      "allowed_claims": ["deterministic temporal tools with review gates"],
+      "forbidden_claims": ["general agent authority", "automatic legal or payroll approval"]
+    },
+    "parva_protocol": {
+      "lane": "protocol_draft",
+      "maturity": "protocol_draft",
+      "public_exposure": true,
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["public_reference", "developer_preview", "full_dev"],
+      "ci_gates": ["protocol_verify", "conformance_core"],
+      "docs": ["docs/PARVA_PROTOCOL.md", "docs/PROTOCOL_DRAFT_BOUNDARY.md"],
+      "allowed_claims": ["draft protocol and conformance preview"],
+      "forbidden_claims": ["standard", "W3C certification", "government endorsement"]
+    },
+    "conformance": {
+      "lane": "protocol_draft",
+      "maturity": "protocol_draft",
+      "public_exposure": true,
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["public_reference", "developer_preview", "full_dev"],
+      "ci_gates": ["conformance_core"],
+      "docs": ["docs/PROTOCOL_CONFORMANCE.md", "docs/PROTOCOL_DRAFT_BOUNDARY.md"],
+      "allowed_claims": ["Parva implementation conformance preview"],
+      "forbidden_claims": ["external certification"]
+    },
+    "credentials": {
+      "lane": "protocol_draft",
+      "maturity": "hash_only_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["public_reference", "developer_preview", "full_dev"],
+      "ci_gates": ["protocol_verify", "schema_validation"],
+      "docs": ["docs/PROTOCOL_CREDENTIALS.md", "docs/PROTOCOL_DRAFT_BOUNDARY.md"],
+      "allowed_claims": ["hash-only preview credential"],
+      "forbidden_claims": ["production signature authority", "third-party certificate"]
+    },
+    "future_bs": {
+      "lane": "research_private",
+      "maturity": "research_preview",
+      "public_exposure": "metadata_only",
+      "canonical_runtime": "source_confidence_taxonomy",
+      "route_profiles": ["research_private", "internal_lab", "full_dev"],
+      "public_metadata_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["future_bs_public_leakage", "maturity_lanes", "research_private_tests"],
+      "docs": ["docs/FUTURE_BS_RESEARCH_BOUNDARY.md", "docs/future_bs/FUTURE_BS_RESEARCH.md", "docs/future_bs/CLAIM_BOUNDARY.md"],
+      "allowed_claims": ["risk analysis", "computed prediction not official", "metadata-only public capability summary"],
+      "forbidden_claims": ["official future date", "guaranteed month length", "financial or legal authority"]
+    },
+    "kundali": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "tithi_panchanga",
+      "route_profiles": ["developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["backend_smoke"],
+      "docs": ["docs/CONSUMER_PANCHANGA_KUNDALI_BOUNDARY.md"],
+      "allowed_claims": ["bounded computed kundali preview"],
+      "forbidden_claims": ["religious final authority", "unbounded public compute"]
+    },
+    "muhurta": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "tithi_panchanga",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["backend_smoke"],
+      "docs": ["docs/CONSUMER_PANCHANGA_KUNDALI_BOUNDARY.md"],
+      "allowed_claims": ["bounded timing window preview"],
+      "forbidden_claims": ["ritual or legal final authority"]
+    },
+    "frontend": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["public_demo", "public_reference", "developer_preview"],
+      "ci_gates": ["frontend_lint", "frontend_build", "frontend_tests"],
+      "docs": ["docs/ROUTE_PROFILES.md", "docs/STABILITY.md"],
+      "allowed_claims": ["capability-aware public reference frontend"],
+      "forbidden_claims": ["private route availability without explicit profile"]
+    },
+    "embeds": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "sdk_clients",
+      "route_profiles": ["public_demo", "public_reference", "developer_preview"],
+      "ci_gates": ["frontend_build"],
+      "docs": ["docs/EMBED_GUIDE.md"],
+      "allowed_claims": ["public API based embeds"],
+      "forbidden_claims": ["private endpoint dependency"]
+    },
+    "python_sdk": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "sdk_clients",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["python_sdk_tests", "sdk_install"],
+      "docs": ["packages/parva-python/README.md", "docs/SDK_USAGE.md", "docs/SDK_ROADMAP.md"],
+      "allowed_claims": ["stable top-level public methods and labeled preview helpers"],
+      "forbidden_claims": ["top-level private future prediction methods"]
+    },
+    "js_ts_sdk": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "sdk_clients",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["js_sdk_tests"],
+      "docs": ["packages/parva-js/README.md", "docs/SDK_USAGE.md", "docs/SDK_ROADMAP.md"],
+      "allowed_claims": ["stable top-level public methods and labeled preview helpers"],
+      "forbidden_claims": ["top-level private future prediction methods"]
+    },
+    "cli_scripts": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": "partial",
+      "canonical_runtime": "public_validation_artifacts",
+      "route_profiles": ["full_dev"],
+      "ci_gates": ["verify_public"],
+      "docs": ["docs/DEVELOPMENT.md"],
+      "allowed_claims": ["public verification and local operator scripts"],
+      "forbidden_claims": ["public dependency on private data"]
+    },
+    "billing_api_keys": {
+      "lane": "enterprise_preview",
+      "maturity": "enterprise_preview",
+      "public_exposure": "controlled",
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["enterprise_preview", "full_dev"],
+      "ci_gates": ["billing_tests"],
+      "docs": ["docs/API_REFERENCE_V3.md", "docs/ROUTE_PROFILES.md"],
+      "allowed_claims": ["controlled billing and API-key preview"],
+      "forbidden_claims": ["automatic paid activation without operator review"]
+    },
+    "ci_sre": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["full_dev"],
+      "ci_gates": ["verify_public", "maturity_lanes"],
+      "docs": ["docs/DEVELOPMENT.md", "docs/ROUTE_PROFILES.md"],
+      "allowed_claims": ["public reproducibility gates"],
+      "forbidden_claims": ["unrun verification"]
+    },
+    "docs": {
+      "lane": "public_preview",
+      "maturity": "public_preview",
+      "public_exposure": true,
+      "canonical_runtime": "runtime_manifest_and_routes",
+      "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "ci_gates": ["docs_links", "path_leaks"],
+      "docs": ["docs/README.md", "docs/STABILITY.md"],
+      "allowed_claims": ["status-labeled public documentation"],
+      "forbidden_claims": ["historical snapshot as current verification status"]
+    }
+  },
+  "required_subsystem_ids": [
+    "core_calendar",
+    "panchanga",
+    "tithi",
+    "nakshatra_yoga_karana",
+    "festivals_observances",
+    "holidays",
+    "fiscal_working_day",
+    "rulelang",
+    "trust_provenance",
+    "source_registry",
+    "release_manifests",
+    "evidence_packets",
+    "transparency_logs",
+    "offline_bundles",
+    "timegraph",
+    "impact_simulator",
+    "agent_tools",
+    "parva_protocol",
+    "conformance",
+    "credentials",
+    "future_bs",
+    "kundali",
+    "muhurta",
+    "frontend",
+    "embeds",
+    "python_sdk",
+    "js_ts_sdk",
+    "cli_scripts",
+    "billing_api_keys",
+    "ci_sre",
+    "docs"
+  ]
+}

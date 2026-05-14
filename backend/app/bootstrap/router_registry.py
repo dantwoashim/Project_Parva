@@ -213,6 +213,17 @@ PUBLIC_DEMO_ROUTE_REGISTRATIONS = [
     RouterRegistration(rules_router, "trust", "rules_read", "rules"),
 ]
 
+MINIMAL_PUBLIC_ROUTE_REGISTRATIONS = [
+    RouterRegistration(policy_router, "public", "public", "policy"),
+]
+
+RESEARCH_PRIVATE_POLICY_NAMES = {
+    "future_bs",
+    "future_bs_private",
+    "calendar_model_risk",
+    "calendar_model_risk_private",
+}
+
 
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
 
@@ -259,7 +270,10 @@ def _registrations_for_profile(
             if registration.audience in {"public", "trust"}
             or (enable_experimental_api and registration.register_when_experimental_enabled)
         ]
-    if route_profile in {"minimal_public", "public_demo"}:
+    if route_profile == "minimal_public":
+        return MINIMAL_PUBLIC_ROUTE_REGISTRATIONS
+
+    if route_profile == "public_demo":
         return PUBLIC_DEMO_ROUTE_REGISTRATIONS
 
     if route_profile == "public_reference":
@@ -268,6 +282,8 @@ def _registrations_for_profile(
         policy_names = DEVELOPER_PREVIEW_POLICY_NAMES
     elif route_profile == "enterprise_preview":
         policy_names = ENTERPRISE_PREVIEW_POLICY_NAMES
+    elif route_profile in {"research_private", "internal_lab"}:
+        policy_names = RESEARCH_PRIVATE_POLICY_NAMES
     else:
         policy_names = DEVELOPER_PREVIEW_POLICY_NAMES
 
@@ -276,11 +292,17 @@ def _registrations_for_profile(
         for registration in ROUTER_REGISTRATIONS
         if registration.policy_name in policy_names
     ]
-    if enable_experimental_api:
+    if enable_experimental_api and route_profile in {
+        "research_private",
+        "internal_lab",
+        "full",
+        "full_dev",
+    }:
         registrations.extend(
             registration
             for registration in ROUTER_REGISTRATIONS
             if registration.register_when_experimental_enabled
+            and registration.policy_name not in {item.policy_name for item in registrations}
         )
     return registrations
 

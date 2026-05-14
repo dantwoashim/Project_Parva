@@ -23,6 +23,8 @@ VALID_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
         "public_reference",
         "developer_preview",
         "enterprise_preview",
+        "research_private",
+        "internal_lab",
         "full",
         "full_dev",
     }
