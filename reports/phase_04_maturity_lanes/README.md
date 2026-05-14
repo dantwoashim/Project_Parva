@@ -1,6 +1,6 @@
 # Phase 04 Maturity Lanes And Exposure Control Report
 
-Status: in verification.
+Status: complete.
 Date: 2026-05-14.
 
 ## Scope
@@ -45,6 +45,31 @@ and was not implemented here unless required for Phase 04 acceptance.
 
 ## Verification Log
 
-Final verification results are recorded after the full Phase 04 command set is
-rerun at the end of this phase.
+Final Phase 04 verification was run on 2026-05-14.
 
+| Command | Result |
+| --- | --- |
+| `python scripts/check_maturity_lanes.py` | PASS. Validated 31 subsystems, 50 route entries, 8 route profiles, and 3 profile OpenAPI artifacts. |
+| `python scripts/release/check_route_inventory.py` | PASS. Verified 448 routes, 217 canonical v3 routes, and 217 legacy routes. |
+| `python scripts/release/check_documented_routes.py` | PASS. Verified documented inventory for 217 canonical v3 routes. |
+| `python scripts/release/check_openapi_drift.py` | PASS. Static public OpenAPI and profile OpenAPI artifacts were current. |
+| `python -m pytest tests/contract/test_frontend_routes_vs_backend_profile.py -q` | PASS. 1 test passed. |
+| `python -m pytest tests/architecture -q` | PASS. 10 tests passed. |
+| `npm --prefix frontend run lint` | PASS. ESLint completed with exit code 0. |
+| `npm --prefix frontend run build` | PASS. Vite built 74 modules. |
+| `npm --prefix frontend test -- --run` | PASS after one fixed rerun. Final result: 26 test files passed, 117 tests passed. The initial run failed only because the informational `Enterprise` footer link was incorrectly gated behind the billing capability and visual snapshots detected the missing link. |
+| `python scripts/release/verify_public.py` | PASS. Public reproducibility gate passed, including environment, hygiene, secret scan, path leak scan, public safety, docs links, canonical runtime, maturity lanes, trust, TimeGraph, RuleLang, impact, agent, protocol, conformance, backend lint/tests, SDK tests, frontend lint/tests/build, and JS SDK tests. |
+
+## Commit And Push Log
+
+| Commit | Purpose |
+| --- | --- |
+| `085059c` | Added maturity lane registries, checker, profile OpenAPI artifacts, and route profile enforcement. |
+| `c2bbc5f` | Added frontend route capability gating. |
+| `509cee3` | Documented Phase 04 boundaries, SDK policy, capability metadata, and report artifacts. |
+| `aec196b` | Kept informational enterprise route public while billing API controls remain gated. |
+| `afb9b4f` | Allowed Phase 04 report artifacts in the repo hygiene gate. |
+
+## Remaining Phase 04 Blockers
+
+None known after the final verification pass.
