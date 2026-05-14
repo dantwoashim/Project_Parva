@@ -1,0 +1,65 @@
+# Phase 01 SDK Inventory
+
+
+
+## Package metadata
+
+
+
+```json
+
+{
+  "parva-js": {
+    "dependencies": {},
+    "devDependencies": {
+      "typescript": "^5.9.3"
+    },
+    "name": "@project-parva/parva-js",
+    "scripts": {
+      "build": "tsc -p tsconfig.json",
+      "test": "npm run build && node --test tests/client.test.mjs"
+    },
+    "version": "0.1.0-alpha.0"
+  },
+  "parva-python": {
+    "dependencies": [],
+    "name": "project-parva-python-sdk",
+    "version": "0.1.0a0"
+  }
+}
+
+```
+
+
+
+## Legacy SDK files
+
+
+
+- `sdk/__init__.py`
+- `sdk/python/README.md`
+- `sdk/python/__init__.py`
+- `sdk/python/parva/__init__.py`
+- `sdk/python/parva_sdk/__init__.py`
+- `sdk/python/parva_sdk/client.py`
+- `sdk/python/parva_sdk/exceptions.py`
+- `sdk/python/parva_sdk/models.py`
+- `sdk/python/pyproject.toml`
+
+
+
+## Package SDK files
+
+
+
+- `packages/parva-js/README.md`
+- `packages/parva-js/package-lock.json`
+- `packages/parva-js/package.json`
+- `packages/parva-js/src/index.ts`
+- `packages/parva-js/tests/client.test.mjs`
+- `packages/parva-js/tsconfig.json`
+- `packages/parva-python/README.md`
+- `packages/parva-python/parva/__init__.py`
+- `packages/parva-python/parva/client.py`
+- `packages/parva-python/pyproject.toml`
+- `packages/parva-python/tests/test_client.py`

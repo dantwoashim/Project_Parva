@@ -1,0 +1,2802 @@
+[
+  {
+    "classification": "candidate",
+    "path": "backend/app/api/festival_routes.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/api/festival_timeline_routes.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/api/rules_routes.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/calculator.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "canonical_candidate",
+    "path": "backend/app/calendar/calculator_v2.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/festival_rules.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/festival_rules_loader.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/festival_rules_v3.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/sources.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/tithi.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/tithi/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/tithi/tithi_boundaries.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/tithi/tithi_core.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/calendar/tithi/tithi_udaya.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/core/source_metadata.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/detail_service.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/models.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/presenters.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/query_service.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/repository.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/risk_service.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/routes.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/trust.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/use_cases.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/festivals/validation.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/civil_rules.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/committee_rule_posterior.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/confidence.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/program_synthesis/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/program_synthesis/program_score.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/program_synthesis/program_search.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/program_synthesis/rule_dsl.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/rule_calibration.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/rule_inversion/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/rule_inversion/decision_surface.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/rule_inversion/effective_cutoff.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/rule_inversion/inversion_runner.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/rule_search.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/source_policy.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/source_registry.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/source_trust.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/truth_fusion/latent_truth_model.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/truth_fusion/source_copy_detection.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/truth_fusion/source_independence.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "research",
+    "path": "backend/app/future_bs/truth_fusion/source_reliability.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "canonical_candidate",
+    "path": "backend/app/rules/catalog_v4.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/dsl.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/execution.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/base.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/chinese/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/chinese/plugin.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/hebrew/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/hebrew/plugin.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/islamic/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/islamic/plugin.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/nepali_hindu/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/nepali_hindu/plugin.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/tibetan_buddhist/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/plugins/tibetan_buddhist/plugin.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/schema_v4.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/service.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/triad_pipeline.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/rules/variants.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "canonical_candidate",
+    "path": "backend/app/services/rulelang_service.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/sources/__init__.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/sources/interface.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/sources/loader.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/sources/review_queue.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/app/sources/validation.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/data/public_artifacts/source_review_queue.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/tools/build_source_review_queue.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/tools/generate_tithi_boundary_fixture.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/tools/normalize_sources.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "backend/tools/profile_tithi.py",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festival_name_map.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/festival_locations.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/festival_rules_v4.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/festivals.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_execution_templates.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_ingestion_seed.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-ashadh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-ashadh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-ashadh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-ashwin/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-ashwin/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-ashwin/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-baisakh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-baisakh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-baisakh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-bhadra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-bhadra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-bhadra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-chaitra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-chaitra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-chaitra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-falgun/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-falgun/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-falgun/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-jestha/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-jestha/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-jestha/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-kartik/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-kartik/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-kartik/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-magh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-magh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-magh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-mangsir/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-mangsir/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-mangsir/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-poush/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-poush/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-poush/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-shrawan/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-shrawan/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/aitabar-vrata-shrawan/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-ashadh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-ashadh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-ashadh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-ashwin/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-ashwin/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-ashwin/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-baisakh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-baisakh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-baisakh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-bhadra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-bhadra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-bhadra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-chaitra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-chaitra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-chaitra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-falgun/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-falgun/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-falgun/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-jestha/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-jestha/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-jestha/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-kartik/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-kartik/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-kartik/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-magh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-magh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-magh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-mangsir/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-mangsir/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-mangsir/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-poush/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-poush/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-poush/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-shrawan/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-shrawan/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/amavasya-observance-shrawan/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashadh-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashadh-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashadh-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashadh-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashadh-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashadh-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashwin-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashwin-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashwin-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashwin-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashwin-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-ashwin-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-baisakh-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-baisakh-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-baisakh-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-baisakh-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-baisakh-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-baisakh-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-bhadra-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-bhadra-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-bhadra-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-bhadra-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-bhadra-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-bhadra-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-chaitra-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-chaitra-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-chaitra-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-chaitra-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-chaitra-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-chaitra-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-falgun-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-falgun-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-falgun-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-falgun-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-falgun-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-falgun-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-jestha-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-jestha-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-jestha-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-jestha-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-jestha-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-jestha-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-kartik-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-kartik-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-kartik-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-kartik-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-kartik-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-kartik-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-magh-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-magh-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-magh-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-magh-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-magh-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-magh-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-mangsir-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-mangsir-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-mangsir-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-mangsir-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-mangsir-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-mangsir-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-poush-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-poush-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-poush-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-poush-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-poush-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-poush-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-shrawan-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-shrawan-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-shrawan-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-shrawan-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-shrawan-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/ashtami-vrata-shrawan-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bajra-jogini-jatra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bajra-jogini-jatra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bajra-jogini-jatra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bala-chaturdashi/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bala-chaturdashi/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bala-chaturdashi/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bhai-tika/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bhai-tika/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bhai-tika/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bhoto-jatra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bhoto-jatra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bhoto-jatra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-ashadh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-ashadh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-ashadh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-ashwin/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-ashwin/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-ashwin/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-baisakh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-baisakh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-baisakh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-bhadra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-bhadra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-bhadra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-chaitra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-chaitra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-chaitra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-falgun/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-falgun/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-falgun/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-jestha/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-jestha/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-jestha/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-kartik/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-kartik/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-kartik/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-magh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-magh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-magh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-mangsir/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-mangsir/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-mangsir/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-poush/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-poush/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-poush/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-shrawan/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-shrawan/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bihibar-vrata-shrawan/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bisket-jatra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bisket-jatra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bisket-jatra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/biswakarma-puja/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/biswakarma-puja/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/biswakarma-puja/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bs-new-year/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bs-new-year/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/bs-new-year/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/buddha-jayanti/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/buddha-jayanti/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/buddha-jayanti/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-ashadh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-ashadh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-ashadh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-ashwin/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-ashwin/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-ashwin/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-baisakh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-baisakh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-baisakh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-bhadra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-bhadra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-bhadra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-chaitra/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-chaitra/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-chaitra/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-falgun/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-falgun/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-falgun/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-jestha/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-jestha/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-jestha/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-kartik/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-kartik/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-kartik/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-magh/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-magh/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-magh/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-mangsir/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-mangsir/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-mangsir/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-poush/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-poush/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-poush/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-shrawan/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-shrawan/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/budhbar-vrata-shrawan/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chandi-purnima/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chandi-purnima/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chandi-purnima/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashadh-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashadh-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashadh-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashadh-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashadh-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashadh-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashwin-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashwin-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashwin-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashwin-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashwin-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-ashwin-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-baisakh-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-baisakh-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-baisakh-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-baisakh-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-baisakh-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-baisakh-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-bhadra-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-bhadra-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-bhadra-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-bhadra-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-bhadra-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-bhadra-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-chaitra-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-chaitra-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-chaitra-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-chaitra-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-chaitra-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-chaitra-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-falgun-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-falgun-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-falgun-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-falgun-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-falgun-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-falgun-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-jestha-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-jestha-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-jestha-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-jestha-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-jestha-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-jestha-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-kartik-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-kartik-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-kartik-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-kartik-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-kartik-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-kartik-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-magh-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-magh-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-magh-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-magh-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-magh-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-magh-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-mangsir-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-mangsir-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-mangsir-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-mangsir-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-mangsir-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-mangsir-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-poush-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-poush-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-poush-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-poush-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-poush-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-poush-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-shrawan-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-shrawan-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-shrawan-krishna/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-shrawan-shukla/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-shrawan-shukla/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturdashi-vrata-shrawan-shukla/validation_cases.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturthi-vrata-ashadh-krishna/evidence.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  },
+  {
+    "classification": "candidate",
+    "path": "data/festivals/rule_triads/chaturthi-vrata-ashadh-krishna/rule.json",
+    "phase_to_resolve": "Phase 03 Canonical Runtime Consolidation",
+    "reference_count_sample": 0,
+    "reference_sample": []
+  }
+]

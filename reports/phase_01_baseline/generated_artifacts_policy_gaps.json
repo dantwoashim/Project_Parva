@@ -1,0 +1,68 @@
+[
+  {
+    "path": "data/future_bs/astronomy/solar_ingress_events_sample.json",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/benchmarks/accuracy_thresholds.json",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/benchmarks/official_holdout_v1.csv",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/corpus/source_registry.json",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/corpus/verification_notes.md",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/examples/sample_external_sheet.csv",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/examples/source_tier_schema.json",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/private/README.md",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/public/official_holdout_2078_2083.csv",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/future_bs/public/source_tier_schema.json",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  },
+  {
+    "path": "data/source_archive/README.md",
+    "phase": "Phase 04/06/07",
+    "policy_gap": "tracked generated/private-sensitive prefix requires review",
+    "recommended_action": "confirm public-safe status or move to generated artifact storage"
+  }
+]

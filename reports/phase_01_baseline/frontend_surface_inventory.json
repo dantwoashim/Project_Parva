@@ -1,0 +1,1118 @@
+[
+  {
+    "lines": 9319,
+    "path": "frontend/src/redesign/ParvaRedesign.css",
+    "phase": "Phase 09",
+    "risk": "large component"
+  },
+  {
+    "lines": 3652,
+    "path": "frontend/src/redesign/ParvaRedesign.jsx",
+    "phase": "Phase 09",
+    "risk": "large component"
+  },
+  {
+    "lines": 1002,
+    "path": "frontend/src/pages/FeedSubscriptionsPage.jsx",
+    "phase": "Phase 09",
+    "risk": "large component"
+  },
+  {
+    "lines": 861,
+    "path": "frontend/src/test/ApiService.test.jsx",
+    "phase": "Phase 09",
+    "risk": "large component"
+  },
+  {
+    "lines": 689,
+    "path": "frontend/src/pages/TimeLabPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 648,
+    "path": "frontend/src/services/api.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 643,
+    "path": "frontend/src/consumer/ConsumerSections.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 640,
+    "path": "frontend/src/test/AppRoutes.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 600,
+    "path": "frontend/src/pages/KundaliPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 590,
+    "path": "frontend/src/pages/TimeLabPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 576,
+    "path": "frontend/src/test/visual/VisualRegression.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 558,
+    "path": "frontend/src/data/inlineGlossary.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 557,
+    "path": "frontend/src/services/apiContracts.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 529,
+    "path": "frontend/src/test/ConsumerInteractions.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 520,
+    "path": "frontend/src/pages/FestivalDetailPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 514,
+    "path": "frontend/src/pages/FeedSubscriptionsPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 478,
+    "path": "frontend/src/pages/ConsumerHome.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 477,
+    "path": "frontend/src/consumer/viewModels/festivalViewModels.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 443,
+    "path": "frontend/src/pages/feedSubscriptions/useFeedSubscriptionsState.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 430,
+    "path": "frontend/src/consumer/sections/primarySections.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 422,
+    "path": "frontend/src/components/UI/SearchSheet.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 416,
+    "path": "frontend/src/components/KundaliGraph/KundaliGraph.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 405,
+    "path": "frontend/src/lib/chronologyProjection.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 405,
+    "path": "frontend/src/pages/PersonalPanchangaPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 392,
+    "path": "frontend/src/pages/FestivalExplorerPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 389,
+    "path": "frontend/src/pages/TruthLabPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 377,
+    "path": "frontend/src/pages/FestivalDetailPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 358,
+    "path": "frontend/src/components/KundaliGraph/KundaliGraph.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 355,
+    "path": "frontend/src/index.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 344,
+    "path": "frontend/src/test/consumerViewModels.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 341,
+    "path": "frontend/src/pages/MuhurtaPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 333,
+    "path": "frontend/src/pages/LandingPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 332,
+    "path": "frontend/src/context/memberContextState.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 330,
+    "path": "frontend/src/components/Festival/FestivalDetail.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 317,
+    "path": "frontend/src/pages/FestivalExplorerPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 313,
+    "path": "frontend/src/pages/TemporalCompassPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 296,
+    "path": "frontend/src/pages/KundaliPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 290,
+    "path": "frontend/src/components/Map/FestivalMap.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 290,
+    "path": "frontend/src/i18n/messages.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 289,
+    "path": "frontend/src/components/Festival/FestivalDetail.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 281,
+    "path": "frontend/src/components/Festival/RitualTimeline.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 279,
+    "path": "frontend/src/context/memberStore.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 269,
+    "path": "frontend/src/context/MemberContext.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 268,
+    "path": "frontend/src/pages/PanchangaPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 265,
+    "path": "frontend/src/hooks/useBestTimePlanner.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 265,
+    "path": "frontend/src/services/apiCore.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 256,
+    "path": "frontend/src/pages/PersonalPanchangaPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 255,
+    "path": "frontend/src/navigation/routeManifest.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 254,
+    "path": "frontend/src/pages/TemporalCompassPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 249,
+    "path": "frontend/src/pages/timeLab/timeLabHelpers.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 247,
+    "path": "frontend/src/pages/ProfilePage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 244,
+    "path": "frontend/src/components/Calendar/TemporalNavigator.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 241,
+    "path": "frontend/src/pages/SavedPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 241,
+    "path": "frontend/src/test/memberContextState.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 239,
+    "path": "frontend/src/components/Map/FestivalMap.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 237,
+    "path": "frontend/src/pages/MuhurtaPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 237,
+    "path": "frontend/src/styles/tokens.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 232,
+    "path": "frontend/src/components/UI/SearchSheet.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 226,
+    "path": "frontend/src/components/UI/AdvancedSettingsDrawer.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 225,
+    "path": "frontend/src/redesign/redesignStaticData.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 224,
+    "path": "frontend/src/consumer/viewModels/shared.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 223,
+    "path": "frontend/src/pages/PanchangaPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 220,
+    "path": "frontend/src/data/temporalGlossary.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 220,
+    "path": "frontend/src/test/memberStore.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 218,
+    "path": "frontend/src/consumer/viewModels/todayViewModel.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 216,
+    "path": "frontend/src/test/FestivalExplorerPage.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 210,
+    "path": "frontend/src/pages/ConsumerHome.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 201,
+    "path": "frontend/src/hooks/useFestivals.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 199,
+    "path": "frontend/src/components/Festival/ConnectionsView.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 199,
+    "path": "frontend/src/pages/feedSubscriptions/feedHelpers.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 197,
+    "path": "frontend/src/App.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 194,
+    "path": "frontend/src/pages/kundali/kundaliPresentation.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 193,
+    "path": "frontend/src/components/UI/AdvancedSettingsDrawer.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 189,
+    "path": "frontend/src/test/TruthLabPage.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 188,
+    "path": "frontend/src/pages/LandingPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 186,
+    "path": "frontend/src/consumer/UtilityPages.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 185,
+    "path": "frontend/src/test/MuhurtaPage.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 179,
+    "path": "frontend/src/components/Festival/RitualTimeline.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 177,
+    "path": "frontend/src/components/Festival/MythologySection.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 175,
+    "path": "frontend/src/test/SearchSheet.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 166,
+    "path": "frontend/src/pages/kundali/useKundaliState.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 164,
+    "path": "frontend/src/test/TimeLabPage.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 157,
+    "path": "frontend/src/test/FeedSubscriptionsPage.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 154,
+    "path": "frontend/src/components/Festival/ConnectionsView.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 154,
+    "path": "frontend/src/components/UI/AuthorityInspector.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 153,
+    "path": "frontend/src/test/FestivalDetailPage.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 151,
+    "path": "frontend/src/components/Festival/DeityCard.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 149,
+    "path": "frontend/src/services/apiContractCore.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 147,
+    "path": "frontend/src/components/Calendar/TemporalNavigator.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 145,
+    "path": "frontend/src/consumer/sections/secondarySections.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 145,
+    "path": "frontend/src/redesign/formatters.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 145,
+    "path": "frontend/src/services/calendarContracts.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 141,
+    "path": "frontend/src/pages/ProfilePage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 137,
+    "path": "frontend/src/test/KundaliPage.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 134,
+    "path": "frontend/src/components/UI/KnowledgePanel.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 130,
+    "path": "frontend/src/components/Festival/ExplainPanel.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 128,
+    "path": "frontend/src/components/UI/EvidenceDrawer.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 128,
+    "path": "frontend/src/components/UI/EvidenceDrawer.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 125,
+    "path": "frontend/src/pages/timeLab/useTimeLabState.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 124,
+    "path": "frontend/src/pages/SavedPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 124,
+    "path": "frontend/src/pages/TruthLabPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 124,
+    "path": "frontend/src/services/personalClient.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 124,
+    "path": "frontend/src/utils/productDateTime.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 121,
+    "path": "frontend/src/pages/truthLab/useTruthLabState.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 120,
+    "path": "frontend/src/components/Festival/DeityCard.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 118,
+    "path": "frontend/src/hooks/useCalendar.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 116,
+    "path": "frontend/src/components/Calendar/LunarPhase.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 113,
+    "path": "frontend/src/hooks/useTemples.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 112,
+    "path": "frontend/src/test/MemberContext.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 110,
+    "path": "frontend/src/services/muhurtaContracts.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 109,
+    "path": "frontend/src/context/temporalContextState.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 107,
+    "path": "frontend/src/components/Festival/MythologySection.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 107,
+    "path": "frontend/src/hooks/useTodayBundle.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 107,
+    "path": "frontend/src/services/calendarClient.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 104,
+    "path": "frontend/src/components/Festival/FestivalCard.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 104,
+    "path": "frontend/src/pages/MethodologyPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 103,
+    "path": "frontend/src/components/Calendar/LunarPhase.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 103,
+    "path": "frontend/src/hooks/useFestivalExplorerData.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 96,
+    "path": "frontend/src/components/UI/HoverGlossaryTerm.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 96,
+    "path": "frontend/src/hooks/usePersonalPlaceBundle.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 95,
+    "path": "frontend/src/components/TimelineRibbon/TimelineRibbon.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 94,
+    "path": "frontend/src/components/MuhurtaHeatmap/MuhurtaHeatmap.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 93,
+    "path": "frontend/src/hooks/useDialogA11y.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 92,
+    "path": "frontend/src/consumer/UtilityPages.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 91,
+    "path": "frontend/src/test/setup.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 89,
+    "path": "frontend/src/components/UI/HoverGlossaryTerm.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 86,
+    "path": "frontend/src/consumer/viewModels/bestTimeViewModel.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 85,
+    "path": "frontend/src/components/UI/AuthorityInspector.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 83,
+    "path": "frontend/src/components/Festival/FestivalCard.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 83,
+    "path": "frontend/src/pages/kundali/kundaliFormState.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 83,
+    "path": "frontend/src/services/kundaliContracts.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 78,
+    "path": "frontend/src/pages/AboutPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 74,
+    "path": "frontend/src/services/personalContracts.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 73,
+    "path": "frontend/src/test/temporalContextState.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 73,
+    "path": "frontend/src/types/api.ts",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 71,
+    "path": "frontend/src/components/UI/KnowledgePanel.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 70,
+    "path": "frontend/src/components/Festival/ExplainPanel.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 68,
+    "path": "frontend/src/utils/isoDate.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 64,
+    "path": "frontend/src/pages/AboutPage.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 61,
+    "path": "frontend/src/test/productDateTime.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 59,
+    "path": "frontend/src/services/festivalClient.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 52,
+    "path": "frontend/src/services/feedApi.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 52,
+    "path": "frontend/src/styles/layouts.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 51,
+    "path": "frontend/src/services/errorFormatting.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 49,
+    "path": "frontend/src/styles/interactions.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 48,
+    "path": "frontend/src/pages/MethodologyPage.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 47,
+    "path": "frontend/src/data/contracts.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 46,
+    "path": "frontend/src/components/UI/ErrorBoundary.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 45,
+    "path": "frontend/src/test/FestivalDetailRitualSchema.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 44,
+    "path": "frontend/src/components/UI/MemberNoticeBar.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 44,
+    "path": "frontend/src/data/locationPresets.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 44,
+    "path": "frontend/src/test/experimentalChronology.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 43,
+    "path": "frontend/src/hooks/useViewportWidth.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 42,
+    "path": "frontend/src/context/TemporalContext.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 36,
+    "path": "frontend/src/components/Compass/OrbitalRing.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 36,
+    "path": "frontend/src/services/festivalContracts.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 35,
+    "path": "frontend/src/components/Compass/HorizonStrip.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 33,
+    "path": "frontend/src/components/UI/MemberNoticeBar.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 32,
+    "path": "frontend/src/consumer/consumerAssetRegistry.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 30,
+    "path": "frontend/src/redesign/ParvaRedesign.tokens.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 29,
+    "path": "frontend/src/consumer/sections/shared.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 27,
+    "path": "frontend/src/services/apiBase.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 26,
+    "path": "frontend/src/main.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 25,
+    "path": "frontend/src/services/analytics.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 24,
+    "path": "frontend/src/services/placesContracts.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 24,
+    "path": "frontend/src/test/apiBase.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 23,
+    "path": "frontend/src/test/errorFormatting.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 20,
+    "path": "frontend/src/pages/truthLab/truthLabHelpers.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 20,
+    "path": "frontend/src/test/i18nMessages.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 19,
+    "path": "frontend/src/test/feedApi.test.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 18,
+    "path": "frontend/src/i18n/useCopy.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 16,
+    "path": "frontend/src/test/HoverGlossaryTerm.test.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 15,
+    "path": "frontend/src/App.css",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 11,
+    "path": "frontend/src/consumer/consumerViewModels.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 10,
+    "path": "frontend/src/context/useMemberContext.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 10,
+    "path": "frontend/src/context/useTemporalContext.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 10,
+    "path": "frontend/src/hooks/index.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 8,
+    "path": "frontend/src/components/Festival/index.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 8,
+    "path": "frontend/src/services/trustClient.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 7,
+    "path": "frontend/src/i18n/locale.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 7,
+    "path": "frontend/src/services/integrationClient.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 5,
+    "path": "frontend/src/consumer/ConsumerSections.jsx",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 3,
+    "path": "frontend/src/components/Calendar/index.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 3,
+    "path": "frontend/src/context/memberContextShared.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 3,
+    "path": "frontend/src/context/temporalContextShared.js",
+    "phase": "n/a",
+    "risk": "normal"
+  },
+  {
+    "lines": 2,
+    "path": "frontend/src/components/Map/index.js",
+    "phase": "n/a",
+    "risk": "normal"
+  }
+]

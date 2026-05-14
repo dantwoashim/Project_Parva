@@ -1,0 +1,156 @@
+[
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates compatibility or legacy surface",
+    "path": "backend/app/future_bs/legacy_cycle_predictor.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "medium"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "backend/app/future_bs/risk_thresholds.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "medium"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates archive/historical material",
+    "path": "backend/tools/build_archive_harvest_queue.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "medium"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates archive/historical material",
+    "path": "backend/tools/discover_koirala_holiday_archives.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "medium"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "data/future_bs/benchmarks/accuracy_thresholds.json",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "data/future_bs/benchmarks/official_holdout_v1.csv",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "data/future_bs/public/official_holdout_2078_2083.csv",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates archive/historical material",
+    "path": "data/source_archive/README.md",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates compatibility or legacy surface",
+    "path": "docs/COMPATIBILITY_BADGES.md",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates compatibility or legacy surface",
+    "path": "docs/PROTOCOL_COMPATIBILITY.md",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "frontend/scripts/golden_journeys.mjs",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates compatibility or legacy surface",
+    "path": "governance/COMPATIBILITY_CERTIFICATION.md",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates compatibility or legacy surface",
+    "path": "registry/compatibility/README.md",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates archive/historical material",
+    "path": "scripts/future_bs/parse_archive_panchanga.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "scripts/future_bs/tune_risk_thresholds.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates archive/historical material",
+    "path": "scripts/release/package_source_archive.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates archive/historical material",
+    "path": "scripts/release/verify_source_archive.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "scripts/run_golden_journeys.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "low"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "tests/accuracy/test_future_bs_official_holdout.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "medium"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates archive/historical material",
+    "path": "tests/fixtures/bs_historical.json",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "medium"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample",
+    "path": "tests/unit/future_bs/test_risk_thresholds.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "medium"
+  },
+  {
+    "evidence": "no or only self filename references found in grep sample; path indicates archive/historical material",
+    "path": "tests/unit/scripts/test_package_source_archive.py",
+    "phase": "Phase 03 or Phase 04",
+    "recommended_action": "review in Phase 03/04 before deletion",
+    "risk_of_deletion": "medium"
+  }
+]

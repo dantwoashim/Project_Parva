@@ -1,0 +1,74 @@
+[
+  {
+    "blocking_reason": null,
+    "command": "git status --short",
+    "duration_seconds": 0.226,
+    "exit_code": 0,
+    "failure_category": null,
+    "requested_command": "git status --short",
+    "status": "pass",
+    "stderr_tail": "",
+    "stdout_tail": "",
+    "summary": "No output."
+  },
+  {
+    "blocking_reason": null,
+    "command": "python --version",
+    "duration_seconds": 0.054,
+    "exit_code": 0,
+    "failure_category": null,
+    "requested_command": "python --version",
+    "status": "pass",
+    "stderr_tail": "",
+    "stdout_tail": "Python 3.10.10",
+    "summary": "Python 3.10.10"
+  },
+  {
+    "blocking_reason": null,
+    "command": "python -c \"import sys; print(sys.executable); print(sys.version)\"",
+    "duration_seconds": 0.301,
+    "exit_code": 0,
+    "failure_category": null,
+    "requested_command": "python -c \"import sys; print(sys.executable); print(sys.version)\"",
+    "status": "pass",
+    "stderr_tail": "",
+    "stdout_tail": "C:\\Users\\prabi\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\n3.11.4 (tags/v3.11.4:d2340ef, Jun  7 2023, 05:45:37) [MSC v.1934 64 bit (AMD64)]",
+    "summary": "3.11.4 (tags/v3.11.4:d2340ef, Jun  7 2023, 05:45:37) [MSC v.1934 64 bit (AMD64)]"
+  },
+  {
+    "blocking_reason": null,
+    "command": "node --version",
+    "duration_seconds": 0.053,
+    "exit_code": 0,
+    "failure_category": null,
+    "requested_command": "node --version",
+    "status": "pass",
+    "stderr_tail": "",
+    "stdout_tail": "v25.2.1",
+    "summary": "v25.2.1"
+  },
+  {
+    "blocking_reason": null,
+    "command": "npm --version",
+    "duration_seconds": 0.371,
+    "exit_code": 0,
+    "failure_category": null,
+    "requested_command": "npm --version",
+    "status": "pass",
+    "stderr_tail": "",
+    "stdout_tail": "11.10.0",
+    "summary": "11.10.0"
+  },
+  {
+    "blocking_reason": null,
+    "command": "find .github/workflows -maxdepth 1 -type f -print 2>/dev/null | sort",
+    "duration_seconds": 0.022,
+    "exit_code": 255,
+    "failure_category": "environment issue",
+    "requested_command": "find .github/workflows -maxdepth 1 -type f -print 2>/dev/null | sort",
+    "status": "fail",
+    "stderr_tail": "The system cannot find the path specified.",
+    "stdout_tail": "",
+    "summary": "The system cannot find the path specified."
+  }
+]
