@@ -4,6 +4,35 @@ export type ClaimBoundary =
   | 'parva_protocol_preview_not_legal_authority'
   | string;
 
+export type MaturityLane =
+  | 'stable_core'
+  | 'public_preview'
+  | 'developer_preview'
+  | 'enterprise_preview'
+  | 'research_private'
+  | 'protocol_draft'
+  | 'deprecated_compatibility'
+  | 'historical';
+
+export type RouteProfile =
+  | 'minimal_public'
+  | 'public_demo'
+  | 'public_reference'
+  | 'developer_preview'
+  | 'enterprise_preview'
+  | 'research_private'
+  | 'internal_lab'
+  | 'full_dev';
+
+export interface BackendCapability {
+  lane: MaturityLane;
+  maturity: string;
+  profiles: RouteProfile[];
+  exactFutureOutput?: boolean | 'guarded';
+  privateData?: boolean | string;
+  researchData?: boolean | string;
+}
+
 export interface SourceRef {
   id: string;
   label?: string;
@@ -22,6 +51,17 @@ export interface SourceAwareMeta {
   warnings?: string[];
   trace_id?: string | null;
   result_class?: string;
+  maturity?: string;
+}
+
+export interface CapabilityAwareResponse {
+  surface?: string;
+  status?: string;
+  publication_status?: 'computed_prediction_not_official' | string;
+  maturity?: string;
+  claim_boundary?: ClaimBoundary;
+  warnings?: string[];
+  meta?: SourceAwareMeta;
 }
 
 export interface CalendarTodayResponse {

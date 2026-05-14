@@ -1,10 +1,10 @@
 export const navItems = [
-  { label: 'Today', to: '/today' },
-  { label: 'My Place', to: '/my-place' },
-  { label: 'Festivals', to: '/festivals' },
-  { label: 'Best Time', to: '/best-time' },
-  { label: 'Birth Reading', shortLabel: 'Birth', to: '/birth-reading' },
-  { label: 'Panchanga', shortLabel: 'Dates', to: '/panchanga' },
+  { label: 'Today', to: '/today', requiredCapability: 'coreCalendar' },
+  { label: 'My Place', to: '/my-place', requiredCapability: 'placeSearch' },
+  { label: 'Festivals', to: '/festivals', requiredCapability: 'festivalTimeline' },
+  { label: 'Best Time', to: '/best-time', requiredCapability: 'muhurtaPublic' },
+  { label: 'Birth Reading', shortLabel: 'Birth', to: '/birth-reading', requiredCapability: 'kundaliPreview' },
+  { label: 'Panchanga', shortLabel: 'Dates', to: '/panchanga', requiredCapability: 'panchangaPublic' },
 ];
 
 export const footerGroups = [
@@ -12,32 +12,32 @@ export const footerGroups = [
     title: 'Product',
     links: [
       { label: 'Home', to: '/' },
-      { label: 'Today', to: '/today' },
-      { label: 'My Place', to: '/my-place' },
-      { label: 'Festivals', to: '/festivals' },
-      { label: 'Best Time', to: '/best-time' },
-      { label: 'Birth Reading', to: '/birth-reading' },
-      { label: 'Panchanga', to: '/panchanga' },
+      { label: 'Today', to: '/today', requiredCapability: 'coreCalendar' },
+      { label: 'My Place', to: '/my-place', requiredCapability: 'placeSearch' },
+      { label: 'Festivals', to: '/festivals', requiredCapability: 'festivalTimeline' },
+      { label: 'Best Time', to: '/best-time', requiredCapability: 'muhurtaPublic' },
+      { label: 'Birth Reading', to: '/birth-reading', requiredCapability: 'kundaliPreview' },
+      { label: 'Panchanga', to: '/panchanga', requiredCapability: 'panchangaPublic' },
     ],
   },
   {
     title: 'Workspace',
     links: [
-      { label: 'Developers', to: '/developers' },
-      { label: 'Enterprise', to: '/enterprise' },
+      { label: 'Developers', to: '/developers', requiredCapability: 'developerPreview' },
+      { label: 'Enterprise', to: '/enterprise', requiredCapability: 'billingEnterprise' },
       { label: 'Saved', to: '/saved' },
       { label: 'Profile', to: '/profile' },
-      { label: 'Integrations', to: '/integrations' },
+      { label: 'Integrations', to: '/integrations', requiredCapability: 'integrationsPreview' },
     ],
   },
   {
     title: 'Trust',
     links: [
-      { label: 'Trust', to: '/trust' },
-      { label: 'Methodology', to: '/methodology' },
-      { label: 'Truth Lab', to: '/truth-lab' },
+      { label: 'Trust', to: '/trust', requiredCapability: 'trustPreview' },
+      { label: 'Methodology', to: '/methodology', requiredCapability: 'futureBsMethodology' },
+      { label: 'Truth Lab', to: '/truth-lab', requiredCapability: 'reliabilityPreview' },
       { label: 'About', to: '/about' },
-      { label: 'API Policy', to: '/policy' },
+      { label: 'API Policy', to: '/policy', requiredCapability: 'policyMetadata' },
     ],
   },
 ];

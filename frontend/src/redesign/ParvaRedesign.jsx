@@ -15,6 +15,7 @@ import {
 import { todayIso } from '../context/temporalContextState';
 import { useTemporalContext } from '../context/useTemporalContext';
 import { useFestivalDetail } from '../hooks/useFestivals';
+import useBackendCapabilities from '../hooks/useBackendCapabilities';
 import usePersonalPlaceBundle from '../hooks/usePersonalPlaceBundle';
 import useTodayBundle from '../hooks/useTodayBundle';
 import { apiHref } from '../services/apiBase';
@@ -125,8 +126,19 @@ function d9Houses(payload) {
 
 function AppChrome({ children }) {
   const [searchOpen, setSearchOpen] = useState(false);
+  const capabilities = useBackendCapabilities();
   const { state } = useTemporalContext();
   const [summary, setSummary] = useState(null);
+  const visibleNavItems = useMemo(() => capabilities.filterRoutes(navItems), [capabilities]);
+  const visibleFooterGroups = useMemo(
+    () => footerGroups
+      .map((group) => ({
+        ...group,
+        links: capabilities.filterRoutes(group.links),
+      }))
+      .filter((group) => group.links.length > 0),
+    [capabilities],
+  );
   const placeLabel = summary?.location_context?.place_title
     || summary?.place_title
     || placeLabelFromLocation(state.location);
@@ -167,7 +179,7 @@ function AppChrome({ children }) {
           ⌕
         </button>
         <nav className="top-nav" aria-label="Primary navigation">
-          {navItems.map((item) => (
+          {visibleNavItems.map((item) => (
             <NavLink key={item.to} to={item.to} aria-label={item.label}>
               <span className="nav-label-full">{item.label}</span>
               <span className="nav-label-short" aria-hidden="true">{item.shortLabel || item.label}</span>
@@ -224,7 +236,7 @@ function AppChrome({ children }) {
             </div>
           </div>
           <div className="footer-link-grid">
-            {footerGroups.map((group) => (
+            {visibleFooterGroups.map((group) => (
               <nav key={group.title} aria-label={`${group.title} links`}>
                 <h2>{group.title}</h2>
                 {group.links.map((link) => (
@@ -242,7 +254,7 @@ function AppChrome({ children }) {
         </section>
       </footer>
       <nav className="bottom-nav" aria-label="Mobile navigation">
-        {navItems.slice(0, 5).map((item) => (
+        {visibleNavItems.slice(0, 5).map((item) => (
           <NavLink key={item.to} to={item.to}>
             {item.shortLabel || item.label}
           </NavLink>
@@ -257,16 +269,17 @@ function SearchDialog({ onClose }) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const capabilities = useBackendCapabilities();
   const fromDate = useMemo(() => todayIso('Asia/Kathmandu'), []);
   const toDate = useMemo(() => addDaysIso(fromDate, 365), [fromDate]);
   const quickCommands = useMemo(() => [
-    { label: 'Today', meta: 'Daily panchanga, source status, and best window', to: '/today' },
-    { label: 'Best Time', meta: 'Ranked muhurta planner', to: '/best-time' },
-    { label: 'Panchanga', meta: 'Date converter and almanac signals', to: '/panchanga' },
-    { label: 'My Place', meta: 'Private calculation context', to: '/my-place' },
-    { label: 'Birth Reading', meta: 'Privacy-aware Kundali workflow', to: '/birth-reading' },
-    { label: 'Trust', meta: 'Reliability, limits, and source evidence', to: '/trust' },
-  ], []);
+    { label: 'Today', meta: 'Daily panchanga, source status, and best window', to: '/today', requiredCapability: 'coreCalendar' },
+    { label: 'Best Time', meta: 'Ranked muhurta planner', to: '/best-time', requiredCapability: 'muhurtaPublic' },
+    { label: 'Panchanga', meta: 'Date converter and almanac signals', to: '/panchanga', requiredCapability: 'panchangaPublic' },
+    { label: 'My Place', meta: 'Private calculation context', to: '/my-place', requiredCapability: 'placeSearch' },
+    { label: 'Birth Reading', meta: 'Privacy-aware Kundali workflow', to: '/birth-reading', requiredCapability: 'kundaliPreview' },
+    { label: 'Trust', meta: 'Reliability, limits, and source evidence', to: '/trust', requiredCapability: 'trustPreview' },
+  ].filter((item) => capabilities.isRouteVisible(item)), [capabilities]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -3413,6 +3426,8 @@ function formatMinorCurrency(amountMinor, currency = 'NPR') {
 }
 
 export function RedesignApiPricing() {
+  const capabilities = useBackendCapabilities();
+  const billingAvailable = capabilities.isEnabled('billingEnterprise');
   const [selectedTier, setSelectedTier] = useState('starter');
   const [provider, setProvider] = useState('manual_bank_qr');
   const [customer, setCustomer] = useState({ email: '', name: '', country: 'NP' });
@@ -3432,6 +3447,10 @@ export function RedesignApiPricing() {
 
   const startCheckout = async (event) => {
     event.preventDefault();
+    if (!billingAvailable) {
+      setStatus({ tone: 'error', text: 'Billing API is controlled under the enterprise preview route profile.' });
+      return;
+    }
     setStatus({ tone: 'loading', text: 'Creating payment request...' });
     setApiKeyResult(null);
     try {
@@ -3453,6 +3472,10 @@ export function RedesignApiPricing() {
 
   const createApiKey = async () => {
     if (!checkout?.checkout_id) return;
+    if (!billingAvailable) {
+      setStatus({ tone: 'error', text: 'API key activation is controlled under the enterprise preview route profile.' });
+      return;
+    }
     setStatus({ tone: 'loading', text: 'Checking activation status...' });
     try {
       const result = await billingAPI.createKey({ checkout_id: checkout.checkout_id, name: `${selectedPlan.name} production key` });
@@ -3466,6 +3489,10 @@ export function RedesignApiPricing() {
 
   const loadUsage = async (event) => {
     event.preventDefault();
+    if (!billingAvailable) {
+      setStatus({ tone: 'error', text: 'Usage lookup is controlled under the enterprise preview route profile.' });
+      return;
+    }
     setStatus({ tone: 'loading', text: 'Loading usage...' });
     try {
       const result = await billingAPI.getUsage(usageKey.trim());

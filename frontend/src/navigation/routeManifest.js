@@ -1,3 +1,5 @@
+import { filterRoutesByProfile, isRouteVisibleInProfile, resolveFrontendProfile } from '../config/routeCapabilities';
+
 const ROUTE_MANIFEST = [
   {
     id: 'today',
@@ -12,6 +14,7 @@ const ROUTE_MANIFEST = [
     bottomNav: true,
     footerGroup: 'consumer',
     searchDefault: true,
+    requiredCapability: 'coreCalendar',
   },
   {
     id: 'my-place',
@@ -26,6 +29,7 @@ const ROUTE_MANIFEST = [
     bottomNav: true,
     footerGroup: 'consumer',
     searchDefault: true,
+    requiredCapability: 'placeSearch',
   },
   {
     id: 'festivals',
@@ -40,6 +44,7 @@ const ROUTE_MANIFEST = [
     bottomNav: true,
     footerGroup: 'consumer',
     searchDefault: true,
+    requiredCapability: 'festivalTimeline',
   },
   {
     id: 'muhurta',
@@ -54,6 +59,7 @@ const ROUTE_MANIFEST = [
     bottomNav: true,
     footerGroup: 'consumer',
     searchDefault: true,
+    requiredCapability: 'muhurtaPublic',
   },
   {
     id: 'kundali',
@@ -68,6 +74,7 @@ const ROUTE_MANIFEST = [
     bottomNav: true,
     footerGroup: 'consumer',
     searchDefault: true,
+    requiredCapability: 'kundaliPreview',
   },
   {
     id: 'saved',
@@ -95,6 +102,7 @@ const ROUTE_MANIFEST = [
     keywords: 'calendar sync feeds',
     metaKey: 'search.command.integrations.meta',
     footerGroup: 'utilities',
+    requiredCapability: 'integrationsPreview',
   },
   {
     id: 'time-lab',
@@ -103,6 +111,7 @@ const ROUTE_MANIFEST = [
     tier: 'beta',
     keywords: 'time lab conversion converter bs ad bc experimental infinite chronology',
     metaKey: 'search.command.timeLab.meta',
+    requiredCapability: 'panchangaPublic',
   },
   {
     id: 'trust',
@@ -112,6 +121,7 @@ const ROUTE_MANIFEST = [
     keywords: 'trust reliability policy evidence source status',
     metaKey: 'search.command.trust.meta',
     footerGroup: 'utilities',
+    requiredCapability: 'trustPreview',
   },
   {
     id: 'methodology',
@@ -121,6 +131,7 @@ const ROUTE_MANIFEST = [
     keywords: 'trust method evidence',
     metaKey: 'search.command.methodology.meta',
     footerGroup: 'utilities',
+    requiredCapability: 'futureBsMethodology',
   },
   {
     id: 'truth-lab',
@@ -130,6 +141,7 @@ const ROUTE_MANIFEST = [
     keywords: 'truth lab dispute atlas authority conflict boundary radar proof capsule',
     metaKey: 'search.command.methodology.meta',
     footerGroup: 'utilities',
+    requiredCapability: 'reliabilityPreview',
   },
   {
     id: 'about',
@@ -148,6 +160,7 @@ const ROUTE_MANIFEST = [
     keywords: 'api policy advisory disclaimer usage',
     metaKey: 'search.command.apiPolicy.meta',
     footerGroup: 'utilities',
+    requiredCapability: 'policyMetadata',
   },
   {
     id: 'panchanga',
@@ -156,6 +169,7 @@ const ROUTE_MANIFEST = [
     tier: 'deferred',
     keywords: 'panchanga almanac calendar daily details',
     metaKey: 'search.command.panchanga.meta',
+    requiredCapability: 'panchangaPublic',
   },
 ];
 
@@ -183,25 +197,29 @@ function searchKindForTier(tier, copy) {
   return copy('search.kind.page');
 }
 
-export function getPrimaryNavItems(copy) {
-  return ROUTE_MANIFEST.filter((route) => route.primaryNav).map((route) => translatedRoute(route, copy));
+function visibleManifest(profile = resolveFrontendProfile()) {
+  return filterRoutesByProfile(ROUTE_MANIFEST, profile);
 }
 
-export function getSideRailItems(copy) {
-  return ROUTE_MANIFEST.filter((route) => route.sideRail).map((route) => translatedRoute(route, copy));
+export function getPrimaryNavItems(copy, { profile = resolveFrontendProfile() } = {}) {
+  return visibleManifest(profile).filter((route) => route.primaryNav).map((route) => translatedRoute(route, copy));
 }
 
-export function getBottomNavItems(copy) {
-  return ROUTE_MANIFEST.filter((route) => route.bottomNav).map((route) => translatedRoute(route, copy));
+export function getSideRailItems(copy, { profile = resolveFrontendProfile() } = {}) {
+  return visibleManifest(profile).filter((route) => route.sideRail).map((route) => translatedRoute(route, copy));
 }
 
-export function getSupportNavItems(copy) {
-  return ROUTE_MANIFEST
+export function getBottomNavItems(copy, { profile = resolveFrontendProfile() } = {}) {
+  return visibleManifest(profile).filter((route) => route.bottomNav).map((route) => translatedRoute(route, copy));
+}
+
+export function getSupportNavItems(copy, { profile = resolveFrontendProfile() } = {}) {
+  return visibleManifest(profile)
     .filter((route) => route.tier !== 'launch-critical' && route.tier !== 'deferred')
     .map((route) => translatedRoute(route, copy));
 }
 
-export function getFooterGroups(copy) {
+export function getFooterGroups(copy, { profile = resolveFrontendProfile() } = {}) {
   const groups = [
     { key: 'consumer', title: copy('footer.consumer') },
     { key: 'utilities', title: copy('footer.utilities') },
@@ -209,17 +227,17 @@ export function getFooterGroups(copy) {
 
   return groups.map((group) => ({
     title: group.title,
-    links: ROUTE_MANIFEST
+    links: visibleManifest(profile)
       .filter((route) => route.footerGroup === group.key)
       .map((route) => ({
         label: copy(route.labelKey),
         to: route.to,
       })),
-  }));
+  })).filter((group) => group.links.length > 0);
 }
 
-export function getSearchCommands(copy, { includeSupport = false } = {}) {
-  return ROUTE_MANIFEST
+export function getSearchCommands(copy, { includeSupport = false, profile = resolveFrontendProfile() } = {}) {
+  return visibleManifest(profile)
     .filter((route) => route.searchDefault || includeSupport)
     .filter((route) => route.tier !== 'deferred' || includeSupport)
     .map((route) => ({
@@ -239,7 +257,9 @@ export function getActiveLaunchSection(pathname) {
 }
 
 export function getSurfaceDescriptor(pathname, copy) {
-  const route = ROUTE_MANIFEST.find((candidate) => matchesPath(pathname, candidate.to));
+  const route = ROUTE_MANIFEST.find(
+    (candidate) => matchesPath(pathname, candidate.to) && isRouteVisibleInProfile(candidate),
+  );
   if (!route || route.tier === 'launch-critical') {
     return null;
   }
