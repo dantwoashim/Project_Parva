@@ -4,10 +4,9 @@ Generated artifact for Phase 03 verification evidence.
 
 ## Status
 
-In progress. The canonical registry, checker, architecture tests, runtime
-validation data copies, and public runtime import cleanup have been implemented.
-Final public verification is still pending in this report until the full command
-set completes.
+Phase 03 public verification is green as of this report update. The canonical
+registry, checker, architecture tests, runtime validation data copies, public
+runtime import cleanup, and final public gate all passed.
 
 ## Scope Audited
 
@@ -37,13 +36,17 @@ set completes.
 | Command | Result | Evidence |
 | --- | --- | --- |
 | `python scripts/check_canonical_runtime.py` | Pass | `Canonical runtime registry check passed.` |
-| `python -m pytest tests/architecture -q` | Pass | `10 passed in 1.99s` |
-| `python scripts/release/check_route_inventory.py` | Pending | Not run yet in this report. |
-| `python scripts/release/check_documented_routes.py` | Pending | Not run yet in this report. |
-| `python scripts/release/check_backend_smoke.py` | Pending | Not run yet in this report. |
-| `python -m ruff check backend tests scripts sdk packages/parva-python` | Pending | Not run yet in this report. |
-| `pytest -q -m "not private_source and not wide_corpus and not research_artifact" --maxfail=20` | Pending | Not run yet in this report. |
-| `python scripts/release/verify_public.py` | Pending | Not run yet in this report. |
+| `python -m pytest tests/architecture -q` | Pass | `10 passed in 2.48s` |
+| `python scripts/release/check_route_inventory.py` | Pass | `route_count: 448`, `canonical_v3_route_count: 217`, `legacy_route_count: 217` |
+| `python scripts/release/check_documented_routes.py` | Pass | `Documented route inventory verified (217 canonical v3 routes).` |
+| `python scripts/release/check_backend_smoke.py` | Pass | `Backend smoke checks passed.` |
+| `python -m ruff check backend tests scripts sdk packages/parva-python` | Pass | `All checks passed!` |
+| `python scripts/check_docs_links.py` | Pass | `Documentation links verified.` |
+| Focused runtime/festival/tithi tests | Pass | `57 passed in 22.46s` |
+| `pytest -q -m "not private_source and not wide_corpus and not research_artifact" --maxfail=20` | Pass | `787 passed, 8 skipped in 125.38s` |
+| First `python scripts/release/verify_public.py` after code changes | Fail then fixed | Failed only at public OpenAPI drift, with `Static public OpenAPI mirror is stale`. Regenerated with `python scripts/release/generate_public_demo_openapi.py`. |
+| `python scripts/release/check_public_openapi_drift.py` after regeneration | Pass | `Static public OpenAPI mirror is current.` |
+| Final `python scripts/release/verify_public.py` | Pass | Ended with `Public reproducibility gate passed.` |
 
 ## Acceptance Checklist
 
@@ -55,11 +58,11 @@ set completes.
 6. Deprecated and compatibility paths labeled and tested: implemented.
 7. Public runtime code does not depend on `tests/fixtures` for public quality claims: implemented, architecture check passing.
 8. Dead-code candidates classified and safe archives/deletions recorded: implemented in generated artifact `reports/phase_03_canonical_runtime/deletions_and_archives.md`.
-9. Public verification remains green: pending full gate.
+9. Public verification remains green: yes, final `verify_public.py` passed after OpenAPI regeneration.
 
 ## Remaining Blockers
 
-None known yet. Full verification is pending.
+None for Phase 03 acceptance.
 
 ## Later-Phase Backlog
 

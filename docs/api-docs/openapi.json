@@ -1800,7 +1800,7 @@
           "calendar"
         ],
         "summary": "Calculate Festival Endpoint",
-        "description": "Calculate the dates for a specific festival in a given year.\n\nUses V2 calculator with correct lunar month model and Adhik Maas handling.",
+        "description": "Calculate the dates for a specific festival in a given year.\n\nUses the canonical festival rule service for public route stability.",
         "operationId": "calculate_festival_endpoint_api_calendar_festivals_calculate__festival_id__get",
         "parameters": [
           {
@@ -12698,7 +12698,7 @@
           "calendar"
         ],
         "summary": "Calculate Festival Endpoint",
-        "description": "Calculate the dates for a specific festival in a given year.\n\nUses V2 calculator with correct lunar month model and Adhik Maas handling.",
+        "description": "Calculate the dates for a specific festival in a given year.\n\nUses the canonical festival rule service for public route stability.",
         "operationId": "calculate_festival_endpoint_v3_api_calendar_festivals_calculate__festival_id__get",
         "parameters": [
           {
