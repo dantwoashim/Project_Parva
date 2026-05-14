@@ -33,6 +33,7 @@ VERIFICATION_COMMANDS: list[dict[str, Any]] = [
     {"command": "python scripts/release/check_route_inventory.py", "timeout": 180},
     {"command": "python scripts/release/check_documented_routes.py", "timeout": 180},
     {"command": "python scripts/release/check_backend_smoke.py", "timeout": 240},
+    {"command": "python scripts/release/verify_public.py", "timeout": 1200},
     {"command": "python scripts/parva_trust_verify.py", "timeout": 240},
     {"command": "python scripts/parva_timegraph_verify.py", "timeout": 240},
     {"command": "python scripts/parva_rulelang_verify.py", "timeout": 240},
@@ -527,7 +528,12 @@ def categorize_result(command: str, status: str, stdout: str, stderr: str) -> st
     if status == "pass":
         return None
     text = f"{stdout}\n{stderr}".lower()
-    if "not recognized" in text or "no such file" in text or "could not find" in text:
+    if (
+        "not recognized" in text
+        or "no such file" in text
+        or "could not find" in text
+        or "the system cannot find the path specified" in text
+    ):
         return "environment issue"
     if "private" in text or "source_archive" in text or "wide_corpus" in text:
         return "private-data issue"
@@ -1437,7 +1443,7 @@ def render_readme(
 def fingerprint(*, phase_python_command: str) -> dict[str, Any]:
     def output(command: str) -> str:
         result = run_command(command, timeout=60)
-        return (result.get("stdout_tail") or result.get("summary") or "").strip()
+        return (result.get("stdout_tail") or "").strip()
 
     py_info = output('python -c "import sys; print(sys.executable); print(sys.version)"').splitlines()
     phase_py_info = output(
