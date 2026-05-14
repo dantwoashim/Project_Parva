@@ -1,6 +1,14 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Future BS Research Boundary
 
-Status: Phase 04 research-private boundary.
+Status: Phase 07 research-private boundary.
 
 Future-BS work is a research and model-risk subsystem. Public Parva surfaces may
 describe its methodology, source policy, uncertainty, risk labels, and claim
@@ -47,12 +55,32 @@ PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION=false
 ```
 
 Research routes require an explicit private profile such as `research_private`,
-`internal_lab`, or `full_dev`, plus the existing experimental and private-schema
-controls.
+`internal_lab`, or `full_dev`, plus the experimental API flag, the research API
+flag, and authentication:
+
+```text
+PARVA_ENABLE_EXPERIMENTAL_API=true
+PARVA_ENABLE_RESEARCH_API=true
+PARVA_ADMIN_TOKEN=<operator token> or scoped PARVA_API_KEYS
+```
+
+Private OpenAPI schema exposure still requires:
+
+```text
+PARVA_SHOW_PRIVATE_SCHEMA=true
+```
+
+The detailed Phase 07 policy set lives under `docs/future_bs/`:
+
+- `RESEARCH_BOUNDARY.md`
+- `PUBLIC_CLAIMS_POLICY.md`
+- `PRIVATE_DATA_POLICY.md`
+- `ACCURACY_REPRODUCIBILITY.md`
+- `WRONG_GREEN_POLICY.md`
+- `MODEL_REGISTRY.md`
 
 ## Claim Rule
 
 Future-BS public language may say Parva computes and studies calendar-risk
 signals. It may not say Parva publishes official future BS dates or guarantees
 future month lengths.
-

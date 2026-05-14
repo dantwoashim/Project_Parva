@@ -1,7 +1,22 @@
+---
+status: stable
+tier: 1
+lane: operations
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Security
 
 Project Parva is temporal infrastructure, so security controls are part of the
 trust story.
+
+For the full current model, see:
+
+- `docs/SECURITY_MODEL.md`
+- `docs/PRODUCTION_DEPLOYMENT_GUARDRAILS.md`
+- `docs/PII_AND_TRACE_POLICY.md`
+- `docs/ADMIN_AUDIT_LOGGING.md`
 
 ## Authentication
 

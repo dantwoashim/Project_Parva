@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Impact Change Sets
 
 A change set describes one or more temporal changes.

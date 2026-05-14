@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Deploy with Upstash Redis
 
 Use Upstash Redis for distributed rate limiting and lightweight shared cache state. Do not rely on in-process memory for a multi-instance hosted backend.

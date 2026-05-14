@@ -3,8 +3,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
+import time
 from pathlib import Path
+from uuid import uuid4
 
 try:
     from .common import DEFAULT_MANIFEST_PATH, DEFAULT_SIGNATURE_PATH, TRUST_LOG_PATH, TrustToolError
@@ -33,6 +36,7 @@ def build_release_log_entry(
         raise TrustToolError("manifest release_id is missing")
 
     return {
+        "entry_id": str(uuid4()),
         "event": "calendar.release.published",
         "release_id": release_id,
         "artifact_hash": sha256_prefixed(sha256_file(manifest_path)),
@@ -52,8 +56,25 @@ def append_log_entry(
     entry = build_release_log_entry(manifest_path, signature_path, timestamp=timestamp)
     log_path = repo_path(log_path)
     log_path.parent.mkdir(parents=True, exist_ok=True)
-    with log_path.open("a", encoding="utf-8", newline="\n") as handle:
-        handle.write(json.dumps(entry, sort_keys=True) + "\n")
+    lock_path = log_path.with_suffix(log_path.suffix + ".lock")
+    lock_fd: int | None = None
+    deadline = time.monotonic() + 10
+    while lock_fd is None:
+        try:
+            lock_fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            if time.monotonic() >= deadline:
+                raise TrustToolError(f"timed out waiting for transparency log lock: {lock_path}")
+            time.sleep(0.1)
+    try:
+        with log_path.open("a", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(entry, sort_keys=True) + "\n")
+    finally:
+        os.close(lock_fd)
+        try:
+            lock_path.unlink()
+        except FileNotFoundError:
+            pass
     return entry
 
 

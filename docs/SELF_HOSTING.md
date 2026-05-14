@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Self-Hosting
 
 Project Parva can be self-hosted locally or in a small deployment, but the public repo assumes you are responsible for your own operations, rate limiting, and source publication.

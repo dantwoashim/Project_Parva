@@ -128,7 +128,7 @@ def test_compliance_profile_and_decision_support_methods() -> None:
         "source": {
             "id": "parva_enterprise_compliance_profiles",
             "label": "Parva enterprise compliance profile definitions",
-            "tier": "public_corpus",
+            "tier": "publisher_reference",
             "authority": "derived_reference_not_legal_authority",
         },
         "confidence": "source_backed",
@@ -404,7 +404,7 @@ def test_client_preserves_source_aware_metadata() -> None:
         "source": {
             "id": "parva_public_bs_ad_corpus",
             "label": "Parva public BS/AD corpus",
-            "tier": "public_corpus",
+            "tier": "software_table_reference",
             "authority": "derived_reference_not_legal_authority",
             "version": "parva-public-calendar-v1",
         },

@@ -14,6 +14,8 @@ from app.services.personal_surface_service import (
     build_personal_proof_capsule,
 )
 
+from ._async_utils import run_cpu_bound
+
 router = APIRouter(prefix="/api/personal", tags=["personal"])
 
 
@@ -33,7 +35,8 @@ async def personal_panchanga(
     tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Kathmandu"),
     risk_mode: str = Query("standard", description="standard|strict"),
 ):
-    return build_personal_panchanga_response(
+    return await run_cpu_bound(
+        build_personal_panchanga_response,
         date_str=date_str,
         lat=lat,
         lon=lon,
@@ -44,7 +47,8 @@ async def personal_panchanga(
 
 @router.post("/panchanga")
 async def personal_panchanga_post(payload: PersonalPanchangaRequest):
-    return build_personal_panchanga_response(
+    return await run_cpu_bound(
+        build_personal_panchanga_response,
         date_str=payload.date,
         lat=payload.lat,
         lon=payload.lon,
@@ -61,7 +65,8 @@ async def personal_panchanga_proof_capsule(
     tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Kathmandu"),
     risk_mode: str = Query("strict", description="standard|strict"),
 ):
-    payload = build_personal_panchanga_response(
+    payload = await run_cpu_bound(
+        build_personal_panchanga_response,
         date_str=date_str,
         lat=lat,
         lon=lon,
@@ -77,7 +82,8 @@ async def personal_panchanga_proof_capsule(
 
 @router.post("/panchanga/proof-capsule")
 async def personal_panchanga_proof_capsule_post(payload: PersonalPanchangaRequest):
-    response_payload = build_personal_panchanga_response(
+    response_payload = await run_cpu_bound(
+        build_personal_panchanga_response,
         date_str=payload.date,
         lat=payload.lat,
         lon=payload.lon,
@@ -105,7 +111,8 @@ async def personal_context(
     tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Kathmandu"),
     risk_mode: str = Query("standard", description="standard|strict"),
 ):
-    return build_personal_context_response(
+    return await run_cpu_bound(
+        build_personal_context_response,
         date_str=date_str,
         lat=lat,
         lon=lon,
@@ -116,7 +123,8 @@ async def personal_context(
 
 @router.post("/context")
 async def personal_context_post(payload: PersonalPanchangaRequest):
-    return build_personal_context_response(
+    return await run_cpu_bound(
+        build_personal_context_response,
         date_str=payload.date,
         lat=payload.lat,
         lon=payload.lon,
@@ -133,7 +141,8 @@ async def personal_context_proof_capsule(
     tz: Optional[str] = Query(None, description="IANA timezone, e.g. Asia/Kathmandu"),
     risk_mode: str = Query("strict", description="standard|strict"),
 ):
-    payload = build_personal_context_response(
+    payload = await run_cpu_bound(
+        build_personal_context_response,
         date_str=date_str,
         lat=lat,
         lon=lon,
@@ -149,7 +158,8 @@ async def personal_context_proof_capsule(
 
 @router.post("/context/proof-capsule")
 async def personal_context_proof_capsule_post(payload: PersonalPanchangaRequest):
-    response_payload = build_personal_context_response(
+    response_payload = await run_cpu_bound(
+        build_personal_context_response,
         date_str=payload.date,
         lat=payload.lat,
         lon=payload.lon,

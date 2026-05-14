@@ -146,10 +146,53 @@ SQLITE_SCHEMA = (
     )
     """,
     """
+    CREATE TABLE IF NOT EXISTS billing_audit_events (
+      id TEXT PRIMARY KEY,
+      action TEXT NOT NULL,
+      actor_principal TEXT,
+      route TEXT,
+      object_type TEXT NOT NULL,
+      object_id TEXT NOT NULL,
+      before_hash TEXT,
+      after_hash TEXT,
+      request_id TEXT,
+      source_ip TEXT,
+      metadata_json TEXT NOT NULL DEFAULT '{}',
+      created_at TEXT NOT NULL
+    )
+    """,
+    """
     CREATE INDEX IF NOT EXISTS idx_usage_events_subject ON usage_events(api_key_id, customer_id, period_ym)
     """,
     """
     CREATE INDEX IF NOT EXISTS idx_payments_reference ON payments(provider, provider_payment_id, provider_reference)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_api_keys_prefix_active ON api_keys(key_prefix, active)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_api_keys_customer ON api_keys(customer_id, created_at)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_subscriptions_customer_status ON subscriptions(customer_id, status)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_usage_counters_subject_period ON usage_counters(subject_type, subject_id, period, bucket)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_usage_events_created ON usage_events(created_at)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_invoices_customer_status ON invoices(customer_id, status, created_at)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_invoices_provider_payment ON invoices(provider, payment_id)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_billing_audit_object ON billing_audit_events(object_type, object_id, created_at)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_billing_audit_actor ON billing_audit_events(actor_principal, created_at)
     """,
 )
 
@@ -162,8 +205,17 @@ POSTGRES_SCHEMA = tuple(
     for statement in SQLITE_SCHEMA
 )
 
+SQLITE_AUDIT_AND_INDEXES = SQLITE_SCHEMA[10:]
+POSTGRES_AUDIT_AND_INDEXES = POSTGRES_SCHEMA[10:]
+
 MIGRATIONS: tuple[Migration, ...] = (
     Migration(version=1, name="billing_foundation", sqlite=SQLITE_SCHEMA, postgres=POSTGRES_SCHEMA),
+    Migration(
+        version=2,
+        name="billing_audit_and_hot_path_indexes",
+        sqlite=SQLITE_AUDIT_AND_INDEXES,
+        postgres=POSTGRES_AUDIT_AND_INDEXES,
+    ),
 )
 
 
@@ -184,4 +236,3 @@ def run_migrations(store) -> None:
             f"INSERT INTO billing_schema_migrations (version, name) VALUES ({store.param()}, {store.param()})",
             (migration.version, migration.name),
         )
-

@@ -1,0 +1,12 @@
+{
+  "level": "parva_agent_safe",
+  "case_id": "agent_safe.valid_review_gate",
+  "input": {
+    "claim": "Is 2091-01-01 official without a public official source?",
+    "expected_decision": "review_required"
+  },
+  "expected": {
+    "status": "pass",
+    "requires_human_review": true
+  }
+}

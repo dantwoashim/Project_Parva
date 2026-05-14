@@ -8,14 +8,6 @@ import subprocess
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-TRACKED_REPORT_ALLOWLIST = (
-    "reports/phase_01_baseline/",
-    "reports/phase_02_red_check/",
-    "reports/phase_03_canonical_runtime/",
-    "reports/phase_04_maturity_lanes/",
-)
-
-
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -23,8 +15,6 @@ def _load_json(path: Path) -> dict:
 def _tracked_path_issue(path: str) -> str | None:
     if path.startswith("frontend/dist/"):
         return "tracked frontend build artifact"
-    if path.startswith("reports/") and path.startswith(TRACKED_REPORT_ALLOWLIST):
-        return None
     if path.startswith("reports/") or path == "evaluation.csv":
         return "tracked generated report artifact"
     if ".egg-info/" in path:
@@ -48,6 +38,8 @@ def main() -> int:
     )
     if tracked.returncode == 0:
         for path in tracked.stdout.splitlines():
+            if not (PROJECT_ROOT / path).exists():
+                continue
             issue = _tracked_path_issue(path)
             if issue:
                 issues.append(f"{path}: {issue}")

@@ -12,7 +12,7 @@ Core public responses may include:
     "source": {
       "id": "parva_public_bs_ad_corpus",
       "label": "Parva public BS/AD corpus",
-      "tier": "public_corpus",
+      "tier": "software_table_reference",
       "authority": "derived_reference_not_legal_authority",
       "version": "parva-public-calendar-v1"
     },
@@ -34,12 +34,15 @@ Existing top-level fields remain available for compatibility. Integrations shoul
 | Tier | Meaning |
 |---|---|
 | `official` | Structured official-source evidence is available for the specific public window |
-| `public_corpus` | Public deterministic corpus or table evidence, not legal authority |
-| `publisher` | Publisher or public documentation reference |
+| `semi_official` | Authority-adjacent source that still needs explicit review before official-grade use |
+| `printed_verified` | Identifiable printed calendar or panchanga evidence reviewed by humans |
+| `public_witness` | Public dated material that links temporal facts without acting as authority |
+| `publisher_reference` | Publisher, documentation, or project-owned reference metadata |
+| `software_table_reference` | Public deterministic table or software corpus evidence, not legal authority |
+| `third_party` | Third-party comparison source, never official-grade by itself |
 | `calculated` | Deterministic computation from declared engine logic |
 | `fixture` | Test or demo data only |
-| `research` | Research-preview or future-risk metadata |
-| `private` | Private deployment source, not required for public tests |
+| `research_private` | Private research evidence; public routes may expose only boundary metadata, not the evidence |
 | `unknown` | Fallback only, should be rare |
 
 ## Confidence Levels

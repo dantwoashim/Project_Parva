@@ -1,3 +1,11 @@
+---
+status: stable
+tier: 1
+lane: operations
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # RuleLang Security
 
 RuleLang is intentionally not a general programming language.

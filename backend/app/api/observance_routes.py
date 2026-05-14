@@ -3,13 +3,15 @@
 from __future__ import annotations
 
 import json
-from datetime import date, timedelta
+from datetime import date
 from pathlib import Path
 from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.observances import resolve_observances
+from app.observances import resolve_observance_window, resolve_observances
+
+from ._async_utils import run_cpu_bound
 
 router = APIRouter(prefix="/api/observances", tags=["observances"])
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -38,7 +40,12 @@ async def resolve_observances_route(
 ):
     """Resolve and rank observances across loaded calendar families."""
     pref_list = _parse_csv(preferences)
-    ranked = resolve_observances(target_date, location=location, preferences=pref_list)
+    ranked = await run_cpu_bound(
+        resolve_observances,
+        target_date,
+        location=location,
+        preferences=pref_list,
+    )
 
     return {
         "date": target_date.isoformat(),
@@ -82,10 +89,16 @@ async def next_observance(
     pref_list = _parse_csv(preferences)
     calendar_list = _parse_csv(calendars)
 
-    for offset in range(days + 1):
-        probe = start + timedelta(days=offset)
-        ranked = resolve_observances(probe, location=location, preferences=pref_list)
-        ranked = _filter_by_calendars(ranked, calendar_list)
+    window = await run_cpu_bound(
+        resolve_observance_window,
+        start,
+        days=days + 1,
+        location=location,
+        preferences=pref_list,
+    )
+    for offset, row in enumerate(window):
+        probe = date.fromisoformat(str(row["date"]))
+        ranked = _filter_by_calendars(list(row["observances"]), calendar_list)
         if ranked:
             return {
                 "from_date": start.isoformat(),
@@ -119,14 +132,20 @@ async def observance_stream(
     pref_list = _parse_csv(preferences)
     calendar_list = _parse_csv(calendars)
 
+    window = await run_cpu_bound(
+        resolve_observance_window,
+        begin,
+        days=days,
+        location=location,
+        preferences=pref_list,
+    )
+
     out: list[dict] = []
-    for offset in range(days):
-        probe = begin + timedelta(days=offset)
-        ranked = resolve_observances(probe, location=location, preferences=pref_list)
-        ranked = _filter_by_calendars(ranked, calendar_list)
+    for row in window:
+        ranked = _filter_by_calendars(list(row["observances"]), calendar_list)
         out.append(
             {
-                "date": probe.isoformat(),
+                "date": row["date"],
                 "count": len(ranked),
                 "top_observance": ranked[0] if ranked else None,
                 "observances": ranked,

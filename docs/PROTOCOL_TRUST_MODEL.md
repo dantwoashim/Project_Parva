@@ -1,3 +1,11 @@
+---
+status: draft
+tier: 2
+lane: protocol
+last_verified: 2026-05-14
+owner: protocol-team
+---
+
 # Protocol Trust Model
 
 Parva Protocol separates evidence strength from convenience. A route can be useful while still carrying a limited claim boundary.

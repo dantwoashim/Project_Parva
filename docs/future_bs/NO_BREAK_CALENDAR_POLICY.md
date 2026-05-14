@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # No-Break Calendar Policy
 
 Financial systems should not hardcode unpublished future BS month lengths as final truth.

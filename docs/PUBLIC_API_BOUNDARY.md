@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Public API Boundary
 
 Status: Phase 04 public/private route boundary.

@@ -1,4 +1,5 @@
 import subprocess
+import sys
 
 
 def test_calendar_var_report_script(tmp_path):
@@ -6,8 +7,7 @@ def test_calendar_var_report_script(tmp_path):
     json_path = tmp_path / "var.json"
     subprocess.run(
         [
-            "py",
-            "-3.11",
+            sys.executable,
             "scripts/future_bs/generate_calendar_var_report.py",
             "--sample",
             "--out",

@@ -1,0 +1,12 @@
+{
+  "level": "parva_impact",
+  "case_id": "impact.invalid_private_dependency",
+  "input": {
+    "dependency_type": "private_source_archive",
+    "entity_id": "client_private_source"
+  },
+  "expected": {
+    "status": "fail",
+    "reason": "public impact compatibility cannot require private dependency disclosure"
+  }
+}

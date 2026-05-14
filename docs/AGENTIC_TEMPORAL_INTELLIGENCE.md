@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Agentic Temporal Intelligence
 
 The agent layer exposes deterministic Parva services as safe tools for humans, developers, and AI agents.

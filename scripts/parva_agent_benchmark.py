@@ -42,6 +42,30 @@ def main() -> int:
             lambda: check_human_review_payload({"use_case": "banking", "confidence": "source_backed"})["requires_human_review"] is True,
         ),
         (
+            "private_data_unavailable_review_required",
+            lambda: check_human_review_payload({"confidence": "unknown", "reason_codes": ["PRIVATE_DATA_UNAVAILABLE"]})["decision"][
+                "reason_codes"
+            ]
+            and check_human_review_payload({"confidence": "unknown", "reason_codes": ["PRIVATE_DATA_UNAVAILABLE"]})[
+                "requires_human_review"
+            ]
+            is True,
+        ),
+        (
+            "source_conflict_review_required",
+            lambda: check_human_review_payload({"confidence": "disputed", "reason_codes": ["DISPUTED_FACT_REVIEW_REQUIRED"]})[
+                "requires_human_review"
+            ]
+            is True,
+        ),
+        (
+            "official_source_missing_review_required",
+            lambda: verify_temporal_claim_payload("Is 2091-01-01 official without a public official source?")["decision"][
+                "requires_human_review"
+            ]
+            is True,
+        ),
+        (
             "ambiguous_intent_requires_confirmation",
             lambda: resolve_intent_payload("Convert this fiscal payroll claim for 2083-01-01 BS.")["requires_confirmation"] is True,
         ),

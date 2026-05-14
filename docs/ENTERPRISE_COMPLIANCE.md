@@ -1,3 +1,11 @@
+---
+status: enterprise-preview
+tier: 2
+lane: rules
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Enterprise Compliance Preview
 
 Project Parva includes a minimal enterprise temporal compliance layer for source-aware decision support.

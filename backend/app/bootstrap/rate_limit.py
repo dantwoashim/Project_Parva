@@ -34,6 +34,10 @@ class RateLimiterBackend(Protocol):
         """Apply the rate limit policy for a single request."""
 
 
+class RateLimiterUnavailable(RuntimeError):
+    """Raised when a selected shared limiter cannot make a safe decision."""
+
+
 class InMemoryRateLimiterBackend:
     """Development-friendly in-process rate limiter."""
 
@@ -146,14 +150,19 @@ return {1, current + 1, 0}
         key = f"parva:ratelimit:{bucket}:{identifier}"
         cutoff = now - policy.window_seconds
         member = f"{now:.6f}:{time.monotonic_ns()}"
-        execution_results = self._eval_atomic_check(
-            key=key,
-            cutoff=cutoff,
-            limit=policy.limit,
-            now_score=now,
-            member=member,
-            ttl=policy.window_seconds,
-        )
+        try:
+            execution_results = self._eval_atomic_check(
+                key=key,
+                cutoff=cutoff,
+                limit=policy.limit,
+                now_score=now,
+                member=member,
+                ttl=policy.window_seconds,
+            )
+        except Exception as exc:  # noqa: BLE001 - fail closed when the shared limiter is unavailable.
+            raise RateLimiterUnavailable(
+                "Redis rate limiter is unavailable; request denied by fail-closed policy."
+            ) from exc
 
         if not isinstance(execution_results, (list, tuple)) or len(execution_results) != 3:
             raise RuntimeError("Redis rate limiter returned an unexpected result.")

@@ -1,3 +1,11 @@
+---
+status: stable
+tier: 1
+lane: operations
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Deployment
 
 Project Parva is designed to run in two deployment profiles:

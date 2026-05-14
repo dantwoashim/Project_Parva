@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Performance Notes
 
 Project Parva keeps public route checks fast enough for release verification, but some calendar surfaces still have different cold and warm behavior.

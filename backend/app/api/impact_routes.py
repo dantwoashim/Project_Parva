@@ -18,6 +18,8 @@ from app.services.impact_service import (
     simulate_release_diff_payload,
 )
 
+from ._async_utils import run_cpu_bound
+
 router = APIRouter(prefix="/api/impact", tags=["impact"])
 
 
@@ -51,7 +53,8 @@ async def get_impact_capabilities() -> dict[str, Any]:
 @router.post("/diff-releases")
 async def diff_releases(payload: ReleaseDiffRequest) -> dict[str, Any]:
     try:
-        return semantic_release_diff_payload(
+        return await run_cpu_bound(
+            semantic_release_diff_payload,
             payload.from_release_id,
             payload.to_release_id,
             include_fixture=payload.include_fixture,
@@ -65,7 +68,7 @@ async def simulate_change_set(payload: ChangeSetRequest, request: Request) -> di
     try:
         change_set = dict(payload.change_set)
         change_set.setdefault("trace_id", getattr(request.state, "request_id", None))
-        return simulate_change_set_payload(change_set, limit=payload.limit)
+        return await run_cpu_bound(simulate_change_set_payload, change_set, limit=payload.limit)
     except ImpactError as exc:
         _raise_impact_error(exc)
 
@@ -73,7 +76,8 @@ async def simulate_change_set(payload: ChangeSetRequest, request: Request) -> di
 @router.post("/simulate-release-diff")
 async def simulate_release_diff(payload: ReleaseDiffSimulationRequest) -> dict[str, Any]:
     try:
-        return simulate_release_diff_payload(
+        return await run_cpu_bound(
+            simulate_release_diff_payload,
             payload.from_release_id,
             payload.to_release_id,
             include_fixture=payload.include_fixture,

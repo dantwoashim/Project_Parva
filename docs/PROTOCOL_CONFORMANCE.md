@@ -1,3 +1,11 @@
+---
+status: draft
+tier: 2
+lane: protocol
+last_verified: 2026-05-14
+owner: protocol-team
+---
+
 # Protocol Conformance
 
 Parva Protocol conformance is currently alpha conformance for a protocol draft. It is intended to make public behavior reproducible and inspectable. It is not third-party certification and it does not create official calendar authority.

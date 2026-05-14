@@ -1,0 +1,12 @@
+{
+  "level": "parva_rulelang",
+  "case_id": "rulelang.invalid_code_execution",
+  "input": {
+    "rule_id": "unsafe_eval",
+    "script": "import os"
+  },
+  "expected": {
+    "status": "fail",
+    "reason": "RuleLang compatibility excludes arbitrary code execution"
+  }
+}

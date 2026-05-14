@@ -26,6 +26,8 @@ from app.services.future_bs_service import (
     simulate_loan_impact,
 )
 
+from ._async_utils import run_cpu_bound
+
 public_router = APIRouter(prefix="/v4/api/future-bs", tags=["future-bs"])
 private_router = APIRouter(prefix="/v4/api/future-bs", tags=["future-bs-private"])
 
@@ -76,7 +78,7 @@ async def future_bs_capabilities(request: Request):
 @private_router.get("/month-lengths/range")
 async def future_bs_month_lengths_range(start: int, end: int):
     try:
-        return predict_bs_range(start, end)
+        return await run_cpu_bound(predict_bs_range, start, end)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -84,7 +86,8 @@ async def future_bs_month_lengths_range(start: int, end: int):
 @private_router.post("/month-lengths/compare")
 async def future_bs_compare_month_lengths(payload: CompareMonthLengthsRequest):
     try:
-        return compare_external_sheet(
+        return await run_cpu_bound(
+            compare_external_sheet,
             payload.source_name,
             [year.model_dump() for year in payload.years],
         )
@@ -95,7 +98,12 @@ async def future_bs_compare_month_lengths(payload: CompareMonthLengthsRequest):
 @private_router.post("/month-lengths/import-excel")
 async def future_bs_import_excel(payload: ImportExcelRequest):
     try:
-        return import_excel_and_compare(payload.source_name, payload.content_base64, payload.file_format)
+        return await run_cpu_bound(
+            import_excel_and_compare,
+            payload.source_name,
+            payload.content_base64,
+            payload.file_format,
+        )
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -114,7 +122,14 @@ async def future_bs_backtest(
     ] = "all_reference",
 ):
     try:
-        return backtest_model(train_start, train_end, test_start, test_end, source_policy=source_policy)
+        return await run_cpu_bound(
+            backtest_model,
+            train_start,
+            train_end,
+            test_start,
+            test_end,
+            source_policy=source_policy,
+        )
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -135,10 +150,23 @@ async def future_bs_backtest_v2(
 ):
     try:
         if mode == "full":
-            return full_backtest(test_start, test_end, source_policy=source_policy)
+            return await run_cpu_bound(full_backtest, test_start, test_end, source_policy=source_policy)
         if mode == "rolling":
-            return rolling_backtest(train_start, test_start, test_end, source_policy=source_policy)
-        return backtest_model(train_start, train_end, test_start, test_end, source_policy=source_policy)
+            return await run_cpu_bound(
+                rolling_backtest,
+                train_start,
+                test_start,
+                test_end,
+                source_policy=source_policy,
+            )
+        return await run_cpu_bound(
+            backtest_model,
+            train_start,
+            train_end,
+            test_start,
+            test_end,
+            source_policy=source_policy,
+        )
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -157,7 +185,14 @@ async def future_bs_backtest_residuals(
     ] = "all_reference",
 ):
     try:
-        return backtest_residuals(train_start, train_end, test_start, test_end, source_policy=source_policy)
+        return await run_cpu_bound(
+            backtest_residuals,
+            train_start,
+            train_end,
+            test_start,
+            test_end,
+            source_policy=source_policy,
+        )
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -165,7 +200,7 @@ async def future_bs_backtest_residuals(
 @private_router.get("/month-lengths/explain")
 async def future_bs_explain_month(year: int, month: int):
     try:
-        return explain_month(year, month)
+        return await run_cpu_bound(explain_month, year, month)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -173,7 +208,7 @@ async def future_bs_explain_month(year: int, month: int):
 @private_router.get("/boundary-risk")
 async def future_bs_boundary_risk(year: int, month: int):
     try:
-        return boundary_risk(year, month)
+        return await run_cpu_bound(boundary_risk, year, month)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -181,7 +216,7 @@ async def future_bs_boundary_risk(year: int, month: int):
 @private_router.get("/month-lengths/export.csv")
 async def future_bs_export_csv(start: int, end: int):
     try:
-        body = predictions_to_csv(start, end)
+        body = await run_cpu_bound(predictions_to_csv, start, end)
     except ValueError as exc:
         raise _bad_request(exc) from exc
     filename = f"parva_future_bs_{start}_{end}.csv"
@@ -200,7 +235,7 @@ async def future_bs_export_csv_alias(start: int, end: int):
 @private_router.get("/month-lengths/export.xlsx")
 async def future_bs_export_xlsx(start: int, end: int):
     try:
-        body = predictions_to_xlsx(start, end)
+        body = await run_cpu_bound(predictions_to_xlsx, start, end)
     except ValueError as exc:
         raise _bad_request(exc) from exc
     filename = f"parva_future_bs_{start}_{end}.xlsx"
@@ -219,7 +254,7 @@ async def future_bs_export_xlsx_alias(start: int, end: int):
 @private_router.get("/month-lengths/{bs_year}")
 async def future_bs_month_lengths(bs_year: int):
     try:
-        return predict_bs_year(bs_year)
+        return await run_cpu_bound(predict_bs_year, bs_year)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -228,20 +263,20 @@ async def future_bs_month_lengths(bs_year: int):
 async def future_bs_loan_impact(payload: LoanImpactRequest):
     raw_payload: dict[str, Any] = payload.model_dump()
     try:
-        return simulate_loan_impact(raw_payload)
+        return await run_cpu_bound(simulate_loan_impact, raw_payload)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
 
 @private_router.get("/model-runs")
 async def future_bs_model_runs():
-    return {"runs": model_runs()}
+    return {"runs": await run_cpu_bound(model_runs)}
 
 
 @private_router.get("/model-runs/{run_id}")
 async def future_bs_model_run(run_id: str):
     try:
-        return model_run(run_id)
+        return await run_cpu_bound(model_run, run_id)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 

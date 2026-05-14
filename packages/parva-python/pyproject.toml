@@ -12,6 +12,9 @@ license = { text = "AGPL-3.0-or-later" }
 authors = [{ name = "Project Parva" }]
 dependencies = []
 
+[project.scripts]
+parva = "parva.cli:main"
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["parva*"]

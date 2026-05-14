@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: dx
+last_verified: 2026-05-14
+owner: dx-team
+---
+
 # Embed Guide
 
 Project Parva ships lightweight static embed surfaces under `frontend/public/embed/`.
@@ -60,6 +68,27 @@ Upcoming Festivals:
 <script async src="https://your-parva-host.example/embed/parva-embed.js"></script>
 ```
 
+To point all widgets on a page at a private or staging API, set `data-api-base` on the loader script:
+
+```html
+<script
+  async
+  src="https://your-parva-host.example/embed/parva-embed.js"
+  data-api-base="https://calendar.example.com/v3/api"
+></script>
+```
+
+To override one widget, set `data-api-base` on that widget container. The loader converts it into the iframe query parameter `api_base`:
+
+```html
+<div
+  data-parva-widget="temporal-compass"
+  data-api-base="https://calendar.example.com/v3/api"
+  data-date="2026-10-21"
+  data-height="320"
+></div>
+```
+
 Upcoming festivals example:
 
 ```html
@@ -83,6 +112,7 @@ Temporal Compass:
 - `tz`
 - `quality_band`
 - `height`
+- `api_base`
 
 Upcoming Festivals:
 
@@ -91,11 +121,12 @@ Upcoming Festivals:
 - `limit`
 - `lang`
 - `height`
+- `api_base`
 
 ## Deployment notes
 
 - These widgets call the stable `v3` API only.
-- They assume the embed page and API are hosted on the same origin.
+- By default they use the public v3 API. Use `api_base` or `data-api-base` for staging or private deployments.
 - Personal/location-sensitive widgets still use POST JSON inside the iframe and do not expose coordinates in the request URL to the API.
 - The embed surfaces are public-beta, explainable, and known-limits-first, just like the main app.
 

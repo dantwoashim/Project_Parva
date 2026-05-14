@@ -1,0 +1,22 @@
+{
+  "_meta": {
+    "name": "Public Secondary Provider Festival Override Extract",
+    "last_updated": "2026-04-03",
+    "source_tier": "third_party",
+    "public": true,
+    "notes": "Selected public-safe derived cross-check rows. These rows support source-precedence behavior without requiring runtime access to private/raw source archives.",
+    "private_archive_policy": "Raw source archives are excluded from public runtime and offline bundles."
+  },
+  "records": [
+    {
+      "festival_id": "bs-new-year",
+      "gregorian": "1943-04-14",
+      "source": "ratopati_calendar_digital_provider",
+      "source_family": "ratopati_calendar_digital_provider",
+      "source_tier": "third_party",
+      "confidence": "secondary",
+      "notes": "Ratopati public calendar event for BS 2000-01-01; secondary digital-provider cross-check, not an official publication.",
+      "_authority_rank": 100
+    }
+  ]
+}

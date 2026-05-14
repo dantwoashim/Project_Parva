@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
 from datetime import date
 from pathlib import Path
@@ -22,9 +23,15 @@ _overrides_cache: Optional[Dict[str, Any]] = None
 AUTHORITY_MODE_CHOICES = frozenset({"public_default", "authority_compare", "all_candidates"})
 _PROJECT_ROOT = Path(__file__).resolve().parents[3]
 _GROUND_TRUTH_DIR = _PROJECT_ROOT / "data" / "ground_truth"
-_SECONDARY_PROVIDER_ARCHIVE = (
-    _PROJECT_ROOT / "data" / "source_archive" / "ratopati" / "event_days_2000_2100.json"
+_PUBLIC_SECONDARY_PROVIDER_EXTRACT = (
+    _PROJECT_ROOT
+    / "data"
+    / "validation"
+    / "public"
+    / "calendar"
+    / "secondary_provider_festival_overrides.json"
 )
+_PRIVATE_SOURCE_ARCHIVE_ENV = "PARVA_SECONDARY_PROVIDER_ARCHIVE"
 
 # Festival aliases for common variations
 FESTIVAL_ALIASES = {
@@ -88,6 +95,7 @@ def _load_overrides() -> Dict[str, Any]:
 
     _enrich_with_baseline_records(merged)
     _enrich_with_evaluation_rows(merged)
+    _enrich_with_public_secondary_provider_records(merged)
     _enrich_with_secondary_provider_records(merged)
     _overrides_cache = merged
     return _overrides_cache
@@ -293,11 +301,49 @@ def _match_secondary_provider_festival(title: str) -> str | None:
     return None
 
 
-def _enrich_with_secondary_provider_records(data: Dict[str, Any]) -> None:
-    if not _SECONDARY_PROVIDER_ARCHIVE.exists():
+def _enrich_with_public_secondary_provider_records(data: Dict[str, Any]) -> None:
+    if not _PUBLIC_SECONDARY_PROVIDER_EXTRACT.exists():
         return
 
-    payload = json.loads(_SECONDARY_PROVIDER_ARCHIVE.read_text(encoding="utf-8"))
+    payload = json.loads(_PUBLIC_SECONDARY_PROVIDER_EXTRACT.read_text(encoding="utf-8"))
+    records = payload.get("records", [])
+    if not isinstance(records, list):
+        return
+
+    for row in records:
+        if not isinstance(row, dict):
+            continue
+        fid = _normalize_festival_id(str(row.get("festival_id", "")))
+        gregorian = str(row.get("gregorian") or row.get("ad_date_en") or "").strip()
+        year_key = gregorian[:4]
+        if not fid or len(year_key) != 4 or not year_key.isdigit():
+            continue
+        _upsert_override(
+            data,
+            year_key,
+            fid,
+            {
+                "start": gregorian,
+                "source": row.get("source") or "ratopati_calendar_digital_provider",
+                "source_family": row.get("source_family") or _canonical_source_family(row.get("source")),
+                "confidence": row.get("confidence") or "secondary",
+                "notes": row.get("notes"),
+                "_authority_rank": int(row.get("_authority_rank", 100) or 100),
+            },
+        )
+
+
+def _enrich_with_secondary_provider_records(data: Dict[str, Any]) -> None:
+    configured_archive = os.getenv(_PRIVATE_SOURCE_ARCHIVE_ENV, "").strip()
+    if not configured_archive:
+        return
+    archive_path = Path(configured_archive)
+    if not archive_path.is_absolute():
+        archive_path = _PROJECT_ROOT / archive_path
+    if not archive_path.exists():
+        return
+
+    payload = json.loads(archive_path.read_text(encoding="utf-8"))
     records = payload.get("records", [])
     if not isinstance(records, list):
         return

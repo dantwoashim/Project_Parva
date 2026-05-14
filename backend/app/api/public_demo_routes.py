@@ -14,6 +14,8 @@ from app.services.calendar_conversion_service import (
 )
 from app.services.calendar_surface_service import build_today_payload
 
+from ._async_utils import run_cpu_bound
+
 router = APIRouter(prefix="/api/calendar", tags=["calendar"])
 
 
@@ -67,7 +69,7 @@ async def get_panchanga_endpoint(
     from app.services.calendar_surface_service import build_panchanga_payload
 
     target_date = parse_iso_date(date_str) if date_str else date.today()
-    return build_panchanga_payload(target_date, risk_mode=risk_mode)
+    return await run_cpu_bound(build_panchanga_payload, target_date, risk_mode=risk_mode)
 
 
 __all__ = ["router"]

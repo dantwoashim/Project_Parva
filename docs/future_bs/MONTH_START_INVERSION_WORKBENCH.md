@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # Month-Start Inversion Workbench
 
 Project Parva's future-BS research layer treats the BS month start as the

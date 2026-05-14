@@ -1,0 +1,12 @@
+{
+  "level": "parva_offline",
+  "case_id": "offline.valid_unsigned_public_bundle",
+  "input": {
+    "bundle_id": "parva-public-offline-0.1.0",
+    "signature_status": "unsigned_preview"
+  },
+  "expected": {
+    "status": "pass",
+    "private_paths_allowed": false
+  }
+}

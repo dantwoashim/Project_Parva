@@ -24,6 +24,8 @@ from app.services.timegraph_service import (
 )
 from app.services.trust_infrastructure_service import TrustInfrastructureError
 
+from ._async_utils import run_cpu_bound
+
 router = APIRouter(prefix="/api/timegraph", tags=["timegraph"])
 
 
@@ -150,7 +152,8 @@ async def list_timegraph_facts(
     offset: int = Query(default=0, ge=0),
 ) -> dict[str, Any]:
     try:
-        return list_facts_payload(
+        return await run_cpu_bound(
+            list_facts_payload,
             release_id=release_id,
             fact_type=fact_type,
             date_value=date,
@@ -172,7 +175,7 @@ async def list_timegraph_facts(
 @router.post("/query")
 async def query_timegraph_facts(payload: TimeGraphQuery, request: Request) -> dict[str, Any]:
     try:
-        return query_facts_payload(payload.model_dump(), trace_id=_trace_id(request))
+        return await run_cpu_bound(query_facts_payload, payload.model_dump(), trace_id=_trace_id(request))
     except (TimeGraphError, ValueError) as exc:
         _raise_timegraph_error(TimeGraphError(str(exc)))
 
@@ -186,7 +189,8 @@ async def get_timegraph_facts_for_date(
     limit: int = Query(default=50, ge=1, le=MAX_LIMIT),
 ) -> dict[str, Any]:
     try:
-        return get_facts_for_date_payload(
+        return await run_cpu_bound(
+            get_facts_for_date_payload,
             calendar,
             date_value,
             release_id=release_id,
@@ -205,7 +209,8 @@ async def get_timegraph_facts_for_source(
     limit: int = Query(default=50, ge=1, le=MAX_LIMIT),
 ) -> dict[str, Any]:
     try:
-        return get_facts_for_source_payload(
+        return await run_cpu_bound(
+            get_facts_for_source_payload,
             source_id,
             release_id=release_id,
             limit=limit,
@@ -222,7 +227,8 @@ async def get_timegraph_facts_for_release(
     limit: int = Query(default=50, ge=1, le=MAX_LIMIT),
 ) -> dict[str, Any]:
     try:
-        return get_facts_for_release_payload(
+        return await run_cpu_bound(
+            get_facts_for_release_payload,
             release_id,
             limit=limit,
             trace_id=_trace_id(request),
@@ -239,7 +245,8 @@ async def get_timegraph_facts_for_profile(
     limit: int = Query(default=50, ge=1, le=MAX_LIMIT),
 ) -> dict[str, Any]:
     try:
-        return get_facts_for_profile_payload(
+        return await run_cpu_bound(
+            get_facts_for_profile_payload,
             profile_id,
             release_id=release_id,
             limit=limit,
@@ -257,7 +264,8 @@ async def get_timegraph_relationships(
     limit: int = Query(default=50, ge=1, le=MAX_LIMIT),
 ) -> dict[str, Any]:
     try:
-        return get_relationships_payload(
+        return await run_cpu_bound(
+            get_relationships_payload,
             entity_id,
             release_id=release_id,
             limit=limit,
@@ -275,7 +283,8 @@ async def trace_timegraph_fact(
     depth: int = Query(default=2, ge=1, le=5),
 ) -> dict[str, Any]:
     try:
-        return trace_fact_payload(
+        return await run_cpu_bound(
+            trace_fact_payload,
             fact_id,
             release_id=release_id,
             depth=depth,
@@ -292,7 +301,12 @@ async def get_timegraph_fact(
     release_id: str | None = Query(default=None),
 ) -> dict[str, Any]:
     try:
-        return get_fact_payload(fact_id, release_id=release_id, trace_id=_trace_id(request))
+        return await run_cpu_bound(
+            get_fact_payload,
+            fact_id,
+            release_id=release_id,
+            trace_id=_trace_id(request),
+        )
     except TimeGraphError as exc:
         _raise_timegraph_error(exc)
 
@@ -304,7 +318,8 @@ async def list_timegraph_conflicts(
     limit: int = Query(default=50, ge=1, le=MAX_LIMIT),
 ) -> dict[str, Any]:
     try:
-        return list_conflicts_payload(
+        return await run_cpu_bound(
+            list_conflicts_payload,
             release_id=release_id,
             limit=limit,
             trace_id=_trace_id(request),

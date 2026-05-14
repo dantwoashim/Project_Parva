@@ -1,4 +1,5 @@
 import subprocess
+import sys
 
 
 def test_external_sheet_audit_script(tmp_path):
@@ -6,8 +7,7 @@ def test_external_sheet_audit_script(tmp_path):
     pdf = tmp_path / "audit.pdf"
     subprocess.run(
         [
-            "py",
-            "-3.11",
+            sys.executable,
             "scripts/future_bs/audit_external_bs_sheet.py",
             "--sample",
             "--start",

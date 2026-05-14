@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # Calendar Reconciliation Workflow
 
 Parva can support a controlled workflow for reconciling official calendar updates, reviewed source changes, and internal temporal assumptions against downstream systems.

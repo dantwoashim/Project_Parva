@@ -1,0 +1,79 @@
+{
+  "schema_version": "2026-05-14.phase07",
+  "registry_format": "json_subset_of_yaml",
+  "policy_name": "future_bs_public_policy",
+  "publication_status_required": "computed_prediction_not_official",
+  "public_profiles": ["minimal_public", "public_demo", "public_reference", "developer_preview"],
+  "research_private_profiles": ["research_private", "internal_lab", "full_dev"],
+  "required_research_gates": {
+    "route_profile": "PARVA_ROUTE_PROFILE",
+    "experimental_api": "PARVA_ENABLE_EXPERIMENTAL_API",
+    "research_api": "PARVA_ENABLE_RESEARCH_API",
+    "auth_token": "PARVA_ADMIN_TOKEN or scoped PARVA_API_KEYS",
+    "private_schema": "PARVA_SHOW_PRIVATE_SCHEMA"
+  },
+  "public_capability_paths": [
+    "/v4/api/future-bs/capabilities",
+    "/v5/api/calendar-model-risk/capabilities"
+  ],
+  "private_route_prefixes": [
+    "/v4/api/future-bs/",
+    "/v5/api/calendar-model-risk/"
+  ],
+  "private_route_allowlist": [
+    "/v4/api/future-bs/capabilities",
+    "/v5/api/calendar-model-risk/capabilities"
+  ],
+  "forbidden_public_claim_phrases": [
+    "guaranteed future",
+    "official future calendar",
+    "official future bs date",
+    "99% future accuracy",
+    "solved future calendar",
+    "publishes official future",
+    "replaces panchanga nirnayak samiti",
+    "legal authority for future dates"
+  ],
+  "claim_negation_hints": [
+    "not ",
+    "does not",
+    "must not",
+    "never",
+    "disallowed",
+    "forbidden",
+    "not_claimed",
+    "no "
+  ],
+  "public_scan_paths": [
+    "README.md",
+    "docs/README.md",
+    "docs/PUBLIC_API_BOUNDARY.md",
+    "docs/FUTURE_BS_RESEARCH_BOUNDARY.md",
+    "docs/future_bs/API.md",
+    "docs/future_bs/ACCURACY.md",
+    "docs/future_bs/CLAIM_BOUNDARY.md",
+    "docs/future_bs/CLAIMS_POLICY.md",
+    "docs/future_bs/FUTURE_BS_RESEARCH.md",
+    "docs/future_bs/LIMITATIONS.md",
+    "docs/future_bs/METHODOLOGY.md",
+    "docs/future_bs/RISK_LABELS.md",
+    "docs/future_bs/SOURCE_POLICY.md",
+    "docs/future_bs/RESEARCH_BOUNDARY.md",
+    "docs/future_bs/PUBLIC_CLAIMS_POLICY.md",
+    "docs/future_bs/PRIVATE_DATA_POLICY.md",
+    "docs/future_bs/ACCURACY_REPRODUCIBILITY.md",
+    "docs/future_bs/WRONG_GREEN_POLICY.md",
+    "docs/future_bs/MODEL_REGISTRY.md",
+    "packages/parva-js/README.md",
+    "packages/parva-python/README.md",
+    "frontend/src/App.jsx",
+    "frontend/src/config/routeCapabilities.js"
+  ],
+  "public_openapi_artifacts": [
+    "docs/api-docs/openapi.json",
+    "docs/api-docs/openapi.public-reference.json",
+    "docs/api-docs/openapi.developer-preview.json",
+    "docs/api-docs/openapi.enterprise-preview.json"
+  ],
+  "heuristic_accuracy_label": "heuristic_accuracy_estimate"
+}

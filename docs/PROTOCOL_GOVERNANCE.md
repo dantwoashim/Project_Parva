@@ -1,3 +1,11 @@
+---
+status: draft
+tier: 2
+lane: protocol
+last_verified: 2026-05-14
+owner: protocol-team
+---
+
 # Protocol Governance
 
 Parva Protocol governance is a draft process for changing public temporal contracts without weakening source policy or claim boundaries.

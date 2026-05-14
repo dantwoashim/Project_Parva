@@ -1,0 +1,13 @@
+{
+  "level": "parva_trust",
+  "case_id": "trust.valid.public_release_manifest",
+  "input": {
+    "release_id": "parva-bs-public-demo",
+    "artifact_path": "data/public/releases/parva-bs-public-demo.manifest.json"
+  },
+  "expected": {
+    "status": "pass",
+    "hash_required": true,
+    "trust_log_required": true
+  }
+}

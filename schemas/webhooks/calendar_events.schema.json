@@ -32,13 +32,17 @@
     "source_tier": {
       "type": "string",
       "enum": [
-        "official_verified",
+        "official",
+        "semi_official",
         "printed_verified",
         "public_witness",
         "publisher_reference",
         "software_table_reference",
-        "third_party_reference",
-        "needs_review"
+        "third_party",
+        "calculated",
+        "fixture",
+        "research_private",
+        "unknown"
       ]
     },
     "affected_bs_year": {

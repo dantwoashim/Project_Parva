@@ -223,6 +223,7 @@ RESEARCH_PRIVATE_POLICY_NAMES = {
     "calendar_model_risk",
     "calendar_model_risk_private",
 }
+RESEARCH_PRIVATE_ROUTE_PROFILES = {"research_private", "internal_lab", "full_dev"}
 
 
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
@@ -262,13 +263,19 @@ def _registrations_for_profile(
     *,
     route_profile: str,
     enable_experimental_api: bool,
+    enable_research_api: bool,
 ) -> list[RouterRegistration]:
+    allow_research_private = (
+        enable_experimental_api
+        and enable_research_api
+        and route_profile in RESEARCH_PRIVATE_ROUTE_PROFILES
+    )
     if route_profile in {"full", "full_dev"}:
         return [
             registration
             for registration in ROUTER_REGISTRATIONS
             if registration.audience in {"public", "trust"}
-            or (enable_experimental_api and registration.register_when_experimental_enabled)
+            or (allow_research_private and registration.register_when_experimental_enabled)
         ]
     if route_profile == "minimal_public":
         return MINIMAL_PUBLIC_ROUTE_REGISTRATIONS
@@ -292,12 +299,7 @@ def _registrations_for_profile(
         for registration in ROUTER_REGISTRATIONS
         if registration.policy_name in policy_names
     ]
-    if enable_experimental_api and route_profile in {
-        "research_private",
-        "internal_lab",
-        "full",
-        "full_dev",
-    }:
+    if allow_research_private:
         registrations.extend(
             registration
             for registration in ROUTER_REGISTRATIONS
@@ -311,6 +313,7 @@ def register_routers(
     app: FastAPI,
     *,
     enable_experimental_api: bool,
+    enable_research_api: bool = False,
     show_private_schema: bool = False,
     environment: str = "development",
     route_profile: str = "full",
@@ -319,6 +322,7 @@ def register_routers(
     registrations = _registrations_for_profile(
         route_profile=route_profile,
         enable_experimental_api=enable_experimental_api,
+        enable_research_api=enable_research_api,
     )
     for registration in registrations:
         if registration.include_base:

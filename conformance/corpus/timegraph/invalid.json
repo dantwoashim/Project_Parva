@@ -1,0 +1,12 @@
+{
+  "level": "parva_timegraph",
+  "case_id": "timegraph.invalid.untraceable_fact",
+  "input": {
+    "fact_id": "private_unpublished_fact",
+    "release_id": "none"
+  },
+  "expected": {
+    "status": "fail",
+    "reason": "public compatibility cannot rely on untraceable private facts"
+  }
+}

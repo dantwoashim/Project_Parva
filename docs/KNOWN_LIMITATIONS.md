@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Known Limitations
 
 Project Parva is useful today, but it is not complete or universally authoritative.

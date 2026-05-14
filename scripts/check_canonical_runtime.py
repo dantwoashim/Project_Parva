@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the Phase 03 canonical runtime registry and import boundaries."""
+"""Validate the canonical runtime registry and import boundaries."""
 
 from __future__ import annotations
 

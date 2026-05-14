@@ -1,3 +1,11 @@
+---
+status: draft
+tier: 2
+lane: protocol
+last_verified: 2026-05-14
+owner: protocol-team
+---
+
 # Protocol Credentials
 
 Parva Calendar Credentials are hash-only preview credentials for portable temporal claims.

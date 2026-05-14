@@ -1,0 +1,13 @@
+{
+  "level": "parva_source_aware",
+  "case_id": "source_aware.invalid.private_tier",
+  "input": {
+    "source_id": "private_archive_preview",
+    "source_tier": "private_source_archive",
+    "claim_boundary": "official_authority"
+  },
+  "expected": {
+    "status": "fail",
+    "reason": "private source tiers and authority claims are excluded from public compatibility"
+  }
+}

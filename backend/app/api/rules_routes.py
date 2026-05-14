@@ -19,6 +19,8 @@ from app.services.rulelang_service import (
     validate_rule_payload,
 )
 
+from ._async_utils import run_cpu_bound
+
 router = APIRouter(prefix="/api/rules", tags=["rules"])
 
 
@@ -94,7 +96,8 @@ async def evaluate_rule(
     request: Request,
 ) -> dict[str, Any]:
     try:
-        return evaluate_rule_payload(
+        return await run_cpu_bound(
+            evaluate_rule_payload,
             rule_id,
             payload.input,
             release_id=payload.release_id,
@@ -108,7 +111,7 @@ async def evaluate_rule(
 @router.post("/{rule_id}/test")
 async def test_rule(rule_id: str, request: Request) -> dict[str, Any]:
     try:
-        return test_rule_payload(rule_id, trace_id=_trace_id(request))
+        return await run_cpu_bound(test_rule_payload, rule_id, trace_id=_trace_id(request))
     except RuleLangError as exc:
         _raise_rule_error(exc)
 
@@ -116,7 +119,8 @@ async def test_rule(rule_id: str, request: Request) -> dict[str, Any]:
 @router.post("/evaluate")
 async def evaluate_custom_rule(payload: CustomRuleEvaluateRequest, request: Request) -> dict[str, Any]:
     try:
-        return evaluate_custom_rule_payload(
+        return await run_cpu_bound(
+            evaluate_custom_rule_payload,
             payload.rule,
             payload.input,
             release_id=payload.release_id,
@@ -131,7 +135,8 @@ async def evaluate_custom_rule(payload: CustomRuleEvaluateRequest, request: Requ
 async def explain_rule(payload: RuleExplainRequest, request: Request) -> dict[str, Any]:
     try:
         if payload.rule is not None:
-            result = evaluate_custom_rule_payload(
+            result = await run_cpu_bound(
+                evaluate_custom_rule_payload,
                 payload.rule,
                 payload.input,
                 release_id=payload.release_id,
@@ -156,7 +161,8 @@ async def explain_rule(payload: RuleExplainRequest, request: Request) -> dict[st
             }
         if not payload.rule_id:
             raise RuleLangError("rule_id or rule is required", code="INVALID_INPUT")
-        return explain_rule_payload(
+        return await run_cpu_bound(
+            explain_rule_payload,
             payload.rule_id,
             payload.input,
             release_id=payload.release_id,

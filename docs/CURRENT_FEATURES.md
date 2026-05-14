@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Current Project Parva Feature Inventory
 
 This inventory preserves the existing Parva platform boundary before additive Future BS and Calendar Model-Risk work.

@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, cast
 
 from app.core.paths import data_dir, project_root
+from app.core.source_authority import PUBLIC_RELEASE_SOURCE_TIERS, normalize_source_tier
 from app.core.source_metadata import NOT_LEGAL_AUTHORITY, PUBLIC_DATA_VERSION
 from app.services.calendar_conversion_service import (
     build_bs_to_gregorian_payload,
@@ -26,17 +27,7 @@ DEFAULT_MANIFEST_PATH = PUBLIC_RELEASE_DIR / f"{DEFAULT_RELEASE_ID}.manifest.jso
 DEFAULT_SOURCE_REGISTRY_PATH = PUBLIC_RELEASE_DIR / f"{DEFAULT_RELEASE_ID}.sources.json"
 DEFAULT_TRUST_LOG_PATH = data_dir() / "public" / "trust" / "parva-trust-log.jsonl"
 PUBLIC_SIGNATURE_STATUS = "unsigned_public_preview"
-ALLOWED_SOURCE_TIERS = {
-    "official",
-    "semi_official",
-    "public_corpus",
-    "publisher",
-    "calculated",
-    "fixture",
-    "research",
-    "private",
-    "unknown",
-}
+ALLOWED_SOURCE_TIERS = frozenset(PUBLIC_RELEASE_SOURCE_TIERS)
 
 
 class TrustInfrastructureError(ValueError):
@@ -185,7 +176,7 @@ def _public_manifest(manifest: dict[str, Any], *, active_release_id: str) -> dic
 
 
 def _normalize_source_record(source: dict[str, Any]) -> dict[str, Any]:
-    tier = str(source.get("source_tier") or "unknown")
+    tier = normalize_source_tier(str(source.get("source_tier") or "unknown"))
     if tier not in ALLOWED_SOURCE_TIERS:
         tier = "unknown"
     return {
@@ -534,7 +525,7 @@ def validate_public_trust_artifacts() -> dict[str, Any]:
         if source_id in source_ids:
             issues.append(f"duplicate source id: {source_id}")
         source_ids.add(str(source_id))
-        tier = source.get("source_tier")
+        tier = normalize_source_tier(str(source.get("source_tier") or "unknown"))
         if tier not in ALLOWED_SOURCE_TIERS:
             issues.append(f"{source_id}: invalid source tier {tier!r}")
     artifact_results = []

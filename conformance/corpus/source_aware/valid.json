@@ -1,0 +1,13 @@
+{
+  "level": "parva_source_aware",
+  "case_id": "source_aware.valid.public_source_boundary",
+  "input": {
+    "source_id": "parva_public_bs_ad_corpus",
+    "source_tier": "public_reference",
+    "claim_boundary": "not_legal_authority"
+  },
+  "expected": {
+    "status": "pass",
+    "private_source_allowed": false
+  }
+}

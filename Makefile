@@ -99,9 +99,11 @@ verify-full: verify
 preflight-production:
 	PARVA_ENV=production \
 	PARVA_SOURCE_URL=https://example.com/source \
+	PARVA_ROUTE_PROFILE=public_reference \
 	PARVA_RATE_LIMIT_BACKEND=redis \
 	PARVA_REDIS_URL=redis://localhost:6379/0 \
 	PARVA_REQUIRE_PRECOMPUTED=false \
+	PARVA_PROVENANCE_ATTESTATION_KEY=test-provenance-key \
 	PARVA_PLACE_SEARCH_ALLOW_REMOTE=false \
 	PARVA_PLACE_SEARCH_PROVIDER_CHAIN=offline \
 	PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only \

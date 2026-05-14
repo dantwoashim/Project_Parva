@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate Phase 04 maturity lanes, route profiles, and public exposure rules."""
+"""Validate maturity lanes, route profiles, and public exposure rules."""
 
 from __future__ import annotations
 

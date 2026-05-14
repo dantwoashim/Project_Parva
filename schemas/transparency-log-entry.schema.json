@@ -14,6 +14,10 @@
     "signature_ref"
   ],
   "properties": {
+    "entry_id": {
+      "type": "string",
+      "format": "uuid"
+    },
     "event": {
       "type": "string",
       "enum": [
@@ -39,6 +43,7 @@
   },
   "examples": [
     {
+      "entry_id": "00000000-0000-4000-8000-000000000001",
       "event": "calendar.release.published",
       "release_id": "parva-bs-public-demo",
       "artifact_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",

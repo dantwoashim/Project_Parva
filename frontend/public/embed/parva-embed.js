@@ -34,13 +34,18 @@
     return url.toString();
   }
 
+  function mergedDataset(target) {
+    const script = ownScript();
+    return Object.assign({}, script ? script.dataset : {}, target.dataset);
+  }
+
   function mount(target) {
     if (!target || target.dataset.parvaMounted === 'true') {
       return;
     }
 
     const widgetName = target.dataset.parvaWidget;
-    const src = buildSrc(widgetName, target.dataset);
+    const src = buildSrc(widgetName, mergedDataset(target));
     if (!src) {
       return;
     }

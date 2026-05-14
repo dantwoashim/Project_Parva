@@ -24,6 +24,7 @@ from app.core.source_metadata import (
     PUBLIC_RELEASE_ID,
     build_bs_claim_meta,
 )
+from app.security.pii import scrub_value
 from app.services.compliance_service import (
     PROFILES,
     add_working_days_payload,
@@ -1448,11 +1449,14 @@ def _append_trace(
 
 def _safe_trace_value(value: Any) -> Any:
     if isinstance(value, dict):
-        return {str(key): _safe_trace_value(nested) for key, nested in value.items()}
+        return {
+            str(key): scrub_value(_safe_trace_value(nested), field_name=str(key))
+            for key, nested in value.items()
+        }
     if isinstance(value, list):
         return [_safe_trace_value(item) for item in value]
     if isinstance(value, (str, int, float, bool)) or value is None:
-        return value
+        return scrub_value(value)
     return str(value)
 
 

@@ -1,0 +1,11 @@
+{
+  "level": "parva_agent_safe",
+  "case_id": "agent_safe.invalid_authority_overclaim",
+  "input": {
+    "claim": "Certify this future calendar date as official legal authority"
+  },
+  "expected": {
+    "status": "fail",
+    "reason": "agent-safe compatibility must not certify official or legal authority"
+  }
+}

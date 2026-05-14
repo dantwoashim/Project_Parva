@@ -14,6 +14,8 @@ from app.services.muhurta_surface_service import (
     build_rahu_kalam_response,
 )
 
+from ._async_utils import run_cpu_bound
+
 router = APIRouter(prefix="/api/muhurta", tags=["muhurta"])
 
 
@@ -60,7 +62,8 @@ async def muhurta_for_day(
         None, description="Birth nakshatra name or number 1-27 (optional tara-bala)"
     ),
 ):
-    return build_muhurta_for_day_response(
+    return await run_cpu_bound(
+        build_muhurta_for_day_response,
         date_str=date_str,
         lat=lat,
         lon=lon,
@@ -71,7 +74,8 @@ async def muhurta_for_day(
 
 @router.post("")
 async def muhurta_for_day_post(payload: MuhurtaDayRequest):
-    return build_muhurta_for_day_response(
+    return await run_cpu_bound(
+        build_muhurta_for_day_response,
         date_str=payload.date,
         lat=payload.lat,
         lon=payload.lon,
@@ -87,12 +91,13 @@ async def rahu_kalam(
     lon: Optional[str] = Query(None, description="Longitude"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
 ):
-    return build_rahu_kalam_response(date_str=date_str, lat=lat, lon=lon, tz=tz)
+    return await run_cpu_bound(build_rahu_kalam_response, date_str=date_str, lat=lat, lon=lon, tz=tz)
 
 
 @router.post("/rahu-kalam")
 async def rahu_kalam_post(payload: RahuKalamRequest):
-    return build_rahu_kalam_response(
+    return await run_cpu_bound(
+        build_rahu_kalam_response,
         date_str=payload.date,
         lat=payload.lat,
         lon=payload.lon,
@@ -114,7 +119,8 @@ async def auspicious_muhurta(
         "np-mainstream-v2", description="np-mainstream-v2|diaspora-practical-v2"
     ),
 ):
-    return build_auspicious_muhurta_response(
+    return await run_cpu_bound(
+        build_auspicious_muhurta_response,
         date_str=date_str,
         ceremony_type=ceremony_type,
         lat=lat,
@@ -127,7 +133,8 @@ async def auspicious_muhurta(
 
 @router.post("/auspicious")
 async def auspicious_muhurta_post(payload: AuspiciousMuhurtaRequest):
-    return build_auspicious_muhurta_response(
+    return await run_cpu_bound(
+        build_auspicious_muhurta_response,
         date_str=payload.date,
         ceremony_type=payload.type,
         lat=payload.lat,

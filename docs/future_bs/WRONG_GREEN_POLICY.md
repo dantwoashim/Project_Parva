@@ -1,4 +1,14 @@
-# Wrong-GREEN Policy
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
+# Future BS Wrong-GREEN Policy
+
+Status: Phase 07 governance policy.
 
 GREEN is the strongest public risk posture. It must be used conservatively.
 
@@ -25,11 +35,34 @@ wrong_green_count = 0
 - Use RED when a case is invalid, source-conflicted, non-claimable, or operationally unsafe.
 - Treat official publication and reviewed authoritative evidence as stronger than computed output.
 - Do not allow third-party shadow data to support official-grade claims.
+- Do not use broad all-reference or weak-source stress tests to tune official GREEN thresholds.
+- A GREEN label cannot appear on a public exact future prediction route because exact future
+  prediction routes are research-private.
 
 ## What GREEN Means
 
 GREEN means low risk under current checks and source policy. It does not mean official publication. It does not guarantee future behavior. It does not override a later official release.
 
+## Required Metrics
+
+Every GREEN-related report must include:
+
+- `wrong_green_count`
+- `wrong_high_confidence_count`
+- `false_confidence_rate`
+- high-confidence coverage
+- source policy
+- official or reviewed evidence window
+- excluded source tiers
+- residual summary
+
 ## What Happens After a Wrong GREEN
 
 If a wrong GREEN is discovered, the affected case should be moved out of GREEN, the reason code memory should be updated, and comparable boundary cases should be reviewed before any broader claim is made.
+
+The next public release must document the correction and re-run:
+
+```bash
+python scripts/check_future_bs_public_leakage.py
+pytest -q -m "not private_source and not wide_corpus and not research_artifact" tests/future_bs tests/accuracy tests/artifacts tests/performance --maxfail=20
+```

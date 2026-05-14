@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Release Manifests
 
 Project Parva release manifests describe which public artifacts, schemas, source policy, and claim boundary belong to a calendar release.

@@ -149,7 +149,7 @@ test("covers compliance profile and decision support endpoints", async () => {
     source: {
       id: "parva_enterprise_compliance_profiles",
       label: "Parva enterprise compliance profile definitions",
-      tier: "public_corpus",
+      tier: "publisher_reference",
       authority: "derived_reference_not_legal_authority",
     },
     confidence: "source_backed",
@@ -449,7 +449,7 @@ test("preserves source-aware metadata from public responses", async () => {
     source: {
       id: "parva_public_bs_ad_corpus",
       label: "Parva public BS/AD corpus",
-      tier: "public_corpus",
+      tier: "software_table_reference",
       authority: "derived_reference_not_legal_authority",
       version: "parva-public-calendar-v1",
     },

@@ -1,41 +1,61 @@
 {
-    "publication_status":  "published_historical_source_policy_schema",
-    "purpose":  "Public source-tier schema for Project Parva source policy; not a future prediction table.",
-    "tiers":  [
-                  {
-                      "tier":  "official_verified",
-                      "meaning":  "Government or official publication evidence",
-                      "claim_use":  "eligible_for_official_grade_claims_when_reviewed"
-                  },
-                  {
-                      "tier":  "printed_verified",
-                      "meaning":  "Identifiable printed calendar or panchanga evidence",
-                      "claim_use":  "eligible_after_manual_review"
-                  },
-                  {
-                      "tier":  "public_witness",
-                      "meaning":  "Public dated material linking AD and BS dates",
-                      "claim_use":  "supporting_witness"
-                  },
-                  {
-                      "tier":  "publisher_reference",
-                      "meaning":  "Public calendar or publisher material",
-                      "claim_use":  "training_or_cross_check_only"
-                  },
-                  {
-                      "tier":  "software_table_reference",
-                      "meaning":  "Open-source or static lookup references",
-                      "claim_use":  "comparison_only"
-                  },
-                  {
-                      "tier":  "third_party_reference",
-                      "meaning":  "App or website references",
-                      "claim_use":  "comparison_only"
-                  },
-                  {
-                      "tier":  "needs_review",
-                      "meaning":  "Ambiguous, conflicting, incomplete, or low-confidence evidence",
-                      "claim_use":  "not_for_claims"
-                  }
-              ]
+  "publication_status": "published_historical_source_policy_schema",
+  "purpose": "Public source-tier schema for Project Parva source policy; not a future prediction table.",
+  "tiers": [
+    {
+      "tier": "official",
+      "meaning": "Government or official publication evidence retained with source metadata",
+      "claim_use": "eligible_for_official_source_interpretation_after_human_review"
+    },
+    {
+      "tier": "semi_official",
+      "meaning": "Authority-adjacent source that still needs explicit review",
+      "claim_use": "supporting_reference_requires_review"
+    },
+    {
+      "tier": "printed_verified",
+      "meaning": "Identifiable printed calendar or panchanga evidence",
+      "claim_use": "eligible_after_manual_review"
+    },
+    {
+      "tier": "public_witness",
+      "meaning": "Public dated material linking AD and BS dates",
+      "claim_use": "supporting_witness"
+    },
+    {
+      "tier": "publisher_reference",
+      "meaning": "Public calendar, publisher, or project reference material",
+      "claim_use": "training_or_cross_check_only"
+    },
+    {
+      "tier": "software_table_reference",
+      "meaning": "Open-source or static lookup references",
+      "claim_use": "comparison_only"
+    },
+    {
+      "tier": "third_party",
+      "meaning": "App or website references",
+      "claim_use": "comparison_only"
+    },
+    {
+      "tier": "calculated",
+      "meaning": "Deterministic computed result from a declared algorithm",
+      "claim_use": "computed_output_not_official_authority"
+    },
+    {
+      "tier": "fixture",
+      "meaning": "Synthetic, demo, or test-only source",
+      "claim_use": "shape_or_test_only_not_for_public_claims"
+    },
+    {
+      "tier": "research_private",
+      "meaning": "Private research evidence or model artifact",
+      "claim_use": "private_research_only_not_public_bundle_material"
+    },
+    {
+      "tier": "unknown",
+      "meaning": "Unclassified or incomplete source metadata",
+      "claim_use": "not_for_claims"
+    }
+  ]
 }

@@ -92,6 +92,8 @@ def main() -> int:
     python = _resolve_python311()
     node_runtime = resolve_node_runtime()
     env = _public_env()
+    if node_runtime:
+        env = node_runtime.build_env(env)
 
     checks: list[tuple[str, list[str]]] = [
         ("environment", [*python, "scripts/verify_environment.py"]),

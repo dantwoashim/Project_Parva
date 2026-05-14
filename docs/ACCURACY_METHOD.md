@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Accuracy Method
 
 This document describes how Parva validates calendar and festival outputs before they are published through the API and reference app.

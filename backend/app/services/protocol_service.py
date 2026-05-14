@@ -9,6 +9,7 @@ from uuid import uuid4
 
 from app.calendar.bikram_sambat import bs_to_gregorian
 from app.core.paths import data_dir, project_root, schema_dir
+from app.core.source_authority import PRIVATE_ONLY_SOURCE_TIERS, normalize_source_tier
 from app.core.source_metadata import NOT_LEGAL_AUTHORITY
 from app.services.trust_infrastructure_service import (
     canonical_json,
@@ -36,6 +37,19 @@ COMPATIBILITY_LEVELS = [
     "parva_offline",
     "parva_full",
 ]
+COMPATIBILITY_LEVEL_ALIASES = {
+    "core": "parva_core",
+    "source-aware": "parva_source_aware",
+    "source_aware": "parva_source_aware",
+    "trust": "parva_trust",
+    "timegraph": "parva_timegraph",
+    "rulelang": "parva_rulelang",
+    "impact": "parva_impact",
+    "agent-safe": "parva_agent_safe",
+    "agent_safe": "parva_agent_safe",
+    "offline": "parva_offline",
+    "full": "parva_full",
+}
 
 
 class ProtocolError(ValueError):
@@ -139,6 +153,7 @@ def run_conformance_payload(
 ) -> dict[str, Any]:
     if target != "local":
         raise ProtocolError("public preview conformance supports target=local only", code="UNSUPPORTED_TARGET")
+    level = COMPATIBILITY_LEVEL_ALIASES.get(level, level)
     if level not in COMPATIBILITY_LEVELS:
         raise ProtocolError(f"unknown compatibility level: {level}", code="INVALID_COMPATIBILITY_LEVEL")
     tests = _conformance_tests_for(level, artifact=artifact)
@@ -154,6 +169,13 @@ def run_conformance_payload(
         "failed": failed,
         "test_results": tests,
         "warnings": [] if failed == 0 else ["one_or_more_conformance_tests_failed"],
+        "limitations": _compatibility_limitations(level),
+        "public_private_data_policy": {
+            "public": "Public conformance uses checked-in public release, source, schema, SDK, and synthetic negative fixtures only.",
+            "private": "Private source archives, client artifacts, and research-only future-BS exact vectors are excluded.",
+            "authority_boundary": "Self-reported compatibility is not external certification or official calendar authority.",
+        },
+        "generated_at": now_utc(),
         "meta": _protocol_meta(),
     }
     report["report_hash"] = f"sha256:{sha256_text(canonical_json(report))}"
@@ -259,16 +281,18 @@ def offline_bundle_manifest_payload() -> dict[str, Any]:
         for path in contents
         if (PROJECT_ROOT / path).exists()
     }
+    meta = _protocol_meta()
+    meta["trace_id"] = "offline_bundle_manifest"
     return {
         "bundle_id": "parva-public-offline-0.1.0",
         "protocol_version": PROTOCOL_VERSION,
-        "created_at": now_utc(),
+        "created_at": _active_release_generated_at(),
         "contents": [{"path": path, "required": True} for path in contents],
         "checksums": checksums,
         "signature": None,
         "signature_status": "unsigned_preview",
         "claim_boundary": "offline_bundle_not_legal_authority",
-        "meta": _protocol_meta(),
+        "meta": meta,
     }
 
 
@@ -283,6 +307,11 @@ def _conformance_tests_for(level: str, *, artifact: dict[str, Any] | None = None
     actual_ad = bs_to_gregorian(2083, 1, 1).isoformat()
     source_payload = list_sources_payload()
     tests = [
+        _test(
+            "core.level_known",
+            "pass" if level in COMPATIBILITY_LEVELS else "fail",
+            "Requested compatibility level is registered by the protocol draft.",
+        ),
         _test(
             "core.date_conversion",
             "pass" if actual_ad == "2026-04-14" else "fail",
@@ -324,38 +353,120 @@ def _conformance_tests_for(level: str, *, artifact: dict[str, Any] | None = None
             "pass" if _sources_have_claim_boundaries(source_payload.get("sources", [])) else "fail",
             "Public source records include claim boundary metadata.",
         ),
+        _test(
+            "core.invalid_fixture_rejected",
+            "pass" if _conformance_artifact_test(_invalid_artifact_for(level))["status"] == "fail" else "fail",
+            "A level-specific invalid fixture fails with a meaningful rejection.",
+        ),
+        _test(
+            "core.compatibility_levels_indexed",
+            "pass" if set(COMPATIBILITY_LEVELS).issubset({item["level"] for item in compatibility_levels_payload()["levels"]}) else "fail",
+            "Compatibility levels are listed in the public protocol index.",
+        ),
+        _test(
+            "core.protocol_status_draft",
+            "pass" if protocol_version_payload()["status"] == "protocol_draft" else "fail",
+            "Protocol status is explicitly draft.",
+        ),
+        _test(
+            "core.capabilities_not_claimed",
+            "pass" if {"government_endorsement", "legal_authority", "third_party_certification"}.issubset(set(protocol_capabilities_payload()["not_claimed"])) else "fail",
+            "Protocol capabilities declare what is not claimed.",
+        ),
+        _test(
+            "core.credential_status_hash_only",
+            "pass" if _credential_status_is_hash_only_preview() else "fail",
+            "Credential preview is hash-only and unsigned.",
+        ),
+        _test(
+            "core.offline_bundle_unsigned_preview",
+            "pass" if offline_bundle_manifest_payload()["signature_status"] == "unsigned_preview" else "fail",
+            "Offline bundle manifest is labeled unsigned preview.",
+        ),
+        _test(
+            "core.private_artifacts_excluded_from_offline",
+            "pass" if _offline_manifest_excludes_private_paths() else "fail",
+            "Offline manifest excludes private and research-only artifact paths.",
+        ),
+        _test(
+            "core.protocol_draft_doc_exists",
+            "pass" if (PROJECT_ROOT / "docs" / "PARVA_PROTOCOL.md").exists() else "fail",
+            "Protocol public documentation exists.",
+        ),
+        _test(
+            "core.calendar_credential_schema_exists",
+            "pass" if (PROTOCOL_SCHEMA_DIR / "calendar-credential.schema.json").exists() else "fail",
+            "Calendar credential schema exists in the protocol schema index.",
+        ),
+        _test(
+            "core.conformance_schema_exists",
+            "pass" if (PROTOCOL_SCHEMA_DIR / "conformance-report.schema.json").exists() else "fail",
+            "Conformance report schema exists in the protocol schema index.",
+        ),
     ]
     if artifact is not None:
         tests.append(_conformance_artifact_test(artifact))
     if level in {"parva_source_aware", "parva_trust", "parva_timegraph", "parva_rulelang", "parva_impact", "parva_agent_safe", "parva_offline", "parva_full"}:
         tests.append(_test("source.registry_has_entries", "pass" if source_payload["sources"] else "fail", "Public source registry has at least one source."))
         tests.append(_test("source.no_private_tier_in_public_registry", "pass" if not _public_sources_include_private(source_payload["sources"]) else "fail", "Public source registry does not expose private-tier sources."))
+        tests.append(_test("source.tiers_normalize", "pass" if _source_tiers_normalize(source_payload["sources"]) else "fail", "Public source tiers normalize through the canonical taxonomy."))
+        tests.append(_test("source.warnings_present", "pass" if _sources_include_warnings(source_payload["sources"]) else "fail", "Public sources carry notes or warnings for non-authority use."))
     if level in {"parva_trust", "parva_timegraph", "parva_rulelang", "parva_impact", "parva_agent_safe", "parva_offline", "parva_full"}:
         tests.append(_test("trust.release_manifest_exists", "pass" if manifest_path.exists() and _safe_json(manifest_path) else "fail", "Public release manifest exists and is readable."))
         tests.append(_test("trust.trust_log_exists", "pass" if trust_log_path.exists() and trust_log_path.read_text(encoding="utf-8").strip() else "fail", "Public trust log exists and is non-empty."))
         tests.append(_test("trust.release_manifest_hashes", "pass" if _manifest_artifact_hashes_exist(manifest_path) else "fail", "Public release manifest declares artifact hashes."))
+        tests.append(_test("trust.source_registry_hashed", "pass" if "data/public/releases/parva-bs-public-demo.sources.json" in offline_bundle_manifest_payload()["checksums"] else "fail", "Source registry is included in offline checksums."))
+        tests.append(_test("trust.release_manifest_hashed", "pass" if "data/public/releases/parva-bs-public-demo.manifest.json" in offline_bundle_manifest_payload()["checksums"] else "fail", "Release manifest is included in offline checksums."))
     if level in {"parva_timegraph", "parva_rulelang", "parva_impact", "parva_agent_safe", "parva_full"}:
         tests.append(_test("timegraph.public_graph_has_facts", "pass" if _timegraph_has_facts() else "fail", "Public TimeGraph exposes traceable facts."))
+        tests.append(_test("timegraph.trace_route_documented", "pass" if _doc_contains("docs/TIMEGRAPH.md", "trace") else "fail", "TimeGraph trace behavior is documented."))
     if level in {"parva_rulelang", "parva_agent_safe", "parva_full"}:
         tests.append(_test("rulelang.schema_exists", "pass" if rule_schema_path.exists() else "fail", "RuleLang schema exists."))
         tests.append(_test("rulelang.public_rules_exist", "pass" if _public_rules_exist() else "fail", "Public RuleLang registry has executable public rules."))
+        tests.append(_test("rulelang.no_arbitrary_code_claim", "pass" if _doc_contains("docs/RULELANG.md", "arbitrary code execution") else "fail", "RuleLang docs state arbitrary code is not executed."))
     if level in {"parva_impact", "parva_agent_safe", "parva_full"}:
         dependencies = _impact_dependency_types()
         tests.append(_test("impact.real_dependencies_extracted", "pass" if {"timegraph_fact", "evidence_packet", "rule_execution", "profile_decision"}.issubset(dependencies) else "fail", "Impact simulator extracts dependencies from TimeGraph facts, evidence packets, rules, and profiles."))
+        tests.append(_test("impact.release_manifest_dependency", "pass" if "release_manifest" in dependencies else "fail", "Impact simulator registers release-manifest dependencies where feasible."))
     if level in {"parva_agent_safe", "parva_full"}:
         tests.append(_test("agent.sdk_python_exists", "pass" if py_sdk_path.exists() else "fail", "Python SDK client file exists for local agent/protocol use."))
         tests.append(_test("agent.sdk_javascript_exists", "pass" if js_sdk_path.exists() else "fail", "JavaScript SDK entrypoint exists for public integration use."))
         tests.append(_test("agent.tool_registry_broad", "pass" if _agent_tool_count() >= 10 else "fail", "Agent-safe deterministic tool registry includes broad public temporal tools."))
+        tests.append(_test("agent.review_gate_documented", "pass" if _doc_contains("docs/AGENTIC_TEMPORAL_INTELLIGENCE.md", "human") else "fail", "Agent-safe review gates are documented."))
     if level in {"parva_offline", "parva_full"}:
         manifest = offline_bundle_manifest_payload()
         expected_paths = [item["path"] for item in manifest["contents"] if item["required"]]
         missing_checksums = [path for path in expected_paths if path not in manifest["checksums"]]
         tests.append(_test("offline.manifest_checksums", "pass" if not missing_checksums else "fail", "Preview offline manifest has checksums for all required contents."))
+        tests.append(_test("offline.required_contents_present", "pass" if all((PROJECT_ROOT / path).exists() for path in expected_paths) else "fail", "Required offline bundle source files exist in the repository."))
+        tests.append(_test("offline.no_private_paths", "pass" if _offline_manifest_excludes_private_paths() else "fail", "Offline manifest excludes private and source archive paths."))
     if level == "parva_full":
         tests.append(_test("protocol.schemas_indexed", "pass" if len(protocol_schemas) >= 10 else "fail", "Protocol draft schemas are indexed for alpha conformance."))
         negative = _conformance_artifact_test({"case_id": "negative.bad_date", "input": {"bs_date": "2083-13-99"}, "expected": {"ad_date": "never"}})
         tests.append(_test("protocol.negative_artifact_rejected", "pass" if negative["status"] == "fail" else "fail", "Invalid conformance artifact is rejected."))
     return tests
+
+
+def _compatibility_limitations(level: str) -> list[str]:
+    limitations = [
+        "self_attested_reference_implementation",
+        "not_third_party_certification",
+        "not_official_calendar_authority",
+        "public_artifacts_only",
+    ]
+    if level in {"parva_agent_safe", "parva_full"}:
+        limitations.append("agent_outputs_require_review_for_sensitive_use")
+    if level in {"parva_offline", "parva_full"}:
+        limitations.append("offline_bundle_is_unsigned_preview")
+    return limitations
+
+
+def _invalid_artifact_for(level: str) -> dict[str, Any]:
+    return {
+        "case_id": f"{level}.invalid_bs_date",
+        "input": {"bs_date": "2083-13-99"},
+        "expected": {"ad_date": "never"},
+    }
 
 
 def _credential_smoke_passes() -> bool:
@@ -373,7 +484,65 @@ def _sources_have_claim_boundaries(sources: list[dict[str, Any]]) -> bool:
 
 
 def _public_sources_include_private(sources: list[dict[str, Any]]) -> bool:
-    return any(str(source.get("source_tier") or source.get("tier") or "").lower() == "private" for source in sources)
+    return any(
+        normalize_source_tier(str(source.get("source_tier") or source.get("tier") or ""))
+        in PRIVATE_ONLY_SOURCE_TIERS
+        for source in sources
+    )
+
+
+def _source_tiers_normalize(sources: list[dict[str, Any]]) -> bool:
+    return bool(sources) and all(
+        bool(normalize_source_tier(str(source.get("source_tier") or source.get("tier") or "")))
+        for source in sources
+    )
+
+
+def _sources_include_warnings(sources: list[dict[str, Any]]) -> bool:
+    return bool(sources) and any(
+        source.get("warnings") or source.get("notes") or source.get("claim_boundary")
+        for source in sources
+    )
+
+
+def _credential_status_is_hash_only_preview() -> bool:
+    try:
+        credential = issue_calendar_credential_payload(
+            {"claim_type": "date_conversion", "bs_date": "2083-01-01"}
+        )["credential"]
+    except (ProtocolError, KeyError, TypeError, ValueError):
+        return False
+    proof = credential.get("proof") if isinstance(credential, dict) else None
+    return (
+        credential.get("status") == "hash_only_preview"
+        and isinstance(proof, dict)
+        and proof.get("type") == "sha256_content_hash"
+    )
+
+
+def _offline_manifest_excludes_private_paths() -> bool:
+    private_tokens = ("private", "source_archive", "research_artifacts", "future_bs/private")
+    manifest = offline_bundle_manifest_payload()
+    paths = [item["path"] for item in manifest["contents"]]
+    return all(not any(token in path for token in private_tokens) for path in paths)
+
+
+def _doc_contains(relative_path: str, needle: str) -> bool:
+    path = PROJECT_ROOT / relative_path
+    try:
+        return needle.lower() in path.read_text(encoding="utf-8").lower()
+    except OSError:
+        return False
+
+
+def _active_release_generated_at() -> str:
+    manifest_path = data_dir() / "public" / "releases" / "parva-bs-public-demo.manifest.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, TypeError):
+        return "1970-01-01T00:00:00Z"
+    generated_at = manifest.get("generated_at")
+    return str(generated_at) if generated_at else "1970-01-01T00:00:00Z"
 
 
 def _manifest_artifact_hashes_exist(manifest_path: Path) -> bool:

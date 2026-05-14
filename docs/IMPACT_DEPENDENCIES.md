@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Impact Dependencies
 
 Dependency records connect outputs to facts, sources, releases, profiles, rules, or evidence packets.

@@ -41,12 +41,14 @@ The public registry schema supports:
 
 - `official`
 - `semi_official`
-- `public_corpus`
-- `publisher`
+- `printed_verified`
+- `public_witness`
+- `publisher_reference`
+- `software_table_reference`
+- `third_party`
 - `calculated`
 - `fixture`
-- `research`
-- `private`
+- `research_private`
 - `unknown`
 
 Weak or convenience references must not be treated as official proof.
@@ -60,7 +62,7 @@ Public API responses may include:
   "meta": {
     "source": {
       "id": "parva_static_lookup_table",
-      "tier": "public_corpus",
+      "tier": "software_table_reference",
       "authority": "derived_reference_not_legal_authority"
     },
     "confidence": "source_backed",

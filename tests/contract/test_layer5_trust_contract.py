@@ -35,8 +35,9 @@ def test_source_registry_and_source_detail_are_public_safe() -> None:
     tiers = {source["tier"] for source in body["sources"]}
     assert "official_verified" not in tiers
     assert "official" in tiers
-    assert "public_corpus" in tiers
-    assert "research" in tiers
+    assert "software_table_reference" in tiers
+    assert "publisher_reference" in tiers
+    assert "research_private" not in tiers
 
     source_id = body["sources"][0]["id"]
     detail = client.get(f"/v3/api/trust/sources/{source_id}")

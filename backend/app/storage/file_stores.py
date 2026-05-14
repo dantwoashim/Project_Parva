@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
-from app.provenance.attestation import build_attestation, verify_attestation
+from app.security.pii import scrub_structured_trace
 
 from .interfaces import TraceStore, TransparencyLogStore
 
@@ -70,11 +70,15 @@ class FileTraceStore(TraceStore):
         base_payload = {
             "trace_type": trace_type,
             "visibility": normalized_visibility,
-            "subject": subject if is_public else self._redact_private_subject(subject),
-            "inputs": inputs if is_public else self._redact_private_inputs(inputs),
-            "outputs": outputs,
-            "steps": steps,
-            "provenance": provenance or {},
+            "subject": scrub_structured_trace(subject)
+            if is_public
+            else self._redact_private_subject(subject),
+            "inputs": scrub_structured_trace(inputs)
+            if is_public
+            else self._redact_private_inputs(inputs),
+            "outputs": scrub_structured_trace(outputs),
+            "steps": [scrub_structured_trace(step) for step in steps],
+            "provenance": scrub_structured_trace(provenance or {}),
             "redacted": not is_public,
             "retention_ttl_hours": None if is_public else self.private_ttl_hours,
         }
@@ -163,10 +167,12 @@ class FileTransparencyLogStore(TransparencyLogStore):
                 "entry_id": entry_id,
                 "timestamp": timestamp,
                 "event_type": event_type,
-                "payload": payload,
+                "payload": scrub_structured_trace(payload),
                 "prev_hash": prev_hash,
             }
             entry_hash = _sha256_hex(_canonical(body))
+            from app.provenance.attestation import build_attestation  # noqa: PLC0415
+
             attestation = build_attestation({**body, "entry_hash": entry_hash})
             entry = {**body, "entry_hash": entry_hash, "attestation": attestation}
             with self.log_path.open("a", encoding="utf-8") as handle:
@@ -191,6 +197,8 @@ class FileTransparencyLogStore(TransparencyLogStore):
             hash_ok = expected_hash == str(row.get("entry_hash"))
             chain_ok = str(row.get("prev_hash")) == prev_hash
             if isinstance(attestation, dict):
+                from app.provenance.attestation import verify_attestation  # noqa: PLC0415
+
                 attestation_ok = verify_attestation(
                     {**body, "entry_hash": str(row.get("entry_hash"))},
                     attestation,
@@ -247,7 +255,7 @@ class FileTransparencyLogStore(TransparencyLogStore):
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "network": network,
             "tx_ref": tx_ref,
-            "payload": payload or {},
+            "payload": scrub_structured_trace(payload or {}),
         }
         with self.anchor_path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(anchor, ensure_ascii=False) + "\n")

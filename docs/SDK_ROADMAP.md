@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: dx
+last_verified: 2026-05-14
+owner: dx-team
+---
+
 # SDK Roadmap
 
 Project Parva is intended to support simple SDK adoption for teams replacing fragile calendar-table logic.
@@ -71,3 +79,23 @@ Both Python and JavaScript SDKs must keep:
 - bounded exponential backoff
 - `Retry-After` handling for HTTP 429
 - source, trust, agent, protocol, and claim-boundary metadata preserved in responses
+
+## Phase 09 acceptance baseline
+
+The current canonical SDK paths are:
+
+```text
+packages/parva-python
+packages/parva-js
+```
+
+The Python CLI entrypoint is `parva`. It is installed from `packages/parva-python` and uses `PARVA_API_BASE` or `--base-url`.
+
+SDK retry and backoff behavior is covered by:
+
+```bash
+python -m pytest packages/parva-python/tests -q
+npm --prefix packages/parva-js test
+```
+
+Public examples are located under `examples/python`, `examples/javascript`, and `examples/curl`. They must not use private future-BS exact outputs.

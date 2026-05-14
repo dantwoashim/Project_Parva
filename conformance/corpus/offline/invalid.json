@@ -1,0 +1,11 @@
+{
+  "level": "parva_offline",
+  "case_id": "offline.invalid_private_path",
+  "input": {
+    "contents": ["data/private/source_archive/client.json"]
+  },
+  "expected": {
+    "status": "fail",
+    "reason": "offline public bundles must exclude private and source archive paths"
+  }
+}

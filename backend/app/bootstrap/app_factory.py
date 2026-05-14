@@ -53,6 +53,7 @@ DEFAULT_CORS_HEADERS = [
     "X-Parva-Envelope",
     "X-Request-ID",
 ]
+DEPLOYED_ENVIRONMENTS = {"production", "staging"}
 RESERVED_FRONTEND_PREFIXES = (
     "api",
     "v2",
@@ -183,6 +184,7 @@ def _validate_startup(settings) -> tuple[dict[str, Any], object]:
 def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, object]) -> None:
     app.state.started_at = datetime.now(timezone.utc)
     app.state.enable_experimental_api = settings.enable_experimental_api
+    app.state.enable_research_api = settings.enable_research_api
     app.state.environment = settings.environment
     app.state.route_profile = settings.route_profile
     app.state.license_mode = settings.license_mode
@@ -196,7 +198,7 @@ def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, obje
 
 def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
     cors_origins = _cors_origins_from_env()
-    if settings.environment.strip().lower() == "production":
+    if settings.environment.strip().lower() in DEPLOYED_ENVIRONMENTS:
         localhost_origins = [
             origin
             for origin in cors_origins
@@ -204,7 +206,7 @@ def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
         ]
         if localhost_origins:
             raise RuntimeError(
-                "Startup validation failed: production CORS origins cannot include localhost."
+                "Startup validation failed: production or staging CORS origins cannot include localhost."
             )
     app.add_middleware(
         CORSMiddleware,
@@ -491,6 +493,7 @@ def create_app() -> FastAPI:
     register_routers(
         app,
         enable_experimental_api=settings.enable_experimental_api,
+        enable_research_api=settings.enable_research_api,
         show_private_schema=settings.show_private_schema,
         environment=settings.environment,
         route_profile=settings.route_profile,

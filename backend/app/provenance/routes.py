@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel
 
 from app.calendar.merkle import (
@@ -37,6 +37,7 @@ from app.provenance.transparency import (
     replay_state,
     verify_log_integrity,
 )
+from app.security.audit import emit_security_audit_event
 
 router = APIRouter(prefix="/api/provenance", tags=["provenance"])
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -140,22 +141,32 @@ async def get_provenance_root() -> RootResponse:
 
 
 @router.post("/snapshot/create")
-async def create_provenance_snapshot() -> Dict[str, Any]:
+async def create_provenance_snapshot(request: Request) -> Dict[str, Any]:
     """
     Create a fresh provenance snapshot record.
     """
+    before = verify_log_integrity()
     record: SnapshotRecord = create_snapshot()
-    append_snapshot_event(
+    entry = append_snapshot_event(
         snapshot_id=record.snapshot_id,
         dataset_hash=record.dataset_hash,
         rules_hash=record.rules_hash,
     )
-    return {
+    response = {
         "snapshot_id": record.snapshot_id,
         "created_at": record.created_at,
         "dataset_hash": record.dataset_hash,
         "rules_hash": record.rules_hash,
     }
+    emit_security_audit_event(
+        request,
+        action="provenance.snapshot.create",
+        object_type="provenance_snapshot",
+        object_id=record.snapshot_id,
+        before=before,
+        after={"snapshot": response, "transparency_entry": entry.to_dict()},
+    )
+    return response
 
 
 @router.get("/snapshot/{snapshot_id}/verify", response_model=SnapshotVerifyResponse)
@@ -353,14 +364,26 @@ async def transparency_replay() -> Dict[str, Any]:
 
 @router.post("/transparency/append")
 async def append_transparency_event(
+    request: Request,
     event_type: str = Query(..., description="Event type label"),
     note: Optional[str] = Query(None, description="Optional note"),
 ) -> Dict[str, Any]:
     """
     Append an ad-hoc transparency event (for audited operations).
     """
+    before = verify_log_integrity()
     row = append_entry(event_type, {"note": note} if note else {})
-    return row.to_dict()
+    response = row.to_dict()
+    emit_security_audit_event(
+        request,
+        action="provenance.transparency.append",
+        object_type="transparency_entry",
+        object_id=row.entry_id,
+        before=before,
+        after=response,
+        metadata={"event_type": event_type},
+    )
+    return response
 
 
 @router.get("/transparency/anchor/prepare")
@@ -373,13 +396,25 @@ async def prepare_anchor(note: Optional[str] = Query(None)) -> Dict[str, Any]:
 
 @router.post("/transparency/anchor/record")
 async def save_anchor_record(
+    request: Request,
     tx_ref: str = Query(..., description="External transaction/hash reference"),
     network: str = Query(..., description="Anchor network label, e.g. ethereum, bitcoin, testnet"),
 ) -> Dict[str, Any]:
     """
     Record an external anchor reference for auditability.
     """
-    return record_anchor(tx_ref=tx_ref, network=network)
+    before = verify_log_integrity()
+    response = record_anchor(tx_ref=tx_ref, network=network)
+    emit_security_audit_event(
+        request,
+        action="provenance.anchor.record",
+        object_type="provenance_anchor",
+        object_id=response.get("tx_ref"),
+        before=before,
+        after=response,
+        metadata={"network": network},
+    )
+    return response
 
 
 @router.get("/transparency/anchors")

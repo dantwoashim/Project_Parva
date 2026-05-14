@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
+from functools import lru_cache
 from typing import Iterable
 
 from app.festivals.repository import get_repository
+from app.reliability.metrics import get_metrics_registry
 from app.rules import get_rule_service
 from app.rules.plugins import (
     ChineseObservancePlugin,
@@ -90,7 +92,62 @@ def _append_result(
     )
 
 
+def _clone_rows(rows: list[dict]) -> list[dict]:
+    return [{**row, "metadata": dict(row.get("metadata") or {})} for row in rows]
+
+
+@lru_cache(maxsize=512)
+def _resolve_observances_cached(
+    target_iso: str,
+    location_key: str,
+    preferences_key: tuple[str, ...],
+) -> tuple[dict, ...]:
+    return tuple(
+        _resolve_observances_uncached(
+            date.fromisoformat(target_iso),
+            location=location_key,
+            preferences=list(preferences_key),
+        )
+    )
+
+
 def resolve_observances(
+    target_date: date,
+    location: str = "kathmandu",
+    preferences: list[str] | None = None,
+) -> list[dict]:
+    """Resolve and rank observances for one date with an in-process cache."""
+    location_key = (location or "kathmandu").strip().lower()
+    preferences_key = tuple(sorted({p.strip().lower() for p in (preferences or []) if p.strip()}))
+    before = _resolve_observances_cached.cache_info().hits
+    rows = _resolve_observances_cached(target_date.isoformat(), location_key, preferences_key)
+    hit = _resolve_observances_cached.cache_info().hits > before
+    get_metrics_registry().record_cache_lookup("observance_resolution", hit)
+    return _clone_rows(list(rows))
+
+
+def resolve_observance_window(
+    start: date,
+    *,
+    days: int,
+    location: str = "kathmandu",
+    preferences: list[str] | None = None,
+) -> list[dict]:
+    """Resolve a bounded date window in one worker call for route batching."""
+    return [
+        {
+            "date": (start + timedelta(days=offset)).isoformat(),
+            "observances": resolve_observances(
+                start + timedelta(days=offset),
+                location=location,
+                preferences=preferences,
+            ),
+        }
+        for offset in range(days)
+    ]
+
+
+def _resolve_observances_uncached(
     target_date: date,
     location: str = "kathmandu",
     preferences: list[str] | None = None,

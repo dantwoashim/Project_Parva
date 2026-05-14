@@ -62,6 +62,7 @@ async def reliability_playbooks():
 @router.get("/metrics")
 async def reliability_metrics():
     return {
+        "metrics": get_metrics_registry().snapshot(),
         "runtime": get_runtime_status(),
         "policy": get_policy_metadata(),
     }

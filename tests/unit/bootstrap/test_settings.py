@@ -82,6 +82,7 @@ def test_public_render_profile_allows_memory_rate_limiter_without_source_url(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setenv("PARVA_ENV", "public")
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "developer_preview")
     monkeypatch.delenv("PARVA_SOURCE_URL", raising=False)
     monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "memory")
     monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
@@ -110,6 +111,11 @@ def test_create_app_requires_source_url_in_production(monkeypatch: pytest.Monkey
     from app.bootstrap.app_factory import create_app
 
     monkeypatch.setenv("PARVA_ENV", "production")
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "public_reference")
+    monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
+    monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
+    monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
     monkeypatch.delenv("PARVA_SOURCE_URL", raising=False)
 
     with pytest.raises(RuntimeError, match="PARVA_SOURCE_URL.*PARVA_ENV=public"):
@@ -123,7 +129,10 @@ def test_create_app_requires_distributed_rate_limiting_in_production(
 
     monkeypatch.setenv("PARVA_ENV", "production")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "public_reference")
     monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "memory")
+    monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
 
     with pytest.raises(RuntimeError, match="PARVA_RATE_LIMIT_BACKEND=redis.*PARVA_ENV=public"):
         create_app()
@@ -136,8 +145,10 @@ def test_create_app_requires_precomputed_artifacts_in_production_by_default(
 
     monkeypatch.setenv("PARVA_ENV", "production")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "public_reference")
     monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
     monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
     monkeypatch.delenv("PARVA_REQUIRE_PRECOMPUTED", raising=False)
     monkeypatch.setattr(
         app_factory,

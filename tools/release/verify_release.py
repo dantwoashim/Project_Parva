@@ -11,6 +11,12 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[2]
+BACKEND_ROOT = ROOT / "backend"
+if str(BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(BACKEND_ROOT))
+
+from app.core.source_authority import PUBLIC_RELEASE_SOURCE_TIERS, normalize_source_tier  # noqa: E402
+
 SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
 PUBLICATION_STATUSES = {
     "official_verified",
@@ -32,17 +38,7 @@ SOURCE_POLICIES = {
     "experimental_shadow",
     "public_demo",
 }
-SOURCE_TIERS = {
-    "official",
-    "semi_official",
-    "public_corpus",
-    "publisher",
-    "calculated",
-    "fixture",
-    "research",
-    "private",
-    "unknown",
-}
+SOURCE_TIERS = set(PUBLIC_RELEASE_SOURCE_TIERS)
 FORBIDDEN_TEXT = [
     re.compile("Info" + r"Developers", re.IGNORECASE),
     re.compile(r"\b" + "info" + r"dev\b", re.IGNORECASE),
@@ -103,7 +99,7 @@ def validate_source_registry(path: Path) -> dict[str, Any]:
             ["source_id", "source_name", "source_tier", "description", "claim_support_level", "notes"],
             f"{path}: sources[{index}]",
         )
-        if source["source_tier"] not in SOURCE_TIERS:
+        if normalize_source_tier(str(source["source_tier"])) not in SOURCE_TIERS:
             raise ReleaseVerificationError(f"{path}: sources[{index}].source_tier is invalid")
     boundary = payload["claim_boundary"]
     if not isinstance(boundary, dict):

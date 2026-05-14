@@ -82,7 +82,9 @@ def test_future_bs_private_routes_are_hidden_from_public_openapi():
 
 
 def test_future_bs_private_routes_are_hidden_from_schema_when_mounted(monkeypatch):
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "full_dev")
     monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "true")
+    monkeypatch.setenv("PARVA_ENABLE_RESEARCH_API", "true")
     monkeypatch.setenv("PARVA_ADMIN_TOKEN", "test-token")
     monkeypatch.delenv("PARVA_SHOW_PRIVATE_SCHEMA", raising=False)
 
@@ -93,6 +95,24 @@ def test_future_bs_private_routes_are_hidden_from_schema_when_mounted(monkeypatc
     assert private_client.get("/v4/api/future-bs/month-lengths/2085").status_code == 401
     paths = set(private_client.get("/openapi.json").json()["paths"])
     assert "/v4/api/future-bs/capabilities" in paths
+    assert "/v4/api/future-bs/month-lengths/{bs_year}" not in paths
+
+
+def test_future_bs_private_routes_require_research_api_flag(monkeypatch):
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "full_dev")
+    monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "true")
+    monkeypatch.setenv("PARVA_ENABLE_RESEARCH_API", "false")
+    monkeypatch.setenv("PARVA_ADMIN_TOKEN", "test-token")
+    monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+
+    from app.bootstrap.app_factory import create_app
+
+    guarded_client = TestClient(create_app())
+
+    assert guarded_client.get("/v4/api/future-bs/capabilities").status_code == 200
+    response = guarded_client.get("/v4/api/future-bs/month-lengths/2085")
+    assert response.status_code in {401, 404}
+    paths = set(guarded_client.get("/openapi.json").json()["paths"])
     assert "/v4/api/future-bs/month-lengths/{bs_year}" not in paths
 
 

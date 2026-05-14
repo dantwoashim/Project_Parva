@@ -1,0 +1,2385 @@
+{
+  "corpus_id": "generated_public_conversion_220_cases",
+  "generated_at": "2026-05-14",
+  "description": "Deterministic public conformance fixture expansion for source-backed conversion and invalid-date behavior.",
+  "valid_cases": [
+    {
+      "case_id": "generated.valid.bs_2080_01_01",
+      "input": {
+        "bs_date": "2080-01-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_01_15",
+      "input": {
+        "bs_date": "2080-01-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_01_28",
+      "input": {
+        "bs_date": "2080-01-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_02_01",
+      "input": {
+        "bs_date": "2080-02-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_02_15",
+      "input": {
+        "bs_date": "2080-02-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_02_28",
+      "input": {
+        "bs_date": "2080-02-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_03_01",
+      "input": {
+        "bs_date": "2080-03-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_03_15",
+      "input": {
+        "bs_date": "2080-03-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_03_28",
+      "input": {
+        "bs_date": "2080-03-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_04_01",
+      "input": {
+        "bs_date": "2080-04-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_04_15",
+      "input": {
+        "bs_date": "2080-04-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_04_28",
+      "input": {
+        "bs_date": "2080-04-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_05_01",
+      "input": {
+        "bs_date": "2080-05-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_05_15",
+      "input": {
+        "bs_date": "2080-05-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_05_28",
+      "input": {
+        "bs_date": "2080-05-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_06_01",
+      "input": {
+        "bs_date": "2080-06-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_06_15",
+      "input": {
+        "bs_date": "2080-06-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_06_28",
+      "input": {
+        "bs_date": "2080-06-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_07_01",
+      "input": {
+        "bs_date": "2080-07-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_07_15",
+      "input": {
+        "bs_date": "2080-07-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_07_28",
+      "input": {
+        "bs_date": "2080-07-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_08_01",
+      "input": {
+        "bs_date": "2080-08-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_08_15",
+      "input": {
+        "bs_date": "2080-08-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_08_28",
+      "input": {
+        "bs_date": "2080-08-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_09_01",
+      "input": {
+        "bs_date": "2080-09-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_09_15",
+      "input": {
+        "bs_date": "2080-09-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_09_28",
+      "input": {
+        "bs_date": "2080-09-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_10_01",
+      "input": {
+        "bs_date": "2080-10-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_10_15",
+      "input": {
+        "bs_date": "2080-10-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_10_28",
+      "input": {
+        "bs_date": "2080-10-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_11_01",
+      "input": {
+        "bs_date": "2080-11-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_11_15",
+      "input": {
+        "bs_date": "2080-11-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_11_28",
+      "input": {
+        "bs_date": "2080-11-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_12_01",
+      "input": {
+        "bs_date": "2080-12-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_12_15",
+      "input": {
+        "bs_date": "2080-12-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2080_12_28",
+      "input": {
+        "bs_date": "2080-12-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_01_01",
+      "input": {
+        "bs_date": "2081-01-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_01_15",
+      "input": {
+        "bs_date": "2081-01-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_01_28",
+      "input": {
+        "bs_date": "2081-01-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_02_01",
+      "input": {
+        "bs_date": "2081-02-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_02_15",
+      "input": {
+        "bs_date": "2081-02-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_02_28",
+      "input": {
+        "bs_date": "2081-02-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_03_01",
+      "input": {
+        "bs_date": "2081-03-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_03_15",
+      "input": {
+        "bs_date": "2081-03-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_03_28",
+      "input": {
+        "bs_date": "2081-03-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_04_01",
+      "input": {
+        "bs_date": "2081-04-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_04_15",
+      "input": {
+        "bs_date": "2081-04-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_04_28",
+      "input": {
+        "bs_date": "2081-04-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_05_01",
+      "input": {
+        "bs_date": "2081-05-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_05_15",
+      "input": {
+        "bs_date": "2081-05-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_05_28",
+      "input": {
+        "bs_date": "2081-05-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_06_01",
+      "input": {
+        "bs_date": "2081-06-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_06_15",
+      "input": {
+        "bs_date": "2081-06-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_06_28",
+      "input": {
+        "bs_date": "2081-06-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_07_01",
+      "input": {
+        "bs_date": "2081-07-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_07_15",
+      "input": {
+        "bs_date": "2081-07-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_07_28",
+      "input": {
+        "bs_date": "2081-07-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_08_01",
+      "input": {
+        "bs_date": "2081-08-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_08_15",
+      "input": {
+        "bs_date": "2081-08-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_08_28",
+      "input": {
+        "bs_date": "2081-08-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_09_01",
+      "input": {
+        "bs_date": "2081-09-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_09_15",
+      "input": {
+        "bs_date": "2081-09-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_09_28",
+      "input": {
+        "bs_date": "2081-09-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_10_01",
+      "input": {
+        "bs_date": "2081-10-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_10_15",
+      "input": {
+        "bs_date": "2081-10-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_10_28",
+      "input": {
+        "bs_date": "2081-10-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_11_01",
+      "input": {
+        "bs_date": "2081-11-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_11_15",
+      "input": {
+        "bs_date": "2081-11-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_11_28",
+      "input": {
+        "bs_date": "2081-11-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_12_01",
+      "input": {
+        "bs_date": "2081-12-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_12_15",
+      "input": {
+        "bs_date": "2081-12-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2081_12_28",
+      "input": {
+        "bs_date": "2081-12-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_01_01",
+      "input": {
+        "bs_date": "2082-01-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_01_15",
+      "input": {
+        "bs_date": "2082-01-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_01_28",
+      "input": {
+        "bs_date": "2082-01-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_02_01",
+      "input": {
+        "bs_date": "2082-02-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_02_15",
+      "input": {
+        "bs_date": "2082-02-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_02_28",
+      "input": {
+        "bs_date": "2082-02-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_03_01",
+      "input": {
+        "bs_date": "2082-03-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_03_15",
+      "input": {
+        "bs_date": "2082-03-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_03_28",
+      "input": {
+        "bs_date": "2082-03-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_04_01",
+      "input": {
+        "bs_date": "2082-04-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_04_15",
+      "input": {
+        "bs_date": "2082-04-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_04_28",
+      "input": {
+        "bs_date": "2082-04-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_05_01",
+      "input": {
+        "bs_date": "2082-05-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_05_15",
+      "input": {
+        "bs_date": "2082-05-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_05_28",
+      "input": {
+        "bs_date": "2082-05-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_06_01",
+      "input": {
+        "bs_date": "2082-06-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_06_15",
+      "input": {
+        "bs_date": "2082-06-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_06_28",
+      "input": {
+        "bs_date": "2082-06-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_07_01",
+      "input": {
+        "bs_date": "2082-07-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_07_15",
+      "input": {
+        "bs_date": "2082-07-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_07_28",
+      "input": {
+        "bs_date": "2082-07-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_08_01",
+      "input": {
+        "bs_date": "2082-08-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_08_15",
+      "input": {
+        "bs_date": "2082-08-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_08_28",
+      "input": {
+        "bs_date": "2082-08-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_09_01",
+      "input": {
+        "bs_date": "2082-09-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_09_15",
+      "input": {
+        "bs_date": "2082-09-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_09_28",
+      "input": {
+        "bs_date": "2082-09-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_10_01",
+      "input": {
+        "bs_date": "2082-10-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_10_15",
+      "input": {
+        "bs_date": "2082-10-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_10_28",
+      "input": {
+        "bs_date": "2082-10-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_11_01",
+      "input": {
+        "bs_date": "2082-11-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_11_15",
+      "input": {
+        "bs_date": "2082-11-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_11_28",
+      "input": {
+        "bs_date": "2082-11-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_12_01",
+      "input": {
+        "bs_date": "2082-12-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_12_15",
+      "input": {
+        "bs_date": "2082-12-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2082_12_28",
+      "input": {
+        "bs_date": "2082-12-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_01_01",
+      "input": {
+        "bs_date": "2083-01-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_01_15",
+      "input": {
+        "bs_date": "2083-01-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_01_28",
+      "input": {
+        "bs_date": "2083-01-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_02_01",
+      "input": {
+        "bs_date": "2083-02-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_02_15",
+      "input": {
+        "bs_date": "2083-02-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_02_28",
+      "input": {
+        "bs_date": "2083-02-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_03_01",
+      "input": {
+        "bs_date": "2083-03-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_03_15",
+      "input": {
+        "bs_date": "2083-03-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_03_28",
+      "input": {
+        "bs_date": "2083-03-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_04_01",
+      "input": {
+        "bs_date": "2083-04-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_04_15",
+      "input": {
+        "bs_date": "2083-04-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_04_28",
+      "input": {
+        "bs_date": "2083-04-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_05_01",
+      "input": {
+        "bs_date": "2083-05-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_05_15",
+      "input": {
+        "bs_date": "2083-05-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_05_28",
+      "input": {
+        "bs_date": "2083-05-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_06_01",
+      "input": {
+        "bs_date": "2083-06-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_06_15",
+      "input": {
+        "bs_date": "2083-06-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_06_28",
+      "input": {
+        "bs_date": "2083-06-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_07_01",
+      "input": {
+        "bs_date": "2083-07-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_07_15",
+      "input": {
+        "bs_date": "2083-07-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_07_28",
+      "input": {
+        "bs_date": "2083-07-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_08_01",
+      "input": {
+        "bs_date": "2083-08-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_08_15",
+      "input": {
+        "bs_date": "2083-08-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_08_28",
+      "input": {
+        "bs_date": "2083-08-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_09_01",
+      "input": {
+        "bs_date": "2083-09-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_09_15",
+      "input": {
+        "bs_date": "2083-09-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_09_28",
+      "input": {
+        "bs_date": "2083-09-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_10_01",
+      "input": {
+        "bs_date": "2083-10-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_10_15",
+      "input": {
+        "bs_date": "2083-10-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_10_28",
+      "input": {
+        "bs_date": "2083-10-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_11_01",
+      "input": {
+        "bs_date": "2083-11-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_11_15",
+      "input": {
+        "bs_date": "2083-11-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_11_28",
+      "input": {
+        "bs_date": "2083-11-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_12_01",
+      "input": {
+        "bs_date": "2083-12-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_12_15",
+      "input": {
+        "bs_date": "2083-12-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2083_12_28",
+      "input": {
+        "bs_date": "2083-12-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_01_01",
+      "input": {
+        "bs_date": "2084-01-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_01_15",
+      "input": {
+        "bs_date": "2084-01-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_01_28",
+      "input": {
+        "bs_date": "2084-01-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_02_01",
+      "input": {
+        "bs_date": "2084-02-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_02_15",
+      "input": {
+        "bs_date": "2084-02-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_02_28",
+      "input": {
+        "bs_date": "2084-02-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_03_01",
+      "input": {
+        "bs_date": "2084-03-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_03_15",
+      "input": {
+        "bs_date": "2084-03-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_03_28",
+      "input": {
+        "bs_date": "2084-03-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_04_01",
+      "input": {
+        "bs_date": "2084-04-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_04_15",
+      "input": {
+        "bs_date": "2084-04-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_04_28",
+      "input": {
+        "bs_date": "2084-04-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_05_01",
+      "input": {
+        "bs_date": "2084-05-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_05_15",
+      "input": {
+        "bs_date": "2084-05-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_05_28",
+      "input": {
+        "bs_date": "2084-05-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_06_01",
+      "input": {
+        "bs_date": "2084-06-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_06_15",
+      "input": {
+        "bs_date": "2084-06-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_06_28",
+      "input": {
+        "bs_date": "2084-06-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_07_01",
+      "input": {
+        "bs_date": "2084-07-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_07_15",
+      "input": {
+        "bs_date": "2084-07-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_07_28",
+      "input": {
+        "bs_date": "2084-07-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_08_01",
+      "input": {
+        "bs_date": "2084-08-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_08_15",
+      "input": {
+        "bs_date": "2084-08-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_08_28",
+      "input": {
+        "bs_date": "2084-08-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_09_01",
+      "input": {
+        "bs_date": "2084-09-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_09_15",
+      "input": {
+        "bs_date": "2084-09-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_09_28",
+      "input": {
+        "bs_date": "2084-09-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_10_01",
+      "input": {
+        "bs_date": "2084-10-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_10_15",
+      "input": {
+        "bs_date": "2084-10-15"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_10_28",
+      "input": {
+        "bs_date": "2084-10-28"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    },
+    {
+      "case_id": "generated.valid.bs_2084_11_01",
+      "input": {
+        "bs_date": "2084-11-01"
+      },
+      "expected": {
+        "status": "pass",
+        "result_shape": "conversion_payload",
+        "publication_status": "source_backed_public_reference"
+      }
+    }
+  ],
+  "invalid_cases": [
+    {
+      "case_id": "generated.invalid.bs_2080_00_00",
+      "input": {
+        "bs_date": "2080-00-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2080_00_32",
+      "input": {
+        "bs_date": "2080-00-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2080_00_99",
+      "input": {
+        "bs_date": "2080-00-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2080_13_00",
+      "input": {
+        "bs_date": "2080-13-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2080_13_32",
+      "input": {
+        "bs_date": "2080-13-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2080_13_99",
+      "input": {
+        "bs_date": "2080-13-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2080_99_00",
+      "input": {
+        "bs_date": "2080-99-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2080_99_32",
+      "input": {
+        "bs_date": "2080-99-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2080_99_99",
+      "input": {
+        "bs_date": "2080-99-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_00_00",
+      "input": {
+        "bs_date": "2081-00-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_00_32",
+      "input": {
+        "bs_date": "2081-00-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_00_99",
+      "input": {
+        "bs_date": "2081-00-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_13_00",
+      "input": {
+        "bs_date": "2081-13-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_13_32",
+      "input": {
+        "bs_date": "2081-13-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_13_99",
+      "input": {
+        "bs_date": "2081-13-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_99_00",
+      "input": {
+        "bs_date": "2081-99-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_99_32",
+      "input": {
+        "bs_date": "2081-99-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2081_99_99",
+      "input": {
+        "bs_date": "2081-99-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_00_00",
+      "input": {
+        "bs_date": "2082-00-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_00_32",
+      "input": {
+        "bs_date": "2082-00-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_00_99",
+      "input": {
+        "bs_date": "2082-00-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_13_00",
+      "input": {
+        "bs_date": "2082-13-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_13_32",
+      "input": {
+        "bs_date": "2082-13-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_13_99",
+      "input": {
+        "bs_date": "2082-13-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_99_00",
+      "input": {
+        "bs_date": "2082-99-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_99_32",
+      "input": {
+        "bs_date": "2082-99-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2082_99_99",
+      "input": {
+        "bs_date": "2082-99-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_00_00",
+      "input": {
+        "bs_date": "2083-00-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_00_32",
+      "input": {
+        "bs_date": "2083-00-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_00_99",
+      "input": {
+        "bs_date": "2083-00-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_13_00",
+      "input": {
+        "bs_date": "2083-13-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_13_32",
+      "input": {
+        "bs_date": "2083-13-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_13_99",
+      "input": {
+        "bs_date": "2083-13-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_99_00",
+      "input": {
+        "bs_date": "2083-99-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_99_32",
+      "input": {
+        "bs_date": "2083-99-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2083_99_99",
+      "input": {
+        "bs_date": "2083-99-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_00_00",
+      "input": {
+        "bs_date": "2084-00-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_00_32",
+      "input": {
+        "bs_date": "2084-00-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_00_99",
+      "input": {
+        "bs_date": "2084-00-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_13_00",
+      "input": {
+        "bs_date": "2084-13-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_13_32",
+      "input": {
+        "bs_date": "2084-13-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_13_99",
+      "input": {
+        "bs_date": "2084-13-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_99_00",
+      "input": {
+        "bs_date": "2084-99-00"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_99_32",
+      "input": {
+        "bs_date": "2084-99-32"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    },
+    {
+      "case_id": "generated.invalid.bs_2084_99_99",
+      "input": {
+        "bs_date": "2084-99-99"
+      },
+      "expected": {
+        "status": "fail",
+        "reason": "invalid_bs_date_must_not_pass_conformance"
+      }
+    }
+  ],
+  "case_count": 220
+}

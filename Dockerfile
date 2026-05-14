@@ -15,6 +15,9 @@ WORKDIR /app
 
 ARG PARVA_DOWNLOAD_JPL_KERNEL=0
 ARG PARVA_JPL_DE440_MD5=c9d581bfd84209dbeee8b1583939b148
+ARG PARVA_PRECOMPUTE=0
+ARG PARVA_PRECOMPUTE_START_YEAR
+ARG PARVA_PRECOMPUTE_END_YEAR
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -51,11 +54,17 @@ RUN mkdir -p /app/data/ephemeris/jpl \
          echo "Skipping JPL kernel download. Set PARVA_DOWNLOAD_JPL_KERNEL=1 to fetch and checksum-verify de440.bsp during build."; \
        fi
 RUN mkdir -p /app/output/precomputed \
-    && START_YEAR="$(date -u +%Y)" \
-    && END_YEAR="$((START_YEAR + 2))" \
-    && python /app/scripts/precompute/precompute_all.py \
-        --start-year "${START_YEAR}" \
-        --end-year "${END_YEAR}"
+    && if [ "$PARVA_PRECOMPUTE" = "1" ]; then \
+         if [ -z "$PARVA_PRECOMPUTE_START_YEAR" ] || [ -z "$PARVA_PRECOMPUTE_END_YEAR" ]; then \
+           echo "PARVA_PRECOMPUTE_START_YEAR and PARVA_PRECOMPUTE_END_YEAR are required when PARVA_PRECOMPUTE=1"; \
+           exit 1; \
+         fi; \
+         python /app/scripts/precompute/precompute_all.py \
+           --start-year "${PARVA_PRECOMPUTE_START_YEAR}" \
+           --end-year "${PARVA_PRECOMPUTE_END_YEAR}"; \
+       else \
+         echo "Skipping build-time precompute. Generate release artifacts explicitly or set PARVA_PRECOMPUTE=1 with explicit year args."; \
+       fi
 COPY --from=frontend-builder /frontend/dist /app/frontend/dist
 
 RUN useradd --create-home --shell /usr/sbin/nologin parva \

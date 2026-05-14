@@ -12,13 +12,17 @@
     "source_tier": {
       "type": "string",
       "enum": [
-        "official_verified",
+        "official",
+        "semi_official",
         "printed_verified",
         "public_witness",
         "publisher_reference",
         "software_table_reference",
-        "third_party_reference",
-        "needs_review"
+        "third_party",
+        "calculated",
+        "fixture",
+        "research_private",
+        "unknown"
       ]
     },
     "url": { "type": "string", "format": "uri" },
@@ -30,7 +34,7 @@
     {
       "source_id": "np-public-calendar-2080",
       "source_name": "Public calendar evidence for BS 2080",
-      "source_tier": "official_verified",
+      "source_tier": "official",
       "url": "https://example.gov.np/public-calendar-2080",
       "reviewed_by": "source-review",
       "reviewed_at": "2024-01-15T00:00:00Z"

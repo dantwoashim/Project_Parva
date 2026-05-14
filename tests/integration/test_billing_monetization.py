@@ -51,10 +51,19 @@ def test_billing_checkout_activation_and_api_key_usage(monkeypatch, caplog):
         for record in caplog.records
         if record.name == "parva.billing.audit"
     ]
+
+    def _invoice_id_matches_logged_value(logged_invoice_id: str | None) -> bool:
+        if logged_invoice_id == checkout_payload["invoice_id"]:
+            return True
+        if not isinstance(logged_invoice_id, str) or "[redacted]" not in logged_invoice_id:
+            return False
+        visible_prefix = logged_invoice_id.split("[redacted]", 1)[0]
+        return checkout_payload["invoice_id"].startswith(visible_prefix)
+
     assert any(
         entry["action_type"] == "invoice.mark_paid"
-        and entry["invoice_id"] == checkout_payload["invoice_id"]
-        and entry["provider_reference"] == "manual-qr-paid"
+        and _invoice_id_matches_logged_value(entry.get("invoice_id"))
+        and entry["provider_reference"] == "[redacted]"
         for entry in audit_entries
     )
 

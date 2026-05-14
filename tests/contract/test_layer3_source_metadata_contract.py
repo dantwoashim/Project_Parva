@@ -61,7 +61,7 @@ def test_unstructured_static_lookup_rows_are_not_marked_official() -> None:
     assert response.status_code == 200
     meta = _meta(response.json())
     assert meta["confidence"] == "source_backed"
-    assert meta["source"]["tier"] == "public_corpus"
+    assert meta["source"]["tier"] == "software_table_reference"
     assert meta["source"]["id"] == "parva_static_lookup_table"
     assert "official" not in {meta["confidence"], meta["source"]["tier"]}
     assert "static_lookup_without_structured_official_provenance" in meta["warnings"]
@@ -78,7 +78,7 @@ def test_future_bs_capabilities_are_labeled_research_preview() -> None:
     assert body["claim_boundary"] == meta["claim_boundary"]
     assert meta["confidence"] == "research_preview"
     assert meta["maturity"] == "research_preview"
-    assert meta["source"]["tier"] == "research"
+    assert meta["source"]["tier"] == "research_private"
     assert meta["claim_boundary"] == "research_preview_not_safe_for_legal_or_payroll_use"
     assert "computed_prediction_not_official" in meta["warnings"]
 

@@ -40,7 +40,6 @@ reports/
 benchmark/results/
 tmp/
 *.zip
-parva_codex_phase_files/
 evaluation.csv
 backend/evaluation.csv
 sdk/python/build/
@@ -108,5 +107,3 @@ backend/data/snapshots/snap_*.festival_snapshot.json
 backend/tools/harvest_hamropatro_calendar.py
 backend/tools/harvest_ratopati_calendar.py
 data/source_inventory/digital_calendar_providers.json
-
-docs/internal_audit/

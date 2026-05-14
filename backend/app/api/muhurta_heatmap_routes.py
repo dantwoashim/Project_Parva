@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from app.explainability import create_reason_trace
 from app.services.muhurta_heatmap_service import build_muhurta_heatmap
 
+from ._async_utils import run_cpu_bound
 from ._personal_utils import (
     CoordinateInput,
     base_meta_payload,
@@ -103,7 +104,8 @@ async def muhurta_heatmap(
     ),
     assumption_set: str = Query("np-mainstream-v2"),
 ):
-    return _build_muhurta_heatmap_response(
+    return await run_cpu_bound(
+        _build_muhurta_heatmap_response,
         date_str=date_str,
         lat=lat,
         lon=lon,
@@ -115,7 +117,8 @@ async def muhurta_heatmap(
 
 @router.post("/heatmap")
 async def muhurta_heatmap_post(payload: MuhurtaHeatmapRequest):
-    return _build_muhurta_heatmap_response(
+    return await run_cpu_bound(
+        _build_muhurta_heatmap_response,
         date_str=payload.date,
         lat=payload.lat,
         lon=payload.lon,

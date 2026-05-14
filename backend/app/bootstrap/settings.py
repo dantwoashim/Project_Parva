@@ -29,6 +29,15 @@ VALID_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
         "full_dev",
     }
 )
+PUBLIC_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
+    {"minimal_public", "public_demo", "public_reference", "developer_preview"}
+)
+RESEARCH_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
+    {"research_private", "internal_lab", "full_dev"}
+)
+PRODUCTION_REJECTED_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
+    {"research_private", "internal_lab", "full", "full_dev"}
+)
 DEFAULT_TEST_ADMIN_TOKEN = "-".join(("parva", "test", "admin", "token"))
 DEFAULT_TEST_READ_KEY = "-".join(("parva", "test", "read", "key"))
 
@@ -64,6 +73,7 @@ class AppSettings:
     source_url: str | None
     route_profile: str
     enable_experimental_api: bool
+    enable_research_api: bool
     show_private_schema: bool
     allow_experimental_in_prod: bool
     serve_frontend: bool
@@ -71,6 +81,7 @@ class AppSettings:
     max_request_bytes: int
     max_query_length: int
     admin_token: str | None
+    debug: bool = False
     api_keys: dict[str, APIKeyRecord] = field(default_factory=dict)
     rate_limit_enabled: bool = True
     rate_limit_backend: str = "memory"
@@ -91,6 +102,7 @@ class AppSettings:
     esewa_base_url: str = "https://rc.esewa.com.np"
     esewa_return_url: str | None = None
     allow_public_unverified_future_conversion: bool = False
+    require_signed_provenance_mutations: bool = True
 
     @property
     def is_dev_environment(self) -> bool:
@@ -193,11 +205,28 @@ def _validate_source_url(settings: AppSettings) -> list[str]:
         errors.append("PARVA_SOURCE_URL must be an absolute http(s) URL or an absolute site path.")
     if settings.source_url == "/source":
         errors.append("PARVA_SOURCE_URL cannot point to /source itself.")
-    if _is_production_environment(settings.environment) and not settings.source_url:
+    if _is_deployed_environment(settings.environment) and not settings.source_url:
         errors.append(
-            "Production deployments must publish corresponding source code via PARVA_SOURCE_URL. "
+            "Production and staging deployments must publish corresponding source code via PARVA_SOURCE_URL. "
             "Use PARVA_ENV=public for the public Render demo profile."
         )
+    return errors
+
+
+def _validate_admin_and_debug_settings(settings: AppSettings) -> list[str]:
+    errors: list[str] = []
+    if _is_deployed_environment(settings.environment) and settings.debug:
+        errors.append("PARVA_DEBUG=true is not allowed in production or staging.")
+    if _is_deployed_environment(settings.environment):
+        admin_surface_profiles = {"developer_preview", "enterprise_preview", "full", "full_dev"}
+        if (
+            settings.route_profile in admin_surface_profiles
+            or settings.enable_experimental_api
+            or settings.billing_enabled
+        ) and not settings.admin_token:
+            errors.append(
+                "Production and staging admin, billing, or mutation surfaces require PARVA_ADMIN_TOKEN."
+            )
     return errors
 
 
@@ -213,11 +242,39 @@ def _validate_experimental_settings(settings: AppSettings) -> list[str]:
     return errors
 
 
+def _validate_research_api_settings(settings: AppSettings) -> list[str]:
+    errors: list[str] = []
+    if not settings.enable_research_api:
+        return errors
+    if not settings.enable_experimental_api:
+        errors.append("Research routes require PARVA_ENABLE_EXPERIMENTAL_API=true.")
+    if settings.route_profile not in RESEARCH_ROUTE_PROFILES:
+        supported = ", ".join(sorted(RESEARCH_ROUTE_PROFILES))
+        errors.append(f"Research routes require PARVA_ROUTE_PROFILE to be one of: {supported}.")
+    if not settings.admin_token:
+        errors.append("Research routes require PARVA_ADMIN_TOKEN.")
+    return errors
+
+
 def _validate_route_profile(settings: AppSettings) -> list[str]:
-    if settings.route_profile in VALID_ROUTE_PROFILES:
-        return []
-    supported = ", ".join(sorted(VALID_ROUTE_PROFILES))
-    return [f"PARVA_ROUTE_PROFILE must be one of: {supported}."]
+    if settings.route_profile not in VALID_ROUTE_PROFILES:
+        supported = ", ".join(sorted(VALID_ROUTE_PROFILES))
+        return [f"PARVA_ROUTE_PROFILE must be one of: {supported}."]
+    errors: list[str] = []
+    if settings.environment.strip().lower() in PUBLIC_ENV_VALUES and (
+        settings.route_profile not in PUBLIC_ROUTE_PROFILES
+    ):
+        errors.append(
+            "PARVA_ENV=public or production public profile cannot mount private or full-dev routes. "
+            "Use a public route profile or a controlled non-public deployment profile."
+        )
+    if _is_deployed_environment(settings.environment) and (
+        settings.route_profile in PRODUCTION_REJECTED_ROUTE_PROFILES
+    ):
+        errors.append(
+            "Production and staging deployments cannot use research_private, internal_lab, full, or full_dev route profiles."
+        )
+    return errors
 
 
 def _validate_trusted_proxy_settings(settings: AppSettings) -> list[str]:
@@ -238,12 +295,28 @@ def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
         errors.append("PARVA_RATE_LIMIT_BACKEND must be either memory or redis.")
     if backend == "redis" and not settings.redis_url:
         errors.append("PARVA_REDIS_URL is required when PARVA_RATE_LIMIT_BACKEND=redis.")
-    if _is_production_environment(settings.environment) and backend == "memory":
+    if _is_deployed_environment(settings.environment) and backend == "memory":
         errors.append(
-            "Production deployments must use PARVA_RATE_LIMIT_BACKEND=redis for distributed throttling. "
+            "Production and staging deployments must use PARVA_RATE_LIMIT_BACKEND=redis for distributed throttling. "
             "Use PARVA_ENV=public for the public Render demo profile."
         )
     return errors
+
+
+def _validate_provenance_settings(settings: AppSettings) -> list[str]:
+    if not _is_deployed_environment(settings.environment):
+        return []
+    if not settings.require_signed_provenance_mutations:
+        return ["PARVA_REQUIRE_SIGNED_PROVENANCE_MUTATIONS=false is not allowed in production or staging."]
+    key_configured = bool(
+        os.getenv("PARVA_PROVENANCE_ATTESTATION_KEY", "").strip()
+        or os.getenv("PARVA_PROVENANCE_ATTESTATION_KEY_FILE", "").strip()
+    )
+    if not key_configured:
+        return [
+            "Production and staging provenance mutations require PARVA_PROVENANCE_ATTESTATION_KEY or PARVA_PROVENANCE_ATTESTATION_KEY_FILE."
+        ]
+    return []
 
 
 def _validate_billing_settings(settings: AppSettings) -> list[str]:
@@ -253,11 +326,11 @@ def _validate_billing_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
     if not settings.database_url:
         errors.append("PARVA_DATABASE_URL is required when PARVA_BILLING_ENABLED=true.")
-    if _is_production_environment(settings.environment):
+    if _is_deployed_environment(settings.environment):
         if settings.database_url and not settings.database_url.startswith(
             ("postgres://", "postgresql://")
         ):
-            errors.append("Production billing requires a Postgres PARVA_DATABASE_URL.")
+            errors.append("Production and staging billing requires a Postgres PARVA_DATABASE_URL.")
     if not _is_local_environment(settings.environment):
         if settings.api_key_pepper == "parva-local-development-pepper":
             errors.append(
@@ -297,6 +370,7 @@ def load_settings() -> AppSettings:
         enable_experimental_api=_parse_bool(
             os.getenv("PARVA_ENABLE_EXPERIMENTAL_API"), default=False
         ),
+        enable_research_api=_parse_bool(os.getenv("PARVA_ENABLE_RESEARCH_API"), default=False),
         show_private_schema=_parse_bool(os.getenv("PARVA_SHOW_PRIVATE_SCHEMA"), default=False),
         allow_experimental_in_prod=_parse_bool(
             os.getenv("PARVA_ALLOW_EXPERIMENTAL_IN_PROD"), default=False
@@ -306,6 +380,7 @@ def load_settings() -> AppSettings:
         ),
         serve_frontend=_parse_bool(os.getenv("PARVA_SERVE_FRONTEND"), default=False),
         frontend_dist=_frontend_dist_from_env(),
+        debug=_parse_bool(os.getenv("PARVA_DEBUG"), default=False),
         max_request_bytes=int(os.getenv("PARVA_MAX_REQUEST_BYTES", "1048576")),
         max_query_length=int(os.getenv("PARVA_MAX_QUERY_LENGTH", "4096")),
         admin_token=admin_token,
@@ -341,6 +416,10 @@ def load_settings() -> AppSettings:
             or "https://rc.esewa.com.np"
         ),
         esewa_return_url=_parse_optional_text(os.getenv("PARVA_ESEWA_RETURN_URL")),
+        require_signed_provenance_mutations=_parse_bool(
+            os.getenv("PARVA_REQUIRE_SIGNED_PROVENANCE_MUTATIONS"),
+            default=_is_deployed_environment(environment),
+        ),
     )
 
 
@@ -349,9 +428,12 @@ def validate_settings(settings: AppSettings) -> list[str]:
     errors.extend(_validate_license_mode(settings))
     errors.extend(_validate_source_url(settings))
     errors.extend(_validate_route_profile(settings))
+    errors.extend(_validate_admin_and_debug_settings(settings))
     errors.extend(_validate_trusted_proxy_settings(settings))
     errors.extend(_validate_experimental_settings(settings))
+    errors.extend(_validate_research_api_settings(settings))
     errors.extend(_validate_rate_limit_settings(settings))
+    errors.extend(_validate_provenance_settings(settings))
     errors.extend(_validate_billing_settings(settings))
     errors.extend(_validate_frontend_settings(settings))
     return errors

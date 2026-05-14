@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # 2083 Proof Capsule
 
 This capsule records a narrow research result for public-safe discussion.

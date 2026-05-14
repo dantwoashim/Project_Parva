@@ -1,0 +1,170 @@
+version: 1
+profile_defaults:
+  public_reference:
+    fail_on_breach_lanes:
+      - stable_core
+      - stable_public
+    warmup_requests: 2
+    measured_requests: 5
+  developer_preview:
+    fail_on_breach_lanes:
+      - stable_core
+      - stable_public
+    warmup_requests: 2
+    measured_requests: 5
+routes:
+  /health:
+    method: GET
+    p95_ms_local: 25
+    p95_ms_deployed: 100
+    max_payload_bytes: 8192
+    lane: stable_core
+    profiles: [public_demo, public_reference, developer_preview, enterprise_preview]
+  /health/ready:
+    method: GET
+    p95_ms_local: 50
+    p95_ms_deployed: 150
+    max_payload_bytes: 16384
+    lane: stable_core
+    profiles: [public_demo, public_reference, developer_preview, enterprise_preview]
+  /v3/api/calendar/convert?date=2026-04-14:
+    method: GET
+    p95_ms_local: 75
+    p95_ms_deployed: 200
+    max_payload_bytes: 32768
+    lane: stable_core
+    subsystem: calendar
+    profiles: [public_demo, public_reference, developer_preview, enterprise_preview]
+  /v3/api/calendar/bs-to-gregorian:
+    method: POST
+    json: {year: 2083, month: 1, day: 1}
+    p95_ms_local: 75
+    p95_ms_deployed: 200
+    max_payload_bytes: 16384
+    lane: stable_core
+    subsystem: calendar
+    profiles: [public_reference, developer_preview, enterprise_preview]
+  /v3/api/calendar/today:
+    method: GET
+    p95_ms_local_warm: 300
+    p95_ms_deployed_warm: 600
+    max_payload_bytes: 65536
+    lane: stable_public
+    subsystem: calendar
+    cache_recommended: true
+    profiles: [public_demo, public_reference, developer_preview, enterprise_preview]
+  /v3/api/festivals/upcoming?days=30&from_date=2026-10-21&quality_band=all:
+    method: GET
+    p95_ms_local_warm: 300
+    p95_ms_deployed_warm: 500
+    max_payload_bytes: 262144
+    lane: stable_public
+    subsystem: festivals
+    cache_required: true
+    profiles: [public_demo, public_reference, developer_preview, enterprise_preview]
+  /v3/api/festivals/timeline?from=2026-10-01&to=2026-11-15&quality_band=all:
+    method: GET
+    p95_ms_local_warm: 500
+    p95_ms_deployed_warm: 800
+    max_payload_bytes: 524288
+    lane: public_preview
+    subsystem: festivals
+    cache_required: true
+    profiles: [public_reference, developer_preview, enterprise_preview]
+  /v3/api/observances/next?from_date=2026-10-21&days=30:
+    method: GET
+    p95_ms_local_warm: 350
+    p95_ms_deployed_warm: 700
+    max_payload_bytes: 131072
+    lane: public_preview
+    subsystem: observances
+    batch_required: true
+    profiles: [public_reference, developer_preview, enterprise_preview]
+  /v3/api/observances/stream?start=2026-10-21&days=7:
+    method: GET
+    p95_ms_local_warm: 500
+    p95_ms_deployed_warm: 900
+    max_payload_bytes: 262144
+    lane: public_preview
+    subsystem: observances
+    batch_required: true
+    profiles: [public_reference, developer_preview, enterprise_preview]
+  /v3/api/calendar/panchanga?date=2026-02-15:
+    method: GET
+    p95_ms_local_warm: 500
+    p95_ms_deployed_warm: 900
+    max_payload_bytes: 131072
+    lane: public_preview
+    subsystem: panchanga
+    heavy_compute: true
+    offload_required: true
+    cache_recommended: true
+    profiles: [public_reference, developer_preview, enterprise_preview]
+  /v3/api/muhurta?date=2026-04-14:
+    method: GET
+    p95_ms_local_warm: 800
+    p95_ms_deployed_warm: 1200
+    max_payload_bytes: 131072
+    lane: public_preview
+    subsystem: muhurta
+    heavy_compute: true
+    offload_required: true
+    profiles: [public_reference, developer_preview, enterprise_preview]
+  /v3/api/kundali?datetime=2026-04-14T09:00:00:
+    method: GET
+    p95_ms_local_warm: 1000
+    p95_ms_deployed_warm: 1500
+    max_payload_bytes: 262144
+    lane: developer_preview
+    subsystem: kundali
+    heavy_compute: true
+    offload_required: true
+    profiles: [developer_preview, enterprise_preview]
+  /v3/api/rules/capabilities:
+    method: GET
+    p95_ms_local: 100
+    p95_ms_deployed: 250
+    max_payload_bytes: 65536
+    lane: developer_preview
+    subsystem: rulelang
+    profiles: [developer_preview, enterprise_preview]
+  /v3/api/impact/capabilities:
+    method: GET
+    p95_ms_local: 100
+    p95_ms_deployed: 250
+    max_payload_bytes: 65536
+    lane: developer_preview
+    subsystem: impact
+    profiles: [developer_preview, enterprise_preview]
+  /v3/api/agent/capabilities:
+    method: GET
+    p95_ms_local: 100
+    p95_ms_deployed: 250
+    max_payload_bytes: 65536
+    lane: developer_preview
+    subsystem: agent
+    profiles: [developer_preview, enterprise_preview]
+  /v3/api/timegraph/capabilities:
+    method: GET
+    p95_ms_local: 150
+    p95_ms_deployed: 300
+    max_payload_bytes: 65536
+    lane: developer_preview
+    subsystem: timegraph
+    profiles: [developer_preview, enterprise_preview]
+  /v3/api/protocol/version:
+    method: GET
+    p95_ms_local: 100
+    p95_ms_deployed: 250
+    max_payload_bytes: 65536
+    lane: protocol_draft
+    subsystem: protocol
+    profiles: [public_reference, developer_preview, enterprise_preview]
+  /v3/api/billing/plans:
+    method: GET
+    p95_ms_local: 150
+    p95_ms_deployed: 300
+    max_payload_bytes: 65536
+    lane: enterprise_preview
+    subsystem: billing
+    profiles: [enterprise_preview]

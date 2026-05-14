@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Reference Implementation Mapping
 
 - PTS-001 date representation: `backend/app/calendar`, `backend/app/services/calendar_conversion_service.py`

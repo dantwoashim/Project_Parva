@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # Future BS Claims Policy
 
 Parva future BS month lengths are computed predictions, not official publication.

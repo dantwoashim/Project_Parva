@@ -6,7 +6,7 @@
     {
       "source_id": "parva-temporal-spec-v0-1",
       "source_name": "Project Parva Temporal Specification v0.1",
-      "source_tier": "publisher",
+      "source_tier": "publisher_reference",
       "description": "Public specification defining temporal contracts, release metadata, trace metadata, and claim boundaries.",
       "claim_support_level": "public_demo",
       "url": "https://github.com/dantwoashim/Project_Parva",
@@ -16,7 +16,7 @@
     {
       "source_id": "parva-public-conformance-v0-1",
       "source_name": "Project Parva public conformance suite v0.1",
-      "source_tier": "publisher",
+      "source_tier": "publisher_reference",
       "description": "Public-safe historical, current, and synthetic shape cases used to verify SDK and runner behavior.",
       "claim_support_level": "public_demo",
       "url": "https://github.com/dantwoashim/Project_Parva",
@@ -26,7 +26,7 @@
     {
       "source_id": "parva-public-api-contract",
       "source_name": "Project Parva public API contract",
-      "source_tier": "publisher",
+      "source_tier": "publisher_reference",
       "description": "Public API and schema contract for calendar conversion, panchanga shape, source metadata, and future-BS capabilities.",
       "claim_support_level": "public_demo",
       "url": "https://github.com/dantwoashim/Project_Parva",
@@ -46,7 +46,7 @@
     {
       "source_id": "parva_static_lookup_table",
       "source_name": "Parva static BS/AD lookup table",
-      "source_tier": "public_corpus",
+      "source_tier": "software_table_reference",
       "description": "Public deterministic BS/AD lookup data used outside the structured official overlap window.",
       "claim_support_level": "public_corpus_reference_only",
       "url": "https://github.com/dantwoashim/Project_Parva",
@@ -56,7 +56,7 @@
     {
       "source_id": "parva_public_bs_ad_corpus",
       "source_name": "Parva public BS/AD corpus",
-      "source_tier": "public_corpus",
+      "source_tier": "software_table_reference",
       "description": "Public reproducible BS/AD corpus used by deterministic public calendar conversion surfaces.",
       "claim_support_level": "public_corpus_reference_only",
       "url": "https://github.com/dantwoashim/Project_Parva",
@@ -96,7 +96,7 @@
     {
       "source_id": "parva_enterprise_compliance_profiles",
       "source_name": "Parva enterprise compliance profile definitions",
-      "source_tier": "public_corpus",
+      "source_tier": "publisher_reference",
       "description": "Public preview compliance profiles for weekend, fixed-date public corpus observance, fiscal-period, and review-required decision support.",
       "claim_support_level": "enterprise_decision_support_not_legal_authority",
       "url": "https://github.com/dantwoashim/Project_Parva",
@@ -106,7 +106,7 @@
     {
       "source_id": "parva_future_bs_risk_research",
       "source_name": "Parva future-BS risk research layer",
-      "source_tier": "research",
+      "source_tier": "calculated",
       "description": "Public-safe future-BS capability metadata for research-preview risk review.",
       "claim_support_level": "research_preview_not_safe_for_legal_or_payroll_use",
       "url": "https://github.com/dantwoashim/Project_Parva",

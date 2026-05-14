@@ -12,7 +12,7 @@ Source records identify public evidence used by a release.
 
 ## Source tiers
 
-Allowed tiers are `official`, `semi_official`, `public_corpus`, `publisher`, `calculated`, `fixture`, `research`, `private`, and `unknown`.
+Allowed tiers are `official`, `semi_official`, `printed_verified`, `public_witness`, `publisher_reference`, `software_table_reference`, `third_party`, `calculated`, `fixture`, `research_private`, and `unknown`.
 
 ## Boundary
 

@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # Confidence Model
 
 Future-BS confidence is not a single magic score. It is assembled from model agreement, future horizon, source quality, civil-boundary risk, and known residual behavior.

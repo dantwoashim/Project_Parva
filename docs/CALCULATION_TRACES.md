@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Calculation Traces
 
 Calculation traces explain the release, source policy, input, output, and ordered steps behind a result.

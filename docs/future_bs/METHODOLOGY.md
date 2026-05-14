@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # Future BS Methodology
 
 Parva Future BS is a computational validation engine for BS month-length risk. It does not publish official future date authority. Public material describes methodology, source policy, and claim boundaries. Direct future values and operational audit outputs are private deployment surfaces.

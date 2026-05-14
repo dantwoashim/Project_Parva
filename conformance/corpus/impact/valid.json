@@ -1,0 +1,12 @@
+{
+  "level": "parva_impact",
+  "case_id": "impact.valid.release_manifest_dependency",
+  "input": {
+    "change_type": "RELEASE_MANIFEST_CHANGED",
+    "release_id": "parva-bs-public-demo"
+  },
+  "expected": {
+    "status": "pass",
+    "dependency_type": "release_manifest"
+  }
+}

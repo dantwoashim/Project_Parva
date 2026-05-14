@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field, HttpUrl
 
 from app.billing import BillingAuthError, get_billing_service
 from app.billing.plans import FREE_DAILY_LIMIT
+from app.security.pii import scrub_structured_trace
 
 router = APIRouter(prefix="/api", tags=["billing"])
 audit_logger = logging.getLogger("parva.billing.audit")
@@ -98,23 +99,37 @@ def _admin_audit_event(
     provider_reference: str | None = None,
 ) -> None:
     principal = _principal(request)
+    payload = scrub_structured_trace(
+        {
+            "event": "billing.admin_action",
+            "action_type": action_type,
+            "admin_principal": getattr(principal, "principal_id", None),
+            "invoice_id": invoice_id,
+            "subscription_id": subscription_id,
+            "key_id": key_id,
+            "provider": provider,
+            "provider_reference": provider_reference,
+            "request_id": getattr(request.state, "request_id", None),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "source_ip": getattr(request.state, "client_ip", None),
+        }
+    )
     audit_logger.info(
         json.dumps(
-            {
-                "event": "billing.admin_action",
-                "action_type": action_type,
-                "admin_principal": getattr(principal, "principal_id", None),
-                "invoice_id": invoice_id,
-                "subscription_id": subscription_id,
-                "key_id": key_id,
-                "provider": provider,
-                "provider_reference": provider_reference,
-                "request_id": getattr(request.state, "request_id", None),
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-            },
+            payload,
             sort_keys=True,
         )
     )
+
+
+def _audit_context(request: Request) -> dict[str, Any]:
+    principal = _principal(request)
+    return {
+        "actor_principal": getattr(principal, "principal_id", None),
+        "route": request.url.path,
+        "request_id": getattr(request.state, "request_id", None),
+        "source_ip": getattr(request.state, "client_ip", None),
+    }
 
 
 async def _billing_call(request: Request, method_name: str, *args, **kwargs):
@@ -170,6 +185,7 @@ async def verify_billing_checkout(checkout_id: str, payload: VerifyCheckoutReque
             status=payload.status,
             provider_reference=payload.provider_reference,
             raw_payload=payload.raw_payload,
+            **_audit_context(request),
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
@@ -184,6 +200,7 @@ async def create_api_key(payload: CreateKeyRequest, request: Request):
             "create_api_key_for_checkout",
             payload.checkout_id,
             name=payload.name,
+            **_audit_context(request),
         )
     except BillingAuthError as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.detail) from exc
@@ -199,7 +216,7 @@ async def revoke_api_key(key_id: str, request: Request):
     if getattr(principal, "principal_type", None) == "api_key" and getattr(principal, "principal_id", None) != key_id:
         raise HTTPException(status_code=403, detail="API keys can only revoke themselves.")
     try:
-        return await _billing_call(request, "revoke_key", key_id)
+        return await _billing_call(request, "revoke_key", key_id, **_audit_context(request))
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
@@ -273,6 +290,7 @@ async def admin_mark_invoice_paid(invoice_id: str, payload: MarkInvoicePaidReque
             invoice_id,
             provider_reference=payload.provider_reference,
             notes=payload.notes,
+            **_audit_context(request),
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
@@ -295,6 +313,7 @@ async def admin_extend_subscription(subscription_id: str, payload: ExtendSubscri
             "extend_subscription",
             subscription_id,
             days=payload.days,
+            **_audit_context(request),
         )
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
@@ -310,7 +329,7 @@ async def admin_extend_subscription(subscription_id: str, payload: ExtendSubscri
 async def admin_revoke_key(key_id: str, request: Request):
     _require_admin(request)
     try:
-        result = await _billing_call(request, "revoke_key", key_id)
+        result = await _billing_call(request, "revoke_key", key_id, **_audit_context(request))
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     _admin_audit_event(request, action_type="api_key.revoke", key_id=key_id)

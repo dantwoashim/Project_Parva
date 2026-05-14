@@ -1,0 +1,12 @@
+{
+  "level": "parva_rulelang",
+  "case_id": "rulelang.valid.safe_public_rule",
+  "input": {
+    "rule_id": "last_working_day_of_nepali_month",
+    "input": {"bs_month": "2082-01", "profile_id": "nepal_private_company_default"}
+  },
+  "expected": {
+    "status": "pass",
+    "arbitrary_code_execution": false
+  }
+}

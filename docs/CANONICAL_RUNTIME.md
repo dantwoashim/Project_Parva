@@ -1,7 +1,15 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Canonical Runtime
 
-Phase 03 defines the canonical runtime paths for public Project Parva behavior.
-The machine-readable registry is `config/canonical-runtime.yaml`. The file uses
+This document defines the canonical runtime paths for public Project Parva
+behavior. The machine-readable registry is `config/canonical-runtime.yaml`. The file uses
 JSON syntax so it is also valid YAML and can be parsed without extra runtime
 dependencies.
 
@@ -56,9 +64,7 @@ Public route quality, plugin quality, and reliability outputs use
 keep their own fixtures under `tests/fixtures/`, but production code must not
 load them directly.
 
-## Future Phases
+## Compatibility Cleanup
 
-Phase 03 documents later-phase cleanup candidates in the generated artifact
-`reports/phase_03_canonical_runtime/` generated artifact directory. Later
-phases can remove compatibility paths only after the registry, architecture
-tests, and route smoke tests stay green.
+Compatibility paths can be removed only after the registry, architecture tests,
+and route smoke tests stay green.

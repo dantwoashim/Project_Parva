@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Impact Events
 
 Layer 8 defines event payload shapes but does not deliver production webhooks.

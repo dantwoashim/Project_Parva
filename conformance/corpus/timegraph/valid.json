@@ -1,0 +1,12 @@
+{
+  "level": "parva_timegraph",
+  "case_id": "timegraph.valid.public_fact_trace",
+  "input": {
+    "fact_id": "fact_bs_ad_2083_01_01",
+    "required_fields": ["fact_id", "release_id", "claim_boundary"]
+  },
+  "expected": {
+    "status": "pass",
+    "trace_required": true
+  }
+}

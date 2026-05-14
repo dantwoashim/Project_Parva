@@ -10,6 +10,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 OUTPUT_DIR = Path(os.getenv("PARVA_OPENAPI_PROFILE_DIR", PROJECT_ROOT / "docs" / "api-docs")).resolve()
 PROFILES = ("public_reference", "developer_preview", "enterprise_preview")
+PUBLIC_PROFILES = {"public_reference", "developer_preview"}
 
 
 def _base_env(profile: str) -> dict[str, str]:
@@ -17,7 +18,7 @@ def _base_env(profile: str) -> dict[str, str]:
         "PARVA_ROUTE_PROFILE": profile,
         "PARVA_ENABLE_EXPERIMENTAL_API": "false",
         "PARVA_SHOW_PRIVATE_SCHEMA": "false",
-        "PARVA_ENV": "public",
+        "PARVA_ENV": "public" if profile in PUBLIC_PROFILES else "test",
         "PARVA_SOURCE_URL": "https://github.com/dantwoashim/Project_Parva",
         "PARVA_REQUIRE_PRECOMPUTED": "false",
         "PARVA_SERVE_FRONTEND": "false",

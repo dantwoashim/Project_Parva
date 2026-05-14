@@ -10,6 +10,7 @@ from fastapi import APIRouter, HTTPException, Query
 from app.explainability import create_reason_trace
 from app.services.muhurta_calendar_service import build_muhurta_calendar
 
+from ._async_utils import run_cpu_bound
 from ._personal_utils import (
     base_meta_payload,
     normalize_coordinates,
@@ -37,7 +38,8 @@ async def muhurta_calendar(
     timezone_name, tz_warnings = normalize_timezone(tz)
 
     try:
-        payload = build_muhurta_calendar(
+        payload = await run_cpu_bound(
+            build_muhurta_calendar,
             from_date=from_date,
             to_date=to_date,
             latitude=latitude,

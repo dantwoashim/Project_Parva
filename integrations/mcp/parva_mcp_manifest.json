@@ -1,0 +1,29 @@
+{
+  "name": "project-parva-agent-safe-temporal-tools",
+  "version": "0.1.0",
+  "status": "public_beta",
+  "claim_boundary": "agent_temporal_reasoning_not_legal_authority",
+  "tools": [
+    {
+      "name": "parva.verify_temporal_claim",
+      "description": "Verify supported public temporal claims or require human review.",
+      "input_schema": {"type": "object", "required": ["claim"], "properties": {"claim": {"type": "string"}}}
+    },
+    {
+      "name": "parva.get_fiscal_period",
+      "description": "Return fiscal period metadata for supported public dates.",
+      "input_schema": {"type": "object", "properties": {"bs_date": {"type": "string"}, "ad_date": {"type": "string"}}}
+    },
+    {
+      "name": "parva.plan_schedule",
+      "description": "Plan bounded public payroll schedules with review gates.",
+      "input_schema": {"type": "object", "required": ["bs_year"], "properties": {"bs_year": {"type": "integer"}, "months": {"type": "array"}}}
+    }
+  ],
+  "not_claimed": [
+    "legal_authority",
+    "official_future_calendar_publication",
+    "private_source_access",
+    "unbounded_agent_execution"
+  ]
+}

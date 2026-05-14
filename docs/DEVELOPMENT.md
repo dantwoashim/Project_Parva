@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: dx
+last_verified: 2026-05-14
+owner: dx-team
+---
+
 # Development
 
 Project Parva is a trust-sensitive calendar infrastructure project. Public development must be reproducible without private source archives, private future-BS artifacts, or local caches.

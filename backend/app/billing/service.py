@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import secrets
 import uuid
 from dataclasses import dataclass
 from datetime import timedelta
 from typing import Any
+
+from app.security.pii import scrub_structured_trace
 
 from .keys import (
     generate_api_key,
@@ -63,6 +66,13 @@ def _invoice_number() -> str:
     return f"PARVA-{now:%Y-%m}-{secrets.randbelow(1_000_000):06d}"
 
 
+def _canonical_hash(payload: Any) -> str | None:
+    if payload is None:
+        return None
+    canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
+    return "sha256:" + hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
 class BillingService:
     def __init__(self, settings: Any) -> None:
         if not settings.database_url:
@@ -80,6 +90,71 @@ class BillingService:
 
     def _active_sql(self, column: str = "active") -> str:
         return f"{column} = true" if self.store.config.dialect == "postgres" else f"{column} = 1"
+
+    def record_audit_event(
+        self,
+        *,
+        action: str,
+        object_type: str,
+        object_id: str,
+        actor_principal: str | None = None,
+        route: str | None = None,
+        request_id: str | None = None,
+        source_ip: str | None = None,
+        before: dict[str, Any] | None = None,
+        after: dict[str, Any] | None = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        now = iso_now()
+        event_id = _new_id("audit")
+        scrubbed_metadata = scrub_structured_trace(metadata or {})
+        self.store.execute(
+            f"""
+            INSERT INTO billing_audit_events (
+              id, action, actor_principal, route, object_type, object_id,
+              before_hash, after_hash, request_id, source_ip, metadata_json, created_at
+            )
+            VALUES (
+              {self.store.param()}, {self.store.param()}, {self.store.param()},
+              {self.store.param()}, {self.store.param()}, {self.store.param()},
+              {self.store.param()}, {self.store.param()}, {self.store.param()},
+              {self.store.param()}, {self.store.param()}, {self.store.param()}
+            )
+            """,
+            (
+                event_id,
+                action,
+                actor_principal,
+                route,
+                object_type,
+                object_id,
+                _canonical_hash(before),
+                _canonical_hash(after),
+                request_id,
+                source_ip,
+                json.dumps(scrubbed_metadata, separators=(",", ":")),
+                now,
+            ),
+        )
+        return {
+            "id": event_id,
+            "action": action,
+            "object_type": object_type,
+            "object_id": object_id,
+            "before_hash": _canonical_hash(before),
+            "after_hash": _canonical_hash(after),
+            "created_at": now,
+        }
+
+    def audit_events_for_object(self, *, object_type: str, object_id: str) -> list[dict[str, Any]]:
+        return self.store.fetchall(
+            f"""
+            SELECT * FROM billing_audit_events
+            WHERE object_type = {self.store.param()} AND object_id = {self.store.param()}
+            ORDER BY created_at ASC
+            """,
+            (object_type, object_id),
+        )
 
     def list_plans(self) -> list[dict[str, Any]]:
         rows = self.store.fetchall(f"SELECT * FROM plans WHERE {self._active_sql()} ORDER BY price_minor ASC")
@@ -269,7 +344,18 @@ class BillingService:
         )
         return row
 
-    def verify_checkout(self, checkout_id: str, *, status: str, provider_reference: str | None = None, raw_payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    def verify_checkout(
+        self,
+        checkout_id: str,
+        *,
+        status: str,
+        provider_reference: str | None = None,
+        raw_payload: dict[str, Any] | None = None,
+        actor_principal: str | None = None,
+        route: str | None = None,
+        request_id: str | None = None,
+        source_ip: str | None = None,
+    ) -> dict[str, Any]:
         checkout = self.get_checkout(checkout_id)
         if not checkout:
             raise ValueError("Checkout not found.")
@@ -300,7 +386,20 @@ class BillingService:
                 f"UPDATE invoices SET status = 'failed', updated_at = {self.store.param()} WHERE id = {self.store.param()}",
                 (now, checkout["invoice_id"]),
             )
-        return self.get_checkout(checkout["id"]) or {}
+        after = self.get_checkout(checkout["id"]) or {}
+        self.record_audit_event(
+            action="checkout.verify",
+            actor_principal=actor_principal,
+            route=route,
+            object_type="checkout",
+            object_id=str(checkout["id"]),
+            before=checkout,
+            after=after,
+            request_id=request_id,
+            source_ip=source_ip,
+            metadata={"provider_reference": provider_reference, "status": status},
+        )
+        return after
 
     def _activate_subscription(self, subscription_id: str, invoice_id: str) -> None:
         now_dt = utc_now()
@@ -323,7 +422,16 @@ class BillingService:
             (now, now, invoice_id),
         )
 
-    def create_api_key_for_checkout(self, checkout_id: str, *, name: str | None = None) -> dict[str, Any]:
+    def create_api_key_for_checkout(
+        self,
+        checkout_id: str,
+        *,
+        name: str | None = None,
+        actor_principal: str | None = None,
+        route: str | None = None,
+        request_id: str | None = None,
+        source_ip: str | None = None,
+    ) -> dict[str, Any]:
         checkout = self.get_checkout(checkout_id)
         if not checkout:
             raise ValueError("Checkout not found.")
@@ -368,15 +476,28 @@ class BillingService:
                 now,
             ),
         )
+        public_key_record = {
+            "id": key_id,
+            "key_prefix": key_prefix,
+            "tier": checkout["tier"],
+            "monthly_limit": checkout["monthly_limit"],
+            "created_at": now,
+        }
+        self.record_audit_event(
+            action="api_key.create",
+            actor_principal=actor_principal or f"checkout:{checkout_id}",
+            route=route,
+            object_type="api_key",
+            object_id=key_id,
+            before=None,
+            after=public_key_record,
+            request_id=request_id,
+            source_ip=source_ip,
+            metadata={"checkout_id": checkout_id, "key_prefix": key_prefix},
+        )
         return {
             "api_key": full_key,
-            "key": {
-                "id": key_id,
-                "key_prefix": key_prefix,
-                "tier": checkout["tier"],
-                "monthly_limit": checkout["monthly_limit"],
-                "created_at": now,
-            },
+            "key": public_key_record,
             "message": "Store this key now. Parva only shows the full secret once.",
         }
 
@@ -493,7 +614,19 @@ class BillingService:
             "reset_at": row["reset_at"] if row else reset_at,
         }
 
-    def revoke_key(self, key_id: str) -> dict[str, Any]:
+    def revoke_key(
+        self,
+        key_id: str,
+        *,
+        actor_principal: str | None = None,
+        route: str | None = None,
+        request_id: str | None = None,
+        source_ip: str | None = None,
+    ) -> dict[str, Any]:
+        before = self.store.fetchone(
+            f"SELECT id, key_prefix, tier, active, revoked_at FROM api_keys WHERE id = {self.store.param()}",
+            (key_id,),
+        )
         now = iso_now()
         self.store.execute(
             f"UPDATE api_keys SET active = {self.store.param()}, revoked_at = {self.store.param()} WHERE id = {self.store.param()}",
@@ -502,6 +635,17 @@ class BillingService:
         row = self.store.fetchone(f"SELECT id, key_prefix, tier, active, revoked_at FROM api_keys WHERE id = {self.store.param()}", (key_id,))
         if not row:
             raise ValueError("API key not found.")
+        self.record_audit_event(
+            action="api_key.revoke",
+            actor_principal=actor_principal,
+            route=route,
+            object_type="api_key",
+            object_id=key_id,
+            before=before,
+            after=row,
+            request_id=request_id,
+            source_ip=source_ip,
+        )
         return row
 
     def create_webhook_subscription(self, *, api_key_id: str, customer_id: str, url: str, event_types: list[str], secret: str) -> dict[str, Any]:
@@ -547,7 +691,17 @@ class BillingService:
             """
         )
 
-    def mark_invoice_paid(self, invoice_id: str, *, provider_reference: str | None, notes: str | None) -> dict[str, Any]:
+    def mark_invoice_paid(
+        self,
+        invoice_id: str,
+        *,
+        provider_reference: str | None,
+        notes: str | None,
+        actor_principal: str | None = None,
+        route: str | None = None,
+        request_id: str | None = None,
+        source_ip: str | None = None,
+    ) -> dict[str, Any]:
         row = self.store.fetchone(f"SELECT * FROM invoices WHERE id = {self.store.param()}", (invoice_id,))
         if not row:
             raise ValueError("Invoice not found.")
@@ -571,9 +725,31 @@ class BillingService:
             )
         if row["subscription_id"]:
             self._activate_subscription(row["subscription_id"], invoice_id)
-        return self.store.fetchone(f"SELECT * FROM invoices WHERE id = {self.store.param()}", (invoice_id,)) or {}
+        after = self.store.fetchone(f"SELECT * FROM invoices WHERE id = {self.store.param()}", (invoice_id,)) or {}
+        self.record_audit_event(
+            action="invoice.mark_paid",
+            actor_principal=actor_principal,
+            route=route,
+            object_type="invoice",
+            object_id=invoice_id,
+            before=row,
+            after=after,
+            request_id=request_id,
+            source_ip=source_ip,
+            metadata={"provider_reference": provider_reference},
+        )
+        return after
 
-    def extend_subscription(self, subscription_id: str, *, days: int = 30) -> dict[str, Any]:
+    def extend_subscription(
+        self,
+        subscription_id: str,
+        *,
+        days: int = 30,
+        actor_principal: str | None = None,
+        route: str | None = None,
+        request_id: str | None = None,
+        source_ip: str | None = None,
+    ) -> dict[str, Any]:
         subscription = self.store.fetchone(f"SELECT * FROM subscriptions WHERE id = {self.store.param()}", (subscription_id,))
         if not subscription:
             raise ValueError("Subscription not found.")
@@ -593,7 +769,20 @@ class BillingService:
             """,
             (renews_at, iso_now(), subscription_id),
         )
-        return self.store.fetchone(f"SELECT * FROM subscriptions WHERE id = {self.store.param()}", (subscription_id,)) or {}
+        after = self.store.fetchone(f"SELECT * FROM subscriptions WHERE id = {self.store.param()}", (subscription_id,)) or {}
+        self.record_audit_event(
+            action="subscription.extend",
+            actor_principal=actor_principal,
+            route=route,
+            object_type="subscription",
+            object_id=subscription_id,
+            before=subscription,
+            after=after,
+            request_id=request_id,
+            source_ip=source_ip,
+            metadata={"days": days},
+        )
+        return after
 
     def usage_anomalies(self) -> list[dict[str, Any]]:
         return self.store.fetchall(

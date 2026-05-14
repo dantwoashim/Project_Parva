@@ -117,6 +117,7 @@ def impact_capabilities_payload() -> dict[str, Any]:
             "rule_execution",
             "profile_decision",
             "timegraph_fact",
+            "release_manifest",
             "release_artifact",
             "trust_log_entry",
         ],
@@ -299,7 +300,25 @@ def build_dependency_registry(*, release_id: str | None = None) -> list[dict[str
     dependencies.extend(_sample_evidence_dependencies(selected))
     dependencies.extend(_sample_rule_dependencies(selected))
     dependencies.extend(_profile_decision_dependencies(selected))
+    dependencies.append(_release_manifest_dependency(selected))
     return dependencies[:MAX_DEPENDENCIES]
+
+
+def _release_manifest_dependency(release_id: str) -> dict[str, Any]:
+    return {
+        "dependency_id": f"dep_release_manifest_{release_id}",
+        "dependency_type": "release_manifest",
+        "owner_type": "release",
+        "owner_id": release_id,
+        "depends_on": [{"entity_type": "release", "entity_id": release_id}],
+        "result_ref": {"type": "release_manifest", "id": release_id},
+        "risk_policy": {"requires_review_on_release_change": True},
+        "metadata": {
+            "release_id": release_id,
+            "confidence": "source_backed",
+            "historically_valid": True,
+        },
+    }
 
 
 def reason_codes_payload() -> dict[str, Any]:

@@ -17,7 +17,7 @@
     {
       "artifact_id": "source-registry",
       "path": "data/public/releases/parva-bs-public-demo.sources.json",
-      "sha256": "bcb7478ea06d23ab6ef066cc1ac6f53cb78194ca00fa18b670c19c27e72ab157",
+      "sha256": "e6ea68e4f966db35e91abd546a7a3958a9ecdc1ce958b66a3bd521b909b4916d",
       "media_type": "application/json",
       "description": "Public-safe source registry for this demo release."
     },
@@ -31,7 +31,7 @@
     {
       "artifact_id": "source-registry-schema",
       "path": "schemas/source-registry.schema.json",
-      "sha256": "c644696514cfc26fb852bef0e1caacde2ddb39682422e19451a7be71a6f983ec",
+      "sha256": "36cc50513210a0ee3a48bed8bf87c219f569d7b07e626f0833f9462a22eabb6b",
       "media_type": "application/schema+json",
       "description": "JSON schema for public source registries."
     },

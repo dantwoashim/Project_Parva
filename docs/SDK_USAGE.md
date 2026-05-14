@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: dx
+last_verified: 2026-05-14
+owner: dx-team
+---
+
 # SDK Usage
 
 Project Parva SDKs are alpha developer surfaces for stable public calendar APIs and the public future-BS capabilities summary.
@@ -79,13 +87,16 @@ future_bs_capabilities = parva.get_future_bs_capabilities()
 Run from the repository root:
 
 ```bash
-python tools/parva-cli/parva_cli.py --help
-python tools/parva-cli/parva_cli.py today
-python tools/parva-cli/parva_cli.py convert ad 2026-04-14
-python tools/parva-cli/parva_cli.py convert bs 2083-01-01
-python tools/parva-cli/parva_cli.py validate bs 2083-01-32
-python tools/parva-cli/parva_cli.py capabilities future-bs
+python -m pip install -e packages/parva-python
+parva --help
+parva today
+parva convert ad 2026-04-14
+parva convert bs 2083-01-01
+parva validate-bs 2083-01-32
+parva capabilities future-bs
 ```
+
+The CLI reads `PARVA_API_BASE` when `--base-url` is not provided. It calls the same public SDK client and does not expose private future-BS prediction routes.
 
 RuleLang SDK helpers include:
 
@@ -175,6 +186,20 @@ python tools/conformance_runner/run.py
 ```
 
 Future SDK work should add language-specific conformance adapters that load the JSON cases under `conformance/` and compare SDK outputs against the same public-safe cases.
+
+## Copy-paste examples
+
+Runnable examples are kept under:
+
+- `examples/python/convert.py`
+- `examples/python/holidays.py`
+- `examples/python/verify_bundle.py`
+- `examples/javascript/convert.mjs`
+- `examples/javascript/holidays.mjs`
+- `examples/javascript/protocol-version.mjs`
+- `examples/curl/quickstart.sh`
+
+They use public or local API bases only and avoid private future-BS exact prediction surfaces.
 
 ## Release And Trace Metadata
 

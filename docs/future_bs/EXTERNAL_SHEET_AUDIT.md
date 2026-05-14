@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # External Sheet Audit Boundary
 
 Parva can compare an external BS month-length sheet against a private computational risk model.

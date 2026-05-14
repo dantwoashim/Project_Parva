@@ -1,3 +1,11 @@
+---
+status: draft
+tier: 2
+lane: protocol
+last_verified: 2026-05-14
+owner: protocol-team
+---
+
 # Protocol Lifecycle
 
 Parva Protocol is a protocol draft. Its lifecycle is designed to keep public contracts stable while the implementation matures.

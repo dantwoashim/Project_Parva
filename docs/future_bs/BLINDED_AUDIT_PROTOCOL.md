@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # Blinded Audit Protocol
 
 Project Parva can review an external BS month-length assumption sheet without returning corrected future values by default.

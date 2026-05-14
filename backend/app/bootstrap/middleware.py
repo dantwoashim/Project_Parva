@@ -16,7 +16,7 @@ from starlette.datastructures import Headers, QueryParams
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.bootstrap.access_control import Principal, authenticate_request, classify_request
-from app.bootstrap.rate_limit import RateLimiterBackend, RatePolicy
+from app.bootstrap.rate_limit import RateLimiterBackend, RateLimiterUnavailable, RatePolicy
 from app.bootstrap.settings import AppSettings
 from app.core.meta_envelope import extract_meta, merge_meta_defaults
 from app.reliability.metrics import get_metrics_registry
@@ -236,6 +236,7 @@ def build_request_context(*, product_version: str, settings: AppSettings):
             )
         )
         response.headers["X-Request-ID"] = request_id
+        response.headers["X-Trace-ID"] = request_id
         return response
 
     return request_context
@@ -476,12 +477,36 @@ def build_rate_limit_guard(*, settings: AppSettings, backend: RateLimiterBackend
             getattr(principal, "principal_id", "") or getattr(request.state, "client_ip", "unknown")
         )
         bucket, policy = _rate_policy_for_request(request.url.path, principal_type)
-        decision = backend.check(
-            identifier=principal_id,
-            bucket=bucket,
-            policy=policy,
-            now=time.time(),
-        )
+        try:
+            decision = backend.check(
+                identifier=principal_id,
+                bucket=bucket,
+                policy=policy,
+                now=time.time(),
+            )
+        except RateLimiterUnavailable:
+            metrics.record_throttle(request.url.path)
+            logger.error(
+                json.dumps(
+                    {
+                        "event": "rate_limit.unavailable",
+                        "request_id": getattr(request.state, "request_id", None),
+                        "path": request.url.path,
+                        "principal": principal_id,
+                        "bucket": bucket,
+                        "policy": "fail_closed",
+                    }
+                )
+            )
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "detail": "Rate limiter unavailable",
+                    "request_id": getattr(request.state, "request_id", None),
+                    "rate_limit_policy": "fail_closed",
+                },
+                headers={"Retry-After": str(policy.window_seconds)},
+            )
 
         if not decision.allowed:
             metrics.record_throttle(request.url.path)

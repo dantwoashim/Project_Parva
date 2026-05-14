@@ -42,10 +42,12 @@ def test_cors_preflight_uses_explicit_methods_and_headers(monkeypatch):
 def test_production_rejects_localhost_cors_origins(monkeypatch):
     monkeypatch.setenv("PARVA_ENV", "production")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://example.com/source")
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "public_reference")
     monkeypatch.setenv("PARVA_RATE_LIMIT_BACKEND", "redis")
     monkeypatch.setenv("PARVA_REDIS_URL", "redis://localhost:6379/0")
     monkeypatch.setenv("PARVA_REQUIRE_PRECOMPUTED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
     monkeypatch.setenv("CORS_ALLOW_ORIGINS", "http://localhost:5173")
 
-    with pytest.raises(RuntimeError, match="production CORS origins cannot include localhost"):
+    with pytest.raises(RuntimeError, match="production or staging CORS origins cannot include localhost"):
         create_app()

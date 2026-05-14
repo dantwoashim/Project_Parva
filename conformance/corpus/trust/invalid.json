@@ -1,0 +1,13 @@
+{
+  "level": "parva_trust",
+  "case_id": "trust.invalid.missing_hash",
+  "input": {
+    "release_id": "parva-bs-public-demo",
+    "artifact_path": "data/public/releases/parva-bs-public-demo.manifest.json",
+    "hash": ""
+  },
+  "expected": {
+    "status": "fail",
+    "reason": "release artifacts must be hash pinned"
+  }
+}

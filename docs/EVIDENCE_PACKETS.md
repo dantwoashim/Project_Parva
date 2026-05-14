@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Evidence Packets
 
 Evidence packets explain how Project Parva produced a temporal answer.

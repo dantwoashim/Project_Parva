@@ -1,3 +1,11 @@
+---
+status: research
+tier: 3
+lane: research
+last_verified: 2026-05-14
+owner: research-team
+---
+
 # Future BS Validation Report Template
 
 This public template is intentionally aggregate-first. It should not expose corrected future month values.

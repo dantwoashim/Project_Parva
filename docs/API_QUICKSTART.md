@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: dx
+last_verified: 2026-05-14
+owner: dx-team
+---
+
 # API Quickstart
 
 Status: Phase 04 public integration quickstart.

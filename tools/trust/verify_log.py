@@ -7,6 +7,7 @@ import re
 import sys
 from pathlib import Path
 from typing import Any
+from uuid import UUID
 
 try:
     from .common import ROOT, TRUST_LOG_PATH, TrustToolError, load_json, repo_path
@@ -66,9 +67,14 @@ def _validate_row(row: dict[str, Any], *, line_number: int) -> None:
     missing = required - set(row)
     if missing:
         raise TrustToolError(f"line {line_number}: missing keys: {', '.join(sorted(missing))}")
-    extra = set(row) - required
+    extra = set(row) - required - {"entry_id"}
     if extra:
         raise TrustToolError(f"line {line_number}: unexpected keys: {', '.join(sorted(extra))}")
+    if "entry_id" in row:
+        try:
+            UUID(str(row["entry_id"]))
+        except ValueError as exc:
+            raise TrustToolError(f"line {line_number}: entry_id must be a UUID") from exc
     if row["event"] not in SUPPORTED_EVENTS:
         raise TrustToolError(f"line {line_number}: unsupported event {row['event']!r}")
     for key in ("artifact_hash", "source_registry_hash"):

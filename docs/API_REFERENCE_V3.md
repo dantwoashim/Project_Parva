@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: dx
+last_verified: 2026-05-14
+owner: dx-team
+---
+
 # API Reference v3
 
 Status: Phase 04 stable core plus public/developer preview route profiles.
@@ -137,7 +145,7 @@ Core temporal responses include an additive `meta` object where meaningful:
     "source": {
       "id": "parva_public_bs_ad_corpus",
       "label": "Parva public BS/AD corpus",
-      "tier": "public_corpus",
+      "tier": "software_table_reference",
       "authority": "derived_reference_not_legal_authority",
       "version": "parva-public-calendar-v1"
     },

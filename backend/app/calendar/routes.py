@@ -11,6 +11,7 @@ from typing import Optional
 from fastapi import APIRouter, Query, Request
 from pydantic import BaseModel
 
+from app.api._async_utils import run_cpu_bound
 from app.core.source_metadata import build_calculated_claim_meta
 from app.policy import get_policy_metadata
 from app.rules import get_rule_service
@@ -225,7 +226,8 @@ async def get_tithi_endpoint(
     Get tithi details for a date/location with method metadata.
     """
     target_date = _parse_iso_date(date_str)
-    return build_tithi_detail_payload(
+    return await run_cpu_bound(
+        build_tithi_detail_payload,
         target_date,
         latitude=latitude,
         longitude=longitude,
@@ -247,7 +249,8 @@ async def get_tithi_proof_capsule(
     risk_mode: str = Query("strict", description="standard|strict"),
 ):
     target_date = _parse_iso_date(date_str)
-    payload = build_tithi_detail_payload(
+    payload = await run_cpu_bound(
+        build_tithi_detail_payload,
         target_date,
         latitude=latitude,
         longitude=longitude,
@@ -288,7 +291,12 @@ async def get_panchanga_endpoint(
     Includes: Tithi, Nakshatra, Yoga, Karana, Vaara (weekday).
     """
     target_date = _parse_iso_date(date_str) if date_str else datetime.now().date()
-    return build_panchanga_payload(target_date, risk_mode=risk_mode, trace_id=_trace_id(request))
+    return await run_cpu_bound(
+        build_panchanga_payload,
+        target_date,
+        risk_mode=risk_mode,
+        trace_id=_trace_id(request),
+    )
 
 
 @router.get("/panchanga/proof-capsule")
@@ -302,7 +310,12 @@ async def get_panchanga_proof_capsule(
     risk_mode: str = Query("strict", description="standard|strict"),
 ):
     target_date = _parse_iso_date(date_str)
-    payload = build_panchanga_payload(target_date, risk_mode=risk_mode, trace_id=_trace_id(request))
+    payload = await run_cpu_bound(
+        build_panchanga_payload,
+        target_date,
+        risk_mode=risk_mode,
+        trace_id=_trace_id(request),
+    )
     return build_calendar_proof_capsule(
         surface="panchanga",
         payload=payload,
@@ -320,7 +333,7 @@ async def get_panchanga_range_endpoint(
     Get panchanga for a range of dates.
     """
     start = _parse_iso_date(start_date)
-    return build_panchanga_range_payload(start, days, trace_id=_trace_id(request))
+    return await run_cpu_bound(build_panchanga_range_payload, start, days, trace_id=_trace_id(request))
 
 
 # =============================================================================
@@ -341,7 +354,7 @@ async def calculate_festival_endpoint(
     from fastapi import HTTPException
 
     rule_service = get_rule_service()
-    result = rule_service.calculate(festival_id, year)
+    result = await run_cpu_bound(rule_service.calculate, festival_id, year)
 
     if result is None:
         info = rule_service.info(festival_id)
@@ -380,7 +393,12 @@ async def get_upcoming_festivals_endpoint(
     Get all festivals occurring within the next N days.
     Uses V2 calculator with correct lunar month model.
     """
-    return build_upcoming_festivals_payload(days, today=date.today(), trace_id=_trace_id(request))
+    return await run_cpu_bound(
+        build_upcoming_festivals_payload,
+        days,
+        today=date.today(),
+        trace_id=_trace_id(request),
+    )
 
 
 @router.get("/sankranti/{year}")
@@ -390,7 +408,7 @@ async def get_sankrantis_endpoint(request: Request, year: int):
     """
     from app.calendar.sankranti import get_sankrantis_in_year
     
-    sankrantis = get_sankrantis_in_year(year)
+    sankrantis = await run_cpu_bound(get_sankrantis_in_year, year)
     
     return {
         "year": year,

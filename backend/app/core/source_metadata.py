@@ -7,6 +7,7 @@ from dataclasses import asdict, dataclass
 from typing import Any
 
 from app.calendar.provenance import BSYearProvenance, get_bs_year_provenance
+from app.core.source_authority import normalize_source_tier
 
 PUBLIC_DATA_VERSION = "parva-public-calendar-v1"
 PUBLIC_RELEASE_ID = "parva-bs-public-demo"
@@ -28,13 +29,15 @@ class SourceClaim:
     retrieved_at: str | None = None
 
     def as_dict(self) -> dict[str, Any]:
-        return {key: value for key, value in asdict(self).items() if value is not None}
+        payload = {key: value for key, value in asdict(self).items() if value is not None}
+        payload["tier"] = normalize_source_tier(str(payload.get("tier") or "unknown"))
+        return payload
 
 
 PUBLIC_BS_AD_CORPUS = SourceClaim(
     id="parva_public_bs_ad_corpus",
     label="Parva public BS/AD corpus",
-    tier="public_corpus",
+    tier="software_table_reference",
     authority="derived_reference_not_legal_authority",
 )
 STRUCTURED_OFFICIAL_CORPUS = SourceClaim(
@@ -46,7 +49,7 @@ STRUCTURED_OFFICIAL_CORPUS = SourceClaim(
 STATIC_LOOKUP_TABLE = SourceClaim(
     id="parva_static_lookup_table",
     label="Parva static BS/AD lookup table",
-    tier="public_corpus",
+    tier="software_table_reference",
     authority="derived_reference_not_legal_authority",
 )
 ESTIMATED_CALENDAR_MODEL = SourceClaim(
@@ -70,13 +73,13 @@ PUBLIC_FESTIVAL_RULES = SourceClaim(
 ENTERPRISE_COMPLIANCE_PROFILES = SourceClaim(
     id="parva_enterprise_compliance_profiles",
     label="Parva enterprise compliance profile definitions",
-    tier="public_corpus",
+    tier="publisher_reference",
     authority="derived_reference_not_legal_authority",
 )
 FUTURE_BS_RESEARCH = SourceClaim(
     id="parva_future_bs_risk_research",
     label="Parva future-BS risk research layer",
-    tier="research",
+    tier="research_private",
     authority="research_preview",
 )
 

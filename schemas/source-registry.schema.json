@@ -47,12 +47,13 @@
             "enum": [
               "official",
               "semi_official",
-              "public_corpus",
-              "publisher",
+              "printed_verified",
+              "public_witness",
+              "publisher_reference",
+              "software_table_reference",
+              "third_party",
               "calculated",
               "fixture",
-              "research",
-              "private",
               "unknown"
             ]
           },
@@ -117,7 +118,7 @@
         {
           "source_id": "parva-temporal-spec-v0-1",
           "source_name": "Project Parva Temporal Specification v0.1",
-          "source_tier": "publisher",
+          "source_tier": "publisher_reference",
           "description": "Public specification defining temporal contracts and claim boundaries.",
           "claim_support_level": "public_demo",
           "url": "https://github.com/dantwoashim/Project_Parva",

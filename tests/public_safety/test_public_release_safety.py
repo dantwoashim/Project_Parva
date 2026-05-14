@@ -98,7 +98,9 @@ def test_public_demo_blocks_exact_unverified_future_conversion(monkeypatch):
 
 
 def test_private_schema_requires_explicit_flag(monkeypatch):
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "full_dev")
     monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "true")
+    monkeypatch.setenv("PARVA_ENABLE_RESEARCH_API", "true")
     monkeypatch.setenv("PARVA_ADMIN_TOKEN", "test-token")
     monkeypatch.setenv("PARVA_SHOW_PRIVATE_SCHEMA", "false")
     monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
@@ -137,7 +139,7 @@ def test_readme_avoids_prohibited_public_claims():
 
 
 def test_public_docs_do_not_use_em_dash():
-    paths = [ROOT / "README.md", ROOT / "AGENTS.md", *list((ROOT / "docs").rglob("*.md"))]
+    paths = [ROOT / "README.md", *list((ROOT / "docs").rglob("*.md"))]
     for path in paths:
         assert "—" not in path.read_text(encoding="utf-8"), str(path.relative_to(ROOT))
 

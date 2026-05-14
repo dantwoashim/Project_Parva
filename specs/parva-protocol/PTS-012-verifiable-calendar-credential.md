@@ -19,4 +19,4 @@ A Parva Calendar Credential is a portable hash-only preview credential for a tem
 
 ## Boundary
 
-The public preview credential uses `hash_only_preview`. It does not claim production-grade signature authority.
+The public preview credential uses `hash_only_preview`. It does not claim a deployment signing authority.

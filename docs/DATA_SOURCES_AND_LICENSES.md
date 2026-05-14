@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Data Sources And Licenses
 
 Project Parva combines code, curated datasets, and source references. Contributors should treat those categories differently.

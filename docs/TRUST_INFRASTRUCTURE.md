@@ -33,12 +33,14 @@ Layer 5 source tiers are:
 
 - `official`
 - `semi_official`
-- `public_corpus`
-- `publisher`
+- `printed_verified`
+- `public_witness`
+- `publisher_reference`
+- `software_table_reference`
+- `third_party`
 - `calculated`
 - `fixture`
-- `research`
-- `private`
+- `research_private`
 - `unknown`
 
 Only a truly documented official source may use `official`. Fixtures, research outputs, and calculated surfaces must stay labeled as such.

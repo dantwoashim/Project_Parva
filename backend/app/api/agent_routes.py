@@ -25,6 +25,8 @@ from app.services.rulelang_service import RuleLangError
 from app.services.timegraph_service import TimeGraphError
 from app.services.trust_infrastructure_service import TrustInfrastructureError
 
+from ._async_utils import run_cpu_bound
+
 router = APIRouter(prefix="/api/agent", tags=["agent"])
 
 
@@ -97,7 +99,8 @@ async def resolve_intent(payload: IntentRequest) -> dict[str, Any]:
 @router.post("/verify-claim")
 async def verify_claim(payload: ClaimRequest) -> dict[str, Any]:
     try:
-        return verify_temporal_claim_payload(
+        return await run_cpu_bound(
+            verify_temporal_claim_payload,
             payload.claim,
             context=payload.context,
             include_evidence=payload.include_evidence,
@@ -109,7 +112,8 @@ async def verify_claim(payload: ClaimRequest) -> dict[str, Any]:
 @router.post("/plan-schedule")
 async def plan_schedule(payload: ScheduleRequest) -> dict[str, Any]:
     try:
-        return plan_schedule_payload(
+        return await run_cpu_bound(
+            plan_schedule_payload,
             schedule_type=payload.schedule_type,
             bs_year=payload.bs_year,
             profile_id=payload.profile_id,
@@ -123,7 +127,7 @@ async def plan_schedule(payload: ScheduleRequest) -> dict[str, Any]:
 @router.post("/explain")
 async def explain(payload: ExplainRequest) -> dict[str, Any]:
     try:
-        return explain_temporal_decision_payload(payload.payload)
+        return await run_cpu_bound(explain_temporal_decision_payload, payload.payload)
     except (AgentError, RuleLangError) as exc:
         _raise_agent_error(exc)
 
@@ -139,7 +143,7 @@ async def check_human_review(payload: HumanReviewRequest) -> dict[str, Any]:
 @router.post("/draft-rule")
 async def draft_rule(payload: DraftRuleRequest) -> dict[str, Any]:
     try:
-        return draft_rule_payload(payload.text, profile_id=payload.profile_id)
+        return await run_cpu_bound(draft_rule_payload, payload.text, profile_id=payload.profile_id)
     except AgentError as exc:
         _raise_agent_error(exc)
 
@@ -147,6 +151,6 @@ async def draft_rule(payload: DraftRuleRequest) -> dict[str, Any]:
 @router.post("/run-tool")
 async def run_tool(payload: RunToolRequest) -> dict[str, Any]:
     try:
-        return run_tool_payload(payload.tool_name, payload.input)
+        return await run_cpu_bound(run_tool_payload, payload.tool_name, payload.input)
     except (AgentError, RuleLangError, ImpactError, TimeGraphError, TrustInfrastructureError) as exc:
         _raise_agent_error(exc)

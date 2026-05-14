@@ -16,9 +16,9 @@ from app.services.protocol_service import verify_calendar_credential_payload  # 
 
 
 def main() -> int:
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 2 or sys.argv[1] in {"-h", "--help"}:
         print("usage: python scripts/parva_credential_verify.py path/to/credential.json")
-        return 2
+        return 0 if len(sys.argv) == 2 and sys.argv[1] in {"-h", "--help"} else 2
     credential = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
     result = verify_calendar_credential_payload(credential)
     print(json.dumps(result, indent=2))

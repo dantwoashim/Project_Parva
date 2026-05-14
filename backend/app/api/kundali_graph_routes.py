@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from app.explainability import create_reason_trace
 from app.services.kundali_graph_service import build_kundali_graph
 
+from ._async_utils import run_cpu_bound
 from ._personal_utils import (
     CoordinateInput,
     base_meta_payload,
@@ -92,12 +93,19 @@ async def kundali_graph_endpoint(
     lon: Optional[str] = Query(None, description="Longitude"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
 ):
-    return _build_kundali_graph_response(datetime_str=datetime_str, lat=lat, lon=lon, tz=tz)
+    return await run_cpu_bound(
+        _build_kundali_graph_response,
+        datetime_str=datetime_str,
+        lat=lat,
+        lon=lon,
+        tz=tz,
+    )
 
 
 @router.post("/graph")
 async def kundali_graph_endpoint_post(payload: KundaliGraphRequest):
-    return _build_kundali_graph_response(
+    return await run_cpu_bound(
+        _build_kundali_graph_response,
         datetime_str=payload.datetime,
         lat=payload.lat,
         lon=payload.lon,

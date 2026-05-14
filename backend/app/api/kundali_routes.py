@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from app.calendar.kundali import compute_kundali
 from app.explainability import create_reason_trace
 
+from ._async_utils import run_cpu_bound
 from ._personal_utils import (
     CoordinateInput,
     base_meta_payload,
@@ -226,12 +227,13 @@ async def kundali_endpoint(
     lon: Optional[str] = Query(None, description="Longitude"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
 ):
-    return _build_kundali_response(datetime_str=datetime_str, lat=lat, lon=lon, tz=tz)
+    return await run_cpu_bound(_build_kundali_response, datetime_str=datetime_str, lat=lat, lon=lon, tz=tz)
 
 
 @router.post("")
 async def kundali_endpoint_post(payload: KundaliRequest):
-    return _build_kundali_response(
+    return await run_cpu_bound(
+        _build_kundali_response,
         datetime_str=payload.datetime,
         lat=payload.lat,
         lon=payload.lon,
@@ -246,12 +248,13 @@ async def lagna_endpoint(
     lon: Optional[str] = Query(None, description="Longitude"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
 ):
-    return _build_lagna_response(datetime_str=datetime_str, lat=lat, lon=lon, tz=tz)
+    return await run_cpu_bound(_build_lagna_response, datetime_str=datetime_str, lat=lat, lon=lon, tz=tz)
 
 
 @router.post("/lagna")
 async def lagna_endpoint_post(payload: KundaliRequest):
-    return _build_lagna_response(
+    return await run_cpu_bound(
+        _build_lagna_response,
         datetime_str=payload.datetime,
         lat=payload.lat,
         lon=payload.lon,

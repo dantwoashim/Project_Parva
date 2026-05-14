@@ -1,3 +1,11 @@
+---
+status: public-beta
+tier: 1
+lane: core
+last_verified: 2026-05-14
+owner: platform-team
+---
+
 # Calendar Releases
 
 A Project Parva calendar release is a versioned bundle of public-safe metadata.

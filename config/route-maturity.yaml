@@ -1,7 +1,7 @@
 {
-  "schema_version": "2026-05-14.phase04",
+  "schema_version": "2026-05-14.route_maturity",
   "registry_format": "json_subset_of_yaml",
-  "generated_by_phase": "phase_04_maturity_lanes_and_exposure_control",
+  "generated_by": "route_maturity_registry",
   "public_profiles": ["minimal_public", "public_demo", "public_reference", "developer_preview"],
   "private_profiles": ["enterprise_preview", "research_private", "internal_lab", "full_dev"],
   "profiles": {
