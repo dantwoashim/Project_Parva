@@ -7,7 +7,7 @@ import argparse
 import json
 import sys
 from copy import deepcopy
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -20,9 +20,23 @@ if str(BACKEND_ROOT) not in sys.path:
 from tools.trust.common import (  # noqa: E402
     DEFAULT_MANIFEST_PATH,
     DEFAULT_SIGNATURE_PATH,
+    TrustToolError,
     build_alpha_signature_payload,
     load_json,
     sha256_file,
+)
+
+FORBIDDEN_PUBLIC_ARTIFACT_PREFIXES = (
+    "data/source_archive/",
+    "data/future_bs/private/",
+    "data/ephemeris/",
+    "private/",
+)
+FORBIDDEN_PUBLIC_ARTIFACT_TOKENS = (
+    "/.env",
+    "/credentials",
+    "/secrets",
+    "/private_credentials",
 )
 
 
@@ -30,12 +44,44 @@ def _dump_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def _public_artifact_path(artifact: dict[str, Any]) -> Path:
+    raw_path = artifact.get("path")
+    artifact_id = str(artifact.get("artifact_id") or "<unknown>")
+    if not isinstance(raw_path, str) or not raw_path.strip():
+        raise TrustToolError(f"artifact {artifact_id}: path is missing")
+
+    if Path(raw_path).is_absolute() or PureWindowsPath(raw_path).is_absolute():
+        raise TrustToolError(f"artifact {artifact_id}: public release path must be repo-relative")
+
+    normalized = raw_path.replace("\\", "/").strip()
+    if normalized.startswith("../") or "/../" in normalized or normalized == "..":
+        raise TrustToolError(f"artifact {artifact_id}: public release path cannot traverse directories")
+
+    normalized_lower = normalized.lower().lstrip("./")
+    if any(normalized_lower.startswith(prefix) for prefix in FORBIDDEN_PUBLIC_ARTIFACT_PREFIXES):
+        raise TrustToolError(
+            f"artifact {artifact_id}: public release path references private/local artifact storage"
+        )
+    token_scan = "/" + normalized_lower
+    if any(token in token_scan for token in FORBIDDEN_PUBLIC_ARTIFACT_TOKENS):
+        raise TrustToolError(
+            f"artifact {artifact_id}: public release path references private credentials or secrets"
+        )
+
+    artifact_path = (PROJECT_ROOT / normalized).resolve()
+    try:
+        artifact_path.relative_to(PROJECT_ROOT)
+    except ValueError as exc:
+        raise TrustToolError(f"artifact {artifact_id}: path escapes repository root") from exc
+    return artifact_path
+
+
 def expected_manifest(manifest_path: Path = DEFAULT_MANIFEST_PATH) -> dict[str, Any]:
     manifest = deepcopy(load_json(manifest_path))
     for artifact in manifest.get("artifact_hashes", []):
         if not isinstance(artifact, dict):
             continue
-        artifact_path = PROJECT_ROOT / str(artifact.get("path") or "")
+        artifact_path = _public_artifact_path(artifact)
         artifact["sha256"] = sha256_file(artifact_path)
     return manifest
 

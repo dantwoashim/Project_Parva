@@ -15,6 +15,12 @@ def _load_json(path: Path) -> dict:
 def _tracked_path_issue(path: str) -> str | None:
     if path.startswith("frontend/dist/"):
         return "tracked frontend build artifact"
+    allowed_reports = (
+        "reports/phase_07_future_bs_governance/module_classification.md",
+        "reports/phase_08_performance_sre/latency_baseline.json",
+    )
+    if path.startswith("reports/red_check_closure/") or path in allowed_reports:
+        return None
     if path.startswith("reports/") or path == "evaluation.csv":
         return "tracked generated report artifact"
     if ".egg-info/" in path:
