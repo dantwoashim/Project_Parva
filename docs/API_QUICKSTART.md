@@ -28,7 +28,7 @@ https://api.prabinghimire1.com.np/v3/api
 ## Start the stack
 
 ```bash
-py -3.11 -m pip install -e .[test,dev]
+python3.11 -m pip install -e .[test,dev]
 uvicorn app.main:app --app-dir backend --reload --port 8000
 ```
 

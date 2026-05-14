@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -49,6 +50,21 @@ BINARY_SUFFIXES = {
 }
 
 
+def _candidate_paths() -> list[Path]:
+    result = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+        cwd=PROJECT_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if result.returncode == 0:
+        return [PROJECT_ROOT / raw for raw in result.stdout.split("\0") if raw]
+    return list(PROJECT_ROOT.rglob("*"))
+
+
 def _is_binary(path: Path) -> bool:
     if path.suffix.lower() in BINARY_SUFFIXES:
         return True
@@ -71,7 +87,7 @@ def _print_line(text: str) -> None:
 def main() -> int:
     matches: list[tuple[Path, int, str]] = []
 
-    for path in PROJECT_ROOT.rglob("*"):
+    for path in _candidate_paths():
         if not path.is_file():
             continue
         if path.resolve() == SELF_PATH:

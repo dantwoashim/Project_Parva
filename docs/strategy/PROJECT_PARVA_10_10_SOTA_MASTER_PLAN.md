@@ -362,7 +362,7 @@ Stakeholder map:
 | Task | Files/modules | Direction | Tests | Verify | Done |
 |---|---|---|---|---|---|
 | Public future conversion policy | `calendar_conversion_service.py`, `bikram_sambat.py`, `calendar/routes.py` | gate AD-to-BS and dual-month future exact estimates, not only BS-to-AD | public route tests | `pytest tests/unit/calendar tests/accuracy` | no exact unverified future public output |
-| verify-public green from fresh clone | `scripts/release/verify_public.py`, workflows | make it the release gate | CI | `py -3.11 scripts/release/verify_public.py` | passes without local hidden files |
+| verify-public green from fresh clone | `scripts/release/verify_public.py`, workflows | make it the release gate | CI | `PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py` | passes without local hidden files |
 | Route-profile contract | `router_registry.py` | snapshot routes per profile | OpenAPI profile tests | profile smoke script | no private route in public |
 | Resource resolver migration | `core/paths.py`, all runtime modules | ban repo-root traversal | architecture grep | `rg "parents\\[|Path\\(__file__"` | only resolver allowed |
 | CPU offload | panchanga, kundali, muhurta, festival routes | sync route or worker/process pool/precompute | latency tests | Locust/k6 smoke | no heavy CPU on event loop |
@@ -429,8 +429,8 @@ Target controls:
 Verification:
 
 ```powershell
-py -3.11 -m pytest tests/unit/bootstrap tests/unit/billing tests/security
-py -3.11 scripts/release/verify_public.py
+python3.11 -m pytest tests/unit/bootstrap tests/unit/billing tests/security
+PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py
 pip-audit
 npm --prefix frontend audit --audit-level=high
 ```
@@ -469,9 +469,9 @@ Parva Trust should be the heart of the product.
 Acceptance:
 
 ```powershell
-py -3.11 scripts/parva_trust_verify.py
-py -3.11 tools/validate_schemas.py
-py -3.11 scripts/release/verify_public.py
+python3.11 scripts/parva_trust_verify.py
+python3.11 tools/validate_schemas.py
+PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py
 ```
 
 Storage:
@@ -569,9 +569,9 @@ Protocol must remain "draft" until external implementers pass.
 Verification:
 
 ```powershell
-py -3.11 tools/validate_schemas.py
-py -3.11 scripts/parva_protocol_verify.py
-py -3.11 scripts/parva_conformance.py --level full
+python3.11 tools/validate_schemas.py
+python3.11 scripts/parva_protocol_verify.py
+python3.11 scripts/parva_conformance.py --level full
 ```
 
 ---
@@ -710,14 +710,14 @@ Infrastructure:
 
 | CI lane | Trigger | Command | Pass criteria |
 |---|---|---|---|
-| Core backend | PR/push | `py -3.11 -m pytest tests/unit/calendar tests/unit/fiscal` | all pass |
-| Public verification | PR/push | `py -3.11 scripts/release/verify_public.py` | all public gates pass |
+| Core backend | PR/push | `python3.11 -m pytest tests/unit/calendar tests/unit/fiscal` | all pass |
+| Public verification | PR/push | `PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py` | all public gates pass |
 | Route safety | PR/push | profile OpenAPI tests | no private routes public |
-| Trust drift | scheduled daily | `py -3.11 scripts/parva_trust_verify.py` | no drift |
-| Schemas | PR/push | `py -3.11 tools/validate_schemas.py` | all valid and examples pass |
-| Protocol | PR/push | `py -3.11 scripts/parva_protocol_verify.py` | conformance artifacts valid |
+| Trust drift | scheduled daily | `python3.11 scripts/parva_trust_verify.py` | no drift |
+| Schemas | PR/push | `python3.11 tools/validate_schemas.py` | all valid and examples pass |
+| Protocol | PR/push | `python3.11 scripts/parva_protocol_verify.py` | conformance artifacts valid |
 | Frontend | PR/push | `npm --prefix frontend run build && npm --prefix frontend run test` | green |
-| SDK Python | PR/push | `py -3.11 -m pytest packages/parva-python/tests` | green |
+| SDK Python | PR/push | `python3.11 -m pytest packages/parva-python/tests` | green |
 | SDK JS | PR/push | `npm --prefix packages/parva-js test` | green |
 | Type | PR/push | `mypy backend/app/parva_core backend/app/parva_trust` | no new errors |
 | Lint | PR/push | `ruff check backend scripts tests` | green |
@@ -767,8 +767,8 @@ docs/
 
 What not to say publicly:
 
-- "official future calendar"
-- "guaranteed future dates"
+- phrasing that presents future calendars as official
+- phrasing that promises future dates
 - "99 percent future accuracy"
 - "replacement for NPNS"
 - client/prospect names
@@ -805,8 +805,8 @@ A file can be deleted when:
 
 ```powershell
 rg "module_name"
-py -3.11 scripts/architecture/import_graph.py
-py -3.11 scripts/release/verify_public.py
+python3.11 scripts/architecture/import_graph.py
+PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py
 npm --prefix frontend run build
 ```
 

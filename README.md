@@ -192,10 +192,11 @@ Public reproducibility gate:
 python3.11 scripts/release/verify_public.py
 ```
 
-Windows:
+If Python 3.11 is not first on PATH:
 
-```powershell
-py -3.11 scripts/release/verify_public.py
+```bash
+PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py
+make verify-public PYTHON=/path/to/python3.11
 ```
 
 Focused checks:

@@ -334,7 +334,7 @@ The public API is optimized for lightweight calendar evaluation. Health, readine
 Use this local helper to measure warmed public endpoints:
 
 ```bash
-py -3.11 scripts/release/measure_public_api_performance.py
+python3.11 scripts/release/measure_public_api_performance.py
 ```
 
 ## Canonical route families

@@ -42,7 +42,7 @@ accuracy claims.
 
 ```powershell
 $env:PYTHONPATH='backend'
-py -3.11 scripts\future_bs\run_month_start_inversion_workbench.py
+python scripts\future_bs\run_month_start_inversion_workbench.py
 ```
 
 Artifacts are written under:
@@ -77,4 +77,3 @@ It should not be used to claim broad future-calendar certainty.
 The highest-value next data work is to promote more historical month starts
 from weak or needs-review status into official, printed, or public-daily
 witness status.
-

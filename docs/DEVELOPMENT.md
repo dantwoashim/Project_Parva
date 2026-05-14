@@ -8,10 +8,10 @@ Project Parva is a trust-sensitive calendar infrastructure project. Public devel
 - Node 20.x
 - npm 10.x or newer
 
-On Windows, prefer the Python launcher:
+If Python 3.11 is not first on PATH, point the public verification scripts at it explicitly:
 
-```powershell
-py -3.11 scripts/verify_environment.py
+```bash
+PARVA_PYTHON=/path/to/python3.11 python scripts/verify_environment.py
 ```
 
 On macOS or Linux:
@@ -64,10 +64,10 @@ The public gate is:
 python3.11 scripts/release/verify_public.py
 ```
 
-Windows equivalent:
+If Python 3.11 is not first on PATH:
 
-```powershell
-py -3.11 scripts/release/verify_public.py
+```bash
+PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py
 ```
 
 Windows wrapper when GNU Make is unavailable:
@@ -80,6 +80,7 @@ With GNU Make:
 
 ```bash
 make verify-public
+make verify-public PYTHON=/path/to/python3.11
 ```
 
 The public gate runs:
@@ -211,13 +212,7 @@ VITE_API_BASE=https://api.prabinghimire1.com.np/v3/api
 If `scripts/verify_environment.py` reports a Python mismatch, use Python 3.11 explicitly:
 
 ```bash
-python3.11 scripts/release/verify_public.py
-```
-
-or on Windows:
-
-```powershell
-py -3.11 scripts/release/verify_public.py
+PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py
 ```
 
 ### Missing Private Source Archive
