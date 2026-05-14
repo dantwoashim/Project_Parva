@@ -1,13 +1,13 @@
-# Parva Python SDK
+# Parva Python SDK Compatibility Scaffold
 
-`parva-sdk` is the Python client for Project Parva's stable public-beta `v3`
-API surface. It supports the read-only calendar/festival endpoints plus the
-POST-first personal compute workflows used by the app.
+`sdk/python` is retained for compatibility with the earlier `parva_sdk` import
+path. New code and tests should use the canonical package under
+`packages/parva-python`.
 
 ## Install
 
 ```bash
-py -3.11 -m pip install -e sdk/python
+python -m pip install -e sdk/python
 ```
 
 ## Quick start

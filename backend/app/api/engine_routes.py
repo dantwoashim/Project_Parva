@@ -43,14 +43,16 @@ PLUGIN_QUALITY_PROFILES = {
 
 STAGE1_VALIDATION_PLUGINS = {"bs", "ns", "tibetan", "islamic"}
 STAGE2_VALIDATION_PLUGINS = {"hebrew", "chinese", "julian"}
+PUBLIC_PLUGIN_VALIDATION_DIR = (
+    Path(__file__).resolve().parents[3] / "data" / "validation" / "public" / "plugins"
+)
 
 
 def _plugin_validation_fixture_paths() -> list[Path]:
-    root = Path(__file__).resolve().parents[3] / "tests" / "fixtures" / "plugins"
     return [
-        root / "plugin_validation_cases.json",
-        root / "plugin_validation_stage1_cases.json",
-        root / "plugin_validation_stage2_cases.json",
+        PUBLIC_PLUGIN_VALIDATION_DIR / "plugin_validation_cases.json",
+        PUBLIC_PLUGIN_VALIDATION_DIR / "plugin_validation_stage1_cases.json",
+        PUBLIC_PLUGIN_VALIDATION_DIR / "plugin_validation_stage2_cases.json",
     ]
 
 

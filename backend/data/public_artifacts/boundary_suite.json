@@ -9,7 +9,7 @@
     {
       "suite_id": "tithi_boundaries_30",
       "category": "sunrise_flips",
-      "fixture_path": "tests/fixtures/tithi_boundaries_30.json",
+      "fixture_path": "data/validation/public/calendar/tithi_boundaries_30.json",
       "samples": 30,
       "passed": 30,
       "failed": 0,
@@ -24,7 +24,7 @@
     {
       "suite_id": "sankranti_24",
       "category": "sankranti_boundaries",
-      "fixture_path": "tests/fixtures/sankranti_24.json",
+      "fixture_path": "data/validation/public/calendar/sankranti_24.json",
       "samples": 24,
       "years": [
         2026,
@@ -38,7 +38,7 @@
     {
       "suite_id": "adhik_maas_reference",
       "category": "lunar_month_transitions",
-      "fixture_path": "tests/fixtures/adhik_maas_reference.json",
+      "fixture_path": "data/validation/public/calendar/adhik_maas_reference.json",
       "samples": 31,
       "range_bs": "2000-2030",
       "passed": 29,

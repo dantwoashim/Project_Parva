@@ -42,8 +42,9 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 
 ## SDK
 
-- Python SDK package under `sdk/python/parva_sdk` with client, models, and exceptions.
-- Compatibility import package under `sdk/python/parva`.
+- Canonical Python SDK package under `packages/parva-python`.
+- Canonical JavaScript and TypeScript SDK package under `packages/parva-js`.
+- Compatibility Python scaffold under `sdk/python`.
 
 ## Scripts and Deployment
 

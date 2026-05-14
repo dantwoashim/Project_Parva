@@ -22,6 +22,7 @@ from app.core.source_metadata import (
 )
 from app.domain.temporal_context import CalendarContext, LocationContext
 from app.policy import get_policy_metadata
+from app.rules import get_rule_service
 from app.services import calendar_conversion_service as conversion_service
 from app.services.trust_surface_service import (
     build_portable_proof_capsule,
@@ -539,10 +540,9 @@ def build_upcoming_festivals_payload(
     today: Optional[date] = None,
     trace_id: str | None = None,
 ) -> dict[str, Any]:
-    from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
-
     today = today or date.today()
     end_date = today + timedelta(days=days)
+    rule_service = get_rule_service()
     upcoming: list[dict[str, Any]] = []
     cache_years_loaded: list[int] = []
 
@@ -598,8 +598,8 @@ def build_upcoming_festivals_payload(
             ),
         }
 
-    for festival_id in list_festivals_v2():
-        result = calculate_festival_v2(festival_id, today.year)
+    for festival_id in rule_service.list_ids():
+        result = rule_service.calculate(festival_id, today.year)
         if result and today <= result.start_date <= end_date:
             upcoming.append(
                 {
@@ -610,7 +610,7 @@ def build_upcoming_festivals_payload(
                 }
             )
         elif result and result.start_date < today:
-            result_next = calculate_festival_v2(festival_id, today.year + 1)
+            result_next = rule_service.calculate(festival_id, today.year + 1)
             if result_next and result_next.start_date <= end_date:
                 upcoming.append(
                     {
@@ -632,7 +632,7 @@ def build_upcoming_festivals_payload(
             "source": "computed",
         },
         **_calendar_meta(
-            engine_path="calculator_v2_upcoming",
+            engine_path="festival_rule_service_upcoming",
             confidence="computed",
             quality_band="provisional",
             fallback_used=False,

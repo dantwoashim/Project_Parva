@@ -1,0 +1,417 @@
+{
+  "schema_version": "2026-05-14.phase03",
+  "registry_format": "json_subset_of_yaml",
+  "generated_by_phase": "phase_03_canonical_runtime_consolidation",
+  "owner_team_default": "Project Parva core maintainers",
+  "areas": [
+    {
+      "id": "bs_ad_conversion",
+      "name": "BS and AD conversion",
+      "lane": "public_runtime",
+      "maturity": "canonical_public",
+      "owner_team": "Calendar core",
+      "canonical_modules": [
+        "app.services.calendar_conversion_service",
+        "app.calendar.bikram_sambat",
+        "app.calendar.bs_year",
+        "app.core.source_metadata"
+      ],
+      "canonical_paths": [
+        "backend/app/services/calendar_conversion_service.py",
+        "backend/app/calendar/bikram_sambat.py",
+        "backend/app/calendar/bs_year.py",
+        "backend/app/calendar/bs_overrides.json",
+        "backend/app/core/source_metadata.py"
+      ],
+      "public_routes": [
+        "/v3/api/calendar/convert",
+        "/v3/api/calendar/bs-to-gregorian",
+        "/v3/api/calendar/validate-bs-date",
+        "/v3/api/enterprise/fiscal-year",
+        "/v3/api/enterprise/bs-months"
+      ],
+      "tests": [
+        {"path": "tests/unit/services/test_calendar_conversion_owner.py", "status": "exists"},
+        {"path": "tests/unit/calendar/test_bikram_sambat.py", "status": "exists"},
+        {"path": "tests/unit/calendar/test_bs_lookup_boundaries.py", "status": "exists"},
+        {"path": "tests/unit/calendar/test_bs_official_range_exhaustive.py", "status": "exists"},
+        {"path": "tests/contract/test_layer2_public_api_contract.py", "status": "exists"}
+      ],
+      "compatibility_modules": [
+        "app.api.calendar_routes",
+        "app.calendar"
+      ],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python -m pytest tests/unit/services/test_calendar_conversion_owner.py tests/unit/calendar/test_bikram_sambat.py tests/unit/calendar/test_bs_lookup_boundaries.py -q"
+    },
+    {
+      "id": "tithi_panchanga",
+      "name": "Tithi and panchanga",
+      "lane": "public_runtime",
+      "maturity": "canonical_public",
+      "owner_team": "Calendar core",
+      "canonical_modules": [
+        "app.calendar.tithi",
+        "app.calendar.tithi.tithi_core",
+        "app.calendar.tithi.tithi_udaya",
+        "app.calendar.tithi.tithi_boundaries",
+        "app.calendar.panchanga",
+        "app.services.calendar_surface_service"
+      ],
+      "canonical_paths": [
+        "backend/app/calendar/tithi",
+        "backend/app/calendar/tithi/__init__.py",
+        "backend/app/calendar/tithi/tithi_core.py",
+        "backend/app/calendar/tithi/tithi_udaya.py",
+        "backend/app/calendar/tithi/tithi_boundaries.py",
+        "backend/app/calendar/panchanga.py",
+        "backend/app/services/calendar_surface_service.py"
+      ],
+      "public_routes": [
+        "/v3/api/calendar/tithi",
+        "/v3/api/calendar/panchanga",
+        "/v3/api/personal/panchanga"
+      ],
+      "tests": [
+        {"path": "tests/unit/calendar/test_tithi.py", "status": "exists"},
+        {"path": "tests/unit/calendar/test_tithi_core_lunar_month.py", "status": "exists"},
+        {"path": "tests/contract/test_tithi_response.py", "status": "exists"},
+        {"path": "tests/integration/test_places_and_muhurta_calendar_api.py", "status": "exists"}
+      ],
+      "compatibility_modules": [
+        "app.calendar",
+        "backend/app/calendar/tithi.py"
+      ],
+      "deprecated_modules": [],
+      "deprecated_paths": [
+        {
+          "path": "backend/app/calendar/tithi.py",
+          "status": "shadowed_compatibility_stub",
+          "replacement": "backend/app/calendar/tithi/"
+        }
+      ],
+      "research_private_dependencies": [],
+      "verification_command": "python -m pytest tests/unit/calendar/test_tithi.py tests/unit/calendar/test_tithi_core_lunar_month.py tests/contract/test_tithi_response.py -q"
+    },
+    {
+      "id": "festivals_observances",
+      "name": "Festivals and observances",
+      "lane": "public_runtime",
+      "maturity": "canonical_public",
+      "owner_team": "Festival rules",
+      "canonical_modules": [
+        "app.rules.service",
+        "app.rules.catalog_v4",
+        "app.rules.execution",
+        "app.festivals.repository",
+        "app.festivals.use_cases",
+        "app.observances.resolver"
+      ],
+      "canonical_paths": [
+        "backend/app/rules/service.py",
+        "backend/app/rules/catalog_v4.py",
+        "backend/app/rules/execution.py",
+        "backend/app/festivals/repository.py",
+        "backend/app/festivals/use_cases.py",
+        "backend/app/observances/resolver.py",
+        "data/festivals",
+        "data/rules",
+        "data/variants",
+        "backend/app/calendar/ground_truth_overrides.json"
+      ],
+      "public_routes": [
+        "/v3/api/festivals/*",
+        "/v3/api/calendar/festivals/calculate/{festival_id}",
+        "/v3/api/calendar/festivals/upcoming",
+        "/v3/api/observances"
+      ],
+      "tests": [
+        {"path": "tests/integration/test_festival_api.py", "status": "exists"},
+        {"path": "tests/integration/test_festival_explain.py", "status": "exists"},
+        {"path": "tests/integration/test_festival_coverage_api.py", "status": "exists"},
+        {"path": "tests/integration/test_festival_authority_conflicts_api.py", "status": "exists"},
+        {"path": "tests/unit/rules/test_rule_service_partial_cache.py", "status": "exists"}
+      ],
+      "compatibility_modules": [
+        "app.api.festival_routes",
+        "app.calendar.calculator_v2",
+        "app.calendar.calculator",
+        "app.calendar.festival_rules_loader"
+      ],
+      "deprecated_modules": [
+        {
+          "module": "app.calendar.calculator",
+          "path": "backend/app/calendar/calculator.py",
+          "replacement": "app.rules.service",
+          "allowed_importers": ["app.calendar", "app.calendar.calculator_v2"]
+        },
+        {
+          "module": "app.calendar.calculator_v2",
+          "path": "backend/app/calendar/calculator_v2.py",
+          "replacement": "app.rules.service",
+          "allowed_importers": [
+            "app.calendar",
+            "app.rules.service",
+            "app.rules.execution",
+            "app.rules.plugins.*"
+          ]
+        }
+      ],
+      "deprecated_paths": [
+        {
+          "path": "backend/app/calendar/festival_rules.json",
+          "status": "legacy_rule_source",
+          "replacement": "data/rules and app.rules.catalog_v4"
+        },
+        {
+          "path": "backend/app/calendar/festival_rules_v3.json",
+          "status": "legacy_rule_source",
+          "replacement": "data/rules and app.rules.catalog_v4"
+        }
+      ],
+      "research_private_dependencies": [],
+      "verification_command": "python -m pytest tests/integration/test_festival_api.py tests/integration/test_festival_explain.py tests/unit/rules/test_rule_service_partial_cache.py -q"
+    },
+    {
+      "id": "source_confidence_taxonomy",
+      "name": "Source and confidence taxonomy",
+      "lane": "public_contract",
+      "maturity": "canonical_public",
+      "owner_team": "Trust infrastructure",
+      "canonical_modules": [
+        "app.core.source_metadata",
+        "app.services.trust_infrastructure_service",
+        "app.sources.validation"
+      ],
+      "canonical_paths": [
+        "backend/app/core/source_metadata.py",
+        "backend/app/services/trust_infrastructure_service.py",
+        "backend/app/sources/validation.py",
+        "backend/app/sources/interface.py",
+        "docs/SOURCE_AWARE_METADATA.md"
+      ],
+      "public_routes": [
+        "/v3/api/policy",
+        "/v3/api/trust/*",
+        "/v3/api/public-artifacts/*"
+      ],
+      "tests": [
+        {"path": "tests/contract/test_layer3_source_metadata_contract.py", "status": "exists"},
+        {"path": "tests/accuracy/test_source_policy_separation.py", "status": "exists"},
+        {"path": "tests/accuracy/test_source_policy_metrics_exist.py", "status": "exists"},
+        {"path": "tests/unit/sources/test_source_validation.py", "status": "exists"}
+      ],
+      "compatibility_modules": [
+        "app.calendar.provenance",
+        "app.festivals.trust"
+      ],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [
+        "app.future_bs.source_policy"
+      ],
+      "verification_command": "python -m pytest tests/contract/test_layer3_source_metadata_contract.py tests/accuracy/test_source_policy_separation.py tests/unit/sources/test_source_validation.py -q"
+    },
+    {
+      "id": "sdk_clients",
+      "name": "Public SDK clients",
+      "lane": "public_client",
+      "maturity": "canonical_public_alpha",
+      "owner_team": "SDK",
+      "canonical_modules": [
+        "packages.parva-python",
+        "packages.parva-js"
+      ],
+      "canonical_paths": [
+        "packages/parva-python",
+        "packages/parva-python/pyproject.toml",
+        "packages/parva-python/parva",
+        "packages/parva-js",
+        "packages/parva-js/package.json",
+        "packages/parva-js/src"
+      ],
+      "public_routes": [
+        "/v3/api/calendar/*",
+        "/v3/api/enterprise/*",
+        "/v3/api/trust/*",
+        "/v4/api/future-bs/capabilities"
+      ],
+      "tests": [
+        {"path": "packages/parva-python/tests/test_client.py", "status": "exists"},
+        {"path": "packages/parva-js/tests/client.test.mjs", "status": "exists"},
+        {"path": "scripts/release/check_sdk_install.py", "status": "exists", "purpose": "compatibility smoke"}
+      ],
+      "compatibility_modules": [
+        "sdk/python"
+      ],
+      "deprecated_modules": [],
+      "deprecated_paths": [
+        {
+          "path": "sdk/python",
+          "status": "compatibility_scaffold",
+          "replacement": "packages/parva-python"
+        }
+      ],
+      "research_private_dependencies": [],
+      "verification_command": "python -m pytest packages/parva-python/tests -q && npm --prefix packages/parva-js test && python scripts/release/check_sdk_install.py"
+    },
+    {
+      "id": "public_validation_artifacts",
+      "name": "Runtime validation and public conformance artifacts",
+      "lane": "public_runtime",
+      "maturity": "canonical_public",
+      "owner_team": "Reliability",
+      "canonical_modules": [
+        "app.reliability.boundary_suite",
+        "app.engine.plugins.validation",
+        "app.api.public_artifacts_routes"
+      ],
+      "canonical_paths": [
+        "data/validation/public/calendar",
+        "data/validation/public/plugins",
+        "backend/data/public_artifacts",
+        "backend/app/reliability/boundary_suite.py",
+        "backend/app/api/engine_routes.py",
+        "backend/app/api/public_artifacts_routes.py"
+      ],
+      "public_routes": [
+        "/v3/api/reliability/boundary-suite",
+        "/v3/api/public-artifacts/boundary-suite",
+        "/v3/api/engine/plugins/quality"
+      ],
+      "tests": [
+        {"path": "tests/unit/reliability/test_boundary_suite.py", "status": "exists"},
+        {"path": "tests/integration/test_boundary_suite_api.py", "status": "exists"},
+        {"path": "tests/unit/engine_plugins/test_registry_and_validation.py", "status": "exists"}
+      ],
+      "compatibility_modules": [
+        "tests/fixtures"
+      ],
+      "deprecated_modules": [],
+      "deprecated_paths": [
+        {
+          "path": "tests/fixtures/plugins",
+          "status": "test_only_source_copy",
+          "replacement": "data/validation/public/plugins"
+        },
+        {
+          "path": "tests/fixtures/tithi_boundaries_30.json",
+          "status": "test_only_source_copy",
+          "replacement": "data/validation/public/calendar/tithi_boundaries_30.json"
+        },
+        {
+          "path": "tests/fixtures/sankranti_24.json",
+          "status": "test_only_source_copy",
+          "replacement": "data/validation/public/calendar/sankranti_24.json"
+        },
+        {
+          "path": "tests/fixtures/adhik_maas_reference.json",
+          "status": "test_only_source_copy",
+          "replacement": "data/validation/public/calendar/adhik_maas_reference.json"
+        }
+      ],
+      "research_private_dependencies": [],
+      "verification_command": "python -m pytest tests/unit/reliability/test_boundary_suite.py tests/integration/test_boundary_suite_api.py tests/unit/engine_plugins/test_registry_and_validation.py -q"
+    },
+    {
+      "id": "runtime_manifest_and_routes",
+      "name": "Runtime manifest and public route inventory",
+      "lane": "public_contract",
+      "maturity": "canonical_public",
+      "owner_team": "Platform",
+      "canonical_modules": [
+        "app.engine.manifest",
+        "app.bootstrap.router_registry",
+        "app.bootstrap.access_control"
+      ],
+      "canonical_paths": [
+        "backend/app/engine/manifest.py",
+        "backend/app/bootstrap/router_registry.py",
+        "backend/app/bootstrap/access_control.py",
+        "docs/ROUTE_ACCESS.md",
+        "docs/API_REFERENCE_V3.md"
+      ],
+      "public_routes": [
+        "/v3/api/engine/manifest",
+        "/v3/api/engine/config",
+        "/v3/api/engine/health"
+      ],
+      "tests": [
+        {"path": "scripts/release/check_route_inventory.py", "status": "exists"},
+        {"path": "scripts/release/check_documented_routes.py", "status": "exists"},
+        {"path": "tests/architecture/test_import_boundaries.py", "status": "exists"}
+      ],
+      "compatibility_modules": [],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python scripts/release/check_route_inventory.py && python scripts/release/check_documented_routes.py"
+    }
+  ],
+  "checks": {
+    "public_route_modules": [
+      "app.calendar.routes",
+      "app.festivals.routes",
+      "app.api.calendar_routes",
+      "app.api.festival_routes",
+      "app.api.engine_routes",
+      "app.api.reliability_routes",
+      "app.api.public_artifacts_routes"
+    ],
+    "runtime_scan_globs": [
+      "backend/app/**/*.py",
+      "backend/data/public_artifacts/**/*.json",
+      "packages/parva-python/parva/**/*.py",
+      "packages/parva-js/src/**/*.ts",
+      "sdk/python/parva/**/*.py",
+      "sdk/python/parva_sdk/**/*.py"
+    ],
+    "forbidden_runtime_path_fragments": [
+      "tests/fixtures",
+      "tests\\\\fixtures"
+    ],
+    "research_private_modules": [
+      "app.future_bs",
+      "app.services.future_bs_service",
+      "app.future_bs.backtest",
+      "app.future_bs.exports",
+      "app.future_bs.report_store",
+      "app.future_bs.residual_analysis",
+      "app.future_bs.schedule_simulator"
+    ],
+    "research_private_allowed_public_route_importers": [],
+    "forbidden_imports": [
+      {
+        "importer_glob": "app.calendar.routes",
+        "module": "app.calendar.calculator_v2",
+        "reason": "calendar route must use app.rules.service"
+      },
+      {
+        "importer_glob": "app.services.calendar_surface_service",
+        "module": "app.calendar.calculator_v2",
+        "reason": "calendar surface service must use app.rules.service"
+      },
+      {
+        "importer_glob": "app.festivals.routes",
+        "module": "app.calendar.calculator_v2",
+        "reason": "festival routes must use app.rules.service"
+      },
+      {
+        "importer_glob": "app.api.engine_routes",
+        "module": "tests",
+        "reason": "public engine quality must read data/validation/public"
+      }
+    ]
+  },
+  "required_area_ids": [
+    "bs_ad_conversion",
+    "tithi_panchanga",
+    "festivals_observances",
+    "source_confidence_taxonomy",
+    "sdk_clients",
+    "public_validation_artifacts",
+    "runtime_manifest_and_routes"
+  ]
+}

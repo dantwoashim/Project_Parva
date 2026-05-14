@@ -30,16 +30,16 @@ Install backend and Python test dependencies:
 python3.11 -m pip install -e .[test,dev]
 ```
 
-Install the legacy Python SDK smoke package:
-
-```bash
-python3.11 -m pip install -e sdk/python
-```
-
-Install the alpha Python SDK package:
+Install the canonical alpha Python SDK package:
 
 ```bash
 python3.11 -m pip install -e packages/parva-python
+```
+
+Install the compatibility Python SDK scaffold only when testing legacy imports:
+
+```bash
+python3.11 -m pip install -e sdk/python
 ```
 
 Install frontend dependencies:

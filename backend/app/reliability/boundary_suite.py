@@ -13,10 +13,10 @@ from app.calendar.sankranti import get_sankrantis_in_year
 from app.calendar.tithi.tithi_udaya import detect_ksheepana, detect_vriddhi, get_udaya_tithi
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-FIXTURES_DIR = PROJECT_ROOT / "tests" / "fixtures"
-TITHI_FIXTURE = FIXTURES_DIR / "tithi_boundaries_30.json"
-SANKRANTI_FIXTURE = FIXTURES_DIR / "sankranti_24.json"
-ADHIK_FIXTURE = FIXTURES_DIR / "adhik_maas_reference.json"
+PUBLIC_VALIDATION_DIR = PROJECT_ROOT / "data" / "validation" / "public" / "calendar"
+TITHI_FIXTURE = PUBLIC_VALIDATION_DIR / "tithi_boundaries_30.json"
+SANKRANTI_FIXTURE = PUBLIC_VALIDATION_DIR / "sankranti_24.json"
+ADHIK_FIXTURE = PUBLIC_VALIDATION_DIR / "adhik_maas_reference.json"
 
 
 def _read_json(path: Path) -> dict[str, Any]:

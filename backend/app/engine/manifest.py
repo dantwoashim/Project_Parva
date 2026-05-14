@@ -36,12 +36,14 @@ PUBLIC_ROUTE_FAMILIES: tuple[dict[str, Any], ...] = (
         ],
         "canonical_runtime": [
             "app.rules.service.FestivalRuleService",
-            "app.calendar.calculator_v2",
             "app.rules.catalog_v4",
+            "app.festivals.repository",
         ],
         "compatibility_components": [
+            "app.calendar.calculator_v2",
             "app.calendar.calculator",
             "app.calendar.festival_rules.json",
+            "app.calendar.festival_rules_v3.json",
         ],
     },
     {
@@ -80,11 +82,12 @@ def build_engine_manifest() -> dict[str, Any]:
         },
         "festival_runtime": {
             "service": "app.rules.service.FestivalRuleService",
-            "calculator": "app.calendar.calculator_v2",
             "catalog": "app.rules.catalog_v4",
+            "compatibility_engine": "app.calendar.calculator_v2",
             "legacy_compatibility": [
                 "app.calendar.calculator",
                 "app.calendar.festival_rules.json",
+                "app.calendar.festival_rules_v3.json",
             ],
         },
         "public_route_families": list(PUBLIC_ROUTE_FAMILIES),

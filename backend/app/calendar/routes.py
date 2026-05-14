@@ -13,6 +13,7 @@ from pydantic import BaseModel
 
 from app.core.source_metadata import build_calculated_claim_meta
 from app.policy import get_policy_metadata
+from app.rules import get_rule_service
 from app.services.calendar_conversion_service import (
     build_bs_to_gregorian_payload,
     build_compare_conversion_payload,
@@ -334,27 +335,23 @@ async def calculate_festival_endpoint(
 ):
     """
     Calculate the dates for a specific festival in a given year.
-    
-    Uses V2 calculator with correct lunar month model and Adhik Maas handling.
+
+    Uses the canonical festival rule service for public route stability.
     """
     from fastapi import HTTPException
 
-    from app.calendar.calculator_v2 import calculate_festival_v2, get_festival_info_v2
-    
-    # Try V2 calculator first (lunar month model)
-    result = calculate_festival_v2(festival_id, year)
-    
+    rule_service = get_rule_service()
+    result = rule_service.calculate(festival_id, year)
+
     if result is None:
-        # Check if festival exists but couldn't be calculated
-        info = get_festival_info_v2(festival_id)
+        info = rule_service.info(festival_id)
         if info is None:
             raise HTTPException(status_code=404, detail=f"Unknown festival: {festival_id}")
-        else:
-            raise HTTPException(
-                status_code=500, 
-                detail=f"Could not calculate {festival_id} for {year}"
-            )
-    
+        raise HTTPException(
+            status_code=500,
+            detail=f"Could not calculate {festival_id} for {year}",
+        )
+
     return {
         "festival_id": festival_id,
         "year": year,

@@ -14,7 +14,7 @@ make dev-frontend
 
 ```bash
 python3.11 -m pip install -e .[test,dev]
-python3.11 -m pip install -e sdk/python
+python3.11 -m pip install -e packages/parva-python
 uvicorn app.main:app --app-dir backend --reload --port 8000
 ```
 

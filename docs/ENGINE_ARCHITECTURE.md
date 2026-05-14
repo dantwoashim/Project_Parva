@@ -48,8 +48,8 @@ Legacy calculators remain available only as compatibility components behind the 
   - `/api/festivals/*`
   - `/api/calendar/festivals/calculate/{festival_id}`
   - `/api/calendar/festivals/upcoming`
-  - canonical runtime: `app.rules.service.FestivalRuleService`, `app.calendar.calculator_v2`, `app.rules.catalog_v4`
-  - compatibility components: `app.calendar.calculator`, `app.calendar.festival_rules.json`
+  - canonical runtime: `app.rules.service.FestivalRuleService`, `app.rules.catalog_v4`, `app.festivals.repository`
+  - compatibility components: `app.calendar.calculator_v2`, `app.calendar.calculator`, legacy festival rule JSON
 - `personal_stack`
   - `/api/personal/*`
   - `/api/muhurta/*`

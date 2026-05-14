@@ -8,6 +8,7 @@ Project Parva combines code, curated datasets, and source references. Contributo
 | --- | --- | --- |
 | First-party code and docs | `backend/`, `frontend/`, `sdk/`, most of `docs/` | Governed by the repository license |
 | Public fixtures | `tests/fixtures/`, small checked-in JSON or CSV test fixtures | Deterministic test inputs, not official authority |
+| Public validation data | `data/validation/public/`, runtime-safe validation inputs | Public route quality and reliability inputs |
 | Public generated data | Checked-in public artifacts and schemas | Only included when intentionally part of the public artifact |
 | Official or public reference material | public holiday PDFs, source inventories, trust metadata | Verify redistribution rights before adding new raw source files |
 | Private source archives | local `data/source_archive/` material | Optional for public development and gated by explicit env vars |
@@ -18,7 +19,8 @@ Project Parva combines code, curated datasets, and source references. Contributo
 ## Important current sources
 
 - festival and variant data under `data/festivals/` and `data/variants/`
-- public fixtures under `tests/fixtures/`
+- runtime validation inputs under `data/validation/public/`
+- test-only fixtures under `tests/fixtures/`
 - public source policy and trace metadata under `backend/data/public_artifacts/`
 - Swiss Ephemeris through `pyswisseph` for astronomical calculations
 
