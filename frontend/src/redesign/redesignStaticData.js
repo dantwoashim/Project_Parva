@@ -24,7 +24,7 @@ export const footerGroups = [
     title: 'Workspace',
     links: [
       { label: 'Developers', to: '/developers', requiredCapability: 'developerPreview' },
-      { label: 'Enterprise', to: '/enterprise', requiredCapability: 'billingEnterprise' },
+      { label: 'Enterprise', to: '/enterprise' },
       { label: 'Saved', to: '/saved' },
       { label: 'Profile', to: '/profile' },
       { label: 'Integrations', to: '/integrations', requiredCapability: 'integrationsPreview' },
