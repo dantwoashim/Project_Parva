@@ -12,6 +12,7 @@ TRACKED_REPORT_ALLOWLIST = (
     "reports/phase_01_baseline/",
     "reports/phase_02_red_check/",
     "reports/phase_03_canonical_runtime/",
+    "reports/phase_04_maturity_lanes/",
 )
 
 
