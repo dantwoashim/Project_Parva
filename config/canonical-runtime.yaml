@@ -215,6 +215,256 @@
       "verification_command": "python -m pytest tests/contract/test_layer3_source_metadata_contract.py tests/accuracy/test_source_policy_separation.py tests/unit/sources/test_source_validation.py -q"
     },
     {
+      "id": "holiday_release_handling",
+      "name": "Holiday release handling",
+      "lane": "public_contract",
+      "maturity": "canonical_public",
+      "owner_team": "Trust infrastructure",
+      "canonical_modules": [
+        "app.services.trust_infrastructure_service",
+        "app.api.public_artifacts_routes",
+        "app.api.trust_routes",
+        "app.festivals.trust"
+      ],
+      "canonical_paths": [
+        "backend/app/services/trust_infrastructure_service.py",
+        "backend/app/api/public_artifacts_routes.py",
+        "backend/app/api/trust_routes.py",
+        "backend/app/festivals/trust.py",
+        "data/public/releases",
+        "data/public/trust",
+        "data/public/transparency-log"
+      ],
+      "public_routes": [
+        "/v3/api/public-artifacts/*",
+        "/v3/api/trust/*",
+        "/v3/api/festivals/*"
+      ],
+      "tests": [
+        {"path": "tests/contract/test_layer5_trust_contract.py", "status": "exists"},
+        {"path": "tests/contract/test_reliability_policy_contract.py", "status": "exists"},
+        {"path": "scripts/parva_trust_verify.py", "status": "exists"}
+      ],
+      "compatibility_modules": [
+        "app.calendar.overrides"
+      ],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python scripts/parva_trust_verify.py && python -m pytest tests/contract/test_layer5_trust_contract.py -q"
+    },
+    {
+      "id": "fiscal_working_day_logic",
+      "name": "Fiscal and working-day logic",
+      "lane": "public_runtime",
+      "maturity": "canonical_public",
+      "owner_team": "Enterprise calendar",
+      "canonical_modules": [
+        "app.calendar.fiscal",
+        "app.services.enterprise_calendar_service",
+        "app.services.compliance_service",
+        "app.api.enterprise_routes",
+        "app.api.compliance_routes"
+      ],
+      "canonical_paths": [
+        "backend/app/calendar/fiscal.py",
+        "backend/app/services/enterprise_calendar_service.py",
+        "backend/app/services/compliance_service.py",
+        "backend/app/api/enterprise_routes.py",
+        "backend/app/api/compliance_routes.py"
+      ],
+      "public_routes": [
+        "/v3/api/enterprise/fiscal-year/{bs_year}",
+        "/v3/api/enterprise/business-days",
+        "/v3/api/compliance/fiscal-period",
+        "/v3/api/compliance/next-working-day",
+        "/v3/api/compliance/previous-working-day",
+        "/v3/api/compliance/add-working-days"
+      ],
+      "tests": [
+        {"path": "tests/integration/test_enterprise_routes.py", "status": "exists"},
+        {"path": "tests/contract/test_layer4_compliance_contract.py", "status": "exists"},
+        {"path": "tests/contract/test_layer2_public_api_contract.py", "status": "exists"}
+      ],
+      "compatibility_modules": [],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python -m pytest tests/integration/test_enterprise_routes.py tests/contract/test_layer4_compliance_contract.py -q"
+    },
+    {
+      "id": "rulelang_executor",
+      "name": "RuleLang executor",
+      "lane": "developer_preview",
+      "maturity": "canonical_public_preview",
+      "owner_team": "RuleLang",
+      "canonical_modules": [
+        "app.services.rulelang_service",
+        "app.api.rules_routes"
+      ],
+      "canonical_paths": [
+        "backend/app/services/rulelang_service.py",
+        "backend/app/api/rules_routes.py",
+        "data/rules/public",
+        "schemas/rulelang-rule.schema.json"
+      ],
+      "public_routes": [
+        "/v3/api/rules/capabilities",
+        "/v3/api/rules",
+        "/v3/api/rules/{rule_id}",
+        "/v3/api/rules/validate",
+        "/v3/api/rules/{rule_id}/evaluate"
+      ],
+      "tests": [
+        {"path": "tests/contract/test_layer7_rulelang_contract.py", "status": "exists"},
+        {"path": "tests/unit/services/test_rulelang_safety.py", "status": "exists"},
+        {"path": "scripts/parva_rulelang_verify.py", "status": "exists"}
+      ],
+      "compatibility_modules": [],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python scripts/parva_rulelang_verify.py && python -m pytest tests/contract/test_layer7_rulelang_contract.py tests/unit/services/test_rulelang_safety.py -q"
+    },
+    {
+      "id": "trust_release_artifacts",
+      "name": "Trust release artifact model",
+      "lane": "public_contract",
+      "maturity": "canonical_public",
+      "owner_team": "Trust infrastructure",
+      "canonical_modules": [
+        "app.services.trust_infrastructure_service",
+        "app.services.trust_surface_service",
+        "app.api.trust_routes",
+        "app.api.public_artifacts_routes"
+      ],
+      "canonical_paths": [
+        "backend/app/services/trust_infrastructure_service.py",
+        "backend/app/services/trust_surface_service.py",
+        "backend/app/api/trust_routes.py",
+        "backend/app/api/public_artifacts_routes.py",
+        "data/public/releases",
+        "data/public/trust",
+        "data/public/transparency-log",
+        "schemas/release-manifest.schema.json",
+        "schemas/source-registry.schema.json"
+      ],
+      "public_routes": [
+        "/v3/api/trust/*",
+        "/v3/api/public-artifacts/*"
+      ],
+      "tests": [
+        {"path": "tests/contract/test_layer5_trust_contract.py", "status": "exists"},
+        {"path": "tests/unit/trust/test_temporal_trust_tools.py", "status": "exists"},
+        {"path": "scripts/parva_trust_verify.py", "status": "exists"}
+      ],
+      "compatibility_modules": [],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python scripts/parva_trust_verify.py && python -m pytest tests/contract/test_layer5_trust_contract.py tests/unit/trust/test_temporal_trust_tools.py -q"
+    },
+    {
+      "id": "protocol_schema_source",
+      "name": "Protocol schema source",
+      "lane": "protocol_draft",
+      "maturity": "canonical_public_preview",
+      "owner_team": "Protocol",
+      "canonical_modules": [
+        "app.services.protocol_service",
+        "app.api.protocol_routes",
+        "app.api.spec_routes"
+      ],
+      "canonical_paths": [
+        "backend/app/services/protocol_service.py",
+        "backend/app/api/protocol_routes.py",
+        "backend/app/api/spec_routes.py",
+        "specs/parva-protocol",
+        "schemas/parva-protocol",
+        "schemas/rulelang-rule.schema.json",
+        "scripts/parva_protocol_verify.py",
+        "scripts/parva_conformance.py"
+      ],
+      "public_routes": [
+        "/v3/api/protocol/version",
+        "/v3/api/protocol/capabilities",
+        "/v3/api/protocol/specs",
+        "/v3/api/protocol/schemas",
+        "/v3/api/protocol/conformance/run"
+      ],
+      "tests": [
+        {"path": "tests/contract/test_layer10_protocol_contract.py", "status": "exists"},
+        {"path": "scripts/parva_protocol_verify.py", "status": "exists"},
+        {"path": "scripts/parva_conformance.py", "status": "exists"}
+      ],
+      "compatibility_modules": [],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python scripts/parva_protocol_verify.py && python scripts/parva_conformance.py --target local --level parva_full && python -m pytest tests/contract/test_layer10_protocol_contract.py -q"
+    },
+    {
+      "id": "cli_scripts",
+      "name": "CLI and verification scripts",
+      "lane": "developer_tooling",
+      "maturity": "canonical_public",
+      "owner_team": "Release engineering",
+      "canonical_modules": [],
+      "canonical_paths": [
+        "scripts/parva_validate.py",
+        "scripts/parva_trust_verify.py",
+        "scripts/parva_timegraph_verify.py",
+        "scripts/parva_rulelang_verify.py",
+        "scripts/parva_protocol_verify.py",
+        "scripts/parva_conformance.py",
+        "scripts/release/verify_public.py",
+        "scripts/check_canonical_runtime.py"
+      ],
+      "public_routes": [],
+      "tests": [
+        {"path": "scripts/release/verify_public.py", "status": "exists"},
+        {"path": "scripts/verify_environment.py", "status": "exists"},
+        {"path": "tests/unit/scripts/test_package_source_archive.py", "status": "exists"}
+      ],
+      "compatibility_modules": [],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python scripts/release/verify_public.py"
+    },
+    {
+      "id": "frontend_api_client",
+      "name": "Frontend API client",
+      "lane": "public_client",
+      "maturity": "canonical_public_preview",
+      "owner_team": "Frontend",
+      "canonical_modules": [],
+      "canonical_paths": [
+        "frontend/src/services/apiCore.js",
+        "frontend/src/services/api.js",
+        "frontend/src/services/apiContracts.js",
+        "frontend/src/services/apiBase.js",
+        "frontend/src/types/api.ts"
+      ],
+      "public_routes": [
+        "/v3/api/*"
+      ],
+      "tests": [
+        {"path": "frontend/src/test/ApiService.test.jsx", "status": "exists"},
+        {"path": "frontend/src/test/apiBase.test.js", "status": "exists"},
+        {"path": "tests/contract/test_frontend_routes_vs_backend_profile.py", "status": "exists"}
+      ],
+      "compatibility_modules": [
+        "frontend/src/services/calendarClient.js",
+        "frontend/src/services/festivalClient.js",
+        "frontend/src/services/personalClient.js"
+      ],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "npm --prefix frontend test -- --run && python -m pytest tests/contract/test_frontend_routes_vs_backend_profile.py -q"
+    },
+    {
       "id": "sdk_clients",
       "name": "Public SDK clients",
       "lane": "public_client",
@@ -410,6 +660,13 @@
     "tithi_panchanga",
     "festivals_observances",
     "source_confidence_taxonomy",
+    "holiday_release_handling",
+    "fiscal_working_day_logic",
+    "rulelang_executor",
+    "trust_release_artifacts",
+    "protocol_schema_source",
+    "cli_scripts",
+    "frontend_api_client",
     "sdk_clients",
     "public_validation_artifacts",
     "runtime_manifest_and_routes"

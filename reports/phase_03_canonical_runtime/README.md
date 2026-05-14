@@ -17,10 +17,12 @@ runtime import cleanup, and final public gate all passed.
 - Canonical runtime modules under `backend/app/calendar/`, `backend/app/rules/`, `backend/app/festivals/`, `backend/app/core/`, `backend/app/reliability/`, and `backend/app/api/`
 - SDK paths `packages/parva-python`, `packages/parva-js`, and `sdk/python`
 - Runtime validation sources under `tests/fixtures/`, `data/validation/public/`, and `backend/data/public_artifacts/`
+- Remaining canonical registry concepts from the phase prompt: holiday release handling, fiscal/working-day logic, RuleLang, trust release artifacts, protocol schemas, CLI/scripts, and frontend API client paths
 
 ## Changes Made
 
 - Added `config/canonical-runtime.yaml` as the machine-readable canonical runtime registry.
+- Expanded the registry to cover conversion, tithi/panchanga, festivals, source/confidence, holiday release handling, fiscal/working-day logic, RuleLang, trust artifacts, protocol schemas, CLI/scripts, frontend API client paths, SDKs, runtime validation artifacts, and route manifest paths.
 - Added `scripts/check_canonical_runtime.py` and wired it into `scripts/release/verify_public.py`.
 - Added architecture tests for registry completeness, research/private import boundaries, runtime fixture boundaries, and deprecated import boundaries.
 - Moved public runtime validation inputs to `data/validation/public/calendar` and `data/validation/public/plugins`.
@@ -50,7 +52,7 @@ runtime import cleanup, and final public gate all passed.
 
 ## Acceptance Checklist
 
-1. Config registry exists and covers major domain concepts: implemented, checker passing.
+1. Config registry exists and covers major domain concepts: implemented for all Phase 03 named concepts, checker passing.
 2. Canonical runtime docs exist: implemented.
 3. Checker exists and passes: implemented and passing.
 4. Architecture tests enforce canonical boundaries: implemented and passing.

@@ -15,6 +15,13 @@ The registry covers these public concepts:
 | Tithi and panchanga | `backend/app/calendar/tithi/`, `backend/app/calendar/panchanga.py` | `backend/app/calendar/tithi.py` is a shadowed compatibility stub |
 | Festivals and observances | `backend/app/rules/service.py`, `backend/app/rules/catalog_v4.py`, `backend/app/festivals/` | `backend/app/calendar/calculator.py`, `backend/app/calendar/calculator_v2.py`, and legacy rule JSON stay behind compatibility wrappers |
 | Source and confidence taxonomy | `backend/app/core/source_metadata.py`, trust infrastructure, source validation | local ad hoc source strings are not canonical |
+| Holiday release handling | `backend/app/services/trust_infrastructure_service.py`, `data/public/releases/`, `data/public/trust/` | calendar overrides remain compatibility evidence inputs |
+| Fiscal and working-day logic | `backend/app/calendar/fiscal.py`, `backend/app/services/enterprise_calendar_service.py`, `backend/app/services/compliance_service.py` | none |
+| RuleLang executor | `backend/app/services/rulelang_service.py`, `backend/app/api/rules_routes.py`, `data/rules/public/` | none |
+| Trust release artifact model | `backend/app/services/trust_infrastructure_service.py`, `backend/app/services/trust_surface_service.py`, `data/public/` | none |
+| Protocol schema source | `backend/app/services/protocol_service.py`, `specs/parva-protocol/`, `schemas/parva-protocol/` | none |
+| CLI and verification scripts | `scripts/parva_validate.py`, `scripts/release/verify_public.py`, `scripts/check_canonical_runtime.py` | none |
+| Frontend API client | `frontend/src/services/apiCore.js`, `frontend/src/services/api.js`, `frontend/src/services/apiContracts.js` | page-specific clients are compatibility helpers |
 | SDKs | `packages/parva-python`, `packages/parva-js` | `sdk/python` is compatibility scaffolding |
 | Runtime validation artifacts | `data/validation/public/`, `backend/data/public_artifacts/` | `tests/fixtures/` is test-only and not a public runtime dependency |
 
