@@ -15,7 +15,10 @@ def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
     body = response.json()
     assert body["surface"] == "future_bs_risk_research"
     assert body["status"] == "research_preview"
+    assert body["maturity"] == "research_preview"
     assert body["publication_status"] == "computed_prediction_not_official"
+    assert body["claim_boundary"] == "research_preview_not_safe_for_legal_or_payroll_use"
+    assert "computed_prediction_not_official" in body["warnings"]
     assert "official_future_publication" in body["not_claimed"]
     assert "methodology_summary" in body["public_surface"]
     assert "model_registry" not in body

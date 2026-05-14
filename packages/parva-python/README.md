@@ -66,6 +66,17 @@ capabilities = client.get_future_bs_capabilities()
 - public policy metadata
 - future-BS capabilities summary
 
+## Maturity Policy
+
+| Lane | Python SDK posture |
+| --- | --- |
+| Stable | Calendar today, AD/BS conversion, BS validation, month calendar, fiscal-year, business-day, and public policy helpers. |
+| Public preview | Trust, evidence, TimeGraph, RuleLang, and public capability helpers remain labeled preview. |
+| Developer preview | Impact, agent, and advanced decision-support helpers are preview compatibility helpers. |
+| Protocol draft | Protocol helpers carry draft status and are not standards certification helpers. |
+| Research private | Exact future-BS prediction, export, backtest, residual, model-run, comparison, and schedule-impact routes are not exposed. |
+| Deprecated compatibility | The SDK defaults to `/v3/api`, not legacy `/api/*` aliases. |
+
 ## TimeGraph
 
 TimeGraph helpers expose public-safe temporal facts and traces. They preserve fact ids,

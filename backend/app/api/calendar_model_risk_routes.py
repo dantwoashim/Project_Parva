@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from app.future_bs.report_store import list_reports, load_report
@@ -48,8 +48,8 @@ def _bad_request(exc: ValueError) -> HTTPException:
 
 
 @public_router.get("/capabilities")
-async def calendar_model_risk_capabilities():
-    return capabilities_payload()
+async def calendar_model_risk_capabilities(request: Request):
+    return capabilities_payload(trace_id=getattr(request.state, "request_id", None))
 
 
 @private_router.get("/prediction/{bs_year}/{month}")

@@ -73,11 +73,18 @@ def backtest_model(
 
 
 def future_bs_capabilities_payload(*, trace_id: str | None = None) -> dict[str, Any]:
+    meta = build_research_claim_meta(trace_id=trace_id)
+    meta["maturity"] = "research_preview"
     return {
         "surface": "future_bs_risk_research",
         "status": "research_preview",
+        "maturity": "research_preview",
         "publication_status": "computed_prediction_not_official",
-        "meta": build_research_claim_meta(trace_id=trace_id),
+        "claim_boundary": meta["claim_boundary"],
+        "confidence": meta["confidence"],
+        "release_id": meta["release_id"],
+        "warnings": meta["warnings"],
+        "meta": meta,
         "public_surface": [
             "methodology_summary",
             "source_policy_summary",

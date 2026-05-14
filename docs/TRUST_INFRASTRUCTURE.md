@@ -1,5 +1,7 @@
 # Trust Infrastructure
 
+Status: Phase 04 public preview trust layer.
+
 Project Parva exposes a public temporal trust layer for source registry records, release manifests, trust logs, release diffs, and evidence packets.
 
 This layer makes answers auditable. It does not turn Parva into an official government calendar publication, legal authority, tax authority, payroll authority, or banking-contract authority.

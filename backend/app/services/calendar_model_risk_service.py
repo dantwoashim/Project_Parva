@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from app.calendar.constants import BS_MONTH_NAMES
+from app.core.source_metadata import build_research_claim_meta
 from app.future_bs.calendar_var import calendar_var_payload
 from app.future_bs.claim_readiness import claim_readiness_report
 from app.future_bs.committee_rule_posterior import committee_rule_posterior
@@ -169,11 +170,22 @@ def audit_external_sheet_response(payload: dict[str, Any]) -> dict[str, Any]:
     return comparison
 
 
-def capabilities_payload() -> dict[str, Any]:
+def capabilities_payload(*, trace_id: str | None = None) -> dict[str, Any]:
+    meta = build_research_claim_meta(
+        trace_id=trace_id,
+        result_class="calendar_model_risk_research_capability",
+    )
+    meta["maturity"] = "research_preview"
     return {
         "surface": "future_bs_risk_research",
         "status": "research_preview",
+        "maturity": "research_preview",
         "publication_status": "computed_prediction_not_official",
+        "claim_boundary": meta["claim_boundary"],
+        "confidence": meta["confidence"],
+        "release_id": meta["release_id"],
+        "warnings": meta["warnings"],
+        "meta": meta,
         "public_surface": [
             "methodology_summary",
             "source_policy_summary",

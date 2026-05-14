@@ -127,6 +127,19 @@ Private deployments may override these values, but public SDK examples must stay
 
 ## Public and Private Boundary
 
+## Maturity Exposure Policy
+
+The SDK surface is split by maturity lane:
+
+| Lane | SDK posture |
+| --- | --- |
+| Stable | Top-level calendar, conversion, validation, and policy helpers. |
+| Public preview | Top-level compatibility helpers are allowed, but docs must label them as preview. |
+| Developer preview | RuleLang, TimeGraph, impact, and agent helpers are preview helpers and may move under explicit preview namespaces in a future major SDK version. |
+| Protocol draft | Protocol helpers expose draft metadata only and are not standards certification helpers. |
+| Research private | Exact future-BS predictions, exports, backtests, residuals, model runs, and schedule-impact routes are omitted from public SDKs. |
+| Deprecated compatibility | `/api/*` aliases are compatibility-only and should not be used in new SDK examples. |
+
 Public SDK methods in this alpha:
 
 - `getToday` or `get_today`

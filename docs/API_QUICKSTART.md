@@ -1,5 +1,7 @@
 # API Quickstart
 
+Status: Phase 04 public integration quickstart.
+
 Project Parva's stable public-beta API lives under `/v3/api/*`.
 
 The lightweight public demo may expose a narrower subset for evaluation. Private or full deployments can enable the broader stable API surface with controlled configuration.

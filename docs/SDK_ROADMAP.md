@@ -20,6 +20,17 @@ Project Parva is intended to support simple SDK adoption for teams replacing fra
 | API mode | Live validation, source metadata, and public calendar surfaces |
 | Private deployment mode | Controlled validation, reconciliation, and sensitive calendar-risk workflows |
 
+## Phase 04 Maturity Policy
+
+| Lane | SDK rule |
+| --- | --- |
+| Stable | Keep stable calendar, conversion, validation, and policy helpers easy to call. |
+| Public preview | Expose only when labeled as preview and backed by public route profiles. |
+| Developer preview | Keep available for early adopters, but do not describe as stable. |
+| Protocol draft | Preserve draft language and avoid standards or certification claims. |
+| Research private | Do not expose exact future-BS private routes from public SDK packages. |
+| Deprecated compatibility | Do not add new examples that target legacy `/api/*` aliases. |
+
 ## Public-Safe Examples
 
 SDK examples should call only public-safe surfaces:

@@ -1,5 +1,7 @@
 # Public API Boundary
 
+Status: Phase 04 public/private route boundary.
+
 The public Project Parva deployment exposes stable calendar, fiscal-year, festival, panchanga, and public methodology surfaces for technical evaluation. The lightweight Render demo may expose a narrower route set than a private or full public profile.
 
 The public deployment is intentionally narrower than a private deployment. Sensitive future-BS workflows remain disabled unless an operator explicitly enables experimental routes and private schema visibility.

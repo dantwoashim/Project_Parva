@@ -13,7 +13,10 @@ def test_calendar_model_risk_capabilities_are_public_v5():
     body = response.json()
     assert body["surface"] == "future_bs_risk_research"
     assert body["status"] == "research_preview"
+    assert body["maturity"] == "research_preview"
     assert body["publication_status"] == "computed_prediction_not_official"
+    assert body["claim_boundary"] == "research_preview_not_safe_for_legal_or_payroll_use"
+    assert "computed_prediction_not_official" in body["warnings"]
     assert "aggregate_validation_posture" in body["public_surface"]
     assert "source_trust_levels" not in body
     assert "capabilities" not in body

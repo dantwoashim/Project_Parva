@@ -74,7 +74,10 @@ def test_future_bs_capabilities_are_labeled_research_preview() -> None:
     body = response.json()
     meta = _meta(body)
     assert body["publication_status"] == "computed_prediction_not_official"
+    assert body["maturity"] == "research_preview"
+    assert body["claim_boundary"] == meta["claim_boundary"]
     assert meta["confidence"] == "research_preview"
+    assert meta["maturity"] == "research_preview"
     assert meta["source"]["tier"] == "research"
     assert meta["claim_boundary"] == "research_preview_not_safe_for_legal_or_payroll_use"
     assert "computed_prediction_not_official" in meta["warnings"]
