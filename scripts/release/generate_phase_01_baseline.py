@@ -447,7 +447,7 @@ def now_iso() -> str:
     return dt.datetime.now(dt.UTC).replace(microsecond=0).isoformat()
 
 
-def run_command(command: str, *, timeout: int = 120) -> dict[str, Any]:
+def run_command(command: str, *, timeout: int = 120, requested_command: str | None = None) -> dict[str, Any]:
     started = time.perf_counter()
     try:
         completed = subprocess.run(
@@ -464,6 +464,7 @@ def run_command(command: str, *, timeout: int = 120) -> dict[str, Any]:
         status = "pass" if completed.returncode == 0 else "fail"
         return {
             "command": command,
+            "requested_command": requested_command or command,
             "status": status,
             "exit_code": completed.returncode,
             "duration_seconds": duration,
@@ -479,6 +480,7 @@ def run_command(command: str, *, timeout: int = 120) -> dict[str, Any]:
         stderr = exc.stderr if isinstance(exc.stderr, str) else ""
         return {
             "command": command,
+            "requested_command": requested_command or command,
             "status": "blocked",
             "exit_code": None,
             "duration_seconds": duration,
@@ -491,6 +493,7 @@ def run_command(command: str, *, timeout: int = 120) -> dict[str, Any]:
     except FileNotFoundError as exc:
         return {
             "command": command,
+            "requested_command": requested_command or command,
             "status": "blocked",
             "exit_code": None,
             "duration_seconds": 0,
@@ -531,6 +534,17 @@ def categorize_result(command: str, status: str, stdout: str, stderr: str) -> st
     if "experimental" in text or "gated" in text or "disabled" in text:
         return "expected gated issue"
     return "repo issue"
+
+
+def command_with_python(command: str, python_command: str) -> str:
+    """Rewrite Python command prefixes for the supported interpreter override."""
+    if python_command == "python":
+        return command
+    if command.startswith("python "):
+        return f"{python_command} {command.removeprefix('python ')}"
+    if command.startswith("pytest "):
+        return f"{python_command} -m {command}"
+    return command
 
 
 def read_json(path: Path) -> dict[str, Any]:
@@ -944,6 +958,7 @@ def render_verification_markdown(payload: dict[str, Any]) -> str:
     rows = [
         [
             command["command"],
+            command.get("requested_command", command["command"]),
             command["status"],
             command.get("exit_code"),
             command.get("failure_category") or "",
@@ -959,6 +974,7 @@ def render_verification_markdown(payload: dict[str, Any]) -> str:
                 [
                     f"### `{command['command']}`",
                     "",
+                    f"- requested_command: `{command.get('requested_command', command['command'])}`",
                     f"- status: `{command['status']}`",
                     f"- exit_code: `{command.get('exit_code')}`",
                     f"- duration_seconds: `{command.get('duration_seconds')}`",
@@ -986,7 +1002,15 @@ def render_verification_markdown(payload: dict[str, Any]) -> str:
             f"Generated at: `{payload['generated_at']}`",
             "",
             markdown_table(
-                ["Command", "Status", "Exit code", "Category", "Seconds", "Summary"],
+                [
+                    "Command run",
+                    "Requested command",
+                    "Status",
+                    "Exit code",
+                    "Category",
+                    "Seconds",
+                    "Summary",
+                ],
                 rows,
             ),
             "",
@@ -1310,6 +1334,7 @@ def render_next_phase_targets(verification: dict[str, Any]) -> str:
     rows = [
         [
             command["command"],
+            command.get("requested_command", command["command"]),
             command["status"],
             command.get("failure_category") or "",
             command.get("summary") or "",
@@ -1329,7 +1354,7 @@ def render_next_phase_targets(verification: dict[str, Any]) -> str:
             "",
             "## Failed or blocked baseline commands",
             "",
-            markdown_table(["Command", "Status", "Category", "Summary"], rows)
+            markdown_table(["Command run", "Requested command", "Status", "Category", "Summary"], rows)
             if rows
             else "No failed or blocked baseline commands were recorded.",
             "",
@@ -1375,6 +1400,9 @@ def render_readme(
                     ["python_executable", fingerprint.get("python_executable")],
                     ["node_version", fingerprint.get("node_version")],
                     ["npm_version", fingerprint.get("npm_version")],
+                    ["phase_python_command", fingerprint.get("phase_python_command")],
+                    ["phase_python_version", fingerprint.get("phase_python_version")],
+                    ["phase_python_executable", fingerprint.get("phase_python_executable")],
                     ["platform", platform.platform()],
                     ["route_profile_default", route_profile_default],
                     ["render_route_profile", render_profile],
@@ -1406,12 +1434,15 @@ def render_readme(
     )
 
 
-def fingerprint() -> dict[str, Any]:
+def fingerprint(*, phase_python_command: str) -> dict[str, Any]:
     def output(command: str) -> str:
         result = run_command(command, timeout=60)
         return (result.get("stdout_tail") or result.get("summary") or "").strip()
 
     py_info = output('python -c "import sys; print(sys.executable); print(sys.version)"').splitlines()
+    phase_py_info = output(
+        f'{phase_python_command} -c "import sys; print(sys.executable); print(sys.version)"'
+    ).splitlines()
     return {
         "git_branch": output("git branch --show-current"),
         "git_commit": output("git rev-parse HEAD"),
@@ -1421,6 +1452,10 @@ def fingerprint() -> dict[str, Any]:
         "python_full_version": py_info[1] if len(py_info) > 1 else "",
         "node_version": output("node --version"),
         "npm_version": output("npm --version"),
+        "phase_python_command": phase_python_command,
+        "phase_python_version": output(f"{phase_python_command} --version"),
+        "phase_python_executable": phase_py_info[0] if phase_py_info else "",
+        "phase_python_full_version": phase_py_info[1] if len(phase_py_info) > 1 else "",
     }
 
 
@@ -1434,6 +1469,11 @@ def main() -> int:
         "--skip-verification",
         action="store_true",
         help="Generate inventories without running the long verification matrix.",
+    )
+    parser.add_argument(
+        "--python-command",
+        default="python",
+        help="Python command to use for Python-based verification commands.",
     )
     args = parser.parse_args()
 
@@ -1461,7 +1501,8 @@ def main() -> int:
             "generated_at": now_iso(),
             "commands": [
                 {
-                    "command": item["command"],
+                    "command": command_with_python(item["command"], args.python_command),
+                    "requested_command": item["command"],
                     "status": "skipped",
                     "exit_code": None,
                     "summary": "Skipped by --skip-verification.",
@@ -1475,12 +1516,16 @@ def main() -> int:
         verification = {
             "generated_at": now_iso(),
             "commands": [
-                run_command(item["command"], timeout=int(item["timeout"]))
+                run_command(
+                    command_with_python(item["command"], args.python_command),
+                    requested_command=item["command"],
+                    timeout=int(item["timeout"]),
+                )
                 for item in VERIFICATION_COMMANDS
             ],
         }
 
-    fp = fingerprint()
+    fp = fingerprint(phase_python_command=args.python_command)
     fingerprint_attempts = run_fingerprint_command_attempts()
     write_json(REPORT_DIR / "fingerprint_command_attempts.json", fingerprint_attempts)
     write_json(REPORT_DIR / "verification_matrix.json", verification)
