@@ -15,6 +15,8 @@ This packet summarizes the current state of Project Parva for an external techni
 - `ai_tooling_boundary.md`
 - `jpl_accuracy_boundary.md`
 - `commercial_readiness.md`
+- `release_readiness.md`
+- `ci_status.md`
 
 ## Review Position
 

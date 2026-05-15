@@ -7,6 +7,15 @@ Project Parva is open-source Nepali temporal infrastructure for Bikram Sambat co
 
 It also includes a controlled future-BS risk research layer for evaluating month-length assumptions before they affect financial, contractual, reporting, or operational systems.
 
+Public review entry points:
+
+- [Quickstart](docs/QUICKSTART.md)
+- [Benchmark v0](public-benchmark/README.md)
+- [Public verification workflow](.github/workflows/public-verification.yml)
+- [Release notes](docs/releases/v0.3.0-public-readiness.md)
+- [Known limitations](docs/KNOWN_LIMITATIONS.md)
+- [External reviewer packet generated artifact](reports/external_reviewer_packet/README.md)
+
 ## Why This Exists
 
 Nepali calendar logic is infrastructure, not decoration.

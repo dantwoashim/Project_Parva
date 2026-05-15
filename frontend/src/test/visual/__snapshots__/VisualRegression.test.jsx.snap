@@ -2142,6 +2142,51 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
         </aside>
       </section>
       <section
+        aria-label="Public review links"
+        class="infrastructure-grid"
+      >
+        <a
+          href="https://github.com/dantwoashim/Project_Parva/blob/main/docs/QUICKSTART.md"
+        >
+          <span>
+            Developer quickstart
+          </span>
+          <p>
+            Copy-paste API calls and SDK entry points for stable routes.
+          </p>
+        </a>
+        <a
+          href="https://github.com/dantwoashim/Project_Parva/tree/main/public-benchmark"
+        >
+          <span>
+            Benchmark v0
+          </span>
+          <p>
+            38 public-safe tasks for Nepali time reliability and review gates.
+          </p>
+        </a>
+        <a
+          href="https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml"
+        >
+          <span>
+            Verification gates
+          </span>
+          <p>
+            Public CI, clean-clone assumptions, trust checks, leakage scans, and route inventory.
+          </p>
+        </a>
+        <a
+          href="https://github.com/dantwoashim/Project_Parva/blob/main/docs/KNOWN_LIMITATIONS.md"
+        >
+          <span>
+            Known limitations
+          </span>
+          <p>
+            Authority boundaries, unsupported ranges, and non-replacement policy.
+          </p>
+        </a>
+      </section>
+      <section
         aria-label="Project Parva capabilities"
         class="infrastructure-grid"
       >

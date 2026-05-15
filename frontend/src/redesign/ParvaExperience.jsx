@@ -2974,6 +2974,19 @@ export function RedesignHome() {
             </dl>
           </aside>
         </section>
+        <section className="infrastructure-grid" aria-label="Public review links">
+          {[
+            ['Developer quickstart', 'Copy-paste API calls and SDK entry points for stable routes.', 'https://github.com/dantwoashim/Project_Parva/blob/main/docs/QUICKSTART.md'],
+            ['Benchmark v0', '38 public-safe tasks for Nepali time reliability and review gates.', 'https://github.com/dantwoashim/Project_Parva/tree/main/public-benchmark'],
+            ['Verification gates', 'Public CI, clean-clone assumptions, trust checks, leakage scans, and route inventory.', 'https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml'],
+            ['Known limitations', 'Authority boundaries, unsupported ranges, and non-replacement policy.', 'https://github.com/dantwoashim/Project_Parva/blob/main/docs/KNOWN_LIMITATIONS.md'],
+          ].map(([title, body, href]) => (
+            <a key={title} href={href}>
+              <span>{title}</span>
+              <p>{body}</p>
+            </a>
+          ))}
+        </section>
         <InfrastructureFeatureGrid />
         <section className="trust-feature-band">
           <div>

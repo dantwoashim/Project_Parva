@@ -23,6 +23,33 @@ def test_bs_to_ad_uses_public_v3_base() -> None:
     assert calls[0][0] == "POST"
     assert calls[0][1] == f"{DEFAULT_API_BASE}/calendar/bs-to-gregorian"
     assert calls[0][3] == {"year": 2083, "month": 1, "day": 1}
+    assert calls[0][4] == 10.0
+
+
+def test_base_url_override_and_timeout_are_passed_to_transport() -> None:
+    calls = []
+
+    def transport(method, url, params, json_body, timeout):
+        calls.append((method, url, params, json_body, timeout))
+        return {"english": "2026-04-14"}
+
+    client = ParvaClient(
+        base_url="https://calendar.example/v3/api/",
+        timeout=2.5,
+        transport=transport,
+    )
+    payload = client.ad_to_bs("2026-04-14")
+
+    assert payload["english"] == "2026-04-14"
+    assert calls == [
+        (
+            "GET",
+            "https://calendar.example/v3/api/calendar/convert?date=2026-04-14",
+            None,
+            None,
+            2.5,
+        )
+    ]
 
 
 def test_future_capabilities_uses_public_v4_endpoint() -> None:
@@ -43,7 +70,10 @@ def test_future_capabilities_uses_public_v4_endpoint() -> None:
 
 
 def test_validate_bs_date_returns_false_for_public_400() -> None:
+    calls = []
+
     def transport(method, url, params, json_body, timeout):
+        calls.append((method, url, params, json_body, timeout))
         raise ParvaAPIError("Invalid BS date", status=400, body={"detail": "Invalid BS date"})
 
     client = ParvaClient(transport=transport)
@@ -51,6 +81,30 @@ def test_validate_bs_date_returns_false_for_public_400() -> None:
 
     assert payload["valid"] is False
     assert payload["publication_status"] == "computed_prediction_not_official"
+    assert len(calls) == 1
+
+
+def test_client_does_not_expose_private_or_research_exact_routes() -> None:
+    method_names = {name for name in dir(ParvaClient) if not name.startswith("_")}
+    forbidden_fragments = {
+        "admin",
+        "audit_private",
+        "backtest",
+        "billing",
+        "loan_impact",
+        "month_length_prediction",
+        "private_source",
+        "research_backtest",
+    }
+
+    exposed = sorted(
+        name
+        for name in method_names
+        for fragment in forbidden_fragments
+        if fragment in name
+    )
+
+    assert exposed == []
 
 
 def test_retries_retry_after_for_429() -> None:

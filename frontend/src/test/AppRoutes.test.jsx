@@ -522,6 +522,10 @@ describe('App routing', () => {
     expect(await screen.findByRole('heading', { name: /Nepali calendar infrastructure for software systems/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Open API docs/i })).toHaveAttribute('href', 'https://api.prabinghimire1.com.np/docs');
+    expect(screen.getByRole('link', { name: /Developer quickstart/i })).toHaveAttribute('href', expect.stringContaining('docs/QUICKSTART.md'));
+    expect(screen.getByRole('link', { name: /Benchmark v0/i })).toHaveAttribute('href', expect.stringContaining('public-benchmark'));
+    expect(screen.getByRole('link', { name: /Verification gates/i })).toHaveAttribute('href', expect.stringContaining('public-verification.yml'));
+    expect(screen.getByRole('link', { name: /Known limitations/i })).toHaveAttribute('href', expect.stringContaining('docs/KNOWN_LIMITATIONS.md'));
   }, 30000);
 
   it('keeps the same consumer shell on desktop routes', async () => {

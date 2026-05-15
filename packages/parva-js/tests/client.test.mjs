@@ -29,6 +29,25 @@ test("uses the public v3 base for conversion calls", async () => {
   assert.equal(payload.gregorian, "2026-04-14");
   assert.equal(calls[0].url, `${DEFAULT_API_BASE}/calendar/bs-to-gregorian`);
   assert.equal(calls[0].init.method, "POST");
+  assert.ok(calls[0].init.signal instanceof AbortSignal);
+});
+
+test("passes base URL overrides and timeout signals to fetch", async () => {
+  const calls = [];
+  const client = new ParvaClient({
+    baseUrl: "https://calendar.example/v3/api/",
+    timeoutMs: 50,
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      return jsonResponse({ english: "2026-04-14" });
+    },
+  });
+
+  const payload = await client.adToBs("2026-04-14");
+
+  assert.equal(payload.english, "2026-04-14");
+  assert.equal(calls[0].url, "https://calendar.example/v3/api/calendar/convert?date=2026-04-14");
+  assert.ok(calls[0].init.signal instanceof AbortSignal);
 });
 
 test("uses the public v4 capabilities endpoint for future-BS capabilities", async () => {
@@ -50,12 +69,16 @@ test("uses the public v4 capabilities endpoint for future-BS capabilities", asyn
 });
 
 test("validateBsDate converts public 400 responses into a validation result", async () => {
+  let calls = 0;
   const client = new ParvaClient({
-    fetchImpl: async () => jsonResponse({ detail: "Invalid BS date" }, {
-      ok: false,
-      status: 400,
-      statusText: "Bad Request",
-    }),
+    fetchImpl: async () => {
+      calls += 1;
+      return jsonResponse({ detail: "Invalid BS date" }, {
+        ok: false,
+        status: 400,
+        statusText: "Bad Request",
+      });
+    },
   });
 
   const result = await client.validateBsDate({ year: 2083, month: 1, day: 32 });
@@ -63,6 +86,45 @@ test("validateBsDate converts public 400 responses into a validation result", as
   assert.equal(result.valid, false);
   assert.equal(result.publication_status, "computed_prediction_not_official");
   assert.match(result.error, /Invalid BS date/);
+  assert.equal(calls, 1);
+});
+
+test("request timeout is surfaced as a structured SDK error", async () => {
+  const client = new ParvaClient({
+    timeoutMs: 1,
+    maxRetries: 0,
+    fetchImpl: async (_url, init) => new Promise((_resolve, reject) => {
+      init.signal.addEventListener("abort", () => {
+        const error = new Error("aborted");
+        error.name = "AbortError";
+        reject(error);
+      }, { once: true });
+    }),
+  });
+
+  await assert.rejects(
+    () => client.getToday(),
+    /timed out after 1ms/,
+  );
+});
+
+test("client does not expose private or exact research route helpers", () => {
+  const methodNames = Object.getOwnPropertyNames(ParvaClient.prototype);
+  const forbiddenFragments = [
+    "admin",
+    "auditPrivate",
+    "backtest",
+    "billing",
+    "loanImpact",
+    "monthLengthPrediction",
+    "privateSource",
+    "researchBacktest",
+  ];
+  const exposed = methodNames.filter((name) => (
+    forbiddenFragments.some((fragment) => name.includes(fragment))
+  ));
+
+  assert.deepEqual(exposed, []);
 });
 
 test("retries 429 responses using Retry-After", async () => {
