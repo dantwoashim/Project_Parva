@@ -1,4 +1,51 @@
+---
+status: public-beta
+audience: enterprise
+---
+
 # Vendor Date Risk Audit
+
+The first commercial wedge is a BS Date Risk Audit and Conformance Suite for
+Nepali software vendors, ERP, accounting, cooperative, microfinance, HR, payroll
+software, and fintech platforms. Banks can be served later, but vendor and
+software-platform proof is the lower-friction first step.
+
+## Input CSV
+
+```csv
+bs_date,workflow_type,expected_behavior,actual_ad_date,holiday_assumptions,fiscal_assumptions
+2082-01-01,invoice_due_date,next_working_day,2025-04-14,known_public_holidays,nepal_fiscal_year
+```
+
+Required columns:
+
+- `bs_date`
+- `workflow_type`
+- `expected_behavior`
+
+Optional columns:
+
+- `actual_ad_date`
+- `holiday_assumptions`
+- `fiscal_assumptions`
+
+## Output Report
+
+The audit report should identify invalid dates, unsupported ranges, source
+conflicts, holiday mismatches, fiscal cutoff mismatches, working-day mismatches,
+review-required cases, and an overall conformance score.
+
+Suggested commercial packaging:
+
+| Offer | Scope | Price guidance |
+| --- | --- | --- |
+| Free mini-audit | 50 rows | Free |
+| Paid audit | vendor CSV and report | NPR 50,000-150,000 |
+| Vendor monthly | continuous conformance suite | NPR 25,000/month or USD 200/month |
+| Enterprise | private deployment and support | NPR 1.2M+/year |
+
+The audit is source-aware technical review, not legal, tax, banking, payroll,
+or government approval.
 
 Status: audit checklist for external products that handle Nepali dates.
 

@@ -25,7 +25,9 @@ Public profiles must not expose private future-BS exact output, private data, or
 
 ## Large component extraction
 
-`frontend/src/redesign/ParvaRedesign.jsx` is still a large shell. Phase 09 starts the committed extraction path by moving reusable verification UI into:
+`frontend/src/redesign/ParvaExperience.jsx` is still the largest shell. Phase 09
+keeps the extraction path measurable instead of rewriting the UI in one risky
+pass. Existing reusable verification UI already lives in:
 
 ```text
 frontend/src/redesign/components/VerificationComponents.jsx
@@ -40,8 +42,12 @@ frontend/src/test/VerificationComponents.test.jsx
 Growth is checked by:
 
 ```bash
-python scripts/frontend/check_component_size.py
+python scripts/frontend/check_component_size.py --max-lines 800 --warn-only
 ```
+
+Current priority extraction targets are route shells, capability/status badges,
+source/evidence/confidence badges, research warning panels, festival cards, and
+trust/protocol sections.
 
 ## Typed API models
 
@@ -69,5 +75,5 @@ The loader and plain iframe mode both support `api_base` configuration. See `doc
 npm --prefix frontend run lint
 npm --prefix frontend run build
 npm --prefix frontend test -- --run
-python scripts/frontend/check_component_size.py
+python scripts/frontend/check_component_size.py --max-lines 800 --warn-only
 ```

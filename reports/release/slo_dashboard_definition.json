@@ -1,0 +1,17 @@
+{
+  "dashboard": "Project Parva Public SLO",
+  "status": "static_dashboard_definition",
+  "generated_at": "2026-05-14",
+  "panels": [
+    {"name": "API availability", "source": "5xx rate by route family", "target": "99.9% monthly public health availability"},
+    {"name": "p95 latency", "source": "parva_request_latency_p95_ms grouped by path", "target": "within config/performance-budgets.yaml"},
+    {"name": "Rate limit pressure", "source": "parva_request_throttles_total", "target": "visible by route and principal scope"},
+    {"name": "Cache effectiveness", "source": "parva_cache_hit_ratio", "target": "observance and artifact cache hit ratios tracked"},
+    {"name": "Degraded states", "source": "parva_degraded_state_total", "target": "no silent degraded state"},
+    {"name": "Trust freshness", "source": "trust-drift workflow and parva_trust_verify.py", "target": "0 unresolved trust drift incidents"}
+  ],
+  "limitations": [
+    "This is a repository dashboard definition, not proof of a deployed external dashboard.",
+    "Production deployment must wire these sources into the chosen telemetry backend."
+  ]
+}

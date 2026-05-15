@@ -68,7 +68,7 @@ def parse_moha_rows() -> list[dict]:
                     month_num = MONTH_VARIANTS[month_raw]
                     day_num = nep_to_int(day_raw)
                     g_date = bs_to_gregorian(bs_year, month_num, day_num)
-                except Exception:
+                except (RuntimeError, TypeError, ValueError):
                     continue
 
                 rows.append(

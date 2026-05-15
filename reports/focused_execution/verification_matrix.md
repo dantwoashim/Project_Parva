@@ -1,0 +1,39 @@
+# Verification Matrix
+
+- PASS `python scripts/verify_environment.py`: Python 3.11.4, Node 20.20.2, npm 11.10.0.
+- PASS `python scripts/release/regenerate_public_release_hashes.py --check`.
+- PASS `python scripts/parva_trust_verify.py`.
+- PASS `python scripts/check_docs_links.py`.
+- PASS `python scripts/check_path_leaks.py`.
+- PASS `python scripts/check_future_bs_public_leakage.py`.
+- PASS `PYTHONPATH=backend:. python scripts/release/check_public_openapi_drift.py`.
+- PASS public pytest lane: `846 passed, 8 skipped`.
+- PASS bootstrap tests: `35 passed`.
+- PASS security tests: `7 passed`.
+- PASS performance public lane: `7 passed`.
+- PASS latency smoke wrote `reports/phase_08_performance_sre/latency_baseline.json` generated artifact.
+- PASS canonical runtime, maturity lanes, schemas, route inventory, documented routes, backend smoke.
+- PASS TimeGraph, RuleLang, Impact, Agent, Protocol, public safety, Render, repo hygiene.
+- PASS ruff general lint.
+- PASS `python -m ruff check backend scripts packages --select BLE001`.
+- PASS repo-wide ruff lint: `python -m ruff check .`.
+- PASS repo-wide broad-exception lint: `python -m ruff check . --select BLE001`.
+- PASS configured mypy: `Success: no issues found in 46 source files`.
+- PASS Python compileall over backend, scripts, SDK, tools, integrations, benchmark, and examples.
+- PASS full pytest suite after public-safety example scan hardening: `846 passed, 8 skipped`.
+- PASS Python SDK tests: `16 passed`.
+- BLOCKED `python -m build packages/parva-python`: Python module `build` is not installed in this environment.
+- UPDATED root `pyproject.toml` dev extras now declare `build>=1.2.0` and `wheel>=0.45.0` for reproducible SDK packaging environments.
+- BLOCKED `python -m pip install build`: PyPI/network socket access denied with WinError 10013.
+- PASS `PIP_CACHE_DIR=tmp/pip-cache python -m pip wheel --no-build-isolation --no-deps --wheel-dir dist/sdk-wheel packages/parva-python`.
+- BLOCKED `python -m pip_audit --local`: PyPI vulnerability metadata lookup blocked by WinError 10013.
+- WARN `python -m pip check`: ambient user-site `opencv-python-headless 4.13.0.92` requires `numpy>=2`; repo does not reference OpenCV and pins NumPy only for the optional research extra.
+- BLOCKED `npm --prefix frontend audit` and `npm --prefix packages/parva-js audit`: npm registry audit endpoint returned an error in this sandbox, even with repo-local npm cache.
+- PASS JS SDK tests: `13 passed`.
+- PASS `npm pack` from `packages/parva-js`.
+- PASS frontend lint, tests (`27 files`, `120 tests`), and build.
+- PASS component size checker in warn-only mode; three files remain over 800 lines.
+- PASS static benchmark runner and benchmark JSON validation.
+- PASS `python scripts/release/verify_public.py`: public reproducibility gate passed.
+- BLOCKED `git add -f ... reports/...`: `.git/index.lock` permission denied.
+- BLOCKED `.git` ACL repair: explicit DENY ACE remains and `takeown /F .git` reports the sandbox user does not have ownership privileges.

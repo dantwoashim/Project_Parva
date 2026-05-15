@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from app.calendar.ephemeris.swiss_eph import calculate_sunrise, calculate_sunset
 from app.calendar.panchanga import get_panchanga
@@ -241,7 +241,7 @@ def _timezone(tz_name: str | None) -> ZoneInfo:
     if tz_name:
         try:
             return ZoneInfo(tz_name)
-        except Exception:
+        except ZoneInfoNotFoundError:
             return ZoneInfo("Asia/Kathmandu")
     return ZoneInfo("Asia/Kathmandu")
 
@@ -274,7 +274,7 @@ def _default_sun_times(
         if next_sunrise <= sunset:
             next_sunrise += timedelta(days=1)
         return sunrise, sunset, next_sunrise
-    except Exception:
+    except (RuntimeError, TypeError, ValueError):
         return (
             datetime(target_date.year, target_date.month, target_date.day, 6, 15, tzinfo=tz),
             datetime(target_date.year, target_date.month, target_date.day, 18, 0, tzinfo=tz),

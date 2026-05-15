@@ -5,7 +5,6 @@ import os
 
 from parva import ParvaClient
 
-
 client = ParvaClient(base_url=os.environ.get("PARVA_API_BASE", "https://api.prabinghimire1.com.np/v3/api"))
 
 payload = {

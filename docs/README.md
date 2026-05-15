@@ -14,10 +14,12 @@ a fresh clone can find the right reference without guessing.
 
 ## Production and Public Demo
 
+- [Quickstart](QUICKSTART.md)
 - [Subsystem Maturity](SUBSYSTEM_MATURITY.md)
 - [Route Profiles](ROUTE_PROFILES.md)
 - [Stability Guide](STABILITY.md)
 - [API Quickstart](API_QUICKSTART.md)
+- [API Reference](API_REFERENCE.md)
 - [API Reference v3](API_REFERENCE_V3.md)
 - [Deployment](DEPLOYMENT.md)
 - [Performance Notes](PERFORMANCE.md)
@@ -26,6 +28,8 @@ a fresh clone can find the right reference without guessing.
 - [Security Policy](../SECURITY.md)
 - [Security Engineering Notes](SECURITY.md)
 - [Versioning](VERSIONING.md)
+- [API Versioning and Deprecation](API_VERSIONING_AND_DEPRECATION.md)
+- [Error Model](ERROR_MODEL.md)
 
 ## Trust, Source Policy, and Protocol
 
@@ -43,6 +47,12 @@ a fresh clone can find the right reference without guessing.
 - [Protocol Draft Boundary](PROTOCOL_DRAFT_BOUNDARY.md)
 - [Protocol Security](PROTOCOL_SECURITY.md)
 - [Vendor Date Risk Audit](VENDOR_DATE_RISK_AUDIT.md)
+- [Enterprise Deployment](ENTERPRISE_DEPLOYMENT.md)
+- [Licensing](LICENSING.md)
+- [Commercial License](COMMERCIAL_LICENSE.md)
+- [Pricing Strategy](PRICING_STRATEGY.md)
+- [Government Pilot Proposal](GOVERNMENT_PILOT_PROPOSAL.md)
+- [Temporal SBOM Service](TEMPORAL_SBOM_SERVICE.md)
 - [Source Policy](future_bs/SOURCE_POLICY.md)
 - [Claim Boundary](future_bs/CLAIM_BOUNDARY.md)
 - [Risk Labels](future_bs/RISK_LABELS.md)
@@ -58,6 +68,8 @@ a fresh clone can find the right reference without guessing.
 - [Future BS Model Registry](future_bs/MODEL_REGISTRY.md)
 - [Consumer Panchanga and Kundali Boundary](CONSUMER_PANCHANGA_KUNDALI_BOUNDARY.md)
 - [SDK Roadmap](SDK_ROADMAP.md)
+- [SDK Strategy](SDK_STRATEGY.md)
+- [SDK Publishing Checklist](SDK_PUBLISHING_CHECKLIST.md)
 - [Deployment Model](DEPLOYMENT.md)
 - [Future BS Research](future_bs/FUTURE_BS_RESEARCH.md)
 - [Reconciliation Workflow](future_bs/RECONCILIATION_WORKFLOW.md)

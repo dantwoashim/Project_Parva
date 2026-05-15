@@ -1,0 +1,135 @@
+{
+  "base_url": null,
+  "failures": [],
+  "generated_at_unix": 1778805189,
+  "mode": "local_in_process",
+  "profile": "public_reference",
+  "results": [
+    {
+      "budget_ms": 25,
+      "errors": [],
+      "lane": "stable_core",
+      "max_ms": 2.373,
+      "max_payload_bytes": 8192,
+      "method": "GET",
+      "p50_ms": 2.232,
+      "p95_ms": 2.373,
+      "path": "/health",
+      "payload_bytes_max": 1083,
+      "requests": 5,
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "budget_ms": 50,
+      "errors": [],
+      "lane": "stable_core",
+      "max_ms": 2.394,
+      "max_payload_bytes": 262144,
+      "method": "GET",
+      "p50_ms": 2.165,
+      "p95_ms": 2.394,
+      "path": "/health/ready",
+      "payload_bytes_max": 921,
+      "requests": 5,
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "budget_ms": 75,
+      "errors": [],
+      "lane": "stable_core",
+      "max_ms": 13.221,
+      "max_payload_bytes": 262144,
+      "method": "GET",
+      "p50_ms": 12.629,
+      "p95_ms": 13.221,
+      "path": "/v3/api/calendar/convert?date=2026-04-14",
+      "payload_bytes_max": 3228,
+      "requests": 5,
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "budget_ms": 300,
+      "errors": [],
+      "lane": "stable_public",
+      "max_ms": 5.947,
+      "max_payload_bytes": 65536,
+      "method": "GET",
+      "p50_ms": 4.583,
+      "p95_ms": 5.947,
+      "path": "/v3/api/calendar/today",
+      "payload_bytes_max": 3367,
+      "requests": 5,
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "budget_ms": 300,
+      "errors": [],
+      "lane": "stable_public",
+      "max_ms": 2.542,
+      "max_payload_bytes": 262144,
+      "method": "GET",
+      "p50_ms": 2.305,
+      "p95_ms": 2.542,
+      "path": "/v3/api/festivals/upcoming?days=30&from_date=2026-10-21&quality_band=all",
+      "payload_bytes_max": 5496,
+      "requests": 5,
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ]
+    },
+    {
+      "budget_ms": 100,
+      "errors": [],
+      "lane": "protocol_draft",
+      "max_ms": 2.436,
+      "max_payload_bytes": 65536,
+      "method": "GET",
+      "p50_ms": 2.206,
+      "p95_ms": 2.436,
+      "path": "/v3/api/protocol/version",
+      "payload_bytes_max": 455,
+      "requests": 5,
+      "statuses": [
+        200,
+        200,
+        200,
+        200,
+        200
+      ]
+    }
+  ],
+  "summary": {
+    "failures": 0,
+    "route_count": 6,
+    "warnings": 0
+  },
+  "warnings": []
+}

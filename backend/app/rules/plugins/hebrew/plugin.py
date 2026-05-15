@@ -45,7 +45,7 @@ class HebrewObservancePlugin:
                 g = self.calendar.convert_to_gregorian(hy, month, day)
                 if g.year == year:
                     candidates.append(g)
-            except Exception:
+            except (RuntimeError, TypeError, ValueError):
                 continue
         return sorted(set(candidates))
 

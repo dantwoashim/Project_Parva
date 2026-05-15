@@ -40,6 +40,7 @@ reports/
 benchmark/results/
 tmp/
 *.zip
+*.tgz
 evaluation.csv
 backend/evaluation.csv
 sdk/python/build/

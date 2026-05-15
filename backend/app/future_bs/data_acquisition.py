@@ -757,7 +757,7 @@ def collect_witnesses(fetch_rat32: bool = True) -> dict[str, Any]:
             all_witnesses.extend(witnesses)
             attempts.extend(source_attempts)
             failures.extend(source_failures)
-        except Exception as exc:  # pragma: no cover - defensive logging path
+        except (OSError, RuntimeError, TypeError, ValueError) as exc:  # pragma: no cover - defensive logging path
             errors.append({"parser": func.__name__, "error": repr(exc), "created_at": utc_now()})
             failures.append(
                 source_attempt(

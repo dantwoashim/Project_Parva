@@ -151,7 +151,7 @@ def is_ns_new_year(check_date: date) -> bool:
     try:
         ns_new_year = get_ns_new_year_date(check_date.year)
         return check_date == ns_new_year
-    except Exception:
+    except (RuntimeError, TypeError, ValueError):
         return False
 
 
@@ -217,7 +217,7 @@ def get_current_ns_year(on_date: Optional[date] = None) -> int:
             # Before NS new year of this Gregorian year
             # We're still in the previous NS year
             return gregorian_year - 880
-    except Exception:
+    except (RuntimeError, TypeError, ValueError):
         # Fallback: assume before NS new year
         return gregorian_year - 880
 

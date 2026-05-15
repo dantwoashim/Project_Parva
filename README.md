@@ -1,5 +1,7 @@
 # Project Parva
 
+[![CI](https://github.com/dantwoashim/Project_Parva/actions/workflows/ci.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/ci.yml)
+
 Project Parva is open-source Nepali temporal infrastructure for Bikram Sambat conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation.
 
 It also includes a controlled future-BS risk research layer for evaluating month-length assumptions before they affect financial, contractual, reporting, or operational systems.
@@ -220,7 +222,9 @@ make verify
 
 ## Public Documentation
 
+- [Quickstart](docs/QUICKSTART.md)
 - [API quickstart](docs/API_QUICKSTART.md)
+- [API reference](docs/API_REFERENCE.md)
 - [API reference](docs/API_REFERENCE_V3.md)
 - [Development](docs/DEVELOPMENT.md)
 - [Public API boundary](docs/PUBLIC_API_BOUNDARY.md)
@@ -232,6 +236,13 @@ make verify
 - [Deployment](docs/DEPLOYMENT.md)
 - [Stability policy](docs/STABILITY.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
+- [SDK strategy](docs/SDK_STRATEGY.md)
+- [SDK publishing checklist](docs/SDK_PUBLISHING_CHECKLIST.md)
+- [API versioning and deprecation](docs/API_VERSIONING_AND_DEPRECATION.md)
+- [Licensing](docs/LICENSING.md)
+- [Enterprise deployment](docs/ENTERPRISE_DEPLOYMENT.md)
+- [Vendor date risk audit](docs/VENDOR_DATE_RISK_AUDIT.md)
+- [Nepali Time Reliability Benchmark](public-benchmark/README.md)
 - [Data sources and licenses](docs/DATA_SOURCES_AND_LICENSES.md)
 - [Future BS research](docs/future_bs/FUTURE_BS_RESEARCH.md)
 - [Future BS risk labels](docs/future_bs/RISK_LABELS.md)

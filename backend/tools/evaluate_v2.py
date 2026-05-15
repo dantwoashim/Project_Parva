@@ -88,7 +88,7 @@ def evaluate_v2(acceptable_variance: int = 1, use_overrides: bool = True) -> Lis
                 )
             )
 
-        except Exception as e:
+        except (RuntimeError, TypeError, ValueError) as e:
             results.append(
                 EvalResult(
                     festival_id=festival_id,

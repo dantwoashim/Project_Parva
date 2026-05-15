@@ -36,7 +36,7 @@ def generate_festival_package(year: int) -> Dict:
                     "method": result.method,
                     "lunar_month": result.lunar_month,
                 }
-        except Exception:
+        except (RuntimeError, TypeError, ValueError):
             continue
     return festivals
 
@@ -64,7 +64,7 @@ def generate_panchanga_package(start_date: date, days: int = 365) -> list:
                     "vaara": panchanga["vaara"]["name_english"],
                 }
             )
-        except Exception:
+        except (RuntimeError, TypeError, ValueError):
             entries.append({"date": d.isoformat(), "error": True})
     return entries
 
@@ -91,10 +91,10 @@ def generate_bs_calendar_package(bs_year: int) -> Dict:
                             "gregorian": greg.isoformat(),
                         }
                     )
-                except Exception:
+                except (RuntimeError, TypeError, ValueError):
                     break
             months[month] = month_data
-        except Exception:
+        except (RuntimeError, TypeError, ValueError):
             continue
     return months
 

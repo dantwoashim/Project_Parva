@@ -20,7 +20,7 @@ def _read_json(path: Path) -> Dict[str, Any]:
         return {}
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except (OSError, json.JSONDecodeError):
         return {}
 
 
@@ -30,7 +30,7 @@ def _derive_uptime(metrics: Dict[str, Any]) -> float:
     if "uptime_percent" in metrics:
         try:
             return float(metrics["uptime_percent"])
-        except Exception:
+        except (TypeError, ValueError):
             pass
     tests_ok = bool(metrics.get("tests_passed"))
     smoke_ok = bool(metrics.get("smoke_passed"))

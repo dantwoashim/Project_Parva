@@ -57,7 +57,7 @@ def compute_rows() -> tuple[list[Row], dict[int, dict[str, float | int]]]:
         try:
             estimated_back = bs_to_gregorian(*estimated)
             delta_days = (estimated_back - current).days
-        except Exception:
+        except (RuntimeError, TypeError, ValueError):
             delta_days = None
 
         rows.append(

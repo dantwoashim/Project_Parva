@@ -66,7 +66,7 @@ def validate_pack_data(data: Dict[str, Any]) -> List[str]:
 def validate_pack_file(path: Path) -> List[str]:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:
+    except (json.JSONDecodeError, OSError, UnicodeDecodeError) as exc:
         return [f"Invalid JSON: {exc}"]
 
     if not isinstance(payload, dict):

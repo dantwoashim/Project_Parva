@@ -42,7 +42,7 @@ def bench_bs_round_trip(years: int = 100) -> Dict:
                         passed += 1
                     else:
                         failed += 1
-                except Exception:
+                except (RuntimeError, TypeError, ValueError):
                     failed += 1
 
     elapsed = time.time() - start
@@ -76,7 +76,7 @@ def bench_tithi_consistency(days: int = 365) -> Dict:
                 passed += 1
             else:
                 failed += 1
-        except Exception:
+        except (RuntimeError, TypeError, ValueError):
             failed += 1
 
     elapsed = time.time() - start
@@ -107,7 +107,7 @@ def bench_festival_calculation(year: int = 2025) -> Dict:
             else:
                 failed += 1
                 errors.append({"festival_id": fid, "error": "returned None"})
-        except Exception as e:
+        except (RuntimeError, TypeError, ValueError) as e:
             failed += 1
             errors.append({"festival_id": fid, "error": str(e)})
 

@@ -22,10 +22,12 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "build>=1.2.0",
     "mypy>=1.11.0",
     "pip-audit>=2.8.0",
     "ruff>=0.8.0",
     "setuptools>=82.0.1",
+    "wheel>=0.45.0",
 ]
 test = [
     "httpx>=0.27.0",

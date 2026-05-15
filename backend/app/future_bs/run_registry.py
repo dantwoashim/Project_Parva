@@ -36,7 +36,7 @@ def build_run_metadata(
             if active_ephemeris_label() == "jpl_de440"
             else "swiss_moshier_lahiri_sidereal"
         )
-    except Exception:
+    except (ImportError, RuntimeError, TypeError, ValueError):
         ephemeris_version = "unknown"
     payload = {
         "run_id": run_id,

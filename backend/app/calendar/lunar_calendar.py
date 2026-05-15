@@ -417,7 +417,7 @@ def _search_tithi_in_month(
             udaya = get_udaya_tithi(check_date)
             if udaya["tithi"] == tithi and udaya["paksha"] == paksha:
                 return check_date
-        except Exception:
+        except (LookupError, RuntimeError, TypeError, ValueError):
             continue
 
     # No udaya match found - return None instead of unreliable fallback

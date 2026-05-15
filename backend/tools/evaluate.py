@@ -123,7 +123,7 @@ def load_moha_matched_tests(report_dir: Path) -> List[Tuple[str, str, str, str]]
                     continue
                 try:
                     g_date = bs_to_gregorian(year_match, month_num, day_num)
-                except Exception:
+                except (RuntimeError, TypeError, ValueError):
                     continue
                 key = (festival_id, year_match)
                 by_festival_year.setdefault(key, []).append(
@@ -213,7 +213,7 @@ def evaluate_festival(
             source=source,
             notes=notes,
         )
-    except Exception as e:
+    except (RuntimeError, TypeError, ValueError) as e:
         return EvaluationResult(
             festival_id=festival_id,
             year=year,
@@ -237,7 +237,7 @@ def evaluate_festival(
             notes=notes,
             error=f"Unknown festival: {festival_id}",
         )
-    except Exception as e:
+    except (RuntimeError, TypeError, ValueError) as e:
         return EvaluationResult(
             festival_id=festival_id,
             year=year,

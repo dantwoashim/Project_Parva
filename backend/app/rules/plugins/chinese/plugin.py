@@ -72,7 +72,7 @@ class ChineseObservancePlugin:
             return None
         try:
             start = self.calendar.convert_to_gregorian(year, month, day)
-        except Exception:
+        except (RuntimeError, TypeError, ValueError):
             return None
 
         return ObservanceDate(

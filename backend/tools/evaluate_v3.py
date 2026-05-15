@@ -39,7 +39,7 @@ def evaluate_v3():
             try:
                 udaya = get_udaya_tithi(d)
                 tithi_info = f"{udaya['paksha'].capitalize()} {udaya['tithi']} ({udaya['name']})"
-            except Exception:
+            except (RuntimeError, TypeError, ValueError):
                 tithi_info = "?"
 
             print(f"✅ {fid:22} -> {d} | {tithi_info:30} | {result.method}")

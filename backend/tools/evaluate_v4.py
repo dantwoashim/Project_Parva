@@ -114,7 +114,7 @@ def evaluate_case(
             rule_type=rule_type,
             probable_cause=cause,
         )
-    except Exception as exc:
+    except (RuntimeError, TypeError, ValueError) as exc:
         return EvalRow(
             festival_id=festival_id,
             year=year,
@@ -180,7 +180,7 @@ def build_run_metadata(args: argparse.Namespace, cases: list[tuple[str, str, str
     output_dir = Path(args.output_dir)
     try:
         output_dir_str = str(output_dir.resolve().relative_to(PROJECT_ROOT.resolve()))
-    except Exception:
+    except ValueError:
         output_dir_str = str(output_dir)
     engine_manifest = build_engine_manifest()
     source_loader = JsonSourceLoader(root=PROJECT_ROOT)

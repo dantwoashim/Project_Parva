@@ -1,0 +1,262 @@
+{
+  "implementation": "project-parva-reference",
+  "protocol_version": "parva-protocol-0.1.0",
+  "level": "parva_full",
+  "status": "pass",
+  "tests_run": 45,
+  "passed": 45,
+  "failed": 0,
+  "test_results": [
+    {
+      "test_id": "core.level_known",
+      "status": "pass",
+      "note": "Requested compatibility level is registered by the protocol draft."
+    },
+    {
+      "test_id": "core.date_conversion",
+      "status": "pass",
+      "note": "BS 2083-01-01 converts through the reference calendar route logic."
+    },
+    {
+      "test_id": "core.protocol_version",
+      "status": "pass",
+      "note": "Protocol version and semver are published."
+    },
+    {
+      "test_id": "core.claim_boundary",
+      "status": "pass",
+      "note": "Protocol claim boundary states the preview is not legal authority."
+    },
+    {
+      "test_id": "core.spec_index",
+      "status": "pass",
+      "note": "Protocol specs are discoverable from the public spec index."
+    },
+    {
+      "test_id": "core.schema_index",
+      "status": "pass",
+      "note": "Protocol schemas are discoverable from the public schema index."
+    },
+    {
+      "test_id": "core.credential_hash_preview",
+      "status": "pass",
+      "note": "Hash-only preview credentials issue and verify for a public historical date."
+    },
+    {
+      "test_id": "source.fixture_not_official",
+      "status": "pass",
+      "note": "Fixture/research sources cannot claim official authority."
+    },
+    {
+      "test_id": "source.registry_readable",
+      "status": "pass",
+      "note": "Public source registry exists and is readable."
+    },
+    {
+      "test_id": "source.registry_claim_boundaries",
+      "status": "pass",
+      "note": "Public source records include claim boundary metadata."
+    },
+    {
+      "test_id": "core.invalid_fixture_rejected",
+      "status": "pass",
+      "note": "A level-specific invalid fixture fails with a meaningful rejection."
+    },
+    {
+      "test_id": "core.compatibility_levels_indexed",
+      "status": "pass",
+      "note": "Compatibility levels are listed in the public protocol index."
+    },
+    {
+      "test_id": "core.protocol_status_draft",
+      "status": "pass",
+      "note": "Protocol status is explicitly draft."
+    },
+    {
+      "test_id": "core.capabilities_not_claimed",
+      "status": "pass",
+      "note": "Protocol capabilities declare what is not claimed."
+    },
+    {
+      "test_id": "core.credential_status_hash_only",
+      "status": "pass",
+      "note": "Credential preview is hash-only and unsigned."
+    },
+    {
+      "test_id": "core.offline_bundle_unsigned_preview",
+      "status": "pass",
+      "note": "Offline bundle manifest is labeled unsigned preview."
+    },
+    {
+      "test_id": "core.private_artifacts_excluded_from_offline",
+      "status": "pass",
+      "note": "Offline manifest excludes private and research-only artifact paths."
+    },
+    {
+      "test_id": "core.protocol_draft_doc_exists",
+      "status": "pass",
+      "note": "Protocol public documentation exists."
+    },
+    {
+      "test_id": "core.calendar_credential_schema_exists",
+      "status": "pass",
+      "note": "Calendar credential schema exists in the protocol schema index."
+    },
+    {
+      "test_id": "core.conformance_schema_exists",
+      "status": "pass",
+      "note": "Conformance report schema exists in the protocol schema index."
+    },
+    {
+      "test_id": "source.registry_has_entries",
+      "status": "pass",
+      "note": "Public source registry has at least one source."
+    },
+    {
+      "test_id": "source.no_private_tier_in_public_registry",
+      "status": "pass",
+      "note": "Public source registry does not expose private-tier sources."
+    },
+    {
+      "test_id": "source.tiers_normalize",
+      "status": "pass",
+      "note": "Public source tiers normalize through the canonical taxonomy."
+    },
+    {
+      "test_id": "source.warnings_present",
+      "status": "pass",
+      "note": "Public sources carry notes or warnings for non-authority use."
+    },
+    {
+      "test_id": "trust.release_manifest_exists",
+      "status": "pass",
+      "note": "Public release manifest exists and is readable."
+    },
+    {
+      "test_id": "trust.trust_log_exists",
+      "status": "pass",
+      "note": "Public trust log exists and is non-empty."
+    },
+    {
+      "test_id": "trust.release_manifest_hashes",
+      "status": "pass",
+      "note": "Public release manifest declares artifact hashes."
+    },
+    {
+      "test_id": "trust.source_registry_hashed",
+      "status": "pass",
+      "note": "Source registry is included in offline checksums."
+    },
+    {
+      "test_id": "trust.release_manifest_hashed",
+      "status": "pass",
+      "note": "Release manifest is included in offline checksums."
+    },
+    {
+      "test_id": "timegraph.public_graph_has_facts",
+      "status": "pass",
+      "note": "Public TimeGraph exposes traceable facts."
+    },
+    {
+      "test_id": "timegraph.trace_route_documented",
+      "status": "pass",
+      "note": "TimeGraph trace behavior is documented."
+    },
+    {
+      "test_id": "rulelang.schema_exists",
+      "status": "pass",
+      "note": "RuleLang schema exists."
+    },
+    {
+      "test_id": "rulelang.public_rules_exist",
+      "status": "pass",
+      "note": "Public RuleLang registry has executable public rules."
+    },
+    {
+      "test_id": "rulelang.no_arbitrary_code_claim",
+      "status": "pass",
+      "note": "RuleLang docs state arbitrary code is not executed."
+    },
+    {
+      "test_id": "impact.real_dependencies_extracted",
+      "status": "pass",
+      "note": "Impact simulator extracts dependencies from TimeGraph facts, evidence packets, rules, and profiles."
+    },
+    {
+      "test_id": "impact.release_manifest_dependency",
+      "status": "pass",
+      "note": "Impact simulator registers release-manifest dependencies where feasible."
+    },
+    {
+      "test_id": "agent.sdk_python_exists",
+      "status": "pass",
+      "note": "Python SDK client file exists for local agent/protocol use."
+    },
+    {
+      "test_id": "agent.sdk_javascript_exists",
+      "status": "pass",
+      "note": "JavaScript SDK entrypoint exists for public integration use."
+    },
+    {
+      "test_id": "agent.tool_registry_broad",
+      "status": "pass",
+      "note": "Agent-safe deterministic tool registry includes broad public temporal tools."
+    },
+    {
+      "test_id": "agent.review_gate_documented",
+      "status": "pass",
+      "note": "Agent-safe review gates are documented."
+    },
+    {
+      "test_id": "offline.manifest_checksums",
+      "status": "pass",
+      "note": "Preview offline manifest has checksums for all required contents."
+    },
+    {
+      "test_id": "offline.required_contents_present",
+      "status": "pass",
+      "note": "Required offline bundle source files exist in the repository."
+    },
+    {
+      "test_id": "offline.no_private_paths",
+      "status": "pass",
+      "note": "Offline manifest excludes private and source archive paths."
+    },
+    {
+      "test_id": "protocol.schemas_indexed",
+      "status": "pass",
+      "note": "Protocol draft schemas are indexed for alpha conformance."
+    },
+    {
+      "test_id": "protocol.negative_artifact_rejected",
+      "status": "pass",
+      "note": "Invalid conformance artifact is rejected."
+    }
+  ],
+  "warnings": [],
+  "limitations": [
+    "self_attested_reference_implementation",
+    "not_third_party_certification",
+    "not_official_calendar_authority",
+    "public_artifacts_only",
+    "agent_outputs_require_review_for_sensitive_use",
+    "offline_bundle_is_unsigned_preview"
+  ],
+  "public_private_data_policy": {
+    "public": "Public conformance uses checked-in public release, source, schema, SDK, and synthetic negative fixtures only.",
+    "private": "Private source archives, client artifacts, and research-only future-BS exact vectors are excluded.",
+    "authority_boundary": "Self-reported compatibility is not external certification or official calendar authority."
+  },
+  "generated_at": "2026-05-14T15:37:46.704529Z",
+  "meta": {
+    "release_id": "parva-bs-public-demo",
+    "protocol_version": "parva-protocol-0.1.0",
+    "claim_boundary": "parva_protocol_preview_not_legal_authority",
+    "warnings": [
+      "public_protocol_preview_not_legal_authority"
+    ],
+    "trace_id": "protocol_trace_88eb3a916d7b4f17",
+    "data_mode": "public"
+  },
+  "report_hash": "sha256:b5c9f2d4916dba4b2e8f275fc492fd2b56f0cc9b479a03b9a7874df4616a6d42"
+}

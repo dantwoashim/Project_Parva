@@ -198,7 +198,7 @@ def _sunrise_sunset(local_date: date) -> tuple[datetime | None, datetime | None,
         sunrise = to_nepal_time(calculate_sunrise(local_date))
         sunset = to_nepal_time(calculate_sunset(local_date))
         return sunrise, sunset, None
-    except Exception as exc:  # pragma: no cover - defensive around ephemeris backends
+    except (RuntimeError, TypeError, ValueError) as exc:  # pragma: no cover - defensive around ephemeris backends
         return None, None, str(exc)
 
 

@@ -78,7 +78,7 @@ def run_pack(
 
         try:
             response, elapsed_ms = request_fn(case["endpoint"], case.get("params", {}))
-        except Exception as exc:
+        except (OSError, RuntimeError, TypeError, ValueError) as exc:
             response = {}
             elapsed_ms = -1
             status = "fail"

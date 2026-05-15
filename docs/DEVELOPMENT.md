@@ -22,6 +22,15 @@ If Python 3.11 is not first on PATH, point the public verification scripts at it
 PARVA_PYTHON=/path/to/python3.11 python scripts/verify_environment.py
 ```
 
+Windows PowerShell example:
+
+```powershell
+$env:PATH="C:\Users\<you>\AppData\Local\Programs\Python\Python311;C:\Users\<you>\AppData\Local\Programs\Python\Python311\Scripts;" + $env:PATH
+python --version
+node --version
+python scripts/verify_environment.py
+```
+
 On macOS or Linux:
 
 ```bash

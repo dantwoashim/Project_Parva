@@ -22,7 +22,7 @@ def _load_history() -> list[dict]:
             continue
         try:
             rows.append(json.loads(line))
-        except Exception:
+        except (json.JSONDecodeError, TypeError, ValueError):
             continue
     return rows
 

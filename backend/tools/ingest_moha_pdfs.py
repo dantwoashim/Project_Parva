@@ -400,7 +400,7 @@ def merge_overrides(
             continue
         try:
             g_date = bs_to_gregorian(e.bs_year, e.month_num, e.day_num)
-        except Exception:
+        except (RuntimeError, TypeError, ValueError):
             continue
         key = (str(g_date.year), e.matched_id)
         prev = selected.get(key)

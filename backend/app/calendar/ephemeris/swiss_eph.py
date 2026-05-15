@@ -254,7 +254,7 @@ def get_sun_longitude(
         result = swe.calc_ut(jd, SUN, flags)
         longitude = result[0][0]  # First element is longitude
         return longitude % 360
-    except Exception as e:
+    except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
         raise EphemerisError(f"Failed to calculate Sun position: {e}")
 
 
@@ -289,7 +289,7 @@ def get_moon_longitude(
         result = swe.calc_ut(jd, MOON, flags)
         longitude = result[0][0]
         return longitude % 360
-    except Exception as e:
+    except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
         raise EphemerisError(f"Failed to calculate Moon position: {e}")
 
 
@@ -327,7 +327,7 @@ def get_sun_moon_positions(
         moon_long = moon_result[0][0] % 360
 
         return (sun_long, moon_long)
-    except Exception as e:
+    except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
         raise EphemerisError(f"Failed to calculate positions: {e}")
 
 
@@ -356,7 +356,7 @@ def get_ayanamsa(dt: datetime) -> float:
     try:
         ayanamsa = swe.get_ayanamsa_ut(jd)
         return ayanamsa
-    except Exception as e:
+    except (swe.Error, EphemerisError, TypeError, ValueError) as e:
         raise EphemerisError(f"Failed to get ayanamsa: {e}")
 
 
@@ -428,7 +428,7 @@ def calculate_sunrise(
         jd_sunrise = result[1][0]  # First element of tret tuple
         return julian_day_to_datetime(jd_sunrise)
 
-    except Exception as e:
+    except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
         # NO FALLBACK - raise the error so callers know calculation failed
         # A wrong sunrise time would corrupt udaya tithi calculations
         raise EphemerisError(
@@ -484,7 +484,7 @@ def calculate_sunset(
         jd_sunset = result[1][0]  # First element of tret tuple
         return julian_day_to_datetime(jd_sunset)
 
-    except Exception as e:
+    except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
         raise EphemerisError(f"Sunset calculation failed for {date_val}: {e}")
 
 

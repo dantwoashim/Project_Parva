@@ -36,7 +36,7 @@ async def make_request(session: aiohttp.ClientSession, url: str) -> Dict:
             await response.json()
             latency = (time.perf_counter() - start) * 1000  # ms
             return {"url": url, "status": response.status, "latency_ms": latency}
-    except Exception as e:
+    except (OSError, RuntimeError, TimeoutError, ValueError) as e:
         latency = (time.perf_counter() - start) * 1000
         return {"url": url, "status": 0, "latency_ms": latency, "error": str(e)}
 
@@ -160,7 +160,7 @@ async def main():
         for ep in ENDPOINTS:
             try:
                 await make_request(session, f"{API_BASE}{ep}")
-            except Exception:
+            except (OSError, RuntimeError, TimeoutError, ValueError):
                 pass
 
     # Test at 50 req/s
