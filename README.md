@@ -1,6 +1,7 @@
 # Project Parva
 
 [![CI](https://github.com/dantwoashim/Project_Parva/actions/workflows/ci.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/ci.yml)
+[![Public verification](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml)
 
 Project Parva is open-source Nepali temporal infrastructure for Bikram Sambat conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation.
 

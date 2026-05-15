@@ -1,0 +1,171 @@
+name: Public verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  environment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install backend public dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -c requirements/constraints.txt -e .[test,dev]
+      - name: Verify toolchain
+        run: python scripts/verify_environment.py
+
+  backend-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install backend public dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -c requirements/constraints.txt -e .[test,dev]
+      - name: Run backend public gates
+        env:
+          PYTHONPATH: backend:.
+        run: |
+          python scripts/release/regenerate_public_release_hashes.py --check
+          python scripts/parva_trust_verify.py
+          python scripts/check_docs_links.py
+          python scripts/check_path_leaks.py
+          python scripts/check_future_bs_public_leakage.py
+          python scripts/release/check_public_openapi_drift.py
+          python -m pytest -q -m "not private_source and not wide_corpus and not research_artifact" --maxfail=20
+
+  governance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install governance dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -c requirements/constraints.txt -e .[test,dev]
+      - name: Run governance gates
+        env:
+          PYTHONPATH: backend:.
+        run: |
+          python scripts/check_canonical_runtime.py
+          python scripts/check_maturity_lanes.py
+          python tools/validate_schemas.py
+          python scripts/release/check_route_inventory.py
+          python scripts/release/check_documented_routes.py
+          python scripts/release/check_public_safety_gate.py
+          python scripts/release/check_repo_hygiene.py
+
+  sdk-ai-mcp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/parva-js/package-lock.json
+      - name: Install SDK dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -c requirements/constraints.txt -e .[test,dev]
+          python -m pip install -e packages/parva-python
+          npm --prefix packages/parva-js ci
+      - name: Run SDK and adapter tests
+        run: |
+          python -m pytest packages/parva-python/tests -q
+          npm --prefix packages/parva-js test
+          python -m pytest packages/parva-ai-tools/tests packages/parva-mcp-server/tests -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+      - name: Run frontend gates
+        run: |
+          npm --prefix frontend run lint
+          npm --prefix frontend test -- --run
+          npm --prefix frontend run build
+
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install benchmark dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -c requirements/constraints.txt -e .[test]
+      - name: Run public benchmark
+        env:
+          PYTHONPATH: backend:.
+        run: |
+          python public-benchmark/runners/run_against_static_baseline.py
+          python public-benchmark/runners/run_against_parva.py
+
+  release-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: |
+            frontend/package-lock.json
+            packages/parva-js/package-lock.json
+      - name: Install release gate dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -c requirements/constraints.txt -e .[test,dev]
+          python -m pip install -e packages/parva-python
+          npm --prefix frontend ci
+          npm --prefix packages/parva-js ci
+      - name: Run public release gate
+        env:
+          PARVA_PYTHON: python
+        run: python scripts/release/verify_public.py
+

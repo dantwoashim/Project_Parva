@@ -42,6 +42,10 @@ export function formatTimeReference(value) {
   if (!value) return 'Awaiting calculation';
   const candidate = typeof value === 'object' ? value.local_time || value.local || value.utc : value;
   if (!candidate) return 'Awaiting calculation';
+  const localIsoTime = String(candidate).match(/^\d{4}-\d{2}-\d{2}T(\d{2}):(\d{2})/);
+  if (localIsoTime) {
+    return formatClockParts(localIsoTime[1], localIsoTime[2]);
+  }
   if (/^\d{2}:\d{2}/.test(candidate)) return candidate.slice(0, 5);
   try {
     return new Intl.DateTimeFormat('en', {
@@ -55,6 +59,17 @@ export function formatTimeReference(value) {
 
 export function formatTimeRange(start, end) {
   return `${formatTimeReference(start)} - ${formatTimeReference(end)}`;
+}
+
+function formatClockParts(hourText, minuteText) {
+  const hour = Number(hourText);
+  const minute = Number(minuteText);
+  if (!Number.isFinite(hour) || !Number.isFinite(minute)) {
+    return `${hourText}:${minuteText}`;
+  }
+  const period = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${String(hour12).padStart(2, '0')}:${String(minute).padStart(2, '0')} ${period}`;
 }
 
 export function formatBsDate(bs = {}) {

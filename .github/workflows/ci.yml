@@ -38,7 +38,7 @@ jobs:
       - name: Run backend quality gates
         run: |
           python -m ruff check backend tests scripts sdk
-          python -m pip_audit --strict
+          python -m pip_audit --strict --requirement requirements/constraints.txt
           npm --prefix packages/parva-js audit --audit-level=high
           python scripts/release/check_repo_hygiene.py
           python scripts/security/scan_repo_secrets.py
