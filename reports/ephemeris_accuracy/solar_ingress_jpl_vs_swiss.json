@@ -1,19 +1,75 @@
 {
-  "schema_version": "2026-05-15.ephemeris_accuracy",
-  "status": "generated_artifact",
   "claim_boundary": "astronomy_evidence_not_civil_authority",
-  "public_runtime_requires_jpl": false,
-  "local_kernel_paths_included": false,
-  "comparison": {
-    "target": "solar_ingress",
-    "primary_research_kernel": "de440",
-    "public_fallback": "swiss_moshier",
-    "result": "interface_and_policy_ready",
-    "full_differential_status": "available_when_operator_runs with verified optional kernels"
+  "confidence": {
+    "astronomy_status": "jpl_verified",
+    "boundary_risk": "unknown",
+    "civil_authority_status": "computed_not_official",
+    "claim_boundary": "astronomy_evidence_not_civil_authority",
+    "not_authority": "Astronomical computation is evidence. Official bodies and published sources remain authoritative for civil decisions.",
+    "review_required": true
   },
-  "authority_boundary": {
-    "astronomical_uncertainty": "solar/lunar longitude and ingress timing",
-    "civil_source_uncertainty": "published calendar and institution decisions",
-    "not_authority": "JPL output is evidence, not official calendar publication"
-  }
+  "generated_at": "2026-05-15T00:00:00+00:00",
+  "kernel_status": {
+    "ok": true,
+    "path_policy": "local kernel paths intentionally omitted",
+    "results": [
+      {
+        "env_var": "PARVA_JPL_DE440_KERNEL",
+        "id": "de440",
+        "present": true,
+        "private_or_research": true,
+        "public_runtime_required": false,
+        "sha256": "a4ce9bf9b3282becc9f4b2ac3cebe03a2ae7599981aabd7265fd8482fff7c4b5",
+        "status": "pass"
+      },
+      {
+        "env_var": "PARVA_JPL_DE441_PART1_KERNEL",
+        "id": "de441_part_1",
+        "present": true,
+        "private_or_research": true,
+        "public_runtime_required": false,
+        "sha256": "13757827f5db41b835a24bbd637488636ce79a8ca754062fed17844f7d5b618e",
+        "status": "pass"
+      },
+      {
+        "env_var": "PARVA_JPL_DE441_PART2_KERNEL",
+        "id": "de441_part_2",
+        "present": true,
+        "private_or_research": true,
+        "public_runtime_required": false,
+        "sha256": "3abb17dae2d78dd34880377544aacb54892104a0d4462b322cb9f4454d4887f6",
+        "status": "pass"
+      },
+      {
+        "env_var": "PARVA_NAIF_LSK_KERNEL",
+        "id": "naif_leap_seconds",
+        "present": false,
+        "private_or_research": true,
+        "public_runtime_required": false,
+        "status": "skipped_absent_optional_kernel"
+      }
+    ]
+  },
+  "not_authority": "This report is astronomy evidence only and is not civil calendar authority.",
+  "samples": [
+    {
+      "delta_arcseconds_jpl_minus_swiss": -2.812649,
+      "jpl_apparent_solar_longitude_deg": 24.059935573,
+      "swiss_apparent_solar_longitude_deg": 24.060716864,
+      "utc": "2026-04-14T00:00:00+00:00"
+    },
+    {
+      "delta_arcseconds_jpl_minus_swiss": -2.737446,
+      "jpl_apparent_solar_longitude_deg": 113.507615812,
+      "swiss_apparent_solar_longitude_deg": 113.508376214,
+      "utc": "2026-07-16T00:00:00+00:00"
+    },
+    {
+      "delta_arcseconds_jpl_minus_swiss": -2.844416,
+      "jpl_apparent_solar_longitude_deg": 203.639146241,
+      "swiss_apparent_solar_longitude_deg": 203.639936357,
+      "utc": "2026-10-17T00:00:00+00:00"
+    }
+  ],
+  "status": "computed"
 }

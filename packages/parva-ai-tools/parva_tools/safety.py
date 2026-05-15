@@ -24,10 +24,14 @@ FORBIDDEN_ROUTE_FRAGMENTS = (
 )
 
 UNSAFE_DESCRIPTION_PHRASES = (
+    "official future",
+    "government approved",
+    "guaranteed future",
     "official future date",
     "legal authority",
     "tax authority",
     "banking authority",
+    "payroll authority",
     "payroll approval",
     "government approval",
     "religious authority",

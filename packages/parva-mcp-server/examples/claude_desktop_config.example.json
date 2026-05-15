@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "project-parva": {
+      "command": "python",
+      "args": ["-m", "parva_mcp_server.server", "--manifest"],
+      "env": {
+        "PARVA_PUBLIC_ORIGIN": "https://api.prabinghimire1.com.np"
+      }
+    }
+  }
+}

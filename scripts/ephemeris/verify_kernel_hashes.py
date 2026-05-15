@@ -21,29 +21,29 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _kernel_path(kernel: dict[str, Any]) -> Path | None:
+def _kernel_path(kernel: dict[str, Any], *, project_root: Path = PROJECT_ROOT) -> Path | None:
     env_var = str(kernel.get("path_env_var") or "")
     configured = os.getenv(env_var, "").strip() if env_var else ""
     if configured:
         return Path(configured).expanduser()
 
     defaults = {
-        "PARVA_JPL_DE440_KERNEL": PROJECT_ROOT / "data" / "ephemeris" / "jpl" / "de440.bsp",
-        "PARVA_JPL_DE441_PART1_KERNEL": PROJECT_ROOT / "data" / "ephemeris" / "jpl" / "de441_part-1.bsp",
-        "PARVA_JPL_DE441_PART2_KERNEL": PROJECT_ROOT / "data" / "ephemeris" / "jpl" / "de441_part-2.bsp",
+        "PARVA_JPL_DE440_KERNEL": project_root / "data" / "ephemeris" / "jpl" / "de440.bsp",
+        "PARVA_JPL_DE441_PART1_KERNEL": project_root / "data" / "ephemeris" / "jpl" / "de441_part-1.bsp",
+        "PARVA_JPL_DE441_PART2_KERNEL": project_root / "data" / "ephemeris" / "jpl" / "de441_part-2.bsp",
     }
     return defaults.get(env_var)
 
 
-def verify() -> dict[str, Any]:
-    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+def verify(config_path: Path = CONFIG_PATH, *, project_root: Path = PROJECT_ROOT) -> dict[str, Any]:
+    config = json.loads(config_path.read_text(encoding="utf-8"))
     results: list[dict[str, Any]] = []
     ok = True
 
     for kernel in config.get("kernels", []):
         kernel_id = str(kernel.get("id") or "unknown")
         expected = kernel.get("expected_sha256")
-        path = _kernel_path(kernel)
+        path = _kernel_path(kernel, project_root=project_root)
         present = bool(path and path.exists())
         row: dict[str, Any] = {
             "id": kernel_id,
@@ -67,7 +67,7 @@ def verify() -> dict[str, Any]:
 
     return {
         "ok": ok,
-        "config": "config/ephemeris-kernels.yaml",
+        "config": "config/ephemeris-kernels.yaml" if config_path == CONFIG_PATH else config_path.name,
         "results": results,
         "path_policy": "local kernel paths intentionally omitted",
     }

@@ -29,3 +29,6 @@ class EphemerisAdapter:
             "available": self.available,
             "notes": self.notes,
         }
+
+    def status(self) -> dict:
+        return self.payload()

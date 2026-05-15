@@ -6,6 +6,7 @@ from parva_mcp_server.manifest import (
     lint_manifest,
     manifest_digest,
 )
+from parva_mcp_server.server import UnsafeMcpCall, call_tool, check_server
 
 
 def test_manifest_lints_clean():
@@ -53,3 +54,29 @@ def test_resources_tools_and_prompts_exist():
 def test_manifest_digest_is_stable():
     manifest = build_manifest()
     assert manifest["manifest_sha256"] == manifest_digest(manifest, include_digest=False)
+
+
+def test_server_check_passes_and_probe_has_claim_boundary():
+    result = check_server()
+    assert result["ok"] is True
+    assert result["probe"]["claim_boundary"] == "decision_support_not_authority"
+    assert result["probe"]["review_required"] is True
+
+
+def test_unsafe_tool_call_is_rejected():
+    try:
+        call_tool("future_bs_exact_prediction", {})
+    except UnsafeMcpCall as exc:
+        assert "Unknown" in str(exc)
+    else:
+        raise AssertionError("unsafe tool call was not rejected")
+
+
+def test_safe_tool_call_can_use_client_abstraction():
+    class FakeClient:
+        def request(self, method, route, payload):
+            return {"method": method, "route": route, "payload": payload}
+
+    result = call_tool("get_fiscal_year", {"bs_year": 2082}, client=FakeClient())
+    assert result["route"] == "/v3/api/enterprise/fiscal-year/2082"
+    assert result["claim_boundary"] == "decision_support_not_authority"

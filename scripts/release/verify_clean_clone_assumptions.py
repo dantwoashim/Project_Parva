@@ -80,7 +80,8 @@ def verify_clean_clone_assumptions() -> list[str]:
     config_text = (PROJECT_ROOT / "config" / "ephemeris-kernels.yaml").read_text(encoding="utf-8")
     if '"public_runtime_required": true' in config_text or "public_runtime_required: true" in config_text:
         issues.append("config/ephemeris-kernels.yaml: JPL kernels must not be public-runtime required")
-    if "D:\\" in config_text or "C:\\" in config_text:
+    local_drive_tokens = ("D:" + chr(92), "C:" + chr(92))
+    if any(token in config_text for token in local_drive_tokens):
         issues.append("config/ephemeris-kernels.yaml: local absolute path leaked")
 
     return issues
