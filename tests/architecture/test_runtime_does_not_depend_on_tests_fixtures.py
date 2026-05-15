@@ -12,7 +12,7 @@ canonical = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(canonical)
 
 
-def test_phase_06_runtime_public_code_does_not_read_tests_fixtures() -> None:
+def test_runtime_public_code_does_not_read_tests_fixtures() -> None:
     registry = canonical.load_registry()
     failures = canonical.check_runtime_fixture_dependencies(registry)
 

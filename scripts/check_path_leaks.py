@@ -70,7 +70,7 @@ def _is_binary(path: Path) -> bool:
         return True
     try:
         chunk = path.read_bytes()[:4096]
-    except Exception:
+    except OSError:
         return True
     return b"\x00" in chunk
 

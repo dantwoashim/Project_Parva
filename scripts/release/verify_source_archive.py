@@ -26,6 +26,7 @@ COMPILED_OR_LOCAL_PARTS = {
     "node_modules",
     "output",
     "reports",
+    "tmp",
 }
 COMPILED_OR_LOCAL_SUFFIXES = {
     ".DS_Store",
@@ -38,7 +39,10 @@ COMPILED_OR_LOCAL_SUFFIXES = {
 COMPILED_OR_LOCAL_PREFIXES = (
     "backend/data/snapshots/",
     "backend/data/traces/",
+    "data/future_bs/private/",
+    "data/source_archive/",
     "frontend/dist/",
+    "local_workspace_notes/",
     "sdk/python/build/",
 )
 

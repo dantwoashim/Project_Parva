@@ -111,6 +111,7 @@ def main(argv: list[str] | None = None) -> int:
     production_preflight_env.setdefault("PARVA_RATE_LIMIT_BACKEND", "redis")
     production_preflight_env.setdefault("PARVA_REDIS_URL", "redis://localhost:6379/0")
     production_preflight_env.setdefault("PARVA_REQUIRE_PRECOMPUTED", "false")
+    production_preflight_env.setdefault("CORS_ALLOW_ORIGINS", "https://example.com")
     production_preflight_env.setdefault("PARVA_PLACE_SEARCH_ALLOW_REMOTE", "false")
     production_preflight_env.setdefault("PARVA_PLACE_SEARCH_PROVIDER_CHAIN", "offline")
     production_preflight_env.setdefault("PARVA_PLACE_SEARCH_PROVIDER_POLICY", "offline_only")

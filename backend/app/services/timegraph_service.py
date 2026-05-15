@@ -1,6 +1,6 @@
 """Public-safe Parva TimeGraph service.
 
-The TimeGraph is intentionally in-memory for Layer 6. It is built from public
+The TimeGraph is intentionally in-memory for the current public preview. It is built from public
 release artifacts and existing deterministic services, so a fresh clone can
 verify it without private source archives.
 """

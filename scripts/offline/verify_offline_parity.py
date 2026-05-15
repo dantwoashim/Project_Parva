@@ -55,7 +55,7 @@ def main() -> int:
             try:
                 remote_data = _http_get(args.base_url, endpoint, params)
                 remote_status = 200
-            except Exception as exc:
+            except (OSError, RuntimeError, TimeoutError, ValueError) as exc:
                 remote_data = {"error": str(exc)}
                 remote_status = 599
 

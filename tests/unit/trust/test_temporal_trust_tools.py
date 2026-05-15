@@ -50,7 +50,7 @@ def test_log_append_and_verify_work_on_repo_tmp_log():
         log_path.unlink(missing_ok=True)
 
 
-def test_phase_6_schemas_parse_and_validate_examples():
+def test_trust_schemas_parse_and_validate_examples():
     for relative in [
         "schemas/signature.schema.json",
         "schemas/transparency-log-entry.schema.json",

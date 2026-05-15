@@ -8,7 +8,7 @@ owner: platform-team
 
 # Future BS Research Boundary
 
-Status: Phase 07 research-private boundary.
+Status: research-private boundary.
 
 Future-BS work is a research and model-risk subsystem. Public Parva surfaces may
 describe its methodology, source policy, uncertainty, risk labels, and claim
@@ -70,7 +70,7 @@ Private OpenAPI schema exposure still requires:
 PARVA_SHOW_PRIVATE_SCHEMA=true
 ```
 
-The detailed Phase 07 policy set lives under `docs/future_bs/`:
+The detailed research governance policy set lives under `docs/future_bs/`:
 
 - `RESEARCH_BOUNDARY.md`
 - `PUBLIC_CLAIMS_POLICY.md`

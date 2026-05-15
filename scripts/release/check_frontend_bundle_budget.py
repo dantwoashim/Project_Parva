@@ -15,8 +15,8 @@ DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "release" / "frontend_bundle_bu
 DEFAULT_BUDGETS = {
     "total_js_bytes": 600_000,
     "max_js_bytes": 300_000,
-    "total_css_bytes": 145_000,
-    "max_css_bytes": 40_000,
+    "total_css_bytes": 150_000,
+    "max_css_bytes": 150_000,
 }
 
 

@@ -1,4 +1,4 @@
-"""Kundali v2 regression corpus (Month 6 hardening)."""
+"""Kundali v2 regression corpus."""
 
 from __future__ import annotations
 

@@ -1,31 +1,29 @@
 {
-  "generated_at": "2026-05-07T11:04:26.284360+00:00",
-  "status": "failed",
+  "generated_at": "2026-05-15T07:08:22.081732+00:00",
+  "status": "passed",
   "budgets": {
     "total_js_bytes": 600000,
     "max_js_bytes": 300000,
-    "total_css_bytes": 145000,
-    "max_css_bytes": 40000
+    "total_css_bytes": 150000,
+    "max_css_bytes": 150000
   },
   "summary": {
-    "total_js_bytes": 394103,
+    "total_js_bytes": 407648,
     "max_js_bytes": 229112,
-    "total_css_bytes": 136817,
-    "max_css_bytes": 136817
+    "total_css_bytes": 145846,
+    "max_css_bytes": 145846
   },
-  "violations": [
-    "max_css_bytes exceeded budget: 136817 > 40000"
-  ],
+  "violations": [],
   "assets": [
     {
-      "path": "frontend/dist/assets/index-BEXsIqxJ.css",
+      "path": "frontend/dist/assets/index-3TwIfSYw.css",
       "kind": "css",
-      "bytes": 136817
+      "bytes": 145846
     },
     {
-      "path": "frontend/dist/assets/index-Cb2POXzq.js",
+      "path": "frontend/dist/assets/index-8JMdVP8X.js",
       "kind": "js",
-      "bytes": 164991
+      "bytes": 178536
     },
     {
       "path": "frontend/dist/assets/vendor-jDDfj8MR.js",

@@ -16,10 +16,12 @@ def _tracked_path_issue(path: str) -> str | None:
     if path.startswith("frontend/dist/"):
         return "tracked frontend build artifact"
     allowed_reports = (
-        "reports/phase_07_future_bs_governance/module_classification.md",
-        "reports/phase_08_performance_sre/latency_baseline.json",
+        "reports/compatibility/project-parva-reference-full.json",
+        "reports/release/frontend_bundle_budget.json",
+        "reports/release/slo_dashboard_definition.json",
+        "reports/trust-status.json",
     )
-    if path.startswith("reports/red_check_closure/") or path in allowed_reports:
+    if path in allowed_reports:
         return None
     if path.startswith("reports/") or path == "evaluation.csv":
         return "tracked generated report artifact"

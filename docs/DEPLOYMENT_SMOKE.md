@@ -52,7 +52,7 @@ release notes.
 When possible, write the smoke output to:
 
 ```text
-reports/phase_08_performance_sre/deployment_smoke_local.json
+tmp/deployment_smoke_local.json
 ```
 
 Do not claim deployment smoke passed unless the command was run against an

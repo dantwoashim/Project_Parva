@@ -63,7 +63,7 @@ def run_benchmark():
 
             try:
                 calc_result = calculate_festival_v2(festival_id, year)
-            except Exception as exc:
+            except (RuntimeError, TypeError, ValueError) as exc:
                 results["calculator_failed"] += 1
                 year_stats["failed"] += 1
                 results["mismatches"].append(

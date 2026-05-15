@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Layer 8 impact simulation behavior."""
+"""Verify impact simulation behavior."""
 
 from __future__ import annotations
 

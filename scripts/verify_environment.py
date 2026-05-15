@@ -17,7 +17,7 @@ FRONTEND_DIR = PROJECT_ROOT / "frontend"
 
 def _check_python() -> tuple[bool, str]:
     if sys.version_info[:2] != (3, 11):
-        return False, f"Expected Python 3.11.x, found {sys.version.split()[0]}"
+        return False, f"ERROR: Python 3.11.x required. Found {sys.version.split()[0]}."
     return True, f"Python {sys.version.split()[0]}"
 
 
@@ -46,7 +46,7 @@ def _check_node() -> tuple[bool, str]:
         ok, detail = _run_version_command(["node", "--version"])
         if ok:
             version = detail.removeprefix("v")
-            return False, f"Expected Node 20.x, found v{version}"
+            return False, f"ERROR: Node 20.x required. Found v{version}."
         return False, "Unable to resolve Node 20.x from system PATH or managed fallback."
     return True, runtime.describe()
 

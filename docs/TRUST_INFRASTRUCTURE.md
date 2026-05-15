@@ -1,6 +1,6 @@
 # Trust Infrastructure
 
-Status: Phase 04 public preview trust layer.
+Status: public preview trust model.
 
 Project Parva exposes a public temporal trust layer for source registry records, release manifests, trust logs, release diffs, and evidence packets.
 
@@ -29,7 +29,7 @@ Public APIs default to this release unless a supported request accepts a differe
 
 ## Source Tiers
 
-Layer 5 source tiers are:
+Source tiers are:
 
 - `official`
 - `semi_official`
@@ -63,4 +63,4 @@ Run:
 python scripts/parva_trust_verify.py
 ```
 
-The verifier checks the release manifest, source registry, artifact hashes, alpha signature, transparency log, and Layer 5 trust log.
+The verifier checks the release manifest, source registry, artifact hashes, alpha signature, transparency log, and trust log.

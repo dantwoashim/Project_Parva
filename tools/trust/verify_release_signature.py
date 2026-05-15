@@ -6,11 +6,23 @@ import sys
 from pathlib import Path
 
 try:
-    from .common import DEFAULT_MANIFEST_PATH, DEFAULT_SIGNATURE_PATH, TrustToolError
-    from .common import load_json, repo_path, validate_alpha_signature_payload
+    from .common import (
+        DEFAULT_MANIFEST_PATH,
+        DEFAULT_SIGNATURE_PATH,
+        TrustToolError,
+        load_json,
+        repo_path,
+        validate_alpha_signature_payload,
+    )
 except ImportError:  # pragma: no cover - direct script execution
-    from common import DEFAULT_MANIFEST_PATH, DEFAULT_SIGNATURE_PATH, TrustToolError
-    from common import load_json, repo_path, validate_alpha_signature_payload
+    from common import (
+        DEFAULT_MANIFEST_PATH,
+        DEFAULT_SIGNATURE_PATH,
+        TrustToolError,
+        load_json,
+        repo_path,
+        validate_alpha_signature_payload,
+    )
 
 
 def verify_release_signature(

@@ -29,7 +29,7 @@ def _command_args() -> list[str]:
         kernel32.LocalFree.argtypes = [ctypes.c_void_p]
         command_line = kernel32.GetCommandLineW()
         argv = shell32.CommandLineToArgvW(command_line, ctypes.byref(argc))
-    except Exception:
+    except (AttributeError, OSError, TypeError, ValueError):
         return sys.argv
 
     if not argv:

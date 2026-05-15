@@ -127,7 +127,7 @@ See [TIMEGRAPH_CONFLICTS.md](TIMEGRAPH_CONFLICTS.md).
 - Fixture conflicts are for schema and workflow testing only.
 - Future-BS research remains `computed_prediction_not_official`.
 
-## Layer 7 Preparation
+## RuleLang Preparation
 
 TimeGraph prepares Project Parva for a future rule layer by making temporal
 claims explicit, source-linked, release-linked, traceable, and conflict-aware.

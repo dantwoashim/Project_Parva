@@ -18,7 +18,7 @@ They are useful for audits, debugging, reproducibility, and release pinning. The
 - `compliance_decision`
 - `rule_execution`
 
-Layer 5 uses the existing calendar conversion and compliance services. Layer 7 adds RuleLang execution packets for structured institutional rules. Evidence packet generation does not duplicate conversion or rule logic.
+The trust model uses the existing calendar conversion and compliance services. RuleLang adds RuleLang execution packets for structured institutional rules. Evidence packet generation does not duplicate conversion or rule logic.
 
 ## Packet Shape
 

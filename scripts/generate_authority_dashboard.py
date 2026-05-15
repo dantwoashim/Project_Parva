@@ -39,7 +39,7 @@ def _read_json(path: Path) -> Dict[str, Any]:
         return {}
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except (OSError, json.JSONDecodeError):
         return {}
 
 
@@ -139,7 +139,7 @@ def _collect_response_confidence_breakdown() -> Dict[str, Any]:
             payload = response.json()
             confidence[_extract_runtime_confidence(payload)] += 1
             boundary[_extract_boundary_risk(payload)] += 1
-        except Exception:
+        except (RuntimeError, TypeError, ValueError):
             failures.append(
                 {"endpoint": endpoint, "status_code": response.status_code, "error": "invalid_json"}
             )

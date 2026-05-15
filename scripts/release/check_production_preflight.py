@@ -19,7 +19,7 @@ from app.bootstrap.app_factory import create_app  # noqa: E402
 def main() -> int:
     try:
         app = create_app()
-    except Exception as exc:
+    except (RuntimeError, TypeError, ValueError) as exc:
         print(str(exc))
         return 1
     settings = app.state.settings

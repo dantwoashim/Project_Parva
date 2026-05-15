@@ -1,7 +1,7 @@
 """Deterministic rule execution for v4 DSL-compatible festival rules.
 
 This module provides a lightweight executor used by:
-- Month-2 validation triads
+- validation triads
 - computed-rule promotion checks
 - future generic rule-evaluation endpoints
 """

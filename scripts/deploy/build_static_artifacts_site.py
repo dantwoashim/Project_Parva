@@ -129,11 +129,11 @@ def main() -> int:
         ("dashboard_metrics.json", PUBLIC_ARTIFACTS_DIR / "dashboard_metrics.json"),
         ("conformance_report.json", REPORTS_DIR / "conformance_report.json"),
         ("rule_ingestion_summary.json", REPORTS_DIR / "rule_ingestion_summary.json"),
-        ("month9_dossier.json", REPORTS_DIR / "release" / "month9_dossier.json"),
+        ("public_beta_dossier.json", REPORTS_DIR / "release" / "public_beta_dossier.json"),
         ("annual_accuracy_2082.json", REPORTS_DIR / "accuracy" / "annual_accuracy_2082.json"),
         ("authority_dashboard.md", REPORTS_RELEASE_DIR / "authority_dashboard.md"),
         ("dashboard_metrics.md", REPORTS_RELEASE_DIR / "dashboard_metrics.md"),
-        ("month9_release_dossier.md", REPORTS_RELEASE_DIR / "month9_release_dossier.md"),
+        ("public_beta_release_dossier.md", REPORTS_RELEASE_DIR / "public_beta_release_dossier.md"),
         ("release_candidate_dossier.md", REPORTS_RELEASE_DIR / "release_candidate_dossier.md"),
     ]
     for label, src in report_map:

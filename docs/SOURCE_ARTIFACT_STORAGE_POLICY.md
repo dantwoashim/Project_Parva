@@ -8,7 +8,7 @@ owner: platform-team
 
 # Source Artifact Storage Policy
 
-Status: Phase 06 storage policy for source artifacts.
+Status: storage policy for source artifacts.
 
 This policy decides where source artifacts live and whether they can enter public releases or offline bundles.
 

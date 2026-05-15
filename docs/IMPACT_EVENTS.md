@@ -8,7 +8,7 @@ owner: platform-team
 
 # Impact Events
 
-Layer 8 defines event payload shapes but does not deliver production webhooks.
+The impact model defines event payload shapes but does not deliver production webhooks.
 
 Preview event types include:
 

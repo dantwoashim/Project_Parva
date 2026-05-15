@@ -147,6 +147,7 @@ def test_public_docs_do_not_use_em_dash():
 def test_public_examples_do_not_contain_future_vectors_or_private_routes():
     examples = ROOT / "examples"
     assert examples.exists()
+    text_suffixes = {".js", ".json", ".md", ".mjs", ".py", ".ts", ".txt"}
     sensitive_tokens = [
         "month-lengths",
         "export.csv",
@@ -158,7 +159,8 @@ def test_public_examples_do_not_contain_future_vectors_or_private_routes():
         "2200",
     ]
     for path in examples.rglob("*"):
-        if path.is_file():
-            text = path.read_text(encoding="utf-8")
-            for token in sensitive_tokens:
-                assert token not in text, str(path.relative_to(ROOT))
+        if not path.is_file() or path.suffix not in text_suffixes:
+            continue
+        text = path.read_text(encoding="utf-8")
+        for token in sensitive_tokens:
+            assert token not in text, str(path.relative_to(ROOT))

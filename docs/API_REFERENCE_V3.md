@@ -8,7 +8,7 @@ owner: dx-team
 
 # API Reference v3
 
-Status: Phase 04 stable core plus public/developer preview route profiles.
+Status: stable core plus public/developer preview route profiles.
 
 Project Parva v3 APIs are designed to run in two deployment profiles:
 

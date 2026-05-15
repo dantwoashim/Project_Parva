@@ -8,7 +8,7 @@ owner: platform-team
 
 # Route Profiles
 
-Status: Phase 04 route exposure control.
+Status: route exposure control.
 
 Source of truth: [config/route-maturity.yaml](../config/route-maturity.yaml)
 

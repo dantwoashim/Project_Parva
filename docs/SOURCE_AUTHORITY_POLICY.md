@@ -8,7 +8,7 @@ owner: platform-team
 
 # Source Authority Policy
 
-Status: Phase 06 canonical source-tier policy.
+Status: canonical source-tier policy.
 
 This policy defines the source authority tiers used by trust artifacts, protocol source records, public source registries, webhook schemas, public source-tier docs, and runtime source metadata.
 

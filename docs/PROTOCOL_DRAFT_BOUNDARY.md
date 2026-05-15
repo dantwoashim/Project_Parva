@@ -8,7 +8,7 @@ owner: protocol-team
 
 # Protocol Draft Boundary
 
-Status: Phase 04 protocol-draft boundary.
+Status: protocol-draft boundary.
 
 Parva Protocol is a draft interoperability layer for programmable, verifiable
 Nepali time. It defines draft specs, schemas, conformance payloads, hash-only

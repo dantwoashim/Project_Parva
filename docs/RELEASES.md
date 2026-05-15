@@ -41,7 +41,7 @@ If a release id is unknown, the API returns a clear 404 error. The public releas
 
 ## Release Diff
 
-Release diff is metadata-level in Layer 5. It compares:
+Release diff is metadata-level in the trust metadata model. It compares:
 
 - sources
 - artifact hashes

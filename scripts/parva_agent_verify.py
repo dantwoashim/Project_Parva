@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Layer 9 agent-safe temporal tooling."""
+"""Verify agent-safe temporal tooling."""
 
 from __future__ import annotations
 

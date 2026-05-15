@@ -35,7 +35,7 @@
         {"path": "tests/unit/calendar/test_bikram_sambat.py", "status": "exists"},
         {"path": "tests/unit/calendar/test_bs_lookup_boundaries.py", "status": "exists"},
         {"path": "tests/unit/calendar/test_bs_official_range_exhaustive.py", "status": "exists"},
-        {"path": "tests/contract/test_layer2_public_api_contract.py", "status": "exists"}
+        {"path": "tests/contract/test_public_api_contract.py", "status": "exists"}
       ],
       "compatibility_modules": [
         "app.api.calendar_routes",
@@ -198,7 +198,7 @@
         "/v3/api/public-artifacts/*"
       ],
       "tests": [
-        {"path": "tests/contract/test_layer3_source_metadata_contract.py", "status": "exists"},
+        {"path": "tests/contract/test_source_metadata_contract.py", "status": "exists"},
         {"path": "tests/accuracy/test_source_policy_separation.py", "status": "exists"},
         {"path": "tests/accuracy/test_source_policy_metrics_exist.py", "status": "exists"},
         {"path": "tests/unit/sources/test_source_validation.py", "status": "exists"}
@@ -212,7 +212,7 @@
       "research_private_dependencies": [
         "app.future_bs.source_policy"
       ],
-      "verification_command": "python -m pytest tests/contract/test_layer3_source_metadata_contract.py tests/accuracy/test_source_policy_separation.py tests/unit/sources/test_source_validation.py -q"
+      "verification_command": "python -m pytest tests/contract/test_source_metadata_contract.py tests/accuracy/test_source_policy_separation.py tests/unit/sources/test_source_validation.py -q"
     },
     {
       "id": "holiday_release_handling",
@@ -241,7 +241,7 @@
         "/v3/api/festivals/*"
       ],
       "tests": [
-        {"path": "tests/contract/test_layer5_trust_contract.py", "status": "exists"},
+        {"path": "tests/contract/test_trust_contract.py", "status": "exists"},
         {"path": "tests/contract/test_reliability_policy_contract.py", "status": "exists"},
         {"path": "scripts/parva_trust_verify.py", "status": "exists"}
       ],
@@ -251,7 +251,7 @@
       "deprecated_modules": [],
       "deprecated_paths": [],
       "research_private_dependencies": [],
-      "verification_command": "python scripts/parva_trust_verify.py && python -m pytest tests/contract/test_layer5_trust_contract.py -q"
+      "verification_command": "python scripts/parva_trust_verify.py && python -m pytest tests/contract/test_trust_contract.py -q"
     },
     {
       "id": "fiscal_working_day_logic",
@@ -283,14 +283,14 @@
       ],
       "tests": [
         {"path": "tests/integration/test_enterprise_routes.py", "status": "exists"},
-        {"path": "tests/contract/test_layer4_compliance_contract.py", "status": "exists"},
-        {"path": "tests/contract/test_layer2_public_api_contract.py", "status": "exists"}
+        {"path": "tests/contract/test_compliance_contract.py", "status": "exists"},
+        {"path": "tests/contract/test_public_api_contract.py", "status": "exists"}
       ],
       "compatibility_modules": [],
       "deprecated_modules": [],
       "deprecated_paths": [],
       "research_private_dependencies": [],
-      "verification_command": "python -m pytest tests/integration/test_enterprise_routes.py tests/contract/test_layer4_compliance_contract.py -q"
+      "verification_command": "python -m pytest tests/integration/test_enterprise_routes.py tests/contract/test_compliance_contract.py -q"
     },
     {
       "id": "rulelang_executor",
@@ -316,7 +316,7 @@
         "/v3/api/rules/{rule_id}/evaluate"
       ],
       "tests": [
-        {"path": "tests/contract/test_layer7_rulelang_contract.py", "status": "exists"},
+        {"path": "tests/contract/test_rulelang_contract.py", "status": "exists"},
         {"path": "tests/unit/services/test_rulelang_safety.py", "status": "exists"},
         {"path": "scripts/parva_rulelang_verify.py", "status": "exists"}
       ],
@@ -324,7 +324,7 @@
       "deprecated_modules": [],
       "deprecated_paths": [],
       "research_private_dependencies": [],
-      "verification_command": "python scripts/parva_rulelang_verify.py && python -m pytest tests/contract/test_layer7_rulelang_contract.py tests/unit/services/test_rulelang_safety.py -q"
+      "verification_command": "python scripts/parva_rulelang_verify.py && python -m pytest tests/contract/test_rulelang_contract.py tests/unit/services/test_rulelang_safety.py -q"
     },
     {
       "id": "trust_release_artifacts",
@@ -354,7 +354,7 @@
         "/v3/api/public-artifacts/*"
       ],
       "tests": [
-        {"path": "tests/contract/test_layer5_trust_contract.py", "status": "exists"},
+        {"path": "tests/contract/test_trust_contract.py", "status": "exists"},
         {"path": "tests/unit/trust/test_temporal_trust_tools.py", "status": "exists"},
         {"path": "scripts/parva_trust_verify.py", "status": "exists"}
       ],
@@ -362,7 +362,7 @@
       "deprecated_modules": [],
       "deprecated_paths": [],
       "research_private_dependencies": [],
-      "verification_command": "python scripts/parva_trust_verify.py && python -m pytest tests/contract/test_layer5_trust_contract.py tests/unit/trust/test_temporal_trust_tools.py -q"
+      "verification_command": "python scripts/parva_trust_verify.py && python -m pytest tests/contract/test_trust_contract.py tests/unit/trust/test_temporal_trust_tools.py -q"
     },
     {
       "id": "protocol_schema_source",
@@ -393,7 +393,7 @@
         "/v3/api/protocol/conformance/run"
       ],
       "tests": [
-        {"path": "tests/contract/test_layer10_protocol_contract.py", "status": "exists"},
+        {"path": "tests/contract/test_protocol_contract.py", "status": "exists"},
         {"path": "scripts/parva_protocol_verify.py", "status": "exists"},
         {"path": "scripts/parva_conformance.py", "status": "exists"}
       ],
@@ -401,7 +401,7 @@
       "deprecated_modules": [],
       "deprecated_paths": [],
       "research_private_dependencies": [],
-      "verification_command": "python scripts/parva_protocol_verify.py && python scripts/parva_conformance.py --target local --level parva_full && python -m pytest tests/contract/test_layer10_protocol_contract.py -q"
+      "verification_command": "python scripts/parva_protocol_verify.py && python scripts/parva_conformance.py --target local --level parva_full && python -m pytest tests/contract/test_protocol_contract.py -q"
     },
     {
       "id": "cli_scripts",

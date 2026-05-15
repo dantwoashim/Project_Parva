@@ -8,7 +8,7 @@ owner: research-team
 
 # Future BS Wrong-GREEN Policy
 
-Status: Phase 07 governance policy.
+Status: governance policy.
 
 GREEN is the strongest public risk posture. It must be used conservatively.
 

@@ -1,6 +1,6 @@
 # Stability Guide
 
-Status: Phase 04 stability and deprecation labels.
+Status: stability and deprecation labels.
 
 Project Parva has one canonical public API track and several supporting surfaces with different maturity levels.
 
@@ -30,7 +30,7 @@ profile exposure is controlled by
 | `/v2`, `/v4`, `/v5` | Experimental | Disabled by default and not isolated versions |
 | Labs and PoCs | Experimental | Not part of the compatibility promise |
 
-## Phase 04 Lanes
+## the public boundary Lanes
 
 | Lane | Stability promise |
 | --- | --- |

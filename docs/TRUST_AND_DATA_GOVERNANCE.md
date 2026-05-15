@@ -1,6 +1,6 @@
 # Trust And Data Governance
 
-Status: Phase 06 governed public trust layer.
+Status: governed public trust model.
 
 Project Parva publishes source-aware calendar, fiscal, festival, panchanga, protocol, and evidence metadata. This governance layer keeps that metadata reproducible without turning Parva into official authority.
 
@@ -18,7 +18,7 @@ Parva is not a government calendar publication, legal authority, tax authority, 
 | Protocol schemas | `schemas/parva-protocol/` | Yes | `python tools/validate_schemas.py` |
 | Offline bundle | `dist/parva-offline-bundle/` when generated | Yes | `python scripts/parva_offline_verify.py dist/parva-offline-bundle` |
 | Private source archives | `data/source_archive/` local only | No | Opt-in private tests only |
-| Private future-BS artifacts | `data/future_bs/private/` local only | No | Phase 07 research governance |
+| Private future-BS artifacts | `data/future_bs/private/` local only | No | the research governance research governance |
 
 ## Release Identity
 
@@ -39,7 +39,7 @@ Every public temporal claim should carry as much of this envelope as the route c
 - `maturity`
 - evidence packet id or evidence path where applicable
 
-Evidence packets currently exist for date conversion, compliance decisions, and public RuleLang execution. Impact reports, credential issue/verify flows, and official holiday ingestion have public scaffolds or bounded report surfaces and are tracked in generated artifact `reports/phase_06_trust_data_governance/evidence_packet_coverage.md`.
+Evidence packets currently exist for date conversion, compliance decisions, and public RuleLang execution. Impact reports, credential issue/verify flows, and official holiday ingestion have public scaffolds or bounded report surfaces and are tracked in generated artifact `public trust verification output`.
 
 ## Public And Private Boundary
 

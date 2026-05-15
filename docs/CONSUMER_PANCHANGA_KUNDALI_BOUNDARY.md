@@ -8,7 +8,7 @@ owner: platform-team
 
 # Consumer Panchanga And Kundali Boundary
 
-Status: Phase 04 public-preview boundary.
+Status: public-preview boundary.
 
 Panchanga, tithi, nakshatra, yoga, karana, muhurta, kundali, and personal
 calendar surfaces are public-preview or developer-preview decision-support

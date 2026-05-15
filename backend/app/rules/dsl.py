@@ -1,6 +1,5 @@
-"""Typed Rule DSL for canonical festival rule execution planning.
+"""Typed Rule DSL for canonical festival rule execution.
 
-Month-2 foundation:
 - Normalize heterogeneous v4 catalog rows into typed DSL payloads.
 - Expose deterministic executability checks for quality gating.
 """

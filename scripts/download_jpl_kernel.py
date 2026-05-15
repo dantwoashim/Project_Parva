@@ -81,7 +81,7 @@ def main() -> int:
     output = args.output or preset["output"]
     try:
         download(url, output, expected_md5, quiet=args.quiet)
-    except Exception as exc:
+    except (OSError, RuntimeError, ValueError) as exc:
         print(str(exc), file=sys.stderr)
         return 1
     return 0

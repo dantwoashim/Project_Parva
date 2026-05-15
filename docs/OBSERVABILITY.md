@@ -61,7 +61,7 @@ Tracked metric scopes:
 
 ## Cache Metrics
 
-The Phase 08 observance resolver records `observance_resolution` cache hits and
+The observance resolver records `observance_resolution` cache hits and
 misses. Festival and precomputed artifact caches should be added to this same
 registry as their cache adapters are promoted.
 

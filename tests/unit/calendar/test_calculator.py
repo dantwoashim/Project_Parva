@@ -99,8 +99,8 @@ class TestCalculateFestivalDate:
             result = calculate_festival_date("dashain", 2010)
             # If it returns, should still be a DateRange
             assert result is None or hasattr(result, "start")
-        except Exception:
-            pass  # Expected - any exception is fine
+        except (KeyError, RuntimeError, ValueError):
+            pass  # Expected - unsupported historical range can reject the request
 
 
 class TestGetUpcomingFestivals:

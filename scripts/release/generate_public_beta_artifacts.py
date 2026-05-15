@@ -47,7 +47,7 @@ def main() -> int:
         ("3/6 Conformance report", [python, "scripts/spec/run_conformance_tests.py"]),
         ("4/6 Authority dashboard", [python, "scripts/generate_authority_dashboard.py"]),
         ("5/6 Dashboard metrics", [python, "scripts/release/generate_dashboard_metrics.py"]),
-        ("6/6 Month 9 dossier", [python, "scripts/release/generate_month9_dossier.py"]),
+        ("6/6 public beta dossier", [python, "scripts/release/generate_public_beta_dossier.py"]),
     ]
 
     for label, command in steps:

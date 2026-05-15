@@ -8,7 +8,7 @@ owner: platform-team
 
 # NPNS Panchanga Source Workflow
 
-Status: Phase 06 authority boundary and workflow scaffold.
+Status: authority boundary and workflow scaffold.
 
 Parva may digitize, cross-check, and compute panchanga metadata, but it is not NPNS, a publisher, a priestly authority, legal authority, or official civil authority.
 

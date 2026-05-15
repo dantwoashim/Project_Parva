@@ -10,7 +10,7 @@ owner: protocol-team
 
 Status: alpha self-attested conformance for a protocol draft.
 
-The Phase 10 conformance program makes Project Parva behavior reproducible for
+The conformance program makes Project Parva behavior reproducible for
 reviewers without claiming certification. The reference runner is
 `python scripts/parva_conformance.py`.
 
@@ -46,7 +46,7 @@ generation time, and report hash.
 
 ## Fixture Inventory
 
-Phase 10 adds public valid and invalid fixtures for source-aware metadata, trust,
+The conformance suite adds public valid and invalid fixtures for source-aware metadata, trust,
 TimeGraph, RuleLang, impact, agent-safe, and offline bundle behavior. Invalid
 fixtures are deliberate and prove the runner does not pass every artifact by
 default.

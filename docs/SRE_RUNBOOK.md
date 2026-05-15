@@ -53,10 +53,10 @@ incident notes identify a direct remediation.
 | Security owner | Review private route exposure, PII, credentials, and auth failures. |
 | SRE owner | Own latency, availability, smoke tests, metrics, and incident review. |
 
-## Phase 08 Commands
+## Performance Commands
 
 ```bash
-python scripts/perf/route_latency_smoke.py --profile public_reference --output reports/phase_08_performance_sre/latency_baseline.json
+python scripts/perf/route_latency_smoke.py --profile public_reference --output tmp/public_reference_latency_baseline.json
 python -m pytest tests/performance -q
 python -m pytest tests/integration/test_heavy_compute_offload.py -q
 python scripts/release/check_backend_smoke.py

@@ -8,7 +8,7 @@ owner: platform-team
 
 # MoHA Holiday Release Workflow
 
-Status: Phase 06 precise scaffold. Full holiday row extraction remains a future implementation task after source samples are supplied.
+Status: authority-boundary workflow scaffold. Full holiday row extraction remains a future implementation task after source samples are supplied.
 
 Parva can ingest MoHA holiday release metadata without claiming MoHA authority. MoHA remains the authority for its own notices.
 

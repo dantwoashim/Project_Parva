@@ -8,7 +8,7 @@ owner: dx-team
 
 # API Quickstart
 
-Status: Phase 04 public integration quickstart.
+Status: public integration quickstart.
 
 Project Parva's stable public-beta API lives under `/v3/api/*`.
 

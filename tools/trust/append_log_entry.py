@@ -10,11 +10,29 @@ from pathlib import Path
 from uuid import uuid4
 
 try:
-    from .common import DEFAULT_MANIFEST_PATH, DEFAULT_SIGNATURE_PATH, TRUST_LOG_PATH, TrustToolError
-    from .common import load_json, repo_path, sha256_file, sha256_prefixed, source_registry_hash_from_manifest
+    from .common import (
+        DEFAULT_MANIFEST_PATH,
+        DEFAULT_SIGNATURE_PATH,
+        TRUST_LOG_PATH,
+        TrustToolError,
+        load_json,
+        repo_path,
+        sha256_file,
+        sha256_prefixed,
+        source_registry_hash_from_manifest,
+    )
 except ImportError:  # pragma: no cover - direct script execution
-    from common import DEFAULT_MANIFEST_PATH, DEFAULT_SIGNATURE_PATH, TRUST_LOG_PATH, TrustToolError
-    from common import load_json, repo_path, sha256_file, sha256_prefixed, source_registry_hash_from_manifest
+    from common import (
+        DEFAULT_MANIFEST_PATH,
+        DEFAULT_SIGNATURE_PATH,
+        TRUST_LOG_PATH,
+        TrustToolError,
+        load_json,
+        repo_path,
+        sha256_file,
+        sha256_prefixed,
+        source_registry_hash_from_manifest,
+    )
 
 
 def build_release_log_entry(

@@ -11,6 +11,7 @@ frontend/dist/
 node_modules/
 dist/
 reports/
+tmp/
 output/
 benchmark/results/
 coverage/
@@ -18,3 +19,6 @@ htmlcov/
 *.log
 data/ephemeris/**/*.bsp
 data/ephemeris/**/*.bpc
+data/source_archive/
+data/future_bs/private/
+local_workspace_notes/

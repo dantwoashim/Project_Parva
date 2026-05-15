@@ -54,7 +54,7 @@ def main() -> int:
                 {"path": path, "status": status, "ok": ok, "keys": list(payload.keys())[:8]}
             )
             all_ok = all_ok and ok
-        except Exception as exc:
+        except (OSError, RuntimeError, TimeoutError, ValueError) as exc:
             report.append({"path": path, "status": "error", "ok": False, "error": str(exc)})
             all_ok = False
 

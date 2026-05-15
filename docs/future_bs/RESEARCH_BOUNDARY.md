@@ -8,7 +8,7 @@ owner: research-team
 
 # Future BS Research Boundary
 
-Status: Phase 07 public/private governance boundary.
+Status: public/private governance boundary.
 
 The Future-BS subsystem is a research and model-risk layer. It may be used to
 study unpublished BS month-length behavior, source disagreement, risk labels,

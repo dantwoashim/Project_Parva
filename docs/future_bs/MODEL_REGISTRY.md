@@ -8,7 +8,7 @@ owner: research-team
 
 # Future BS Model Registry
 
-Status: Phase 07 governance registry.
+Status: governance registry.
 
 The active Future-BS engine is registered as a computed prediction system. It is
 not an official publication system.

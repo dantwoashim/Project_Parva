@@ -55,7 +55,7 @@ def main() -> int:
             continue
         try:
             response = _handle(json.loads(line))
-        except Exception as exc:  # pragma: no cover - defensive stdio boundary
+        except (json.JSONDecodeError, RuntimeError, TypeError, ValueError) as exc:  # pragma: no cover - defensive stdio boundary
             response = {"ok": False, "error": type(exc).__name__, "detail": str(exc)}
         print(json.dumps(response, separators=(",", ":")), flush=True)
     return 0

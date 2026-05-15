@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify Phase 09 quickstart and SDK example artifacts exist."""
+"""Verify quickstart and SDK example artifacts exist."""
 
 from __future__ import annotations
 

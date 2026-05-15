@@ -32,6 +32,7 @@ EXCLUDED_DIR_NAMES = {
     "dist",
     "output",
     "reports",
+    "tmp",
 }
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".zip"}
 EXCLUDED_FILE_NAMES = {".DS_Store"}
@@ -40,6 +41,9 @@ EXCLUDED_RELATIVE_PREFIXES = {
     Path("backend/data/snapshots"),
     Path("backend/data/traces"),
     Path("backend/project_parva.egg-info"),
+    Path("data/future_bs/private"),
+    Path("data/source_archive"),
+    Path("local_workspace_notes"),
 }
 ALLOWED_GENERATED_DIRTY_PATHS = {
     Path("backend/data/public_artifacts/authority_dashboard.json"),
@@ -112,6 +116,31 @@ def _working_tree_is_clean() -> bool:
     )
 
 
+def _tracked_source_paths() -> list[Path]:
+    result = subprocess.run(
+        ["git", "ls-files", "-z"],
+        cwd=PROJECT_ROOT,
+        check=False,
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace").strip()
+        raise SystemExit(f"Unable to enumerate tracked source files: {detail or 'git ls-files failed'}")
+
+    paths: list[Path] = []
+    for raw in result.stdout.split(b"\0"):
+        if not raw:
+            continue
+        try:
+            relative = Path(raw.decode("utf-8"))
+        except UnicodeDecodeError:
+            raise SystemExit("Unable to decode git-tracked path as UTF-8.")
+        path = PROJECT_ROOT / relative
+        if path.is_file() and not _should_skip(path):
+            paths.append(path)
+    return sorted(paths)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -133,9 +162,7 @@ def main(argv: list[str] | None = None) -> int:
 
     files_written = 0
     with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(PROJECT_ROOT.rglob("*")):
-            if not path.is_file() or _should_skip(path):
-                continue
+        for path in _tracked_source_paths():
             relative = path.relative_to(PROJECT_ROOT)
             archive.write(path, arcname=str(Path(archive_root) / relative))
             files_written += 1

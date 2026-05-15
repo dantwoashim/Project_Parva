@@ -142,7 +142,7 @@ Unsupported inputs return structured 4xx errors.
 
 ## Source Confidence
 
-Compliance responses propagate Layer 3 metadata:
+Compliance responses propagate source metadata:
 
 - source
 - confidence

@@ -84,7 +84,7 @@ def _read_json(path: Path) -> dict[str, Any]:
         return {}
     try:
         return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except (OSError, json.JSONDecodeError):
         return {}
 
 
@@ -137,7 +137,7 @@ def _sample_endpoints() -> dict[str, Any]:
         if "application/json" in (response.headers.get("content-type") or ""):
             try:
                 payload = response.json()
-            except Exception:
+            except ValueError:
                 payload = None
 
         meta = _extract_meta(payload) if isinstance(payload, dict) else {}
@@ -153,7 +153,7 @@ def _sample_endpoints() -> dict[str, Any]:
             if snapshot_id not in snapshot_cache:
                 try:
                     snapshot_cache[snapshot_id] = bool(verify_snapshot(snapshot_id).get("valid"))
-                except Exception:
+                except (RuntimeError, TypeError, ValueError):
                     snapshot_cache[snapshot_id] = False
             provenance_verified = snapshot_cache[snapshot_id]
 

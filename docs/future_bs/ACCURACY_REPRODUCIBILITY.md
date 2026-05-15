@@ -44,7 +44,7 @@ publication_status = computed_prediction_not_official
 
 ## Reproducibility Commands
 
-The Phase 07 public lane is:
+The public research-governance lane is:
 
 ```bash
 python scripts/check_future_bs_public_leakage.py

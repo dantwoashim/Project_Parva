@@ -28,7 +28,7 @@ def _run(cmd: list[str], cwd: Path) -> dict:
             "stdout": proc.stdout[-8000:],
             "stderr": proc.stderr[-8000:],
         }
-    except Exception as exc:  # pragma: no cover - defensive
+    except (OSError, RuntimeError, ValueError) as exc:  # pragma: no cover - defensive
         return {
             "cmd": " ".join(cmd),
             "returncode": -1,

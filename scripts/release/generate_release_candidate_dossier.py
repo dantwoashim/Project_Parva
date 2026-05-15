@@ -22,7 +22,7 @@ from node_runtime import resolve_node_runtime  # noqa: E402
 REPORTS_RELEASE_DIR = PROJECT_ROOT / "reports" / "release"
 REPORTS_DOSSIER_JSON = REPORTS_RELEASE_DIR / "release_candidate_dossier.json"
 REPORTS_DOSSIER_MD = REPORTS_RELEASE_DIR / "release_candidate_dossier.md"
-MONTH9_DOSSIER_MD = REPORTS_RELEASE_DIR / "month9_release_dossier.md"
+PUBLIC_BETA_DOSSIER_MD = REPORTS_RELEASE_DIR / "public_beta_release_dossier.md"
 AUTHORITY_DASHBOARD_MD = REPORTS_RELEASE_DIR / "authority_dashboard.md"
 DASHBOARD_METRICS_MD = REPORTS_RELEASE_DIR / "dashboard_metrics.md"
 AUTHORITY_DASHBOARD_JSON = (
@@ -226,11 +226,11 @@ def _build_payload(args: argparse.Namespace) -> dict:
             "accessibility_dialog_regression_check": "yes" if browser_smoke_status == "passed" else "pending",
             "launch_critical_journeys_reviewed": "yes" if golden_journeys_status == "passed" else "pending",
             "timezone_rendering_spot_check": "yes",
-            "known_limits_accepted_for_this_candidate": f"See {_rel(MONTH9_DOSSIER_MD)}.",
+            "known_limits_accepted_for_this_candidate": f"See {_rel(PUBLIC_BETA_DOSSIER_MD)}.",
         },
         "artifact_inventory": {
             "source_archive": _rel(source_archive),
-            "public_beta_dossier": _rel(MONTH9_DOSSIER_MD),
+            "public_beta_dossier": _rel(PUBLIC_BETA_DOSSIER_MD),
             "conformance_report": _rel(CONFORMANCE_REPORT_JSON),
             "authority_dashboard": _rel(AUTHORITY_DASHBOARD_MD),
             "dashboard_metrics": _rel(DASHBOARD_METRICS_MD),

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate OpenAPI artifacts for the public Phase 04 route profiles."""
+"""Generate OpenAPI artifacts for public route profiles."""
 
 from __future__ import annotations
 

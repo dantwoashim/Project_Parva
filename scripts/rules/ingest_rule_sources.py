@@ -109,7 +109,7 @@ def main() -> int:
         "--computed-target",
         type=int,
         default=200,
-        help="Minimum computed-rule baseline expected for Month-4 quality gate.",
+        help="Minimum computed-rule baseline expected for the rule quality gate.",
     )
     parser.add_argument(
         "--emit-triads",

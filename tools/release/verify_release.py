@@ -9,13 +9,15 @@ import sys
 from pathlib import Path
 from typing import Any
 
-
 ROOT = Path(__file__).resolve().parents[2]
 BACKEND_ROOT = ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.core.source_authority import PUBLIC_RELEASE_SOURCE_TIERS, normalize_source_tier  # noqa: E402
+from app.core.source_authority import (  # noqa: E402
+    PUBLIC_RELEASE_SOURCE_TIERS,
+    normalize_source_tier,
+)
 
 SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
 PUBLICATION_STATUSES = {

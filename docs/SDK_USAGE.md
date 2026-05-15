@@ -109,7 +109,7 @@ RuleLang SDK helpers include:
 - `evaluateCustomRule` / `evaluate_custom_rule`
 - `explainRule` / `explain_rule`
 
-Layer 8, 9, and 10 SDK helpers include:
+Preview SDK helpers include:
 
 - impact simulation: `simulateChangeSet` / `simulate_change_set`
 - impact release diff: `simulateReleaseDiff` / `simulate_release_diff`

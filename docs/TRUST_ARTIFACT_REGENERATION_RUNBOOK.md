@@ -1,6 +1,6 @@
 # Trust Artifact Regeneration Runbook
 
-Status: Phase 06 public release hash runbook.
+Status: public release hash runbook.
 
 Use this runbook when a public source registry, release manifest, release schema, protocol schema, or bundled public artifact changes.
 
@@ -49,7 +49,7 @@ Hash changes require review by the release owner for the changed artifact class:
 4. Run `python scripts/release/regenerate_public_release_hashes.py --write`.
 5. Re-run `python scripts/parva_trust_verify.py`.
 6. Re-run `python scripts/check_path_leaks.py`.
-7. Update the Phase 06 rebuild report with changed files and command output.
+7. Update release notes with changed files and command output.
 
 ## Private Artifact Exclusion
 

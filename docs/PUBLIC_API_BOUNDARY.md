@@ -8,7 +8,7 @@ owner: platform-team
 
 # Public API Boundary
 
-Status: Phase 04 public/private route boundary.
+Status: public/private route boundary.
 
 The public Project Parva deployment exposes stable calendar, fiscal-year, festival, panchanga, and public methodology surfaces for technical evaluation. The lightweight Render demo may expose a narrower route set than a private or full public profile.
 

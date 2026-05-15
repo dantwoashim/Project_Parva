@@ -63,6 +63,15 @@ def test_should_skip_generated_provenance_artifacts():
     assert package_source_archive._should_skip(
         package_source_archive.PROJECT_ROOT / "backend" / "data" / "traces" / "trace.json"
     )
+    assert package_source_archive._should_skip(
+        package_source_archive.PROJECT_ROOT / "data" / "source_archive" / "private.csv"
+    )
+    assert package_source_archive._should_skip(
+        package_source_archive.PROJECT_ROOT / "data" / "future_bs" / "private" / "model.json"
+    )
+    assert package_source_archive._should_skip(
+        package_source_archive.PROJECT_ROOT / "tmp" / "local-cache.json"
+    )
 
 
 def test_should_skip_nested_packaging_residue():
@@ -111,4 +120,23 @@ def test_verify_source_archive_rejects_nested_runtime_residue(tmp_path):
     assert failures == [
         "archive contains packaging residue: backend/project_parva.egg-info/PKG-INFO",
         "archive contains compiled/local artifact: img/.DS_Store",
+    ]
+
+
+def test_verify_source_archive_rejects_private_and_local_members(tmp_path):
+    archive_path = tmp_path / "project-parva-test-source.zip"
+    with zipfile.ZipFile(archive_path, "w") as archive:
+        archive.writestr("project-parva-test/data/source_archive/private.csv", "bad")
+        archive.writestr("project-parva-test/data/future_bs/private/model.json", "bad")
+        archive.writestr("project-parva-test/local_workspace_notes/main-final.md", "bad")
+        archive.writestr("project-parva-test/tmp/cache.json", "bad")
+
+    members = verify_source_archive._normalized_members(archive_path)
+    failures = [verify_source_archive._member_failure(member) for member in members]
+
+    assert failures == [
+        "archive contains compiled/local artifact: data/future_bs/private/model.json",
+        "archive contains compiled/local artifact: data/source_archive/private.csv",
+        "archive contains compiled/local artifact: local_workspace_notes/main-final.md",
+        "archive contains compiled/local artifact: tmp/cache.json",
     ]

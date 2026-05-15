@@ -28,7 +28,7 @@ Project Parva is intended to support simple SDK adoption for teams replacing fra
 | API mode | Live validation, source metadata, and public calendar surfaces |
 | Private deployment mode | Controlled validation, reconciliation, and sensitive calendar-risk workflows |
 
-## Phase 04 Maturity Policy
+## Maturity Policy
 
 | Lane | SDK rule |
 | --- | --- |
@@ -80,7 +80,7 @@ Both Python and JavaScript SDKs must keep:
 - `Retry-After` handling for HTTP 429
 - source, trust, agent, protocol, and claim-boundary metadata preserved in responses
 
-## Phase 09 acceptance baseline
+## Acceptance Baseline
 
 The current canonical SDK paths are:
 

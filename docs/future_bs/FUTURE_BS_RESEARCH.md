@@ -8,7 +8,7 @@ owner: research-team
 
 # Future BS Research Layer
 
-Status: Phase 04 research-private boundary.
+Status: research-private boundary.
 
 The future-BS layer is an experimental calendar-risk research system. It studies how month-length assumptions behave before they affect fiscal reports, contracts, renewals, interest periods, exports, and audit trails.
 

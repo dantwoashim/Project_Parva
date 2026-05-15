@@ -77,7 +77,7 @@ def _verify_signature(payload: dict, signature: str, public_key_bytes: bytes, me
         try:
             public_key.verify(bytes.fromhex(signature), canonical.encode("utf-8"))
             return True
-        except Exception:
+        except (TypeError, ValueError):
             return False
     else:
         import hmac

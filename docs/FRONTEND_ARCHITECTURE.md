@@ -8,7 +8,7 @@ owner: platform-team
 
 # Frontend Architecture
 
-Status: Phase 09 developer-experience baseline.
+Status: developer-experience baseline.
 
 The frontend is capability-aware. Route visibility is controlled by the route profile and capability map, not by ad hoc page checks.
 
@@ -25,7 +25,7 @@ Public profiles must not expose private future-BS exact output, private data, or
 
 ## Large component extraction
 
-`frontend/src/redesign/ParvaExperience.jsx` is still the largest shell. Phase 09
+`frontend/src/redesign/ParvaExperience.jsx` is still the largest shell. the frontend and SDK baseline
 keeps the extraction path measurable instead of rewriting the UI in one risky
 pass. Existing reusable verification UI already lives in:
 

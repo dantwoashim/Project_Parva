@@ -7,11 +7,21 @@ import sys
 from pathlib import Path
 
 try:
-    from .common import DEFAULT_MANIFEST_PATH, DEFAULT_SIGNATURE_PATH, TrustToolError
-    from .common import build_alpha_signature_payload, repo_path
+    from .common import (
+        DEFAULT_MANIFEST_PATH,
+        DEFAULT_SIGNATURE_PATH,
+        TrustToolError,
+        build_alpha_signature_payload,
+        repo_path,
+    )
 except ImportError:  # pragma: no cover - direct script execution
-    from common import DEFAULT_MANIFEST_PATH, DEFAULT_SIGNATURE_PATH, TrustToolError
-    from common import build_alpha_signature_payload, repo_path
+    from common import (
+        DEFAULT_MANIFEST_PATH,
+        DEFAULT_SIGNATURE_PATH,
+        TrustToolError,
+        build_alpha_signature_payload,
+        repo_path,
+    )
 
 
 def sign_release(

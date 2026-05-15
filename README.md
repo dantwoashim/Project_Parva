@@ -236,7 +236,6 @@ make verify
 - [Deployment](docs/DEPLOYMENT.md)
 - [Stability policy](docs/STABILITY.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
-- [SDK strategy](docs/SDK_STRATEGY.md)
 - [SDK publishing checklist](docs/SDK_PUBLISHING_CHECKLIST.md)
 - [API versioning and deprecation](docs/API_VERSIONING_AND_DEPRECATION.md)
 - [Licensing](docs/LICENSING.md)

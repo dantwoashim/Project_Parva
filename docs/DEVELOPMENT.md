@@ -182,10 +182,10 @@ python3.11 scripts/release/check_repo_hygiene.py
 python3.11 scripts/release/measure_public_api_performance.py
 ```
 
-Layer 2 public API contract:
+Public API contract:
 
 ```bash
-python3.11 -m pytest tests/contract/test_layer2_public_api_contract.py -q
+python3.11 -m pytest tests/contract/test_public_api_contract.py -q
 python3.11 -m pytest packages/parva-python/tests -q
 npm --prefix packages/parva-js test
 ```

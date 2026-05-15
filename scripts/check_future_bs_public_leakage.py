@@ -26,7 +26,6 @@ REQUIRED_DOCS = [
     "docs/future_bs/ACCURACY_REPRODUCIBILITY.md",
     "docs/future_bs/WRONG_GREEN_POLICY.md",
     "docs/future_bs/MODEL_REGISTRY.md",
-    "reports/phase_07_future_bs_governance/module_classification.md",
 ]
 SDK_CODE_GLOBS = [
     "packages/parva-js/src/**/*.ts",
@@ -80,10 +79,10 @@ def check_required_files() -> list[str]:
     for relative in REQUIRED_DOCS:
         path = PROJECT_ROOT / relative
         if not path.exists():
-            failures.append(f"Missing required Phase 07 artifact: {relative}")
+            failures.append(f"Missing required public boundary artifact: {relative}")
             continue
         if not path.read_text(encoding="utf-8").strip():
-            failures.append(f"Required Phase 07 artifact is empty: {relative}")
+            failures.append(f"Required public boundary artifact is empty: {relative}")
     return failures
 
 
@@ -285,7 +284,7 @@ def main() -> int:
                 "ok": True,
                 "policy": str(POLICY_PATH.relative_to(PROJECT_ROOT)),
                 "checked": [
-                    "required_phase07_artifacts",
+                    "required_public_boundary_artifacts",
                     "route_maturity_public_profiles",
                     "public_openapi_artifacts",
                     "public_profile_apps",

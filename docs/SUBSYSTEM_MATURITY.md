@@ -1,6 +1,6 @@
 # Subsystem Maturity
 
-Status: Phase 04 public exposure control.
+Status: public exposure control.
 
 Source of truth: [config/subsystem-maturity.yaml](../config/subsystem-maturity.yaml)
 
