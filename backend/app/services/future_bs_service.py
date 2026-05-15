@@ -80,6 +80,7 @@ def future_bs_capabilities_payload(*, trace_id: str | None = None) -> dict[str, 
         "status": "research_preview",
         "maturity": "research_preview",
         "publication_status": "computed_prediction_not_official",
+        "review_required": True,
         "claim_boundary": meta["claim_boundary"],
         "confidence": meta["confidence"],
         "release_id": meta["release_id"],
@@ -104,6 +105,11 @@ def future_bs_capabilities_payload(*, trace_id: str | None = None) -> dict[str, 
             "legal_or_tax_final_authority",
             "guaranteed_future_calendar_accuracy",
         ],
+        "not_authority": (
+            "Future-BS research capability metadata is not an official future "
+            "date source and is not legal, tax, banking, payroll, government, "
+            "or religious authority."
+        ),
     }
 
 

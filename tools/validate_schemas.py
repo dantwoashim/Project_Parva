@@ -26,6 +26,7 @@ SCHEMA_PATHS = [
     ROOT / "schemas" / "festival-occurrence.schema.json",
     ROOT / "schemas" / "panchanga-day.schema.json",
     ROOT / "schemas" / "nepal-fiscal-year.schema.json",
+    ROOT / "schemas" / "external-temporal-rules.schema.json",
 ]
 SCHEMA_PATHS.extend(sorted((ROOT / "schemas" / "parva-protocol").glob("*.schema.json")))
 

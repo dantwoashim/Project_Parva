@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-parva.local/public-benchmark/schema.json",
+  "title": "Nepali Time Reliability Benchmark",
+  "type": "object",
+  "required": ["schema_version", "name", "claim_boundary", "tasks", "scoring"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "claim_boundary": {
+      "type": "string",
+      "pattern": "not_authority|benchmark|technical"
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 30,
+      "items": { "$ref": "#/$defs/task" }
+    },
+    "scoring": {
+      "type": "object",
+      "required": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "correctness": { "type": "integer", "const": 40 },
+        "source_awareness": { "type": "integer", "const": 20 },
+        "uncertainty_handling": { "type": "integer", "const": 20 },
+        "review_gate_behavior": { "type": "integer", "const": 10 },
+        "machine_readable_structure": { "type": "integer", "const": 10 }
+      }
+    }
+  },
+  "$defs": {
+    "task": {
+      "type": "object",
+      "required": [
+        "id",
+        "category",
+        "input",
+        "expected",
+        "public_safe",
+        "authority_boundary",
+        "scoring_dimensions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "category": { "type": "string", "minLength": 1 },
+        "input": { "type": "object" },
+        "expected": { "type": "object" },
+        "public_safe": { "type": "boolean", "const": true },
+        "authority_boundary": {
+          "type": "string",
+          "minLength": 1,
+          "not": {
+            "enum": [
+              "official_future_date",
+              "government_authority",
+              "legal_authority",
+              "banking_authority",
+              "payroll_authority",
+              "tax_authority"
+            ]
+          }
+        },
+        "scoring_dimensions": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "correctness",
+              "source_awareness",
+              "uncertainty_handling",
+              "review_gate_behavior",
+              "machine_readable_structure"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

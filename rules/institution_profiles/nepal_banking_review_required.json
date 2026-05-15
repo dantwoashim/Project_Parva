@@ -1,0 +1,18 @@
+{
+  "profile_id": "nepal_banking_review_required",
+  "name": "Nepal Banking Review Required",
+  "jurisdiction": "Nepal",
+  "public_safe": true,
+  "official_rule": false,
+  "review_required_for_final_use": true,
+  "authority_boundary": "Sample review profile, not banking, legal, tax, payroll, government, or religious authority.",
+  "requires_evidence": [
+    "institution holiday notice",
+    "regulator or bank source for settlement use"
+  ],
+  "review_required_when": [
+    "repayment date shift",
+    "settlement cutoff",
+    "customer-facing banking notice"
+  ]
+}

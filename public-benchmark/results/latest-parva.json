@@ -1,0 +1,548 @@
+{
+  "base_url": "inprocess://parva",
+  "results": [
+    {
+      "category": "bs_ad_conversion",
+      "http_status": 200,
+      "id": "conversion_001",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "bs_ad_conversion",
+      "http_status": 200,
+      "id": "conversion_002",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "bs_ad_conversion",
+      "http_status": 200,
+      "id": "conversion_003",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "bs_ad_conversion",
+      "http_status": 200,
+      "id": "conversion_004",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "bs_ad_conversion",
+      "http_status": 200,
+      "id": "conversion_005",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 400,
+      "id": "invalid_001",
+      "score": 60,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 400,
+      "id": "invalid_002",
+      "score": 60,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 400,
+      "id": "invalid_003",
+      "score": 60,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 200,
+      "id": "invalid_004",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 200,
+      "id": "invalid_005",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "holidays",
+      "http_status": 200,
+      "id": "holiday_001",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "holidays",
+      "http_status": 200,
+      "id": "holiday_002",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "holidays",
+      "http_status": 200,
+      "id": "holiday_003",
+      "score": 70,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "holidays",
+      "http_status": 200,
+      "id": "holiday_004",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "working_days",
+      "http_status": 200,
+      "id": "working_001",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "working_days",
+      "http_status": 200,
+      "id": "working_002",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "working_days",
+      "http_status": 200,
+      "id": "working_003",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "working_days",
+      "http_status": 200,
+      "id": "working_004",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "http_status": 200,
+      "id": "fiscal_001",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "http_status": 200,
+      "id": "fiscal_002",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "http_status": 200,
+      "id": "fiscal_003",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "festival_dates",
+      "http_status": 200,
+      "id": "festival_001",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "festival_dates",
+      "http_status": 200,
+      "id": "festival_002",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "festival_dates",
+      "http_status": 200,
+      "id": "festival_003",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "http_status": 200,
+      "id": "panchanga_001",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "http_status": 200,
+      "id": "panchanga_002",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "http_status": 200,
+      "id": "panchanga_003",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "payroll_repayment_review_gates",
+      "http_status": 200,
+      "id": "review_001",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "payroll_repayment_review_gates",
+      "http_status": 200,
+      "id": "review_002",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "payroll_repayment_review_gates",
+      "http_status": 200,
+      "id": "review_003",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "http_status": 200,
+      "id": "future_bs_001",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "http_status": 200,
+      "id": "future_bs_002",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "http_status": 200,
+      "id": "future_bs_003",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "http_status": 200,
+      "id": "future_bs_004",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "http_status": 200,
+      "id": "metadata_001",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "http_status": 200,
+      "id": "metadata_002",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "http_status": 200,
+      "id": "metadata_003",
+      "score": 70,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "http_status": 200,
+      "id": "metadata_004",
+      "score": 70,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    }
+  ],
+  "runner": "parva",
+  "schema_version": "2026-05-15.nepali-time-reliability.v0",
+  "summary": {
+    "blocked": 0,
+    "failed": 0,
+    "max_score": 3800,
+    "passed": 38,
+    "score": 3400,
+    "score_percent": 89.47,
+    "total": 38
+  }
+}

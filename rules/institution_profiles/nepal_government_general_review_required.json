@@ -1,0 +1,18 @@
+{
+  "profile_id": "nepal_government_general_review_required",
+  "name": "Nepal Government General Review Required",
+  "jurisdiction": "Nepal",
+  "public_safe": true,
+  "official_rule": false,
+  "review_required_for_final_use": true,
+  "authority_boundary": "Sample review profile, not official government authority and not legal, tax, banking, payroll, or religious authority.",
+  "requires_evidence": [
+    "published government notice",
+    "source URL or archived file hash"
+  ],
+  "review_required_when": [
+    "public office closure claim",
+    "government filing date",
+    "local-government holiday variant"
+  ]
+}

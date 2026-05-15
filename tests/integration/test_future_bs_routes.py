@@ -17,6 +17,7 @@ def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
     assert body["status"] == "research_preview"
     assert body["maturity"] == "research_preview"
     assert body["publication_status"] == "computed_prediction_not_official"
+    assert body["review_required"] is True
     assert body["claim_boundary"] == "research_preview_not_safe_for_legal_or_payroll_use"
     assert "computed_prediction_not_official" in body["warnings"]
     assert "official_future_publication" in body["not_claimed"]
@@ -24,6 +25,7 @@ def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
     assert "model_registry" not in body
     assert "precomputed_store" not in body
     assert "solar_ingress_cache" not in body
+    assert "official future" in body["not_authority"]
 
 
 def test_future_bs_private_routes_are_not_public_in_default_profile():

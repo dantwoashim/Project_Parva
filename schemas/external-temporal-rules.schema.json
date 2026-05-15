@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-parva.local/schemas/external-temporal-rules.schema.json",
+  "title": "External Temporal Rules Registry",
+  "type": "object",
+  "required": ["schema_version", "registry_format", "claim_boundary", "source_tiers", "rules"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "registry_format": { "type": "string", "const": "json_subset_of_yaml" },
+    "claim_boundary": { "type": "string", "pattern": ".*not_authority.*" },
+    "source_tiers": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "enum": ["official", "semi_official", "institutional", "published", "research", "unknown"]
+      }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "required": [
+        "rule_id",
+        "name",
+        "authority_type",
+        "source_tier",
+        "applies_to",
+        "effective_from",
+        "effective_to",
+        "jurisdiction",
+        "evidence_required",
+        "public_safe",
+        "review_required_when",
+        "conflict_resolution",
+        "examples"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+        "name": { "type": "string", "minLength": 1 },
+        "authority_type": { "type": "string", "minLength": 1 },
+        "source_tier": {
+          "enum": ["official", "semi_official", "institutional", "published", "research", "unknown"]
+        },
+        "applies_to": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "effective_from": { "type": ["string", "null"] },
+        "effective_to": { "type": ["string", "null"] },
+        "jurisdiction": { "type": "string", "minLength": 1 },
+        "evidence_required": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "public_safe": { "type": "boolean" },
+        "review_required_when": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "conflict_resolution": { "type": "string", "minLength": 1 },
+        "examples": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "2026-05-15.external_temporal_rules",
+      "registry_format": "json_subset_of_yaml",
+      "claim_boundary": "institution_rule_registry_not_authority",
+      "source_tiers": ["official", "semi_official", "institutional", "published", "research", "unknown"],
+      "rules": [
+        {
+          "rule_id": "sample_review_gate",
+          "name": "Sample review gate",
+          "authority_type": "institutional_decision_support",
+          "source_tier": "institutional",
+          "applies_to": ["working_days"],
+          "effective_from": null,
+          "effective_to": null,
+          "jurisdiction": "Nepal",
+          "evidence_required": ["institution policy"],
+          "public_safe": true,
+          "review_required_when": ["final operational use"],
+          "conflict_resolution": "institution policy overrides helper output",
+          "examples": ["safe example only"]
+        }
+      ]
+    }
+  ]
+}

@@ -4,9 +4,16 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from validate_benchmark import validate_benchmark_document  # noqa: E402
+
+RESULTS_PATH = ROOT / "results" / "latest-static-baseline.json"
 WEIGHTS = {
     "correctness": 40,
     "source_awareness": 20,
@@ -17,7 +24,11 @@ WEIGHTS = {
 
 
 def _load_benchmark() -> dict:
-    return json.loads((ROOT / "benchmark.json").read_text(encoding="utf-8"))
+    benchmark = json.loads((ROOT / "benchmark.json").read_text(encoding="utf-8"))
+    issues = validate_benchmark_document(benchmark)
+    if issues:
+        raise ValueError("; ".join(issues))
+    return benchmark
 
 
 def _result_for_task(task: dict) -> dict:
@@ -65,7 +76,10 @@ def run_static_baseline() -> dict:
 
 
 def main() -> int:
-    print(json.dumps(run_static_baseline(), indent=2))
+    report = run_static_baseline()
+    RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    RESULTS_PATH.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(json.dumps(report, indent=2, sort_keys=True))
     return 0
 
 

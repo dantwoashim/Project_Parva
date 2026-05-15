@@ -15,10 +15,14 @@ from pathlib import Path
 from typing import Any, Callable
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 PROJECT_ROOT = ROOT.parent
 BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
+
+from validate_benchmark import validate_benchmark_document  # noqa: E402
 
 WEIGHTS = {
     "correctness": 40,
@@ -40,10 +44,15 @@ class RequestSpec:
 FetchResult = tuple[int, Any]
 Fetcher = Callable[[str, RequestSpec, float], FetchResult]
 _INPROCESS_CLIENT: Any | None = None
+RESULTS_PATH = ROOT / "results" / "latest-parva.json"
 
 
 def _load_benchmark() -> dict[str, Any]:
-    return json.loads((ROOT / "benchmark.json").read_text(encoding="utf-8"))
+    benchmark = json.loads((ROOT / "benchmark.json").read_text(encoding="utf-8"))
+    issues = validate_benchmark_document(benchmark)
+    if issues:
+        raise ValueError("; ".join(issues))
+    return benchmark
 
 
 def _parse_bs_date(value: str) -> tuple[int, int, int]:
@@ -251,7 +260,16 @@ def _evaluate_task(task: dict[str, Any], status: int, payload: Any) -> dict[str,
         "correctness": _correctness(task, status, payload),
         "source_awareness": _contains_key(payload, {"source", "sources", "source_metadata", "provenance", "policy", "meta"}),
         "uncertainty_handling": _contains_key(payload, {"confidence", "uncertainty", "risk", "publication_status", "claim_boundary", "review_required"}),
-        "review_gate_behavior": status in {400, 403} or _contains_key(payload, {"review_required", "human_review_required", "unsupported", "not_legal_authority"}),
+        "review_gate_behavior": status in {400, 403} or _contains_key(
+            payload,
+            {
+                "review_required",
+                "human_review_required",
+                "requires_human_review",
+                "unsupported",
+                "not_legal_authority",
+            },
+        ),
         "machine_readable_structure": isinstance(payload, (dict, list)),
     }
 
@@ -260,7 +278,12 @@ def _evaluate_task(task: dict[str, Any], status: int, payload: Any) -> dict[str,
     if expected.get("method_metadata_required"):
         signals["uncertainty_handling"] = signals["uncertainty_handling"] or _contains_key(payload, {"method", "engine_version", "ephemeris"})
     if expected.get("review_required"):
-        signals["review_gate_behavior"] = signals["review_gate_behavior"] or _contains_pair(payload, "review_required", True)
+        signals["review_gate_behavior"] = (
+            signals["review_gate_behavior"]
+            or _contains_pair(payload, "review_required", True)
+            or _contains_pair(payload, "requires_human_review", True)
+            or _contains_pair(payload, "human_review_required", True)
+        )
     if expected.get("not_legal_authority"):
         signals["review_gate_behavior"] = signals["review_gate_behavior"] or _contains_key(payload, {"policy", "claim_boundary"})
     if expected.get("exact_predictions_public") is False:
@@ -328,7 +351,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     report = run_benchmark(args.base_url, timeout=args.timeout)
-    print(json.dumps(report, indent=2))
+    RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    RESULTS_PATH.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(json.dumps(report, indent=2, sort_keys=True))
     if args.fail_under is not None and report["summary"]["score_percent"] < args.fail_under:
         return 1
     return 0 if report["summary"]["blocked"] == 0 else 2

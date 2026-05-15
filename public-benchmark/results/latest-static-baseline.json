@@ -1,0 +1,508 @@
+{
+  "results": [
+    {
+      "category": "bs_ad_conversion",
+      "id": "conversion_001",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "bs_ad_conversion",
+      "id": "conversion_002",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "bs_ad_conversion",
+      "id": "conversion_003",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "bs_ad_conversion",
+      "id": "conversion_004",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "bs_ad_conversion",
+      "id": "conversion_005",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "id": "invalid_001",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "id": "invalid_002",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "id": "invalid_003",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "id": "invalid_004",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "id": "invalid_005",
+      "score": 50,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "holidays",
+      "id": "holiday_001",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "holidays",
+      "id": "holiday_002",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "holidays",
+      "id": "holiday_003",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "holidays",
+      "id": "holiday_004",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "working_days",
+      "id": "working_001",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "working_days",
+      "id": "working_002",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "working_days",
+      "id": "working_003",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "working_days",
+      "id": "working_004",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "id": "fiscal_001",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "id": "fiscal_002",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "id": "fiscal_003",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "festival_dates",
+      "id": "festival_001",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "festival_dates",
+      "id": "festival_002",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "festival_dates",
+      "id": "festival_003",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "id": "panchanga_001",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "id": "panchanga_002",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "id": "panchanga_003",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "payroll_repayment_review_gates",
+      "id": "review_001",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "payroll_repayment_review_gates",
+      "id": "review_002",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "payroll_repayment_review_gates",
+      "id": "review_003",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "id": "future_bs_001",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "id": "future_bs_002",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "id": "future_bs_003",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "id": "future_bs_004",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "id": "metadata_001",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "id": "metadata_002",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "id": "metadata_003",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "id": "metadata_004",
+      "score": 10,
+      "signals": {
+        "correctness": false,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "unsupported"
+    }
+  ],
+  "runner": "static_baseline",
+  "schema_version": "2026-05-15.nepali-time-reliability.v0",
+  "summary": {
+    "max_score": 3800,
+    "passed": 10,
+    "score": 780,
+    "score_percent": 20.53,
+    "total": 38,
+    "unsupported": 28
+  }
+}

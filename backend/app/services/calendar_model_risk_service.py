@@ -181,6 +181,7 @@ def capabilities_payload(*, trace_id: str | None = None) -> dict[str, Any]:
         "status": "research_preview",
         "maturity": "research_preview",
         "publication_status": "computed_prediction_not_official",
+        "review_required": True,
         "claim_boundary": meta["claim_boundary"],
         "confidence": meta["confidence"],
         "release_id": meta["release_id"],
@@ -205,6 +206,11 @@ def capabilities_payload(*, trace_id: str | None = None) -> dict[str, Any]:
             "legal_or_tax_final_authority",
             "guaranteed_future_calendar_accuracy",
         ],
+        "not_authority": (
+            "Calendar model-risk capability metadata is not an official future "
+            "date source and is not legal, tax, banking, payroll, government, "
+            "or religious authority."
+        ),
     }
 
 

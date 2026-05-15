@@ -98,6 +98,7 @@ def main() -> int:
     checks: list[tuple[str, list[str]]] = [
         ("environment", [*python, "scripts/verify_environment.py"]),
         ("repository hygiene", [*python, "scripts/release/check_repo_hygiene.py"]),
+        ("clean clone assumptions", [*python, "scripts/release/verify_clean_clone_assumptions.py"]),
         ("secret scan", [*python, "scripts/security/scan_repo_secrets.py"]),
         ("path leak scan", [*python, "scripts/check_path_leaks.py"]),
         ("public safety gate", [*python, "scripts/release/check_public_safety_gate.py"]),
@@ -112,6 +113,9 @@ def main() -> int:
         ("agentic temporal verification", [*python, "scripts/parva_agent_verify.py"]),
         ("agent benchmark", [*python, "scripts/parva_agent_benchmark.py"]),
         ("protocol verification", [*python, "scripts/parva_protocol_verify.py"]),
+        ("external temporal rules", [*python, "scripts/validate_external_temporal_rules.py"]),
+        ("benchmark schema", [*python, "public-benchmark/validate_benchmark.py"]),
+        ("public claims", [*python, "scripts/release/check_public_claims.py"]),
         ("protocol conformance core", [*python, "scripts/parva_conformance.py", "--target", "local", "--level", "parva_core"]),
         ("protocol conformance full", [*python, "scripts/parva_conformance.py", "--target", "local", "--level", "parva_full"]),
         ("documented route inventory", [*python, "scripts/release/check_documented_routes.py"]),

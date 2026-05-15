@@ -18,7 +18,7 @@ The canonical runtime list lives in `backend/app/core/source_authority.py`.
 
 | Tier | Who can use it | Public output? | Official-looking claims? | Human review? | Public offline bundle? | Conflict rule |
 |---|---|---:|---:|---:|---:|---|
-| `official` | Reviewed source records tied to an official publication such as MoHA, NPNS, NRB, or another legal authority | Yes | Only as source interpretation, never as Parva authority | Yes | Yes | Overrides weaker tiers when the publication is in scope |
+| `official` | Reviewed source records tied to an official publication such as MoHA, NPNS, NRB, or another competent authority | Yes | Only as source interpretation, never as Parva authority | Yes | Yes | Overrides weaker tiers when the publication is in scope |
 | `semi_official` | Authority-adjacent sources, notices, institutional pages, or delegated publications | Yes | No | Yes | Yes | Loses to `official`; beats printed, public witness, software, and third-party rows |
 | `printed_verified` | Human-reviewed printed calendars or panchanga publications | Yes | No | Yes | Yes | Loses to official or semi-official sources; beats weaker references |
 | `public_witness` | Public dated material linking AD and BS facts | Yes | No | Yes | Yes | Supports triangulation; does not override higher authority |

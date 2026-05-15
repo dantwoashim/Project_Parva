@@ -1,0 +1,19 @@
+{
+  "profile_id": "nepal_private_company_default",
+  "name": "Nepal Private Company Default",
+  "jurisdiction": "Nepal",
+  "public_safe": true,
+  "official_rule": false,
+  "review_required_for_final_use": true,
+  "authority_boundary": "Sample decision-support profile, not legal, tax, banking, payroll, government, or religious authority.",
+  "weekend_policy": {
+    "non_working_weekdays": ["saturday"],
+    "source_tier": "research",
+    "evidence_required": ["employer work-week policy for final payroll use"]
+  },
+  "review_required_when": [
+    "payroll finalization",
+    "employment-law consequence",
+    "organization-specific holiday adjustment"
+  ]
+}
