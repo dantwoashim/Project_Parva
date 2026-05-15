@@ -736,6 +736,27 @@ def _engine_track_for_path(path: str) -> str:
     return "v3"
 
 
+_STRICT_CSP = "default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
+
+_API_DOCS_CSP = (
+    "default-src 'self'; "
+    "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+    "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+    "img-src 'self' data: https://fastapi.tiangolo.com; "
+    "font-src 'self' data: https://cdn.jsdelivr.net; "
+    "connect-src 'self'; "
+    "object-src 'none'; "
+    "frame-ancestors 'none'; "
+    "base-uri 'self'"
+)
+
+
+def _content_security_policy_for_path(path: str) -> str:
+    if path in {"/docs", "/redoc", "/docs/oauth2-redirect"}:
+        return _API_DOCS_CSP
+    return _STRICT_CSP
+
+
 def build_engine_headers(
     *,
     ephemeris_header_value: Callable[[], str],
@@ -761,8 +782,8 @@ def build_engine_headers(
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "no-referrer"
-        response.headers["Content-Security-Policy"] = (
-            "default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
+        response.headers["Content-Security-Policy"] = _content_security_policy_for_path(
+            request.url.path
         )
         if request.url.path.startswith(_PRIVATE_RESPONSE_PREFIXES):
             response.headers["Cache-Control"] = "no-store"
