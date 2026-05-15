@@ -46,7 +46,8 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 
 - React/Vite frontend with landing, consumer home, festival explorer/detail, methodology, panchanga, personal panchanga, muhurta, kundali, temporal compass, time lab, truth lab, profile, saved, and feed subscription pages.
 - Frontend service clients and contract tests for API usage.
-- Built static assets under `frontend/dist`.
+- Built static assets are generated locally by the frontend build and are not
+  tracked in source control.
 
 ## SDK
 

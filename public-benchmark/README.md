@@ -7,7 +7,7 @@ uncertainty handling, review gates, and machine-readable structure.
 Categories:
 
 - BS/AD conversion
-- valid and invalid BS dates
+- invalid BS dates and validation failure behavior
 - public holidays
 - working-day shifts
 - fiscal-year boundaries
@@ -26,7 +26,13 @@ Run the static baseline:
 python public-benchmark/runners/run_against_static_baseline.py
 ```
 
-Run against a local or deployed Parva base URL:
+Run against the in-process public-reference Parva app:
+
+```bash
+python public-benchmark/runners/run_against_parva.py
+```
+
+Run against a deployed Parva base URL:
 
 ```bash
 python public-benchmark/runners/run_against_parva.py --base-url https://api.prabinghimire1.com.np

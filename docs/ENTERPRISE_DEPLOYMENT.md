@@ -22,3 +22,8 @@ Recommended deployment shape:
 Enterprise use remains decision support. Parva is not a government authority,
 legal authority, tax advisor, banking-contract authority, payroll final
 authority, or religious authority.
+
+For vendor audit and conformance deployments, run the public gate first, then
+attach organization-specific source policies for holidays, payroll cutoffs,
+banking calendars, fiscal assumptions, and local holidays. Do not use public
+demo profiles as final institution policy.

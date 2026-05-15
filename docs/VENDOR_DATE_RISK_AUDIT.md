@@ -13,7 +13,7 @@ software-platform proof is the lower-friction first step.
 ## Input CSV
 
 ```csv
-bs_date,workflow_type,expected_behavior,actual_ad_date,holiday_assumptions,fiscal_assumptions
+bs_date,workflow_type,expected_behavior,actual_ad_date,holiday_assumption,fiscal_assumption
 2082-01-01,invoice_due_date,next_working_day,2025-04-14,known_public_holidays,nepal_fiscal_year
 ```
 
@@ -26,14 +26,16 @@ Required columns:
 Optional columns:
 
 - `actual_ad_date`
-- `holiday_assumptions`
-- `fiscal_assumptions`
+- `holiday_assumption`
+- `fiscal_assumption`
 
 ## Output Report
 
 The audit report should identify invalid dates, unsupported ranges, source
 conflicts, holiday mismatches, fiscal cutoff mismatches, working-day mismatches,
 review-required cases, and an overall conformance score.
+
+Sample input and output live under `samples/vendor-date-risk-audit`.
 
 Suggested commercial packaging:
 

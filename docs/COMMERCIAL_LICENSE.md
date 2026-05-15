@@ -19,3 +19,7 @@ Commercial license scope can include:
 
 Commercial licensing does not grant government, legal, tax, banking, payroll,
 religious, official calendar, or external certification authority.
+
+The first commercial package should be the BS Date Risk Audit plus Conformance
+Suite. A license may cover private deployment and support, but the audit report
+must still label review-required cases and unsupported future assumptions.

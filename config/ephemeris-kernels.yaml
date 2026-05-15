@@ -1,0 +1,52 @@
+{
+  "schema_version": "2026-05-15.ephemeris_kernels",
+  "registry_format": "json_subset_of_yaml",
+  "policy": {
+    "public_runtime_required": false,
+    "private_or_research": true,
+    "no_large_binary_commits": true,
+    "no_public_kernel_paths": true
+  },
+  "kernels": [
+    {
+      "id": "de440",
+      "role": "primary high-precision JPL SPK candidate for solar and lunar longitude research",
+      "coverage": "1550-2650 AD planetary ephemeris family",
+      "path_env_var": "PARVA_JPL_DE440_KERNEL",
+      "expected_sha256": "a4ce9bf9b3282becc9f4b2ac3cebe03a2ae7599981aabd7265fd8482fff7c4b5",
+      "public_runtime_required": false,
+      "private_or_research": true,
+      "commit_binary": false
+    },
+    {
+      "id": "de441_part_1",
+      "role": "extended-range JPL SPK research candidate",
+      "coverage": "long-range planetary ephemeris family, part 1",
+      "path_env_var": "PARVA_JPL_DE441_PART1_KERNEL",
+      "expected_sha256": "13757827f5db41b835a24bbd637488636ce79a8ca754062fed17844f7d5b618e",
+      "public_runtime_required": false,
+      "private_or_research": true,
+      "commit_binary": false
+    },
+    {
+      "id": "de441_part_2",
+      "role": "extended-range JPL SPK research candidate",
+      "coverage": "long-range planetary ephemeris family, part 2",
+      "path_env_var": "PARVA_JPL_DE441_PART2_KERNEL",
+      "expected_sha256": "3abb17dae2d78dd34880377544aacb54892104a0d4462b322cb9f4454d4887f6",
+      "public_runtime_required": false,
+      "private_or_research": true,
+      "commit_binary": false
+    },
+    {
+      "id": "naif_leap_seconds",
+      "role": "NAIF leap seconds kernel for SPICE time conversion when a full SPICE stack is used",
+      "coverage": "NAIF leap-second table as deployed by operator",
+      "path_env_var": "PARVA_NAIF_LSK_KERNEL",
+      "expected_sha256": null,
+      "public_runtime_required": false,
+      "private_or_research": true,
+      "commit_binary": false
+    }
+  ]
+}

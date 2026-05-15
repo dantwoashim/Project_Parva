@@ -40,9 +40,13 @@ python scripts/parva_conformance.py --target local --level full
 python scripts/parva_conformance.py --target local --level full --output reports/compatibility/project-parva-reference-full.json
 ```
 
-The output report includes implementation name, protocol version, compatibility
+The output report is a generated artifact and includes implementation name, protocol version, compatibility
 level, test counts, per-test results, limitations, public/private data policy,
 generation time, and report hash.
+
+Vendor conformance is not external certification. It is a reproducible
+technical compatibility check for a specific release, fixture set, and protocol
+draft level.
 
 ## Fixture Inventory
 

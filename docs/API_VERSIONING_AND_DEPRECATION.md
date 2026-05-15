@@ -26,3 +26,8 @@ Deprecation rule:
 2. Add replacement route, maturity lane, and sunset note.
 3. Keep public OpenAPI and docs link checks green.
 4. Do not remove behavior without contract tests or a migration note.
+
+Public docs and SDK examples must not imply that v4 or v5 are stable exact
+Future-BS APIs. Public v4/v5 capability routes may describe research posture,
+but exact unsupported future outputs require private gates and remain
+`computed_prediction_not_official`.

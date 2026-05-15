@@ -156,6 +156,20 @@ client = ParvaClient(max_retries=2, retry_base_delay=0.25)
 
 Set `max_retries=0` to disable retries.
 
+## Review-Required Behavior
+
+Do not discard `review_required`, `claim_boundary`, `confidence`,
+`source_tier`, `warnings`, or `publication_status` fields from SDK responses.
+Invalid dates, unsupported ranges, private route denials, and
+`computed_prediction_not_official` labels are decision boundaries, not transient
+transport failures.
+
+The SDK has named helpers for conversion, validation, fiscal-year,
+business-day, compliance, trust, TimeGraph, RuleLang, protocol, and capability
+metadata. Holiday, festival-detail, and panchanga examples can use the REST
+routes directly until those helpers are promoted into the canonical alpha
+surface.
+
 ## Claim Boundary
 
 Future-BS capabilities describe a research surface. They are not official calendar publication and must preserve:

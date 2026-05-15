@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import urllib.error
 import urllib.parse
@@ -14,6 +15,11 @@ from pathlib import Path
 from typing import Any, Callable
 
 ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = ROOT.parent
+BACKEND_ROOT = PROJECT_ROOT / "backend"
+if str(BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(BACKEND_ROOT))
+
 WEIGHTS = {
     "correctness": 40,
     "source_awareness": 20,
@@ -33,6 +39,7 @@ class RequestSpec:
 
 FetchResult = tuple[int, Any]
 Fetcher = Callable[[str, RequestSpec, float], FetchResult]
+_INPROCESS_CLIENT: Any | None = None
 
 
 def _load_benchmark() -> dict[str, Any]:
@@ -51,6 +58,9 @@ def _url(base_url: str, spec: RequestSpec) -> str:
 
 
 def fetch_json(base_url: str, spec: RequestSpec, timeout: float) -> FetchResult:
+    if base_url.startswith("inprocess://"):
+        return _fetch_inprocess(spec)
+
     data = None
     headers = {"Accept": "application/json"}
     if spec.body is not None:
@@ -69,39 +79,99 @@ def fetch_json(base_url: str, spec: RequestSpec, timeout: float) -> FetchResult:
         return exc.code, payload
 
 
+def _fetch_inprocess(spec: RequestSpec) -> FetchResult:
+    global _INPROCESS_CLIENT
+    if _INPROCESS_CLIENT is None:
+        os.environ.setdefault("PARVA_ENV", "test")
+        os.environ.setdefault("PARVA_ROUTE_PROFILE", "public_reference")
+        os.environ.setdefault("PARVA_ENABLE_EXPERIMENTAL_API", "false")
+        os.environ.setdefault("PARVA_ENABLE_RESEARCH_API", "false")
+        os.environ.setdefault("PARVA_SHOW_PRIVATE_SCHEMA", "false")
+        os.environ.setdefault("PARVA_RATE_LIMIT_ENABLED", "false")
+        os.environ.setdefault("PARVA_REQUIRE_PRECOMPUTED", "false")
+        from fastapi.testclient import TestClient
+        from app.bootstrap.app_factory import create_app
+
+        _INPROCESS_CLIENT = TestClient(create_app())
+
+    response = _INPROCESS_CLIENT.request(
+        spec.method,
+        spec.path,
+        params=spec.params,
+        json=spec.body,
+    )
+    try:
+        payload: Any = response.json()
+    except ValueError:
+        payload = {"error": response.text}
+    return response.status_code, payload
+
+
 def _request_for_task(task: dict[str, Any]) -> RequestSpec:
     category = task["category"]
     item = task.get("input", {})
 
     if category == "bs_ad_conversion":
+        if "ad_date" in item:
+            return RequestSpec("GET", "/v3/api/calendar/convert", params={"date": item["ad_date"]})
         year, month, day = _parse_bs_date(item["bs_date"])
-        return RequestSpec("POST", "/v3/api/calendar/bs-to-gregorian", body={"year": year, "month": month, "day": day})
+        return RequestSpec(
+            "POST",
+            "/v3/api/calendar/bs-to-gregorian",
+            body={"year": year, "month": month, "day": day},
+        )
     if category == "ad_bs_conversion":
         return RequestSpec("GET", "/v3/api/calendar/convert", params={"date": item["ad_date"]})
-    if category == "valid_invalid_bs_dates":
+    if category in {"valid_invalid_bs_dates", "invalid_bs_dates"}:
         year, month, day = _parse_bs_date(item["bs_date"])
         return RequestSpec("POST", "/v3/api/calendar/bs-to-gregorian", body={"year": year, "month": month, "day": day})
     if category == "fiscal_year_boundaries":
         bs_year = int(item.get("bs_year") or str(item.get("bs_date", "2082")).split("-", 1)[0])
         return RequestSpec("GET", f"/v3/api/enterprise/fiscal-year/{bs_year}")
-    if category in {"working_day_shifts", "repayment_payroll_due_date_logic"}:
-        bs_date = item.get("bs_date", "2082-04-02")
+    if category in {"working_day_shifts", "repayment_payroll_due_date_logic", "working_days", "payroll_repayment_review_gates"}:
+        bs_date = item.get("bs_date") or item.get("start_bs", "2082-04-02")
+        if category in {"working_days"} and "start_bs" in item and "end_bs" in item:
+            return RequestSpec(
+                "POST",
+                "/v3/api/enterprise/business-days",
+                body={"start_bs": item["start_bs"], "end_bs": item["end_bs"], "holiday_policy": item.get("holiday_policy", "none")},
+            )
         return RequestSpec(
             "POST",
-            "/v3/api/enterprise/business-days",
-            body={"start_bs": bs_date, "end_bs": bs_date, "holiday_policy": item.get("holiday_policy", "none")},
+            "/v3/api/compliance/evaluate-date",
+            body={
+                "profile_id": item.get("profile_id", "nepal_private_company_default"),
+                "bs_date": bs_date,
+                "decision_intent": item.get("workflow_type", "general"),
+            },
         )
-    if category == "public_holidays":
+    if category in {"public_holidays", "holidays"}:
+        if item.get("route"):
+            raw_route = str(item["route"])
+            path, _, query = raw_route.partition("?")
+            params = dict(urllib.parse.parse_qsl(query)) if query else None
+            return RequestSpec("GET", path, params=params)
+        if "bs_date" in item or "ad_date" in item:
+            return RequestSpec(
+                "POST",
+                "/v3/api/compliance/evaluate-date",
+                body={
+                    "profile_id": item.get("profile_id", "nepal_private_company_default"),
+                    "bs_date": item.get("bs_date"),
+                    "ad_date": item.get("ad_date"),
+                    "decision_intent": "general",
+                },
+            )
         return RequestSpec("GET", "/v3/api/festivals/upcoming", params={"days": "30"})
     if category == "festival_dates":
         festival = item.get("festival", "dashain")
         year = str(item.get("year", 2026))
         return RequestSpec("GET", f"/v3/api/festivals/{festival}", params={"year": year})
-    if category == "panchanga_tithi":
+    if category in {"panchanga_tithi", "panchanga_tithi_at_sunrise"}:
         return RequestSpec("GET", "/v3/api/calendar/panchanga", params={"date": item.get("ad_date", "2026-04-14")})
-    if category == "future_bs_review_required":
+    if category in {"future_bs_review_required", "future_bs_unsupported_review_required"}:
         return RequestSpec("GET", "/v4/api/future-bs/capabilities")
-    if category == "source_confidence_review_metadata":
+    if category in {"source_confidence_review_metadata", "source_confidence_evidence_metadata"}:
         return RequestSpec("GET", str(item.get("route", "/v3/api/policy")))
     if category == "static_naive_baseline":
         return RequestSpec("GET", "/v3/api/policy")
@@ -139,9 +209,16 @@ def _correctness(task: dict[str, Any], status: int, payload: Any) -> bool:
     expected = task.get("expected", {})
     category = task["category"]
     if category == "bs_ad_conversion":
-        if "ad_date" not in expected:
-            return status == 200
-        return status == 200 and (payload.get("gregorian") or payload.get("ad_date")) == expected.get("ad_date")
+        if "ad_date" in expected:
+            return status == 200 and (payload.get("gregorian") or payload.get("ad_date")) == expected.get("ad_date")
+        if {"bs_year", "bs_month", "bs_day"} & set(expected):
+            bs = payload.get("bikram_sambat", {}) if isinstance(payload, dict) else {}
+            return status == 200 and all(
+                bs.get(key) == expected.get(f"bs_{key}")
+                for key in ("year", "month", "day")
+                if f"bs_{key}" in expected
+            )
+        return status == 200
     if category == "ad_bs_conversion":
         if not {"bs_year", "bs_month", "bs_day"} & set(expected):
             return status == 200
@@ -151,7 +228,7 @@ def _correctness(task: dict[str, Any], status: int, payload: Any) -> bool:
             for key in ("year", "month", "day")
             if f"bs_{key}" in expected
         )
-    if category == "valid_invalid_bs_dates":
+    if category in {"valid_invalid_bs_dates", "invalid_bs_dates"}:
         if "valid" not in expected:
             return status == 200
         wants_valid = bool(expected.get("valid"))
@@ -160,7 +237,7 @@ def _correctness(task: dict[str, Any], status: int, payload: Any) -> bool:
         if "fiscal_year" not in expected:
             return status == 200
         return status == 200 and payload.get("fiscal_year") == expected.get("fiscal_year")
-    if category == "future_bs_review_required":
+    if category in {"future_bs_review_required", "future_bs_unsupported_review_required"}:
         publication_status = expected.get("publication_status")
         return status == 200 and (
             not publication_status or _contains_pair(payload, "publication_status", publication_status)
@@ -245,7 +322,7 @@ def run_benchmark(base_url: str, *, timeout: float = 20.0, fetcher: Fetcher = fe
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base-url", default="http://localhost:8000")
+    parser.add_argument("--base-url", default="inprocess://parva")
     parser.add_argument("--timeout", type=float, default=20.0)
     parser.add_argument("--fail-under", type=float, default=None, help="Exit nonzero if score_percent is below this value.")
     args = parser.parse_args(argv)

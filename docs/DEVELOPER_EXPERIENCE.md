@@ -30,3 +30,18 @@ Known friction still tracked:
   research or preview subsystem.
 - The default Windows shell may resolve Python 3.10 and Node 25; the verifier
   reports this clearly.
+
+## Ten-Minute Adoption Target
+
+The developer path should fit this sequence:
+
+| Minute | Outcome |
+| --- | --- |
+| 0-2 | Read stable route and authority boundary in [Quickstart](QUICKSTART.md). |
+| 2-4 | Install SDK or use REST examples. |
+| 4-6 | Convert BS/AD, validate an invalid BS date, and inspect metadata. |
+| 6-8 | Call fiscal-year and working-day support. |
+| 8-10 | Run public verification or inspect the verification matrix generated artifact. |
+
+If a route is preview, research-private, or unsupported, the docs should say so
+before a developer has to discover it through a failed request.

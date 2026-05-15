@@ -20,3 +20,8 @@ Minimum inventory:
 
 The service supports vendor audits and private deployments. It does not certify
 software, replace official publications, or create legal authority.
+
+Vendor audit output should include a temporal SBOM section naming route
+versions, source policy, holiday policy, fiscal assumptions, unsupported future
+assumptions, and review-required cases. The SBOM is evidence for engineering
+review, not proof of external certification.

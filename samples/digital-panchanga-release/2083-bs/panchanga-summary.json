@@ -1,0 +1,16 @@
+{
+  "release_id": "sample-2083-bs-digital-panchanga",
+  "status": "sample_not_official",
+  "summaries": [
+    {
+      "ad_date": "2026-04-14",
+      "bs_date": "2083-01-01",
+      "summary_status": "computed_sample_requires_source_review",
+      "method": "public_panchanga_summary_shape",
+      "source_tier": "computed",
+      "confidence": "needs_review",
+      "claim_boundary": "sample_schema_not_official_release",
+      "review_required": true
+    }
+  ]
+}

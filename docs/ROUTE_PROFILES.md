@@ -74,3 +74,22 @@ future routes must not be presented as stable SDK methods.
 Existing compatibility aliases remain documented, but new SDK work should group
 preview and draft helpers under explicit preview or draft namespaces.
 
+## Developer Stable Route Set
+
+Use these first for public integrations:
+
+| Capability | Route | Maturity |
+| --- | --- | --- |
+| AD to BS | `/v3/api/calendar/convert` | stable core |
+| BS to AD | `/v3/api/calendar/bs-to-gregorian` | stable core |
+| BS validation | `/v3/api/calendar/bs-to-gregorian` failure behavior | stable core |
+| Fiscal year | `/v3/api/enterprise/fiscal-year/{bs_year}` | stable core |
+| Working-day support | `/v3/api/compliance/*` and `/v3/api/enterprise/business-days` | public/enterprise preview decision support |
+| Festivals | `/v3/api/festivals/*` | public preview with source boundary |
+| Panchanga | `/v3/api/calendar/panchanga` | public preview with computation boundary |
+| Trust metadata | `/v3/api/trust/*` and `/v3/api/policy` | public preview |
+| Future-BS capability | `/v4/api/future-bs/capabilities` | metadata only |
+
+Do not build public clients against exact Future-BS routes, private source
+routes, admin routes, billing routes, key routes, webhooks, or trust mutation
+surfaces.

@@ -1,0 +1,19 @@
+{
+  "release_id": "sample-2083-bs-digital-panchanga",
+  "sources": [
+    {
+      "source_id": "source-sample-calendar",
+      "source_tier": "published",
+      "authority_type": "sample_only",
+      "evidence_required": true,
+      "public_safe": true
+    },
+    {
+      "source_id": "source-sample-panchanga",
+      "source_tier": "published",
+      "authority_type": "sample_only",
+      "evidence_required": true,
+      "public_safe": true
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "2026-05-15.vendor_date_risk_audit_sample",
+  "status": "sample_not_certification",
+  "summary": {
+    "rows": 4,
+    "invalid_dates": 1,
+    "holiday_mismatches": 1,
+    "working_day_mismatches": 0,
+    "fiscal_cutoff_errors": 0,
+    "unsupported_future_assumptions": 1,
+    "source_conflicts": 0,
+    "review_required_cases": 3,
+    "conformance_score": 72
+  },
+  "findings": [
+    {
+      "bs_date": "2082-13-01",
+      "issue": "invalid_date",
+      "severity": "high",
+      "review_required": true
+    },
+    {
+      "bs_date": "2090-01-01",
+      "issue": "unsupported_future_assumption",
+      "severity": "high",
+      "review_required": true,
+      "claim_boundary": "computed_prediction_not_official"
+    },
+    {
+      "bs_date": "2082-01-01",
+      "issue": "holiday_policy_requires_source_review",
+      "severity": "medium",
+      "review_required": true
+    }
+  ],
+  "not_authority": "Sample audit output is decision support, not legal, tax, banking, payroll, government, or external certification authority."
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "2026-05-15.ephemeris_accuracy",
+  "status": "generated_artifact",
+  "claim_boundary": "astronomy_evidence_not_civil_authority",
+  "public_runtime_requires_jpl": false,
+  "local_kernel_paths_included": false,
+  "comparison": {
+    "target": "solar_ingress",
+    "primary_research_kernel": "de440",
+    "public_fallback": "swiss_moshier",
+    "result": "interface_and_policy_ready",
+    "full_differential_status": "available_when_operator_runs with verified optional kernels"
+  },
+  "authority_boundary": {
+    "astronomical_uncertainty": "solar/lunar longitude and ingress timing",
+    "civil_source_uncertainty": "published calendar and institution decisions",
+    "not_authority": "JPL output is evidence, not official calendar publication"
+  }
+}

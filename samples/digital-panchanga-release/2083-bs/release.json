@@ -1,0 +1,15 @@
+{
+  "release_id": "sample-2083-bs-digital-panchanga",
+  "schema_version": "2026-05-15.digital_panchanga_sample",
+  "status": "sample_not_official",
+  "bs_year": 2083,
+  "claim_boundary": "sample_schema_not_official_release",
+  "review_required": true,
+  "not_authority": "Official bodies decide. This sample only demonstrates machine-readable structure.",
+  "artifacts": [
+    "holidays.csv",
+    "festivals.json",
+    "panchanga-summary.json",
+    "source-metadata.json"
+  ]
+}

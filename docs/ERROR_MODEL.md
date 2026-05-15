@@ -31,3 +31,14 @@ are active:
 
 If an existing route cannot yet emit this shape, preserve compatibility and add
 tests before changing the wire contract.
+
+## Client Handling
+
+- Retry only `429`, `500`, `502`, `503`, and `504`.
+- Honor `Retry-After` on `429`.
+- Do not retry invalid-date, unsupported-range, auth, private-route, or
+  review-required responses as if they were transient failures.
+- Preserve `claim_boundary` and `review_required` in logs and downstream
+  decisions.
+- Treat `computed_prediction_not_official` as a safety label, not a warning that
+  can be hidden.

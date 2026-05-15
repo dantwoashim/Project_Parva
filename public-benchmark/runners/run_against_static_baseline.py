@@ -22,7 +22,12 @@ def _load_benchmark() -> dict:
 
 def _result_for_task(task: dict) -> dict:
     category = task["category"]
-    supported = category in {"bs_ad_conversion", "ad_bs_conversion", "valid_invalid_bs_dates"}
+    supported = category in {
+        "bs_ad_conversion",
+        "ad_bs_conversion",
+        "valid_invalid_bs_dates",
+        "invalid_bs_dates",
+    }
     signals = {
         "correctness": supported,
         "source_awareness": False,
