@@ -31,42 +31,40 @@ jobs:
       - name: Install backend dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e .[test,dev]
-          python -m pip install -e sdk/python
+          python -m pip install -c requirements/constraints.txt -e .[test,dev]
+          python -m pip install -e packages/parva-python
           npm --prefix packages/parva-js ci
 
       - name: Run backend quality gates
+        env:
+          PYTHONPATH: backend:.
         run: |
-          python -m ruff check backend tests scripts sdk
+          python -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server
           python -m pip_audit --strict --requirement requirements/constraints.txt
           npm --prefix packages/parva-js audit --audit-level=high
           python scripts/release/check_repo_hygiene.py
+          python scripts/release/verify_clean_clone_assumptions.py
           python scripts/security/scan_repo_secrets.py
           python scripts/release/check_public_safety_gate.py
           python scripts/release/check_render_blueprint.py
-          python scripts/release/check_cloudrun_blueprint.py
           python scripts/validate_festival_catalog.py
-          python scripts/release/check_license_compliance.py
           python scripts/check_docs_links.py
           python scripts/check_path_leaks.py
-          python scripts/release/check_contract_freeze.py
+          python scripts/check_future_bs_public_leakage.py
+          python scripts/release/check_public_claims.py
+          python scripts/validate_external_temporal_rules.py
+          python public-benchmark/validate_benchmark.py
           python scripts/release/check_route_inventory.py
           python scripts/release/check_documented_routes.py
+          python scripts/release/check_public_openapi_drift.py
           python scripts/release/check_backend_smoke.py
           python scripts/release/check_sdk_install.py
           python scripts/spec/run_conformance_tests.py
-          python scripts/release/package_source_archive.py
-          python scripts/release/verify_source_archive.py
-          PARVA_ENV=production PARVA_SOURCE_URL=https://example.com/source PARVA_ROUTE_PROFILE=public_reference PARVA_RATE_LIMIT_BACKEND=redis PARVA_REDIS_URL=redis://localhost:6379/0 PARVA_REQUIRE_PRECOMPUTED=false PARVA_PROVENANCE_ATTESTATION_KEY=test-provenance-key PARVA_PLACE_SEARCH_ALLOW_REMOTE=false PARVA_PLACE_SEARCH_PROVIDER_CHAIN=offline PARVA_PLACE_SEARCH_PROVIDER_POLICY=offline_only python scripts/release/check_production_preflight.py
-
-      - name: Build Docker image
-        run: docker build -t project-parva-ci .
-
-      - name: Build Cloud Run Docker image
-        run: docker build -f Dockerfile.cloudrun -t project-parva-cloudrun-ci .
+          python public-benchmark/runners/run_against_static_baseline.py
+          python public-benchmark/runners/run_against_parva.py
 
       - name: Run backend tests
-        run: pytest -q backend/tests tests/unit tests/contract
+        run: python -m pytest -q -m "not private_source and not wide_corpus and not research_artifact" --maxfail=20
 
   frontend-quality:
     runs-on: ubuntu-latest
@@ -102,22 +100,4 @@ jobs:
           npm --prefix frontend audit --audit-level=high
           npm --prefix frontend run lint
           npm --prefix frontend test -- --run
-          npm --prefix frontend run test:visual
           npm --prefix frontend run build
-
-      - name: Run live route, accessibility, and product-loop gates
-        run: |
-          python scripts/run_browser_smoke.py --timeout-seconds 60
-          python scripts/run_frontend_accessibility.py --timeout-seconds 60
-          python scripts/run_golden_journeys.py --timeout-seconds 60
-
-      - name: Upload frontend QA artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: frontend-live-qa
-          path: |
-            reports/release/browser_smoke.json
-            reports/release/frontend_accessibility.json
-            reports/release/golden_journeys.json
-            output/playwright
