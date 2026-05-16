@@ -1,11 +1,10 @@
 # Final Verification Matrix
 
-Generated: 2026-05-15T19:24:09.089857+00:00
+Generated: 2026-05-16T05:07:34.268865+00:00
 
 | Status | Count |
 | --- | ---: |
-| pass | 61 |
-| blocked | 1 |
+| pass | 62 |
 
 | Command | Status | Evidence |
 | --- | --- | --- |
@@ -57,7 +56,7 @@ Generated: 2026-05-15T19:24:09.089857+00:00
 | `py -3.11 scripts/release/check_repo_hygiene.py` | pass | Repository hygiene check passed. |
 | `py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server` | pass | All checks passed! |
 | `py -3.11 -m pytest packages/parva-python/tests -q` | pass | ..................                                                       [100%] \| 18 passed in 0.94s |
-| `py -3.11 -m build packages/parva-python` | blocked | <home>\AppData\Local\Programs\Python\Python311\python.exe: No module named build |
+| `py -3.11 -m build packages/parva-python` | pass | Successfully built project_parva_python_sdk-0.1.0a0.tar.gz and project_parva_python_sdk-0.1.0a0-py3-none-any.whl. Setuptools emitted a non-blocking project.license table deprecation warning for 2027-Feb-18. |
 | `py -3.11 -m pip wheel packages/parva-python --no-deps --no-build-isolation -w <temp>` | pass | Preparing metadata (pyproject.toml): started \| Preparing metadata (pyproject.toml): finished with status 'done' \| Building wheels for collected packages: project-parva-python-sdk \| Building wheel for project-parva-python-sdk (pyproject.toml): started \| Building wheel for project-parva-python-sdk (pyproject.toml): finished with status 'done' \| Created wheel for project-parva-python-sdk: filename=project_parva_python_sdk-0.1.0a0-py3-none-any.whl size=12328 sha256=5e17dc09d8d9bd3ea3c8104485e982c2f4eb4c43038891470903e5763238835e \| Stored in directory: <local-path> \| Successfully built project-parva-python-sdk \| [notice] A new release of pip is available: 23.1.2 -> 26.1.1 \| [notice] To update, run: <home>\AppData\Local\Programs\Python\Python311\python.exe -m pip install --upgrade pip |
 | `npx -y -p node@20 -p npm@10 npm --prefix packages/parva-js test` | pass | ... \| 1..16 \| # tests 16 \| # suites 0 \| # pass 16 \| # fail 0 \| # cancelled 0 \| # skipped 0 \| # todo 0 \| # duration_ms 130.2667 |
 | `npx -y -p node@20 -p npm@10 npm pack --dry-run (packages/parva-js)` | pass | npm notice Tarball Details \| npm notice name: @project-parva/parva-js \| npm notice version: 0.1.0-alpha.0 \| npm notice filename: project-parva-parva-js-0.1.0-alpha.0.tgz \| npm notice package size: 13.7 kB \| npm notice unpacked size: 78.9 kB \| npm notice shasum: ee158df32504f7b5d75fdd1bf4086f4998d7795a \| npm notice integrity: sha512-9zDAx2xMHvO0c[...]C5YwBeqoovRGw== \| npm notice total files: 5 \| npm notice |
