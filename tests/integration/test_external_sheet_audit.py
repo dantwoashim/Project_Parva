@@ -1,6 +1,10 @@
 import subprocess
 import sys
 
+import pytest
+
+pytestmark = pytest.mark.research_artifact
+
 
 def test_external_sheet_audit_script(tmp_path):
     xlsx = tmp_path / "audit.xlsx"

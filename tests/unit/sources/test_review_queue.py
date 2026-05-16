@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import pytest
 from app.sources.review_queue import build_source_review_queue
+
+pytestmark = pytest.mark.research_artifact
 
 
 def test_build_source_review_queue_has_priority_and_actions():

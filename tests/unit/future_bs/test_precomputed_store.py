@@ -1,6 +1,9 @@
 """Precomputed store tests."""
 
+import pytest
 from app.future_bs.precomputed_store import get_precomputed_year, precomputed_store_status
+
+pytestmark = pytest.mark.research_artifact
 
 
 def test_precomputed_store_loads_future_year_instantly():

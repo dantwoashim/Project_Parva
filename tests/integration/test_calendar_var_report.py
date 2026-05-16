@@ -1,6 +1,10 @@
 import subprocess
 import sys
 
+import pytest
+
+pytestmark = pytest.mark.research_artifact
+
 
 def test_calendar_var_report_script(tmp_path):
     pdf = tmp_path / "var.pdf"

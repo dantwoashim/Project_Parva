@@ -1,8 +1,11 @@
 """Comparison report tests."""
 
+import pytest
 from app.future_bs.compare import compare_external_sheet
 from app.future_bs.comparison_report import comparison_report_markdown
 from app.services.future_bs_service import predict_bs_year
+
+pytestmark = pytest.mark.research_artifact
 
 
 def test_compare_detects_mismatch_and_report_renders():

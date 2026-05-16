@@ -1,7 +1,10 @@
+import pytest
 from app.future_bs.solar_ingress_cache import (
     cached_events_for_gregorian_year,
     solar_ingress_cache_status,
 )
+
+pytestmark = pytest.mark.research_artifact
 
 
 def test_trusted_jpl_cache_can_serve_readonly_when_active_label_is_swiss():

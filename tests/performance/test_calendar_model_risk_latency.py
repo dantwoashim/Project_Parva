@@ -1,6 +1,9 @@
 import time
 
+import pytest
 from app.services.calendar_model_risk_service import claim_readiness_report, prediction_payload
+
+pytestmark = pytest.mark.research_artifact
 
 
 def test_prediction_payload_latency_under_100ms():

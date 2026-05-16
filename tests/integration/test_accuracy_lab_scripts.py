@@ -2,6 +2,10 @@ import json
 import subprocess
 from pathlib import Path
 
+import pytest
+
+pytestmark = pytest.mark.research_artifact
+
 
 def test_accuracy_loop_final_outputs_exist():
     subprocess.run(["python", "scripts/future_bs/run_accuracy_loop.py", "--final"], check=True)

@@ -1,9 +1,12 @@
+import pytest
 from app.future_bs.corpus import corpus_rows
 from app.future_bs.shadow_residual_correction import (
     apply_shadow_residual_rules,
     predict_shadow_corrected_year,
     train_shadow_residual_rules,
 )
+
+pytestmark = pytest.mark.research_artifact
 
 
 def test_shadow_residual_rules_are_not_official_claim_usable():

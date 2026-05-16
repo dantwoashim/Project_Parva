@@ -10,6 +10,8 @@ from app.future_bs.solar_ingress_predictor import (
     solar_civil_training_summary,
 )
 
+pytestmark = pytest.mark.research_artifact
+
 
 @pytest.mark.parametrize("bs_year", [2084, 2099, 2200])
 def test_computational_predictor_returns_valid_year_shape(bs_year: int):

@@ -11,6 +11,8 @@ from app.future_bs.month_start.inversion_workbench import (
     run_month_start_inversion_workbench,
 )
 
+pytestmark = pytest.mark.research_artifact
+
 
 @pytest.fixture(scope="module")
 def workbench_payload() -> dict:
