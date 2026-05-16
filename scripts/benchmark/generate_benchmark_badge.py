@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from datetime import UTC, datetime
 from html import escape
 from pathlib import Path
@@ -25,7 +26,7 @@ def _load_comparison() -> dict[str, Any]:
 
 
 def _summary(comparison: dict[str, Any]) -> dict[str, Any]:
-    source_mtime = datetime.fromtimestamp(COMPARISON_JSON.stat().st_mtime, UTC).isoformat()
+    source_timestamp = _source_timestamp()
     parva_summary = comparison.get("parva_summary", {})
     review_gate = comparison.get("review_gate_performance", {})
     return {
@@ -33,12 +34,33 @@ def _summary(comparison: dict[str, Any]) -> dict[str, Any]:
         "static_score_percent": comparison["static_score_percent"],
         "score_gap_percent": comparison["score_gap_percent"],
         "task_count": parva_summary.get("total", 0),
-        "generated_at": source_mtime,
+        "generated_at": source_timestamp,
         "review_gate_performance": review_gate,
         "category_breakdown": comparison.get("category_breakdown", {}),
         "claim_boundary": "technical_benchmark_not_authority",
         "source": "public-benchmark/results/comparison.json",
     }
+
+
+def _source_timestamp() -> str:
+    proc = subprocess.run(
+        [
+            "git",
+            "log",
+            "-1",
+            "--format=%cI",
+            "--",
+            str(COMPARISON_JSON.relative_to(ROOT)).replace("\\", "/"),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    timestamp = proc.stdout.strip()
+    if timestamp:
+        return timestamp
+    return datetime.fromtimestamp(COMPARISON_JSON.stat().st_mtime, UTC).isoformat()
 
 
 def _badge_svg(summary: dict[str, Any]) -> str:

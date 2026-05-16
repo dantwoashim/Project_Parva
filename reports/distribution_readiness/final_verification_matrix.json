@@ -1,0 +1,976 @@
+{
+  "generated_at": "2026-05-16T10:41:38.903999+00:00",
+  "environment": {
+    "python": "Python 3.11.4",
+    "node": "v20.20.2",
+    "npm": "10.9.8",
+    "os": "Windows-10-10.0.26200-SP0",
+    "git_commit": "701260c133c3fd2d38ba8bf1c0b9798e7da7e0b6"
+  },
+  "commands": [
+    {
+      "command": "git status --short",
+      "argv": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "M frontend/src/data/benchmarkSummary.json\n M public-benchmark/results/benchmark-summary.json\n M reports/phase_08_performance_sre/latency_baseline.json\n M scripts/benchmark/generate_benchmark_badge.py",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:33:51.641455+00:00",
+      "ended_at": "2026-05-16T10:33:51.703096+00:00"
+    },
+    {
+      "command": "py -3.11 --version",
+      "argv": [
+        "py",
+        "-3.11",
+        "--version"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Python 3.11.4",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:33:51.703096+00:00",
+      "ended_at": "2026-05-16T10:33:51.738096+00:00"
+    },
+    {
+      "command": "node --version (Node 20)",
+      "argv": [
+        "npx.cmd",
+        "-y",
+        "-p",
+        "node@20",
+        "-p",
+        "npm@10",
+        "node",
+        "--version"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "v20.20.2",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:33:51.738096+00:00",
+      "ended_at": "2026-05-16T10:33:54.185069+00:00"
+    },
+    {
+      "command": "npm --version (npm 10)",
+      "argv": [
+        "npx.cmd",
+        "-y",
+        "-p",
+        "node@20",
+        "-p",
+        "npm@10",
+        "npm",
+        "--version"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "10.9.8",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:33:54.185069+00:00",
+      "ended_at": "2026-05-16T10:33:56.357203+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/verify_environment.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/verify_environment.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "      \"detail\": \"Node v20.20.2 (managed via npx node@20)\"\n    },\n    \"npm\": {\n      \"ok\": true,\n      \"detail\": \"11.10.0\"\n    },\n    \"frontend_lockfile\": {\n      \"ok\": true,\n      \"detail\": \"frontend\\\\package-lock.json\"\n    }\n  }\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:33:56.357203+00:00",
+      "ended_at": "2026-05-16T10:33:59.182025+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/regenerate_public_release_hashes.py --check",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/regenerate_public_release_hashes.py",
+        "--check"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\n  \"manifest_ok\": true,\n  \"manifest_path\": \"data/public/releases/parva-bs-public-demo.manifest.json\",\n  \"ok\": true,\n  \"signature_ok\": true,\n  \"signature_path\": \"data/public/releases/parva-bs-public-demo.signature.json\"\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:33:59.182025+00:00",
+      "ended_at": "2026-05-16T10:33:59.322354+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/parva_trust_verify.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/parva_trust_verify.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "  \"release_checks\": 22,\n  \"signature_checks\": 3,\n  \"transparency_log\": {\n    \"events\": [\n      \"calendar.release.published\"\n    ],\n    \"log_path\": \"data/public/transparency-log/parva-log.jsonl\",\n    \"total_entries\": 9,\n    \"valid\": true\n  }\n}\ntrust verification passed",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:33:59.322354+00:00",
+      "ended_at": "2026-05-16T10:34:00.212217+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/check_docs_links.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/check_docs_links.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Documentation links verified.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:00.212217+00:00",
+      "ended_at": "2026-05-16T10:34:00.318695+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/check_path_leaks.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/check_path_leaks.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "No local path leaks detected.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:00.318695+00:00",
+      "ended_at": "2026-05-16T10:34:02.613155+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/check_future_bs_public_leakage.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/check_future_bs_public_leakage.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "    \"public_profile_apps\",\n    \"research_route_gates\",\n    \"public_claim_text\",\n    \"public_sdk_defaults\"\n  ]\n}\n{\"event\": \"auth.denied\", \"path\": \"/v4/api/future-bs/month-lengths/2085\", \"method\": \"GET\", \"request_id\": \"01622f1fc5354583a146ee6eaccef4f3\", \"policy\": \"experimental_read\", \"principal\": null, \"reason\": \"credentials_missing\", \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"01622f1fc5354583a146ee6eaccef4f3\", \"path\": \"/v4/api/future-bs/month-lengths/2085\", \"method\": \"GET\", \"status_code\": 401, \"latency_ms\": 0.77, \"principal\": null, \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v4/api/future-bs/month-lengths/2085 \"HTTP/1.1 401 Unauthorized\"\n{\"event\": \"auth.denied\", \"path\": \"/v5/api/calendar-model-risk/prediction/2089/6\", \"method\": \"GET\", \"request_id\": \"12fe6efb2633482a90bad604b54c5eb5\", \"policy\": \"experimental_read\", \"principal\": null, \"reason\": \"credentials_missing\", \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"12fe6efb2633482a90bad604b54c5eb5\", \"path\": \"/v5/api/calendar-model-risk/prediction/2089/6\", \"method\": \"GET\", \"status_code\": 401, \"latency_ms\": 0.36, \"principal\": null, \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v5/api/calendar-model-risk/prediction/2089/6 \"HTTP/1.1 401 Unauthorized\"",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:02.613155+00:00",
+      "ended_at": "2026-05-16T10:34:07.063773+00:00"
+    },
+    {
+      "command": "PYTHONPATH=backend:. py -3.11 scripts/release/check_public_openapi_drift.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_public_openapi_drift.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Wrote C:\\Users\\prabi\\AppData\\Local\\Temp\\parva-openapi-iwiot5p2\\openapi.json with 387 paths.\nStatic public OpenAPI mirror is current.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:07.063773+00:00",
+      "ended_at": "2026-05-16T10:34:09.620287+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_public_claims.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_public_claims.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Public claims check passed.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:09.620287+00:00",
+      "ended_at": "2026-05-16T10:34:10.861430+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/verify_clean_clone_assumptions.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/verify_clean_clone_assumptions.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Clean-clone public verification assumptions passed.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:10.861430+00:00",
+      "ended_at": "2026-05-16T10:34:11.897271+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_archive_hygiene.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_archive_hygiene.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\n  \"ok\": true,\n  \"required_paths\": 9\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:11.897271+00:00",
+      "ended_at": "2026-05-16T10:34:15.865257+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_package_readiness.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_package_readiness.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\n  \"ok\": true,\n  \"python_packages\": 3,\n  \"npm_packages\": 1\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:15.865257+00:00",
+      "ended_at": "2026-05-16T10:34:16.196460+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/validate_external_temporal_rules.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/validate_external_temporal_rules.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "External temporal rule registry passed.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:16.196460+00:00",
+      "ended_at": "2026-05-16T10:34:16.298850+00:00"
+    },
+    {
+      "command": "py -3.11 public-benchmark/validate_benchmark.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "public-benchmark/validate_benchmark.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\n  \"claim_boundary\": \"technical_benchmark_not_authority\",\n  \"ok\": true,\n  \"schema\": \"public-benchmark/schema.json\",\n  \"tasks\": 38\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:16.298850+00:00",
+      "ended_at": "2026-05-16T10:34:16.407169+00:00"
+    },
+    {
+      "command": "py -3.11 public-benchmark/runners/run_against_static_baseline.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "public-benchmark/runners/run_against_static_baseline.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "  ],\n  \"runner\": \"static_baseline\",\n  \"schema_version\": \"2026-05-15.nepali-time-reliability.v0\",\n  \"summary\": {\n    \"max_score\": 3800,\n    \"passed\": 10,\n    \"score\": 780,\n    \"score_percent\": 20.53,\n    \"total\": 38,\n    \"unsupported\": 28\n  }\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:16.407169+00:00",
+      "ended_at": "2026-05-16T10:34:16.497229+00:00"
+    },
+    {
+      "command": "py -3.11 public-benchmark/runners/run_against_parva.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "public-benchmark/runners/run_against_parva.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\"event\": \"auth.skipped\", \"path\": \"/v3/api/trust/sources\", \"method\": \"GET\", \"request_id\": \"31edd586f783401c99096d683bc3e767\", \"policy\": \"trust_read\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"31edd586f783401c99096d683bc3e767\", \"path\": \"/v3/api/trust/sources\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 2.46, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/trust/sources \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/policy\", \"method\": \"GET\", \"request_id\": \"66c9b7bfa5ad4b54abd01116d2a6e327\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"66c9b7bfa5ad4b54abd01116d2a6e327\", \"path\": \"/v3/api/policy\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1.53, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/policy \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/trust/capabilities\", \"method\": \"GET\", \"request_id\": \"7ebd616c80f34758904b3fff95b4eed2\", \"policy\": \"trust_read\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"7ebd616c80f34758904b3fff95b4eed2\", \"path\": \"/v3/api/trust/capabilities\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1.4, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/trust/capabilities \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/trust/releases\", \"method\": \"GET\", \"request_id\": \"22f1e153daa04eefbb761ad0e07b0950\", \"policy\": \"trust_read\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"22f1e153daa04eefbb761ad0e07b0950\", \"path\": \"/v3/api/trust/releases\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 2.01, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/trust/releases \"HTTP/1.1 200 OK\"",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:16.497229+00:00",
+      "ended_at": "2026-05-16T10:34:22.061780+00:00"
+    },
+    {
+      "command": "py -3.11 public-benchmark/runners/compare_results.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "public-benchmark/runners/compare_results.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "  \"score_gap_percent\": 68.94,\n  \"static_score_percent\": 20.53,\n  \"static_summary\": {\n    \"max_score\": 3800,\n    \"passed\": 10,\n    \"score\": 780,\n    \"score_percent\": 20.53,\n    \"total\": 38,\n    \"unsupported\": 28\n  },\n  \"unsupported_tasks\": []\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:22.061780+00:00",
+      "ended_at": "2026-05-16T10:34:22.194113+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/benchmark/generate_benchmark_badge.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/benchmark/generate_benchmark_badge.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "  \"generated_at\": \"2026-05-16T00:11:15+05:45\",\n  \"parva_score_percent\": 89.47,\n  \"review_gate_performance\": {\n    \"passed\": 7,\n    \"score_percent\": 100.0,\n    \"tasks\": 7\n  },\n  \"score_gap_percent\": 68.94,\n  \"source\": \"public-benchmark/results/comparison.json\",\n  \"static_score_percent\": 20.53,\n  \"task_count\": 38\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:22.194113+00:00",
+      "ended_at": "2026-05-16T10:34:22.365285+00:00"
+    },
+    {
+      "command": "py -3.11 -m pytest -q -m not private/research lanes --maxfail=20",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "pytest",
+        "-q",
+        "-m",
+        "not private_source and not wide_corpus and not research_artifact",
+        "--maxfail=20"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": ".............................................................ss...s..s.s [ 17%]\n........................................................................ [ 26%]\n........................................................................ [ 34%]\n........................................................................ [ 43%]\n........................................................................ [ 52%]\n..........................................................s............. [ 60%]\n........................................................................ [ 69%]\n........................................................................ [ 78%]\n........................................................................ [ 86%]\n........................................................................ [ 95%]\n......................................                                   [100%]\n824 passed, 6 skipped, 64 deselected in 117.08s (0:01:57)",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:34:22.365285+00:00",
+      "ended_at": "2026-05-16T10:36:21.569556+00:00"
+    },
+    {
+      "command": "py -3.11 -m pytest tests/benchmark -q",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "pytest",
+        "tests/benchmark",
+        "-q"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": ".......                                                                  [100%]\n7 passed in 0.11s",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:21.570590+00:00",
+      "ended_at": "2026-05-16T10:36:22.217152+00:00"
+    },
+    {
+      "command": "py -3.11 -m pytest tests/ephemeris -q",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "pytest",
+        "tests/ephemeris",
+        "-q"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "........                                                                 [100%]\n8 passed in 0.35s",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:22.217152+00:00",
+      "ended_at": "2026-05-16T10:36:23.149747+00:00"
+    },
+    {
+      "command": "py -3.11 -m pytest tests/rules -q",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "pytest",
+        "tests/rules",
+        "-q"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "...                                                                      [100%]\n3 passed in 0.07s",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:23.150745+00:00",
+      "ended_at": "2026-05-16T10:36:24.266568+00:00"
+    },
+    {
+      "command": "py -3.11 -m pytest tests/release -q",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "pytest",
+        "tests/release",
+        "-q"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "..........                                                               [100%]\n10 passed in 3.01s",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:24.266568+00:00",
+      "ended_at": "2026-05-16T10:36:27.828372+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/perf/route_latency_smoke.py --profile public_reference --output reports/phase_08_performance_sre/latency_baseline.json",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/perf/route_latency_smoke.py",
+        "--profile",
+        "public_reference",
+        "--output",
+        "reports/phase_08_performance_sre/latency_baseline.json"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\"event\": \"auth.skipped\", \"path\": \"/v3/api/protocol/version\", \"method\": \"GET\", \"request_id\": \"121c3bb48bca45c3b2fce5a14b7f074c\", \"policy\": \"protocol_read\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"121c3bb48bca45c3b2fce5a14b7f074c\", \"path\": \"/v3/api/protocol/version\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 0.87, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/protocol/version \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/protocol/version\", \"method\": \"GET\", \"request_id\": \"895cf0874fbe4767b9a28d40e8f922ed\", \"policy\": \"protocol_read\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"895cf0874fbe4767b9a28d40e8f922ed\", \"path\": \"/v3/api/protocol/version\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1.27, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/protocol/version \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/protocol/version\", \"method\": \"GET\", \"request_id\": \"eb702750f4804bd79b2b8315397904e4\", \"policy\": \"protocol_read\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"eb702750f4804bd79b2b8315397904e4\", \"path\": \"/v3/api/protocol/version\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1.16, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/protocol/version \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/protocol/version\", \"method\": \"GET\", \"request_id\": \"68d2db03d1ac48ff85eff731e13edea9\", \"policy\": \"protocol_read\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"68d2db03d1ac48ff85eff731e13edea9\", \"path\": \"/v3/api/protocol/version\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1.0, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/protocol/version \"HTTP/1.1 200 OK\"",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:27.828372+00:00",
+      "ended_at": "2026-05-16T10:36:31.924980+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/check_canonical_runtime.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/check_canonical_runtime.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Canonical runtime registry check passed.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:31.924980+00:00",
+      "ended_at": "2026-05-16T10:36:33.582299+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/check_maturity_lanes.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/check_maturity_lanes.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "    \"public_reference\": {\n      \"allow_research_private\": false,\n      \"route_count\": 249\n    },\n    \"research_private\": {\n      \"allow_research_private\": true,\n      \"route_count\": 39\n    }\n  },\n  \"route_entry_count\": 50,\n  \"subsystem_count\": 31\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:33.582299+00:00",
+      "ended_at": "2026-05-16T10:36:37.308706+00:00"
+    },
+    {
+      "command": "py -3.11 tools/validate_schemas.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "tools/validate_schemas.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "ok: schemas\\parva-protocol\\conformance-report.schema.json\nok: schemas\\parva-protocol\\evidence-packet.schema.json\nok: schemas\\parva-protocol\\impact-report.schema.json\nok: schemas\\parva-protocol\\institutional-profile.schema.json\nok: schemas\\parva-protocol\\offline-bundle-manifest.schema.json\nok: schemas\\parva-protocol\\release-manifest.schema.json\nok: schemas\\parva-protocol\\rulelang-rule.schema.json\nok: schemas\\parva-protocol\\source-record.schema.json\nok: schemas\\parva-protocol\\timegraph-fact.schema.json\nok: schemas\\parva-protocol\\timegraph-relationship.schema.json\nok: schemas\\parva-protocol\\trust-log-entry.schema.json\nvalidated 31 schemas",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:37.308706+00:00",
+      "ended_at": "2026-05-16T10:36:37.404634+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_route_inventory.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_route_inventory.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\n  \"ok\": true,\n  \"route_count\": 448,\n  \"canonical_v3_route_count\": 217,\n  \"legacy_route_count\": 217\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:37.404634+00:00",
+      "ended_at": "2026-05-16T10:36:39.115485+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_documented_routes.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_documented_routes.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Documented route inventory verified (217 canonical v3 routes).",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:39.116603+00:00",
+      "ended_at": "2026-05-16T10:36:40.951366+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_backend_smoke.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_backend_smoke.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\"event\": \"auth.skipped\", \"path\": \"/v3/api/calendar/convert\", \"method\": \"GET\", \"request_id\": \"3327320403d140129eb15bd0ec3cd910\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"3327320403d140129eb15bd0ec3cd910\", \"path\": \"/v3/api/calendar/convert\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 12.09, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/calendar/convert?date=2026-10-21 \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/festivals/upcoming\", \"method\": \"GET\", \"request_id\": \"272271994be9438690decfa13b6b0e3f\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"272271994be9438690decfa13b6b0e3f\", \"path\": \"/v3/api/festivals/upcoming\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1262.82, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/festivals/upcoming?days=30 \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/policy\", \"method\": \"GET\", \"request_id\": \"f63092c4bc304e858a015dd0ee549597\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"f63092c4bc304e858a015dd0ee549597\", \"path\": \"/v3/api/policy\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1.71, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/policy \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/personal/panchanga\", \"method\": \"POST\", \"request_id\": \"3b74b7f6518b42e8838a29fa3ee9e4d7\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"3b74b7f6518b42e8838a29fa3ee9e4d7\", \"path\": \"/v3/api/personal/panchanga\", \"method\": \"POST\", \"status_code\": 200, \"latency_ms\": 10.01, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: POST http://testserver/v3/api/personal/panchanga \"HTTP/1.1 200 OK\"",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:40.951366+00:00",
+      "ended_at": "2026-05-16T10:36:44.269437+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/parva_timegraph_verify.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/parva_timegraph_verify.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Project Parva TimeGraph verification\n{\n  \"conflict_count\": 1,\n  \"fact_count\": 7416,\n  \"ok\": true,\n  \"relationship_count\": 27755,\n  \"release_id\": \"parva-bs-public-demo\",\n  \"sample_date_query_items\": 3,\n  \"sample_trace_sources\": 1\n}\ntimegraph verification passed",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:44.269437+00:00",
+      "ended_at": "2026-05-16T10:36:46.318436+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/parva_rulelang_verify.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/parva_rulelang_verify.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "      \"RULE_VALIDATED\",\n      \"INPUT_VALIDATED\",\n      \"LAST_WORKING_DAY_SELECTED\",\n      \"WEEKDAY\",\n      \"NO_MATCHING_PUBLIC_HOLIDAY\",\n      \"CONFIDENCE_POLICY_SATISFIED\"\n    ],\n    \"requires_human_review\": false,\n    \"status\": \"approved\"\n  }\n}\nrulelang verification passed",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:46.318436+00:00",
+      "ended_at": "2026-05-16T10:36:47.470016+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/parva_impact_verify.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/parva_impact_verify.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Project Parva impact verification\n{\n  \"ok\": true,\n  \"fixture_impacts\": 2\n}\nimpact verification passed",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:47.470016+00:00",
+      "ended_at": "2026-05-16T10:36:48.848254+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/parva_agent_verify.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/parva_agent_verify.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Project Parva agent verification\n{\n  \"ok\": true,\n  \"tool_count\": 14,\n  \"schedule_items\": 2\n}\nagent verification passed",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:48.849384+00:00",
+      "ended_at": "2026-05-16T10:36:49.987062+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/parva_protocol_verify.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/parva_protocol_verify.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Project Parva protocol verification\n{\n  \"ok\": true,\n  \"conformance_tests\": 20\n}\nprotocol verification passed",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:49.987062+00:00",
+      "ended_at": "2026-05-16T10:36:50.908652+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_public_safety_gate.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_public_safety_gate.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "PASS protocol schema validation\nPASS public text safety\nPublic safety gate passed.\n{\"event\": \"auth.skipped\", \"path\": \"/openapi.json\", \"method\": \"GET\", \"request_id\": \"ba1324567fc24fa6977c148d63bebabb\", \"policy\": \"public\", \"principal\": null, \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"ba1324567fc24fa6977c148d63bebabb\", \"path\": \"/openapi.json\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 577.71, \"principal\": null, \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/openapi.json \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/openapi.json\", \"method\": \"GET\", \"request_id\": \"30d27f2499d84e6fb209d0c90ce2350d\", \"policy\": \"public\", \"principal\": null, \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"30d27f2499d84e6fb209d0c90ce2350d\", \"path\": \"/openapi.json\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 64.2, \"principal\": null, \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/openapi.json \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/calendar/bs-to-gregorian\", \"method\": \"POST\", \"request_id\": \"b05c2f7d207c4abdb069543381673725\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"b05c2f7d207c4abdb069543381673725\", \"path\": \"/v3/api/calendar/bs-to-gregorian\", \"method\": \"POST\", \"status_code\": 403, \"latency_ms\": 2.5, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: POST http://testserver/v3/api/calendar/bs-to-gregorian \"HTTP/1.1 403 Forbidden\"",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:50.908652+00:00",
+      "ended_at": "2026-05-16T10:36:54.102974+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_render_blueprint.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_render_blueprint.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Render blueprint check passed.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:54.102974+00:00",
+      "ended_at": "2026-05-16T10:36:54.177110+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_repo_hygiene.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_repo_hygiene.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Repository hygiene check passed.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:54.177110+00:00",
+      "ended_at": "2026-05-16T10:36:54.390892+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/frontend/check_component_size.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/frontend/check_component_size.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Frontend component size report: 1 production files exceed 700 lines.\n 1002 frontend/src/pages/FeedSubscriptionsPage.jsx within-budget budget=1050",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:54.390892+00:00",
+      "ended_at": "2026-05-16T10:36:54.508423+00:00"
+    },
+    {
+      "command": "py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "ruff",
+        "check",
+        "backend",
+        "tests",
+        "scripts",
+        "sdk",
+        "packages/parva-python",
+        "packages/parva-ai-tools",
+        "packages/parva-mcp-server"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "All checks passed!",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:54.509728+00:00",
+      "ended_at": "2026-05-16T10:36:54.664137+00:00"
+    },
+    {
+      "command": "py -3.11 -m pytest packages/parva-python/tests -q",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "pytest",
+        "packages/parva-python/tests",
+        "-q"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "..................                                                       [100%]\n18 passed in 1.05s",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:54.665698+00:00",
+      "ended_at": "2026-05-16T10:36:56.137473+00:00"
+    },
+    {
+      "command": "py -3.11 -m build packages/parva-python",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "build",
+        "packages/parva-python"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "* Installing packages in isolated environment:\n  - setuptools>=82.0.1\n  - wheel>=0.45.0\n* Getting build dependencies for sdist...\n* Building sdist...\n* Building wheel from sdist\n* Creating isolated environment: venv+pip...\n* Installing packages in isolated environment:\n  - setuptools>=82.0.1\n  - wheel>=0.45.0\n* Getting build dependencies for wheel...\n* Building wheel...",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:36:56.137473+00:00",
+      "ended_at": "2026-05-16T10:37:06.460753+00:00"
+    },
+    {
+      "command": "py -3.11 -m pytest packages/parva-ai-tools/tests -q",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "pytest",
+        "packages/parva-ai-tools/tests",
+        "-q"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "........                                                                 [100%]\n8 passed in 0.09s",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:06.461297+00:00",
+      "ended_at": "2026-05-16T10:37:07.262300+00:00"
+    },
+    {
+      "command": "py -3.11 packages/parva-ai-tools/examples/basic_usage.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "packages/parva-ai-tools/examples/basic_usage.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "decision_support_not_authority\nreview_required=False",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:07.262300+00:00",
+      "ended_at": "2026-05-16T10:37:07.629521+00:00"
+    },
+    {
+      "command": "py -3.11 -m pytest packages/parva-mcp-server/tests -q",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "pytest",
+        "packages/parva-mcp-server/tests",
+        "-q"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "..........                                                               [100%]\n10 passed in 0.05s",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:07.629521+00:00",
+      "ended_at": "2026-05-16T10:37:08.861386+00:00"
+    },
+    {
+      "command": "py -3.11 -m parva_mcp_server.server --manifest",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "parva_mcp_server.server",
+        "--manifest"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "      \"route\": \"/v3/api/calendar/panchanga\"\n    },\n    {\n      \"claim_boundary\": \"decision_support_not_authority\",\n      \"method\": \"POST\",\n      \"name\": \"check_temporal_claim\",\n      \"read_only\": true,\n      \"review_required_passthrough\": true,\n      \"route\": \"/v3/api/agent/verify-claim\"\n    }\n  ]\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:08.861386+00:00",
+      "ended_at": "2026-05-16T10:37:09.025674+00:00"
+    },
+    {
+      "command": "py -3.11 -m parva_mcp_server.server --check",
+      "argv": [
+        "py",
+        "-3.11",
+        "-m",
+        "parva_mcp_server.server",
+        "--check"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "  \"ok\": true,\n  \"probe\": {\n    \"claim_boundary\": \"decision_support_not_authority\",\n    \"method\": \"GET\",\n    \"review_required\": true,\n    \"route\": \"/v3/api/calendar/convert\",\n    \"status\": \"manifest_only\",\n    \"tool\": \"convert_ad_to_bs\"\n  },\n  \"resource_count\": 6,\n  \"tool_count\": 9\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:09.025674+00:00",
+      "ended_at": "2026-05-16T10:37:09.178438+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/check_mcp_registry_metadata.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/check_mcp_registry_metadata.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\n  \"ok\": true,\n  \"metadata\": \"D:\\\\Project_Parva-main\\\\packages\\\\parva-mcp-server\\\\mcp-server.json\"\n}",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:09.178438+00:00",
+      "ended_at": "2026-05-16T10:37:09.363325+00:00"
+    },
+    {
+      "command": "npm --prefix packages/parva-js test (Node 20/npm 10)",
+      "argv": [
+        "npx.cmd",
+        "-y",
+        "-p",
+        "node@20",
+        "-p",
+        "npm@10",
+        "npm",
+        "--prefix",
+        "packages/parva-js",
+        "test"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "  ---\n  duration_ms: 0.7384\n  ...\n1..16\n# tests 16\n# suites 0\n# pass 16\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 114.8422",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:09.363325+00:00",
+      "ended_at": "2026-05-16T10:37:15.185420+00:00"
+    },
+    {
+      "command": "npm pack --dry-run in packages/parva-js (Node 20/npm 10)",
+      "argv": [
+        "npx.cmd",
+        "-y",
+        "-p",
+        "node@20",
+        "-p",
+        "npm@10",
+        "npm",
+        "pack",
+        "--dry-run"
+      ],
+      "cwd": "packages\\parva-js",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "npm notice 26.4kB dist/index.js.map\nnpm notice 746B package.json\nnpm notice Tarball Details\nnpm notice name: @project-parva/parva-js\nnpm notice version: 0.3.0-alpha.0\nnpm notice filename: project-parva-parva-js-0.3.0-alpha.0.tgz\nnpm notice package size: 13.7 kB\nnpm notice unpacked size: 79.1 kB\nnpm notice shasum: 3888e90a2d4bc871415e1fdba56a28ca0dd87c1b\nnpm notice integrity: sha512-bDW31EuZzBcc5[...]O+QFBoc4w1uAQ==\nnpm notice total files: 5\nnpm notice",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:15.185420+00:00",
+      "ended_at": "2026-05-16T10:37:18.228897+00:00"
+    },
+    {
+      "command": "npm --prefix frontend run lint (Node 20/npm 10)",
+      "argv": [
+        "npx.cmd",
+        "-y",
+        "-p",
+        "node@20",
+        "-p",
+        "npm@10",
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "lint"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "> frontend@3.0.0 lint\n> eslint .",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:18.230129+00:00",
+      "ended_at": "2026-05-16T10:37:30.811463+00:00"
+    },
+    {
+      "command": "npm --prefix frontend test -- --run (Node 20/npm 10)",
+      "argv": [
+        "npx.cmd",
+        "-y",
+        "-p",
+        "node@20",
+        "-p",
+        "npm@10",
+        "npm",
+        "--prefix",
+        "frontend",
+        "test",
+        "--",
+        "--run"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": " \u001b[32m\u00e2\u0153\u201c\u001b[39m src/test/memberContextState.test.js \u001b[2m(\u001b[22m\u001b[2m8 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 28\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m\u00e2\u0153\u201c\u001b[39m src/test/feedApi.test.js \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 27\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m\u00e2\u0153\u201c\u001b[39m src/test/CapabilityGating.test.jsx \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 24\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m\u00e2\u0153\u201c\u001b[39m src/test/experimentalChronology.test.js \u001b[2m(\u001b[22m\u001b[2m2 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 17\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m\u00e2\u0153\u201c\u001b[39m src/test/errorFormatting.test.js \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 7\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m\u00e2\u0153\u201c\u001b[39m src/test/apiBase.test.js \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 6\u001b[2mms\u001b[22m\u001b[39m\n \u001b[32m\u00e2\u0153\u201c\u001b[39m src/test/i18nMessages.test.js \u001b[2m(\u001b[22m\u001b[2m3 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 7\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m27 passed\u001b[39m\u001b[22m\u001b[90m (27)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m121 passed\u001b[39m\u001b[22m\u001b[90m (121)\u001b[39m\n\u001b[2m   Start at \u001b[22m 16:22:33\n\u001b[2m   Duration \u001b[22m 24.67s\u001b[2m (transform 4.32s, setup 16.08s, collect 19.47s, tests 44.85s, environment 60.73s, prepare 8.94s)\u001b[22m",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:30.811463+00:00",
+      "ended_at": "2026-05-16T10:37:58.374433+00:00"
+    },
+    {
+      "command": "npm --prefix frontend run build (Node 20/npm 10)",
+      "argv": [
+        "npx.cmd",
+        "-y",
+        "-p",
+        "node@20",
+        "-p",
+        "npm@10",
+        "npm",
+        "--prefix",
+        "frontend",
+        "run",
+        "build"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "> vite build\n\n\u001b[36mvite v7.3.3 \u001b[32mbuilding client environment for production...\u001b[36m\u001b[39m\ntransforming...\n\u001b[32m\u00e2\u0153\u201c\u001b[39m 87 modules transformed.\nrendering chunks...\ncomputing gzip size...\n\u001b[2mdist/\u001b[22m\u001b[32mindex.html                 \u001b[39m\u001b[1m\u001b[2m  1.80 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m \u00e2\u201d\u201a gzip:  0.63 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[35massets/index-DlNJmNOP.css  \u001b[39m\u001b[1m\u001b[2m146.02 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m \u00e2\u201d\u201a gzip: 28.09 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[36massets/index-CrP1OSWj.js   \u001b[39m\u001b[1m\u001b[2m185.43 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m \u00e2\u201d\u201a gzip: 49.61 kB\u001b[22m\n\u001b[2mdist/\u001b[22m\u001b[36massets/vendor-jDDfj8MR.js  \u001b[39m\u001b[1m\u001b[2m229.11 kB\u001b[22m\u001b[1m\u001b[22m\u001b[2m \u00e2\u201d\u201a gzip: 73.45 kB\u001b[22m\n\u001b[32m\u00e2\u0153\u201c built in 2.46s\u001b[39m",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:37:58.374940+00:00",
+      "ended_at": "2026-05-16T10:38:04.916428+00:00"
+    },
+    {
+      "command": "py -3.11 samples/digital-panchanga-release/2083-bs/verification/verify_release.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "samples/digital-panchanga-release/2083-bs/verification/verify_release.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "Sample digital Panchanga release verified.",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:38:04.916428+00:00",
+      "ended_at": "2026-05-16T10:38:05.048104+00:00"
+    },
+    {
+      "command": "py -3.11 scripts/release/verify_public.py",
+      "argv": [
+        "py",
+        "-3.11",
+        "scripts/release/verify_public.py"
+      ],
+      "cwd": ".",
+      "status": "pass",
+      "exit_code": 0,
+      "summary": "{\"event\": \"auth.skipped\", \"path\": \"/v3/api/calendar/convert\", \"method\": \"GET\", \"request_id\": \"32934933eb654f33b127c75538c19397\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"32934933eb654f33b127c75538c19397\", \"path\": \"/v3/api/calendar/convert\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 11.52, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/calendar/convert?date=2026-10-21 \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/festivals/upcoming\", \"method\": \"GET\", \"request_id\": \"a5c28ce9bb694a93b7ef7b84bb3908e6\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"a5c28ce9bb694a93b7ef7b84bb3908e6\", \"path\": \"/v3/api/festivals/upcoming\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1277.18, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/festivals/upcoming?days=30 \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/policy\", \"method\": \"GET\", \"request_id\": \"efbb069ce11341fd85df2aa6761e4e67\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"efbb069ce11341fd85df2aa6761e4e67\", \"path\": \"/v3/api/policy\", \"method\": \"GET\", \"status_code\": 200, \"latency_ms\": 1.81, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: GET http://testserver/v3/api/policy \"HTTP/1.1 200 OK\"\n{\"event\": \"auth.skipped\", \"path\": \"/v3/api/personal/panchanga\", \"method\": \"POST\", \"request_id\": \"187cef3c718c41eaa203b7991dbf3e2f\", \"policy\": \"public\", \"principal\": \"testclient\", \"reason\": null, \"client_ip\": \"testclient\"}\n{\"event\": \"request.complete\", \"request_id\": \"187cef3c718c41eaa203b7991dbf3e2f\", \"path\": \"/v3/api/personal/panchanga\", \"method\": \"POST\", \"status_code\": 200, \"latency_ms\": 9.3, \"principal\": \"testclient\", \"client_ip\": \"testclient\", \"version\": \"3.0.0\"}\nHTTP Request: POST http://testserver/v3/api/personal/panchanga \"HTTP/1.1 200 OK\"",
+      "blocking_reason": null,
+      "started_at": "2026-05-16T10:38:05.048104+00:00",
+      "ended_at": "2026-05-16T10:41:38.903999+00:00"
+    }
+  ]
+}
