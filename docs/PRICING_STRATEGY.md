@@ -10,6 +10,7 @@ customers, pilots, adoption, or certification.
 
 | Offer | Scope | Price guidance |
 | --- | --- | --- |
+| Free API tier | 10,000 requests/month with 1,000/day abuse-control cap for public API evaluation and benchmark/development usage | Free |
 | Free mini-audit | Up to 50 rows, public-safe report | Free |
 | Paid audit | Vendor CSV review and written report | NPR 50,000-150,000 |
 | Vendor monthly | Continuous conformance checks | NPR 25,000/month or USD 200/month |
@@ -20,3 +21,5 @@ software vendors, payroll, ERP, accounting, cooperatives, microfinance, HR, and
 fintech platforms.
 
 Do not present this as customer proof. It is a proposed go-to-market structure.
+The free API tier does not include SLA, private deployment, official authority,
+or commercial support.

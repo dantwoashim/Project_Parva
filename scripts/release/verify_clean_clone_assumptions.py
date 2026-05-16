@@ -21,6 +21,9 @@ REQUIRED_PUBLIC_FILES = (
     "reports/release_readiness/release_checklist.md",
     "reports/release_readiness/public_claims_checklist.md",
     "reports/release_readiness/final_verification_matrix.json",
+    "reports/distribution_readiness/README.md",
+    "reports/distribution_readiness/baseline.md",
+    "reports/distribution_readiness/duplicate_runtime_cleanup.md",
     "public-benchmark/benchmark.json",
     "public-benchmark/schema.json",
     "public-benchmark/validate_benchmark.py",
@@ -30,6 +33,8 @@ REQUIRED_PUBLIC_FILES = (
     "public-benchmark/results/latest-parva.json",
     "public-benchmark/results/latest-static-baseline.json",
     "public-benchmark/results/comparison.json",
+    "public-benchmark/results/benchmark.svg",
+    "public-benchmark/results/benchmark-summary.json",
 )
 
 OPTIONAL_PRIVATE_INPUTS = (

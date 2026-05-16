@@ -4,11 +4,25 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "parva-ai-tools"
-version = "0.1.0-alpha.0"
+version = "0.3.0a0"
 description = "Safety-bound LangChain and LlamaIndex wrappers for public Project Parva temporal tools."
+readme = "README.md"
 requires-python = ">=3.11,<3.12"
-license = { text = "AGPL-3.0-or-later" }
+license = "AGPL-3.0-or-later"
+authors = [{ name = "Project Parva" }]
 dependencies = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://github.com/dantwoashim/Project_Parva"
+Repository = "https://github.com/dantwoashim/Project_Parva"
+Documentation = "https://github.com/dantwoashim/Project_Parva/blob/main/packages/parva-ai-tools/README.md"
 
 [project.optional-dependencies]
 langchain = ["langchain-core>=0.3.0"]

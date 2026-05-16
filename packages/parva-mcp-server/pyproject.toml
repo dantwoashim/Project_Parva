@@ -4,11 +4,28 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "parva-mcp-server"
-version = "0.1.0-alpha.0"
+version = "0.3.0a0"
 description = "Thin read-only MCP adapter manifest for public-safe Project Parva temporal tools."
+readme = "README.md"
 requires-python = ">=3.11,<3.12"
-license = { text = "AGPL-3.0-or-later" }
+license = "AGPL-3.0-or-later"
+authors = [{ name = "Project Parva" }]
 dependencies = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://github.com/dantwoashim/Project_Parva"
+Repository = "https://github.com/dantwoashim/Project_Parva"
+Documentation = "https://github.com/dantwoashim/Project_Parva/blob/main/packages/parva-mcp-server/README.md"
+
+[project.scripts]
+parva-mcp-server = "parva_mcp_server.server:main"
 
 [project.optional-dependencies]
 test = ["pytest>=9.0.3"]

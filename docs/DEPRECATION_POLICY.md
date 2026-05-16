@@ -45,6 +45,16 @@ one canonical runtime per concept.
 | Python SDK | `sdk/python` | `packages/parva-python` |
 | Runtime validation | `tests/fixtures/` | `data/validation/public/` |
 
+## Removal Targets
+
+| Path | Target |
+| --- | --- |
+| `backend/app/calendar/tithi.py` | Remove no earlier than v0.4.0 after import audits prove the package path is the only runtime path. |
+| `backend/app/calendar/calculator.py` | Remove no earlier than v0.5.0 after festival routes, tools, docs, and smoke tests use `app.rules.service` only. |
+| `backend/app/calendar/calculator_v2.py` | Remove no earlier than v0.5.0 after compatibility evaluators and source-precedence tests move to `app.rules.service`. |
+| `backend/app/calendar/festival_rules.json` | Remove no earlier than v0.5.0 after legacy loaders are retired. |
+| `backend/app/calendar/festival_rules_v3.json` | Remove no earlier than v0.5.0 after rule triads and `festival_rules_v4.json` preserve required provenance. |
+
 ## Removal Gate
 
 A deprecated path can be deleted only when:

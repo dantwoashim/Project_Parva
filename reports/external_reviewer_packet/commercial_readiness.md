@@ -13,6 +13,9 @@ BS Date Risk Audit and Conformance Suite for Nepali software vendors, payroll, E
 - `docs/PRICING_STRATEGY.md`
 - `docs/CONFORMANCE_PROGRAM.md`
 - `samples/vendor-date-risk-audit/`
+- `docs/PRICING_STRATEGY.md` now includes a free public API tier of
+  10,000 requests/month with a 1,000/day abuse-control cap for evaluation and
+  benchmark/development usage.
 
 ## What Can Be Sold Honestly
 
@@ -29,3 +32,5 @@ BS Date Risk Audit and Conformance Suite for Nepali software vendors, payroll, E
 - Payroll/tax/legal authority.
 - External certification.
 - Official future BS dates.
+- Registry acceptance.
+- PyPI or npm publication.

@@ -6,9 +6,10 @@ pushes to `main`, pull requests to `main`, and manual dispatch.
 The workflow uses Python 3.11 and Node 20. It runs environment, backend public,
 governance, SDK/AI/MCP, frontend, benchmark, and release-gate jobs.
 
-Last checked: 2026-05-16T05:00Z.
+Last checked before this distribution sprint: 2026-05-16T05:00Z.
 
-Checked commit: `db4ec3288e8fbec9ee63633e6ac019307c0004cd`.
+Checked commit before this distribution sprint:
+`db4ec3288e8fbec9ee63633e6ac019307c0004cd`.
 
 GitHub Actions evidence:
 
@@ -33,3 +34,7 @@ The CI run passed both visible jobs:
 GitHub emitted Node 20 action deprecation warnings for third-party action
 runtime internals. The project runtime under test remains pinned to Node 20 for
 application and package commands.
+
+The current distribution sprint must be pushed before a fresh GitHub Actions
+run can verify the new benchmark page, package-readiness checker, MCP registry
+metadata checker, archive hygiene checker, and frontend component split.

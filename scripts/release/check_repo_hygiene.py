@@ -50,6 +50,12 @@ def _tracked_path_issue(path: str) -> str | None:
         "reports/release_readiness/public_claims_checklist.md",
         "reports/release_readiness/README.md",
         "reports/release_readiness/release_checklist.md",
+        "reports/distribution_readiness/README.md",
+        "reports/distribution_readiness/baseline.md",
+        "reports/distribution_readiness/duplicate_runtime_cleanup.md",
+        "reports/distribution_readiness/final_verification_matrix.json",
+        "reports/distribution_readiness/final_verification_matrix.md",
+        "reports/distribution_readiness/next_30_days.md",
         "reports/red_check_closure/README.md",
         "reports/trust-status.json",
     )

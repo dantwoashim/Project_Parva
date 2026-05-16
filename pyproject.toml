@@ -7,7 +7,7 @@ name = "project-parva"
 version = "3.0.0"
 description = "Nepal Festival Discovery System"
 requires-python = ">=3.11,<3.12"
-license = { text = "AGPL-3.0-or-later" }
+license = "AGPL-3.0-or-later"
 readme = "README.md"
 dependencies = [
     "fastapi>=0.135.1",

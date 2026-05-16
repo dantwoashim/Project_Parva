@@ -27,3 +27,8 @@ For vendor audit and conformance deployments, run the public gate first, then
 attach organization-specific source policies for holidays, payroll cutoffs,
 banking calendars, fiscal assumptions, and local holidays. Do not use public
 demo profiles as final institution policy.
+
+The free public tier is useful for evaluation and development, but enterprise
+deployments should not depend on free-tier limits, public demo availability, or
+public-demo operational posture. Use paid API-key access or private deployment
+when contractual support, controlled quotas, or dedicated operations are needed.

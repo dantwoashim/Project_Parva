@@ -1,0 +1,180 @@
+{
+  "category_breakdown": {
+    "parva": {
+      "bs_ad_conversion": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 500,
+        "score": 450,
+        "score_percent": 90.0,
+        "tasks": 5
+      },
+      "festival_dates": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 300,
+        "score": 270,
+        "score_percent": 90.0,
+        "tasks": 3
+      },
+      "fiscal_year_boundaries": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 300,
+        "score": 270,
+        "score_percent": 90.0,
+        "tasks": 3
+      },
+      "future_bs_unsupported_review_required": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 400,
+        "score": 400,
+        "score_percent": 100.0,
+        "tasks": 4
+      },
+      "holidays": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 400,
+        "score": 370,
+        "score_percent": 92.5,
+        "tasks": 4
+      },
+      "invalid_bs_dates": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 500,
+        "score": 360,
+        "score_percent": 72.0,
+        "tasks": 5
+      },
+      "panchanga_tithi_at_sunrise": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 300,
+        "score": 270,
+        "score_percent": 90.0,
+        "tasks": 3
+      },
+      "payroll_repayment_review_gates": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 300,
+        "score": 300,
+        "score_percent": 100.0,
+        "tasks": 3
+      },
+      "source_confidence_evidence_metadata": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 400,
+        "score": 320,
+        "score_percent": 80.0,
+        "tasks": 4
+      },
+      "working_days": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 400,
+        "score": 390,
+        "score_percent": 97.5,
+        "tasks": 4
+      }
+    },
+    "static_baseline": {
+      "bs_ad_conversion": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 500,
+        "score": 250,
+        "score_percent": 50.0,
+        "tasks": 5
+      },
+      "festival_dates": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 300,
+        "score": 30,
+        "score_percent": 10.0,
+        "tasks": 3
+      },
+      "fiscal_year_boundaries": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 300,
+        "score": 30,
+        "score_percent": 10.0,
+        "tasks": 3
+      },
+      "future_bs_unsupported_review_required": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 400,
+        "score": 40,
+        "score_percent": 10.0,
+        "tasks": 4
+      },
+      "holidays": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 400,
+        "score": 40,
+        "score_percent": 10.0,
+        "tasks": 4
+      },
+      "invalid_bs_dates": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 500,
+        "score": 250,
+        "score_percent": 50.0,
+        "tasks": 5
+      },
+      "panchanga_tithi_at_sunrise": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 300,
+        "score": 30,
+        "score_percent": 10.0,
+        "tasks": 3
+      },
+      "payroll_repayment_review_gates": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 300,
+        "score": 30,
+        "score_percent": 10.0,
+        "tasks": 3
+      },
+      "source_confidence_evidence_metadata": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 400,
+        "score": 40,
+        "score_percent": 10.0,
+        "tasks": 4
+      },
+      "working_days": {
+        "blocked": 0,
+        "failed": 0,
+        "max_score": 400,
+        "score": 40,
+        "score_percent": 10.0,
+        "tasks": 4
+      }
+    }
+  },
+  "claim_boundary": "technical_benchmark_not_authority",
+  "generated_at": "2026-05-16T07:55:01.503997+00:00",
+  "parva_score_percent": 89.47,
+  "review_gate_performance": {
+    "passed": 7,
+    "score_percent": 100.0,
+    "tasks": 7
+  },
+  "score_gap_percent": 68.94,
+  "source": "public-benchmark/results/comparison.json",
+  "static_score_percent": 20.53,
+  "task_count": 38
+}

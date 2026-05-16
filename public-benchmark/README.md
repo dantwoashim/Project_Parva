@@ -1,5 +1,7 @@
 # Nepali Time Reliability Benchmark v0
 
+![Parva benchmark](results/benchmark.svg)
+
 This benchmark makes Nepali time reliability visible as a public software
 category. It tests deterministic calendar behavior, source awareness,
 uncertainty handling, review gates, and machine-readable structure.
@@ -19,6 +21,14 @@ Categories:
 
 The benchmark does not require private data and does not claim legal, banking,
 payroll, government, religious, or official future-date authority.
+
+Current tracked comparison:
+
+- Parva: 89.47%
+- Static baseline: 20.53%
+- Gap: 68.94 percentage points
+- Tasks: 38
+- Review gates: 7/7
 
 Run the static baseline:
 

@@ -13,7 +13,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field, HttpUrl
 
 from app.billing import BillingAuthError, get_billing_service
-from app.billing.plans import FREE_DAILY_LIMIT
+from app.billing.plans import FREE_DAILY_LIMIT, FREE_MONTHLY_LIMIT
 from app.security.pii import scrub_structured_trace
 
 router = APIRouter(prefix="/api", tags=["billing"])
@@ -145,7 +145,11 @@ async def _billing_call(request: Request, method_name: str, *args, **kwargs):
 
 @router.get("/billing/plans")
 async def billing_plans(request: Request):
-    return {"plans": await _billing_call(request, "list_plans"), "free_daily_limit": FREE_DAILY_LIMIT}
+    return {
+        "plans": await _billing_call(request, "list_plans"),
+        "free_daily_limit": FREE_DAILY_LIMIT,
+        "free_monthly_limit": FREE_MONTHLY_LIMIT,
+    }
 
 
 @router.post("/billing/checkout")

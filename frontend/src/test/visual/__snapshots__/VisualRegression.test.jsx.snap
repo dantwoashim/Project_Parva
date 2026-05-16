@@ -106,6 +106,24 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-current="page"
           aria-label="Best Time"
           class="active"
@@ -776,6 +794,12 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -876,19 +900,19 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
         Festivals
       </a>
       <a
+        class=""
+        data-discover="true"
+        href="/benchmark"
+      >
+        Benchmark
+      </a>
+      <a
         aria-current="page"
         class="active"
         data-discover="true"
         href="/best-time"
       >
         Best Time
-      </a>
-      <a
-        class=""
-        data-discover="true"
-        href="/birth-reading"
-      >
-        Birth
       </a>
     </nav>
   </div>
@@ -1001,6 +1025,24 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-current="page"
           aria-label="Best Time"
           class="active"
@@ -1671,6 +1713,12 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -1771,19 +1819,19 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
         Festivals
       </a>
       <a
+        class=""
+        data-discover="true"
+        href="/benchmark"
+      >
+        Benchmark
+      </a>
+      <a
         aria-current="page"
         class="active"
         data-discover="true"
         href="/best-time"
       >
         Best Time
-      </a>
-      <a
-        class=""
-        data-discover="true"
-        href="/birth-reading"
-      >
-        Birth
       </a>
     </nav>
   </div>
@@ -1893,6 +1941,24 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             class="nav-label-short"
           >
             Festivals
+          </span>
+        </a>
+        <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
           </span>
         </a>
         <a
@@ -2367,6 +2433,12 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -2469,16 +2541,16 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>
@@ -2592,6 +2664,24 @@ exports[`visual regression harness > festival detail page visual baseline on des
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-label="Best Time"
           class=""
           data-discover="true"
@@ -3313,6 +3403,12 @@ exports[`visual regression harness > festival detail page visual baseline on des
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -3416,16 +3512,16 @@ exports[`visual regression harness > festival detail page visual baseline on des
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>
@@ -3539,6 +3635,24 @@ exports[`visual regression harness > festival detail page visual baseline on mob
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-label="Best Time"
           class=""
           data-discover="true"
@@ -4260,6 +4374,12 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -4363,16 +4483,16 @@ exports[`visual regression harness > festival detail page visual baseline on mob
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>
@@ -4486,6 +4606,24 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-label="Best Time"
           class=""
           data-discover="true"
@@ -5150,6 +5288,12 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -5253,16 +5397,16 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>
@@ -5376,6 +5520,24 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-label="Best Time"
           class=""
           data-discover="true"
@@ -6040,6 +6202,12 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -6143,16 +6311,16 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>
@@ -6262,6 +6430,24 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             class="nav-label-short"
           >
             Festivals
+          </span>
+        </a>
+        <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
           </span>
         </a>
         <a
@@ -6850,6 +7036,12 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -6952,17 +7144,16 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
       <a
         class=""
         data-discover="true"
+        href="/benchmark"
+      >
+        Benchmark
+      </a>
+      <a
+        class=""
+        data-discover="true"
         href="/best-time"
       >
         Best Time
-      </a>
-      <a
-        aria-current="page"
-        class="active"
-        data-discover="true"
-        href="/birth-reading"
-      >
-        Birth
       </a>
     </nav>
   </div>
@@ -7076,6 +7267,24 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-label="Best Time"
           class=""
           data-discover="true"
@@ -7583,6 +7792,12 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -7686,16 +7901,16 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>
@@ -7809,6 +8024,24 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-label="Best Time"
           class=""
           data-discover="true"
@@ -8316,6 +8549,12 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -8419,16 +8658,16 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>
@@ -8542,6 +8781,24 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-label="Best Time"
           class=""
           data-discover="true"
@@ -9476,6 +9733,12 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -9579,16 +9842,16 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>
@@ -9702,6 +9965,24 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
           </span>
         </a>
         <a
+          aria-label="Benchmark"
+          class=""
+          data-discover="true"
+          href="/benchmark"
+        >
+          <span
+            class="nav-label-full"
+          >
+            Benchmark
+          </span>
+          <span
+            aria-hidden="true"
+            class="nav-label-short"
+          >
+            Benchmark
+          </span>
+        </a>
+        <a
           aria-label="Best Time"
           class=""
           data-discover="true"
@@ -10636,6 +10917,12 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             </a>
             <a
               data-discover="true"
+              href="/benchmark"
+            >
+              Benchmark
+            </a>
+            <a
+              data-discover="true"
               href="/enterprise"
             >
               Enterprise
@@ -10739,16 +11026,16 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
       <a
         class=""
         data-discover="true"
-        href="/best-time"
+        href="/benchmark"
       >
-        Best Time
+        Benchmark
       </a>
       <a
         class=""
         data-discover="true"
-        href="/birth-reading"
+        href="/best-time"
       >
-        Birth
+        Best Time
       </a>
     </nav>
   </div>

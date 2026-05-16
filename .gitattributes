@@ -8,7 +8,6 @@
 frontend/node_modules export-ignore
 frontend/dist export-ignore
 output export-ignore
-reports export-ignore
 backend/data/snapshots export-ignore
 backend/data/traces export-ignore
 backend/project_parva.egg-info export-ignore

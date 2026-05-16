@@ -1,0 +1,58 @@
+{
+  "claim_boundary": "decision_support_not_authority",
+  "description": "Read-only MCP adapter for public-safe Project Parva Nepali temporal tools.",
+  "forbidden_routes": [
+    "/admin/",
+    "/billing/",
+    "/keys",
+    "/webhooks",
+    "/trust/mutate",
+    "future-bs/month-lengths",
+    "future-bs/backtest",
+    "future-bs/export",
+    "future-bs/model-runs",
+    "loan-impact",
+    "calendar-model-risk/prediction",
+    "audit-external-sheet",
+    "stress-test"
+  ],
+  "license": "AGPL-3.0-or-later",
+  "name": "parva-mcp-server",
+  "prompts": [
+    "explain_nepali_date_safely",
+    "check_claim_with_sources",
+    "plan_schedule_with_review_gates"
+  ],
+  "read_only": true,
+  "repository": "https://github.com/dantwoashim/Project_Parva",
+  "resources": [
+    "parva://capabilities",
+    "parva://route-maturity",
+    "parva://source-policy",
+    "parva://supported-ranges",
+    "parva://known-limitations",
+    "parva://benchmark-summary"
+  ],
+  "security_boundaries": {
+    "admin_routes": false,
+    "billing_routes": false,
+    "exact_unsupported_future_bs_predictions": false,
+    "filesystem_writes": false,
+    "private_routes": false,
+    "shell_execution": false,
+    "trust_mutation_routes": false
+  },
+  "tools": [
+    "convert_bs_to_ad",
+    "convert_ad_to_bs",
+    "get_nepali_today",
+    "check_holiday",
+    "check_working_day",
+    "get_fiscal_year",
+    "get_festival_date",
+    "get_panchanga_summary",
+    "check_temporal_claim"
+  ],
+  "transport": "stdio",
+  "version": "0.3.0a0"
+}

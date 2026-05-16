@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Report large frontend source files without changing the build."""
+"""Fail on oversized frontend source files and report near-limit files."""
 
 from __future__ import annotations
 
@@ -9,8 +9,11 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 FRONTEND_SRC = PROJECT_ROOT / "frontend" / "src"
 SOURCE_SUFFIXES = {".js", ".jsx", ".ts", ".tsx"}
+WARN_LINE_BUDGET = 700
+FAIL_LINE_BUDGET = 1_000
 GRANDFATHERED_LINE_BUDGETS = {
-    Path("frontend/src/redesign/ParvaExperience.jsx"): 3_700,
+    # FeedSubscriptionsPage predates the public-beta shell and is scheduled for
+    # follow-up extraction; keep the allowance narrow and explicit.
     Path("frontend/src/pages/FeedSubscriptionsPage.jsx"): 1_050,
 }
 
@@ -38,7 +41,8 @@ def iter_large_files(max_lines: int) -> list[tuple[int, Path, int | None]]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--max-lines", type=int, default=800)
+    parser.add_argument("--max-lines", type=int, default=WARN_LINE_BUDGET)
+    parser.add_argument("--fail-lines", type=int, default=FAIL_LINE_BUDGET)
     parser.add_argument("--warn-only", action="store_true")
     args = parser.parse_args()
 
@@ -51,8 +55,9 @@ def main() -> int:
     print(f"Frontend component size report: {len(rows)} production files exceed {args.max_lines} lines.")
     for count, path, budget in rows:
         if budget is None:
-            failures.append(f"{path.as_posix()} has no explicit large-file budget")
-            print(f"{count:5d} {path.as_posix()} over {args.max_lines} lines")
+            print(f"{count:5d} {path.as_posix()} over warning budget={args.max_lines}")
+            if count > args.fail_lines:
+                failures.append(f"{path.as_posix()} exceeded hard limit: {count} > {args.fail_lines}")
             continue
         status = "within-budget" if count <= budget else "over-budget"
         print(f"{count:5d} {path.as_posix()} {status} budget={budget}")

@@ -2,6 +2,7 @@ export const navItems = [
   { label: 'Today', to: '/today', requiredCapability: 'coreCalendar' },
   { label: 'My Place', to: '/my-place', requiredCapability: 'placeSearch' },
   { label: 'Festivals', to: '/festivals', requiredCapability: 'festivalTimeline' },
+  { label: 'Benchmark', to: '/benchmark', requiredCapability: 'developerPreview' },
   { label: 'Best Time', to: '/best-time', requiredCapability: 'muhurtaPublic' },
   { label: 'Birth Reading', shortLabel: 'Birth', to: '/birth-reading', requiredCapability: 'kundaliPreview' },
   { label: 'Panchanga', shortLabel: 'Dates', to: '/panchanga', requiredCapability: 'panchangaPublic' },
@@ -24,6 +25,7 @@ export const footerGroups = [
     title: 'Workspace',
     links: [
       { label: 'Developers', to: '/developers', requiredCapability: 'developerPreview' },
+      { label: 'Benchmark', to: '/benchmark', requiredCapability: 'developerPreview' },
       { label: 'Enterprise', to: '/enterprise' },
       { label: 'Saved', to: '/saved' },
       { label: 'Profile', to: '/profile' },
@@ -173,9 +175,9 @@ export const pricingPlans = [
     slug: 'free',
     name: 'Free',
     price: 'NPR 0',
-    limit: '100 requests/day/IP',
+    limit: '10,000 requests/month, 1,000/day abuse cap',
     support: 'No support',
-    body: 'For testing public calendar endpoints before a product depends on Parva.',
+    body: 'For public API evaluation, benchmark work, and development integrations with source-aware responses.',
   },
   {
     slug: 'starter',

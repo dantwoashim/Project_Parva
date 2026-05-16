@@ -44,6 +44,9 @@ jobs:
           npm --prefix packages/parva-js audit --audit-level=high
           python scripts/release/check_repo_hygiene.py
           python scripts/release/verify_clean_clone_assumptions.py
+          python scripts/release/check_archive_hygiene.py
+          python scripts/release/check_package_readiness.py
+          python scripts/release/check_mcp_registry_metadata.py
           python scripts/security/scan_repo_secrets.py
           python scripts/release/check_public_safety_gate.py
           python scripts/release/check_render_blueprint.py
@@ -54,6 +57,7 @@ jobs:
           python scripts/release/check_public_claims.py
           python scripts/validate_external_temporal_rules.py
           python public-benchmark/validate_benchmark.py
+          python scripts/benchmark/generate_benchmark_badge.py
           python scripts/release/check_route_inventory.py
           python scripts/release/check_documented_routes.py
           python scripts/release/check_public_openapi_drift.py
@@ -62,6 +66,7 @@ jobs:
           python scripts/spec/run_conformance_tests.py
           python public-benchmark/runners/run_against_static_baseline.py
           python public-benchmark/runners/run_against_parva.py
+          python public-benchmark/runners/compare_results.py
 
       - name: Run backend tests
         run: python -m pytest -q -m "not private_source and not wide_corpus and not research_artifact" --maxfail=20
@@ -98,6 +103,7 @@ jobs:
       - name: Run frontend quality gates
         run: |
           npm --prefix frontend audit --audit-level=high
+          python scripts/frontend/check_component_size.py
           npm --prefix frontend run lint
           npm --prefix frontend test -- --run
           npm --prefix frontend run build

@@ -23,3 +23,8 @@ religious, official calendar, or external certification authority.
 The first commercial package should be the BS Date Risk Audit plus Conformance
 Suite. A license may cover private deployment and support, but the audit report
 must still label review-required cases and unsupported future assumptions.
+
+The public free tier is intended for developer evaluation: 10,000 requests per
+month with a 1,000 request/day abuse-control cap. It includes public API access,
+benchmark and development usage, and source-aware responses. It does not include
+SLA, private deployment, integration support, or commercial support.

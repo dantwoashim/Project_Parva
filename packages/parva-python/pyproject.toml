@@ -4,13 +4,25 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "project-parva-python-sdk"
-version = "0.1.0a0"
+version = "0.3.0a0"
 description = "Public-safe Python SDK alpha for Project Parva calendar APIs."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "AGPL-3.0-or-later" }
+license = "AGPL-3.0-or-later"
 authors = [{ name = "Project Parva" }]
 dependencies = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://github.com/dantwoashim/Project_Parva"
+Repository = "https://github.com/dantwoashim/Project_Parva"
+Documentation = "https://github.com/dantwoashim/Project_Parva/blob/main/docs/QUICKSTART.md"
 
 [project.scripts]
 parva = "parva.cli:main"

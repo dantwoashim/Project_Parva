@@ -1,6 +1,6 @@
 # External Reviewer Packet
 
-Generated: 2026-05-15T19:58:47+05:45
+Generated: 2026-05-16T00:00:00+05:45
 
 This packet summarizes the current state of Project Parva for an external technical reviewer.
 
@@ -21,3 +21,11 @@ This packet summarizes the current state of Project Parva for an external techni
 ## Review Position
 
 Project Parva is a deterministic Nepali temporal infrastructure reference implementation. It is not an official government source, legal authority, tax authority, payroll authority, banking authority, religious authority, or official future BS date authority.
+
+## Distribution Update
+
+The public-beta surface now includes a visible benchmark page, generated
+benchmark badge, package-readiness checks, MCP registry metadata checks,
+archive hygiene checks, and a distribution-readiness packet. These are local
+technical readiness artifacts, not registry acceptance, package publication,
+customer proof, external certification, or government approval.

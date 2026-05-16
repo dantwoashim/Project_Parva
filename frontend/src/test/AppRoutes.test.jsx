@@ -542,6 +542,7 @@ describe('App routing', () => {
     expect(within(primaryNav).getByRole('link', { name: /^Today$/i })).toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^My Place$/i })).toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^Festivals$/i })).toBeInTheDocument();
+    expect(within(primaryNav).getByRole('link', { name: /^Benchmark$/i })).toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^Best Time$/i })).toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^Birth Reading$/i })).toBeInTheDocument();
 
@@ -571,6 +572,21 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions)).toBeInTheDocument();
+  }, 30000);
+
+  it('renders the public benchmark page with scores and authority boundary', async () => {
+    setViewportWidth(1280);
+    render(
+      <MemoryRouter initialEntries={['/benchmark']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /Nepali Time Reliability Benchmark/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByText('89.47%')).toBeInTheDocument();
+    expect(screen.getByText('20.53%')).toBeInTheDocument();
+    expect(screen.getByText(/technical reliability benchmark, not official government\/calendar authority/i)).toBeInTheDocument();
+    expect(screen.getByText(/review-required behavior preservation/i)).toBeInTheDocument();
   }, 30000);
 
   it('keeps the same shell on mobile widths and exposes the bottom navigation', async () => {

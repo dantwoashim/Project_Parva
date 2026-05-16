@@ -72,9 +72,16 @@ jobs:
           python scripts/check_canonical_runtime.py
           python scripts/check_maturity_lanes.py
           python tools/validate_schemas.py
+          python scripts/validate_external_temporal_rules.py
           python scripts/release/check_route_inventory.py
           python scripts/release/check_documented_routes.py
+          python scripts/release/check_public_claims.py
           python scripts/release/check_public_safety_gate.py
+          python scripts/release/verify_clean_clone_assumptions.py
+          python scripts/release/check_archive_hygiene.py
+          python scripts/release/check_package_readiness.py
+          python scripts/release/check_mcp_registry_metadata.py
+          python scripts/frontend/check_component_size.py
           python scripts/release/check_repo_hygiene.py
 
   sdk-ai-mcp:
@@ -100,7 +107,13 @@ jobs:
       - name: Run SDK and adapter tests
         run: |
           python -m pytest packages/parva-python/tests -q
+          python -m build packages/parva-python
+          python -m build packages/parva-ai-tools
+          python -m build packages/parva-mcp-server
           npm --prefix packages/parva-js test
+          cd packages/parva-js
+          npm pack --dry-run
+          cd ../..
           python -m pytest packages/parva-ai-tools/tests packages/parva-mcp-server/tests -q
 
   frontend:
@@ -140,6 +153,8 @@ jobs:
         run: |
           python public-benchmark/runners/run_against_static_baseline.py
           python public-benchmark/runners/run_against_parva.py
+          python public-benchmark/runners/compare_results.py
+          python scripts/benchmark/generate_benchmark_badge.py
 
   release-gate:
     runs-on: ubuntu-latest
@@ -168,4 +183,3 @@ jobs:
         env:
           PARVA_PYTHON: python
         run: python scripts/release/verify_public.py
-

@@ -2,6 +2,9 @@
 
 [![CI](https://github.com/dantwoashim/Project_Parva/actions/workflows/ci.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/ci.yml)
 [![Public verification](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml)
+![Benchmark](public-benchmark/results/benchmark.svg)
+
+Source-aware Nepali temporal infrastructure for software systems and AI agents.
 
 Project Parva is open-source Nepali temporal infrastructure for Bikram Sambat conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation.
 
@@ -10,9 +13,10 @@ It also includes a controlled future-BS risk research layer for evaluating month
 Public review entry points:
 
 - [Quickstart](docs/QUICKSTART.md)
-- [Benchmark v0](public-benchmark/README.md)
+- [Benchmark v0](public-benchmark/README.md) and product page `/benchmark`
 - [Public verification workflow](.github/workflows/public-verification.yml)
 - [Release notes](docs/releases/v0.3.0-public-readiness.md)
+- [Package publishing checklist](docs/releases/PACKAGE_PUBLISHING.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
 - [External reviewer packet generated artifact](reports/external_reviewer_packet/README.md)
 
@@ -23,6 +27,13 @@ Nepali calendar logic is infrastructure, not decoration.
 BS dates affect fiscal reports, payroll, contracts, transaction records, holidays, reporting periods, renewals, interest periods, compliance exports, and audit trails. Fragile calendar tables can quietly become operational risk when they are copied, extended, or updated without source policy.
 
 Parva treats calendar behavior as something that should be explainable, source-aware, reproducible, and honest about confidence.
+
+## Benchmark V0
+
+Parva currently scores 89.47% on the 38-task public Nepali Time Reliability
+Benchmark, compared with 20.53% for the static baseline. The benchmark tests
+technical reliability, source awareness, uncertainty handling, review gates,
+and machine-readable structure. It is not government or calendar authority.
 
 ## What Parva Provides
 
@@ -157,6 +168,35 @@ curl https://api.prabinghimire1.com.np/v3/api/protocol/version
 ```
 
 Public examples intentionally avoid direct future month-length prediction, future exports, backtests, model runs, schedule-impact simulation, and private comparison workflows.
+
+## SDK And MCP Packages
+
+- Python SDK: `packages/parva-python`
+- JavaScript SDK: `packages/parva-js`
+- Public-safe tool wrappers: `packages/parva-ai-tools`
+- Optional MCP adapter: `packages/parva-mcp-server`
+
+The packages are prepared for public-beta release and dry-run checks. This
+repository does not claim PyPI publication, npm publication, MCP registry
+acceptance, external endorsement, or certification.
+
+## Use Cases
+
+- Nepali date conversion for software systems
+- panchanga, tithi, muhurta, and festival software
+- payroll, fiscal-period, ERP, accounting, HR, and cooperative workflows
+- AI agent temporal grounding through deterministic tool calls
+- vendor date-risk audits and conformance testing
+- government digital Panchanga pilot proposal work
+
+## What This Is Not
+
+- not government authority
+- not legal, tax, payroll, or banking authority
+- not religious authority
+- not an official Future-BS engine
+- not a Panchanga replacement
+- not customer, vendor, registry, or certification proof
 
 ## Deployment Model
 

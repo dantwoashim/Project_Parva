@@ -8,6 +8,7 @@ import { resolveDocumentLanguage } from './i18n/locale';
 import { trackEvent } from './services/analytics';
 import {
   RedesignBestTime,
+  RedesignBenchmark,
   RedesignBirthReading,
   RedesignDevelopers,
   RedesignEnterprise,
@@ -53,6 +54,10 @@ const routeSeo = {
   '/best-time': {
     title: 'Best Time - Parva',
     description: 'Plan with ranked muhurta windows, caution periods, confidence, and plain-language method evidence.',
+  },
+  '/benchmark': {
+    title: 'Benchmark - Project Parva',
+    description: 'Nepali Time Reliability Benchmark v0 results for deterministic calendar behavior, source awareness, uncertainty handling, and review gates.',
   },
   '/birth-reading': {
     title: 'Birth Reading - Parva',
@@ -121,6 +126,7 @@ function AppRoutes() {
         <Route path="/" element={<RedesignHome />} />
         <Route path="/today" element={<RedesignToday />} />
         <Route path="/best-time" element={<RedesignBestTime />} />
+        <Route path="/benchmark" element={<RedesignBenchmark />} />
         <Route path="/festivals" element={<RedesignFestivals />} />
         <Route path="/festivals/:festivalId" element={<RedesignFestivalDetail />} />
         <Route path="/my-place" element={<RedesignMyPlace />} />

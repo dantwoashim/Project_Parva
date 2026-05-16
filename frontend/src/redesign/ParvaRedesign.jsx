@@ -19,3 +19,5 @@ export {
   RedesignTrust,
   RedesignTruthLab,
 } from './ParvaExperience.jsx';
+
+export { RedesignBenchmark } from './BenchmarkPage.jsx';

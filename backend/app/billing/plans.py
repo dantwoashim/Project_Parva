@@ -17,7 +17,8 @@ class PlanDefinition:
     features: tuple[str, ...]
 
 
-FREE_DAILY_LIMIT = 100
+FREE_MONTHLY_LIMIT = 10_000
+FREE_DAILY_LIMIT = 1_000
 
 PLAN_DEFINITIONS: tuple[PlanDefinition, ...] = (
     PlanDefinition(
@@ -25,10 +26,14 @@ PLAN_DEFINITIONS: tuple[PlanDefinition, ...] = (
         name="Free",
         currency="NPR",
         price_minor=0,
-        monthly_limit=0,
+        monthly_limit=FREE_MONTHLY_LIMIT,
         daily_limit=FREE_DAILY_LIMIT,
         support="None",
-        features=("Public endpoints",),
+        features=(
+            "Public API access",
+            "Benchmark and development usage",
+            "Source-aware responses",
+        ),
     ),
     PlanDefinition(
         slug="starter",
@@ -63,4 +68,3 @@ PLAN_DEFINITIONS: tuple[PlanDefinition, ...] = (
 )
 
 PLANS_BY_SLUG = {plan.slug: plan for plan in PLAN_DEFINITIONS}
-
