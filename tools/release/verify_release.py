@@ -20,6 +20,7 @@ from app.core.source_authority import (  # noqa: E402
 )
 
 SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
+SHA256_REF_RE = re.compile(r"^(?:sha256:)?[a-f0-9]{64}$", re.IGNORECASE)
 PUBLICATION_STATUSES = {
     "official_verified",
     "printed_verified",
@@ -41,6 +42,7 @@ SOURCE_POLICIES = {
     "public_demo",
 }
 SOURCE_TIERS = set(PUBLIC_RELEASE_SOURCE_TIERS)
+TEXT_HASH_SUFFIXES = {".csv", ".json", ".jsonl", ".md", ".txt", ".yaml", ".yml"}
 FORBIDDEN_TEXT = [
     re.compile("Info" + r"Developers", re.IGNORECASE),
     re.compile(r"\b" + "info" + r"dev\b", re.IGNORECASE),
@@ -48,6 +50,17 @@ FORBIDDEN_TEXT = [
     re.compile("99%" + r"\s+future\s+accuracy", re.IGNORECASE),
 ]
 FORBIDDEN_FUTURE_YEAR_TEXT = ("20" + "84", "20" + "85", "20" + "99", "22" + "00")
+PUBLIC_SAFETY_HASH_KEYS = {
+    "artifact_hash",
+    "entry_hash",
+    "hash",
+    "manifest_hash",
+    "packet_hash",
+    "previous_entry_hash",
+    "sha256",
+    "signature",
+    "source_sha256",
+}
 
 
 class ReleaseVerificationError(ValueError):
@@ -66,11 +79,10 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    data = path.read_bytes()
+    if path.suffix.lower() in TEXT_HASH_SUFFIXES:
+        data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def require_keys(payload: dict[str, Any], keys: list[str], context: str) -> None:
@@ -79,8 +91,32 @@ def require_keys(payload: dict[str, Any], keys: list[str], context: str) -> None
         raise ReleaseVerificationError(f"{context}: missing required keys: {', '.join(missing)}")
 
 
+def _public_claim_text(value: Any, *, key: str | None = None) -> list[str]:
+    if key:
+        normalized_key = key.lower()
+        if normalized_key in PUBLIC_SAFETY_HASH_KEYS or normalized_key.endswith("_hash"):
+            return []
+    if isinstance(value, dict):
+        fragments: list[str] = []
+        for child_key, child_value in value.items():
+            fragments.extend(_public_claim_text(child_value, key=str(child_key)))
+        return fragments
+    if isinstance(value, list):
+        fragments = []
+        for child in value:
+            fragments.extend(_public_claim_text(child))
+        return fragments
+    if isinstance(value, str):
+        if SHA256_REF_RE.fullmatch(value):
+            return []
+        return [value]
+    if isinstance(value, int | float | bool):
+        return [str(value)]
+    return []
+
+
 def assert_public_safe(path: Path, payload: dict[str, Any]) -> None:
-    text = json.dumps(payload, ensure_ascii=False)
+    text = "\n".join(_public_claim_text(payload))
     for pattern in FORBIDDEN_TEXT:
         if pattern.search(text):
             raise ReleaseVerificationError(f"{path}: forbidden public-safety text matched")

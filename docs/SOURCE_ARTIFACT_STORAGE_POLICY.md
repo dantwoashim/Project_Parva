@@ -33,5 +33,5 @@ This policy decides where source artifacts live and whether they can enter publi
 - Never require internet access to verify a generated offline bundle.
 - Do not commit large binary artifacts unless they are small, public, essential, and redistribution-safe.
 - Use object storage, GitHub Releases artifacts, or Git LFS for large public files when a raw file must be retained.
-- Keep `data/ephemeris/jpl/` ignored for local JPL kernels.
+- Keep the local JPL kernel cache ignored; public verification must not require those files.
 

@@ -28,6 +28,7 @@ DEFAULT_SOURCE_REGISTRY_PATH = PUBLIC_RELEASE_DIR / f"{DEFAULT_RELEASE_ID}.sourc
 DEFAULT_TRUST_LOG_PATH = data_dir() / "public" / "trust" / "parva-trust-log.jsonl"
 PUBLIC_SIGNATURE_STATUS = "unsigned_public_preview"
 ALLOWED_SOURCE_TIERS = frozenset(PUBLIC_RELEASE_SOURCE_TIERS)
+TEXT_HASH_SUFFIXES = {".csv", ".json", ".jsonl", ".md", ".txt", ".yaml", ".yml"}
 
 
 class TrustInfrastructureError(ValueError):
@@ -51,11 +52,10 @@ def sha256_text(text: str) -> str:
 
 
 def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    data = path.read_bytes()
+    if path.suffix.lower() in TEXT_HASH_SUFFIXES:
+        data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def active_release_id() -> str:

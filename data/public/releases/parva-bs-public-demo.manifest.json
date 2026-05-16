@@ -17,7 +17,7 @@
     {
       "artifact_id": "source-registry",
       "path": "data/public/releases/parva-bs-public-demo.sources.json",
-      "sha256": "e6ea68e4f966db35e91abd546a7a3958a9ecdc1ce958b66a3bd521b909b4916d",
+      "sha256": "8b3e1ef5a4009c5b072882399448b85cf9d9dcfddf4ccd885cdde87229773649",
       "media_type": "application/json",
       "description": "Public-safe source registry for this demo release."
     },
@@ -45,49 +45,49 @@
     {
       "artifact_id": "calculation-trace-schema",
       "path": "schemas/calculation-trace.schema.json",
-      "sha256": "4caafb0abdede42711361f51ae462f0688e173495b75d26d725cf5e4984e82ad",
+      "sha256": "9c2cba5ec68d9b2e02bdf222d5f5cfe675ed430d118cf3fd8c33eb48d9993dfc",
       "media_type": "application/schema+json",
       "description": "Existing public calculation trace schema used by this release layer."
     },
     {
       "artifact_id": "rulelang-rule-schema",
       "path": "schemas/rulelang-rule.schema.json",
-      "sha256": "b1778d8b7ee3ec6006873306b2a161fe00240026392f782f1ac6b72724fa22f4",
+      "sha256": "385a0c497614bd53cd71cbef77c047af78b6245b2557bdb3cb2ff75f1c80c655",
       "media_type": "application/schema+json",
       "description": "JSON schema for public RuleLang rule definitions."
     },
     {
       "artifact_id": "impact-report-schema",
       "path": "schemas/impact-report.schema.json",
-      "sha256": "1dd1c2728b668f1ebb33c41e4f7de19e0603d7009ad29099969a60cf3cb9d57a",
+      "sha256": "0b0ba53434ad1e91096f3b29868b302e7b3d562b655c989cd1be55f0d4207977",
       "media_type": "application/schema+json",
       "description": "JSON schema for public temporal impact reports."
     },
     {
       "artifact_id": "agent-tool-schema",
       "path": "schemas/agent-tool.schema.json",
-      "sha256": "cf74ada83f1dc336ae790b1e2e29dc189255c237adfaa9ce5a9e3f0fe595bda2",
+      "sha256": "0645075ae2eb82e8f6f4b73832bf34800d48264bb7526f737c4df3266ee228c4",
       "media_type": "application/schema+json",
       "description": "JSON schema for public agent-safe temporal tool definitions."
     },
     {
       "artifact_id": "calendar-credential-schema",
       "path": "schemas/parva-protocol/calendar-credential.schema.json",
-      "sha256": "08eeaf6498bf17337244fa5d6dae683931d75364f42d86e9706f5c42aa88db97",
+      "sha256": "1cca7ea6287d020847d1fd9feebd827d9f4e68edc39efc31099ce764629ad88e",
       "media_type": "application/schema+json",
       "description": "JSON schema for Parva Protocol calendar credentials."
     },
     {
       "artifact_id": "conformance-report-schema",
       "path": "schemas/parva-protocol/conformance-report.schema.json",
-      "sha256": "a6127221f85519bc082a5a53489b8bbe128c42b9b40f38864a9228a3048df0b8",
+      "sha256": "2605ae06a28aa50bfb33e6196f8c8536c5945b38e1f66d317a0b9a1046525a79",
       "media_type": "application/schema+json",
       "description": "JSON schema for Parva Protocol conformance reports."
     },
     {
       "artifact_id": "offline-bundle-manifest-schema",
       "path": "schemas/parva-protocol/offline-bundle-manifest.schema.json",
-      "sha256": "d9f86fa12a65e0b41e5c3dd0325912ea7612b6a8a2c178ac10d7bf3ff92d0165",
+      "sha256": "bd487fbd84c35d6393148b9570b79d83b4765e97ab412ac962fbdde68a3db701",
       "media_type": "application/schema+json",
       "description": "JSON schema for Parva Protocol offline bundle manifests."
     }

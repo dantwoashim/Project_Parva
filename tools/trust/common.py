@@ -12,6 +12,7 @@ SIGNATURE_ALGORITHM = "alpha_hash_only_sha256"
 TRUST_LOG_PATH = ROOT / "data" / "public" / "transparency-log" / "parva-log.jsonl"
 DEFAULT_MANIFEST_PATH = ROOT / "data" / "public" / "releases" / "parva-bs-public-demo.manifest.json"
 DEFAULT_SIGNATURE_PATH = ROOT / "data" / "public" / "releases" / "parva-bs-public-demo.signature.json"
+TEXT_HASH_SUFFIXES = {".csv", ".json", ".jsonl", ".md", ".txt", ".yaml", ".yml"}
 
 
 class TrustToolError(ValueError):
@@ -50,11 +51,10 @@ def canonical_json(payload: dict[str, Any]) -> str:
 
 
 def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    data = path.read_bytes()
+    if path.suffix.lower() in TEXT_HASH_SUFFIXES:
+        data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(data).hexdigest()
 
 
 def sha256_text(text: str) -> str:

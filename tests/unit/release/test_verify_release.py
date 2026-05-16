@@ -5,7 +5,11 @@ from pathlib import Path
 
 import pytest
 
-from tools.release.verify_release import ReleaseVerificationError, verify_release
+from tools.release.verify_release import (
+    ReleaseVerificationError,
+    assert_public_safe,
+    verify_release,
+)
 
 MANIFEST = Path("data/public/releases/parva-bs-public-demo.manifest.json")
 
@@ -25,3 +29,13 @@ def test_release_verifier_fails_on_hash_mismatch(tmp_path):
 
     with pytest.raises(ReleaseVerificationError, match="hash mismatch"):
         verify_release(bad_manifest.resolve())
+
+
+def test_public_safety_scan_ignores_future_year_digits_inside_hashes():
+    assert_public_safe(
+        MANIFEST,
+        {
+            "sha256": "1cca7ea6287d020847d1fd9feebd827d9f4e68edc39efc31099ce764629ad88e",
+            "claim_boundary": "public demo only",
+        },
+    )
