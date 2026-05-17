@@ -12,11 +12,31 @@ from app.sources.hashing import canonical_json_hash
 class BitplaneAttestation:
     plane_hash: str
     manifest_hash: str
+    manifest_entry_hash: str | None = None
 
     @property
     def attestation_hash(self) -> str:
-        return f"sha256:{canonical_json_hash({'plane_hash': self.plane_hash, 'manifest_hash': self.manifest_hash})}"
+        return f"sha256:{canonical_json_hash(self.as_dict(include_hash=False))}"
+
+    def as_dict(self, *, include_hash: bool = True) -> dict[str, str | None]:
+        payload = {
+            "plane_hash": self.plane_hash,
+            "manifest_hash": self.manifest_hash,
+            "manifest_entry_hash": self.manifest_entry_hash,
+        }
+        if include_hash:
+            payload["attestation_hash"] = self.attestation_hash
+        return payload
 
 
-def attest_bitplane(plane: CausalBitplane, manifest_hash: str) -> BitplaneAttestation:
-    return BitplaneAttestation(plane_hash=plane.hash, manifest_hash=manifest_hash)
+def attest_bitplane(
+    plane: CausalBitplane,
+    manifest_hash: str,
+    *,
+    manifest_entry_hash: str | None = None,
+) -> BitplaneAttestation:
+    return BitplaneAttestation(
+        plane_hash=plane.hash,
+        manifest_hash=manifest_hash,
+        manifest_entry_hash=manifest_entry_hash,
+    )

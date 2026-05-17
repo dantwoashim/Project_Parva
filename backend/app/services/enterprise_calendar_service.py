@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 from typing import Any
 
+from app.boundary.vector import BoundaryVector
 from app.calendar.bikram_sambat import (
     bs_to_gregorian,
     days_in_bs_month,
@@ -27,6 +28,8 @@ from app.core.source_metadata import (
 )
 from app.policy import get_policy_metadata
 from app.services.bs_month_metadata_service import BsMonthCalculationMode, build_bs_month_metadata
+from app.trust.field_provenance import FieldProvenance, ProvenanceMap
+from app.trust.taint import AuthorityTaint, TaintFlag
 
 ENGINE_FISCAL_YEAR = "parva_enterprise_fiscal_year_v1"
 SOURCE_RANGE = STATIC_LOOKUP_RANGE_LABEL
@@ -185,8 +188,19 @@ def bs_months_payload(
             "provenance_note": metadata["provenance_note"],
         }
 
+    field_provenance = _bs_month_field_provenance(metadata, mode=mode)
+    boundary = _bs_month_boundary(metadata, field_provenance)
+    result = _bs_month_result(metadata, mode=mode)
+    policy_decision = _bs_month_policy_decision(metadata, mode=mode)
+
     common = {
         "bs_year": bs_year,
+        "requested_mode": mode,
+        "selected_method": metadata.get("selected_mode") or metadata["calculation_mode"],
+        "result": result,
+        "policy_decision": policy_decision,
+        "boundary": boundary,
+        "field_provenance": field_provenance.as_dict(),
         "calculation_mode": metadata["calculation_mode"],
         "engine": metadata["engine"],
         "confidence": metadata["confidence"],
@@ -209,8 +223,11 @@ def bs_months_payload(
         ),
     }
     if mode == "compare":
+        branch_set = _branch_set_payload(metadata)
         return {
             **common,
+            "membrane_kind": "branch_set",
+            "branch_set": branch_set,
             "branches": metadata["branches"],
             "default_branch": metadata["default_branch"],
             "selected_mode": metadata["selected_mode"],
@@ -222,6 +239,146 @@ def bs_months_payload(
         "total_days": metadata["total_days"],
         "selected_mode": metadata.get("selected_mode"),
         "canonical_decision": metadata.get("canonical_decision"),
+    }
+
+
+def _bs_month_field_provenance(
+    metadata: dict[str, Any],
+    *,
+    mode: BsMonthCalculationMode,
+) -> ProvenanceMap:
+    if mode == "static_lookup":
+        authority = AuthorityTaint.STATIC_REFERENCE
+        derivation = "static_lookup_compatibility_reference"
+    elif mode == "compare":
+        authority = AuthorityTaint.COMPUTED_UNCERTIFIED
+        derivation = "branch_set_comparison"
+    else:
+        authority = AuthorityTaint.COMPUTED_UNCERTIFIED
+        derivation = "solar_civil_sankranti_computation"
+
+    flags = frozenset({TaintFlag.REVIEW_REQUIRED})
+    policy_id = "enterprise_bs_months@v1"
+    fields = {
+        "months": FieldProvenance(
+            "months",
+            authority,
+            derivation,
+            policy_id=policy_id,
+            review_state="review_required",
+            flags=flags,
+        ),
+        "total_days": FieldProvenance(
+            "total_days",
+            authority,
+            derivation,
+            policy_id=policy_id,
+            review_state="review_required",
+            flags=flags,
+        ),
+        "selected_method": FieldProvenance(
+            "selected_method",
+            AuthorityTaint.COMPUTED_UNCERTIFIED,
+            "policy_selected_method",
+            policy_id=policy_id,
+            review_state="review_required",
+            flags=flags,
+        ),
+        "claim_boundary": FieldProvenance(
+            "claim_boundary",
+            AuthorityTaint.COMPUTED_UNCERTIFIED,
+            "policy_boundary_label",
+            policy_id=policy_id,
+            review_state="review_required",
+            flags=flags,
+        ),
+    }
+    if mode == "compare":
+        fields["branches"] = FieldProvenance(
+            "branches",
+            AuthorityTaint.COMPUTED_UNCERTIFIED,
+            "branch_set_membrane",
+            policy_id=policy_id,
+            review_state="review_required",
+            flags=frozenset({TaintFlag.REVIEW_REQUIRED, TaintFlag.SOURCE_CONFLICT}),
+        )
+    return ProvenanceMap(fields)
+
+
+def _bs_month_boundary(metadata: dict[str, Any], provenance: ProvenanceMap) -> dict[str, Any]:
+    boundary = BoundaryVector.from_provenance(provenance).as_dict()
+    boundary["claim_boundary"] = metadata.get("claim_boundary") or boundary["claim_boundary"]
+    boundary["blocked_use_cases"] = metadata.get("blocked_use_cases") or boundary["blocked_use_cases"]
+    boundary["review_state"] = "required" if metadata.get("review_required", True) else boundary["review_state"]
+    boundary["not_authority"] = True
+    return boundary
+
+
+def _bs_month_result(metadata: dict[str, Any], *, mode: BsMonthCalculationMode) -> dict[str, Any]:
+    if mode == "compare":
+        return {
+            "default_branch": metadata["default_branch"],
+            "selected_mode": metadata["selected_mode"],
+            "disagreement": metadata["disagreement"],
+            "branches": [
+                {"branch_id": branch_id, **branch_payload}
+                for branch_id, branch_payload in sorted(metadata["branches"].items())
+            ],
+        }
+    return {
+        "months": metadata["months"],
+        "total_days": metadata["total_days"],
+    }
+
+
+def _bs_month_policy_decision(metadata: dict[str, Any], *, mode: BsMonthCalculationMode) -> dict[str, Any]:
+    if mode == "compare":
+        return {
+            "policy": "enterprise_bs_months@v1",
+            "selected_mode": metadata["selected_mode"],
+            "decision_trace": [
+                "compare_mode_requested",
+                "branch_set_returned_without_collapsing_disagreement",
+                "review_required_for_any_decision_use",
+            ],
+            "claim_boundary": metadata["claim_boundary"],
+            "not_authority": True,
+        }
+    canonical_decision = metadata.get("canonical_decision") or {}
+    return {
+        "policy": canonical_decision.get("policy", "enterprise_bs_months@v1"),
+        "selected_mode": metadata.get("selected_mode") or metadata["calculation_mode"],
+        "decision_trace": [
+            canonical_decision.get("reason", "explicit mode selected"),
+            "review_required_for_legal_tax_payroll_banking_government_or_panchanga_use",
+        ],
+        "claim_boundary": metadata.get("claim_boundary"),
+        "not_authority": True,
+    }
+
+
+def _branch_set_payload(metadata: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "kind": "parva_membrane",
+        "membrane_kind": "branch_set",
+        "default_branch": metadata["default_branch"],
+        "selected_mode": metadata["selected_mode"],
+        "review_required": True,
+        "claim_boundary": metadata["claim_boundary"],
+        "branches": [
+            {
+                "branch_id": branch_id,
+                "authority": branch_payload.get("authority"),
+                "confidence": branch_payload.get("confidence"),
+                "review_required": branch_payload.get("review_required", True),
+                "claim_boundary": branch_payload.get("claim_boundary"),
+                "result": {
+                    "months": branch_payload.get("months"),
+                    "total_days": branch_payload.get("total_days"),
+                },
+            }
+            for branch_id, branch_payload in sorted(metadata["branches"].items())
+        ],
     }
 
 

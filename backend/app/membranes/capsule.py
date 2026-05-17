@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any
 
 from app.boundary.vector import BoundaryVector
@@ -12,6 +14,16 @@ from app.sources.hashing import canonical_json_hash
 from app.trust.field_provenance import FieldProvenance, ProvenanceMap
 from app.trust.taint import AuthorityTaint
 from app.witnesses.schema import Witness
+
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+SOURCE_SNAPSHOT_PATH = PROJECT_ROOT / "data" / "sources" / "source_snapshot.json"
+
+
+def _source_snapshot_hash() -> str:
+    if not SOURCE_SNAPSHOT_PATH.exists():
+        return "sha256:source_snapshot_unavailable"
+    payload = json.loads(SOURCE_SNAPSHOT_PATH.read_text(encoding="utf-8"))
+    return str(payload.get("snapshot_hash") or "sha256:source_snapshot_missing_hash")
 
 
 def build_convert_bs_to_ad_capsule(year: int, month: int, day: int) -> dict[str, Any]:
@@ -34,13 +46,14 @@ def build_convert_bs_to_ad_capsule(year: int, month: int, day: int) -> dict[str,
         }
     )
     boundary = BoundaryVector.from_provenance(provenance)
+    source_snapshot_hash = _source_snapshot_hash()
     witness = Witness(
         operation="convert_bs_to_ad",
         input_hash=f"sha256:{canonical_json_hash(canonical_query)}",
         output_hash=f"sha256:{canonical_json_hash(result)}",
         verifier="parva.convert_bs_to_ad",
         verifier_version="1.0.0",
-        method_parameters={"calendar": "BS"},
+        method_parameters={"calendar": "BS", "source_snapshot_hash": source_snapshot_hash},
         source_refs=("parva:src:v1:sample-2082-calendar-notice",),
     )
     capsule = {
@@ -53,8 +66,16 @@ def build_convert_bs_to_ad_capsule(year: int, month: int, day: int) -> dict[str,
         "boundary": boundary.as_dict(),
         "field_provenance": provenance.as_dict(),
         "source_docket_ids": ["parva:src:v1:sample-2082-calendar-notice"],
+        "source_snapshot_hash": source_snapshot_hash,
         "proof_pack": {
             "level": "audit",
+            "verifier": "parva.convert_bs_to_ad",
+            "verifier_version": "1.0.0",
+            "method_parameters": {"calendar": "BS", "source_snapshot_hash": source_snapshot_hash},
+            "source_artifacts": {
+                "source_docket_ids": ["parva:src:v1:sample-2082-calendar-notice"],
+                "source_snapshot_hash": source_snapshot_hash,
+            },
             "steps": [
                 {
                     "operation": "canonicalize_query",

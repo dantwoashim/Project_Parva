@@ -144,7 +144,7 @@
         },
         "identity_hash": "parva:id:v1:sha256:ad6b59834e7de23d53ec59a0fd24d27d7b1fe4b90593014b7fce509a445c36b8",
         "level": "compact",
-        "witness_hash": "parva:wit:v1:sha256:a0384eccdacee09dc59258f7d490d35196fcd9755673fc54490c79f4691436f2"
+        "witness_hash": "parva:wit:v1:sha256:a02577a72a353d0924555e0c7ad742a71b2dab87f7551e3be7b72d22f0581631"
       }
     },
     "lineage": [
@@ -221,6 +221,16 @@
           "membrane_kind": "positive",
           "proof_pack": {
             "level": "audit",
+            "method_parameters": {
+              "calendar": "BS",
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+            },
+            "source_artifacts": {
+              "source_docket_ids": [
+                "parva:src:v1:sample-2082-calendar-notice"
+              ],
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+            },
             "steps": [
               {
                 "operation": "canonicalize_query",
@@ -230,7 +240,9 @@
                 "operation": "convert_bs_to_ad",
                 "output_hash": "sha256:9ad0d825759fd73637dd0ff1bb51c77b432d9d8414d3b1a4796a96ae40204824"
               }
-            ]
+            ],
+            "verifier": "parva.convert_bs_to_ad",
+            "verifier_version": "1.0.0"
           },
           "result": {
             "ad_date": "2025-04-14"
@@ -238,10 +250,12 @@
           "source_docket_ids": [
             "parva:src:v1:sample-2082-calendar-notice"
           ],
+          "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
           "witness": {
             "input_hash": "sha256:ad6b59834e7de23d53ec59a0fd24d27d7b1fe4b90593014b7fce509a445c36b8",
             "method_parameters": {
-              "calendar": "BS"
+              "calendar": "BS",
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
             },
             "operation": "convert_bs_to_ad",
             "output_hash": "sha256:9ad0d825759fd73637dd0ff1bb51c77b432d9d8414d3b1a4796a96ae40204824",
@@ -250,9 +264,9 @@
             ],
             "verifier": "parva.convert_bs_to_ad",
             "verifier_version": "1.0.0",
-            "witness_id": "parva:wit:v1:sha256:a0384eccdacee09dc59258f7d490d35196fcd9755673fc54490c79f4691436f2"
+            "witness_id": "parva:wit:v1:sha256:a02577a72a353d0924555e0c7ad742a71b2dab87f7551e3be7b72d22f0581631"
           },
-          "witness_hash": "parva:wit:v1:sha256:a0384eccdacee09dc59258f7d490d35196fcd9755673fc54490c79f4691436f2"
+          "witness_hash": "parva:wit:v1:sha256:a02577a72a353d0924555e0c7ad742a71b2dab87f7551e3be7b72d22f0581631"
         },
         "source_docket_ids": [
           "parva:src:v1:sample-2082-calendar-notice"
@@ -372,11 +386,14 @@
     "embed_exists": true,
     "local_kernel_files": [
       "bitplanes.ts",
+      "boundaries.ts",
       "canonicalize.ts",
       "constraints.ts",
       "hash.ts",
       "manifest.ts",
       "membranes.ts",
+      "policy.ts",
+      "proofpacks.ts",
       "verify.ts"
     ]
   },
@@ -560,6 +577,16 @@
         "membrane_kind": "positive",
         "proof_pack": {
           "level": "audit",
+          "method_parameters": {
+            "calendar": "BS",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [
+              "parva:src:v1:sample-2082-calendar-notice"
+            ],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
           "steps": [
             {
               "operation": "canonicalize_query",
@@ -569,7 +596,9 @@
               "operation": "convert_bs_to_ad",
               "output_hash": "sha256:826c0dcc18e9498ce8c0338430aff74303e658f388a0228948d47f28aa12cf77"
             }
-          ]
+          ],
+          "verifier": "parva.convert_bs_to_ad",
+          "verifier_version": "1.0.0"
         },
         "result": {
           "ad_date": "2025-08-15"
@@ -577,10 +606,12 @@
         "source_docket_ids": [
           "parva:src:v1:sample-2082-calendar-notice"
         ],
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
         "witness": {
           "input_hash": "sha256:299cbb01a68a33966cebc4655ed84084ee02730586e49a0f235ff204d6e977d0",
           "method_parameters": {
-            "calendar": "BS"
+            "calendar": "BS",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "convert_bs_to_ad",
           "output_hash": "sha256:826c0dcc18e9498ce8c0338430aff74303e658f388a0228948d47f28aa12cf77",
@@ -589,9 +620,9 @@
           ],
           "verifier": "parva.convert_bs_to_ad",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:f1e6ae2e865dd2f6efe0e24bbfa28b4681c44c2d322c645392c1a4be061b2811"
+          "witness_id": "parva:wit:v1:sha256:4f1e28f397f9d9b3fa9bd3f042804bcd730e800d45c9f900fc9dd09a62bfc043"
         },
-        "witness_hash": "parva:wit:v1:sha256:f1e6ae2e865dd2f6efe0e24bbfa28b4681c44c2d322c645392c1a4be061b2811"
+        "witness_hash": "parva:wit:v1:sha256:4f1e28f397f9d9b3fa9bd3f042804bcd730e800d45c9f900fc9dd09a62bfc043"
       },
       "extraction_receipt": {
         "extracted_deadline": "2082-04-31",
@@ -616,6 +647,16 @@
         "obligation_id": "parva:obl:v1:sample-notice-payroll",
         "proof_pack": {
           "level": "audit",
+          "method_parameters": {
+            "calendar": "BS",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [
+              "parva:src:v1:sample-2082-calendar-notice"
+            ],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
           "steps": [
             {
               "operation": "canonicalize_query",
@@ -625,7 +666,9 @@
               "operation": "convert_bs_to_ad",
               "output_hash": "sha256:826c0dcc18e9498ce8c0338430aff74303e658f388a0228948d47f28aa12cf77"
             }
-          ]
+          ],
+          "verifier": "parva.convert_bs_to_ad",
+          "verifier_version": "1.0.0"
         },
         "required_action": "Review payroll date handling before deadline.",
         "required_documents": [

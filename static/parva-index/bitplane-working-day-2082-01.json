@@ -32,7 +32,226 @@
     true,
     true
   ],
-  "hash": "sha256:72ede31311bb8305947fbe2e9f476db96ee99195b376530fd4e1cec42cd9ab67",
+  "cause_stamps": [
+    {
+      "day": 1,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 2,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 3,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 4,
+      "policy": "working_day_bitplane@v1",
+      "reason": "weekend_offset",
+      "source": "static_bundle_manifest",
+      "value": false
+    },
+    {
+      "day": 5,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 6,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 7,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 8,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 9,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 10,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 11,
+      "policy": "working_day_bitplane@v1",
+      "reason": "weekend_offset",
+      "source": "static_bundle_manifest",
+      "value": false
+    },
+    {
+      "day": 12,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 13,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 14,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 15,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 16,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 17,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 18,
+      "policy": "working_day_bitplane@v1",
+      "reason": "weekend_offset",
+      "source": "static_bundle_manifest",
+      "value": false
+    },
+    {
+      "day": 19,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 20,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 21,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 22,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 23,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 24,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 25,
+      "policy": "working_day_bitplane@v1",
+      "reason": "weekend_offset",
+      "source": "static_bundle_manifest",
+      "value": false
+    },
+    {
+      "day": 26,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 27,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 28,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 29,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 30,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    },
+    {
+      "day": 31,
+      "policy": "working_day_bitplane@v1",
+      "reason": "default_working_day",
+      "source": "static_bundle_manifest",
+      "value": true
+    }
+  ],
+  "hash": "sha256:45381650852898540d17d6de91ee182714e546d99b04462f44fb28b4fb0c1443",
   "kind": "causal_bitplane",
   "name": "working_day",
   "witness_refs": [

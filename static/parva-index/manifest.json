@@ -2,11 +2,11 @@
   "files": [
     {
       "path": "bitplane-working-day-2082-01.attestation.json",
-      "sha256": "dd2be5be2539df3e59b5ae472836a0f2ef361e48d637763a5e0da831921951bd"
+      "sha256": "e491b952c318eabf175d5185d80f90d37bd69865dcda6c2a62936262da191146"
     },
     {
       "path": "bitplane-working-day-2082-01.json",
-      "sha256": "3759489962a1509bb7e62ad7825909cde4c85d5d140495cd901f7cdf913f9475"
+      "sha256": "66e11dce36853f4d9047350390c782423f4d7403df831caa12a234eab1ae088a"
     },
     {
       "path": "bs-2082.json",

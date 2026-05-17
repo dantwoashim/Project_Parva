@@ -20,6 +20,14 @@ def test_2087_default_canonical_does_not_emit_static_table_truth() -> None:
     assert response.status_code == 200
     body = response.json()
     assert body["calculation_mode"] == "canonical"
+    assert body["requested_mode"] == "canonical"
+    assert body["selected_method"] == "solar_civil"
+    assert body["result"]["total_days"] == 365
+    assert body["policy_decision"]["not_authority"] is True
+    assert body["boundary"]["not_authority"] is True
+    assert body["boundary"]["review_state"] == "required"
+    assert "total_days" in body["field_provenance"]
+    assert body["field_provenance"]["total_days"]["authority"] == "computed_uncertified"
     assert body["selected_mode"] == "solar_civil"
     assert body["total_days"] == 365
     assert _days(body) == compute_bs_month_lengths(2087)
@@ -56,6 +64,17 @@ def test_2087_compare_returns_structured_branches() -> None:
     assert response.status_code == 200
     body = response.json()
     assert body["calculation_mode"] == "compare"
+    assert body["requested_mode"] == "compare"
+    assert body["membrane_kind"] == "branch_set"
+    assert body["branch_set"]["membrane_kind"] == "branch_set"
+    assert {branch["branch_id"] for branch in body["branch_set"]["branches"]} == {
+        "canonical",
+        "solar_civil",
+        "static_lookup",
+    }
+    assert body["result"]["disagreement"] is True
+    assert body["policy_decision"]["decision_trace"][0] == "compare_mode_requested"
+    assert body["field_provenance"]["branches"]["flags"] == ["review_required", "source_conflict"]
     assert body["default_branch"] == "canonical"
     assert body["selected_mode"] == "canonical"
     assert set(body["branches"]) == {"canonical", "solar_civil", "static_lookup"}

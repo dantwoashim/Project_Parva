@@ -1,0 +1,59 @@
+{
+  "claim": "Local ceiling primitives are implemented and auditable.",
+  "external_blockers": [
+    {
+      "blocker": "institutional signed review witnesses",
+      "reason": "repo has local witness structures but no real external signatures from calendar, government, bank, payroll, or Panchanga institutions"
+    },
+    {
+      "blocker": "external adoption proof",
+      "reason": "repo has conformance artifacts and vendor packet, but no verifiable customers, pilots, registry acceptance, or package publication"
+    },
+    {
+      "blocker": "official future-date authority",
+      "reason": "must remain unclaimable; public Future-BS behavior is computed_prediction_not_official and review_required"
+    }
+  ],
+  "hard_checks": [
+    {
+      "detail": "required_paths=15",
+      "name": "required_architecture_paths",
+      "status": "pass"
+    },
+    {
+      "detail": "canonical payload carries proof-facing response contract",
+      "name": "enterprise_month_contract",
+      "status": "pass"
+    },
+    {
+      "detail": "compare mode exposes explicit branch-set membrane",
+      "name": "enterprise_compare_branch_set",
+      "status": "pass"
+    },
+    {
+      "detail": "capsule binds source snapshot, docket, witness, and tamper failure",
+      "name": "conversion_capsule_depth",
+      "status": "pass"
+    },
+    {
+      "detail": "cause_stamps=31 hash=sha256:45381650852898540d17d6de91ee182714e546d99b04462f44fb28b4fb0c1443",
+      "name": "causal_bitplane_depth",
+      "status": "pass"
+    },
+    {
+      "detail": "claim_index_root=sha256:fcb84bfefb45a55e3ea8a4c32903210e5279d92e49d7a83a0fd81541dd223866",
+      "name": "claim_index_depth",
+      "status": "pass"
+    }
+  ],
+  "not_claimable": [
+    "government authority",
+    "legal/tax/payroll/banking authority",
+    "official future date authority",
+    "external certification",
+    "customer/adoption proof",
+    "public exact unsupported Future-BS predictions"
+  ],
+  "scope": "local_ceiling_depth_audit",
+  "status": "pass"
+}

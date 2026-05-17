@@ -1,6 +1,9 @@
 {
   "claim_boundary": "bitplane_attestation_not_official_authority",
   "kind": "bitplane_attestation_card",
-  "manifest_binding": "included_in_static_manifest_after_rebuild",
-  "plane_hash": "sha256:72ede31311bb8305947fbe2e9f476db96ee99195b376530fd4e1cec42cd9ab67"
+  "manifest_binding": "attestation_file_and_plane_file_are_included_in_static_manifest",
+  "manifest_entry_hash": "sha256:66e11dce36853f4d9047350390c782423f4d7403df831caa12a234eab1ae088a",
+  "manifest_entry_path": "bitplane-working-day-2082-01.json",
+  "plane_hash": "sha256:45381650852898540d17d6de91ee182714e546d99b04462f44fb28b4fb0c1443",
+  "verifier": "scripts/forge/verify_manifest.py"
 }

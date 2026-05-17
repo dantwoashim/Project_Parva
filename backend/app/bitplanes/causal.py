@@ -13,6 +13,11 @@ class CausalBitplane:
     name: str
     bits: tuple[bool, ...]
     witness_refs: tuple[str, ...]
+    cause_stamps: tuple[dict[str, Any], ...]
+
+    def __post_init__(self) -> None:
+        if len(self.bits) != len(self.cause_stamps):
+            raise ValueError("cause_stamps length must match bits length")
 
     @property
     def hash(self) -> str:
@@ -24,6 +29,7 @@ class CausalBitplane:
             "name": self.name,
             "bits": list(self.bits),
             "witness_refs": list(self.witness_refs),
+            "cause_stamps": list(self.cause_stamps),
         }
         if include_hash:
             payload["hash"] = self.hash
