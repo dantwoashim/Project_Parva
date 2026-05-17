@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+from pathlib import Path
 from typing import Any
 
 from .client import DEFAULT_API_BASE, ParvaClient
@@ -54,6 +55,26 @@ def _capabilities(args: argparse.Namespace) -> int:
     return _print(client.get_trust_capabilities())
 
 
+def _read_artifact(path: str) -> dict[str, Any]:
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def _verify_proofpack(args: argparse.Namespace) -> int:
+    from app.membranes.proofpack import verify_proof_pack
+
+    ok, reason = verify_proof_pack(_read_artifact(args.path))
+    print(json.dumps({"verified": ok, "reason": reason}, indent=2, sort_keys=True))
+    return 0 if ok else 1
+
+
+def _verify_timepack(args: argparse.Namespace) -> int:
+    from app.membranes.timepack import verify_timepack
+
+    ok, reason = verify_timepack(_read_artifact(args.path))
+    print(json.dumps({"verified": ok, "reason": reason}, indent=2, sort_keys=True))
+    return 0 if ok else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="parva", description="Project Parva public API CLI")
     parser.add_argument(
@@ -78,6 +99,14 @@ def build_parser() -> argparse.ArgumentParser:
     capabilities = subparsers.add_parser("capabilities", help="Fetch public capability metadata.")
     capabilities.add_argument("surface", choices=["future-bs", "enterprise", "trust"])
     capabilities.set_defaults(func=_capabilities)
+
+    proofpack = subparsers.add_parser("verify-proofpack", help="Verify a standalone Parva proof pack.")
+    proofpack.add_argument("path")
+    proofpack.set_defaults(func=_verify_proofpack)
+
+    timepack = subparsers.add_parser("verify-timepack", help="Verify a standalone Parva Timepack.")
+    timepack.add_argument("path")
+    timepack.set_defaults(func=_verify_timepack)
     return parser
 
 

@@ -72,6 +72,17 @@ export interface HolidayInput {
   proof?: ProofMode;
 }
 
+export interface PanchangaInput {
+  date: string;
+  proof?: ProofMode;
+  lat?: number;
+  lon?: number;
+  tz?: string;
+  ephemeris_provider?: string;
+  ephemeris_fixture_id?: string;
+  ayanamsa?: string;
+}
+
 export interface WorkingDaySearchInput {
   profile_id?: string;
   bs_date?: string;
@@ -332,6 +343,21 @@ export class ParvaClient {
     });
   }
 
+  async getPanchanga(input: PanchangaInput): Promise<JsonObject> {
+    return this.request("GET", "/calendar/panchanga", {
+      params: optionalParams({
+        date: input.date,
+        proof: input.proof,
+        lat: input.lat,
+        lon: input.lon,
+        tz: input.tz ?? "Asia/Kathmandu",
+        ephemeris_provider: input.ephemeris_provider ?? "builtin_swiss_moshier",
+        ephemeris_fixture_id: input.ephemeris_fixture_id,
+        ayanamsa: input.ayanamsa ?? "lahiri",
+      }),
+    });
+  }
+
   verifyMembrane(membrane: JsonObject): { verified: boolean; reason: string; missing?: string[] } {
     const required = ["kind", "canonical_query", "identity_hash", "result", "boundary", "field_provenance", "witness_hash"];
     const missing = required.filter((key) => !(key in membrane));
@@ -345,6 +371,52 @@ export class ParvaClient {
       return { verified: false, reason: "witness_hash_invalid" };
     }
     return { verified: true, reason: "structural_checks_passed_replay_required_for_full_verification" };
+  }
+
+  verifyProofPack(proofPack: JsonObject): { verified: boolean; reason: string; missing?: string[] } {
+    if (proofPack.membrane && typeof proofPack.membrane === "object" && !Array.isArray(proofPack.membrane)) {
+      return this.verifyMembrane(proofPack.membrane as JsonObject);
+    }
+    const required = ["identity_hash", "witness_hash", "boundary"];
+    const missing = required.filter((key) => !(key in proofPack));
+    return {
+      verified: missing.length === 0,
+      reason: missing.length === 0 ? "verified_compact_proofpack" : "required_fields_missing",
+      missing,
+    };
+  }
+
+  verifyTimepack(timepack: JsonObject): { verified: boolean; reason: string; missing?: string[] } {
+    if (timepack.kind !== "parva_timepack" || !Array.isArray(timepack.proof_packs)) {
+      return { verified: false, reason: "timepack_schema_invalid" };
+    }
+    for (const pack of timepack.proof_packs) {
+      const result = this.verifyProofPack(pack as JsonObject);
+      if (!result.verified) {
+        return { verified: false, reason: `child_${result.reason}` };
+      }
+    }
+    const boundary = timepack.boundary_summary as JsonObject | undefined;
+    if (!boundary?.not_authority) {
+      return { verified: false, reason: "timepack_boundary_summary_missing" };
+    }
+    return { verified: true, reason: "structural_checks_passed_replay_required_for_full_verification" };
+  }
+
+  replayPanchangaMembrane(membrane: JsonObject): { verified: boolean; reason: string; missing?: string[] } {
+    const structural = this.verifyMembrane(membrane);
+    if (!structural.verified) {
+      return structural;
+    }
+    const query = membrane.canonical_query as JsonObject | undefined;
+    if (query?.operation !== "panchanga_summary") {
+      return { verified: false, reason: "not_panchanga_membrane" };
+    }
+    const metadata = membrane.ephemeris_metadata as JsonObject | undefined;
+    if (!metadata?.provider_id || !metadata.provider_kind) {
+      return { verified: false, reason: "ephemeris_metadata_missing" };
+    }
+    return { verified: true, reason: "structural_panchanga_checks_passed_local_kernel_or_backend_replay_required" };
   }
 
   async nextWorkingDay(input: WorkingDaySearchInput): Promise<JsonObject> {

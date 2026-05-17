@@ -1780,6 +1780,121 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "none|compact|audit|replay|membrane",
+              "title": "Proof"
+            },
+            "description": "none|compact|audit|replay|membrane"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Latitude for proof identity",
+              "title": "Lat"
+            },
+            "description": "Latitude for proof identity"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Longitude for proof identity",
+              "title": "Lon"
+            },
+            "description": "Longitude for proof identity"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
+          },
+          {
+            "name": "ephemeris_provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "builtin_swiss_moshier|jpl_de440",
+              "default": "builtin_swiss_moshier",
+              "title": "Ephemeris Provider"
+            },
+            "description": "builtin_swiss_moshier|jpl_de440"
+          },
+          {
+            "name": "ephemeris_fixture_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Pinned fixture id for deterministic replay",
+              "title": "Ephemeris Fixture Id"
+            },
+            "description": "Pinned fixture id for deterministic replay"
+          },
+          {
+            "name": "ayanamsa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Sidereal ayanamsa mode",
+              "default": "lahiri",
+              "title": "Ayanamsa"
+            },
+            "description": "Sidereal ayanamsa mode"
           }
         ],
         "responses": {
@@ -12967,6 +13082,121 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "none|compact|audit|replay|membrane",
+              "title": "Proof"
+            },
+            "description": "none|compact|audit|replay|membrane"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Latitude for proof identity",
+              "title": "Lat"
+            },
+            "description": "Latitude for proof identity"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Longitude for proof identity",
+              "title": "Lon"
+            },
+            "description": "Longitude for proof identity"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
+          },
+          {
+            "name": "ephemeris_provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "builtin_swiss_moshier|jpl_de440",
+              "default": "builtin_swiss_moshier",
+              "title": "Ephemeris Provider"
+            },
+            "description": "builtin_swiss_moshier|jpl_de440"
+          },
+          {
+            "name": "ephemeris_fixture_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Pinned fixture id for deterministic replay",
+              "title": "Ephemeris Fixture Id"
+            },
+            "description": "Pinned fixture id for deterministic replay"
+          },
+          {
+            "name": "ayanamsa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Sidereal ayanamsa mode",
+              "default": "lahiri",
+              "title": "Ayanamsa"
+            },
+            "description": "Sidereal ayanamsa mode"
           }
         ],
         "responses": {

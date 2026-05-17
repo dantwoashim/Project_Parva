@@ -17,3 +17,5 @@ export function ProofPacketView({ proofPack }) {
     </section>
   );
 }
+
+export { PanchangaProofDrawer } from './PanchangaProofDrawer';

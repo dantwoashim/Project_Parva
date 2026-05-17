@@ -192,6 +192,35 @@ class ParvaClient:
             ),
         )
 
+    def get_panchanga(
+        self,
+        date: str,
+        *,
+        proof: str | None = None,
+        latitude: float | None = None,
+        longitude: float | None = None,
+        timezone: str = "Asia/Kathmandu",
+        ephemeris_provider: str = "builtin_swiss_moshier",
+        ephemeris_fixture_id: str | None = None,
+        ayanamsa: str = "lahiri",
+    ) -> JsonObject:
+        return self._request(
+            "GET",
+            "/calendar/panchanga",
+            params=_clean_params(
+                {
+                    "date": date,
+                    "proof": proof,
+                    "lat": latitude,
+                    "lon": longitude,
+                    "tz": timezone,
+                    "ephemeris_provider": ephemeris_provider,
+                    "ephemeris_fixture_id": ephemeris_fixture_id,
+                    "ayanamsa": ayanamsa,
+                },
+            ),
+        )
+
     def verify_membrane(self, membrane: JsonObject) -> JsonObject:
         """Run SDK-side structural checks for a membrane receipt.
 
@@ -213,6 +242,43 @@ class ParvaClient:
         if not isinstance(membrane.get("field_provenance"), dict):
             return {"verified": False, "reason": "field_provenance_missing"}
         return {"verified": True, "reason": "structural_checks_passed_replay_required_for_full_verification"}
+
+    def verify_proofpack(self, proofpack: JsonObject) -> JsonObject:
+        if isinstance(proofpack.get("membrane"), dict):
+            return self.verify_membrane(proofpack["membrane"])
+        required = {"identity_hash", "witness_hash", "boundary"}
+        missing = sorted(required - set(proofpack))
+        return {
+            "verified": not missing,
+            "reason": "verified_compact_proofpack" if not missing else "required_fields_missing",
+            "missing": missing,
+        }
+
+    def verify_timepack(self, timepack: JsonObject) -> JsonObject:
+        if timepack.get("kind") != "parva_timepack" or not isinstance(timepack.get("proof_packs"), list):
+            return {"verified": False, "reason": "timepack_schema_invalid"}
+        for proofpack in timepack["proof_packs"]:
+            result = self.verify_proofpack(proofpack)
+            if not result["verified"]:
+                return {"verified": False, "reason": f"child_{result['reason']}"}
+        boundary = timepack.get("boundary_summary") or {}
+        if not boundary.get("not_authority"):
+            return {"verified": False, "reason": "timepack_boundary_summary_missing"}
+        return {"verified": True, "reason": "structural_checks_passed_replay_required_for_full_verification"}
+
+    def replay_panchanga_membrane(self, membrane: JsonObject) -> JsonObject:
+        structural = self.verify_membrane(membrane)
+        if not structural["verified"]:
+            return structural
+        if (membrane.get("canonical_query") or {}).get("operation") != "panchanga_summary":
+            return {"verified": False, "reason": "not_panchanga_membrane"}
+        metadata = membrane.get("ephemeris_metadata") or {}
+        if not metadata.get("provider_id") or not metadata.get("provider_kind"):
+            return {"verified": False, "reason": "ephemeris_metadata_missing"}
+        return {
+            "verified": True,
+            "reason": "structural_panchanga_checks_passed_local_kernel_or_backend_replay_required",
+        }
 
     def next_working_day(
         self,
@@ -978,6 +1044,30 @@ def check_holiday(
         ad_date=ad_date,
         profile_id=profile_id,
         proof=proof,
+    )
+
+
+def get_panchanga(
+    date: str,
+    *,
+    client: ParvaClient | None = None,
+    proof: str | None = None,
+    latitude: float | None = None,
+    longitude: float | None = None,
+    timezone: str = "Asia/Kathmandu",
+    ephemeris_provider: str = "builtin_swiss_moshier",
+    ephemeris_fixture_id: str | None = None,
+    ayanamsa: str = "lahiri",
+) -> JsonObject:
+    return (client or ParvaClient()).get_panchanga(
+        date,
+        proof=proof,
+        latitude=latitude,
+        longitude=longitude,
+        timezone=timezone,
+        ephemeris_provider=ephemeris_provider,
+        ephemeris_fixture_id=ephemeris_fixture_id,
+        ayanamsa=ayanamsa,
     )
 
 

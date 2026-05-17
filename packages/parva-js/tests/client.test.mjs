@@ -547,6 +547,14 @@ test("core SDK methods expose proof modes", async () => {
   await client.evaluateDate({ bs_date: "2082-01-01", proof: "membrane" });
   await client.getFiscalYear(2082, { proof: "membrane" });
   await client.getBsMonths(2082, { mode: "compare", proof: "membrane" });
+  await client.getPanchanga({
+    date: "2025-04-14",
+    proof: "replay",
+    lat: 27.7172,
+    lon: 85.324,
+    ephemeris_provider: "pinned_panchanga_fixture",
+    ephemeris_fixture_id: "kathmandu_2025_04_14_lahiri",
+  });
 
   assert.equal(calls[0].url, `${DEFAULT_API_BASE}/calendar/convert?date=2025-04-14&proof=membrane`);
   assert.equal(calls[1].url, `${DEFAULT_API_BASE}/calendar/bs-to-gregorian?proof=membrane`);
@@ -559,6 +567,8 @@ test("core SDK methods expose proof modes", async () => {
   assert.equal(calls[4].url, `${DEFAULT_API_BASE}/compliance/evaluate-date?proof=membrane`);
   assert.equal(calls[5].url, `${DEFAULT_API_BASE}/enterprise/fiscal-year/2082?proof=membrane`);
   assert.equal(calls[6].url, `${DEFAULT_API_BASE}/enterprise/bs-months/2082?mode=compare&proof=membrane`);
+  assert.match(calls[7].url, /\/calendar\/panchanga\?date=2025-04-14&proof=replay/);
+  assert.match(calls[7].url, /ephemeris_provider=pinned_panchanga_fixture/);
 });
 
 test("SDK membrane verifier is structural and does not upgrade authority", () => {
@@ -576,4 +586,26 @@ test("SDK membrane verifier is structural and does not upgrade authority", () =>
     verified: true,
     reason: "structural_checks_passed_replay_required_for_full_verification",
   });
+});
+
+test("SDK proofpack, timepack, and panchanga helpers preserve boundaries", () => {
+  const client = new ParvaClient({ fetchImpl: async () => jsonResponse({}) });
+  const membrane = {
+    kind: "parva_membrane",
+    canonical_query: { operation: "panchanga_summary" },
+    identity_hash: "parva:id:v1:sha256:abc",
+    result: { tithi: { name: "Pratipada" } },
+    boundary: { claim_boundary: "computed_ephemeris_not_panchanga_authority" },
+    field_provenance: { tithi: { authority: "computed_uncertified" } },
+    witness_hash: "parva:wit:v1:sha256:def",
+    ephemeris_metadata: { provider_id: "pinned_panchanga_fixture", provider_kind: "pinned_fixture" },
+  };
+
+  assert.equal(client.verifyProofPack({ level: "audit", membrane }).verified, true);
+  assert.equal(client.verifyTimepack({
+    kind: "parva_timepack",
+    proof_packs: [{ level: "audit", membrane }],
+    boundary_summary: { not_authority: true },
+  }).verified, true);
+  assert.equal(client.replayPanchangaMembrane(membrane).verified, true);
 });

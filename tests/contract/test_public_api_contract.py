@@ -240,3 +240,27 @@ def test_bs_months_endpoint_emits_replayable_membrane_when_requested() -> None:
     assert proof["capsule"]["canonical_query"]["operation"] == "bs_months"
     assert proof["capsule"]["result"]["requested_mode"] == "canonical"
     assert verify_membrane(proof["capsule"]) == (True, "verified")
+
+
+def test_panchanga_endpoint_emits_replayable_method_docketed_membrane() -> None:
+    response = client.get(
+        "/v3/api/calendar/panchanga",
+        params={
+            "date": "2025-04-14",
+            "proof": "replay",
+            "ephemeris_provider": "pinned_panchanga_fixture",
+            "ephemeris_fixture_id": "kathmandu_2025_04_14_lahiri",
+            "lat": 27.7172,
+            "lon": 85.324,
+            "tz": "Asia/Kathmandu",
+        },
+    )
+
+    assert response.status_code == 200
+    proof = response.json()["proof"]
+    capsule = proof["capsule"]
+    assert capsule["canonical_query"]["operation"] == "panchanga_summary"
+    assert capsule["ephemeris_metadata"]["provider_kind"] == "pinned_fixture"
+    assert capsule["boundary"]["not_panchanga_authority"] is True
+    assert capsule["boundary"]["not_ritual_final_authority"] is True
+    assert verify_membrane(capsule) == (True, "verified")

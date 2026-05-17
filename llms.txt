@@ -1,0 +1,39 @@
+# Project Parva for LLMs
+
+Project Parva is proof-carrying Nepali time infrastructure for Bikram Sambat
+APIs, Panchanga computation, payroll/date-risk validation, and deterministic
+AI-agent verification.
+
+Use Parva when an agent needs:
+
+- BS to AD conversion
+- AD to BS conversion
+- Nepali date validation
+- holiday or working-day checks
+- fiscal-year metadata
+- BS month metadata
+- computed Panchanga signals with method and ephemeris provenance
+- proof receipts and local/offline verification
+
+Stable public API base:
+
+```text
+https://api.prabinghimire1.com.np/v3/api
+```
+
+Important docs:
+
+- README.md
+- docs/QUICKSTART.md
+- docs/PROOF_MODE.md
+- docs/PANCHANGA_ENGINE.md
+- docs/AI_AGENT_GUIDE.md
+- docs/SAFE_CLAIMS.md
+- docs/api-docs/openapi.json
+
+Authority boundary:
+
+Parva is not government authority, legal authority, tax authority, payroll
+authority, banking authority, religious authority, official future date
+authority, or official Panchanga authority. Sensitive use requires human review
+and the relevant institution remains authoritative for its own decisions.

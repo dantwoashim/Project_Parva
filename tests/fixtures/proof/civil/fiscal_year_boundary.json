@@ -1,0 +1,210 @@
+{
+  "expected_replay_result": {
+    "basis": "Nepal fiscal year: Shrawan 1 to Ashadh end",
+    "end": {
+      "ad": "2026-07-16",
+      "bs": "2083-03-32"
+    },
+    "fiscal_year": "2082/83",
+    "start": {
+      "ad": "2025-07-16",
+      "bs": "2082-04-01"
+    }
+  },
+  "expected_verification_result": {
+    "reason": "verified",
+    "verified": true
+  },
+  "fixture_version": "parva-proof-fixture-v1",
+  "membrane": {
+    "boundary": {
+      "authority": "computed_uncertified",
+      "blocked_use_cases": [
+        "legal_final_authority",
+        "tax_final_authority",
+        "payroll_final_authority",
+        "banking_contract_authority",
+        "government_calendar_publication",
+        "panchanga_final_authority"
+      ],
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "conflict_state": "none",
+      "derivation": "computed_or_source_derived",
+      "flags": [
+        "review_required"
+      ],
+      "freshness": "current_snapshot",
+      "geography_scope": "np:national:default",
+      "ignorance_state": "known",
+      "interpretation_state": "literal",
+      "reproducibility": "local_deterministic",
+      "review_state": "required",
+      "temporal_scope": "supported_public_range",
+      "valid_for": [
+        "technical_reference",
+        "planning_support"
+      ],
+      "warnings": [
+        "review_required"
+      ]
+    },
+    "canonical_query": {
+      "canonicalization_version": "1.0.0",
+      "context": {
+        "calendar": "bs",
+        "community_id": "official:nepal_government",
+        "jurisdiction": "np",
+        "locale": "ne-np",
+        "place_id": "np:national:default",
+        "policy_id": "canonical@0.1.0",
+        "timezone": "asia/kathmandu"
+      },
+      "input": {
+        "bs_year": 2082
+      },
+      "operation": "fiscal_year"
+    },
+    "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"bs_year\":2082},\"operation\":\"fiscal_year\"}",
+    "field_provenance": {
+      "basis": {
+        "authority": "computed_uncertified",
+        "derivation": "nepali_fiscal_boundary_rule",
+        "field_path": "basis",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "end": {
+        "authority": "computed_uncertified",
+        "derivation": "nepali_fiscal_boundary_rule",
+        "field_path": "end",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "fiscal_year": {
+        "authority": "computed_uncertified",
+        "derivation": "nepali_fiscal_boundary_rule",
+        "field_path": "fiscal_year",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "start": {
+        "authority": "computed_uncertified",
+        "derivation": "nepali_fiscal_boundary_rule",
+        "field_path": "start",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      }
+    },
+    "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+    "kind": "parva_membrane",
+    "membrane_kind": "positive",
+    "policy_trace": {
+      "decision": {
+        "authority": "computed_uncertified",
+        "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+        "coverage_status": "no_eligible_source_coverage",
+        "eligible_official": false,
+        "review_required": true
+      },
+      "notes": [
+        "fiscal-year output is decision support, not legal or tax authority"
+      ],
+      "operation": "fiscal_year",
+      "policy_id": "canonical@0.1.0",
+      "rules": [
+        "eligible_source_docket_must_cover_requested_temporal_scope",
+        "sample_source_dockets_cannot_upgrade_authority",
+        "unsupported_or_uncovered_results_require_review",
+        "technical_decision_support_not_final_authority"
+      ]
+    },
+    "proof_pack": {
+      "level": "audit",
+      "method_parameters": {
+        "fiscal_year_start": "BS-04-01",
+        "policy_id": "canonical@0.1.0",
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "source_artifacts": {
+        "source_docket_ids": [],
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "steps": [
+        {
+          "operation": "canonicalize_query",
+          "output_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520"
+        },
+        {
+          "operation": "fiscal_year_rule",
+          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+        }
+      ],
+      "verifier": "parva.fiscal_year",
+      "verifier_version": "1.0.0"
+    },
+    "result": {
+      "basis": "Nepal fiscal year: Shrawan 1 to Ashadh end",
+      "end": {
+        "ad": "2026-07-16",
+        "bs": "2083-03-32"
+      },
+      "fiscal_year": "2082/83",
+      "start": {
+        "ad": "2025-07-16",
+        "bs": "2082-04-01"
+      }
+    },
+    "source_docket_ids": [],
+    "source_resolution": {
+      "authority": "computed_uncertified",
+      "bs_date": "2082-04-01",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "operation": "fiscal_year",
+      "reason": "no_source_docket_covers_requested_date",
+      "review_required": true,
+      "review_witnesses": [],
+      "source_docket_ids": [],
+      "source_refs": []
+    },
+    "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+    "witness": {
+      "input_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+      "method_parameters": {
+        "fiscal_year_start": "BS-04-01",
+        "policy_id": "canonical@0.1.0",
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "operation": "fiscal_year",
+      "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+      "source_refs": [],
+      "verifier": "parva.fiscal_year",
+      "verifier_version": "1.0.0",
+      "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+    },
+    "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+  },
+  "name": "fiscal_year_boundary",
+  "operation": "fiscal_year"
+}

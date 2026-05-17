@@ -9,6 +9,7 @@ from app.membranes.operation_verifiers.bs_months import verify_bs_months_replay
 from app.membranes.operation_verifiers.convert_bs_to_ad import verify_convert_bs_to_ad_replay
 from app.membranes.operation_verifiers.fiscal_year import verify_fiscal_year_replay
 from app.membranes.operation_verifiers.holiday import verify_holiday_replay
+from app.membranes.operation_verifiers.panchanga_summary import verify_panchanga_summary_replay
 from app.membranes.operation_verifiers.validate_bs_date import verify_validate_bs_date_replay
 from app.membranes.operation_verifiers.working_day import verify_working_day_replay
 
@@ -29,6 +30,8 @@ def replay_verify(membrane: dict[str, Any]) -> tuple[bool, str]:
         return verify_fiscal_year_replay(membrane)
     if operation == "bs_months":
         return verify_bs_months_replay(membrane)
+    if operation == "panchanga_summary":
+        return verify_panchanga_summary_replay(membrane)
     return False, "unsupported_operation_replay"
 
 

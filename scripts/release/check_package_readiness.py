@@ -15,7 +15,7 @@ PYTHON_PACKAGES = (
     ROOT / "packages" / "parva-ai-tools",
     ROOT / "packages" / "parva-mcp-server",
 )
-NPM_PACKAGES = (ROOT / "packages" / "parva-js",)
+NPM_PACKAGES = (ROOT / "packages" / "parva-js", ROOT / "packages" / "parva-local-kernel")
 FORBIDDEN_FILE_PARTS = (
     "__pycache__",
     ".pytest_cache",
@@ -121,7 +121,7 @@ def main() -> int:
     if issues:
         print(json.dumps({"ok": False, "issues": issues}, indent=2))
         return 1
-    print(json.dumps({"ok": True, "python_packages": 3, "npm_packages": 1}, indent=2))
+    print(json.dumps({"ok": True, "python_packages": 3, "npm_packages": len(NPM_PACKAGES)}, indent=2))
     return 0
 
 

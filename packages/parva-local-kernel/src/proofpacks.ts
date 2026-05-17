@@ -1,26 +1,18 @@
-import { sha256Hex } from './hash';
+import { verifyMembrane, type Membrane, type ProofFixture, type VerificationResult } from './membranes.js';
 
 export type ProofPack = {
-  kind: "proof_pack";
-  level: "local" | "audit";
-  identityHash: string;
-  witnessHash: string;
-  sourceSnapshotHash: string;
-  resultHash: string;
+  level?: string;
+  membrane?: Membrane;
+  identity_hash?: string;
+  witness_hash?: string;
 };
 
-export async function buildProofPack(
-  result: unknown,
-  identityHash: string,
-  witnessHash: string,
-  sourceSnapshotHash: string,
-): Promise<ProofPack> {
-  return {
-    kind: "proof_pack",
-    level: "local",
-    identityHash,
-    witnessHash,
-    sourceSnapshotHash,
-    resultHash: `sha256:${await sha256Hex(JSON.stringify(result))}`,
-  };
+export async function verifyProofPack(pack: ProofPack, fixtures: ProofFixture[] = []): Promise<VerificationResult> {
+  if (pack.membrane) {
+    return verifyMembrane(pack.membrane, { fixtures });
+  }
+  if (!pack.identity_hash || !pack.witness_hash) {
+    return { verified: false, reason: 'proofpack_required_fields_missing' };
+  }
+  return { verified: true, reason: 'verified_compact_proofpack' };
 }

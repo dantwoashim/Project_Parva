@@ -1,0 +1,251 @@
+{
+  "expected_replay_result": {
+    "bs_date": "2082-01-02",
+    "holiday": null,
+    "is_holiday": false,
+    "membership_key": "01-02",
+    "membership_proof": {
+      "claim_index_hash": "sha256:f7f108aeec48f650e51add393985f2118f82d55945719586efa8c4b3fdb76479",
+      "proof_type": "non_membership"
+    },
+    "profile_id": "nepal_public_general",
+    "source_set": "public_fixed_date_corpus"
+  },
+  "expected_verification_result": {
+    "reason": "verified",
+    "verified": true
+  },
+  "fixture_version": "parva-proof-fixture-v1",
+  "membrane": {
+    "boundary": {
+      "authority": "static_reference",
+      "blocked_use_cases": [
+        "legal_final_authority",
+        "tax_final_authority",
+        "payroll_final_authority",
+        "banking_contract_authority",
+        "government_calendar_publication",
+        "panchanga_final_authority"
+      ],
+      "claim_boundary": "decision_support_not_authority",
+      "conflict_state": "none",
+      "derivation": "computed_or_source_derived",
+      "flags": [
+        "review_required"
+      ],
+      "freshness": "current_snapshot",
+      "geography_scope": "np:national:default",
+      "ignorance_state": "negative_or_failure",
+      "interpretation_state": "literal",
+      "reproducibility": "local_deterministic",
+      "review_state": "required",
+      "temporal_scope": "supported_public_range",
+      "valid_for": [
+        "technical_reference",
+        "planning_support"
+      ],
+      "warnings": [
+        "review_required"
+      ]
+    },
+    "canonical_query": {
+      "canonicalization_version": "1.0.0",
+      "context": {
+        "calendar": "bs",
+        "community_id": "official:nepal_government",
+        "jurisdiction": "np",
+        "locale": "ne-np",
+        "place_id": "np:national:default",
+        "policy_id": "canonical@0.1.0",
+        "timezone": "asia/kathmandu"
+      },
+      "input": {
+        "day": 2,
+        "month": 1,
+        "profile_id": "nepal_public_general",
+        "year": 2082
+      },
+      "operation": "holiday"
+    },
+    "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":2,\"month\":1,\"profile_id\":\"nepal_public_general\",\"year\":2082},\"operation\":\"holiday\"}",
+    "field_provenance": {
+      "bs_date": {
+        "authority": "static_reference",
+        "derivation": "fixed_public_corpus_membership",
+        "field_path": "bs_date",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "holiday": {
+        "authority": "static_reference",
+        "derivation": "fixed_public_corpus_membership",
+        "field_path": "holiday",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "is_holiday": {
+        "authority": "static_reference",
+        "derivation": "fixed_public_corpus_membership",
+        "field_path": "is_holiday",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "membership_key": {
+        "authority": "static_reference",
+        "derivation": "fixed_public_corpus_membership",
+        "field_path": "membership_key",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "membership_proof": {
+        "authority": "static_reference",
+        "derivation": "fixed_public_corpus_membership",
+        "field_path": "membership_proof",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "profile_id": {
+        "authority": "static_reference",
+        "derivation": "fixed_public_corpus_membership",
+        "field_path": "profile_id",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "source_set": {
+        "authority": "static_reference",
+        "derivation": "fixed_public_corpus_membership",
+        "field_path": "source_set",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      }
+    },
+    "identity_hash": "parva:id:v1:sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869",
+    "kind": "parva_membrane",
+    "membrane_kind": "negative",
+    "policy_trace": {
+      "decision": {
+        "authority": "computed_uncertified",
+        "claim_boundary": "decision_support_not_authority",
+        "coverage_status": "no_eligible_source_coverage",
+        "eligible_official": false,
+        "review_required": true
+      },
+      "notes": [
+        "public fixed-date holiday corpus is decision support, not an official holiday notice"
+      ],
+      "operation": "holiday",
+      "policy_id": "canonical@0.1.0",
+      "rules": [
+        "eligible_source_docket_must_cover_requested_temporal_scope",
+        "sample_source_dockets_cannot_upgrade_authority",
+        "unsupported_or_uncovered_results_require_review",
+        "technical_decision_support_not_final_authority"
+      ]
+    },
+    "proof_pack": {
+      "level": "audit",
+      "method_parameters": {
+        "policy_id": "canonical@0.1.0",
+        "profile_id": "nepal_public_general",
+        "source_set": "public_fixed_date_corpus",
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "source_artifacts": {
+        "source_docket_ids": [],
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "steps": [
+        {
+          "operation": "canonicalize_query",
+          "output_hash": "sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869"
+        },
+        {
+          "operation": "holiday_membership",
+          "output_hash": "sha256:5fdd25eefea8240d25d79ae13f98ab100b3adae9975a55b3e95ab283e396166b"
+        }
+      ],
+      "verifier": "parva.holiday",
+      "verifier_version": "1.0.0"
+    },
+    "result": {
+      "bs_date": "2082-01-02",
+      "holiday": null,
+      "is_holiday": false,
+      "membership_key": "01-02",
+      "membership_proof": {
+        "claim_index_hash": "sha256:f7f108aeec48f650e51add393985f2118f82d55945719586efa8c4b3fdb76479",
+        "proof_type": "non_membership"
+      },
+      "profile_id": "nepal_public_general",
+      "source_set": "public_fixed_date_corpus"
+    },
+    "source_docket_ids": [],
+    "source_resolution": {
+      "authority": "computed_uncertified",
+      "bs_date": "2082-01-02",
+      "claim_boundary": "decision_support_not_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "operation": "holiday",
+      "reason": "no_source_docket_covers_requested_date",
+      "review_required": true,
+      "review_witnesses": [],
+      "source_docket_ids": [],
+      "source_refs": []
+    },
+    "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+    "witness": {
+      "input_hash": "sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869",
+      "method_parameters": {
+        "policy_id": "canonical@0.1.0",
+        "profile_id": "nepal_public_general",
+        "source_set": "public_fixed_date_corpus",
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "operation": "holiday",
+      "output_hash": "sha256:5fdd25eefea8240d25d79ae13f98ab100b3adae9975a55b3e95ab283e396166b",
+      "source_refs": [],
+      "verifier": "parva.holiday",
+      "verifier_version": "1.0.0",
+      "witness_id": "parva:wit:v1:sha256:de53bad6400f258af679bfe323ddcf5eec2cfe53c6a5f61dc73c689027d58b3c"
+    },
+    "witness_hash": "parva:wit:v1:sha256:de53bad6400f258af679bfe323ddcf5eec2cfe53c6a5f61dc73c689027d58b3c"
+  },
+  "name": "holiday_non_membership",
+  "operation": "holiday"
+}

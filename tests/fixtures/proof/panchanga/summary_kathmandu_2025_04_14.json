@@ -1,0 +1,597 @@
+{
+  "expected_replay_result": {
+    "claim_boundary": "computed_ephemeris_not_panchanga_authority",
+    "date": "2025-04-14",
+    "karana": {
+      "name": "Kaulava",
+      "number": 32
+    },
+    "moon": {
+      "longitude": 190.7281,
+      "rashi_english": "Libra",
+      "rashi_name": "Tula",
+      "rashi_number": 7
+    },
+    "nakshatra": {
+      "name": "Swati",
+      "number": 15,
+      "progress": 0.3046
+    },
+    "paksha": "krishna",
+    "publication_status": "computed_not_official",
+    "review_required": true,
+    "sun": {
+      "longitude": 0.0844,
+      "rashi_english": "Aries",
+      "rashi_name": "Mesha",
+      "rashi_number": 1
+    },
+    "sunrise": {
+      "local": "2025-04-14T05:40:28+05:45",
+      "local_time": "05:40:28",
+      "timezone": "Asia/Kathmandu",
+      "utc": "2025-04-13T23:55:28+00:00"
+    },
+    "sunset": {
+      "local": "2025-04-14T18:27:51+05:45",
+      "local_time": "18:27:51",
+      "timezone": "Asia/Kathmandu",
+      "utc": "2025-04-14T12:42:51+00:00"
+    },
+    "tithi": {
+      "display_number": 1,
+      "end_time": "2025-04-14T02:55:38.546875+00:00",
+      "name": "Pratipada",
+      "number": 16,
+      "paksha": "krishna",
+      "progress": 0.887
+    },
+    "vaara": {
+      "name_english": "Monday",
+      "name_sanskrit": "Somavara",
+      "number": 1
+    },
+    "yoga": {
+      "name": "Vajra",
+      "number": 15,
+      "progress": 0.3109
+    }
+  },
+  "expected_verification_result": {
+    "reason": "verified",
+    "verified": true
+  },
+  "fixture_version": "parva-proof-fixture-v1",
+  "membrane": {
+    "boundary": {
+      "authority": "computed_uncertified",
+      "blocked_use_cases": [
+        "legal_final_authority",
+        "tax_final_authority",
+        "payroll_final_authority",
+        "banking_contract_authority",
+        "government_calendar_publication",
+        "panchanga_final_authority"
+      ],
+      "claim_boundary": "computed_ephemeris_not_panchanga_authority",
+      "conflict_state": "none",
+      "derivation": "computed_or_source_derived",
+      "ephemeris_method_dependent": true,
+      "flags": [
+        "review_required"
+      ],
+      "freshness": "current_snapshot",
+      "geography_scope": "np:national:default",
+      "ignorance_state": "known",
+      "interpretation_state": "literal",
+      "location_sensitive": true,
+      "not_authority": true,
+      "not_panchanga_authority": true,
+      "not_ritual_final_authority": true,
+      "reproducibility": "local_deterministic",
+      "review_state": "required",
+      "temporal_scope": "supported_public_range",
+      "valid_for": [
+        "technical_reference",
+        "planning_support"
+      ],
+      "warnings": [
+        "review_required"
+      ]
+    },
+    "canonical_query": {
+      "canonicalization_version": "1.0.0",
+      "context": {
+        "ayanamsa": "lahiri",
+        "calendar": "ad",
+        "canonicalization_version": "parva-canon-v1",
+        "community_id": "official:nepal_government",
+        "ephemeris_fixture_id": "kathmandu_2025_04_14_lahiri",
+        "ephemeris_provider": "pinned_panchanga_fixture",
+        "latitude": 27.7172,
+        "locale": "ne-np",
+        "longitude": 85.324,
+        "place_id": "np:national:default",
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "sidereal_mode": "sidereal",
+        "sunrise_rule": "udaya_at_local_sunrise",
+        "timezone": "asia/kathmandu"
+      },
+      "input": {
+        "date": "2025-04-14"
+      },
+      "operation": "panchanga_summary"
+    },
+    "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"ayanamsa\":\"lahiri\",\"calendar\":\"ad\",\"canonicalization_version\":\"parva-canon-v1\",\"community_id\":\"official:nepal_government\",\"ephemeris_fixture_id\":\"kathmandu_2025_04_14_lahiri\",\"ephemeris_provider\":\"pinned_panchanga_fixture\",\"latitude\":27.7172,\"locale\":\"ne-np\",\"longitude\":85.324,\"place_id\":\"np:national:default\",\"policy_id\":\"panchanga-computed-not-authority@1.0.0\",\"sidereal_mode\":\"sidereal\",\"sunrise_rule\":\"udaya_at_local_sunrise\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"date\":\"2025-04-14\"},\"operation\":\"panchanga_summary\"}",
+    "ephemeris_metadata": {
+      "boundary_vector": {
+        "claim_boundary": "pinned_fixture_not_official_panchanga_authority",
+        "not_authority": true,
+        "review_required": true
+      },
+      "coordinate_frame": "sidereal",
+      "ephemeris_name": "Swiss/Moshier pinned Panchanga fixture slice",
+      "ephemeris_version": "fixture-v1",
+      "fallback_used": false,
+      "fixture_id": "kathmandu_2025_04_14_lahiri",
+      "jpl_backed": false,
+      "kernel_hash": "sha256:123dc6be92568d655db5ddf397b1134e3a26b23b873fa284286b287afdc9c4d1",
+      "precision_tolerance": "exact pinned fixture replay",
+      "provider_id": "pinned_panchanga_fixture",
+      "provider_kind": "pinned_fixture",
+      "source_or_method_docket": "parva.panchanga.method_dockets.v1",
+      "supported_date_range": "2025-04-14 only",
+      "time_scale": "UTC"
+    },
+    "field_provenance": {
+      "claim_boundary": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "claim_boundary",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "date": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "date",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "karana": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "karana",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "moon": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "moon",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "nakshatra": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "nakshatra",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "paksha": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "paksha",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "publication_status": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "publication_status",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "review_required": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "review_required",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "sun": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "sun",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "sunrise": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "sunrise",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "sunset": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "sunset",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "tithi": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "tithi",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "vaara": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "vaara",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      },
+      "yoga": {
+        "authority": "computed_uncertified",
+        "derivation": "panchanga_ephemeris_method_replay",
+        "field_path": "yoga",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "panchanga-computed-not-authority@1.0.0",
+        "review_state": "review_required",
+        "source_docket_id": null,
+        "witness_ids": []
+      }
+    },
+    "identity_hash": "parva:id:v1:sha256:41a6d146c364bd7e95047e3b8ebaaa32f8119a0409422e030de4af0922dee2e5",
+    "kind": "parva_membrane",
+    "membrane_kind": "positive",
+    "method_docket_refs": [
+      "parva.panchanga.sunrise.v1",
+      "parva.panchanga.tithi.v1",
+      "parva.panchanga.nakshatra.v1",
+      "parva.panchanga.yoga_karana.v1"
+    ],
+    "method_dockets": [
+      {
+        "algorithm": "Swiss Ephemeris sunrise calculation through pyswisseph",
+        "assumptions": [
+          "observer latitude/longitude explicit",
+          "sunrise attribution rule explicit"
+        ],
+        "coordinate_frame": "geocentric apparent ecliptic longitudes where applicable",
+        "implementation_version": "1.0.0",
+        "limitations": [
+          "computed_not_official",
+          "not_panchanga_authority",
+          "not_ritual_final_authority"
+        ],
+        "method_id": "parva.panchanga.sunrise.v1",
+        "precision_tolerance": "provider-dependent; fixture replay exact for pinned values",
+        "time_standard": "UTC instant with observer IANA timezone projection"
+      },
+      {
+        "algorithm": "floor((moon_sidereal_longitude - sun_sidereal_longitude) mod 360 / 12) + 1 at sunrise",
+        "assumptions": [
+          "Lahiri/chosen ayanamsa",
+          "udaya tithi"
+        ],
+        "coordinate_frame": "sidereal ecliptic longitude",
+        "implementation_version": "1.0.0",
+        "limitations": [
+          "computed_not_official",
+          "not_ritual_final_authority"
+        ],
+        "method_id": "parva.panchanga.tithi.v1",
+        "precision_tolerance": "depends on ephemeris provider and ayanamsa",
+        "time_standard": "sunrise UTC instant"
+      },
+      {
+        "algorithm": "floor(moon_sidereal_longitude / (360 / 27)) + 1 at sunrise",
+        "assumptions": [
+          "27 equal nakshatra divisions"
+        ],
+        "coordinate_frame": "sidereal ecliptic longitude",
+        "implementation_version": "1.0.0",
+        "limitations": [
+          "computed_not_official",
+          "not_ritual_final_authority"
+        ],
+        "method_id": "parva.panchanga.nakshatra.v1",
+        "precision_tolerance": "depends on ephemeris provider and ayanamsa",
+        "time_standard": "sunrise UTC instant"
+      },
+      {
+        "algorithm": "standard equal-division yoga and half-tithi karana calculations",
+        "assumptions": [
+          "computed components are decision support only"
+        ],
+        "coordinate_frame": "sidereal ecliptic longitude",
+        "implementation_version": "1.0.0",
+        "limitations": [
+          "computed_not_official",
+          "not_panchanga_authority"
+        ],
+        "method_id": "parva.panchanga.yoga_karana.v1",
+        "precision_tolerance": "depends on ephemeris provider and ayanamsa",
+        "time_standard": "sunrise UTC instant"
+      }
+    ],
+    "policy_trace": {
+      "decision": {
+        "authority": "computed_uncertified",
+        "claim_boundary": "computed_ephemeris_not_panchanga_authority",
+        "review_required": true
+      },
+      "operation": "panchanga_summary",
+      "policy_id": "panchanga-computed-not-authority@1.0.0",
+      "rules": [
+        "panchanga_outputs_are_computed_not_official",
+        "location_timezone_ephemeris_and_ayanamsa_are_identity_inputs",
+        "fallback_provider_cannot_claim_jpl_authority",
+        "ritual_final_authority_is_not_claimed"
+      ]
+    },
+    "proof_pack": {
+      "level": "replay",
+      "method_parameters": {
+        "ayanamsa": "lahiri",
+        "ephemeris_metadata": {
+          "boundary_vector": {
+            "claim_boundary": "pinned_fixture_not_official_panchanga_authority",
+            "not_authority": true,
+            "review_required": true
+          },
+          "coordinate_frame": "sidereal",
+          "ephemeris_name": "Swiss/Moshier pinned Panchanga fixture slice",
+          "ephemeris_version": "fixture-v1",
+          "fallback_used": false,
+          "fixture_id": "kathmandu_2025_04_14_lahiri",
+          "jpl_backed": false,
+          "kernel_hash": "sha256:123dc6be92568d655db5ddf397b1134e3a26b23b873fa284286b287afdc9c4d1",
+          "precision_tolerance": "exact pinned fixture replay",
+          "provider_id": "pinned_panchanga_fixture",
+          "provider_kind": "pinned_fixture",
+          "source_or_method_docket": "parva.panchanga.method_dockets.v1",
+          "supported_date_range": "2025-04-14 only",
+          "time_scale": "UTC"
+        },
+        "location": {
+          "latitude": 27.7172,
+          "longitude": 85.324,
+          "timezone": "Asia/Kathmandu"
+        },
+        "method_docket_refs": [
+          "parva.panchanga.sunrise.v1",
+          "parva.panchanga.tithi.v1",
+          "parva.panchanga.nakshatra.v1",
+          "parva.panchanga.yoga_karana.v1"
+        ],
+        "not_authority": true,
+        "sunrise_rule": "udaya_at_local_sunrise"
+      },
+      "source_artifacts": {
+        "ephemeris_metadata": {
+          "boundary_vector": {
+            "claim_boundary": "pinned_fixture_not_official_panchanga_authority",
+            "not_authority": true,
+            "review_required": true
+          },
+          "coordinate_frame": "sidereal",
+          "ephemeris_name": "Swiss/Moshier pinned Panchanga fixture slice",
+          "ephemeris_version": "fixture-v1",
+          "fallback_used": false,
+          "fixture_id": "kathmandu_2025_04_14_lahiri",
+          "jpl_backed": false,
+          "kernel_hash": "sha256:123dc6be92568d655db5ddf397b1134e3a26b23b873fa284286b287afdc9c4d1",
+          "precision_tolerance": "exact pinned fixture replay",
+          "provider_id": "pinned_panchanga_fixture",
+          "provider_kind": "pinned_fixture",
+          "source_or_method_docket": "parva.panchanga.method_dockets.v1",
+          "supported_date_range": "2025-04-14 only",
+          "time_scale": "UTC"
+        },
+        "method_docket_refs": [
+          "parva.panchanga.sunrise.v1",
+          "parva.panchanga.tithi.v1",
+          "parva.panchanga.nakshatra.v1",
+          "parva.panchanga.yoga_karana.v1"
+        ]
+      },
+      "steps": [
+        {
+          "operation": "canonicalize_query",
+          "output_hash": "sha256:41a6d146c364bd7e95047e3b8ebaaa32f8119a0409422e030de4af0922dee2e5"
+        },
+        {
+          "operation": "panchanga_summary",
+          "output_hash": "sha256:5b03eb29592d534f6154c79920e7d79d1765e484f9f50ad0a57174c2543a4e4f"
+        }
+      ],
+      "verifier": "parva.panchanga_summary",
+      "verifier_version": "1.0.0"
+    },
+    "result": {
+      "claim_boundary": "computed_ephemeris_not_panchanga_authority",
+      "date": "2025-04-14",
+      "karana": {
+        "name": "Kaulava",
+        "number": 32
+      },
+      "moon": {
+        "longitude": 190.7281,
+        "rashi_english": "Libra",
+        "rashi_name": "Tula",
+        "rashi_number": 7
+      },
+      "nakshatra": {
+        "name": "Swati",
+        "number": 15,
+        "progress": 0.3046
+      },
+      "paksha": "krishna",
+      "publication_status": "computed_not_official",
+      "review_required": true,
+      "sun": {
+        "longitude": 0.0844,
+        "rashi_english": "Aries",
+        "rashi_name": "Mesha",
+        "rashi_number": 1
+      },
+      "sunrise": {
+        "local": "2025-04-14T05:40:28+05:45",
+        "local_time": "05:40:28",
+        "timezone": "Asia/Kathmandu",
+        "utc": "2025-04-13T23:55:28+00:00"
+      },
+      "sunset": {
+        "local": "2025-04-14T18:27:51+05:45",
+        "local_time": "18:27:51",
+        "timezone": "Asia/Kathmandu",
+        "utc": "2025-04-14T12:42:51+00:00"
+      },
+      "tithi": {
+        "display_number": 1,
+        "end_time": "2025-04-14T02:55:38.546875+00:00",
+        "name": "Pratipada",
+        "number": 16,
+        "paksha": "krishna",
+        "progress": 0.887
+      },
+      "vaara": {
+        "name_english": "Monday",
+        "name_sanskrit": "Somavara",
+        "number": 1
+      },
+      "yoga": {
+        "name": "Vajra",
+        "number": 15,
+        "progress": 0.3109
+      }
+    },
+    "source_docket_ids": [],
+    "witness": {
+      "input_hash": "sha256:41a6d146c364bd7e95047e3b8ebaaa32f8119a0409422e030de4af0922dee2e5",
+      "method_parameters": {
+        "ayanamsa": "lahiri",
+        "ephemeris_metadata": {
+          "boundary_vector": {
+            "claim_boundary": "pinned_fixture_not_official_panchanga_authority",
+            "not_authority": true,
+            "review_required": true
+          },
+          "coordinate_frame": "sidereal",
+          "ephemeris_name": "Swiss/Moshier pinned Panchanga fixture slice",
+          "ephemeris_version": "fixture-v1",
+          "fallback_used": false,
+          "fixture_id": "kathmandu_2025_04_14_lahiri",
+          "jpl_backed": false,
+          "kernel_hash": "sha256:123dc6be92568d655db5ddf397b1134e3a26b23b873fa284286b287afdc9c4d1",
+          "precision_tolerance": "exact pinned fixture replay",
+          "provider_id": "pinned_panchanga_fixture",
+          "provider_kind": "pinned_fixture",
+          "source_or_method_docket": "parva.panchanga.method_dockets.v1",
+          "supported_date_range": "2025-04-14 only",
+          "time_scale": "UTC"
+        },
+        "location": {
+          "latitude": 27.7172,
+          "longitude": 85.324,
+          "timezone": "Asia/Kathmandu"
+        },
+        "method_docket_refs": [
+          "parva.panchanga.sunrise.v1",
+          "parva.panchanga.tithi.v1",
+          "parva.panchanga.nakshatra.v1",
+          "parva.panchanga.yoga_karana.v1"
+        ],
+        "not_authority": true,
+        "sunrise_rule": "udaya_at_local_sunrise"
+      },
+      "operation": "panchanga_summary",
+      "output_hash": "sha256:5b03eb29592d534f6154c79920e7d79d1765e484f9f50ad0a57174c2543a4e4f",
+      "source_refs": [
+        "parva.panchanga.sunrise.v1",
+        "parva.panchanga.tithi.v1",
+        "parva.panchanga.nakshatra.v1",
+        "parva.panchanga.yoga_karana.v1"
+      ],
+      "verifier": "parva.panchanga_summary",
+      "verifier_version": "1.0.0",
+      "witness_id": "parva:wit:v1:sha256:d02c82567c0bc4fcf5871a501e24b542dfe4266348e7150279df9f357a2a6a2e"
+    },
+    "witness_hash": "parva:wit:v1:sha256:d02c82567c0bc4fcf5871a501e24b542dfe4266348e7150279df9f357a2a6a2e"
+  },
+  "name": "summary_kathmandu_2025_04_14",
+  "operation": "panchanga_summary"
+}

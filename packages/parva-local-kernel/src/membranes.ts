@@ -1,7 +1,7 @@
-import { canonicalize } from './canonicalize';
-import { sha256Hex } from './hash';
+import { stableStringify } from './canonicalize.js';
+import { sha256Hex } from './hash.js';
 
-type Membrane = {
+export type Membrane = {
   canonical_query?: unknown;
   identity_hash?: string;
   result?: unknown;
@@ -13,14 +13,57 @@ type Membrane = {
   field_provenance?: Record<string, { authority?: string; flags?: string[] }>;
 };
 
+export type ProofFixture = {
+  operation: string;
+  expected_replay_result: unknown;
+  membrane: Membrane;
+};
+
+export type VerificationResult = { verified: boolean; reason: string };
+
 const PREFIX_IDENTITY = 'parva:id:v1:sha256:';
 const PREFIX_WITNESS = 'parva:wit:v1:sha256:';
 
 function canonicalQueryForBackend(query: unknown): string {
-  return canonicalize(query);
+  return stableStringify(query);
 }
 
-export async function verifyMembrane(membrane: Membrane): Promise<{ verified: boolean; reason: string }> {
+function operationOf(membrane: Membrane): string {
+  const query = membrane.canonical_query as { operation?: unknown } | undefined;
+  return typeof query?.operation === 'string' ? query.operation : '';
+}
+
+function deepEqual(left: unknown, right: unknown): boolean {
+  return stableStringify(left) === stableStringify(right);
+}
+
+function findFixture(membrane: Membrane, fixtures: ProofFixture[]): ProofFixture | undefined {
+  return fixtures.find((fixture) => {
+    return fixture.operation === operationOf(membrane) && fixture.membrane.identity_hash === membrane.identity_hash;
+  });
+}
+
+function hasAuthorityOverclaim(membrane: Membrane): boolean {
+  const boundary = membrane.boundary;
+  if (!boundary) {
+    return true;
+  }
+  const authority = boundary.authority;
+  const sourceDockets = (membrane as { source_docket_ids?: unknown }).source_docket_ids;
+  const hasSource = Array.isArray(sourceDockets) && sourceDockets.length > 0;
+  if ((authority === 'structured_official' || authority === 'archived_official') && !hasSource) {
+    return true;
+  }
+  if (operationOf(membrane).startsWith('panchanga') && boundary.claim_boundary !== 'computed_ephemeris_not_panchanga_authority') {
+    return true;
+  }
+  return false;
+}
+
+export async function verifyMembrane(
+  membrane: Membrane,
+  options: { fixtures?: ProofFixture[] } = {},
+): Promise<VerificationResult> {
   if (!membrane.canonical_query || !membrane.identity_hash || !membrane.witness || !membrane.witness_hash) {
     return { verified: false, reason: 'required_fields_missing' };
   }
@@ -30,13 +73,13 @@ export async function verifyMembrane(membrane: Membrane): Promise<{ verified: bo
     return { verified: false, reason: 'identity_hash_mismatch' };
   }
 
-  const resultDigest = await sha256Hex(canonicalize(membrane.result ?? {}));
+  const resultDigest = await sha256Hex(stableStringify(membrane.result ?? {}));
   if (membrane.witness.output_hash !== `sha256:${resultDigest}`) {
     return { verified: false, reason: 'witness_output_hash_mismatch' };
   }
 
   const { witness_id: _witnessId, ...witnessWithoutId } = membrane.witness;
-  const witnessDigest = await sha256Hex(canonicalize(witnessWithoutId));
+  const witnessDigest = await sha256Hex(stableStringify(witnessWithoutId));
   const expectedWitnessId = `${PREFIX_WITNESS}${witnessDigest}`;
   if (membrane.witness.witness_id !== expectedWitnessId || membrane.witness_hash !== expectedWitnessId) {
     return { verified: false, reason: 'witness_hash_mismatch' };
@@ -44,6 +87,9 @@ export async function verifyMembrane(membrane: Membrane): Promise<{ verified: bo
 
   if (!membrane.boundary?.authority || !membrane.boundary.claim_boundary) {
     return { verified: false, reason: 'boundary_or_provenance_missing' };
+  }
+  if (hasAuthorityOverclaim(membrane)) {
+    return { verified: false, reason: 'authority_overclaim' };
   }
 
   const result = membrane.result;
@@ -76,5 +122,51 @@ export async function verifyMembrane(membrane: Membrane): Promise<{ verified: bo
     return { verified: false, reason: 'source_snapshot_hash_mismatch' };
   }
 
+  if (options.fixtures) {
+    const replay = await replayMembrane(membrane, options.fixtures);
+    if (!replay.verified) {
+      return replay;
+    }
+  }
+
   return { verified: true, reason: 'verified' };
+}
+
+export async function replayMembrane(membrane: Membrane, fixtures: ProofFixture[]): Promise<VerificationResult> {
+  const fixture = findFixture(membrane, fixtures);
+  if (!fixture) {
+    return { verified: false, reason: 'fixture_not_found' };
+  }
+  if (!deepEqual(membrane.result, fixture.expected_replay_result)) {
+    return { verified: false, reason: 'replayed_result_mismatch' };
+  }
+  if (!deepEqual(membrane.canonical_query, fixture.membrane.canonical_query)) {
+    return { verified: false, reason: 'canonical_query_mismatch' };
+  }
+  if (operationOf(membrane) === 'bs_months') {
+    const result = membrane.result as { total_days?: unknown; months?: Array<{ days?: number }> };
+    if (Array.isArray(result.months)) {
+      const total = result.months.reduce((sum, month) => sum + Number(month.days ?? 0), 0);
+      if (total !== result.total_days) {
+        return { verified: false, reason: 'bs_month_total_mismatch' };
+      }
+    }
+  }
+  return { verified: true, reason: 'replayed' };
+}
+
+export async function verifyCivilOperation(membrane: Membrane, fixtures: ProofFixture[]): Promise<VerificationResult> {
+  return verifyMembrane(membrane, { fixtures });
+}
+
+export async function verifyPanchangaMembrane(membrane: Membrane, fixtures: ProofFixture[]): Promise<VerificationResult> {
+  const operation = operationOf(membrane);
+  if (operation !== 'panchanga_summary') {
+    return { verified: false, reason: 'not_panchanga_membrane' };
+  }
+  const ephemerisMetadata = (membrane as { ephemeris_metadata?: Record<string, unknown> }).ephemeris_metadata;
+  if (!ephemerisMetadata?.provider_id || !ephemerisMetadata.provider_kind) {
+    return { verified: false, reason: 'ephemeris_metadata_missing' };
+  }
+  return verifyMembrane(membrane, { fixtures });
 }

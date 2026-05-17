@@ -1,0 +1,614 @@
+{
+  "expected_replay_result": {
+    "branch_set": null,
+    "branches": null,
+    "bs_year": 2082,
+    "months": [
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 31,
+        "end_ad": "2025-05-14",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 1,
+        "name": "Baishakh",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-04-14"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 31,
+        "end_ad": "2025-06-14",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 2,
+        "name": "Jestha",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-05-15"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 31,
+        "end_ad": "2025-07-15",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 3,
+        "name": "Ashadh",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-06-15"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 32,
+        "end_ad": "2025-08-16",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 4,
+        "name": "Shrawan",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-07-16"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 31,
+        "end_ad": "2025-09-16",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 5,
+        "name": "Bhadra",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-08-17"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 30,
+        "end_ad": "2025-10-16",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 6,
+        "name": "Ashwin",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-09-17"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 30,
+        "end_ad": "2025-11-15",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 7,
+        "name": "Kartik",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-10-17"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 30,
+        "end_ad": "2025-12-15",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 8,
+        "name": "Mangsir",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-11-16"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 29,
+        "end_ad": "2026-01-13",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 9,
+        "name": "Poush",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2025-12-16"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 30,
+        "end_ad": "2026-02-12",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 10,
+        "name": "Magh",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2026-01-14"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 30,
+        "end_ad": "2026-03-14",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 11,
+        "name": "Falgun",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2026-02-13"
+      },
+      {
+        "authority": "computed_reference_not_authority",
+        "calculation_mode": "canonical",
+        "days": 30,
+        "end_ad": "2026-04-13",
+        "engine": "bs_month_canonical_policy_v0",
+        "month": 12,
+        "name": "Chaitra",
+        "not_authority": true,
+        "review_required": true,
+        "selected_mode": "solar_civil",
+        "start_ad": "2026-03-15"
+      }
+    ],
+    "policy_decision": {
+      "claim_boundary": "computed_solar_civil_not_official_calendar_authority",
+      "decision_trace": [
+        "Static lookup is compatibility/reference data only. Canonical BS month metadata selects deterministic solar-civil sankranti computation and keeps all output non-authoritative.",
+        "review_required_for_legal_tax_payroll_banking_government_or_panchanga_use"
+      ],
+      "not_authority": true,
+      "policy": "phase_00_trust_arrest_v0",
+      "selected_mode": "solar_civil"
+    },
+    "requested_mode": "canonical",
+    "selected_method": "solar_civil",
+    "total_days": 365
+  },
+  "expected_verification_result": {
+    "reason": "verified",
+    "verified": true
+  },
+  "fixture_version": "parva-proof-fixture-v1",
+  "membrane": {
+    "boundary": {
+      "authority": "computed_uncertified",
+      "blocked_use_cases": [
+        "legal_final_authority",
+        "tax_final_authority",
+        "payroll_final_authority",
+        "banking_contract_authority",
+        "government_calendar_publication",
+        "panchanga_final_authority"
+      ],
+      "claim_boundary": "computed_solar_civil_or_reference_not_authority",
+      "conflict_state": "none",
+      "derivation": "computed_or_source_derived",
+      "flags": [
+        "review_required"
+      ],
+      "freshness": "current_snapshot",
+      "geography_scope": "np:national:default",
+      "ignorance_state": "known",
+      "interpretation_state": "literal",
+      "reproducibility": "local_deterministic",
+      "review_state": "required",
+      "temporal_scope": "supported_public_range",
+      "valid_for": [
+        "technical_reference",
+        "planning_support"
+      ],
+      "warnings": [
+        "review_required"
+      ]
+    },
+    "canonical_query": {
+      "canonicalization_version": "1.0.0",
+      "context": {
+        "calendar": "bs",
+        "community_id": "official:nepal_government",
+        "locale": "ne-np",
+        "place_id": "np:national:default",
+        "policy_id": "canonical@0.1.0",
+        "timezone": "asia/kathmandu"
+      },
+      "input": {
+        "bs_year": 2082,
+        "mode": "canonical"
+      },
+      "operation": "bs_months"
+    },
+    "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"bs_year\":2082,\"mode\":\"canonical\"},\"operation\":\"bs_months\"}",
+    "field_provenance": {
+      "branch_set": {
+        "authority": "computed_uncertified",
+        "derivation": "bs_month_metadata_branch_evaluation",
+        "field_path": "branch_set",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      },
+      "branches": {
+        "authority": "computed_uncertified",
+        "derivation": "bs_month_metadata_branch_evaluation",
+        "field_path": "branches",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      },
+      "bs_year": {
+        "authority": "computed_uncertified",
+        "derivation": "bs_month_metadata_branch_evaluation",
+        "field_path": "bs_year",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      },
+      "months": {
+        "authority": "computed_uncertified",
+        "derivation": "bs_month_metadata_branch_evaluation",
+        "field_path": "months",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      },
+      "policy_decision": {
+        "authority": "computed_uncertified",
+        "derivation": "bs_month_metadata_branch_evaluation",
+        "field_path": "policy_decision",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      },
+      "requested_mode": {
+        "authority": "computed_uncertified",
+        "derivation": "bs_month_metadata_branch_evaluation",
+        "field_path": "requested_mode",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      },
+      "selected_method": {
+        "authority": "computed_uncertified",
+        "derivation": "bs_month_metadata_branch_evaluation",
+        "field_path": "selected_method",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      },
+      "total_days": {
+        "authority": "computed_uncertified",
+        "derivation": "bs_month_metadata_branch_evaluation",
+        "field_path": "total_days",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      }
+    },
+    "identity_hash": "parva:id:v1:sha256:132f2f9d2efeda7761fbeab8e04efe9178b858075fbeac2a940dabb58fbab1f2",
+    "kind": "parva_membrane",
+    "membrane_kind": "positive",
+    "policy_trace": {
+      "decision": {
+        "authority": "computed_uncertified",
+        "claim_boundary": "computed_solar_civil_or_reference_not_authority",
+        "coverage_status": "covered_by_reference_source_not_official",
+        "eligible_official": false,
+        "review_required": true
+      },
+      "notes": [
+        "static lookup is explicit reference mode and does not become source-backed authority"
+      ],
+      "operation": "bs_months",
+      "policy_id": "canonical@0.1.0",
+      "rules": [
+        "eligible_source_docket_must_cover_requested_temporal_scope",
+        "sample_source_dockets_cannot_upgrade_authority",
+        "unsupported_or_uncovered_results_require_review",
+        "technical_decision_support_not_final_authority"
+      ]
+    },
+    "proof_pack": {
+      "level": "audit",
+      "method_parameters": {
+        "mode": "canonical",
+        "policy_id": "canonical@0.1.0",
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "source_artifacts": {
+        "source_docket_ids": [
+          "parva:src:v1:sample-2082-calendar-notice"
+        ],
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "steps": [
+        {
+          "operation": "canonicalize_query",
+          "output_hash": "sha256:132f2f9d2efeda7761fbeab8e04efe9178b858075fbeac2a940dabb58fbab1f2"
+        },
+        {
+          "operation": "bs_months_metadata",
+          "output_hash": "sha256:3348c66d1fc88cd3ebb370693536e31d697a1bce674ffe390c6220998020e5c3"
+        }
+      ],
+      "verifier": "parva.bs_months",
+      "verifier_version": "1.0.0"
+    },
+    "result": {
+      "branch_set": null,
+      "branches": null,
+      "bs_year": 2082,
+      "months": [
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 31,
+          "end_ad": "2025-05-14",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 1,
+          "name": "Baishakh",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-04-14"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 31,
+          "end_ad": "2025-06-14",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 2,
+          "name": "Jestha",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-05-15"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 31,
+          "end_ad": "2025-07-15",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 3,
+          "name": "Ashadh",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-06-15"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 32,
+          "end_ad": "2025-08-16",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 4,
+          "name": "Shrawan",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-07-16"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 31,
+          "end_ad": "2025-09-16",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 5,
+          "name": "Bhadra",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-08-17"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 30,
+          "end_ad": "2025-10-16",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 6,
+          "name": "Ashwin",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-09-17"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 30,
+          "end_ad": "2025-11-15",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 7,
+          "name": "Kartik",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-10-17"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 30,
+          "end_ad": "2025-12-15",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 8,
+          "name": "Mangsir",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-11-16"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 29,
+          "end_ad": "2026-01-13",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 9,
+          "name": "Poush",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2025-12-16"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 30,
+          "end_ad": "2026-02-12",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 10,
+          "name": "Magh",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2026-01-14"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 30,
+          "end_ad": "2026-03-14",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 11,
+          "name": "Falgun",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2026-02-13"
+        },
+        {
+          "authority": "computed_reference_not_authority",
+          "calculation_mode": "canonical",
+          "days": 30,
+          "end_ad": "2026-04-13",
+          "engine": "bs_month_canonical_policy_v0",
+          "month": 12,
+          "name": "Chaitra",
+          "not_authority": true,
+          "review_required": true,
+          "selected_mode": "solar_civil",
+          "start_ad": "2026-03-15"
+        }
+      ],
+      "policy_decision": {
+        "claim_boundary": "computed_solar_civil_not_official_calendar_authority",
+        "decision_trace": [
+          "Static lookup is compatibility/reference data only. Canonical BS month metadata selects deterministic solar-civil sankranti computation and keeps all output non-authoritative.",
+          "review_required_for_legal_tax_payroll_banking_government_or_panchanga_use"
+        ],
+        "not_authority": true,
+        "policy": "phase_00_trust_arrest_v0",
+        "selected_mode": "solar_civil"
+      },
+      "requested_mode": "canonical",
+      "selected_method": "solar_civil",
+      "total_days": 365
+    },
+    "source_docket_ids": [
+      "parva:src:v1:sample-2082-calendar-notice"
+    ],
+    "source_resolution": {
+      "authority": "computed_uncertified",
+      "bs_date": "2082-01-01",
+      "claim_boundary": "computed_solar_civil_or_reference_not_authority",
+      "coverage_status": "covered_by_reference_source_not_official",
+      "eligible_official": false,
+      "operation": "bs_months",
+      "reason": "covered_source_is_reference_or_sample",
+      "review_required": true,
+      "review_witnesses": [
+        "parva:review:v1:sample"
+      ],
+      "source_docket_ids": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "source_refs": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ]
+    },
+    "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+    "witness": {
+      "input_hash": "sha256:132f2f9d2efeda7761fbeab8e04efe9178b858075fbeac2a940dabb58fbab1f2",
+      "method_parameters": {
+        "mode": "canonical",
+        "policy_id": "canonical@0.1.0",
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "operation": "bs_months",
+      "output_hash": "sha256:3348c66d1fc88cd3ebb370693536e31d697a1bce674ffe390c6220998020e5c3",
+      "source_refs": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "verifier": "parva.bs_months",
+      "verifier_version": "1.0.0",
+      "witness_id": "parva:wit:v1:sha256:7e8375439f780757b477849c5047e1b72380de8f53b779540951f886e04fbeb8"
+    },
+    "witness_hash": "parva:wit:v1:sha256:7e8375439f780757b477849c5047e1b72380de8f53b779540951f886e04fbeb8"
+  },
+  "name": "bs_months_canonical",
+  "operation": "bs_months"
+}

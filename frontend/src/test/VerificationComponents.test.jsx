@@ -7,6 +7,7 @@ import {
   TimelineList,
   VerificationStrip,
 } from '../redesign/components/VerificationComponents';
+import { PanchangaProofDrawer } from '../proof/PanchangaProofDrawer';
 
 describe('verification component extraction', () => {
   it('renders clamped confidence and source dots', () => {
@@ -42,5 +43,46 @@ describe('verification component extraction', () => {
     );
 
     expect(screen.getByRole('link', { name: /08:00/i })).toHaveAttribute('href', '/best-time');
+  });
+
+  it('renders Panchanga proof metadata and non-authority boundary', () => {
+    render(
+      <PanchangaProofDrawer
+        proof={{
+          capsule: {
+            identity_hash: 'parva:id:v1:sha256:abc',
+            witness_hash: 'parva:wit:v1:sha256:def',
+            canonical_query: {
+              context: {
+                latitude: 27.7172,
+                longitude: 85.324,
+                timezone: 'Asia/Kathmandu',
+                ayanamsa: 'lahiri',
+              },
+            },
+            boundary: { claim_boundary: 'computed_ephemeris_not_panchanga_authority' },
+            ephemeris_metadata: {
+              provider_id: 'pinned_panchanga_fixture',
+              provider_kind: 'pinned_fixture',
+              ephemeris_version: 'fixture-v1',
+            },
+            result: {
+              tithi: { name: 'Pratipada' },
+              nakshatra: { name: 'Ashwini' },
+            },
+            field_provenance: {
+              tithi: { authority: 'computed_uncertified' },
+              nakshatra: { authority: 'computed_uncertified' },
+            },
+          },
+        }}
+      />,
+    );
+
+    expect(screen.getByRole('heading', { name: /Panchanga proof/i })).toBeInTheDocument();
+    expect(screen.getByText(/not official Panchanga authority/i)).toBeInTheDocument();
+    expect(screen.getByText(/pinned_panchanga_fixture/i)).toBeInTheDocument();
+    expect(screen.getByText('computed_ephemeris_not_panchanga_authority')).toBeInTheDocument();
+    expect(screen.getByText('Field provenance')).toBeInTheDocument();
   });
 });

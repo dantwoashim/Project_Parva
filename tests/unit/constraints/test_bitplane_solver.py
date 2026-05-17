@@ -35,3 +35,21 @@ def test_solver_rejected_dates_include_causal_stamps() -> None:
 
     assert result["rejected_dates"][0]["causal_stamps"]
     assert result["proof_pack"]["planes"]["working_day"]["cause_stamps"]
+
+
+def test_expanded_bitplanes_include_fiscal_festival_and_overlay_causes() -> None:
+    from app.forge.bitplanes import build_month_bitplanes
+
+    planes = build_month_bitplanes(
+        bs_year=2082,
+        bs_month=4,
+        festival_windows={"dashain": {10, 11}},
+        overlay_days={15},
+    )
+
+    assert "fiscal_period" in planes
+    assert "festival_window:dashain" in planes
+    assert "overlay:branch" in planes
+    assert all(planes["fiscal_period"].bits)
+    assert planes["festival_window:dashain"].bits[9] is True
+    assert planes["overlay:branch"].cause_stamps[14]["reason"] == "overlay_branch_applied"

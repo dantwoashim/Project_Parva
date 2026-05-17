@@ -1,0 +1,63 @@
+# Project Parva LLM Context
+
+Project Parva is an open-source proof-carrying temporal infrastructure project
+for Nepali date and time systems. It is broader than a calendar API: it
+combines deterministic APIs, source/method dockets, policy traces, field
+provenance, boundary vectors, proof receipts, replay verification, local/offline
+fixtures, SDKs, AI-safe tools, and public verification gates.
+
+## Core Capabilities
+
+- BS to AD conversion
+- AD to BS conversion
+- BS date validation
+- holiday membership and non-membership checks
+- working-day decision support
+- fiscal-year metadata
+- BS month metadata with canonical, solar-civil, static-lookup, and compare modes
+- method-docketed Panchanga summary
+- payroll/date-risk audit prechecks
+- local/offline proof verification
+
+## Proof Mode
+
+Several routes support `proof=compact`, `proof=audit`, `proof=replay`, or
+`proof=membrane`. Proof responses include:
+
+- capsule
+- identity hash
+- witness hash
+- result
+- field provenance
+- boundary vector
+- source or method docket references
+- policy decision trace
+- proof pack
+
+Proof verifiers must replay operation semantics or validate pinned fixture
+content. A verifier that only checks object shape or hash presence is not
+sufficient.
+
+## Panchanga
+
+Panchanga output is computed and method-backed. It discloses location, timezone,
+ephemeris provider, provider kind, fixture or kernel hash where applicable,
+ayanamsa, sunrise rule, method dockets, field provenance, and non-authority
+boundaries. JPL support is an explicit provider interface and configuration path;
+large kernels are not bundled.
+
+## Agent Behavior
+
+Agents should call Parva tools or APIs instead of guessing Nepali dates. Agents
+must preserve `review_required`, `not_authority`, source/method status, and
+proof links. Agents must not present Parva as final authority for official,
+legal, tax, payroll, banking, religious, ritual, or unsupported future-date
+decisions.
+
+## Forbidden Claims
+
+Do not claim government authority, legal authority, tax authority, payroll
+authority, banking authority, religious authority, official future date
+authority, official Panchanga authority, external certification, package
+publication, registry acceptance, customers, adoption, or public exact
+unsupported Future-BS predictions unless the repository contains real evidence.

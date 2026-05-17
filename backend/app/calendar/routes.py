@@ -20,6 +20,7 @@ from app.membranes.capsule import (
     build_validate_bs_date_capsule,
     proof_response,
 )
+from app.panchanga.proof import build_panchanga_summary_capsule
 from app.policy import get_policy_metadata
 from app.rules import get_rule_service
 from app.services.calendar_conversion_service import (
@@ -328,6 +329,13 @@ async def get_panchanga_endpoint(
         examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
     ),
     risk_mode: str = Query("standard", description="standard|strict"),
+    proof: str | None = Query(None, description="none|compact|audit|replay|membrane"),
+    lat: Optional[float] = Query(None, description="Latitude for proof identity"),
+    lon: Optional[float] = Query(None, description="Longitude for proof identity"),
+    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+    ephemeris_provider: str = Query("builtin_swiss_moshier", description="builtin_swiss_moshier|jpl_de440"),
+    ephemeris_fixture_id: Optional[str] = Query(None, description="Pinned fixture id for deterministic replay"),
+    ayanamsa: str = Query("lahiri", description="Sidereal ayanamsa mode"),
 ):
     """
     Get complete panchanga (5-element Hindu calendar) for a date.
@@ -336,12 +344,27 @@ async def get_panchanga_endpoint(
     Includes: Tithi, Nakshatra, Yoga, Karana, Vaara (weekday).
     """
     target_date = _parse_iso_date(date_str) if date_str else datetime.now().date()
-    return await run_cpu_bound(
+    payload = await run_cpu_bound(
         build_panchanga_payload,
         target_date,
         risk_mode=risk_mode,
         trace_id=_trace_id(request),
     )
+    if _proof_requested(proof):
+        latitude = float(lat) if lat is not None else 27.7172
+        longitude = float(lon) if lon is not None else 85.3240
+        capsule = await run_cpu_bound(
+            build_panchanga_summary_capsule,
+            target_date,
+            latitude=latitude,
+            longitude=longitude,
+            timezone_name=tz or "Asia/Kathmandu",
+            provider_id=ephemeris_provider,
+            fixture_id=ephemeris_fixture_id,
+            ayanamsa=ayanamsa,
+        )
+        payload["proof"] = proof_response(capsule, mode=proof or "membrane")
+    return payload
 
 
 @router.get("/panchanga/proof-capsule")

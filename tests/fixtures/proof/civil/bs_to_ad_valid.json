@@ -1,0 +1,169 @@
+{
+  "expected_replay_result": {
+    "ad_date": "2025-04-14"
+  },
+  "expected_verification_result": {
+    "reason": "verified",
+    "verified": true
+  },
+  "fixture_version": "parva-proof-fixture-v1",
+  "membrane": {
+    "boundary": {
+      "authority": "static_reference",
+      "blocked_use_cases": [
+        "legal_final_authority",
+        "tax_final_authority",
+        "payroll_final_authority",
+        "banking_contract_authority",
+        "government_calendar_publication",
+        "panchanga_final_authority"
+      ],
+      "claim_boundary": "sample_source_chain_not_authority",
+      "conflict_state": "none",
+      "derivation": "computed_or_source_derived",
+      "flags": [
+        "review_required"
+      ],
+      "freshness": "current_snapshot",
+      "geography_scope": "np:national:default",
+      "ignorance_state": "known",
+      "interpretation_state": "literal",
+      "reproducibility": "local_deterministic",
+      "review_state": "required",
+      "temporal_scope": "supported_public_range",
+      "valid_for": [
+        "technical_reference",
+        "planning_support"
+      ],
+      "warnings": [
+        "review_required"
+      ]
+    },
+    "canonical_query": {
+      "canonicalization_version": "1.0.0",
+      "context": {
+        "calendar": "bs",
+        "community_id": "official:nepal_government",
+        "locale": "ne-np",
+        "place_id": "np:national:default",
+        "policy_id": "canonical@0.1.0",
+        "timezone": "asia/kathmandu"
+      },
+      "input": {
+        "day": 1,
+        "month": 1,
+        "year": 2082
+      },
+      "operation": "convert_bs_to_ad"
+    },
+    "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":1,\"month\":1,\"year\":2082},\"operation\":\"convert_bs_to_ad\"}",
+    "field_provenance": {
+      "ad_date": {
+        "authority": "static_reference",
+        "derivation": "source_lookup",
+        "field_path": "ad_date",
+        "flags": [
+          "review_required"
+        ],
+        "policy_id": "canonical@0.1.0",
+        "review_state": "review_required",
+        "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+        "witness_ids": [
+          "parva:review:v1:sample"
+        ]
+      }
+    },
+    "identity_hash": "parva:id:v1:sha256:ad6b59834e7de23d53ec59a0fd24d27d7b1fe4b90593014b7fce509a445c36b8",
+    "kind": "parva_membrane",
+    "membrane_kind": "positive",
+    "policy_trace": {
+      "decision": {
+        "authority": "static_reference",
+        "claim_boundary": "sample_source_chain_not_authority",
+        "coverage_status": "covered_by_reference_source_not_official",
+        "eligible_official": false,
+        "review_required": true
+      },
+      "notes": [],
+      "operation": "convert_bs_to_ad",
+      "policy_id": "canonical@0.1.0",
+      "rules": [
+        "eligible_source_docket_must_cover_requested_temporal_scope",
+        "sample_source_dockets_cannot_upgrade_authority",
+        "unsupported_or_uncovered_results_require_review",
+        "technical_decision_support_not_final_authority"
+      ]
+    },
+    "proof_pack": {
+      "level": "audit",
+      "method_parameters": {
+        "calendar": "BS",
+        "policy_id": "canonical@0.1.0",
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "source_artifacts": {
+        "source_docket_ids": [
+          "parva:src:v1:sample-2082-calendar-notice"
+        ],
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "steps": [
+        {
+          "operation": "canonicalize_query",
+          "output_hash": "sha256:ad6b59834e7de23d53ec59a0fd24d27d7b1fe4b90593014b7fce509a445c36b8"
+        },
+        {
+          "operation": "convert_bs_to_ad",
+          "output_hash": "sha256:9ad0d825759fd73637dd0ff1bb51c77b432d9d8414d3b1a4796a96ae40204824"
+        }
+      ],
+      "verifier": "parva.convert_bs_to_ad",
+      "verifier_version": "1.0.0"
+    },
+    "result": {
+      "ad_date": "2025-04-14"
+    },
+    "source_docket_ids": [
+      "parva:src:v1:sample-2082-calendar-notice"
+    ],
+    "source_resolution": {
+      "authority": "static_reference",
+      "bs_date": "2082-01-01",
+      "claim_boundary": "sample_source_chain_not_authority",
+      "coverage_status": "covered_by_reference_source_not_official",
+      "eligible_official": false,
+      "operation": "convert_bs_to_ad",
+      "reason": "covered_source_is_reference_or_sample",
+      "review_required": true,
+      "review_witnesses": [
+        "parva:review:v1:sample"
+      ],
+      "source_docket_ids": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "source_refs": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ]
+    },
+    "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+    "witness": {
+      "input_hash": "sha256:ad6b59834e7de23d53ec59a0fd24d27d7b1fe4b90593014b7fce509a445c36b8",
+      "method_parameters": {
+        "calendar": "BS",
+        "policy_id": "canonical@0.1.0",
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+      },
+      "operation": "convert_bs_to_ad",
+      "output_hash": "sha256:9ad0d825759fd73637dd0ff1bb51c77b432d9d8414d3b1a4796a96ae40204824",
+      "source_refs": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "verifier": "parva.convert_bs_to_ad",
+      "verifier_version": "1.0.0",
+      "witness_id": "parva:wit:v1:sha256:9a0cbd7b99bfe577b5235f83a43de3d39c255d1f217b4025583656e6bbb6843f"
+    },
+    "witness_hash": "parva:wit:v1:sha256:9a0cbd7b99bfe577b5235f83a43de3d39c255d1f217b4025583656e6bbb6843f"
+  },
+  "name": "bs_to_ad_valid",
+  "operation": "convert_bs_to_ad"
+}

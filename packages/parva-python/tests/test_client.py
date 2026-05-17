@@ -495,6 +495,14 @@ def test_core_methods_expose_proof_modes() -> None:
     client.evaluate_date(bs_date="2082-01-01", proof="membrane")
     client.get_fiscal_year(2082, proof="membrane")
     client.get_bs_months(2082, mode="compare", proof="membrane")
+    client.get_panchanga(
+        "2025-04-14",
+        proof="replay",
+        latitude=27.7172,
+        longitude=85.324,
+        ephemeris_provider="pinned_panchanga_fixture",
+        ephemeris_fixture_id="kathmandu_2025_04_14_lahiri",
+    )
 
     assert calls[0][1] == f"{DEFAULT_API_BASE}/calendar/convert?date=2025-04-14&proof=membrane"
     assert calls[1][1] == f"{DEFAULT_API_BASE}/calendar/bs-to-gregorian?proof=membrane"
@@ -507,6 +515,8 @@ def test_core_methods_expose_proof_modes() -> None:
     assert calls[4][1] == f"{DEFAULT_API_BASE}/compliance/evaluate-date?proof=membrane"
     assert calls[5][1] == f"{DEFAULT_API_BASE}/enterprise/fiscal-year/2082?proof=membrane"
     assert calls[6][1] == f"{DEFAULT_API_BASE}/enterprise/bs-months/2082?mode=compare&proof=membrane"
+    assert calls[7][1].startswith(f"{DEFAULT_API_BASE}/calendar/panchanga?date=2025-04-14&proof=replay")
+    assert "ephemeris_provider=pinned_panchanga_fixture" in calls[7][1]
 
 
 def test_sdk_membrane_structural_verifier_does_not_upgrade_authority() -> None:
@@ -529,6 +539,30 @@ def test_sdk_membrane_structural_verifier_does_not_upgrade_authority() -> None:
         "verified": True,
         "reason": "structural_checks_passed_replay_required_for_full_verification",
     }
+
+
+def test_sdk_proofpack_timepack_and_panchanga_helpers_are_boundary_preserving() -> None:
+    client = ParvaClient(transport=lambda *_args: {})
+    membrane = {
+        "kind": "parva_membrane",
+        "canonical_query": {"operation": "panchanga_summary"},
+        "identity_hash": "parva:id:v1:sha256:abc",
+        "result": {"tithi": {"name": "Pratipada"}},
+        "boundary": {"claim_boundary": "computed_ephemeris_not_panchanga_authority"},
+        "field_provenance": {"tithi": {"authority": "computed_uncertified"}},
+        "witness_hash": "parva:wit:v1:sha256:def",
+        "ephemeris_metadata": {"provider_id": "pinned_panchanga_fixture", "provider_kind": "pinned_fixture"},
+    }
+
+    assert client.verify_proofpack({"level": "audit", "membrane": membrane})["verified"] is True
+    assert client.verify_timepack(
+        {
+            "kind": "parva_timepack",
+            "proof_packs": [{"level": "audit", "membrane": membrane}],
+            "boundary_summary": {"not_authority": True},
+        }
+    )["verified"] is True
+    assert client.replay_panchanga_membrane(membrane)["verified"] is True
 
 
 def test_non_validation_errors_are_not_hidden() -> None:
