@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from app.canonicalization.normalize import identity_hash
+from app.membranes.replay import replay_verify
 from app.sources.hashing import canonical_json_hash
 from app.witnesses.hashing import witness_hash
 
@@ -17,4 +18,7 @@ def verify_membrane(membrane: dict) -> tuple[bool, str]:
     witness_id = witness.pop("witness_id", None)
     if witness_hash(witness) != witness_id or witness_id != membrane["witness_hash"]:
         return False, "witness_hash_mismatch"
+    replay_ok, replay_reason = replay_verify(membrane)
+    if not replay_ok:
+        return False, replay_reason
     return True, "verified"

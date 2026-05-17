@@ -10,9 +10,10 @@ from app.boundary.vector import BoundaryVector
 from app.calendar.bikram_sambat import bs_to_gregorian
 from app.canonicalization.normalize import canonical_json, canonicalize_query
 from app.membranes.identity import membrane_identity_hash
+from app.membranes.source_resolution import resolve_convert_bs_to_ad_source
 from app.sources.hashing import canonical_json_hash
 from app.trust.field_provenance import FieldProvenance, ProvenanceMap
-from app.trust.taint import AuthorityTaint
+from app.trust.taint import TaintFlag
 from app.witnesses.schema import Witness
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -34,14 +35,20 @@ def build_convert_bs_to_ad_capsule(year: int, month: int, day: int) -> dict[str,
     }
     canonical_query = canonicalize_query(query)
     result = {"ad_date": bs_to_gregorian(year, month, day).isoformat()}
+    source_resolution = resolve_convert_bs_to_ad_source(year, month, day)
+    flags = frozenset({TaintFlag.REVIEW_REQUIRED}) if source_resolution.review_required else frozenset()
+    source_docket_id = source_resolution.source_docket_ids[0] if source_resolution.source_docket_ids else None
     provenance = ProvenanceMap(
         {
             "ad_date": FieldProvenance(
                 "ad_date",
-                AuthorityTaint.STRUCTURED_OFFICIAL,
-                "lookup",
-                source_docket_id="parva:src:v1:sample-2082-calendar-notice",
-                witness_ids=("parva:review:v1:sample",),
+                source_resolution.authority,
+                "source_lookup" if source_docket_id else "deterministic_conversion_without_source_coverage",
+                source_docket_id=source_docket_id,
+                witness_ids=source_resolution.review_witnesses,
+                policy_id="canonical@0.1.0",
+                review_state="review_required" if source_resolution.review_required else "reviewed",
+                flags=flags,
             )
         }
     )
@@ -54,7 +61,7 @@ def build_convert_bs_to_ad_capsule(year: int, month: int, day: int) -> dict[str,
         verifier="parva.convert_bs_to_ad",
         verifier_version="1.0.0",
         method_parameters={"calendar": "BS", "source_snapshot_hash": source_snapshot_hash},
-        source_refs=("parva:src:v1:sample-2082-calendar-notice",),
+        source_refs=source_resolution.source_refs,
     )
     capsule = {
         "kind": "parva_membrane",
@@ -65,7 +72,8 @@ def build_convert_bs_to_ad_capsule(year: int, month: int, day: int) -> dict[str,
         "result": result,
         "boundary": boundary.as_dict(),
         "field_provenance": provenance.as_dict(),
-        "source_docket_ids": ["parva:src:v1:sample-2082-calendar-notice"],
+        "source_docket_ids": list(source_resolution.source_docket_ids),
+        "source_resolution": source_resolution.as_dict(),
         "source_snapshot_hash": source_snapshot_hash,
         "proof_pack": {
             "level": "audit",
@@ -73,7 +81,7 @@ def build_convert_bs_to_ad_capsule(year: int, month: int, day: int) -> dict[str,
             "verifier_version": "1.0.0",
             "method_parameters": {"calendar": "BS", "source_snapshot_hash": source_snapshot_hash},
             "source_artifacts": {
-                "source_docket_ids": ["parva:src:v1:sample-2082-calendar-notice"],
+                "source_docket_ids": list(source_resolution.source_docket_ids),
                 "source_snapshot_hash": source_snapshot_hash,
             },
             "steps": [

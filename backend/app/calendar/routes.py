@@ -13,6 +13,7 @@ from pydantic import BaseModel
 
 from app.api._async_utils import run_cpu_bound
 from app.core.source_metadata import build_calculated_claim_meta
+from app.membranes.capsule import build_convert_bs_to_ad_capsule
 from app.policy import get_policy_metadata
 from app.rules import get_rule_service
 from app.services.calendar_conversion_service import (
@@ -167,18 +168,37 @@ async def get_dual_month(
 
 
 @router.post("/bs-to-gregorian")
-async def bs_to_gregorian_convert(payload: BSConversionRequest, request: Request):
+async def bs_to_gregorian_convert(
+    payload: BSConversionRequest,
+    request: Request,
+    proof: str | None = Query(None, description="Set to 'membrane' for a replay-verifiable proof capsule."),
+):
     """
     Convert a Bikram Sambat date to Gregorian.
     """
     try:
-        return build_bs_to_gregorian_payload(
+        response = build_bs_to_gregorian_payload(
             payload.year,
             payload.month,
             payload.day,
             trace_id=_trace_id(request),
             settings=getattr(request.app.state, "settings", None),
         )
+        proof_header = str(request.headers.get("x-parva-proof") or "").strip().lower()
+        if str(proof or "").strip().lower() == "membrane" or proof_header == "membrane":
+            capsule = build_convert_bs_to_ad_capsule(payload.year, payload.month, payload.day)
+            response["proof"] = {
+                "mode": "membrane",
+                "capsule": capsule,
+                "identity_hash": capsule["identity_hash"],
+                "witness_hash": capsule["witness_hash"],
+                "field_provenance": capsule["field_provenance"],
+                "boundary_vector": capsule["boundary"],
+                "proof_pack": capsule["proof_pack"],
+                "source_docket_refs": capsule["source_docket_ids"],
+                "freshness": capsule["boundary"].get("freshness"),
+            }
+        return response
     except ValueError as e:
         from fastapi import HTTPException
         raise HTTPException(status_code=400, detail=str(e))

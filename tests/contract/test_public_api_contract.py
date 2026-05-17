@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from app.main import app
+from app.membranes.verifier import verify_membrane
 from fastapi.testclient import TestClient
 
 client = TestClient(app)
@@ -114,3 +115,52 @@ def test_public_openapi_lists_core_surfaces() -> None:
     }
 
     assert expected_paths.issubset(paths)
+
+
+def test_core_conversion_endpoint_emits_membrane_when_requested() -> None:
+    response = client.post(
+        "/v3/api/calendar/bs-to-gregorian",
+        params={"proof": "membrane"},
+        json={"year": 2082, "month": 1, "day": 1},
+    )
+
+    assert response.status_code == 200
+    proof = response.json()["proof"]
+    assert proof["mode"] == "membrane"
+    assert proof["identity_hash"].startswith("parva:id:v1:sha256:")
+    assert proof["witness_hash"].startswith("parva:wit:v1:sha256:")
+    assert proof["capsule"]["source_resolution"]["eligible_official"] is False
+
+
+def test_core_conversion_membrane_verifies() -> None:
+    response = client.post(
+        "/v3/api/calendar/bs-to-gregorian?proof=membrane",
+        json={"year": 2082, "month": 1, "day": 1},
+    )
+
+    assert response.status_code == 200
+    assert verify_membrane(response.json()["proof"]["capsule"]) == (True, "verified")
+
+
+def test_core_conversion_field_provenance_complete() -> None:
+    response = client.post(
+        "/v3/api/calendar/bs-to-gregorian?proof=membrane",
+        json={"year": 2082, "month": 1, "day": 1},
+    )
+
+    provenance = response.json()["proof"]["field_provenance"]
+    assert set(provenance) == {"ad_date"}
+    assert provenance["ad_date"]["authority"] == "static_reference"
+    assert "review_required" in provenance["ad_date"]["flags"]
+
+
+def test_core_conversion_no_sample_docket_outside_coverage() -> None:
+    response = client.post(
+        "/v3/api/calendar/bs-to-gregorian?proof=membrane",
+        json={"year": 2099, "month": 1, "day": 1},
+    )
+
+    assert response.status_code == 200
+    proof = response.json()["proof"]
+    assert proof["source_docket_refs"] == []
+    assert proof["boundary_vector"]["authority"] == "computed_uncertified"

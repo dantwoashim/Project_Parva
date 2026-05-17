@@ -1,0 +1,27 @@
+{
+  "kind": "public_source_inventory",
+  "source_family": "moha_official",
+  "claim_boundary": "inventory_for_review_workflow_not_official_calendar_authority",
+  "sources": [
+    {
+      "bs_year": 2076,
+      "status": "archived_raw_pdf",
+      "source_type": "public_notice_archive",
+      "url": "https://example.invalid/public-safe-placeholder/moha-2076",
+      "local_path": "data/source_archive/README.md",
+      "structured_artifacts": [],
+      "notes": "Public-safe review inventory row. The raw source archive itself is private/not committed."
+    },
+    {
+      "bs_year": 2082,
+      "status": "structured_official",
+      "source_type": "public_fixture_reference",
+      "url": "https://example.invalid/public-safe-placeholder/moha-2082",
+      "local_path": "data/sources/raw/official/sample_2082_calendar_notice.txt",
+      "structured_artifacts": [
+        "data/sources/normalized/calendar/sample_2082_calendar_rows.json"
+      ],
+      "notes": "Structured public fixture for review-queue reproducibility; source docket marks it as sample/static reference, not official authority."
+    }
+  ]
+}

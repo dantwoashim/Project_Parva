@@ -1,0 +1,76 @@
+{
+  "kind": "phase_16_depth_inventory",
+  "generated_from": "manual_semantic_review_after_phase_01_15",
+  "status": "mixed_local_depth",
+  "classifications": [
+    {
+      "module": "backend/app/membranes",
+      "classification": "production-integrated",
+      "evidence": [
+        "convert_bs_to_ad capsules resolve source coverage dynamically",
+        "verifier replays conversion result and source docket resolution",
+        "core /api/calendar/bs-to-gregorian proof=membrane path emits a replay-verifiable capsule"
+      ],
+      "remaining_gap": "Only convert_bs_to_ad is fully replay-verified end to end."
+    },
+    {
+      "module": "backend/app/sources",
+      "classification": "production-integrated",
+      "evidence": [
+        "source coverage resolver rejects irrelevant sample dockets",
+        "source review queue reads committed public inventory"
+      ],
+      "remaining_gap": "Real official dockets still require external/public source acquisition and review."
+    },
+    {
+      "module": "static/parva-embed.js",
+      "classification": "production-integrated",
+      "evidence": [
+        "embed renderer uses createElement/textContent/replaceChildren",
+        "security tests ban innerHTML and script construction"
+      ],
+      "remaining_gap": "Proof-aware card rendering can be expanded, but XSS-prone rendering is removed."
+    },
+    {
+      "module": "packages/parva-local-kernel",
+      "classification": "demo-only",
+      "evidence": [
+        "local verifier now validates identity, witness, boundary and provenance hashes instead of field presence only"
+      ],
+      "remaining_gap": "It does not yet replay full source coverage and BS conversion with shared backend fixtures in packaged browser tests."
+    },
+    {
+      "module": "backend/app/constraints",
+      "classification": "demo-only",
+      "evidence": [
+        "bitplane primitives exist and are audited by existing ceiling depth scripts"
+      ],
+      "remaining_gap": "Solver still needs full forge-generated bitplane consumption across holidays, working days, festivals and review-required states."
+    },
+    {
+      "module": "backend/app/notices and TempC",
+      "classification": "sample-only",
+      "evidence": [
+        "phase primitives exist"
+      ],
+      "remaining_gap": "Notice extraction and TempC grammar still require production-grade parser/extractor expansion before ceiling claims."
+    },
+    {
+      "module": "federation and external witnesses",
+      "classification": "placeholder",
+      "evidence": [
+        "local witness primitives exist"
+      ],
+      "remaining_gap": "No real non-maintainer witness, institution signature, customer, registry acceptance or certification exists."
+    }
+  ],
+  "safe_claim": "One operation, convert_bs_to_ad, now has local proof-carrying integration through core API proof mode and backend replay verification.",
+  "unsafe_claims": [
+    "full grand-plan implementation",
+    "external witness network",
+    "institutional adoption",
+    "government authority",
+    "official future date authority",
+    "third-party certification"
+  ]
+}

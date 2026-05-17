@@ -1325,15 +1325,35 @@
         "summary": "Bs To Gregorian Convert",
         "description": "Convert a Bikram Sambat date to Gregorian.",
         "operationId": "bs_to_gregorian_convert_api_calendar_bs_to_gregorian_post",
+        "parameters": [
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to 'membrane' for a replay-verifiable proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to 'membrane' for a replay-verifiable proof capsule."
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/BSConversionRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -12239,15 +12259,35 @@
         "summary": "Bs To Gregorian Convert",
         "description": "Convert a Bikram Sambat date to Gregorian.",
         "operationId": "bs_to_gregorian_convert_v3_api_calendar_bs_to_gregorian_post",
+        "parameters": [
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to 'membrane' for a replay-verifiable proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to 'membrane' for a replay-verifiable proof capsule."
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/BSConversionRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {

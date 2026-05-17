@@ -14,10 +14,16 @@ MOHA_INVENTORY_PATH = PROJECT_ROOT / "data" / "source_inventory" / "moha_officia
 def _read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError, TypeError, ValueError):
-        return {}
+    for encoding in ("utf-8", "utf-8-sig", "utf-16"):
+        try:
+            return json.loads(path.read_text(encoding=encoding))
+        except UnicodeDecodeError:
+            continue
+        except json.JSONDecodeError:
+            continue
+        except (OSError, TypeError, ValueError):
+            return {}
+    return {}
 
 
 def _resolve_path(path_str: str | None) -> Path | None:
@@ -106,7 +112,11 @@ def build_source_review_queue() -> dict[str, Any]:
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "source_family": "moha_official",
-        "inventory_path": str(MOHA_INVENTORY_PATH.relative_to(PROJECT_ROOT)),
+        "inventory_path": str(
+            MOHA_INVENTORY_PATH.relative_to(PROJECT_ROOT)
+            if MOHA_INVENTORY_PATH.is_relative_to(PROJECT_ROOT)
+            else MOHA_INVENTORY_PATH
+        ).replace("\\", "/"),
         "total_items": len(queue),
         "summary": {
             "critical": sum(1 for item in queue if item["review_priority"] == "critical"),
