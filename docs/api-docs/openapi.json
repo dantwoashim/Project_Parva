@@ -2010,6 +2010,20 @@
               "type": "integer",
               "title": "Bs Year"
             }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "solar_civil",
+                "static_lookup"
+              ],
+              "type": "string",
+              "default": "solar_civil",
+              "title": "Mode"
+            }
           }
         ],
         "responses": {
@@ -12907,6 +12921,20 @@
             "schema": {
               "type": "integer",
               "title": "Bs Year"
+            }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "solar_civil",
+                "static_lookup"
+              ],
+              "type": "string",
+              "default": "solar_civil",
+              "title": "Mode"
             }
           }
         ],

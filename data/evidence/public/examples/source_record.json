@@ -1,0 +1,9 @@
+{
+  "authority_boundary": "source_backed_not_authority",
+  "public_safe": true,
+  "source_id": "sample_public_holiday_notice",
+  "source_reference": "https://example.org/public-nepali-calendar-notice",
+  "source_tier": "public_witness",
+  "source_type": "notice"
+}
+

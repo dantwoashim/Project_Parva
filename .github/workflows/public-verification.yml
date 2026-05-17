@@ -81,8 +81,12 @@ jobs:
           python scripts/release/check_archive_hygiene.py
           python scripts/release/check_package_readiness.py
           python scripts/release/check_mcp_registry_metadata.py
+          python scripts/sheets/validate_sheet_examples.py
+          python scripts/conformance/generate_conformance_report.py --input samples/conformance/vendor_input_sample.csv --json-out samples/conformance/conformance_report_sample.json --md-out samples/conformance/conformance_report_sample.md
+          python scripts/vendor_audit/run_vendor_date_risk_audit.py --input samples/vendor-date-risk-audit/input_sample.csv --json-out samples/vendor-date-risk-audit/output_report_sample.json --md-out samples/vendor-date-risk-audit/output_report_sample.md
           python scripts/frontend/check_component_size.py
           python scripts/release/check_repo_hygiene.py
+          python -m pytest tests/evidence tests/conformance tests/vendor_audit -q
 
   sdk-ai-mcp:
     runs-on: ubuntu-latest
@@ -115,6 +119,7 @@ jobs:
           npm pack --dry-run
           cd ../..
           python -m pytest packages/parva-ai-tools/tests packages/parva-mcp-server/tests -q
+          printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"ci","version":"0"}}}\n' | python -m parva_mcp_server.server --stdio
 
   frontend:
     runs-on: ubuntu-latest

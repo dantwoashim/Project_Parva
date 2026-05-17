@@ -1,0 +1,9 @@
+bs_date,workflow_type,expected_behavior,supported_range,institution_profile,source_tier,confidence,review_required,location_sensitive,benchmark_score_percent,evidence_packet_id
+2082-01-01,bs_ad_conversion,valid,true,,,,false,,,
+2082-01-99,bs_ad_conversion,invalid_date,true,,,,true,,,
+2082-01-01,holiday,holiday,true,nepal_private_company_default,public_witness,medium,false,,,
+2082-04-01,fiscal_year,fiscal_boundary,true,nepal_private_company_default,public_witness,medium,false,,,
+2082-01-02,working_day,working_day,true,nepal_private_company_default,public_witness,medium,false,,,
+2099-01-01,future_bs_boundary,review_required,false,nepal_private_company_default,needs_review,low,true,,,
+2082-01-01,panchanga,tithi_summary,true,nepal_private_company_default,public_witness,medium,false,true,89.47,evidence_sample_001
+

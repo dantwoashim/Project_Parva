@@ -1,0 +1,32 @@
+{
+  "authority_boundary": "source_backed_not_authority",
+  "benchmark_candidate": false,
+  "checksum": "3acac2f2ab10a39dc64bba52373c94ea6d1890513cd27ed2ee84d7f1da000128",
+  "extracted_rows": [
+    {
+      "ad_date": "2025-04-14",
+      "bs_date": "2082-01-01",
+      "category": "source_confidence_evidence_metadata",
+      "label": "Public calendar sample row"
+    }
+  ],
+  "ingestion_time": "2026-05-17T07:15:52+00:00",
+  "normalized_rows": [
+    {
+      "ad_date": "2025-04-14",
+      "authority_boundary": "source_backed_not_authority",
+      "bs_date": "2082-01-01",
+      "category": "source_confidence_evidence_metadata",
+      "label": "Public calendar sample row",
+      "review_required": true,
+      "row_id": "row_0001"
+    }
+  ],
+  "public_safe": true,
+  "review_status": "reviewed",
+  "reviewer_required": false,
+  "source_id": "sample_public_holiday_notice",
+  "source_reference": "https://example.org/public-nepali-calendar-notice",
+  "source_tier": "public_witness",
+  "source_type": "notice"
+}

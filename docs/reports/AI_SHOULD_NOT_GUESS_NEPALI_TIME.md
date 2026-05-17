@@ -50,8 +50,8 @@ Current tracked result:
 
 | Runner | Tasks | Passed | Blocked | Score |
 | --- | ---: | ---: | ---: | ---: |
-| Parva | 38 | 38 | 0 | 89.47% |
-| Static baseline | 38 | 10 | 0 | 20.53% |
+| Parva | 64 | 64 | 0 | 87.19% |
+| Static baseline | 64 | 15 | 0 | 19.38% |
 
 The gap is strongest in working-day, payroll/repayment review, holiday,
 Future-BS unsupported/review-required, panchanga, and source-metadata tasks.

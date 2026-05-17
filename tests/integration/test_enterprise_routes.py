@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from app.calendar.bikram_sambat import days_in_bs_month
+from app.calendar.sankranti import compute_bs_month_lengths
 from app.main import app
 from fastapi.testclient import TestClient
 
@@ -38,8 +40,24 @@ def test_bs_months_returns_12_months():
     body = response.json()
     assert body["bs_year"] == 2082
     assert len(body["months"]) == 12
+    assert [row["days"] for row in body["months"]] == compute_bs_month_lengths(2082)
     assert all(29 <= row["days"] <= 32 for row in body["months"])
     assert body["total_days"] == sum(row["days"] for row in body["months"])
+    assert body["calculation_mode"] == "solar_civil"
+    assert body["confidence"] == "solar_civil_computed"
+    assert body["source_status"] == "computed_solar_civil"
+    assert body["not_authority"] is True
+
+
+def test_bs_months_static_lookup_is_explicit_compatibility_mode():
+    response = client.get("/v3/api/enterprise/bs-months/2082", params={"mode": "static_lookup"})
+    assert response.status_code == 200
+    body = response.json()
+    assert [row["days"] for row in body["months"]] == [
+        days_in_bs_month(2082, month) for month in range(1, 13)
+    ]
+    assert body["calculation_mode"] == "static_lookup"
+    assert body["engine"] == "static_lookup_compatibility_v1"
     assert body["confidence"] == "official_lookup"
     assert body["source_status"] == "structured_official"
 
@@ -49,8 +67,8 @@ def test_bs_months_2085_is_not_marked_official():
     assert response.status_code == 200
     body = response.json()
     assert body["bs_year"] == 2085
-    assert body["confidence"] == "static_lookup_unverified"
-    assert body["source_status"] == "static_table_unverified"
+    assert body["confidence"] == "solar_civil_computed"
+    assert body["source_status"] == "computed_solar_civil"
     assert body["official_structured_range"] == "2078-2083 BS"
 
 

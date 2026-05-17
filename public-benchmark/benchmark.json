@@ -743,6 +743,523 @@
         "review_gate_behavior",
         "machine_readable_structure"
       ]
+    },
+    {
+      "id": "invalid_006",
+      "category": "invalid_bs_dates",
+      "input": {
+        "bs_date": "2082-13-01"
+      },
+      "expected": {
+        "valid": false,
+        "claim_boundary": "unsupported"
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "invalid_007",
+      "category": "invalid_bs_dates",
+      "input": {
+        "bs_date": "2082-00-10"
+      },
+      "expected": {
+        "valid": false,
+        "claim_boundary": "unsupported"
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "invalid_008",
+      "category": "invalid_bs_dates",
+      "input": {
+        "bs_date": "2082-01-00"
+      },
+      "expected": {
+        "valid": false,
+        "claim_boundary": "unsupported"
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "invalid_009",
+      "category": "invalid_bs_dates",
+      "input": {
+        "bs_date": "2082-02-99"
+      },
+      "expected": {
+        "valid": false,
+        "claim_boundary": "unsupported"
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "invalid_010",
+      "category": "invalid_bs_dates",
+      "input": {
+        "bs_date": "2082-12-99"
+      },
+      "expected": {
+        "valid": false,
+        "claim_boundary": "unsupported"
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "fiscal_004",
+      "category": "fiscal_year_boundaries",
+      "input": {
+        "bs_year": 2081
+      },
+      "expected": {
+        "machine_readable": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "fiscal_005",
+      "category": "fiscal_year_boundaries",
+      "input": {
+        "bs_date": "2083-04-01"
+      },
+      "expected": {
+        "machine_readable": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "fiscal_006",
+      "category": "fiscal_year_boundaries",
+      "input": {
+        "bs_year": 2084
+      },
+      "expected": {
+        "machine_readable": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "working_005",
+      "category": "working_days",
+      "input": {
+        "bs_date": "2082-04-04",
+        "profile_id": "nepal_private_company_default"
+      },
+      "expected": {
+        "machine_readable": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "working_006",
+      "category": "working_days",
+      "input": {
+        "start_bs": "2082-04-01",
+        "end_bs": "2082-04-07",
+        "holiday_policy": "none"
+      },
+      "expected": {
+        "machine_readable": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "working_007",
+      "category": "working_days",
+      "input": {
+        "bs_date": "2082-04-05",
+        "profile_id": "nepal_government_general"
+      },
+      "expected": {
+        "review_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "holiday_005",
+      "category": "holidays",
+      "input": {
+        "route": "/v3/api/festivals/upcoming?days=60"
+      },
+      "expected": {
+        "machine_readable": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "holiday_006",
+      "category": "holidays",
+      "input": {
+        "bs_date": "2082-05-01",
+        "profile_id": "nepal_private_company_default"
+      },
+      "expected": {
+        "source_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "holiday_007",
+      "category": "holidays",
+      "input": {
+        "ad_date": "2026-10-21",
+        "profile_id": "nepal_government_general"
+      },
+      "expected": {
+        "review_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "festival_004",
+      "category": "festival_dates",
+      "input": {
+        "festival": "dashain",
+        "year": 2027
+      },
+      "expected": {
+        "source_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "festival_005",
+      "category": "festival_dates",
+      "input": {
+        "festival": "tihar",
+        "year": 2027
+      },
+      "expected": {
+        "source_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "festival_006",
+      "category": "festival_dates",
+      "input": {
+        "festival": "maghe-sankranti",
+        "year": 2027
+      },
+      "expected": {
+        "review_allowed": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "panchanga_004",
+      "category": "panchanga_tithi_at_sunrise",
+      "input": {
+        "ad_date": "2026-05-17"
+      },
+      "expected": {
+        "method_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "panchanga_005",
+      "category": "panchanga_tithi_at_sunrise",
+      "input": {
+        "ad_date": "2026-09-17"
+      },
+      "expected": {
+        "method_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "panchanga_006",
+      "category": "panchanga_tithi_at_sunrise",
+      "input": {
+        "ad_date": "2027-01-14"
+      },
+      "expected": {
+        "method_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "future_bs_005",
+      "category": "future_bs_unsupported_review_required",
+      "input": {
+        "bs_year": 2085,
+        "workflow_type": "payroll_cutoff"
+      },
+      "expected": {
+        "review_required": true,
+        "exact_predictions_public": false
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "future_bs_006",
+      "category": "future_bs_unsupported_review_required",
+      "input": {
+        "bs_year": 2095,
+        "workflow_type": "banking_working_day"
+      },
+      "expected": {
+        "review_required": true,
+        "exact_predictions_public": false
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "future_bs_007",
+      "category": "future_bs_unsupported_review_required",
+      "input": {
+        "bs_year": 2110,
+        "workflow_type": "cooperative_repayment"
+      },
+      "expected": {
+        "review_required": true,
+        "exact_predictions_public": false
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "metadata_005",
+      "category": "source_confidence_evidence_metadata",
+      "input": {
+        "route": "/v3/api/reliability/status"
+      },
+      "expected": {
+        "machine_readable": true,
+        "source_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "metadata_006",
+      "category": "source_confidence_evidence_metadata",
+      "input": {
+        "route": "/v3/api/reliability/benchmark-manifest"
+      },
+      "expected": {
+        "machine_readable": true,
+        "source_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
+    },
+    {
+      "id": "metadata_007",
+      "category": "source_confidence_evidence_metadata",
+      "input": {
+        "route": "/v3/api/policy"
+      },
+      "expected": {
+        "machine_readable": true,
+        "source_metadata_required": true
+      },
+      "public_safe": true,
+      "authority_boundary": "technical_benchmark_not_authority",
+      "scoring_dimensions": [
+        "correctness",
+        "source_awareness",
+        "uncertainty_handling",
+        "review_gate_behavior",
+        "machine_readable_structure"
+      ]
     }
   ],
   "scoring": {

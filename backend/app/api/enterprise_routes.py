@@ -66,9 +66,13 @@ async def enterprise_fiscal_year(bs_year: int, request: Request):
 
 
 @router.get("/bs-months/{bs_year}")
-async def enterprise_bs_months(bs_year: int, request: Request):
+async def enterprise_bs_months(
+    bs_year: int,
+    request: Request,
+    mode: Literal["solar_civil", "static_lookup"] = "solar_civil",
+):
     try:
-        return bs_months_payload(bs_year, trace_id=_trace_id(request))
+        return bs_months_payload(bs_year, trace_id=_trace_id(request), mode=mode)
     except ValueError as exc:
         raise _bad_request(exc) from exc
 

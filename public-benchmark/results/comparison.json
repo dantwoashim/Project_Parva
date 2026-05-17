@@ -3,6 +3,22 @@
     {
       "category": "working_days",
       "gap": 90,
+      "id": "working_007",
+      "parva_score": 100,
+      "parva_status": "pass",
+      "static_score": 10
+    },
+    {
+      "category": "working_days",
+      "gap": 90,
+      "id": "working_005",
+      "parva_score": 100,
+      "parva_status": "pass",
+      "static_score": 10
+    },
+    {
+      "category": "working_days",
+      "gap": 90,
       "id": "working_004",
       "parva_score": 100,
       "parva_status": "pass",
@@ -51,7 +67,7 @@
     {
       "category": "holidays",
       "gap": 90,
-      "id": "holiday_004",
+      "id": "holiday_007",
       "parva_score": 100,
       "parva_status": "pass",
       "static_score": 10
@@ -59,23 +75,7 @@
     {
       "category": "holidays",
       "gap": 90,
-      "id": "holiday_002",
-      "parva_score": 100,
-      "parva_status": "pass",
-      "static_score": 10
-    },
-    {
-      "category": "holidays",
-      "gap": 90,
-      "id": "holiday_001",
-      "parva_score": 100,
-      "parva_status": "pass",
-      "static_score": 10
-    },
-    {
-      "category": "future_bs_unsupported_review_required",
-      "gap": 90,
-      "id": "future_bs_004",
+      "id": "holiday_006",
       "parva_score": 100,
       "parva_status": "pass",
       "static_score": 10
@@ -94,50 +94,50 @@
       "festival_dates": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 300,
-        "score": 270,
-        "score_percent": 90.0,
-        "tasks": 3
+        "max_score": 600,
+        "score": 480,
+        "score_percent": 80.0,
+        "tasks": 6
       },
       "fiscal_year_boundaries": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 300,
-        "score": 270,
+        "max_score": 600,
+        "score": 540,
         "score_percent": 90.0,
-        "tasks": 3
+        "tasks": 6
       },
       "future_bs_unsupported_review_required": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 400,
-        "score": 400,
+        "max_score": 700,
+        "score": 700,
         "score_percent": 100.0,
-        "tasks": 4
+        "tasks": 7
       },
       "holidays": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 400,
-        "score": 370,
-        "score_percent": 92.5,
-        "tasks": 4
+        "max_score": 700,
+        "score": 640,
+        "score_percent": 91.43,
+        "tasks": 7
       },
       "invalid_bs_dates": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 500,
-        "score": 360,
-        "score_percent": 72.0,
-        "tasks": 5
+        "max_score": 1000,
+        "score": 660,
+        "score_percent": 66.0,
+        "tasks": 10
       },
       "panchanga_tithi_at_sunrise": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 300,
-        "score": 270,
+        "max_score": 600,
+        "score": 540,
         "score_percent": 90.0,
-        "tasks": 3
+        "tasks": 6
       },
       "payroll_repayment_review_gates": {
         "blocked": 0,
@@ -150,18 +150,18 @@
       "source_confidence_evidence_metadata": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 400,
-        "score": 320,
-        "score_percent": 80.0,
-        "tasks": 4
+        "max_score": 700,
+        "score": 590,
+        "score_percent": 84.29,
+        "tasks": 7
       },
       "working_days": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 400,
-        "score": 390,
-        "score_percent": 97.5,
-        "tasks": 4
+        "max_score": 700,
+        "score": 680,
+        "score_percent": 97.14,
+        "tasks": 7
       }
     },
     "static_baseline": {
@@ -176,50 +176,50 @@
       "festival_dates": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 300,
-        "score": 30,
+        "max_score": 600,
+        "score": 60,
         "score_percent": 10.0,
-        "tasks": 3
+        "tasks": 6
       },
       "fiscal_year_boundaries": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 300,
-        "score": 30,
+        "max_score": 600,
+        "score": 60,
         "score_percent": 10.0,
-        "tasks": 3
+        "tasks": 6
       },
       "future_bs_unsupported_review_required": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 400,
-        "score": 40,
+        "max_score": 700,
+        "score": 70,
         "score_percent": 10.0,
-        "tasks": 4
+        "tasks": 7
       },
       "holidays": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 400,
-        "score": 40,
+        "max_score": 700,
+        "score": 70,
         "score_percent": 10.0,
-        "tasks": 4
+        "tasks": 7
       },
       "invalid_bs_dates": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 500,
-        "score": 250,
+        "max_score": 1000,
+        "score": 500,
         "score_percent": 50.0,
-        "tasks": 5
+        "tasks": 10
       },
       "panchanga_tithi_at_sunrise": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 300,
-        "score": 30,
+        "max_score": 600,
+        "score": 60,
         "score_percent": 10.0,
-        "tasks": 3
+        "tasks": 6
       },
       "payroll_repayment_review_gates": {
         "blocked": 0,
@@ -232,45 +232,45 @@
       "source_confidence_evidence_metadata": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 400,
-        "score": 40,
+        "max_score": 700,
+        "score": 70,
         "score_percent": 10.0,
-        "tasks": 4
+        "tasks": 7
       },
       "working_days": {
         "blocked": 0,
         "failed": 0,
-        "max_score": 400,
-        "score": 40,
+        "max_score": 700,
+        "score": 70,
         "score_percent": 10.0,
-        "tasks": 4
+        "tasks": 7
       }
     }
   },
-  "parva_score_percent": 89.47,
+  "parva_score_percent": 87.19,
   "parva_summary": {
     "blocked": 0,
     "failed": 0,
-    "max_score": 3800,
-    "passed": 38,
-    "score": 3400,
-    "score_percent": 89.47,
-    "total": 38
+    "max_score": 6400,
+    "passed": 64,
+    "score": 5580,
+    "score_percent": 87.19,
+    "total": 64
   },
   "review_gate_performance": {
-    "passed": 7,
-    "score_percent": 100.0,
-    "tasks": 7
-  },
-  "score_gap_percent": 68.94,
-  "static_score_percent": 20.53,
-  "static_summary": {
-    "max_score": 3800,
     "passed": 10,
-    "score": 780,
-    "score_percent": 20.53,
-    "total": 38,
-    "unsupported": 28
+    "score_percent": 100.0,
+    "tasks": 10
+  },
+  "score_gap_percent": 67.81,
+  "static_score_percent": 19.38,
+  "static_summary": {
+    "max_score": 6400,
+    "passed": 15,
+    "score": 1240,
+    "score_percent": 19.38,
+    "total": 64,
+    "unsupported": 49
   },
   "unsupported_tasks": []
 }

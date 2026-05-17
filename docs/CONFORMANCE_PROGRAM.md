@@ -48,6 +48,27 @@ Vendor conformance is not external certification. It is a reproducible
 technical compatibility check for a specific release, fixture set, and protocol
 draft level.
 
+## Nepali Time Reliability Levels
+
+The public-beta distribution also includes a lightweight Nepali time reliability
+report format:
+
+- [Bronze](conformance/BRONZE.md): conversion, invalid dates, supported range.
+- [Silver](conformance/SILVER.md): holidays, fiscal years, working days,
+  institution profiles.
+- [Gold](conformance/GOLD.md): source metadata, confidence metadata,
+  review-required behavior, Future-BS boundaries.
+- [Platinum](conformance/PLATINUM.md): panchanga, location sensitivity,
+  benchmark threshold, evidence packet support.
+
+Run:
+
+```bash
+python scripts/conformance/generate_conformance_report.py --input samples/conformance/vendor_input_sample.csv --json-out samples/conformance/conformance_report_sample.json --md-out samples/conformance/conformance_report_sample.md
+```
+
+The output is a conformance report, not a certification or authority claim.
+
 ## Fixture Inventory
 
 The conformance suite adds public valid and invalid fixtures for source-aware metadata, trust,

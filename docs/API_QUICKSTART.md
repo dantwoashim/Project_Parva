@@ -82,6 +82,14 @@ curl https://api.prabinghimire1.com.np/v3/api/enterprise/fiscal-year/2082
 curl https://api.prabinghimire1.com.np/v3/api/enterprise/bs-months/2082
 ```
 
+By default this uses the solar-civil sankranti computation path and returns
+`calculation_mode: "solar_civil"`. Static table lookup is retained only as an
+explicit compatibility/reference mode:
+
+```bash
+curl "https://api.prabinghimire1.com.np/v3/api/enterprise/bs-months/2082?mode=static_lookup"
+```
+
 ## 7. Business days
 
 This helper counts business days with a weekend rule. Holiday exclusion is disabled unless a private deployment configures a holiday policy.

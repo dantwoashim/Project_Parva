@@ -13,6 +13,7 @@ import {
   AppChrome,
   PageHero,
 } from './ExperienceCommon.jsx';
+import benchmarkSummary from '../../data/benchmarkSummary.json';
 
 export function RedesignIntegrations() {
   const [payload, setPayload] = useState(null);
@@ -212,6 +213,10 @@ function TrustMetricCard({ eyebrow, title, value, detail, actionTo, actionLabel 
       {actionTo ? <Link className="text-link" to={actionTo}>{actionLabel || 'Open'}</Link> : null}
     </article>
   );
+}
+
+function formatPercent(value) {
+  return `${Number(value || 0).toFixed(2)}%`;
 }
 
 function TrustLimitsStrip({ runtime = {}, policy = {} }) {
@@ -417,7 +422,27 @@ export function RedesignTrust() {
     >
       <TrustLoading loading={trust.loading} error={trust.error} />
       <TrustLimitsStrip runtime={runtime} policy={policy} />
+      <section className="trust-feature-band" aria-label="Public verification status">
+        <div>
+          <p className="eyebrow">Public verification status, not live uptime SLA</p>
+          <h2>{formatPercent(benchmarkSummary.parva_score_percent)} benchmark score across {benchmarkSummary.task_count} public-safe tasks.</h2>
+        </div>
+        <p>
+          Public review should start with the benchmark, public verification workflow,
+          API docs, and known limitations. Parva is source-aware decision support and
+          not government, calendar, legal, tax, banking, payroll, religious, or
+          future-date authority.
+        </p>
+      </section>
       <section className="trust-hero-grid">
+        <TrustMetricCard
+          eyebrow="Benchmark"
+          title="Reliability score"
+          value={formatPercent(benchmarkSummary.parva_score_percent)}
+          detail={`${formatPercent(benchmarkSummary.score_gap_percent)} gap over the static baseline; ${benchmarkSummary.review_gate_performance?.passed || 0}/${benchmarkSummary.review_gate_performance?.tasks || 0} review-gate tasks passed.`}
+          actionTo="/benchmark"
+          actionLabel="Open benchmark"
+        />
         <TrustMetricCard
           eyebrow="Runtime"
           title="Service state"
@@ -465,12 +490,22 @@ export function RedesignTrust() {
           ['Methodology', 'How date, place, source, and risk state become a result.', '/methodology'],
           ['Truth Lab', 'Live reliability status, benchmark manifests, source review queues, and boundary suites.', '/truth-lab'],
           ['API Policy', 'The exact advisory policy returned by the backend for consumers and integrators.', '/policy'],
+          ['API Docs', 'Public OpenAPI docs for stable route inspection.', 'https://api.prabinghimire1.com.np/docs'],
+          ['Verification reports', 'Reviewer packet and public verification evidence in the source repo.', 'https://github.com/dantwoashim/Project_Parva/tree/main/reports/external_reviewer_packet'],
+          ['Known limitations', 'Supported ranges, authority boundaries, and unavailable external dependencies.', 'https://github.com/dantwoashim/Project_Parva/blob/main/docs/KNOWN_LIMITATIONS.md'],
           ['About', 'What Parva is, what it is not, and how to use it responsibly.', '/about'],
         ].map(([title, body, to]) => (
-          <Link key={title} to={to}>
-            <span>{title}</span>
-            <p>{body}</p>
-          </Link>
+          String(to).startsWith('http') ? (
+            <a key={title} href={to}>
+              <span>{title}</span>
+              <p>{body}</p>
+            </a>
+          ) : (
+            <Link key={title} to={to}>
+              <span>{title}</span>
+              <p>{body}</p>
+            </Link>
+          )
         ))}
       </section>
     </TrustPageFrame>

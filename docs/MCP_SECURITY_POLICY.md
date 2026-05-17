@@ -7,6 +7,10 @@ audience: ai-tooling
 
 The Parva MCP adapter is read-only by default.
 
+The live `--stdio` server accepts only newline-delimited JSON-RPC requests for
+the whitelisted MCP methods: `initialize`, `tools/list`, `tools/call`,
+`resources/list`, `resources/read`, `prompts/list`, and `prompts/get`.
+
 Hard rules:
 
 - no shell execution,
@@ -19,6 +23,9 @@ Hard rules:
 - no exact unsupported Future-BS predictions,
 - no private route token leakage,
 - no authority claims.
+
+Resource reads are restricted to whitelisted `parva://` resources. `file://`,
+`http://`, relative paths, absolute paths, and unknown schemes are rejected.
 
 Tool descriptors must preserve `claim_boundary`, `review_required`, and the
 authority boundary. A model calling Parva may use it as deterministic decision

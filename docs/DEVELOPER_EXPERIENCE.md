@@ -45,3 +45,15 @@ The developer path should fit this sequence:
 
 If a route is preview, research-private, or unsupported, the docs should say so
 before a developer has to discover it through a failed request.
+
+## Non-Programmer Adoption
+
+Spreadsheet users can start from [Parva Sheets](../packages/parva-sheets/README.md).
+The Google Apps Script and Excel Office Script examples expose public v3 API
+helpers for BS/AD conversion, holiday checks, fiscal years, and working-day
+status. Metadata-aware formulas can return review-required and claim-boundary
+columns where the spreadsheet format allows it.
+
+These examples are not marketplace publications and do not grant official or
+institutional authority. They are public-beta distribution examples for review,
+internal testing, and vendor audit preparation.

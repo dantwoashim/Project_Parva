@@ -1,43 +1,46 @@
-# Vendor Date Risk Audit Sample
+# Vendor Date Risk Audit Report
 
-Status: sample output, not a certification.
+This is a technical conformance report, not certification and not official authority.
+
+## Summary
+
+- Rows: 4
+- Conformance score: 37.5
+- Issue count: 5
+- Claim boundary: technical_conformance_report_not_certification
 
 ## Invalid Dates
 
-- `2082-13-01` should be rejected. Month 13 is invalid for public BS date
-  handling.
+- Row 3 `2082-13-01`: Invalid BS date: 2082-13-01. Year must be 2000-2099, month 1-12, and day must be valid for that month.
 
 ## Holiday Mismatches
 
-- `2082-01-01` requires source-aware holiday policy review before a vendor
-  treats it as a non-working day.
+None.
 
 ## Working-Day Mismatches
 
-- `2082-04-02` should be evaluated against the selected institution profile.
+- Row 5 `2082-04-02`: actual_ad_date does not match Parva BS/AD conversion
 
 ## Fiscal Cutoff Errors
 
-- No fiscal cutoff error is proven in this sample. Final accounting behavior
-  requires organization policy.
+None.
 
 ## Unsupported Future Assumptions
 
-- `2090-01-01` must remain review-required. The sample must not infer an
-  official future holiday or civil rule.
+- Row 4 `2090-01-01`: date is outside structured official public range used by this audit
 
 ## Source Conflicts
 
-- No conflicting source packet is attached in the sample input.
+- Row 4 `2090-01-01`: holiday assumption is unknown or unsupported by provided evidence
 
 ## Review-Required Cases
 
-- Payroll, loan repayment, banking, tax, legal, and official-source decisions
-  remain review-required unless the institution attaches its own source policy.
+- Row 4 `2090-01-01`: workflow requires human review before operational use
 
-## Conformance Score
+## Recommendations
 
-Sample score: 72/100.
-
-This score is a technical sample only. It is not external certification,
-government approval, customer proof, or legal approval.
+- Reject invalid BS dates before persistence or conversion.
+- Reconcile stored AD dates against deterministic BS/AD conversion.
+- Treat unsupported future or unverified source ranges as review_required.
+- Attach source evidence for holiday and institution-specific assumptions.
+- Require human review for sensitive payroll, repayment, banking, legal, or tax workflows.

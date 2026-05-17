@@ -17,6 +17,7 @@ Public review entry points:
 - [Public verification workflow](.github/workflows/public-verification.yml)
 - [Release notes](docs/releases/v0.3.0-public-readiness.md)
 - [Package publishing checklist](docs/releases/PACKAGE_PUBLISHING.md)
+- [Spreadsheet examples](packages/parva-sheets/README.md)
 - [Known limitations](docs/KNOWN_LIMITATIONS.md)
 - [External reviewer packet generated artifact](reports/external_reviewer_packet/README.md)
 
@@ -30,8 +31,8 @@ Parva treats calendar behavior as something that should be explainable, source-a
 
 ## Benchmark V0
 
-Parva currently scores 89.47% on the 38-task public Nepali Time Reliability
-Benchmark, compared with 20.53% for the static baseline. The benchmark tests
+Parva currently scores 87.19% on the 64-task public Nepali Time Reliability
+Benchmark, compared with 19.38% for the static baseline. The benchmark tests
 technical reliability, source awareness, uncertainty handling, review gates,
 and machine-readable structure. It is not government or calendar authority.
 
@@ -39,7 +40,7 @@ and machine-readable structure. It is not government or calendar authority.
 
 | Area | Purpose |
 | --- | --- |
-| Calendar conversion | BS to AD, AD to BS, today endpoints, and month metadata |
+| Calendar conversion | BS to AD, AD to BS, today endpoints, and solar-civil month metadata |
 | Fiscal-year logic | Nepali fiscal boundaries, fiscal labels, periods, and date-range helpers |
 | Date validation | BS date validation and published-range checks |
 | Panchanga and lunar computation | Tithi, nakshatra, yoga, karana, paksha, and related computation where enabled |
@@ -50,6 +51,9 @@ and machine-readable structure. It is not government or calendar authority.
 | RuleLang | Structured institutional temporal rules with bounded execution, reason codes, and audit traces |
 | Impact simulator | Bounded release and change-set impact analysis for public-safe temporal changes |
 | Agent-safe tools | Deterministic temporal tool registry, claim checks, schedule plans, and review gates |
+| Spreadsheet examples | Google Apps Script and Excel Office Script helpers for non-programmer workflows |
+| Evidence pipeline | Public-source ingestion, normalization, checksums, review markers, and benchmark candidates |
+| Conformance reports | Technical Nepali time reliability report levels for vendor review, not certification |
 | Parva Protocol | Public preview schemas, conformance, credentials, compatibility levels, and offline bundle metadata |
 | Future BS risk research | Experimental month-length risk analysis, source-aware validation, and review labels |
 

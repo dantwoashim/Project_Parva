@@ -1,37 +1,67 @@
 {
-  "schema_version": "2026-05-15.vendor_date_risk_audit_sample",
-  "status": "sample_not_certification",
-  "summary": {
-    "rows": 4,
-    "invalid_dates": 1,
-    "holiday_mismatches": 1,
-    "working_day_mismatches": 0,
-    "fiscal_cutoff_errors": 0,
-    "unsupported_future_assumptions": 1,
-    "source_conflicts": 0,
-    "review_required_cases": 3,
-    "conformance_score": 72
-  },
-  "findings": [
+  "fiscal_cutoff_errors": [],
+  "holiday_mismatches": [],
+  "invalid_dates": [
     {
       "bs_date": "2082-13-01",
-      "issue": "invalid_date",
-      "severity": "high",
-      "review_required": true
-    },
-    {
-      "bs_date": "2090-01-01",
-      "issue": "unsupported_future_assumption",
-      "severity": "high",
-      "review_required": true,
-      "claim_boundary": "computed_prediction_not_official"
-    },
-    {
-      "bs_date": "2082-01-01",
-      "issue": "holiday_policy_requires_source_review",
-      "severity": "medium",
-      "review_required": true
+      "expected_behavior": "reject_invalid_date",
+      "reason": "Invalid BS date: 2082-13-01. Year must be 2000-2099, month 1-12, and day must be valid for that month.",
+      "row_number": 3,
+      "workflow_type": "payroll_cutoff"
     }
   ],
-  "not_authority": "Sample audit output is decision support, not legal, tax, banking, payroll, government, or external certification authority."
+  "recommendations": [
+    "Reject invalid BS dates before persistence or conversion.",
+    "Reconcile stored AD dates against deterministic BS/AD conversion.",
+    "Treat unsupported future or unverified source ranges as review_required.",
+    "Attach source evidence for holiday and institution-specific assumptions.",
+    "Require human review for sensitive payroll, repayment, banking, legal, or tax workflows."
+  ],
+  "review_required_cases": [
+    {
+      "bs_date": "2090-01-01",
+      "expected_behavior": "review_required",
+      "reason": "workflow requires human review before operational use",
+      "row_number": 4,
+      "source_status": "static_table_unverified",
+      "workflow_type": "loan_repayment"
+    }
+  ],
+  "source_conflicts": [
+    {
+      "bs_date": "2090-01-01",
+      "expected_behavior": "review_required",
+      "reason": "holiday assumption is unknown or unsupported by provided evidence",
+      "row_number": 4,
+      "workflow_type": "loan_repayment"
+    }
+  ],
+  "summary": {
+    "claim_boundary": "technical_conformance_report_not_certification",
+    "conformance_score": 37.5,
+    "issue_count": 5,
+    "not_authority": true,
+    "rows": 4
+  },
+  "unsupported_future_assumptions": [
+    {
+      "bs_date": "2090-01-01",
+      "expected_behavior": "review_required",
+      "reason": "date is outside structured official public range used by this audit",
+      "row_number": 4,
+      "source_status": "static_table_unverified",
+      "workflow_type": "loan_repayment"
+    }
+  ],
+  "working_day_mismatches": [
+    {
+      "actual_ad_date": "2025-07-18",
+      "bs_date": "2082-04-02",
+      "expected_ad_date": "2025-07-17",
+      "expected_behavior": "is_working_day",
+      "reason": "actual_ad_date does not match Parva BS/AD conversion",
+      "row_number": 5,
+      "workflow_type": "attendance"
+    }
+  ]
 }

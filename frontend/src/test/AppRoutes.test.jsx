@@ -2,8 +2,13 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
+import benchmarkSummary from '../data/benchmarkSummary.json';
 
 const routeLoadOptions = { timeout: 15000 };
+
+function pct(value) {
+  return `${Number(value || 0).toFixed(2)}%`;
+}
 
 function setViewportWidth(width) {
   window.innerWidth = width;
@@ -583,10 +588,27 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /Nepali Time Reliability Benchmark/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByText('89.47%')).toBeInTheDocument();
-    expect(screen.getByText('20.53%')).toBeInTheDocument();
+    expect(screen.getByText(pct(benchmarkSummary.parva_score_percent))).toBeInTheDocument();
+    expect(screen.getByText(pct(benchmarkSummary.static_score_percent))).toBeInTheDocument();
     expect(screen.getByText(/technical reliability benchmark, not official government\/calendar authority/i)).toBeInTheDocument();
     expect(screen.getByText(/review-required behavior preservation/i)).toBeInTheDocument();
+  }, 30000);
+
+  it('renders the public trust surface with verification and authority boundaries', async () => {
+    setViewportWidth(1280);
+    render(
+      <MemoryRouter initialEntries={['/trust']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /A calmer way to see what the engine knows/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByText(/Public verification status, not live uptime SLA/i)).toBeInTheDocument();
+    expect(screen.getAllByText(pct(benchmarkSummary.parva_score_percent)).length).toBeGreaterThan(0);
+    expect(screen.getByText(/not government, calendar, legal, tax, banking, payroll, religious, or future-date authority/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Verification reports/i })).toHaveAttribute('href', expect.stringContaining('external_reviewer_packet'));
+    expect(screen.getByRole('link', { name: /API Docs/i })).toHaveAttribute('href', 'https://api.prabinghimire1.com.np/docs');
+    expect(screen.queryByText(/uptime SLA/i)).not.toHaveTextContent(/99\.9/i);
   }, 30000);
 
   it('keeps the same shell on mobile widths and exposes the bottom navigation', async () => {

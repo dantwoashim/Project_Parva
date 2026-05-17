@@ -9,7 +9,6 @@ from app.calendar.bikram_sambat import (
     bs_to_gregorian,
     days_in_bs_month,
     get_bs_confidence,
-    get_bs_month_name,
     gregorian_to_bs,
 )
 from app.calendar.fiscal import fiscal_year_label
@@ -21,6 +20,7 @@ from app.calendar.provenance import (
 )
 from app.core.source_metadata import build_bs_claim_meta
 from app.policy import get_policy_metadata
+from app.services.bs_month_metadata_service import BsMonthCalculationMode, build_bs_month_metadata
 
 ENGINE_FISCAL_YEAR = "parva_enterprise_fiscal_year_v1"
 SOURCE_RANGE = STATIC_LOOKUP_RANGE_LABEL
@@ -158,22 +158,32 @@ def fiscal_year_payload(bs_year: int, *, trace_id: str | None = None) -> dict[st
     }
 
 
-def bs_months_payload(bs_year: int, *, trace_id: str | None = None) -> dict[str, Any]:
-    months = [
-        {
-            "month": month,
-            "name": get_bs_month_name(month),
-            "days": days_in_bs_month(bs_year, month),
+def bs_months_payload(
+    bs_year: int,
+    *,
+    trace_id: str | None = None,
+    mode: BsMonthCalculationMode = "solar_civil",
+) -> dict[str, Any]:
+    metadata = build_bs_month_metadata(bs_year, mode=mode)
+    months = metadata["months"]
+    provenance = _provenance_payload(bs_year)
+    if mode == "solar_civil":
+        provenance = {
+            **provenance,
+            "source_status": metadata["source_status"],
+            "provenance_note": metadata["provenance_note"],
         }
-        for month in range(1, 13)
-    ]
     return {
         "bs_year": bs_year,
         "months": months,
-        "total_days": sum(month["days"] for month in months),
-        "confidence": _confidence_for_bs_year(bs_year)[0],
-        "source_range": _confidence_for_bs_year(bs_year)[1],
-        **_provenance_payload(bs_year),
+        "total_days": metadata["total_days"],
+        "calculation_mode": metadata["calculation_mode"],
+        "engine": metadata["engine"],
+        "confidence": metadata.get("confidence", _confidence_for_bs_year(bs_year)[0]),
+        "source_range": metadata.get("source_range", _confidence_for_bs_year(bs_year)[1]),
+        "compatibility_mode": metadata.get("compatibility_mode"),
+        "not_authority": True,
+        **provenance,
         "policy": get_policy_metadata(),
         "meta": _claim_meta_for_year(bs_year, trace_id=trace_id, result_class="bs_month_metadata"),
     }

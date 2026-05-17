@@ -2,7 +2,7 @@
 
 ## Benchmark
 
-`public-benchmark/benchmark.json` contains 38 public-safe tasks across:
+`public-benchmark/benchmark.json` contains 64 public-safe tasks across:
 
 - BS/AD conversion
 - invalid BS dates
@@ -25,8 +25,8 @@
 
 ## Runner Results
 
-- Static baseline: 20.53 percent.
-- Parva runner: 86.58 percent, 38 tasks passed.
+- Static baseline: 19.38 percent.
+- Parva runner: 87.19 percent, 64 tasks passed.
 
 ## Interpretation
 

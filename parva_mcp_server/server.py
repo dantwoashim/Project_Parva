@@ -20,6 +20,11 @@ _MODULE = importlib.util.module_from_spec(_SPEC)
 _SPEC.loader.exec_module(_MODULE)
 
 main = _MODULE.main
+UnsafeMcpCall = _MODULE.UnsafeMcpCall
+call_tool = _MODULE.call_tool
+check_server = _MODULE.check_server
+handle_jsonrpc_request = _MODULE.handle_jsonrpc_request
+run_stdio = _MODULE.run_stdio
 
 
 if __name__ == "__main__":

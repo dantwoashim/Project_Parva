@@ -87,7 +87,7 @@ The public v3 contract is centered on a small set of stable calendar and enterpr
 | `/v3/api/calendar/bs-to-gregorian` | POST | Bikram Sambat to Gregorian conversion and BS date validation |
 | `/v3/api/calendar/dual-month?year=YYYY&month=M` | GET | Gregorian month calendar with BS context |
 | `/v3/api/enterprise/fiscal-year/{bs_year}` | GET | Nepali fiscal-year boundaries |
-| `/v3/api/enterprise/bs-months/{bs_year}` | GET | BS month metadata for a year |
+| `/v3/api/enterprise/bs-months/{bs_year}` | GET | BS month metadata for a year; defaults to solar-civil sankranti computation, with `?mode=static_lookup` only for explicit compatibility/reference use |
 | `/v3/api/enterprise/business-days` | POST | Weekend-rule business-day count for a BS date range |
 | `/v3/api/enterprise/capabilities` | GET | Enterprise calendar capability metadata |
 | `/v3/api/compliance/profiles` | GET | Enterprise compliance profile catalog |

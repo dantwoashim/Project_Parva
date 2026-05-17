@@ -24,11 +24,11 @@ payroll, government, religious, or official future-date authority.
 
 Current tracked comparison:
 
-- Parva: 89.47%
-- Static baseline: 20.53%
-- Gap: 68.94 percentage points
-- Tasks: 38
-- Review gates: 7/7
+- Parva: 87.19%
+- Static baseline: 19.38%
+- Gap: 67.81 percentage points
+- Tasks: 64
+- Review gates: 10/10
 
 Run the static baseline:
 

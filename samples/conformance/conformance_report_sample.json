@@ -1,0 +1,77 @@
+{
+  "achieved_level": "platinum",
+  "claim_boundary": "technical_conformance_report_not_certification",
+  "generated_at": "2026-05-17T07:11:10+00:00",
+  "levels": {
+    "bronze": {
+      "max_score": 3,
+      "missing_checks": [],
+      "passed_checks": [
+        "bs_ad_conversion",
+        "invalid_date_detection",
+        "supported_range_disclosure"
+      ],
+      "score": 3,
+      "score_percent": 100.0
+    },
+    "gold": {
+      "max_score": 11,
+      "missing_checks": [],
+      "passed_checks": [
+        "bs_ad_conversion",
+        "invalid_date_detection",
+        "supported_range_disclosure",
+        "holidays",
+        "fiscal_years",
+        "working_days",
+        "institution_profiles",
+        "source_metadata",
+        "confidence_metadata",
+        "review_required_behavior",
+        "future_bs_boundary"
+      ],
+      "score": 11,
+      "score_percent": 100.0
+    },
+    "platinum": {
+      "max_score": 15,
+      "missing_checks": [],
+      "passed_checks": [
+        "bs_ad_conversion",
+        "invalid_date_detection",
+        "supported_range_disclosure",
+        "holidays",
+        "fiscal_years",
+        "working_days",
+        "institution_profiles",
+        "source_metadata",
+        "confidence_metadata",
+        "review_required_behavior",
+        "future_bs_boundary",
+        "panchanga",
+        "location_sensitive",
+        "benchmark_threshold",
+        "evidence_packet_support"
+      ],
+      "score": 15,
+      "score_percent": 100.0
+    },
+    "silver": {
+      "max_score": 7,
+      "missing_checks": [],
+      "passed_checks": [
+        "bs_ad_conversion",
+        "invalid_date_detection",
+        "supported_range_disclosure",
+        "holidays",
+        "fiscal_years",
+        "working_days",
+        "institution_profiles"
+      ],
+      "score": 7,
+      "score_percent": 100.0
+    }
+  },
+  "not_authority": true,
+  "rows": 7
+}

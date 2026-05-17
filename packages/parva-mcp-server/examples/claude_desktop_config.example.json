@@ -2,7 +2,7 @@
   "mcpServers": {
     "project-parva": {
       "command": "python",
-      "args": ["-m", "parva_mcp_server.server", "--manifest"],
+      "args": ["-m", "parva_mcp_server.server", "--stdio"],
       "env": {
         "PARVA_PUBLIC_ORIGIN": "https://api.prabinghimire1.com.np"
       }

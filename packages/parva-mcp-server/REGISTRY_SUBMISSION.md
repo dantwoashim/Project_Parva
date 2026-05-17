@@ -33,6 +33,7 @@ acceptance, listing, endorsement, or external certification.
 
 ```bash
 python -m pip install parva-mcp-server
+parva-mcp-server --stdio
 parva-mcp-server --manifest
 parva-mcp-server --check
 ```
@@ -40,9 +41,13 @@ parva-mcp-server --check
 Local repository run:
 
 ```bash
+python -m parva_mcp_server.server --stdio
 python -m parva_mcp_server.server --manifest
 python -m parva_mcp_server.server --check
 ```
+
+`--stdio` runs the live MCP JSON-RPC server. `--manifest` and `--check` are
+diagnostic commands that print and exit.
 
 ## Security Model
 
@@ -59,5 +64,6 @@ authority.
 
 ## Example Config
 
-See `examples/claude_desktop_config.example.json`. The example contains no
-secrets.
+See `examples/claude_desktop_config.example.json` and
+`examples/codex_mcp_config.example.json`. The examples contain no secrets and
+use `--stdio`.

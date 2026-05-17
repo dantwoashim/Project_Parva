@@ -532,6 +532,370 @@
         "uncertainty_handling": true
       },
       "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 400,
+      "id": "invalid_006",
+      "score": 60,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 400,
+      "id": "invalid_007",
+      "score": 60,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 400,
+      "id": "invalid_008",
+      "score": 60,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 400,
+      "id": "invalid_009",
+      "score": 60,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "invalid_bs_dates",
+      "http_status": 400,
+      "id": "invalid_010",
+      "score": 60,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "http_status": 200,
+      "id": "fiscal_004",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "http_status": 200,
+      "id": "fiscal_005",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "fiscal_year_boundaries",
+      "http_status": 200,
+      "id": "fiscal_006",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "working_days",
+      "http_status": 200,
+      "id": "working_005",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "working_days",
+      "http_status": 200,
+      "id": "working_006",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "working_days",
+      "http_status": 200,
+      "id": "working_007",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "holidays",
+      "http_status": 200,
+      "id": "holiday_005",
+      "score": 70,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "holidays",
+      "http_status": 200,
+      "id": "holiday_006",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "holidays",
+      "http_status": 200,
+      "id": "holiday_007",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "festival_dates",
+      "http_status": 200,
+      "id": "festival_004",
+      "score": 70,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "festival_dates",
+      "http_status": 200,
+      "id": "festival_005",
+      "score": 70,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "festival_dates",
+      "http_status": 200,
+      "id": "festival_006",
+      "score": 70,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": false
+      },
+      "status": "pass"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "http_status": 200,
+      "id": "panchanga_004",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "http_status": 200,
+      "id": "panchanga_005",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "panchanga_tithi_at_sunrise",
+      "http_status": 200,
+      "id": "panchanga_006",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "http_status": 200,
+      "id": "future_bs_005",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "http_status": 200,
+      "id": "future_bs_006",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "future_bs_unsupported_review_required",
+      "http_status": 200,
+      "id": "future_bs_007",
+      "score": 100,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": true,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "http_status": 200,
+      "id": "metadata_005",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "http_status": 200,
+      "id": "metadata_006",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
+    },
+    {
+      "category": "source_confidence_evidence_metadata",
+      "http_status": 200,
+      "id": "metadata_007",
+      "score": 90,
+      "signals": {
+        "correctness": true,
+        "machine_readable_structure": true,
+        "review_gate_behavior": false,
+        "source_awareness": true,
+        "uncertainty_handling": true
+      },
+      "status": "pass"
     }
   ],
   "runner": "parva",
@@ -539,10 +903,10 @@
   "summary": {
     "blocked": 0,
     "failed": 0,
-    "max_score": 3800,
-    "passed": 38,
-    "score": 3400,
-    "score_percent": 89.47,
-    "total": 38
+    "max_score": 6400,
+    "passed": 64,
+    "score": 5580,
+    "score_percent": 87.19,
+    "total": 64
   }
 }

@@ -37,6 +37,17 @@ review-required cases, and an overall conformance score.
 
 Sample input and output live under `samples/vendor-date-risk-audit`.
 
+Run the local sample:
+
+```bash
+python scripts/vendor_audit/run_vendor_date_risk_audit.py --input samples/vendor-date-risk-audit/input_sample.csv --json-out samples/vendor-date-risk-audit/output_report_sample.json --md-out samples/vendor-date-risk-audit/output_report_sample.md
+```
+
+The command generates machine-readable JSON and a Markdown report with invalid
+dates, holiday mismatches, working-day mismatches, fiscal cutoff errors,
+unsupported future assumptions, source conflicts, review-required cases,
+recommendations, and a conformance score.
+
 Suggested commercial packaging:
 
 | Offer | Scope | Price guidance |
