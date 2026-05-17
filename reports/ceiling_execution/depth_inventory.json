@@ -1,26 +1,28 @@
 {
   "kind": "phase_16_depth_inventory",
-  "generated_from": "manual_semantic_review_after_phase_01_15",
+  "generated_from": "semantic_depth_review_after_civil_core_hardening",
   "status": "mixed_local_depth",
   "classifications": [
     {
       "module": "backend/app/membranes",
       "classification": "production-integrated",
       "evidence": [
-        "convert_bs_to_ad capsules resolve source coverage dynamically",
-        "verifier replays conversion result and source docket resolution",
-        "core /api/calendar/bs-to-gregorian proof=membrane path emits a replay-verifiable capsule"
+        "convert_bs_to_ad, ad_to_bs, validate_bs_date, holiday, working_day, fiscal_year and bs_months capsules resolve source coverage dynamically",
+        "operation verifiers replay the actual civil computation and reject wrong-but-self-consistent artifacts",
+        "core API proof modes emit membrane capsules for conversion, validation, compliance holiday/working-day, fiscal-year and BS month metadata routes",
+        "static lookup mode remains static_reference and cannot serialize as source-backed authority"
       ],
-      "remaining_gap": "Only convert_bs_to_ad is fully replay-verified end to end."
+      "remaining_gap": "Proof-supported routes are locally replay-verifiable, but external official source coverage is still limited to committed public/reference artifacts."
     },
     {
       "module": "backend/app/sources",
       "classification": "production-integrated",
       "evidence": [
         "source coverage resolver rejects irrelevant sample dockets",
+        "review-required civil operations degrade authority when eligible official coverage is absent",
         "source review queue reads committed public inventory"
       ],
-      "remaining_gap": "Real official dockets still require external/public source acquisition and review."
+      "remaining_gap": "Real official dockets still require external/public source acquisition, extraction receipts and independent review witnesses."
     },
     {
       "module": "static/parva-embed.js",
@@ -33,27 +35,48 @@
     },
     {
       "module": "packages/parva-local-kernel",
-      "classification": "demo-only",
+      "classification": "production-integrated-v0",
       "evidence": [
-        "local verifier now validates identity, witness, boundary and provenance hashes instead of field presence only"
+        "local verifier validates identity hash, witness hash, proof-pack result hash, source snapshot linkage and field provenance for every result field",
+        "semantic depth gate rejects field-presence-only verification"
       ],
-      "remaining_gap": "It does not yet replay full source coverage and BS conversion with shared backend fixtures in packaged browser tests."
+      "remaining_gap": "Packaged browser tests still need full civil replay from shared BS/AD static fixtures."
     },
     {
       "module": "backend/app/constraints",
-      "classification": "demo-only",
+      "classification": "production-integrated-v0",
       "evidence": [
-        "bitplane primitives exist and are audited by existing ceiling depth scripts"
+        "working-day solver now consumes forge-generated causal bitplanes from actual BS-to-AD weekday truth",
+        "solver output includes bitplane hashes, candidate mask hash, compiled expression, rejected-date causes and proof pack"
       ],
-      "remaining_gap": "Solver still needs full forge-generated bitplane consumption across holidays, working days, festivals and review-required states."
+      "remaining_gap": "Festival windows, fiscal periods and institution overlay bitplanes still need broader workflow integration."
     },
     {
-      "module": "backend/app/notices and TempC",
-      "classification": "sample-only",
+      "module": "backend/app/tempc",
+      "classification": "production-integrated-v0",
       "evidence": [
-        "phase primitives exist"
+        "TempC parses let bs_month, working_days and payroll_schedule emit statements",
+        "TempC interpreter emits a compiled constraint query and decision-support boundary"
       ],
-      "remaining_gap": "Notice extraction and TempC grammar still require production-grade parser/extractor expansion before ceiling claims."
+      "remaining_gap": "TempC remains a small workflow grammar, not a general temporal programming language."
+    },
+    {
+      "module": "backend/app/compliance/notice_ingestion.py",
+      "classification": "production-integrated-v0",
+      "evidence": [
+        "notice ingestion extracts issuer, publication/effective/deadline/action/party/jurisdiction fields from structured text",
+        "ingestion emits source docket, extraction receipt, deadline membrane and obligation object with review-required boundary"
+      ],
+      "remaining_gap": "The extractor is semi-manual and does not perform OCR or legal interpretation."
+    },
+    {
+      "module": "SDK proof surfaces",
+      "classification": "production-integrated-v0",
+      "evidence": [
+        "Python and JavaScript SDKs expose proof modes for core civil routes",
+        "SDKs include conservative membrane structural checks that do not upgrade authority"
+      ],
+      "remaining_gap": "Full SDK-side replay remains delegated to backend/local-kernel verifiers."
     },
     {
       "module": "federation and external witnesses",
@@ -64,13 +87,15 @@
       "remaining_gap": "No real non-maintainer witness, institution signature, customer, registry acceptance or certification exists."
     }
   ],
-  "safe_claim": "One operation, convert_bs_to_ad, now has local proof-carrying integration through core API proof mode and backend replay verification.",
+  "safe_claim": "Stable civil temporal operations now have opt-in local proof-carrying API integration and backend replay verification under bounded authority.",
   "unsafe_claims": [
-    "full grand-plan implementation",
+    "full external grand-plan implementation",
     "external witness network",
     "institutional adoption",
     "government authority",
     "official future date authority",
-    "third-party certification"
+    "third-party certification",
+    "public package publication",
+    "registry acceptance"
   ]
 }

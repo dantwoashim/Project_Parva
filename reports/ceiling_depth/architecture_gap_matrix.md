@@ -9,7 +9,7 @@
 - enterprise_compare_branch_set: pass - compare mode exposes explicit branch-set membrane
 - conversion_capsule_depth: pass - capsule binds source snapshot, docket, witness, and tamper failure
 - causal_bitplane_depth: pass - cause_stamps=31 hash=sha256:45381650852898540d17d6de91ee182714e546d99b04462f44fb28b4fb0c1443
-- claim_index_depth: pass - claim_index_root=sha256:436871c3e3598728cb2f4d390541813c91e726f80c54131a2796bdfc85b21a3b
+- claim_index_depth: pass - claim_index_root=sha256:8d211baf8eb1546a48d348fd399df3cf7e221cc6ad725e6c48621029c6f2eca1
 
 ## External Blockers
 - institutional signed review witnesses: repo has local witness structures but no real external signatures from calendar, government, bank, payroll, or Panchanga institutions

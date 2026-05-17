@@ -41,7 +41,7 @@
       "status": "pass"
     },
     {
-      "detail": "claim_index_root=sha256:436871c3e3598728cb2f4d390541813c91e726f80c54131a2796bdfc85b21a3b",
+      "detail": "claim_index_root=sha256:8d211baf8eb1546a48d348fd399df3cf7e221cc6ad725e6c48621029c6f2eca1",
       "name": "claim_index_depth",
       "status": "pass"
     }

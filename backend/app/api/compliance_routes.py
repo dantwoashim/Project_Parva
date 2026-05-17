@@ -2,9 +2,15 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
+from app.membranes.capsule import (
+    _proof_requested,
+    build_holiday_capsule,
+    build_working_day_capsule,
+    proof_response,
+)
 from app.services.compliance_service import (
     add_working_days_payload,
     evaluate_date_payload,
@@ -15,6 +21,7 @@ from app.services.compliance_service import (
     next_working_day_payload,
     previous_working_day_payload,
 )
+from app.services.enterprise_calendar_service import parse_ad_date, parse_bs_date
 
 router = APIRouter(prefix="/api/compliance", tags=["compliance"])
 
@@ -68,15 +75,73 @@ async def get_compliance_profile(profile_id: str, request: Request):
 
 
 @router.post("/evaluate-date")
-async def evaluate_compliance_date(payload: ComplianceDateRequest, request: Request):
+async def evaluate_compliance_date(
+    payload: ComplianceDateRequest,
+    request: Request,
+    proof: str | None = Query(None, description="Set to membrane/compact/audit/replay for a proof capsule."),
+):
     try:
-        return evaluate_date_payload(
+        response = evaluate_date_payload(
             profile_id=payload.profile_id,
             bs_date=payload.bs_date,
             ad_date=payload.ad_date,
             decision_intent=payload.decision_intent,
             trace_id=_trace_id(request),
         )
+        proof_header = str(request.headers.get("x-parva-proof") or "").strip().lower()
+        proof_mode = str(proof or proof_header or "").strip().lower()
+        if _proof_requested(proof_mode):
+            bs_year, bs_month, bs_day = parse_bs_date(response["date"]["bs"])
+            response["proof"] = proof_response(
+                build_working_day_capsule(
+                    bs_year,
+                    bs_month,
+                    bs_day,
+                    profile_id=payload.profile_id,
+                    decision_intent=payload.decision_intent,
+                ),
+                mode=proof_mode or "membrane",
+            )
+        return response
+    except ValueError as exc:
+        raise _bad_request(exc) from exc
+
+
+@router.get("/holiday")
+async def holiday_lookup(
+    request: Request,
+    bs_date: str | None = Query(None, description="BS date in YYYY-MM-DD format."),
+    ad_date: str | None = Query(None, description="AD date in YYYY-MM-DD format."),
+    profile_id: str = Query("nepal_public_general"),
+    proof: str | None = Query(None, description="Set to membrane/compact/audit/replay for a proof capsule."),
+):
+    """Check fixed public-corpus holiday membership with optional proof."""
+    try:
+        if bool(bs_date) == bool(ad_date):
+            raise ValueError("Provide exactly one of bs_date or ad_date.")
+        if bs_date:
+            bs_year, bs_month, bs_day = parse_bs_date(bs_date)
+        else:
+            ad = parse_ad_date(str(ad_date))
+            from app.calendar.bikram_sambat import gregorian_to_bs
+
+            bs_year, bs_month, bs_day = gregorian_to_bs(ad)
+        capsule = build_holiday_capsule(bs_year, bs_month, bs_day, profile_id=profile_id)
+        response = {
+            "bs_date": capsule["result"]["bs_date"],
+            "profile_id": profile_id,
+            "is_holiday": capsule["result"]["is_holiday"],
+            "holiday": capsule["result"]["holiday"],
+            "source_set": capsule["result"]["source_set"],
+            "policy": capsule["policy_trace"],
+            "meta": {
+                "claim_boundary": "decision_support_not_authority",
+                "trace_id": _trace_id(request),
+            },
+        }
+        if _proof_requested(proof):
+            response["proof"] = proof_response(capsule, mode=str(proof or "membrane"))
+        return response
     except ValueError as exc:
         raise _bad_request(exc) from exc
 

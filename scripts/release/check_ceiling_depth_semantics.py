@@ -34,25 +34,57 @@ def _failures() -> list[str]:
     if "replay_verify" not in verifier:
         failures.append("membrane verifier must dispatch to replay verification")
 
-    replay = PROJECT_ROOT / "backend/app/membranes/operation_verifiers/convert_bs_to_ad.py"
-    if not replay.exists():
-        failures.append("convert_bs_to_ad operation replay verifier is missing")
-    else:
+    operation_verifiers = {
+        "convert_bs_to_ad": "bs_to_gregorian",
+        "ad_to_bs": "gregorian_to_bs",
+        "validate_bs_date": "is_valid_bs_date",
+        "holiday": "holiday_membership",
+        "working_day": "working_day_policy",
+        "fiscal_year": "fiscal_year_payload",
+        "bs_months": "bs_months_payload",
+    }
+    for operation, recompute_marker in operation_verifiers.items():
+        replay = PROJECT_ROOT / f"backend/app/membranes/operation_verifiers/{operation}.py"
+        if not replay.exists():
+            failures.append(f"{operation} operation replay verifier is missing")
+            continue
         replay_source = replay.read_text(encoding="utf-8")
-        if "bs_to_gregorian" not in replay_source or "replayed_result_mismatch" not in replay_source:
-            failures.append("convert_bs_to_ad replay verifier must recompute conversion results")
-        if "source_docket_resolution_mismatch" not in replay_source:
-            failures.append("convert_bs_to_ad replay verifier must enforce source docket resolution")
+        common_marker = "replayed_result_mismatch" if operation == "convert_bs_to_ad" else "verify_common_replay"
+        if recompute_marker not in replay_source or common_marker not in replay_source:
+            failures.append(f"{operation} replay verifier must recompute operation results")
+        if operation != "convert_bs_to_ad" and "expected_result" not in replay_source:
+            failures.append(f"{operation} replay verifier must compare expected_result")
+
+    common_replay = _read("backend/app/membranes/operation_verifiers/common.py")
+    if "source_docket_resolution_mismatch" not in common_replay:
+        failures.append("civil replay verifier must enforce source docket resolution")
+    if "source_authority_overclaim" not in common_replay:
+        failures.append("civil replay verifier must reject source authority overclaims")
 
     local_kernel = _read("packages/parva-local-kernel/src/membranes.ts")
     if "Boolean(membrane.identity_hash && membrane.witness_hash)" in local_kernel:
         failures.append("local kernel verifyMembrane must not be field-presence-only")
     if "identity_hash_mismatch" not in local_kernel or "witness_hash_mismatch" not in local_kernel:
         failures.append("local kernel verifyMembrane must validate identity and witness hashes")
+    if "proof_pack_result_hash_mismatch" not in local_kernel or "source_snapshot_hash_mismatch" not in local_kernel:
+        failures.append("local kernel verifyMembrane must validate proof-pack and source snapshot linkage")
 
     routes = _read("backend/app/calendar/routes.py")
     if "proof: str | None" not in routes or "build_convert_bs_to_ad_capsule" not in routes:
         failures.append("core BS-to-AD route must expose membrane proof mode")
+    for route_marker in ("build_ad_to_bs_capsule", "build_validate_bs_date_capsule"):
+        if route_marker not in routes:
+            failures.append(f"calendar route must expose proof mode via {route_marker}")
+
+    compliance_routes = _read("backend/app/api/compliance_routes.py")
+    for route_marker in ("build_holiday_capsule", "build_working_day_capsule"):
+        if route_marker not in compliance_routes:
+            failures.append(f"compliance route must expose proof mode via {route_marker}")
+
+    enterprise_routes = _read("backend/app/api/enterprise_routes.py")
+    for route_marker in ("build_fiscal_year_capsule", "build_bs_months_capsule"):
+        if route_marker not in enterprise_routes:
+            failures.append(f"enterprise route must expose proof mode via {route_marker}")
 
     try:
         ast.parse(_read("backend/app/membranes/capsule.py"))

@@ -106,7 +106,10 @@ def test_public_openapi_lists_core_surfaces() -> None:
         "/v3/api/calendar/today",
         "/v3/api/calendar/convert",
         "/v3/api/calendar/bs-to-gregorian",
+        "/v3/api/calendar/validate-bs-date",
         "/v3/api/calendar/dual-month",
+        "/v3/api/compliance/holiday",
+        "/v3/api/compliance/evaluate-date",
         "/v3/api/enterprise/capabilities",
         "/v3/api/enterprise/fiscal-year/{bs_year}",
         "/v3/api/enterprise/bs-months/{bs_year}",
@@ -164,3 +167,76 @@ def test_core_conversion_no_sample_docket_outside_coverage() -> None:
     proof = response.json()["proof"]
     assert proof["source_docket_refs"] == []
     assert proof["boundary_vector"]["authority"] == "computed_uncertified"
+
+
+def test_ad_to_bs_endpoint_emits_replayable_membrane_when_requested() -> None:
+    response = client.get("/v3/api/calendar/convert", params={"date": "2025-04-14", "proof": "membrane"})
+
+    assert response.status_code == 200
+    proof = response.json()["proof"]
+    assert proof["capsule"]["canonical_query"]["operation"] == "ad_to_bs"
+    assert proof["capsule"]["result"]["bs_date"] == "2082-01-01"
+    assert verify_membrane(proof["capsule"]) == (True, "verified")
+
+
+def test_validate_bs_date_endpoint_emits_replayable_negative_membrane() -> None:
+    response = client.get(
+        "/v3/api/calendar/validate-bs-date",
+        params={"year": 2082, "month": 1, "day": 32, "proof": "membrane"},
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["valid"] is False
+    proof = body["proof"]
+    assert proof["capsule"]["canonical_query"]["operation"] == "validate_bs_date"
+    assert proof["capsule"]["membrane_kind"] == "negative"
+    assert verify_membrane(proof["capsule"]) == (True, "verified")
+
+
+def test_holiday_endpoint_emits_replayable_membership_membrane() -> None:
+    response = client.get(
+        "/v3/api/compliance/holiday",
+        params={"bs_date": "2082-01-01", "proof": "membrane"},
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["is_holiday"] is True
+    proof = body["proof"]
+    assert proof["capsule"]["canonical_query"]["operation"] == "holiday"
+    assert proof["capsule"]["result"]["membership_proof"]["proof_type"] == "membership"
+    assert verify_membrane(proof["capsule"]) == (True, "verified")
+
+
+def test_working_day_endpoint_emits_replayable_policy_membrane() -> None:
+    response = client.post(
+        "/v3/api/compliance/evaluate-date?proof=membrane",
+        json={"profile_id": "nepal_private_company_default", "bs_date": "2082-01-01", "decision_intent": "general"},
+    )
+
+    assert response.status_code == 200
+    proof = response.json()["proof"]
+    assert proof["capsule"]["canonical_query"]["operation"] == "working_day"
+    assert "decision_support" in proof["boundary_vector"]["claim_boundary"]
+    assert verify_membrane(proof["capsule"]) == (True, "verified")
+
+
+def test_fiscal_year_endpoint_emits_replayable_membrane_when_requested() -> None:
+    response = client.get("/v3/api/enterprise/fiscal-year/2082", params={"proof": "membrane"})
+
+    assert response.status_code == 200
+    proof = response.json()["proof"]
+    assert proof["capsule"]["canonical_query"]["operation"] == "fiscal_year"
+    assert "legal_tax" in proof["boundary_vector"]["claim_boundary"]
+    assert verify_membrane(proof["capsule"]) == (True, "verified")
+
+
+def test_bs_months_endpoint_emits_replayable_membrane_when_requested() -> None:
+    response = client.get("/v3/api/enterprise/bs-months/2082", params={"mode": "canonical", "proof": "membrane"})
+
+    assert response.status_code == 200
+    proof = response.json()["proof"]
+    assert proof["capsule"]["canonical_query"]["operation"] == "bs_months"
+    assert proof["capsule"]["result"]["requested_mode"] == "canonical"
+    assert verify_membrane(proof["capsule"]) == (True, "verified")

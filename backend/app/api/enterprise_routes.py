@@ -4,9 +4,15 @@ from __future__ import annotations
 
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
+from app.membranes.capsule import (
+    _proof_requested,
+    build_bs_months_capsule,
+    build_fiscal_year_capsule,
+    proof_response,
+)
 from app.services.enterprise_calendar_service import (
     bs_months_payload,
     bulk_convert_payload,
@@ -58,9 +64,18 @@ async def enterprise_capabilities(request: Request):
 
 
 @router.get("/fiscal-year/{bs_year}")
-async def enterprise_fiscal_year(bs_year: int, request: Request):
+async def enterprise_fiscal_year(
+    bs_year: int,
+    request: Request,
+    proof: str | None = Query(None, description="Set to membrane/compact/audit/replay for a proof capsule."),
+):
     try:
-        return fiscal_year_payload(bs_year, trace_id=_trace_id(request))
+        response = fiscal_year_payload(bs_year, trace_id=_trace_id(request))
+        proof_header = str(request.headers.get("x-parva-proof") or "").strip().lower()
+        proof_mode = str(proof or proof_header or "").strip().lower()
+        if _proof_requested(proof_mode):
+            response["proof"] = proof_response(build_fiscal_year_capsule(bs_year), mode=proof_mode or "membrane")
+        return response
     except ValueError as exc:
         raise _bad_request(exc) from exc
 
@@ -70,9 +85,15 @@ async def enterprise_bs_months(
     bs_year: int,
     request: Request,
     mode: Literal["canonical", "solar_civil", "static_lookup", "compare"] = "canonical",
+    proof: str | None = Query(None, description="Set to membrane/compact/audit/replay for a proof capsule."),
 ):
     try:
-        return bs_months_payload(bs_year, trace_id=_trace_id(request), mode=mode)
+        response = bs_months_payload(bs_year, trace_id=_trace_id(request), mode=mode)
+        proof_header = str(request.headers.get("x-parva-proof") or "").strip().lower()
+        proof_mode = str(proof or proof_header or "").strip().lower()
+        if _proof_requested(proof_mode):
+            response["proof"] = proof_response(build_bs_months_capsule(bs_year, mode=mode), mode=proof_mode or "membrane")
+        return response
     except ValueError as exc:
         raise _bad_request(exc) from exc
 

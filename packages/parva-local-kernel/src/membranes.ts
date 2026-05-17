@@ -7,7 +7,9 @@ type Membrane = {
   result?: unknown;
   witness?: Record<string, unknown>;
   witness_hash?: string;
-  boundary?: { authority?: string; review_state?: string };
+  proof_pack?: { steps?: Array<Record<string, unknown>>; source_artifacts?: Record<string, unknown> };
+  source_snapshot_hash?: string;
+  boundary?: { authority?: string; review_state?: string; claim_boundary?: string };
   field_provenance?: Record<string, { authority?: string; flags?: string[] }>;
 };
 
@@ -40,15 +42,38 @@ export async function verifyMembrane(membrane: Membrane): Promise<{ verified: bo
     return { verified: false, reason: 'witness_hash_mismatch' };
   }
 
-  const provenance = membrane.field_provenance?.ad_date;
-  if (!membrane.boundary?.authority || !provenance?.authority) {
+  if (!membrane.boundary?.authority || !membrane.boundary.claim_boundary) {
     return { verified: false, reason: 'boundary_or_provenance_missing' };
   }
-  if (membrane.boundary.authority !== provenance.authority) {
-    return { verified: false, reason: 'boundary_authority_mismatch' };
+
+  const result = membrane.result;
+  if (!result || typeof result !== 'object' || Array.isArray(result)) {
+    return { verified: false, reason: 'result_object_required' };
   }
-  if (membrane.boundary.review_state === 'required' && !(provenance.flags ?? []).includes('review_required')) {
-    return { verified: false, reason: 'field_review_required_missing' };
+  const fieldProvenance = membrane.field_provenance ?? {};
+  for (const field of Object.keys(result as Record<string, unknown>)) {
+    const provenance = fieldProvenance[field];
+    if (!provenance?.authority) {
+      return { verified: false, reason: 'field_provenance_missing' };
+    }
+    if (membrane.boundary.review_state === 'required' && !(provenance.flags ?? []).includes('review_required')) {
+      return { verified: false, reason: 'field_review_required_missing' };
+    }
+  }
+
+  const steps = membrane.proof_pack?.steps ?? [];
+  if (!Array.isArray(steps) || steps.length < 2) {
+    return { verified: false, reason: 'proof_pack_steps_missing' };
+  }
+  const lastStep = steps[steps.length - 1];
+  if (lastStep.output_hash !== `sha256:${resultDigest}`) {
+    return { verified: false, reason: 'proof_pack_result_hash_mismatch' };
+  }
+  if (
+    typeof membrane.source_snapshot_hash === 'string'
+    && membrane.proof_pack?.source_artifacts?.source_snapshot_hash !== membrane.source_snapshot_hash
+  ) {
+    return { verified: false, reason: 'source_snapshot_hash_mismatch' };
   }
 
   return { verified: true, reason: 'verified' };

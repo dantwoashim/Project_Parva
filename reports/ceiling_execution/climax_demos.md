@@ -19,7 +19,7 @@
 - Evidence keys: folded, lineage, timepack
 
 ## phase_07
-- Evidence keys: bitplane_witness_refs, claim_boundary, kind, rejected_dates, selected_days
+- Evidence keys: bitplane_witness_refs, candidate_mask_hash, claim_boundary, compiled_bit_expression, input_bitplane_hashes, input_constraints, kind, proof_pack, rejected_dates, selected_days, suggested_relaxations, unsat_core
 
 ## phase_08
 - Evidence keys: capsule_id, claim_boundary, results, workflow

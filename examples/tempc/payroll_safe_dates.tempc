@@ -1,3 +1,5 @@
 program payroll_safe_dates {
-  emit payroll_safe_dates count=5
+  let month = bs_month(2082, 4)
+  let days = working_days(in: month, exclude: holidays())
+  emit payroll_schedule(days, policy: "canonical@0.1.0")
 }

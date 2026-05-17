@@ -3,6 +3,7 @@ export const DEFAULT_FUTURE_BS_CAPABILITIES_URL =
   "https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities";
 
 export type JsonObject = Record<string, unknown>;
+export type ProofMode = "compact" | "audit" | "replay" | "membrane";
 
 export interface SourceClaim {
   id: string;
@@ -61,6 +62,14 @@ export interface ComplianceDateInput {
   bs_date?: string;
   ad_date?: string;
   decision_intent?: string;
+  proof?: ProofMode;
+}
+
+export interface HolidayInput {
+  bs_date?: string;
+  ad_date?: string;
+  profile_id?: string;
+  proof?: ProofMode;
 }
 
 export interface WorkingDaySearchInput {
@@ -220,15 +229,31 @@ export class ParvaClient {
     return this.request("GET", "/calendar/today", { params });
   }
 
-  async adToBs(date: string): Promise<JsonObject> {
-    return this.request("GET", "/calendar/convert", { params: { date } });
+  async adToBs(date: string, options: { proof?: ProofMode } = {}): Promise<JsonObject> {
+    return this.request("GET", "/calendar/convert", {
+      params: optionalParams({ date, proof: options.proof }),
+    });
   }
 
-  async bsToAd(input: BsDateInput): Promise<JsonObject> {
-    return this.request("POST", "/calendar/bs-to-gregorian", { json: input });
+  async bsToAd(input: BsDateInput & { proof?: ProofMode }): Promise<JsonObject> {
+    const { proof, ...body } = input;
+    return this.request("POST", "/calendar/bs-to-gregorian", {
+      params: optionalParams({ proof }),
+      json: body,
+    });
   }
 
-  async validateBsDate(input: BsDateInput): Promise<ValidateBsDateResult> {
+  async validateBsDate(input: BsDateInput & { proof?: ProofMode }): Promise<ValidateBsDateResult | JsonObject> {
+    if (input.proof) {
+      return this.request("GET", "/calendar/validate-bs-date", {
+        params: optionalParams({
+          year: input.year,
+          month: input.month,
+          day: input.day,
+          proof: input.proof,
+        }),
+      });
+    }
     try {
       const result = await this.bsToAd(input);
       return {
@@ -254,12 +279,22 @@ export class ParvaClient {
     });
   }
 
-  async getFiscalYear(bsYear: number): Promise<JsonObject> {
-    return this.request("GET", `/enterprise/fiscal-year/${bsYear}`);
+  async getFiscalYear(bsYear: number, options: { proof?: ProofMode } = {}): Promise<JsonObject> {
+    return this.request("GET", `/enterprise/fiscal-year/${bsYear}`, {
+      params: optionalParams({ proof: options.proof }),
+    });
   }
 
-  async getBsMonths(bsYear: number): Promise<JsonObject> {
-    return this.request("GET", `/enterprise/bs-months/${bsYear}`);
+  async getBsMonths(
+    bsYear: number,
+    options: { mode?: "canonical" | "solar_civil" | "static_lookup" | "compare"; proof?: ProofMode } = {},
+  ): Promise<JsonObject> {
+    return this.request("GET", `/enterprise/bs-months/${bsYear}`, {
+      params: optionalParams({
+        mode: options.mode && options.mode !== "canonical" ? options.mode : undefined,
+        proof: options.proof,
+      }),
+    });
   }
 
   async getBusinessDays(input: BusinessDaysInput): Promise<JsonObject> {
@@ -279,7 +314,37 @@ export class ParvaClient {
   }
 
   async evaluateDate(input: ComplianceDateInput): Promise<JsonObject> {
-    return this.request("POST", "/compliance/evaluate-date", { json: input });
+    const { proof, ...body } = input;
+    return this.request("POST", "/compliance/evaluate-date", {
+      params: optionalParams({ proof }),
+      json: body,
+    });
+  }
+
+  async checkHoliday(input: HolidayInput): Promise<JsonObject> {
+    return this.request("GET", "/compliance/holiday", {
+      params: optionalParams({
+        bs_date: input.bs_date,
+        ad_date: input.ad_date,
+        profile_id: input.profile_id ?? "nepal_public_general",
+        proof: input.proof,
+      }),
+    });
+  }
+
+  verifyMembrane(membrane: JsonObject): { verified: boolean; reason: string; missing?: string[] } {
+    const required = ["kind", "canonical_query", "identity_hash", "result", "boundary", "field_provenance", "witness_hash"];
+    const missing = required.filter((key) => !(key in membrane));
+    if (missing.length) {
+      return { verified: false, reason: "required_fields_missing", missing };
+    }
+    if (typeof membrane.identity_hash !== "string" || !membrane.identity_hash.startsWith("parva:id:v1:sha256:")) {
+      return { verified: false, reason: "identity_hash_invalid" };
+    }
+    if (typeof membrane.witness_hash !== "string" || !membrane.witness_hash.startsWith("parva:wit:v1:sha256:")) {
+      return { verified: false, reason: "witness_hash_invalid" };
+    }
+    return { verified: true, reason: "structural_checks_passed_replay_required_for_full_verification" };
   }
 
   async nextWorkingDay(input: WorkingDaySearchInput): Promise<JsonObject> {
@@ -711,15 +776,15 @@ export function getToday(options: { riskMode?: string } = {}, clientOptions?: Pa
   return new ParvaClient(clientOptions).getToday(options);
 }
 
-export function adToBs(date: string, clientOptions?: ParvaClientOptions) {
-  return new ParvaClient(clientOptions).adToBs(date);
+export function adToBs(date: string, clientOptions?: ParvaClientOptions, options: { proof?: ProofMode } = {}) {
+  return new ParvaClient(clientOptions).adToBs(date, options);
 }
 
-export function bsToAd(input: BsDateInput, clientOptions?: ParvaClientOptions) {
+export function bsToAd(input: BsDateInput & { proof?: ProofMode }, clientOptions?: ParvaClientOptions) {
   return new ParvaClient(clientOptions).bsToAd(input);
 }
 
-export function validateBsDate(input: BsDateInput, clientOptions?: ParvaClientOptions) {
+export function validateBsDate(input: BsDateInput & { proof?: ProofMode }, clientOptions?: ParvaClientOptions) {
   return new ParvaClient(clientOptions).validateBsDate(input);
 }
 
@@ -727,12 +792,16 @@ export function getMonthCalendar(year: number, month: number, clientOptions?: Pa
   return new ParvaClient(clientOptions).getMonthCalendar(year, month);
 }
 
-export function getFiscalYear(bsYear: number, clientOptions?: ParvaClientOptions) {
-  return new ParvaClient(clientOptions).getFiscalYear(bsYear);
+export function getFiscalYear(bsYear: number, clientOptions?: ParvaClientOptions, options: { proof?: ProofMode } = {}) {
+  return new ParvaClient(clientOptions).getFiscalYear(bsYear, options);
 }
 
-export function getBsMonths(bsYear: number, clientOptions?: ParvaClientOptions) {
-  return new ParvaClient(clientOptions).getBsMonths(bsYear);
+export function getBsMonths(
+  bsYear: number,
+  clientOptions?: ParvaClientOptions,
+  options: { mode?: "canonical" | "solar_civil" | "static_lookup" | "compare"; proof?: ProofMode } = {},
+) {
+  return new ParvaClient(clientOptions).getBsMonths(bsYear, options);
 }
 
 export function getBusinessDays(input: BusinessDaysInput, clientOptions?: ParvaClientOptions) {
@@ -753,6 +822,10 @@ export function getProfile(profileId: string, clientOptions?: ParvaClientOptions
 
 export function evaluateDate(input: ComplianceDateInput, clientOptions?: ParvaClientOptions) {
   return new ParvaClient(clientOptions).evaluateDate(input);
+}
+
+export function checkHoliday(input: HolidayInput, clientOptions?: ParvaClientOptions) {
+  return new ParvaClient(clientOptions).checkHoliday(input);
 }
 
 export function nextWorkingDay(input: WorkingDaySearchInput, clientOptions?: ParvaClientOptions) {

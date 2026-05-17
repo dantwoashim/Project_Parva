@@ -10,3 +10,5 @@ class TempCProgram:
     name: str
     operation: str
     parameters: dict
+    statements: tuple[dict, ...] = ()
+    diagnostics: tuple[str, ...] = ()

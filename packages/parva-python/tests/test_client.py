@@ -479,6 +479,58 @@ def test_client_preserves_source_aware_metadata() -> None:
     assert payload["meta"] == meta
 
 
+def test_core_methods_expose_proof_modes() -> None:
+    calls = []
+
+    def transport(method, url, params, json_body, timeout):
+        calls.append((method, url, params, json_body, timeout))
+        return {"proof": {"mode": "membrane", "capsule": {"kind": "parva_membrane"}}}
+
+    client = ParvaClient(transport=transport)
+
+    client.ad_to_bs("2025-04-14", proof="membrane")
+    client.bs_to_ad(2082, 1, 1, proof="membrane")
+    client.validate_bs_date(2082, 1, 1, proof="membrane")
+    client.check_holiday(bs_date="2082-01-01", proof="membrane")
+    client.evaluate_date(bs_date="2082-01-01", proof="membrane")
+    client.get_fiscal_year(2082, proof="membrane")
+    client.get_bs_months(2082, mode="compare", proof="membrane")
+
+    assert calls[0][1] == f"{DEFAULT_API_BASE}/calendar/convert?date=2025-04-14&proof=membrane"
+    assert calls[1][1] == f"{DEFAULT_API_BASE}/calendar/bs-to-gregorian?proof=membrane"
+    assert calls[2][1] == (
+        f"{DEFAULT_API_BASE}/calendar/validate-bs-date?year=2082&month=1&day=1&proof=membrane"
+    )
+    assert calls[3][1] == (
+        f"{DEFAULT_API_BASE}/compliance/holiday?bs_date=2082-01-01&profile_id=nepal_public_general&proof=membrane"
+    )
+    assert calls[4][1] == f"{DEFAULT_API_BASE}/compliance/evaluate-date?proof=membrane"
+    assert calls[5][1] == f"{DEFAULT_API_BASE}/enterprise/fiscal-year/2082?proof=membrane"
+    assert calls[6][1] == f"{DEFAULT_API_BASE}/enterprise/bs-months/2082?mode=compare&proof=membrane"
+
+
+def test_sdk_membrane_structural_verifier_does_not_upgrade_authority() -> None:
+    client = ParvaClient(transport=lambda *_args: {})
+
+    assert client.verify_membrane({"kind": "parva_membrane"})["verified"] is False
+    result = client.verify_membrane(
+        {
+            "kind": "parva_membrane",
+            "canonical_query": {"operation": "ad_to_bs"},
+            "identity_hash": "parva:id:v1:sha256:abc",
+            "result": {"bs_date": "2082-01-01"},
+            "boundary": {"claim_boundary": "decision_support_not_authority"},
+            "field_provenance": {"bs_date": {"authority": "static_reference"}},
+            "witness_hash": "parva:wit:v1:sha256:def",
+        }
+    )
+
+    assert result == {
+        "verified": True,
+        "reason": "structural_checks_passed_replay_required_for_full_verification",
+    }
+
+
 def test_non_validation_errors_are_not_hidden() -> None:
     def transport(method, url, params, json_body, timeout):
         raise ParvaAPIError("server unavailable", status=503)

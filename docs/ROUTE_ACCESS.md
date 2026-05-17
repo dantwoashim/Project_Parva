@@ -61,6 +61,7 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 - `GET /v3/api/calendar/convert`
 - `GET /v3/api/calendar/convert/compare`
 - `GET /v3/api/calendar/dual-month`
+- `GET /v3/api/calendar/validate-bs-date`
 - `GET /v3/api/calendar/festivals/calculate/{festival_id}`
 - `GET /v3/api/calendar/festivals/upcoming`
 - `GET /v3/api/calendar/panchanga`
@@ -77,6 +78,7 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 - `POST /v3/api/compliance/add-working-days`
 - `POST /v3/api/compliance/evaluate-date`
 - `POST /v3/api/compliance/fiscal-period`
+- `GET /v3/api/compliance/holiday`
 - `POST /v3/api/compliance/month-closing-day`
 - `POST /v3/api/compliance/next-working-day`
 - `GET /v3/api/compliance/profiles`

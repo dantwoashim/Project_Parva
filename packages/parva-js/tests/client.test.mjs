@@ -530,3 +530,50 @@ test("preserves source-aware metadata from public responses", async () => {
 
   assert.deepEqual(payload.meta, meta);
 });
+
+test("core SDK methods expose proof modes", async () => {
+  const calls = [];
+  const client = new ParvaClient({
+    fetchImpl: async (url, init) => {
+      calls.push({ url, init });
+      return jsonResponse({ proof: { mode: "membrane" } });
+    },
+  });
+
+  await client.adToBs("2025-04-14", { proof: "membrane" });
+  await client.bsToAd({ year: 2082, month: 1, day: 1, proof: "membrane" });
+  await client.validateBsDate({ year: 2082, month: 1, day: 1, proof: "membrane" });
+  await client.checkHoliday({ bs_date: "2082-01-01", proof: "membrane" });
+  await client.evaluateDate({ bs_date: "2082-01-01", proof: "membrane" });
+  await client.getFiscalYear(2082, { proof: "membrane" });
+  await client.getBsMonths(2082, { mode: "compare", proof: "membrane" });
+
+  assert.equal(calls[0].url, `${DEFAULT_API_BASE}/calendar/convert?date=2025-04-14&proof=membrane`);
+  assert.equal(calls[1].url, `${DEFAULT_API_BASE}/calendar/bs-to-gregorian?proof=membrane`);
+  assert.deepEqual(JSON.parse(calls[1].init.body), { year: 2082, month: 1, day: 1 });
+  assert.equal(calls[2].url, `${DEFAULT_API_BASE}/calendar/validate-bs-date?year=2082&month=1&day=1&proof=membrane`);
+  assert.equal(
+    calls[3].url,
+    `${DEFAULT_API_BASE}/compliance/holiday?bs_date=2082-01-01&profile_id=nepal_public_general&proof=membrane`,
+  );
+  assert.equal(calls[4].url, `${DEFAULT_API_BASE}/compliance/evaluate-date?proof=membrane`);
+  assert.equal(calls[5].url, `${DEFAULT_API_BASE}/enterprise/fiscal-year/2082?proof=membrane`);
+  assert.equal(calls[6].url, `${DEFAULT_API_BASE}/enterprise/bs-months/2082?mode=compare&proof=membrane`);
+});
+
+test("SDK membrane verifier is structural and does not upgrade authority", () => {
+  const client = new ParvaClient({ fetchImpl: async () => jsonResponse({}) });
+  assert.equal(client.verifyMembrane({ kind: "parva_membrane" }).verified, false);
+  assert.deepEqual(client.verifyMembrane({
+    kind: "parva_membrane",
+    canonical_query: { operation: "ad_to_bs" },
+    identity_hash: "parva:id:v1:sha256:abc",
+    result: { bs_date: "2082-01-01" },
+    boundary: { claim_boundary: "decision_support_not_authority" },
+    field_provenance: { bs_date: { authority: "static_reference" } },
+    witness_hash: "parva:wit:v1:sha256:def",
+  }), {
+    verified: true,
+    reason: "structural_checks_passed_replay_required_for_full_verification",
+  });
+});

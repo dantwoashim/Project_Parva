@@ -72,17 +72,24 @@ class ParvaClient:
         params = {"risk_mode": risk_mode} if risk_mode else None
         return self._request("GET", "/calendar/today", params=params)
 
-    def ad_to_bs(self, date: str) -> JsonObject:
-        return self._request("GET", "/calendar/convert", params={"date": date})
+    def ad_to_bs(self, date: str, *, proof: str | None = None) -> JsonObject:
+        return self._request("GET", "/calendar/convert", params=_clean_params({"date": date, "proof": proof}))
 
-    def bs_to_ad(self, year: int, month: int, day: int) -> JsonObject:
+    def bs_to_ad(self, year: int, month: int, day: int, *, proof: str | None = None) -> JsonObject:
         return self._request(
             "POST",
             "/calendar/bs-to-gregorian",
+            params=_clean_params({"proof": proof}),
             json_body={"year": year, "month": month, "day": day},
         )
 
-    def validate_bs_date(self, year: int, month: int, day: int) -> JsonObject:
+    def validate_bs_date(self, year: int, month: int, day: int, *, proof: str | None = None) -> JsonObject:
+        if proof:
+            return self._request(
+                "GET",
+                "/calendar/validate-bs-date",
+                params=_clean_params({"year": year, "month": month, "day": day, "proof": proof}),
+            )
         try:
             payload = self.bs_to_ad(year, month, day)
         except ParvaAPIError as exc:
@@ -106,11 +113,15 @@ class ParvaClient:
             params={"year": str(year), "month": str(month)},
         )
 
-    def get_fiscal_year(self, bs_year: int) -> JsonObject:
-        return self._request("GET", f"/enterprise/fiscal-year/{bs_year}")
+    def get_fiscal_year(self, bs_year: int, *, proof: str | None = None) -> JsonObject:
+        return self._request("GET", f"/enterprise/fiscal-year/{bs_year}", params=_clean_params({"proof": proof}))
 
-    def get_bs_months(self, bs_year: int) -> JsonObject:
-        return self._request("GET", f"/enterprise/bs-months/{bs_year}")
+    def get_bs_months(self, bs_year: int, *, mode: str = "canonical", proof: str | None = None) -> JsonObject:
+        return self._request(
+            "GET",
+            f"/enterprise/bs-months/{bs_year}",
+            params=_clean_params({"mode": mode if mode != "canonical" else None, "proof": proof}),
+        )
 
     def get_business_days(
         self,
@@ -151,10 +162,12 @@ class ParvaClient:
         bs_date: str | None = None,
         ad_date: str | None = None,
         decision_intent: str = "general",
+        proof: str | None = None,
     ) -> JsonObject:
         return self._request(
             "POST",
             "/compliance/evaluate-date",
+            params=_clean_params({"proof": proof}),
             json_body={
                 "profile_id": profile_id,
                 "bs_date": bs_date,
@@ -162,6 +175,44 @@ class ParvaClient:
                 "decision_intent": decision_intent,
             },
         )
+
+    def check_holiday(
+        self,
+        *,
+        bs_date: str | None = None,
+        ad_date: str | None = None,
+        profile_id: str = "nepal_public_general",
+        proof: str | None = None,
+    ) -> JsonObject:
+        return self._request(
+            "GET",
+            "/compliance/holiday",
+            params=_clean_params(
+                {"bs_date": bs_date, "ad_date": ad_date, "profile_id": profile_id, "proof": proof},
+            ),
+        )
+
+    def verify_membrane(self, membrane: JsonObject) -> JsonObject:
+        """Run SDK-side structural checks for a membrane receipt.
+
+        Full replay verification is available in the local kernel/backend
+        verifier. This SDK helper is intentionally conservative and never
+        upgrades authority.
+        """
+
+        required = {"kind", "canonical_query", "identity_hash", "result", "boundary", "field_provenance", "witness_hash"}
+        missing = sorted(required - set(membrane))
+        if missing:
+            return {"verified": False, "reason": "required_fields_missing", "missing": missing}
+        if not str(membrane.get("identity_hash", "")).startswith("parva:id:v1:sha256:"):
+            return {"verified": False, "reason": "identity_hash_invalid"}
+        if not str(membrane.get("witness_hash", "")).startswith("parva:wit:v1:sha256:"):
+            return {"verified": False, "reason": "witness_hash_invalid"}
+        if not isinstance(membrane.get("boundary"), dict) or not membrane["boundary"].get("claim_boundary"):
+            return {"verified": False, "reason": "boundary_vector_missing"}
+        if not isinstance(membrane.get("field_provenance"), dict):
+            return {"verified": False, "reason": "field_provenance_missing"}
+        return {"verified": True, "reason": "structural_checks_passed_replay_required_for_full_verification"}
 
     def next_working_day(
         self,
@@ -815,8 +866,8 @@ def get_today(*, client: ParvaClient | None = None, risk_mode: str | None = None
     return (client or ParvaClient()).get_today(risk_mode=risk_mode)
 
 
-def ad_to_bs(date: str, *, client: ParvaClient | None = None) -> JsonObject:
-    return (client or ParvaClient()).ad_to_bs(date)
+def ad_to_bs(date: str, *, client: ParvaClient | None = None, proof: str | None = None) -> JsonObject:
+    return (client or ParvaClient()).ad_to_bs(date, proof=proof)
 
 
 def bs_to_ad(
@@ -825,8 +876,9 @@ def bs_to_ad(
     day: int,
     *,
     client: ParvaClient | None = None,
+    proof: str | None = None,
 ) -> JsonObject:
-    return (client or ParvaClient()).bs_to_ad(year, month, day)
+    return (client or ParvaClient()).bs_to_ad(year, month, day, proof=proof)
 
 
 def validate_bs_date(
@@ -835,8 +887,9 @@ def validate_bs_date(
     day: int,
     *,
     client: ParvaClient | None = None,
+    proof: str | None = None,
 ) -> JsonObject:
-    return (client or ParvaClient()).validate_bs_date(year, month, day)
+    return (client or ParvaClient()).validate_bs_date(year, month, day, proof=proof)
 
 
 def get_month_calendar(
@@ -848,12 +901,18 @@ def get_month_calendar(
     return (client or ParvaClient()).get_month_calendar(year, month)
 
 
-def get_fiscal_year(bs_year: int, *, client: ParvaClient | None = None) -> JsonObject:
-    return (client or ParvaClient()).get_fiscal_year(bs_year)
+def get_fiscal_year(bs_year: int, *, client: ParvaClient | None = None, proof: str | None = None) -> JsonObject:
+    return (client or ParvaClient()).get_fiscal_year(bs_year, proof=proof)
 
 
-def get_bs_months(bs_year: int, *, client: ParvaClient | None = None) -> JsonObject:
-    return (client or ParvaClient()).get_bs_months(bs_year)
+def get_bs_months(
+    bs_year: int,
+    *,
+    client: ParvaClient | None = None,
+    mode: str = "canonical",
+    proof: str | None = None,
+) -> JsonObject:
+    return (client or ParvaClient()).get_bs_months(bs_year, mode=mode, proof=proof)
 
 
 def get_business_days(
@@ -895,12 +954,30 @@ def evaluate_date(
     bs_date: str | None = None,
     ad_date: str | None = None,
     decision_intent: str = "general",
+    proof: str | None = None,
 ) -> JsonObject:
     return (client or ParvaClient()).evaluate_date(
         profile_id=profile_id,
         bs_date=bs_date,
         ad_date=ad_date,
         decision_intent=decision_intent,
+        proof=proof,
+    )
+
+
+def check_holiday(
+    *,
+    client: ParvaClient | None = None,
+    bs_date: str | None = None,
+    ad_date: str | None = None,
+    profile_id: str = "nepal_public_general",
+    proof: str | None = None,
+) -> JsonObject:
+    return (client or ParvaClient()).check_holiday(
+        bs_date=bs_date,
+        ad_date=ad_date,
+        profile_id=profile_id,
+        proof=proof,
     )
 
 
