@@ -1,0 +1,6 @@
+{
+  "claim_boundary": "bitplane_attestation_not_official_authority",
+  "kind": "bitplane_attestation_card",
+  "manifest_binding": "included_in_static_manifest_after_rebuild",
+  "plane_hash": "sha256:72ede31311bb8305947fbe2e9f476db96ee99195b376530fd4e1cec42cd9ab67"
+}

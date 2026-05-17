@@ -1,0 +1,5 @@
+{
+  "overlay_id": "company_payroll_overlay",
+  "remove_days": [2],
+  "claim_boundary": "institutional_overlay_not_canonical_truth"
+}

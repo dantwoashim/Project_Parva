@@ -1,0 +1,41 @@
+{
+  "bits": [
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "hash": "sha256:72ede31311bb8305947fbe2e9f476db96ee99195b376530fd4e1cec42cd9ab67",
+  "kind": "causal_bitplane",
+  "name": "working_day",
+  "witness_refs": [
+    "static_bundle_manifest"
+  ]
+}

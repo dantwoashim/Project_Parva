@@ -1,4 +1,4 @@
-"""Policy metadata helpers for informational usage responses."""
+"""Policy metadata helpers and Phase 01 policy primitives."""
 
 from __future__ import annotations
 

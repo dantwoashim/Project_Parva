@@ -1,0 +1,16 @@
+{
+  "policy_id": "canonical@0.1.0",
+  "candidate_ranking": [
+    "structured_official",
+    "archived_official",
+    "reviewed_institutional",
+    "computed_certified",
+    "computed_uncertified",
+    "static_reference",
+    "third_party_reference",
+    "user_supplied",
+    "unknown_unverified"
+  ],
+  "static_reference_rule": "explicit_mode_or_compare_branch_only",
+  "default_boundary": "decision_support_not_authority"
+}

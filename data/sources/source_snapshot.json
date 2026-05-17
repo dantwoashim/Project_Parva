@@ -1,0 +1,10 @@
+{
+  "docket_hashes": [
+    "sha256:fd1f32d09becfe8e70fbecad5571511f9dbc2cb3949b383ff61cefb0dad3a6a8"
+  ],
+  "kind": "source_snapshot",
+  "receipt_hashes": [
+    "sha256:b2aa6bfcbb43411de5e3e2e047de9eadcaebc318e1a55d39f47f90904143171a"
+  ],
+  "snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+}

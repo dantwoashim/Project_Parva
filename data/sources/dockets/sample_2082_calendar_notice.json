@@ -1,0 +1,25 @@
+﻿{
+    "kind":  "source_docket",
+    "source_id":  "parva:src:v1:sample-2082-calendar-notice",
+    "issuer":  "Project Parva sample fixture",
+    "source_type":  "structured_reference",
+    "authority_class":  "static_reference",
+    "raw_artifact":  {
+                         "path":  "data/sources/raw/official/sample_2082_calendar_notice.txt",
+                         "sha256":  "a8e46bfda6e4be6fa8d4f30720fe7c429aa87ace9eb0fbf3bd76aa3b7a970bd3"
+                     },
+    "acquired_at":  "2026-05-17T00:00:00Z",
+    "acquisition_method":  "checked_in_public_fixture",
+    "original_url":  null,
+    "normalized_output":  {
+                              "path":  "data/sources/normalized/calendar/sample_2082_calendar_rows.json",
+                              "sha256":  "2b75598ed964805ea583f4ad3d5aa5d1cbca2c7a12e36effdfe3ebcf20757c9c"
+                          },
+    "review_status":  "reviewed_sample",
+    "review_witnesses":  [
+                             "parva:review:v1:sample"
+                         ],
+    "notes":  [
+                  "Public-safe sample source chain for Phase 02; not official authority."
+              ]
+}

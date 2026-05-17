@@ -1,0 +1,9 @@
+{
+  "capsule_id": "payroll_core_2082",
+  "workflow": "payroll_date_risk",
+  "cases": [
+    {"bs_date": "2082-04-31", "workflow_type": "payroll_cutoff", "holiday_assumption": "known_public_holidays"},
+    {"bs_date": "2082-13-01", "workflow_type": "payroll_cutoff", "holiday_assumption": "known_public_holidays"},
+    {"bs_date": "2096-01-01", "workflow_type": "future_payroll_cutoff", "holiday_assumption": "assume_no_holidays"}
+  ]
+}

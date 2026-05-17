@@ -1,0 +1,6 @@
+{
+  "kind": "federation_registry",
+  "version": "1.0.0",
+  "witnesses": [],
+  "governance_boundary": "external_witnesses_pending_untrusted_by_default"
+}

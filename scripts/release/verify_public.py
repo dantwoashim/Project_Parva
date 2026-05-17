@@ -115,6 +115,8 @@ def main() -> int:
         ("protocol verification", [*python, "scripts/parva_protocol_verify.py"]),
         ("external temporal rules", [*python, "scripts/validate_external_temporal_rules.py"]),
         ("benchmark schema", [*python, "public-benchmark/validate_benchmark.py"]),
+        ("ceiling phase requirements", [*python, "scripts/release/check_ceiling_phase_requirements.py"]),
+        ("ceiling climax demos", [*python, "scripts/release/run_ceiling_climax_demos.py"]),
         ("public claims", [*python, "scripts/release/check_public_claims.py"]),
         ("protocol conformance core", [*python, "scripts/parva_conformance.py", "--target", "local", "--level", "parva_core"]),
         ("protocol conformance full", [*python, "scripts/parva_conformance.py", "--target", "local", "--level", "parva_full"]),

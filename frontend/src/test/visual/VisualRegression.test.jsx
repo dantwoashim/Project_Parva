@@ -490,6 +490,7 @@ describe('visual regression harness', () => {
   it('consumer home visual baseline', async () => {
     const { container } = await renderRoute('/');
     await screen.findByRole('heading', { name: /Nepali calendar infrastructure for software systems/i }, routeLoadOptions);
+    await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 

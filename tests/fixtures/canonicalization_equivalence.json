@@ -1,0 +1,1981 @@
+{
+  "equivalent": [
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८३"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2083"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८४"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2084"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८३"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2083"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८४"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2084"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८३"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2083"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८४"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2084"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८३"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2083"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८४"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2084"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८३"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2083"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८४"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2084"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८३"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2083"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८४"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2084"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८३"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2083"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८४"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2084"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८३"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2083"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८४"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2084"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "find_festival_date",
+        "input": {
+          "festival": "दशैं",
+          "year": "२०८२"
+        }
+      },
+      {
+        "operation": " find_festival_date ",
+        "input": {
+          "festival": "DASAIN",
+          "year": "2082"
+        },
+        "context": {
+          "calendar": "bs",
+          "place_id": "np:national:default"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-01"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-01 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-02"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-02 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-03"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-03 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-04"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-04 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-05"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-05 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-06"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-06 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-07"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-07 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-08"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-08 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-09"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-09 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-10"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-10 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-11"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-11 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-12"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-12 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-13"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-13 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-14"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-14 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-15"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-15 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-16"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-16 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-17"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-17 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-18"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-18 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-19"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-19 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-20"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-20 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-21"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-21 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-22"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-22 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-23"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-23 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-24"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-24 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-25"
+        }
+      },
+      {
+        "operation": "CHECK_WORKING_DAY",
+        "input": {
+          "date": " 2082-01-25 "
+        },
+        "context": {
+          "calendar": "BS",
+          "timezone": "Asia/Kathmandu",
+          "policy_id": "canonical@0.1.0"
+        }
+      }
+    ]
+  ],
+  "different": [
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-01"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-01"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-02"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-02"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-03"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-03"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-04"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-04"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-05"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-05"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-06"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-06"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-07"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-07"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-08"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-08"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-09"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-09"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-10"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-10"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-11"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-11"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-12"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-12"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-13"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-13"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-14"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-14"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-15"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-15"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-16"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-16"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-17"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-17"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-18"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-18"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-19"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-19"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-20"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-20"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-21"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-21"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-22"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-22"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-23"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-23"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-24"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-24"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-25"
+        },
+        "context": {
+          "policy_id": "canonical@0.1.0"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-25"
+        },
+        "context": {
+          "policy_id": "banking_review_required@0.1.0"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-01"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-01"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-02"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-02"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-03"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-03"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-04"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-04"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-05"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-05"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-06"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-06"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-07"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-07"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-08"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-08"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-09"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-09"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-10"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-10"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-11"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-11"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-12"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-12"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-13"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-13"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-14"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-14"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-15"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-15"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-16"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-16"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-17"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-17"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-18"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-18"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-19"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-19"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-20"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-20"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-21"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-21"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-22"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-22"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-23"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-23"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-24"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-24"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ],
+    [
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-25"
+        },
+        "context": {
+          "place_id": "np:national:default"
+        }
+      },
+      {
+        "operation": "check_working_day",
+        "input": {
+          "date": "2082-01-25"
+        },
+        "context": {
+          "place_id": "np:kathmandu:local"
+        }
+      }
+    ]
+  ]
+}

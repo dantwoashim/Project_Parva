@@ -1,0 +1,3 @@
+program payroll_safe_dates {
+  emit payroll_safe_dates count=5
+}

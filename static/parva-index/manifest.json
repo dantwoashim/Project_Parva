@@ -1,0 +1,18 @@
+{
+  "files": [
+    {
+      "path": "bitplane-working-day-2082-01.attestation.json",
+      "sha256": "dd2be5be2539df3e59b5ae472836a0f2ef361e48d637763a5e0da831921951bd"
+    },
+    {
+      "path": "bitplane-working-day-2082-01.json",
+      "sha256": "3759489962a1509bb7e62ad7825909cde4c85d5d140495cd901f7cdf913f9475"
+    },
+    {
+      "path": "bs-2082.json",
+      "sha256": "f1b6f28461fa9c4ba82341a0fd24e1ba5eb6b2ffbd6a9b7c478d6433fbcc3863"
+    }
+  ],
+  "kind": "parva_static_manifest",
+  "version": "1.0.0"
+}

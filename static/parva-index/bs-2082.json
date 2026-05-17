@@ -1,0 +1,79 @@
+{
+  "bs_year": 2082,
+  "claim_boundary": "static_bundle_not_authority",
+  "kind": "parva_static_year_bundle",
+  "months": [
+    {
+      "days": 31,
+      "end_ad": "2025-05-14",
+      "month": 1,
+      "start_ad": "2025-04-14"
+    },
+    {
+      "days": 31,
+      "end_ad": "2025-06-14",
+      "month": 2,
+      "start_ad": "2025-05-15"
+    },
+    {
+      "days": 31,
+      "end_ad": "2025-07-15",
+      "month": 3,
+      "start_ad": "2025-06-15"
+    },
+    {
+      "days": 32,
+      "end_ad": "2025-08-16",
+      "month": 4,
+      "start_ad": "2025-07-16"
+    },
+    {
+      "days": 31,
+      "end_ad": "2025-09-16",
+      "month": 5,
+      "start_ad": "2025-08-17"
+    },
+    {
+      "days": 31,
+      "end_ad": "2025-10-17",
+      "month": 6,
+      "start_ad": "2025-09-17"
+    },
+    {
+      "days": 30,
+      "end_ad": "2025-11-16",
+      "month": 7,
+      "start_ad": "2025-10-18"
+    },
+    {
+      "days": 29,
+      "end_ad": "2025-12-15",
+      "month": 8,
+      "start_ad": "2025-11-17"
+    },
+    {
+      "days": 30,
+      "end_ad": "2026-01-14",
+      "month": 9,
+      "start_ad": "2025-12-16"
+    },
+    {
+      "days": 29,
+      "end_ad": "2026-02-12",
+      "month": 10,
+      "start_ad": "2026-01-15"
+    },
+    {
+      "days": 30,
+      "end_ad": "2026-03-14",
+      "month": 11,
+      "start_ad": "2026-02-13"
+    },
+    {
+      "days": 30,
+      "end_ad": "2026-04-13",
+      "month": 12,
+      "start_ad": "2026-03-15"
+    }
+  ]
+}

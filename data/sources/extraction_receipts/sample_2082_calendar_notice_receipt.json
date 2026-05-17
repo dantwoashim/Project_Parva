@@ -1,0 +1,21 @@
+{
+  "kind": "extraction_receipt",
+  "manual_patch": {
+    "applied": false,
+    "reason": null
+  },
+  "normalization_rule": "calendar_row_v1",
+  "normalized_row": {
+    "ad_date": "2025-04-14",
+    "bs_date": "2082-01-01"
+  },
+  "normalized_row_hash": "ba5b2502ce506b3b531bac602e3176bbe957bef6fd1ee0938f4d4d344445b768",
+  "ocr_text": "BS 2082-01-01 maps to AD 2025-04-14",
+  "receipt_id": "parva:extract:v1:sha256:d2aa3791d76d8d417868bce1527acfbfed7215d17fcecd7ba6352a62fa7dc442",
+  "review_status": "reviewed_sample",
+  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+  "source_region": {
+    "line_end": 1,
+    "line_start": 1
+  }
+}
