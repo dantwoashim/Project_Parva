@@ -35,6 +35,11 @@ The audit report should identify invalid dates, unsupported ranges, source
 conflicts, holiday mismatches, fiscal cutoff mismatches, working-day mismatches,
 review-required cases, and an overall conformance score.
 
+For BS month-length checks, the enterprise API default is canonical
+trust-arrest mode. Static lookup output is accepted only as explicit
+compatibility/reference evidence and must remain review-required in vendor
+reports.
+
 Sample input and output live under `samples/vendor-date-risk-audit`.
 
 Run the local sample:

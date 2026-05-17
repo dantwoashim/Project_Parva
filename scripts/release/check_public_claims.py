@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -37,6 +38,14 @@ FORBIDDEN_PATTERNS = {
     "Panchanga replacement": re.compile(r"\bPanchanga\s+replacement\b", re.IGNORECASE),
     "certified": re.compile(r"\bcertified\b", re.IGNORECASE),
     "SOC 2": re.compile(r"\bSOC\s*2\b", re.IGNORECASE),
+}
+
+OPENAPI_OPERATION_CLAIM_PATTERNS = {
+    "authoritative": re.compile(r"\bauthoritative\b", re.IGNORECASE),
+    "production-safe": re.compile(r"\bproduction[-\s]+safe\b", re.IGNORECASE),
+    "enterprise-ready": re.compile(r"\benterprise[-\s]+ready\b", re.IGNORECASE),
+    "verified": re.compile(r"\bverified\b", re.IGNORECASE),
+    "source-backed": re.compile(r"\bsource[-\s]+backed\b", re.IGNORECASE),
 }
 
 NEGATION_PATTERNS = (
@@ -93,6 +102,37 @@ def check_public_claims() -> list[str]:
                         continue
                     rel = path.relative_to(PROJECT_ROOT).as_posix()
                     issues.append(f"{rel}:{line_number}: unsupported public claim phrase `{label}`")
+    issues.extend(_check_openapi_operation_claims())
+    return issues
+
+
+def _check_openapi_operation_claims() -> list[str]:
+    issues: list[str] = []
+    for path in sorted((PROJECT_ROOT / "docs" / "api-docs").glob("openapi*.json")):
+        try:
+            document = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        for route_path, methods in (document.get("paths") or {}).items():
+            if not isinstance(methods, dict):
+                continue
+            for method, operation in methods.items():
+                if not isinstance(operation, dict):
+                    continue
+                text = "\n".join(
+                    str(operation.get(key) or "") for key in ("summary", "description")
+                )
+                if not text.strip():
+                    continue
+                for label, pattern in OPENAPI_OPERATION_CLAIM_PATTERNS.items():
+                    for match in pattern.finditer(text):
+                        if _is_negated(text, match.start()):
+                            continue
+                        rel = path.relative_to(PROJECT_ROOT).as_posix()
+                        issues.append(
+                            f"{rel}:{method.upper()} {route_path}: "
+                            f"unsupported OpenAPI operation claim `{label}`"
+                        )
     return issues
 
 

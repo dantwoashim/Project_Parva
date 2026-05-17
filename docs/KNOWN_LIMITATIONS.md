@@ -16,6 +16,10 @@ Project Parva is useful today, but it is not complete or universally authoritati
 2. Some festival rows are still provisional or source-review-driven rather than fully authority-reviewed.
 3. Fine boundary cases near sunrise can differ when timezone or location inputs change.
 4. Conflict handling is explicit, but a stable public default is still a policy choice when sources disagree.
+5. Enterprise BS month metadata uses canonical trust-arrest selection by
+   default. Static lookup is available only through explicit compatibility or
+   compare mode and remains review-required reference data, not final
+   government, legal, tax, payroll, banking, or panchanga authority.
 
 ## Product and platform limits
 

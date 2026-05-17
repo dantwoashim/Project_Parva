@@ -2017,11 +2017,13 @@
             "required": false,
             "schema": {
               "enum": [
+                "canonical",
                 "solar_civil",
-                "static_lookup"
+                "static_lookup",
+                "compare"
               ],
               "type": "string",
-              "default": "solar_civil",
+              "default": "canonical",
               "title": "Mode"
             }
           }
@@ -4142,7 +4144,7 @@
           "engine"
         ],
         "summary": "Get Engine Manifest",
-        "description": "Return the authoritative engine manifest for public route families.",
+        "description": "Return the canonical engine manifest for public route families.",
         "operationId": "get_engine_manifest_api_engine_manifest_get",
         "responses": {
           "200": {
@@ -12929,11 +12931,13 @@
             "required": false,
             "schema": {
               "enum": [
+                "canonical",
                 "solar_civil",
-                "static_lookup"
+                "static_lookup",
+                "compare"
               ],
               "type": "string",
-              "default": "solar_civil",
+              "default": "canonical",
               "title": "Mode"
             }
           }
@@ -15016,7 +15020,7 @@
           "engine"
         ],
         "summary": "Get Engine Manifest",
-        "description": "Return the authoritative engine manifest for public route families.",
+        "description": "Return the canonical engine manifest for public route families.",
         "operationId": "get_engine_manifest_v3_api_engine_manifest_get",
         "responses": {
           "200": {

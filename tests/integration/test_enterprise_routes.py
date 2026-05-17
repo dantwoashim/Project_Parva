@@ -43,10 +43,13 @@ def test_bs_months_returns_12_months():
     assert [row["days"] for row in body["months"]] == compute_bs_month_lengths(2082)
     assert all(29 <= row["days"] <= 32 for row in body["months"])
     assert body["total_days"] == sum(row["days"] for row in body["months"])
-    assert body["calculation_mode"] == "solar_civil"
-    assert body["confidence"] == "solar_civil_computed"
+    assert body["calculation_mode"] == "canonical"
+    assert body["selected_mode"] == "solar_civil"
+    assert body["confidence"] == "canonical_solar_civil_computed"
     assert body["source_status"] == "computed_solar_civil"
     assert body["not_authority"] is True
+    assert body["review_required"] is True
+    assert body["meta"]["confidence"] == body["confidence"]
 
 
 def test_bs_months_static_lookup_is_explicit_compatibility_mode():
@@ -58,8 +61,13 @@ def test_bs_months_static_lookup_is_explicit_compatibility_mode():
     ]
     assert body["calculation_mode"] == "static_lookup"
     assert body["engine"] == "static_lookup_compatibility_v1"
-    assert body["confidence"] == "official_lookup"
-    assert body["source_status"] == "structured_official"
+    assert body["confidence"] == "static_lookup_unverified"
+    assert body["source_status"] == "static_reference"
+    assert body["authority"] == "static_reference"
+    assert body["review_required"] is True
+    assert body["meta"]["confidence"] == "static_lookup_unverified"
+    assert body["meta"]["source"]["id"] == "parva_static_lookup_table"
+    assert "payroll_final_authority" in body["blocked_use_cases"]
 
 
 def test_bs_months_2085_is_not_marked_official():
@@ -67,9 +75,10 @@ def test_bs_months_2085_is_not_marked_official():
     assert response.status_code == 200
     body = response.json()
     assert body["bs_year"] == 2085
-    assert body["confidence"] == "solar_civil_computed"
+    assert body["confidence"] == "canonical_solar_civil_computed"
     assert body["source_status"] == "computed_solar_civil"
     assert body["official_structured_range"] == "2078-2083 BS"
+    assert body["meta"]["confidence"] == body["confidence"]
 
 
 def test_business_days_returns_count():

@@ -82,12 +82,21 @@ curl https://api.prabinghimire1.com.np/v3/api/enterprise/fiscal-year/2082
 curl https://api.prabinghimire1.com.np/v3/api/enterprise/bs-months/2082
 ```
 
-By default this uses the solar-civil sankranti computation path and returns
-`calculation_mode: "solar_civil"`. Static table lookup is retained only as an
-explicit compatibility/reference mode:
+By default this uses the canonical Phase 00 trust-arrest policy, which selects
+the solar-civil sankranti computation path and returns
+`calculation_mode: "canonical"` with `selected_mode: "solar_civil"`. Static
+table lookup is retained only as an explicit compatibility/reference mode and
+is marked unverified and review-required:
 
 ```bash
 curl "https://api.prabinghimire1.com.np/v3/api/enterprise/bs-months/2082?mode=static_lookup"
+```
+
+For audit/debug use, compare mode returns separate canonical, solar-civil, and
+static-lookup branches without merging their authority boundaries:
+
+```bash
+curl "https://api.prabinghimire1.com.np/v3/api/enterprise/bs-months/2087?mode=compare"
 ```
 
 ## 7. Business days

@@ -20,6 +20,7 @@ The registry covers these public concepts:
 | Concept | Canonical path | Compatibility or deprecated path |
 | --- | --- | --- |
 | BS and AD conversion | `backend/app/services/calendar_conversion_service.py`, `backend/app/calendar/bikram_sambat.py` | `backend/app/calendar/__init__.py` re-exports remain compatibility only |
+| Enterprise BS month metadata | `backend/app/services/bs_month_metadata_service.py`, `backend/app/calendar/sankranti.py` | static BS lookup is compatibility/reference mode only through explicit `mode=static_lookup` or compare branches |
 | Tithi and panchanga | `backend/app/calendar/tithi/`, `backend/app/calendar/panchanga.py` | `backend/app/calendar/tithi.py` is a shadowed compatibility stub |
 | Festivals and observances | `backend/app/rules/service.py`, `backend/app/rules/catalog_v4.py`, `backend/app/festivals/` | `backend/app/calendar/calculator.py`, `backend/app/calendar/calculator_v2.py`, and legacy rule JSON stay behind compatibility wrappers |
 | Source and confidence taxonomy | `backend/app/core/source_metadata.py`, trust infrastructure, source validation | local ad hoc source strings are not canonical |

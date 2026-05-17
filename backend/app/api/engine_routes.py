@@ -200,7 +200,7 @@ async def get_engine_config():
 
 @router.get("/manifest")
 async def get_engine_manifest():
-    """Return the authoritative engine manifest for public route families."""
+    """Return the canonical engine manifest for public route families."""
     return build_engine_manifest()
 
 

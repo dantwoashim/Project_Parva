@@ -43,6 +43,8 @@ def _tracked_path_issue(path: str) -> str | None:
         "reports/phase_07_future_bs_governance/module_classification.md",
         "reports/phase_08_performance_sre/latency_baseline.json",
         "reports/phase_09_frontend_sdk_dx/adoption_hardening_report.md",
+        "reports/phase_00_trust_arrest.md",
+        "reports/phase_00_trust_arrest_public_surface_repair.md",
         "reports/release/frontend_bundle_budget.json",
         "reports/release/slo_dashboard_definition.json",
         "reports/release_readiness/final_verification_matrix.json",

@@ -18,7 +18,13 @@ from app.calendar.provenance import (
     STRUCTURED_OFFICIAL_RANGE_LABEL,
     get_bs_year_provenance,
 )
-from app.core.source_metadata import build_bs_claim_meta
+from app.core.source_metadata import (
+    ASTRONOMICAL_ENGINE,
+    STATIC_LOOKUP_TABLE,
+    build_bs_claim_meta,
+    build_calculated_claim_meta,
+    build_claim_meta,
+)
 from app.policy import get_policy_metadata
 from app.services.bs_month_metadata_service import BsMonthCalculationMode, build_bs_month_metadata
 
@@ -162,31 +168,107 @@ def bs_months_payload(
     bs_year: int,
     *,
     trace_id: str | None = None,
-    mode: BsMonthCalculationMode = "solar_civil",
+    mode: BsMonthCalculationMode = "canonical",
 ) -> dict[str, Any]:
     metadata = build_bs_month_metadata(bs_year, mode=mode)
-    months = metadata["months"]
     provenance = _provenance_payload(bs_year)
-    if mode == "solar_civil":
+    if mode in {"canonical", "solar_civil", "compare"}:
         provenance = {
             **provenance,
             "source_status": metadata["source_status"],
             "provenance_note": metadata["provenance_note"],
         }
-    return {
+    if mode == "static_lookup":
+        provenance = {
+            **provenance,
+            "source_status": metadata["source_status"],
+            "provenance_note": metadata["provenance_note"],
+        }
+
+    common = {
         "bs_year": bs_year,
-        "months": months,
-        "total_days": metadata["total_days"],
         "calculation_mode": metadata["calculation_mode"],
         "engine": metadata["engine"],
-        "confidence": metadata.get("confidence", _confidence_for_bs_year(bs_year)[0]),
-        "source_range": metadata.get("source_range", _confidence_for_bs_year(bs_year)[1]),
+        "confidence": metadata["confidence"],
+        "source_range": metadata.get("source_range"),
+        "source_status": metadata["source_status"],
+        "authority": metadata.get("authority", "computed_reference_not_authority"),
+        "review_required": metadata.get("review_required", True),
+        "claim_boundary": metadata.get("claim_boundary"),
+        "blocked_use_cases": metadata.get("blocked_use_cases", []),
         "compatibility_mode": metadata.get("compatibility_mode"),
         "not_authority": True,
         **provenance,
         "policy": get_policy_metadata(),
-        "meta": _claim_meta_for_year(bs_year, trace_id=trace_id, result_class="bs_month_metadata"),
+        "meta": _bs_month_claim_meta(
+            bs_year,
+            trace_id=trace_id,
+            result_class="bs_month_metadata",
+            mode=mode,
+            confidence=metadata["confidence"],
+        ),
     }
+    if mode == "compare":
+        return {
+            **common,
+            "branches": metadata["branches"],
+            "default_branch": metadata["default_branch"],
+            "selected_mode": metadata["selected_mode"],
+            "disagreement": metadata["disagreement"],
+        }
+    return {
+        **common,
+        "months": metadata["months"],
+        "total_days": metadata["total_days"],
+        "selected_mode": metadata.get("selected_mode"),
+        "canonical_decision": metadata.get("canonical_decision"),
+    }
+
+
+def _bs_month_claim_meta(
+    bs_year: int,
+    *,
+    trace_id: str | None,
+    result_class: str,
+    mode: BsMonthCalculationMode,
+    confidence: str,
+) -> dict[str, Any]:
+    if mode == "static_lookup":
+        return build_claim_meta(
+            source=STATIC_LOOKUP_TABLE,
+            confidence="static_lookup_unverified",
+            claim_boundary="static_lookup_reference_not_authority",
+            warnings=[
+                "review_required",
+                "static_lookup_without_structured_official_provenance",
+                "not_legal_tax_payroll_banking_government_or_panchanga_authority",
+            ],
+            trace_id=trace_id,
+            result_class=result_class,
+        )
+    if mode == "compare":
+        return build_calculated_claim_meta(
+            trace_id=trace_id,
+            result_class=result_class,
+            source=ASTRONOMICAL_ENGINE,
+            confidence="comparison_requires_review",
+            claim_boundary="compare_mode_not_authority",
+            warnings=[
+                "review_required",
+                "static_lookup_branch_is_reference_only",
+            ],
+        )
+    return build_calculated_claim_meta(
+        trace_id=trace_id,
+        result_class=result_class,
+        source=ASTRONOMICAL_ENGINE,
+        confidence=confidence,
+        claim_boundary="computed_solar_civil_not_official_calendar_authority",
+        warnings=[
+            "review_required",
+            "computed_prediction_not_official",
+        ],
+    )
 
 
 def business_days_payload(
