@@ -166,7 +166,7 @@
     }
   },
   "claim_boundary": "technical_benchmark_not_authority",
-  "generated_at": "2026-05-16T00:11:15+05:45",
+  "generated_at": "2026-05-17T13:04:30+05:45",
   "parva_score_percent": 87.19,
   "review_gate_performance": {
     "passed": 10,

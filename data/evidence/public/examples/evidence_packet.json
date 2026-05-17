@@ -1,7 +1,7 @@
 {
   "authority_boundary": "source_backed_not_authority",
   "benchmark_candidate": false,
-  "checksum": "3acac2f2ab10a39dc64bba52373c94ea6d1890513cd27ed2ee84d7f1da000128",
+  "checksum": "ca2ff4a740f616da67212a617906666723394020fba8cc9833256f73be148453",
   "extracted_rows": [
     {
       "ad_date": "2025-04-14",
@@ -10,7 +10,7 @@
       "label": "Public calendar sample row"
     }
   ],
-  "ingestion_time": "2026-05-17T07:15:52+00:00",
+  "ingestion_time": "2026-05-17T00:00:00+00:00",
   "normalized_rows": [
     {
       "ad_date": "2025-04-14",

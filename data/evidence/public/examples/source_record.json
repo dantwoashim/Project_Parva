@@ -1,9 +1,9 @@
 {
   "authority_boundary": "source_backed_not_authority",
+  "ingestion_time": "2026-05-17T00:00:00+00:00",
   "public_safe": true,
   "source_id": "sample_public_holiday_notice",
   "source_reference": "https://example.org/public-nepali-calendar-notice",
   "source_tier": "public_witness",
   "source_type": "notice"
 }
-

@@ -3,7 +3,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from scripts.benchmark.generate_benchmark_badge import BENCHMARK_SVG, COMPARISON_JSON, SUMMARY_JSON, main
+from scripts.benchmark.generate_benchmark_badge import (
+    BENCHMARK_SVG,
+    COMPARISON_JSON,
+    SUMMARY_JSON,
+    main,
+)
 
 
 def test_benchmark_badge_generation_outputs_public_assets():
