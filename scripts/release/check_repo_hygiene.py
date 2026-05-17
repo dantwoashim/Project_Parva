@@ -103,6 +103,9 @@ def _tracked_path_issue(path: str) -> str | None:
         "reports/ceiling_execution/climax_demos.md",
         "reports/ceiling_execution/phase_requirement_matrix.json",
         "reports/ceiling_execution/phase_requirement_matrix.md",
+        "reports/ceiling_depth/architecture_gap_matrix.json",
+        "reports/ceiling_depth/architecture_gap_matrix.md",
+        "reports/ceiling_depth/remaining_blockers.md",
         "reports/samples/payroll_date_risk_sample.md",
         "reports/trust-status.json",
     )
