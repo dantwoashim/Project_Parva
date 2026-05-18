@@ -30,11 +30,15 @@ ARTIFACT_DIRS = [
 
 
 def _sha256(path: Path) -> str:
+    payload = _portable_artifact_bytes(path)
     digest = sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
+    digest.update(payload)
     return f"sha256:{digest.hexdigest()}"
+
+
+def _portable_artifact_bytes(path: Path) -> bytes:
+    """Hash text artifacts after Git-style EOL normalization for CI parity."""
+    return path.read_bytes().replace(b"\r\n", b"\n")
 
 
 def _git_head() -> str:
@@ -66,7 +70,7 @@ def build_manifest() -> dict[str, Any]:
             {
                 "path": path.relative_to(PROJECT_ROOT).as_posix(),
                 "sha256": _sha256(path),
-                "bytes": path.stat().st_size,
+                "bytes": len(_portable_artifact_bytes(path)),
             }
         )
     return {

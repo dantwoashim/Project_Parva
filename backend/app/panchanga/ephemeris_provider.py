@@ -16,6 +16,7 @@ from app.calendar.ephemeris.swiss_eph import (
     get_ephemeris_info,
 )
 from app.calendar.panchanga import get_panchanga
+from app.sources.hashing import canonical_json_hash
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 FIXTURE_ROOT = PROJECT_ROOT / "data" / "ephemeris" / "fixtures"
@@ -46,6 +47,12 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return f"sha256:{digest.hexdigest()}"
+
+
+def _sha256_json_file(path: Path) -> str:
+    """Hash JSON fixtures by canonical content so replay survives checkout EOLs."""
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return f"sha256:{canonical_json_hash(payload)}"
 
 
 def method_dockets() -> list[dict[str, Any]]:
@@ -162,7 +169,7 @@ class FixtureEphemerisProvider:
             "fixture_id": self.fixture_id,
             "ephemeris_name": payload.get("ephemeris_name", "pinned fixture slice"),
             "ephemeris_version": payload.get("ephemeris_version", "fixture-v1"),
-            "kernel_hash": _sha256_file(self.fixture_path),
+            "kernel_hash": _sha256_json_file(self.fixture_path),
             "time_scale": payload.get("time_scale", "UTC"),
             "coordinate_frame": payload.get("coordinate_frame", "sidereal"),
             "precision_tolerance": payload.get("precision_tolerance", "exact pinned fixture replay"),

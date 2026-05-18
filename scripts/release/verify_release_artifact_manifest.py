@@ -12,11 +12,15 @@ MANIFEST = PROJECT_ROOT / "data" / "public" / "release-artifact-manifest.json"
 
 
 def _sha256(path: Path) -> str:
+    payload = _portable_artifact_bytes(path)
     digest = sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
+    digest.update(payload)
     return f"sha256:{digest.hexdigest()}"
+
+
+def _portable_artifact_bytes(path: Path) -> bytes:
+    """Hash text artifacts after Git-style EOL normalization for CI parity."""
+    return path.read_bytes().replace(b"\r\n", b"\n")
 
 
 def main() -> int:
@@ -36,7 +40,7 @@ def main() -> int:
         actual = _sha256(path)
         if actual != expected:
             issues.append(f"{rel}: hash mismatch expected {expected} actual {actual}")
-        if path.stat().st_size != artifact.get("bytes"):
+        if len(_portable_artifact_bytes(path)) != artifact.get("bytes"):
             issues.append(f"{rel}: byte size mismatch")
     if issues:
         for issue in issues:

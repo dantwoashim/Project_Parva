@@ -1,44 +1,44 @@
 {
   "artifacts": [
     {
-      "bytes": 488306,
+      "bytes": 470544,
       "path": "docs/api-docs/openapi.public-reference.json",
-      "sha256": "sha256:da0ca89866d4302431a0306363824436ea63b9412e4fc57d9207010fd063e249"
+      "sha256": "sha256:67604e760aee74d50a232380024c6c45aafb6770ed2bee8ce0775163c3e42092"
     },
     {
-      "bytes": 7147,
+      "bytes": 6951,
       "path": "examples/external/proofpacks/civil-conversion.proofpack.json",
-      "sha256": "sha256:3445ebd4b19e311171b0ed73b4922a99d6de77d15b1d778d0f105a77bcd8d589"
+      "sha256": "sha256:e6f8befc2a22bab87d9b3b5cb8115337b58e04bd65a430858f294bbd36e4115d"
     },
     {
-      "bytes": 21221,
+      "bytes": 20647,
       "path": "examples/external/proofpacks/panchanga-summary.proofpack.json",
-      "sha256": "sha256:4bf37610651d6042770f8d0b5565ab312cb85c607bf8d9b34f257910aedd8fa0"
+      "sha256": "sha256:8b6658a2ed1bc89b7cb1b058f9f9212bf6b66ca5d7a9ca75a78226f201b764fd"
     },
     {
-      "bytes": 9121,
+      "bytes": 8861,
       "path": "examples/external/proofpacks/payroll-row.proofpack.json",
-      "sha256": "sha256:a82edc33ebd98af97e12db21f161d22673c650bb4d8c97de052b1ae84cb95035"
+      "sha256": "sha256:eeb991d138aeb2ec3ec4880cfe50b98b4b5c1353ff3a7e027a2571e2a31e09bb"
     },
     {
-      "bytes": 1210,
+      "bytes": 1179,
       "path": "examples/external/reviewer-bundle/manifest.json",
-      "sha256": "sha256:ff08b33e5acaff562862990c4c262f62a2fc3d67e56f4eecb9ff862a4a3cec32"
+      "sha256": "sha256:a5469f00632ebb130d5c478f5bc382fb5937ba072d03406bbef2a95e48d0a42e"
     },
     {
-      "bytes": 16100,
+      "bytes": 15689,
       "path": "examples/external/timepacks/civil-conversion.timepack.json",
-      "sha256": "sha256:5d01da8d105f067a843cf4c3195c01de11824cba666e8a76579b493b04df254f"
+      "sha256": "sha256:25637ee6c29803cafaa7301f69312b490576c0b37cdc5c58756bfe095b142583"
     },
     {
-      "bytes": 47928,
+      "bytes": 46706,
       "path": "examples/external/timepacks/panchanga-summary.timepack.json",
-      "sha256": "sha256:b795e727c52e639d79b9b974a2b761179114bc985d512984d992b124b3baa6e7"
+      "sha256": "sha256:6cf6559686567915879fc974763353092395dd82e43f758d267084ede82e04d0"
     },
     {
-      "bytes": 190101,
+      "bytes": 185647,
       "path": "examples/external/timepacks/payroll-date-risk.timepack.json",
-      "sha256": "sha256:5533de92119d4a80a91bf183b17366d4566d575968440d9ba74c26e9e186350d"
+      "sha256": "sha256:d8f1bfbddee9e24fda40cc2c39765016e218bd956ef5e174c2386325ce2906bc"
     },
     {
       "bytes": 746,
@@ -56,84 +56,84 @@
       "sha256": "sha256:84c67180a7993015036977981428bc718dd9ecceabef6426de75861cff7616c4"
     },
     {
-      "bytes": 13644,
+      "bytes": 13234,
       "path": "reports/source_coverage/coverage_matrix.json",
-      "sha256": "sha256:17677bec04bb233249faecd1ceb58399e59f6b46a715aaa86d644d711c74a84e"
+      "sha256": "sha256:0f67cb9855914b0f79485f352377ac624a384ecfa047438289460d45c731cd05"
     },
     {
-      "bytes": 4620,
+      "bytes": 4582,
       "path": "reports/source_coverage/coverage_matrix.md",
-      "sha256": "sha256:501dc69be55524646bb73d439eb2d68af88efae9109b00520e5132c1d8c10969"
+      "sha256": "sha256:a5f4de7ed05f57bd83fd0d7796924ef78e3bbc7b0eafcc72cea6340c0895e1a3"
     },
     {
-      "bytes": 7495,
+      "bytes": 7280,
       "path": "tests/fixtures/proof/civil/ad_to_bs_valid.json",
-      "sha256": "sha256:dd75deb18e7ecbd496c2fef15dbf175a7cc6669de4dd1fa83cb2095f5c52481f"
+      "sha256": "sha256:3f5b8c2c8ed6d073e2689d71b9e4970499fc436fb97f55c0a405feee2dfb53b6"
     },
     {
-      "bytes": 21267,
+      "bytes": 20653,
       "path": "tests/fixtures/proof/civil/bs_months_canonical.json",
-      "sha256": "sha256:ecb224216b0c4d5df5517bb75ee0e5f2fb18ea9c934e3f8753ad2113beb5d43a"
+      "sha256": "sha256:1c27df222fdcbf6090d523e0535dd864da6e7d565df21f1e6f636fc074f627fa"
     },
     {
-      "bytes": 88359,
+      "bytes": 86037,
       "path": "tests/fixtures/proof/civil/bs_months_compare.json",
-      "sha256": "sha256:cd0792ad7f424446b034421ac50f8a3741e688988ad0122cd0c50dea1a861d38"
+      "sha256": "sha256:14cc8f33019d23c1294ad7171cdb826ff9778d025c24808b4c2c62921eb19d0e"
     },
     {
-      "bytes": 18618,
+      "bytes": 18056,
       "path": "tests/fixtures/proof/civil/bs_months_static_lookup.json",
-      "sha256": "sha256:7d7656d9f3226ed2888851beb1644d7a85543a046d84e6ee284cf1279e4808cb"
+      "sha256": "sha256:0afd40b94ef465c6c1a22599abe5e71be7ea20165378e0ee0bca2a2ffa1d87db"
     },
     {
-      "bytes": 6153,
+      "bytes": 5984,
       "path": "tests/fixtures/proof/civil/bs_to_ad_valid.json",
-      "sha256": "sha256:c1bcc4216c31670a7fab39b8d4d5fb0c4af8104b77ce707c07cbf04910163315"
+      "sha256": "sha256:4c29a209270ab63162bbf72a5f4c3590ff0611c992d39004e013005fb40dda31"
     },
     {
-      "bytes": 7410,
+      "bytes": 7200,
       "path": "tests/fixtures/proof/civil/fiscal_year_boundary.json",
-      "sha256": "sha256:72784c50067b06f1a7583855209eca386c0c43b9929a3c6b704e51ac28bf7b03"
+      "sha256": "sha256:d58b39bd81f7f8aacac58d77d50817ae8d00811d0f4232ac8591bb7f461980ae"
     },
     {
-      "bytes": 10229,
+      "bytes": 9944,
       "path": "tests/fixtures/proof/civil/holiday_membership.json",
-      "sha256": "sha256:85edf5f8260f931a8811565bc1584164d0603ee0bdf497debedb7def67a3fb2a"
+      "sha256": "sha256:b2e394f6eb515fbe13b42b25f71a3737678a1336c1e13e033fe79a12c999b854"
     },
     {
-      "bytes": 9042,
+      "bytes": 8791,
       "path": "tests/fixtures/proof/civil/holiday_non_membership.json",
-      "sha256": "sha256:56dd00c0cb15f9dc6902d9722af8014e72c993b206f7347fbf48d18f766e982a"
+      "sha256": "sha256:07c1ff06cd817ee7d2b9926145cf1e8eab3a015618fef9dca0d8129f03247008"
     },
     {
-      "bytes": 8300,
+      "bytes": 8061,
       "path": "tests/fixtures/proof/civil/validate_bs_date_invalid.json",
-      "sha256": "sha256:933f085467e739c9faca2b4fd64e36f3aeb430f0c2dc72d83242ce07f00e2cbb"
+      "sha256": "sha256:2ede659afe41c33d5e07e5ee3dbeccaee6959ef2e0c47eca87d953b5d29191d7"
     },
     {
-      "bytes": 9105,
+      "bytes": 8840,
       "path": "tests/fixtures/proof/civil/validate_bs_date_valid.json",
-      "sha256": "sha256:156bf9cf2df4f066362153d577ae435c3b0563407d5a27d42d3436d6b368c24b"
+      "sha256": "sha256:a633e727403db4316bce0daa7cb205864a09dfecc8db0aeca7c5c73a3203a9dc"
     },
     {
-      "bytes": 10168,
+      "bytes": 9886,
       "path": "tests/fixtures/proof/civil/working_day_false.json",
-      "sha256": "sha256:d74e913a8ed2491c241d5f3ba1dbfbedeb5148cdf11165a015880d76004b5246"
+      "sha256": "sha256:fa42b0d51aaaef8729b1f128a0ec0d15b4358b3e89b87430f83e43cd1584f7c6"
     },
     {
-      "bytes": 10085,
+      "bytes": 9805,
       "path": "tests/fixtures/proof/civil/working_day_true.json",
-      "sha256": "sha256:418c7bccf869ade8d9297974c189215e58a46bb54e513bb044526f96053e01bb"
+      "sha256": "sha256:e70247b4c8a05df26b6cbc88f40994122ffcb723ded5f3b853bc4646d2cfa786"
     },
     {
-      "bytes": 21450,
+      "bytes": 20853,
       "path": "tests/fixtures/proof/panchanga/summary_kathmandu_2025_04_14.json",
-      "sha256": "sha256:35b14eebd1d7066a222ac1728112094af4d0870e3ac845e406ace08bd128cfaa"
+      "sha256": "sha256:21e37aabfefa93706b797065379c24736447e00a4c73c85ed48822c557a58605"
     }
   ],
   "claim_boundary": "release_artifact_manifest_not_external_validation",
   "generated_at": "reproducible",
-  "git_commit_at_generation": "66de4276933b1817c525b7b14927d246f2893806",
+  "git_commit_at_generation": "30b5a1bdd29ecee6743896b0a3dcfb719a4e10c6",
   "not_authority": true,
   "schema": "parva-release-artifact-manifest-v1",
   "verification_summary": {

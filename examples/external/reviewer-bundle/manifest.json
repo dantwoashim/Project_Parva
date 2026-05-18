@@ -7,7 +7,7 @@
     },
     {
       "path": "examples/external/proofpacks/panchanga-summary.proofpack.json",
-      "sha256": "e1f2c8a55e1be7793b34505a9e98ffade3fdba270c86bc0b8f00e16d31739dcf"
+      "sha256": "bf583bd8e887a55b668c482451328e479f3c4f0d3601cd14b99d1b47b57b5b0c"
     },
     {
       "path": "examples/external/proofpacks/payroll-row.proofpack.json",
@@ -19,7 +19,7 @@
     },
     {
       "path": "examples/external/timepacks/panchanga-summary.timepack.json",
-      "sha256": "ca5d1eb0c8c40df58ceb02cefc7507db8ddc2fb9cc4ed1f14bbcad8d7386f135"
+      "sha256": "fed0b3df487163a85f0ab4f6fcd248fe7ea4b7473941aca15707657e98a4d823"
     },
     {
       "path": "examples/external/timepacks/payroll-date-risk.timepack.json",

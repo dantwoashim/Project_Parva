@@ -111,7 +111,7 @@
       "fallback_used": false,
       "fixture_id": "kathmandu_2025_04_14_lahiri",
       "jpl_backed": false,
-      "kernel_hash": "sha256:123dc6be92568d655db5ddf397b1134e3a26b23b873fa284286b287afdc9c4d1",
+      "kernel_hash": "sha256:4ce0cd67c148f9448509d829ce22adca081e394b4e9e69666a5ac610539f6146",
       "precision_tolerance": "exact pinned fixture replay",
       "provider_id": "pinned_panchanga_fixture",
       "provider_kind": "pinned_fixture",
@@ -394,7 +394,7 @@
           "fallback_used": false,
           "fixture_id": "kathmandu_2025_04_14_lahiri",
           "jpl_backed": false,
-          "kernel_hash": "sha256:123dc6be92568d655db5ddf397b1134e3a26b23b873fa284286b287afdc9c4d1",
+          "kernel_hash": "sha256:4ce0cd67c148f9448509d829ce22adca081e394b4e9e69666a5ac610539f6146",
           "precision_tolerance": "exact pinned fixture replay",
           "provider_id": "pinned_panchanga_fixture",
           "provider_kind": "pinned_fixture",
@@ -429,7 +429,7 @@
           "fallback_used": false,
           "fixture_id": "kathmandu_2025_04_14_lahiri",
           "jpl_backed": false,
-          "kernel_hash": "sha256:123dc6be92568d655db5ddf397b1134e3a26b23b873fa284286b287afdc9c4d1",
+          "kernel_hash": "sha256:4ce0cd67c148f9448509d829ce22adca081e394b4e9e69666a5ac610539f6146",
           "precision_tolerance": "exact pinned fixture replay",
           "provider_id": "pinned_panchanga_fixture",
           "provider_kind": "pinned_fixture",
@@ -532,7 +532,7 @@
           "fallback_used": false,
           "fixture_id": "kathmandu_2025_04_14_lahiri",
           "jpl_backed": false,
-          "kernel_hash": "sha256:123dc6be92568d655db5ddf397b1134e3a26b23b873fa284286b287afdc9c4d1",
+          "kernel_hash": "sha256:4ce0cd67c148f9448509d829ce22adca081e394b4e9e69666a5ac610539f6146",
           "precision_tolerance": "exact pinned fixture replay",
           "provider_id": "pinned_panchanga_fixture",
           "provider_kind": "pinned_fixture",
@@ -564,11 +564,11 @@
       ],
       "verifier": "parva.panchanga_summary",
       "verifier_version": "1.0.0",
-      "witness_id": "parva:wit:v1:sha256:d02c82567c0bc4fcf5871a501e24b542dfe4266348e7150279df9f357a2a6a2e"
+      "witness_id": "parva:wit:v1:sha256:8efdd4776dfc41b0169a4b591bdadfad3425ce77b6373c364bb3d90e823a2274"
     },
-    "witness_hash": "parva:wit:v1:sha256:d02c82567c0bc4fcf5871a501e24b542dfe4266348e7150279df9f357a2a6a2e"
+    "witness_hash": "parva:wit:v1:sha256:8efdd4776dfc41b0169a4b591bdadfad3425ce77b6373c364bb3d90e823a2274"
   },
   "offline_verifier": "parva_membrane_replay_v1",
   "proofpack_version": "v1",
-  "witness_hash": "parva:wit:v1:sha256:d02c82567c0bc4fcf5871a501e24b542dfe4266348e7150279df9f357a2a6a2e"
+  "witness_hash": "parva:wit:v1:sha256:8efdd4776dfc41b0169a4b591bdadfad3425ce77b6373c364bb3d90e823a2274"
 }
