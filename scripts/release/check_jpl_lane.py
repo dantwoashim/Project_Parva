@@ -22,10 +22,13 @@ OUT_JSON = PROJECT_ROOT / "reports/panchanga/jpl_lane_report.json"
 OUT_MD = PROJECT_ROOT / "reports/panchanga/jpl_lane_report.md"
 
 
-def build_report() -> dict[str, object]:
+def build_report(*, use_configured_jpl: bool = False) -> dict[str, object]:
     fallback = BuiltInApproxProvider().metadata()
-    configured = bool(os.getenv("PARVA_JPL_KERNEL_PATH") or os.getenv("PARVA_JPL_DE440_KERNEL"))
-    jpl = JplEphemerisProvider().metadata()
+    configured = use_configured_jpl and bool(os.getenv("PARVA_JPL_KERNEL_PATH") or os.getenv("PARVA_JPL_DE440_KERNEL"))
+    jpl_provider = JplEphemerisProvider() if use_configured_jpl else JplEphemerisProvider(
+        kernel_path="__parva_public_default_no_jpl_kernel__",
+    )
+    jpl = jpl_provider.metadata()
     status = "configured" if configured and jpl.get("available") else "skipped"
     return {
         "schema": "parva-jpl-lane-report-v1",
@@ -37,7 +40,7 @@ def build_report() -> dict[str, object]:
         "fallback_claims_jpl": bool(fallback.get("jpl_backed")),
         "skip_reason": None
         if status == "configured"
-        else "PARVA_JPL_KERNEL_PATH/PARVA_JPL_DE440_KERNEL is not configured; default proof lane uses pinned fixtures and fallback metadata only.",
+        else "The committed public report does not use local JPL environment variables; default proof lane uses pinned fixtures and fallback metadata only. Run with --use-configured-jpl for a local real-kernel trial.",
     }
 
 
@@ -62,15 +65,15 @@ def markdown(report: dict[str, object]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_report() -> None:
-    report = build_report()
+def write_report(*, use_configured_jpl: bool = False) -> None:
+    report = build_report(use_configured_jpl=use_configured_jpl)
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     OUT_MD.write_text(markdown(report), encoding="utf-8")
 
 
 def check_report() -> list[str]:
-    expected = build_report()
+    expected = build_report(use_configured_jpl=False)
     expected_json = json.dumps(expected, indent=2, sort_keys=True) + "\n"
     expected_md = markdown(expected)
     failures: list[str] = []
@@ -86,8 +89,16 @@ def check_report() -> list[str]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
+    parser.add_argument(
+        "--use-configured-jpl",
+        action="store_true",
+        help="Generate a local, non-default report from PARVA_JPL_KERNEL_PATH/PARVA_JPL_DE440_KERNEL.",
+    )
     args = parser.parse_args()
     if args.check:
+        if args.use_configured_jpl:
+            print("FAIL: --check verifies the committed public default report; omit --use-configured-jpl")
+            return 1
         failures = check_report()
         if failures:
             for failure in failures:
@@ -95,7 +106,7 @@ def main() -> int:
             return 1
         print("Panchanga JPL lane report is current.")
         return 0
-    write_report()
+    write_report(use_configured_jpl=args.use_configured_jpl)
     print("Wrote reports/panchanga/jpl_lane_report.json and .md")
     return 0
 

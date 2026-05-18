@@ -21,27 +21,20 @@
   },
   "generated_at": "2026-01-01T00:00:00+00:00",
   "jpl_metadata": {
-    "available": true,
+    "available": false,
     "boundary_vector": {
-      "claim_boundary": "computed_ephemeris_not_panchanga_authority",
+      "claim_boundary": "jpl_unavailable_not_used",
       "not_authority": true,
       "review_required": true
     },
-    "coordinate_frame": "JPL SPK apparent positions via configured adapter",
     "ephemeris_name": "JPL DE440-family SPK",
     "ephemeris_version": "de440",
-    "jpl_backed": true,
-    "kernel_file": "de440.bsp",
-    "kernel_hash": "sha256:a4ce9bf9b3282becc9f4b2ac3cebe03a2ae7599981aabd7265fd8482fff7c4b5",
-    "precision_tolerance": "kernel/provider dependent",
+    "kernel_hash": null,
     "provider_id": "jpl_de440",
-    "provider_kind": "jpl_kernel",
-    "source_or_method_docket": "parva.panchanga.method_dockets.v1",
-    "supported_date_range": "configured kernel range",
-    "time_scale": "TDB/UTC converted by ephemeris library"
+    "provider_kind": "jpl_kernel"
   },
-  "real_jpl_kernel_claimed": true,
+  "real_jpl_kernel_claimed": false,
   "schema": "parva-jpl-lane-report-v1",
-  "skip_reason": null,
-  "status": "configured"
+  "skip_reason": "The committed public report does not use local JPL environment variables; default proof lane uses pinned fixtures and fallback metadata only. Run with --use-configured-jpl for a local real-kernel trial.",
+  "status": "skipped"
 }
