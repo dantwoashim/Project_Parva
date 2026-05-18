@@ -12,7 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(Path(__file__).resolve().parent) not in sys.path:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from openapi_proof_schemas import add_proof_schemas  # noqa: E402
+from openapi_proof_schemas import add_proof_contract_references  # noqa: E402
 
 
 def _output_path() -> Path:
@@ -36,7 +36,7 @@ def main() -> int:
 
     app = create_app()
     schema = app.openapi()
-    add_proof_schemas(schema)
+    add_proof_contract_references(schema)
     components = schema.setdefault("components", {}).setdefault("schemas", {})
     components.setdefault(
         "SourceAwareMeta",

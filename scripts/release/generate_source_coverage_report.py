@@ -22,6 +22,8 @@ from app.sources.hashing import canonical_json_hash
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 OUT_JSON = PROJECT_ROOT / "reports" / "source_coverage" / "coverage_matrix.json"
 OUT_MD = PROJECT_ROOT / "reports" / "source_coverage" / "coverage_matrix.md"
+OUT_YEAR_FIELD = PROJECT_ROOT / "reports" / "source_coverage" / "year_field_status.md"
+OUT_PANCHANGA = PROJECT_ROOT / "reports" / "source_coverage" / "panchanga_method_coverage.md"
 
 
 def _row(operation: str, year: int, field: str, resolution: Any, *, method: str | None = None) -> dict[str, Any]:
@@ -112,25 +114,75 @@ def _write_markdown(payload: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _write_year_field_status(payload: dict[str, Any]) -> str:
+    lines = [
+        "# Year and Field Coverage Status",
+        "",
+        "This report is a reviewer aid. It is not official authority.",
+        "",
+        "| Year | Operation | Field | Source-backed | Method-backed | Review required | Unsupported/research boundary |",
+        "| ---: | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in payload["rows"]:
+        source_backed = bool(row["source_docket_ids"])
+        method_backed = bool(row["method_docket_ids"])
+        unsupported = row["coverage_status"] in {"uncovered", "unsupported_range"} or "unsupported" in row["claim_boundary"]
+        lines.append(
+            f"| {row['year']} | {row['operation']} | {row['field']} | {source_backed} | {method_backed} | "
+            f"{row['review_required']} | {unsupported} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def _write_panchanga_method_coverage(payload: dict[str, Any]) -> str:
+    rows = [row for row in payload["rows"] if row["operation"] == "panchanga_summary"]
+    lines = [
+        "# Panchanga Method Coverage",
+        "",
+        "Panchanga coverage here is method-backed and computed. It is not official Panchanga or ritual final authority.",
+        "",
+        "| Field | Method dockets | Ephemeris fixture/provider | Boundary | Review required | JPL status |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        methods = ", ".join(row["method_docket_ids"])
+        fixture = row.get("ephemeris_fixture", "none")
+        jpl_status = row.get("jpl_status", "not_real_kernel_configured")
+        lines.append(
+            f"| {row['field']} | {methods} | {fixture} | {row['claim_boundary']} | "
+            f"{row['review_required']} | {jpl_status} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="Fail if committed report differs.")
     args = parser.parse_args()
     payload = build_matrix()
     md = _write_markdown(payload)
+    year_field = _write_year_field_status(payload)
+    panchanga = _write_panchanga_method_coverage(payload)
     if args.check:
-        if not OUT_JSON.exists() or not OUT_MD.exists():
+        if not OUT_JSON.exists() or not OUT_MD.exists() or not OUT_YEAR_FIELD.exists() or not OUT_PANCHANGA.exists():
             raise SystemExit("source coverage report missing; run without --check")
         current_json = json.loads(OUT_JSON.read_text(encoding="utf-8"))
         current_md = OUT_MD.read_text(encoding="utf-8")
-        if current_json != payload or current_md != md:
+        if (
+            current_json != payload
+            or current_md != md
+            or OUT_YEAR_FIELD.read_text(encoding="utf-8") != year_field
+            or OUT_PANCHANGA.read_text(encoding="utf-8") != panchanga
+        ):
             raise SystemExit("source coverage report is stale; run scripts/release/generate_source_coverage_report.py")
         print("Source coverage report is current.")
         return 0
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     OUT_MD.write_text(md, encoding="utf-8")
-    print(f"Wrote {OUT_JSON.relative_to(PROJECT_ROOT)} and {OUT_MD.relative_to(PROJECT_ROOT)}")
+    OUT_YEAR_FIELD.write_text(year_field, encoding="utf-8")
+    OUT_PANCHANGA.write_text(panchanga, encoding="utf-8")
+    print(f"Wrote source coverage reports under {OUT_JSON.parent.relative_to(PROJECT_ROOT)}")
     return 0
 
 

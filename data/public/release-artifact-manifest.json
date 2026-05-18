@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 470544,
+      "bytes": 479907,
       "path": "docs/api-docs/openapi.public-reference.json",
-      "sha256": "sha256:67604e760aee74d50a232380024c6c45aafb6770ed2bee8ce0775163c3e42092"
+      "sha256": "sha256:54bab8b55f37d0836854213b8b50fb1a62ec761d739bf845d9299051f6b3e41a"
     },
     {
       "bytes": 6951,
@@ -41,6 +41,21 @@
       "sha256": "sha256:d8f1bfbddee9e24fda40cc2c39765016e218bd956ef5e174c2386325ce2906bc"
     },
     {
+      "bytes": 236042,
+      "path": "examples/payroll/ugly.report.example.json",
+      "sha256": "sha256:f0c32761b106f7c0f2b11ee32b01f0bd1ab9594d1b044753d0dd4133f145a97e"
+    },
+    {
+      "bytes": 1378,
+      "path": "examples/payroll/ugly.report.example.md",
+      "sha256": "sha256:d245f5c24e5b9100c3f9a97451a252fd2063c990c12530bb023ec8913f534626"
+    },
+    {
+      "bytes": 455807,
+      "path": "examples/payroll/ugly.report.example.timepack.json",
+      "sha256": "sha256:7d33ff5e0c19b0f7ddf376fabf2fe3f63a0b8702cacb1eb024d49ea465147326"
+    },
+    {
       "bytes": 746,
       "path": "packages/parva-js/package.json",
       "sha256": "sha256:6b08410b312c12d6002938d83cd1ec84c4488b2cfbb32dd272625358c6b9a4a1"
@@ -56,6 +71,46 @@
       "sha256": "sha256:84c67180a7993015036977981428bc718dd9ecceabef6426de75861cff7616c4"
     },
     {
+      "bytes": 2349,
+      "path": "reports/external/reviewer_dry_audit.json",
+      "sha256": "sha256:d24f1ad41de34f4c8961b4237c04e2877a09ee7c0d1b6c32da3516ee45750368"
+    },
+    {
+      "bytes": 840,
+      "path": "reports/external/reviewer_dry_audit.md",
+      "sha256": "sha256:55f411fc6bc4ae224a1262eb1cb6a4ce203f341f3bb5313e930ae9d0ed5ae7ca"
+    },
+    {
+      "bytes": 4883,
+      "path": "reports/external_reviewer_dry_run/review_report.json",
+      "sha256": "sha256:5058b3850877bd8eb8998f8bf60a127f08fadeb5ce3e8b1242bb481ab0ba7672"
+    },
+    {
+      "bytes": 1652,
+      "path": "reports/external_reviewer_dry_run/review_report.md",
+      "sha256": "sha256:ee06351653123b3b8262f6a3407905f1022d30fa97b6b0a8c6a4fb75f680b602"
+    },
+    {
+      "bytes": 1715,
+      "path": "reports/panchanga/jpl_lane_report.json",
+      "sha256": "sha256:7c2d283cf72b040c57ef54623b50d910c75adb299af423f7560b0581ec4a1f3a"
+    },
+    {
+      "bytes": 628,
+      "path": "reports/panchanga/jpl_lane_report.md",
+      "sha256": "sha256:d04f69017a68b60a6e5795e485f1b78caece0752f7b965ddd85ff6ed7ecee916"
+    },
+    {
+      "bytes": 4662,
+      "path": "reports/proof_contract/route_proof_matrix.json",
+      "sha256": "sha256:ad70bee7b78d6e12054fd5114cc7a008a45eeaae970d891e67329dc25ed6c4b9"
+    },
+    {
+      "bytes": 2143,
+      "path": "reports/proof_contract/route_proof_matrix.md",
+      "sha256": "sha256:af56ba41a0aa09e2815e7ef2117fe519c2c2bd71e0e2ef83a305ea0e878e2e22"
+    },
+    {
       "bytes": 13234,
       "path": "reports/source_coverage/coverage_matrix.json",
       "sha256": "sha256:0f67cb9855914b0f79485f352377ac624a384ecfa047438289460d45c731cd05"
@@ -64,6 +119,16 @@
       "bytes": 4582,
       "path": "reports/source_coverage/coverage_matrix.md",
       "sha256": "sha256:a5f4de7ed05f57bd83fd0d7796924ef78e3bbc7b0eafcc72cea6340c0895e1a3"
+    },
+    {
+      "bytes": 550,
+      "path": "reports/source_coverage/panchanga_method_coverage.md",
+      "sha256": "sha256:78d9bb0406ac93e18482ed1945af6b08719ff93710e11d8160cb320ba0b8308b"
+    },
+    {
+      "bytes": 2208,
+      "path": "reports/source_coverage/year_field_status.md",
+      "sha256": "sha256:fd59824427e853a000b3a277859f64a147d4913c5f0e23ead37ebe13c36ffbab"
     },
     {
       "bytes": 7280,
@@ -133,12 +198,14 @@
   ],
   "claim_boundary": "release_artifact_manifest_not_external_validation",
   "generated_at": "reproducible",
-  "git_commit_at_generation": "30b5a1bdd29ecee6743896b0a3dcfb719a4e10c6",
+  "git_commit_at_generation": "895eb5d653ea325cb41f0d9c5d32870c9512277d",
   "not_authority": true,
   "schema": "parva-release-artifact-manifest-v1",
   "verification_summary": {
+    "jpl_lane": "scripts/release/check_jpl_lane.py --check",
     "local_kernel_package": "scripts/release/check_local_kernel_package.py",
     "public_gate": "scripts/release/verify_public.py",
+    "route_proof_matrix": "scripts/release/generate_route_proof_matrix.py --check",
     "source_coverage": "scripts/release/generate_source_coverage_report.py --check"
   }
 }

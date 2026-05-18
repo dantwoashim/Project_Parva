@@ -7,6 +7,7 @@ export {
   type ProofFixture,
   type VerificationResult,
 } from './membranes.js';
+export { replayPanchangaMembrane, type PanchangaFixture, type PanchangaReplayResult } from './panchanga.js';
 export { verifyProofPack, type ProofPack } from './proofpacks.js';
 export { verifyTimepack, type Timepack } from './timepacks.js';
 export { canonicalize, stableStringify } from './canonicalize.js';

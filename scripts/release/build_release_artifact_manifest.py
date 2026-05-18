@@ -19,6 +19,19 @@ ARTIFACT_PATHS = [
     "packages/parva-js/package.json",
     "reports/source_coverage/coverage_matrix.json",
     "reports/source_coverage/coverage_matrix.md",
+    "reports/source_coverage/year_field_status.md",
+    "reports/source_coverage/panchanga_method_coverage.md",
+    "reports/proof_contract/route_proof_matrix.json",
+    "reports/proof_contract/route_proof_matrix.md",
+    "reports/panchanga/jpl_lane_report.json",
+    "reports/panchanga/jpl_lane_report.md",
+    "reports/external/reviewer_dry_audit.json",
+    "reports/external/reviewer_dry_audit.md",
+    "reports/external_reviewer_dry_run/review_report.json",
+    "reports/external_reviewer_dry_run/review_report.md",
+    "examples/payroll/ugly.report.example.json",
+    "examples/payroll/ugly.report.example.md",
+    "examples/payroll/ugly.report.example.timepack.json",
     "examples/external/reviewer-bundle/manifest.json",
 ]
 
@@ -84,6 +97,8 @@ def build_manifest() -> dict[str, Any]:
             "public_gate": "scripts/release/verify_public.py",
             "local_kernel_package": "scripts/release/check_local_kernel_package.py",
             "source_coverage": "scripts/release/generate_source_coverage_report.py --check",
+            "route_proof_matrix": "scripts/release/generate_route_proof_matrix.py --check",
+            "jpl_lane": "scripts/release/check_jpl_lane.py --check",
         },
     }
 

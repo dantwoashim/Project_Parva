@@ -41,6 +41,19 @@ def add_proof_schemas(schema: dict[str, Any]) -> None:
         },
     )
     components.setdefault(
+        "SourceDocketRef",
+        {
+            "type": "object",
+            "title": "SourceDocketRef",
+            "properties": {
+                "source_docket_id": {"type": "string"},
+                "authority": {"type": "string"},
+                "coverage_status": {"type": "string"},
+                "snapshot_hash": {"type": "string", "nullable": True},
+            },
+        },
+    )
+    components.setdefault(
         "MethodDocket",
         {
             "type": "object",
@@ -102,6 +115,66 @@ def add_proof_schemas(schema: dict[str, Any]) -> None:
                 },
                 "source_docket_refs": {"type": "array", "items": {"type": "string"}},
                 "proof_pack": {"type": "object"},
+                "capsule": {"$ref": "#/components/schemas/MembraneArtifact"},
+            },
+        },
+    )
+    components.setdefault(
+        "MembraneArtifact",
+        {
+            "type": "object",
+            "title": "MembraneArtifact",
+            "properties": {
+                "kind": {"type": "string", "example": "parva_membrane"},
+                "membrane_kind": {"type": "string", "enum": ["positive", "negative", "branch", "unsat"]},
+                "canonical_query": {"type": "object"},
+                "identity_hash": {"type": "string"},
+                "witness_hash": {"type": "string"},
+                "result": {"type": "object"},
+                "boundary": {"$ref": "#/components/schemas/BoundaryVector"},
+                "field_provenance": {
+                    "type": "object",
+                    "additionalProperties": {"$ref": "#/components/schemas/FieldProvenance"},
+                },
+                "policy_trace": {"$ref": "#/components/schemas/PolicyDecisionTrace"},
+            },
+        },
+    )
+    components.setdefault(
+        "ReplayStatus",
+        {
+            "type": "object",
+            "title": "ReplayStatus",
+            "properties": {
+                "verified": {"type": "boolean"},
+                "reason": {"type": "string"},
+                "verifier": {"type": "string"},
+            },
+        },
+    )
+    components.setdefault(
+        "NegativeMembrane",
+        {"allOf": [{"$ref": "#/components/schemas/MembraneArtifact"}], "title": "NegativeMembrane"},
+    )
+    components.setdefault(
+        "UnsatMembrane",
+        {"allOf": [{"$ref": "#/components/schemas/MembraneArtifact"}], "title": "UnsatMembrane"},
+    )
+    components.setdefault(
+        "BranchMembrane",
+        {"allOf": [{"$ref": "#/components/schemas/MembraneArtifact"}], "title": "BranchMembrane"},
+    )
+    components.setdefault(
+        "PanchangaProofArtifact",
+        {
+            "type": "object",
+            "title": "PanchangaProofArtifact",
+            "properties": {
+                "proof": {"$ref": "#/components/schemas/ProofReceipt"},
+                "method_dockets": {"type": "array", "items": {"$ref": "#/components/schemas/MethodDocket"}},
+                "ephemeris_metadata": {"$ref": "#/components/schemas/EphemerisProviderMetadata"},
+                "not_panchanga_authority": {"type": "boolean"},
+                "not_ritual_final_authority": {"type": "boolean"},
             },
         },
     )
@@ -152,3 +225,71 @@ def add_proof_schemas(schema: dict[str, Any]) -> None:
             },
         },
     )
+
+
+PROOF_CAPABLE_PATHS = {
+    "/v3/api/calendar/bs-to-gregorian",
+    "/v3/api/calendar/convert",
+    "/v3/api/calendar/validate-bs-date",
+    "/v3/api/compliance/holiday",
+    "/v3/api/compliance/evaluate-date",
+    "/v3/api/enterprise/fiscal-year/{bs_year}",
+    "/v3/api/enterprise/bs-months/{bs_year}",
+    "/v3/api/calendar/panchanga",
+}
+
+
+def add_proof_contract_references(schema: dict[str, Any]) -> None:
+    """Attach proof parameters and response references to proof-capable routes."""
+
+    add_proof_schemas(schema)
+    proof_parameter = {
+        "name": "proof",
+        "in": "query",
+        "required": False,
+        "schema": {"type": "string", "enum": ["none", "compact", "audit", "replay", "membrane"]},
+        "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt.",
+    }
+    for path, methods in schema.get("paths", {}).items():
+        if path not in PROOF_CAPABLE_PATHS:
+            continue
+        for operation in methods.values():
+            parameters = operation.setdefault("parameters", [])
+            proof_params = [param for param in parameters if param.get("name") == "proof" and param.get("in") == "query"]
+            if proof_params:
+                for param in proof_params:
+                    param["schema"] = proof_parameter["schema"]
+                    param["description"] = proof_parameter["description"]
+            else:
+                parameters.append(proof_parameter)
+            operation.setdefault("x-parva-proof-schemas", [])
+            operation["x-parva-proof-schemas"] = [
+                "#/components/schemas/ProofReceipt",
+                "#/components/schemas/MembraneArtifact",
+                "#/components/schemas/BoundaryVector",
+                "#/components/schemas/FieldProvenance",
+                "#/components/schemas/ReplayStatus",
+            ]
+            if "panchanga" in path:
+                operation["x-parva-proof-schemas"].extend(
+                    [
+                        "#/components/schemas/PanchangaProofArtifact",
+                        "#/components/schemas/MethodDocket",
+                        "#/components/schemas/EphemerisProviderMetadata",
+                    ]
+                )
+            responses = operation.setdefault("responses", {})
+            ok = responses.setdefault("200", {}).setdefault("content", {}).setdefault("application/json", {})
+            existing_schema = ok.get("schema", {"type": "object"})
+            ok["schema"] = {
+                "allOf": [
+                    existing_schema,
+                    {
+                        "type": "object",
+                        "properties": {
+                            "proof": {"$ref": "#/components/schemas/ProofReceipt"},
+                            "replay_status": {"$ref": "#/components/schemas/ReplayStatus"},
+                        },
+                    },
+                ]
+            }

@@ -1,0 +1,89 @@
+{
+  "artifacts": [
+    {
+      "exists": true,
+      "path": "examples/external/proofpacks/civil-conversion.proofpack.json"
+    },
+    {
+      "exists": true,
+      "path": "examples/external/proofpacks/panchanga-summary.proofpack.json"
+    },
+    {
+      "exists": true,
+      "path": "examples/external/timepacks/payroll-date-risk.timepack.json"
+    },
+    {
+      "exists": true,
+      "path": "examples/external/reviewer-bundle/manifest.json"
+    },
+    {
+      "exists": true,
+      "path": "reports/source_coverage/coverage_matrix.json"
+    },
+    {
+      "exists": true,
+      "path": "reports/proof_contract/route_proof_matrix.json"
+    }
+  ],
+  "challenge_process": "Use docs/external/WITNESS_SUBMISSION_GUIDE.md and include artifact id, disputed field, source/method evidence, and proposed correction.",
+  "docs": [
+    {
+      "exists": true,
+      "path": "docs/external/REVIEWER_PACKET.md"
+    },
+    {
+      "exists": true,
+      "path": "docs/external/AUDITOR_REPLAY_GUIDE.md"
+    },
+    {
+      "exists": true,
+      "path": "docs/external/PANCHANGA_REVIEW_GUIDE.md"
+    },
+    {
+      "exists": true,
+      "path": "docs/external/FORBIDDEN_CLAIMS.md"
+    },
+    {
+      "exists": true,
+      "path": "docs/external/SAFE_CLAIMS.md"
+    },
+    {
+      "exists": true,
+      "path": "docs/external/WITNESS_SUBMISSION_GUIDE.md"
+    },
+    {
+      "exists": true,
+      "path": "docs/external/CONFORMANCE_REVIEW_CHECKLIST.md"
+    },
+    {
+      "exists": true,
+      "path": "docs/external/REVIEW_CHECKLIST.md"
+    },
+    {
+      "exists": true,
+      "path": "docs/external/REVIEWER_DRY_RUN.md"
+    }
+  ],
+  "external_review_claimed": false,
+  "generated_at": "2026-01-01T00:00:00+00:00",
+  "live_api_required": false,
+  "missing": [],
+  "real_jpl_required": false,
+  "schema": "parva-external-review-dry-audit-v1",
+  "skipped_or_external": [
+    "real external reviewer signature",
+    "institutional adoption",
+    "third-party certification",
+    "government approval",
+    "real JPL kernel lane unless configured by reviewer"
+  ],
+  "status": "pass",
+  "verified_locally": [
+    "reviewer dry-run instructions present",
+    "civil proofpack artifact present",
+    "Panchanga proofpack artifact present",
+    "payroll/date-risk Timepack artifact present",
+    "source coverage report present",
+    "route proof matrix present"
+  ]
+}

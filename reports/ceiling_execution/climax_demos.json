@@ -3651,41 +3651,73 @@
         "ad_date": "2025-08-15",
         "bs_date": "2082-04-31",
         "claim_boundary": "payroll_date_risk_not_authority",
-        "fix_suggestions": [],
-        "issues": [],
+        "diagnostics": [],
+        "expected_ad_date": null,
+        "fix_suggestions": [
+          "manual_review"
+        ],
+        "issues": [
+          "fiscal_boundary_ambiguity"
+        ],
+        "original_row": {
+          "bs_date": "2082-04-31",
+          "holiday_assumption": "known_public_holidays",
+          "workflow_type": "payroll_cutoff"
+        },
         "proof_packs": [],
-        "risk_score": 0,
-        "status": "pass"
+        "risk_score": 25,
+        "row_number": 1,
+        "severity": "low",
+        "status": "review_required"
       },
       {
         "ad_date": null,
         "bs_date": "2082-13-01",
         "claim_boundary": "payroll_date_risk_not_authority",
+        "diagnostics": [],
+        "expected_ad_date": null,
         "fix_suggestions": [
           "manual_review"
         ],
         "issues": [
           "invalid_bs_date"
         ],
+        "original_row": {
+          "bs_date": "2082-13-01",
+          "holiday_assumption": "known_public_holidays",
+          "workflow_type": "payroll_cutoff"
+        },
         "proof_packs": [],
         "risk_score": 25,
+        "row_number": 2,
+        "severity": "high",
         "status": "review_required"
       },
       {
         "ad_date": "2039-04-16",
         "bs_date": "2096-01-01",
         "claim_boundary": "payroll_date_risk_not_authority",
+        "diagnostics": [],
+        "expected_ad_date": null,
         "fix_suggestions": [
           "manual_review"
         ],
         "issues": [
+          "holiday_assumption_requires_review",
           "holiday_conflict",
           "non_working_day_conflict",
           "review_required_future_sensitive",
-          "holiday_assumption_requires_review"
+          "unsupported_range"
         ],
+        "original_row": {
+          "bs_date": "2096-01-01",
+          "holiday_assumption": "assume_no_holidays",
+          "workflow_type": "future_payroll_cutoff"
+        },
         "proof_packs": [],
         "risk_score": 100,
+        "row_number": 3,
+        "severity": "medium",
         "status": "review_required"
       }
     ],
@@ -3745,6 +3777,7 @@
       "index.ts",
       "manifest.ts",
       "membranes.ts",
+      "panchanga.ts",
       "policy.ts",
       "proofpacks.ts",
       "timepacks.ts",
@@ -10416,7 +10449,7 @@
       "kind": "parva_conformance_badge",
       "status": "passing_reference_report",
       "test_pack": "payroll_core_2082",
-      "witness_hash": "sha256:60e5449db5e4f1e5cf4ffca04c6765a41f8115ccee3ee2b82d02850752ff89c5"
+      "witness_hash": "sha256:227cf6ab9cec2a73fa9b7fe637950995e18ea2168eb57ebdd6bcf254e7bffc45"
     },
     "challenge": {
       "challenged_witness": "community:sample",

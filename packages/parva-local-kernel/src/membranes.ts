@@ -1,6 +1,7 @@
 import { stableStringify } from './canonicalize.js';
 import { replayCivilResult, verifyBsMonthReplay } from './civil.js';
 import { sha256Hex } from './hash.js';
+import { replayPanchangaMembrane, type PanchangaFixture, type PanchangaMembrane } from './panchanga.js';
 
 export type Membrane = {
   canonical_query?: unknown;
@@ -194,5 +195,10 @@ export async function verifyPanchangaMembrane(membrane: Membrane, fixtures: Proo
   if (!ephemerisMetadata?.provider_id || !ephemerisMetadata.provider_kind) {
     return { verified: false, reason: 'ephemeris_metadata_missing' };
   }
-  return verifyMembrane(membrane, { fixtures });
+  const generic = await verifyMembrane(membrane, { fixtures });
+  if (!generic.verified) {
+    return generic;
+  }
+  const replay = await replayPanchangaMembrane(membrane as PanchangaMembrane, fixtures as PanchangaFixture[]);
+  return replay.verified ? { verified: true, reason: 'verified' } : replay;
 }

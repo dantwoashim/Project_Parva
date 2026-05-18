@@ -11,6 +11,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 SCAN_ROOTS = (
     PROJECT_ROOT / "README.md",
+    PROJECT_ROOT / "AGENTS.md",
     PROJECT_ROOT / "llms.txt",
     PROJECT_ROOT / "llms-full.txt",
     PROJECT_ROOT / "docs",
@@ -29,6 +30,7 @@ SKIP_PARTS = {
     "__pycache__",
     "node_modules",
     "dist",
+    "external_reviewer_dry_run",
 }
 
 FORBIDDEN_PATTERNS = {
@@ -43,6 +45,13 @@ FORBIDDEN_PATTERNS = {
     "Panchanga replacement": re.compile(r"\bPanchanga\s+replacement\b", re.IGNORECASE),
     "certified": re.compile(r"\bcertified\b", re.IGNORECASE),
     "SOC 2": re.compile(r"\bSOC\s*2\b", re.IGNORECASE),
+    "published package": re.compile(r"\b(published|available)\s+on\s+(npm|PyPI)\b", re.IGNORECASE),
+    "MCP registry acceptance": re.compile(r"\bMCP\s+registry\s+(accepted|approved|listed)\b", re.IGNORECASE),
+    "customer adoption": re.compile(r"\b(customer|adoption|pilot\s+customer)\s+(proof|validated|confirmed)\b", re.IGNORECASE),
+    "official Panchanga authority": re.compile(r"\bofficial\s+Panchanga\s+authority\b", re.IGNORECASE),
+    "ritual final authority": re.compile(r"\britual\s+final\s+authority\b", re.IGNORECASE),
+    "JPL-backed overclaim": re.compile(r"\bJPL[-\s]+backed\b", re.IGNORECASE),
+    "static lookup source-backed": re.compile(r"\bstatic\s+lookup\b.{0,80}\bsource[-\s]+backed\b", re.IGNORECASE),
 }
 
 OPENAPI_OPERATION_CLAIM_PATTERNS = {
@@ -69,6 +78,17 @@ NEGATION_PATTERNS = (
     re.compile(r"\bthey\s+are\s+not\b", re.IGNORECASE),
     re.compile(r"\bdisallowed\s+public\s+claims\b", re.IGNORECASE),
     re.compile(r"\ba\s+replacement\s+for\b", re.IGNORECASE),
+    re.compile(r"\bcannot\b", re.IGNORECASE),
+    re.compile(r"\bcannot\s+replace\b", re.IGNORECASE),
+    re.compile(r"\bwhat\s+JPL\s+cannot\s+decide\b", re.IGNORECASE),
+    re.compile(r"\bunless\s+actually\b", re.IGNORECASE),
+    re.compile(r"\bunless\s+real\b", re.IGNORECASE),
+    re.compile(r"\bonly\s+when\b", re.IGNORECASE),
+    re.compile(r"\bis\s+claimed\s+only\s+when\b", re.IGNORECASE),
+    re.compile(r"\bnot\s+real\s+JPL\b", re.IGNORECASE),
+    re.compile(r"\bno\s+real\s+JPL\b", re.IGNORECASE),
+    re.compile(r"\bwhat\s+JPL[-\s]+backed\s+means\b", re.IGNORECASE),
+    re.compile(r"\bJPL[-\s]+backed\s+claim\b", re.IGNORECASE),
 )
 
 
@@ -96,6 +116,13 @@ def _is_negated(line: str, start: int, previous_context: str = "") -> bool:
     return any(pattern.search(window) for pattern in NEGATION_PATTERNS)
 
 
+def _display_path(path: Path) -> str:
+    try:
+        return path.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def check_public_claims() -> list[str]:
     issues: list[str] = []
     for path in _candidate_files():
@@ -110,7 +137,7 @@ def check_public_claims() -> list[str]:
                 for match in pattern.finditer(line):
                     if _is_negated(line, match.start(), previous_context):
                         continue
-                    rel = path.relative_to(PROJECT_ROOT).as_posix()
+                    rel = _display_path(path)
                     issues.append(f"{rel}:{line_number}: unsupported public claim phrase `{label}`")
     issues.extend(_check_openapi_operation_claims())
     return issues

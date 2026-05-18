@@ -121,6 +121,10 @@ def main() -> int:
         ("ceiling climax demos", [*python, "scripts/release/run_ceiling_climax_demos.py"]),
         ("public claims", [*python, "scripts/release/check_public_claims.py"]),
         ("public surface security", [*python, "scripts/release/check_public_surface_security.py"]),
+        ("CI Node 24 readiness", [*python, "scripts/release/check_ci_node24_readiness.py"]),
+        ("Panchanga JPL lane report", [*python, "scripts/release/check_jpl_lane.py", "--check"]),
+        ("route proof contract matrix", [*python, "scripts/release/generate_route_proof_matrix.py", "--check"]),
+        ("external reviewer dry audit", [*python, "scripts/release/generate_external_review_dry_audit.py", "--check"]),
         ("source coverage report", [*python, "scripts/release/generate_source_coverage_report.py", "--check"]),
         ("release artifact manifest", [*python, "scripts/release/verify_release_artifact_manifest.py"]),
         ("protocol conformance core", [*python, "scripts/parva_conformance.py", "--target", "local", "--level", "parva_core"]),
@@ -129,6 +133,7 @@ def main() -> int:
         ("public OpenAPI drift", [*python, "scripts/release/check_public_openapi_drift.py"]),
         ("backend smoke", [*python, "scripts/release/check_backend_smoke.py"]),
         ("Python SDK import smoke", [*python, "scripts/release/check_sdk_install.py"]),
+        ("offline SDK proof examples", [*python, "scripts/release/check_sdk_examples.py"]),
         ("local kernel package readiness", [*python, "scripts/release/check_local_kernel_package.py"]),
         ("backend lint", [*python, "-m", "ruff", "check", "backend", "tests", "scripts", "sdk", "packages/parva-python"]),
         (

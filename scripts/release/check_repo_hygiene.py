@@ -112,6 +112,16 @@ def _tracked_path_issue(path: str) -> str | None:
         "reports/trust-status.json",
         "reports/source_coverage/coverage_matrix.json",
         "reports/source_coverage/coverage_matrix.md",
+        "reports/source_coverage/panchanga_method_coverage.md",
+        "reports/source_coverage/year_field_status.md",
+        "reports/proof_contract/route_proof_matrix.json",
+        "reports/proof_contract/route_proof_matrix.md",
+        "reports/panchanga/jpl_lane_report.json",
+        "reports/panchanga/jpl_lane_report.md",
+        "reports/external/reviewer_dry_audit.json",
+        "reports/external/reviewer_dry_audit.md",
+        "reports/external_reviewer_dry_run/review_report.json",
+        "reports/external_reviewer_dry_run/review_report.md",
     )
     if path in allowed_reports:
         return None

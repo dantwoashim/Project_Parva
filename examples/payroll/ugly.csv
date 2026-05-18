@@ -1,0 +1,8 @@
+employee_id,bs_date,actual_ad_date,workflow_type,holiday_assumption,source_status,claimed_authority,extra_column
+E-001,2082-01-02,2025-04-15,regular,,,
+E-002,,2025-04-15,regular,,,
+E-003,2082/01/99,not-a-date,regular,,,
+E-004,२०८२-०१-०१,2025-04-14,regular,,official,payroll_authority,noise
+E-005,2082-04-01,2025-07-17,regular,,,
+E-006,2082-12-01,2026-03-15,future_payroll,assume_no_holidays,,
+E-006,2082-12-01,2026-03-15,future_payroll,assume_no_holidays,,

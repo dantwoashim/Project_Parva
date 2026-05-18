@@ -12492,18 +12492,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
-              "title": "Proof"
+              "type": "string",
+              "enum": [
+                "none",
+                "compact",
+                "audit",
+                "replay",
+                "membrane"
+              ]
             },
-            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+            "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt."
           }
         ],
         "responses": {
@@ -12512,7 +12510,22 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ConversionResult"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ConversionResult"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "proof": {
+                          "$ref": "#/components/schemas/ProofReceipt"
+                        },
+                        "replay_status": {
+                          "$ref": "#/components/schemas/ReplayStatus"
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -12527,7 +12540,14 @@
               }
             }
           }
-        }
+        },
+        "x-parva-proof-schemas": [
+          "#/components/schemas/ProofReceipt",
+          "#/components/schemas/MembraneArtifact",
+          "#/components/schemas/BoundaryVector",
+          "#/components/schemas/FieldProvenance",
+          "#/components/schemas/ReplayStatus"
+        ]
       }
     },
     "/v3/api/calendar/convert/compare": {
@@ -12651,18 +12671,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Set to 'membrane' for a replay-verifiable proof capsule.",
-              "title": "Proof"
+              "type": "string",
+              "enum": [
+                "none",
+                "compact",
+                "audit",
+                "replay",
+                "membrane"
+              ]
             },
-            "description": "Set to 'membrane' for a replay-verifiable proof capsule."
+            "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt."
           }
         ],
         "requestBody": {
@@ -12680,7 +12698,22 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "allOf": [
+                    {},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "proof": {
+                          "$ref": "#/components/schemas/ProofReceipt"
+                        },
+                        "replay_status": {
+                          "$ref": "#/components/schemas/ReplayStatus"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -12694,7 +12727,14 @@
               }
             }
           }
-        }
+        },
+        "x-parva-proof-schemas": [
+          "#/components/schemas/ProofReceipt",
+          "#/components/schemas/MembraneArtifact",
+          "#/components/schemas/BoundaryVector",
+          "#/components/schemas/FieldProvenance",
+          "#/components/schemas/ReplayStatus"
+        ]
       }
     },
     "/v3/api/calendar/validate-bs-date": {
@@ -12744,18 +12784,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
-              "title": "Proof"
+              "type": "string",
+              "enum": [
+                "none",
+                "compact",
+                "audit",
+                "replay",
+                "membrane"
+              ]
             },
-            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+            "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt."
           }
         ],
         "responses": {
@@ -12763,7 +12801,22 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "allOf": [
+                    {},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "proof": {
+                          "$ref": "#/components/schemas/ProofReceipt"
+                        },
+                        "replay_status": {
+                          "$ref": "#/components/schemas/ReplayStatus"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -12777,7 +12830,14 @@
               }
             }
           }
-        }
+        },
+        "x-parva-proof-schemas": [
+          "#/components/schemas/ProofReceipt",
+          "#/components/schemas/MembraneArtifact",
+          "#/components/schemas/BoundaryVector",
+          "#/components/schemas/FieldProvenance",
+          "#/components/schemas/ReplayStatus"
+        ]
       }
     },
     "/v3/api/calendar/today": {
@@ -13088,18 +13148,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "none|compact|audit|replay|membrane",
-              "title": "Proof"
+              "type": "string",
+              "enum": [
+                "none",
+                "compact",
+                "audit",
+                "replay",
+                "membrane"
+              ]
             },
-            "description": "none|compact|audit|replay|membrane"
+            "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt."
           },
           {
             "name": "lat",
@@ -13204,7 +13262,22 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "allOf": [
+                    {},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "proof": {
+                          "$ref": "#/components/schemas/ProofReceipt"
+                        },
+                        "replay_status": {
+                          "$ref": "#/components/schemas/ReplayStatus"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -13218,7 +13291,17 @@
               }
             }
           }
-        }
+        },
+        "x-parva-proof-schemas": [
+          "#/components/schemas/ProofReceipt",
+          "#/components/schemas/MembraneArtifact",
+          "#/components/schemas/BoundaryVector",
+          "#/components/schemas/FieldProvenance",
+          "#/components/schemas/ReplayStatus",
+          "#/components/schemas/PanchangaProofArtifact",
+          "#/components/schemas/MethodDocket",
+          "#/components/schemas/EphemerisProviderMetadata"
+        ]
       }
     },
     "/v3/api/calendar/panchanga/proof-capsule": {
@@ -13514,18 +13597,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
-              "title": "Proof"
+              "type": "string",
+              "enum": [
+                "none",
+                "compact",
+                "audit",
+                "replay",
+                "membrane"
+              ]
             },
-            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+            "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt."
           }
         ],
         "responses": {
@@ -13533,7 +13614,22 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "allOf": [
+                    {},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "proof": {
+                          "$ref": "#/components/schemas/ProofReceipt"
+                        },
+                        "replay_status": {
+                          "$ref": "#/components/schemas/ReplayStatus"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -13547,7 +13643,14 @@
               }
             }
           }
-        }
+        },
+        "x-parva-proof-schemas": [
+          "#/components/schemas/ProofReceipt",
+          "#/components/schemas/MembraneArtifact",
+          "#/components/schemas/BoundaryVector",
+          "#/components/schemas/FieldProvenance",
+          "#/components/schemas/ReplayStatus"
+        ]
       }
     },
     "/v3/api/enterprise/bs-months/{bs_year}": {
@@ -13588,18 +13691,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
-              "title": "Proof"
+              "type": "string",
+              "enum": [
+                "none",
+                "compact",
+                "audit",
+                "replay",
+                "membrane"
+              ]
             },
-            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+            "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt."
           }
         ],
         "responses": {
@@ -13607,7 +13708,22 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "allOf": [
+                    {},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "proof": {
+                          "$ref": "#/components/schemas/ProofReceipt"
+                        },
+                        "replay_status": {
+                          "$ref": "#/components/schemas/ReplayStatus"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -13621,7 +13737,14 @@
               }
             }
           }
-        }
+        },
+        "x-parva-proof-schemas": [
+          "#/components/schemas/ProofReceipt",
+          "#/components/schemas/MembraneArtifact",
+          "#/components/schemas/BoundaryVector",
+          "#/components/schemas/FieldProvenance",
+          "#/components/schemas/ReplayStatus"
+        ]
       }
     },
     "/v3/api/enterprise/business-days": {
@@ -13813,18 +13936,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
-              "title": "Proof"
+              "type": "string",
+              "enum": [
+                "none",
+                "compact",
+                "audit",
+                "replay",
+                "membrane"
+              ]
             },
-            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+            "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt."
           }
         ],
         "requestBody": {
@@ -13842,7 +13963,22 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "allOf": [
+                    {},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "proof": {
+                          "$ref": "#/components/schemas/ProofReceipt"
+                        },
+                        "replay_status": {
+                          "$ref": "#/components/schemas/ReplayStatus"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -13856,7 +13992,14 @@
               }
             }
           }
-        }
+        },
+        "x-parva-proof-schemas": [
+          "#/components/schemas/ProofReceipt",
+          "#/components/schemas/MembraneArtifact",
+          "#/components/schemas/BoundaryVector",
+          "#/components/schemas/FieldProvenance",
+          "#/components/schemas/ReplayStatus"
+        ]
       }
     },
     "/v3/api/compliance/holiday": {
@@ -13919,18 +14062,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
-              "title": "Proof"
+              "type": "string",
+              "enum": [
+                "none",
+                "compact",
+                "audit",
+                "replay",
+                "membrane"
+              ]
             },
-            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+            "description": "Optional proof level. Use none for no proof payload; compact/audit/replay/membrane return a proof receipt."
           }
         ],
         "responses": {
@@ -13938,7 +14079,22 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "allOf": [
+                    {},
+                    {
+                      "type": "object",
+                      "properties": {
+                        "proof": {
+                          "$ref": "#/components/schemas/ProofReceipt"
+                        },
+                        "replay_status": {
+                          "$ref": "#/components/schemas/ReplayStatus"
+                        }
+                      }
+                    }
+                  ]
+                }
               }
             }
           },
@@ -13952,7 +14108,14 @@
               }
             }
           }
-        }
+        },
+        "x-parva-proof-schemas": [
+          "#/components/schemas/ProofReceipt",
+          "#/components/schemas/MembraneArtifact",
+          "#/components/schemas/BoundaryVector",
+          "#/components/schemas/FieldProvenance",
+          "#/components/schemas/ReplayStatus"
+        ]
       }
     },
     "/v3/api/compliance/next-working-day": {
@@ -27498,6 +27661,25 @@
           }
         }
       },
+      "SourceDocketRef": {
+        "type": "object",
+        "title": "SourceDocketRef",
+        "properties": {
+          "source_docket_id": {
+            "type": "string"
+          },
+          "authority": {
+            "type": "string"
+          },
+          "coverage_status": {
+            "type": "string"
+          },
+          "snapshot_hash": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "MethodDocket": {
         "type": "object",
         "title": "MethodDocket",
@@ -27622,6 +27804,115 @@
           },
           "proof_pack": {
             "type": "object"
+          },
+          "capsule": {
+            "$ref": "#/components/schemas/MembraneArtifact"
+          }
+        }
+      },
+      "MembraneArtifact": {
+        "type": "object",
+        "title": "MembraneArtifact",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "example": "parva_membrane"
+          },
+          "membrane_kind": {
+            "type": "string",
+            "enum": [
+              "positive",
+              "negative",
+              "branch",
+              "unsat"
+            ]
+          },
+          "canonical_query": {
+            "type": "object"
+          },
+          "identity_hash": {
+            "type": "string"
+          },
+          "witness_hash": {
+            "type": "string"
+          },
+          "result": {
+            "type": "object"
+          },
+          "boundary": {
+            "$ref": "#/components/schemas/BoundaryVector"
+          },
+          "field_provenance": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/FieldProvenance"
+            }
+          },
+          "policy_trace": {
+            "$ref": "#/components/schemas/PolicyDecisionTrace"
+          }
+        }
+      },
+      "ReplayStatus": {
+        "type": "object",
+        "title": "ReplayStatus",
+        "properties": {
+          "verified": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "verifier": {
+            "type": "string"
+          }
+        }
+      },
+      "NegativeMembrane": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MembraneArtifact"
+          }
+        ],
+        "title": "NegativeMembrane"
+      },
+      "UnsatMembrane": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MembraneArtifact"
+          }
+        ],
+        "title": "UnsatMembrane"
+      },
+      "BranchMembrane": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MembraneArtifact"
+          }
+        ],
+        "title": "BranchMembrane"
+      },
+      "PanchangaProofArtifact": {
+        "type": "object",
+        "title": "PanchangaProofArtifact",
+        "properties": {
+          "proof": {
+            "$ref": "#/components/schemas/ProofReceipt"
+          },
+          "method_dockets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MethodDocket"
+            }
+          },
+          "ephemeris_metadata": {
+            "$ref": "#/components/schemas/EphemerisProviderMetadata"
+          },
+          "not_panchanga_authority": {
+            "type": "boolean"
+          },
+          "not_ritual_final_authority": {
+            "type": "boolean"
           }
         }
       },

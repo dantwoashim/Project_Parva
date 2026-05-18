@@ -75,6 +75,17 @@ def _failures() -> list[str]:
         failures.append("local kernel verifyMembrane must validate proof-pack and source snapshot linkage")
     if "replayMembrane" not in local_kernel or "replayCivilResult" not in local_kernel:
         failures.append("local kernel must perform formula-based civil membrane replay")
+    if "replayPanchangaMembrane" not in local_kernel:
+        failures.append("local kernel must perform component-level Panchanga fixture replay")
+    local_panchanga = _read("packages/parva-local-kernel/src/panchanga.ts")
+    for marker in (
+        "'tithi.number'",
+        "'nakshatra.name'",
+        "fallback_provider_claims_jpl",
+        "panchanga_not_ritual_final_authority_missing",
+    ):
+        if marker not in local_panchanga:
+            failures.append(f"local kernel Panchanga replay missing marker {marker}")
     local_civil = _read("packages/parva-local-kernel/src/civil.ts")
     for marker in ("function bsToAd", "function adToBs", "holidayResult", "workingDayResult", "fiscalYearResult", "verifyBsMonthReplay"):
         if marker not in local_civil:
@@ -85,6 +96,8 @@ def _failures() -> list[str]:
         failures.append("shared civil proof fixtures must cover core replay cases")
     if not list((PROJECT_ROOT / "tests/fixtures/proof/panchanga").glob("*.json")):
         failures.append("Panchanga proof fixtures are missing")
+    if not (PROJECT_ROOT / "reports/proof_contract/route_proof_matrix.json").exists():
+        failures.append("route proof contract matrix is missing")
     for proof_artifact in (
         "examples/external/proofpacks/civil-conversion.proofpack.json",
         "examples/external/proofpacks/panchanga-summary.proofpack.json",
@@ -133,6 +146,7 @@ def _failures() -> list[str]:
     verify_public = _read("scripts/release/verify_public.py")
     for gate in (
         "check_local_kernel_package.py",
+        "generate_route_proof_matrix.py",
         "generate_source_coverage_report.py",
         "verify_release_artifact_manifest.py",
         "check_public_surface_security.py",

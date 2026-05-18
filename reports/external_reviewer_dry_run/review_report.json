@@ -1,0 +1,131 @@
+{
+  "commands": [
+    {
+      "command": "C:\\Users\\prabi\\AppData\\Local\\Programs\\Python\\Python311\\python.exe scripts/verify_environment.py",
+      "exit_code": 0,
+      "expected_status": "pass",
+      "label": "environment",
+      "status": "pass",
+      "summary": [
+        "    }",
+        "  }",
+        "}"
+      ]
+    },
+    {
+      "command": "C:\\NODE\\npm.CMD --prefix packages/parva-local-kernel test",
+      "exit_code": 0,
+      "expected_status": "pass",
+      "label": "local-kernel tests",
+      "status": "pass",
+      "summary": [
+        "\u00e2\u201e\u00b9 skipped 0",
+        "\u00e2\u201e\u00b9 todo 0",
+        "\u00e2\u201e\u00b9 duration_ms 114.6269"
+      ]
+    },
+    {
+      "command": "C:\\Users\\prabi\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m parva.cli verify-proofpack examples/external/proofpacks/civil-conversion.proofpack.json",
+      "exit_code": 0,
+      "expected_status": "pass",
+      "label": "civil proofpack",
+      "status": "pass",
+      "summary": [
+        "  \"reason\": \"verified\",",
+        "  \"verified\": true",
+        "}"
+      ]
+    },
+    {
+      "command": "C:\\Users\\prabi\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m parva.cli verify-proofpack examples/external/proofpacks/panchanga-summary.proofpack.json",
+      "exit_code": 0,
+      "expected_status": "pass",
+      "label": "panchanga proofpack",
+      "status": "pass",
+      "summary": [
+        "  \"reason\": \"verified\",",
+        "  \"verified\": true",
+        "}"
+      ]
+    },
+    {
+      "command": "C:\\Users\\prabi\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m parva.cli verify-timepack examples/external/timepacks/payroll-date-risk.timepack.json",
+      "exit_code": 0,
+      "expected_status": "pass",
+      "label": "payroll timepack",
+      "status": "pass",
+      "summary": [
+        "  \"reason\": \"verified\",",
+        "  \"verified\": true",
+        "}"
+      ]
+    },
+    {
+      "command": "C:\\Users\\prabi\\AppData\\Local\\Programs\\Python\\Python311\\python.exe scripts/release/check_public_claims.py",
+      "exit_code": 0,
+      "expected_status": "pass",
+      "label": "public claims",
+      "status": "pass",
+      "summary": [
+        "Public claims check passed."
+      ]
+    },
+    {
+      "command": "C:\\Users\\prabi\\AppData\\Local\\Programs\\Python\\Python311\\python.exe scripts/release/check_public_surface_security.py",
+      "exit_code": 0,
+      "expected_status": "pass",
+      "label": "public surface security",
+      "status": "pass",
+      "summary": [
+        "Public surface security check passed."
+      ]
+    },
+    {
+      "command": "PARVA_JPL_KERNEL_PATH not configured",
+      "exit_code": 0,
+      "expected_status": "skip",
+      "label": "optional JPL kernel lane",
+      "status": "skip",
+      "summary": [
+        "Skipped honestly: configure PARVA_JPL_KERNEL_PATH and expected hash to run the real JPL lane.",
+        "Default Panchanga proof fixtures remain pinned-fixture/method-backed, not real JPL-kernel output."
+      ]
+    }
+  ],
+  "expected_outputs": {
+    "civil_proofpack": "examples/external/proofpacks/civil-conversion.proofpack.json",
+    "json_report": "reports/external_reviewer_dry_run/review_report.json",
+    "markdown_report": "reports/external_reviewer_dry_run/review_report.md",
+    "panchanga_proofpack": "examples/external/proofpacks/panchanga-summary.proofpack.json",
+    "payroll_timepack": "examples/external/timepacks/payroll-date-risk.timepack.json"
+  },
+  "external_validation_claimed": false,
+  "forbidden_claims": [
+    "No government authority.",
+    "No legal, tax, payroll, or banking authority.",
+    "No official future-date authority.",
+    "No official Panchanga or ritual authority.",
+    "No external certification, registry acceptance, package publication, adoption, or customer proof unless real evidence exists.",
+    "No real JPL-kernel execution is claimed unless PARVA_JPL_KERNEL_PATH is configured and verified."
+  ],
+  "generated_at": "2026-01-01T00:00:00+00:00",
+  "jpl_lane": {
+    "command": "PARVA_JPL_KERNEL_PATH not configured",
+    "exit_code": 0,
+    "expected_status": "skip",
+    "label": "optional JPL kernel lane",
+    "status": "skip",
+    "summary": [
+      "Skipped honestly: configure PARVA_JPL_KERNEL_PATH and expected hash to run the real JPL lane.",
+      "Default Panchanga proof fixtures remain pinned-fixture/method-backed, not real JPL-kernel output."
+    ]
+  },
+  "live_api_required": false,
+  "safe_claims": [
+    "Local/offline proof packs can be verified from committed artifacts.",
+    "The reviewer dry run exercises civil, Panchanga, and payroll/date-risk examples without live API access.",
+    "Panchanga results are computed/method-backed decision support with explicit non-authority boundaries."
+  ],
+  "schema": "parva-reviewer-dry-run-v1",
+  "status": "pass"
+}

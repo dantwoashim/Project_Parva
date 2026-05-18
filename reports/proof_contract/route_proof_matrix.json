@@ -1,0 +1,184 @@
+{
+  "generated_at": "2026-01-01T00:00:00+00:00",
+  "required_proof_modes": [
+    "none",
+    "compact",
+    "audit",
+    "replay",
+    "membrane"
+  ],
+  "route_count": 8,
+  "routes": [
+    {
+      "contract_test_file": "tests/contract/test_route_proof_contract_matrix.py",
+      "method": "POST",
+      "openapi_schema_refs": [
+        "ProofReceipt",
+        "MembraneArtifact",
+        "BoundaryVector",
+        "FieldProvenance"
+      ],
+      "operation": "bs_to_ad",
+      "proof_modes_supported": [
+        "none",
+        "compact",
+        "audit",
+        "replay",
+        "membrane"
+      ],
+      "route": "/v3/api/calendar/bs-to-gregorian",
+      "stable_public": true,
+      "verification_status": "covered"
+    },
+    {
+      "contract_test_file": "tests/contract/test_route_proof_contract_matrix.py",
+      "method": "GET",
+      "openapi_schema_refs": [
+        "ProofReceipt",
+        "MembraneArtifact",
+        "BoundaryVector",
+        "FieldProvenance"
+      ],
+      "operation": "ad_to_bs",
+      "proof_modes_supported": [
+        "none",
+        "compact",
+        "audit",
+        "replay",
+        "membrane"
+      ],
+      "route": "/v3/api/calendar/convert",
+      "stable_public": true,
+      "verification_status": "covered"
+    },
+    {
+      "contract_test_file": "tests/contract/test_route_proof_contract_matrix.py",
+      "method": "GET",
+      "openapi_schema_refs": [
+        "ProofReceipt",
+        "NegativeMembrane",
+        "BoundaryVector",
+        "FieldProvenance"
+      ],
+      "operation": "validate_bs_date",
+      "proof_modes_supported": [
+        "none",
+        "compact",
+        "audit",
+        "replay",
+        "membrane"
+      ],
+      "route": "/v3/api/calendar/validate-bs-date",
+      "stable_public": true,
+      "verification_status": "covered"
+    },
+    {
+      "contract_test_file": "tests/contract/test_route_proof_contract_matrix.py",
+      "method": "GET",
+      "openapi_schema_refs": [
+        "ProofReceipt",
+        "MembraneArtifact",
+        "BoundaryVector",
+        "FieldProvenance"
+      ],
+      "operation": "holiday",
+      "proof_modes_supported": [
+        "none",
+        "compact",
+        "audit",
+        "replay",
+        "membrane"
+      ],
+      "route": "/v3/api/compliance/holiday",
+      "stable_public": true,
+      "verification_status": "covered"
+    },
+    {
+      "contract_test_file": "tests/contract/test_route_proof_contract_matrix.py",
+      "method": "POST",
+      "openapi_schema_refs": [
+        "ProofReceipt",
+        "MembraneArtifact",
+        "BoundaryVector",
+        "FieldProvenance"
+      ],
+      "operation": "working_day",
+      "proof_modes_supported": [
+        "none",
+        "compact",
+        "audit",
+        "replay",
+        "membrane"
+      ],
+      "route": "/v3/api/compliance/evaluate-date",
+      "stable_public": true,
+      "verification_status": "covered"
+    },
+    {
+      "contract_test_file": "tests/contract/test_route_proof_contract_matrix.py",
+      "method": "GET",
+      "openapi_schema_refs": [
+        "ProofReceipt",
+        "MembraneArtifact",
+        "BoundaryVector",
+        "FieldProvenance"
+      ],
+      "operation": "fiscal_year",
+      "proof_modes_supported": [
+        "none",
+        "compact",
+        "audit",
+        "replay",
+        "membrane"
+      ],
+      "route": "/v3/api/enterprise/fiscal-year/{bs_year}",
+      "stable_public": true,
+      "verification_status": "covered"
+    },
+    {
+      "contract_test_file": "tests/contract/test_route_proof_contract_matrix.py",
+      "method": "GET",
+      "openapi_schema_refs": [
+        "ProofReceipt",
+        "BranchMembrane",
+        "BoundaryVector",
+        "FieldProvenance"
+      ],
+      "operation": "bs_months",
+      "proof_modes_supported": [
+        "none",
+        "compact",
+        "audit",
+        "replay",
+        "membrane"
+      ],
+      "route": "/v3/api/enterprise/bs-months/{bs_year}",
+      "stable_public": true,
+      "verification_status": "covered"
+    },
+    {
+      "contract_test_file": "tests/contract/test_route_proof_contract_matrix.py",
+      "method": "GET",
+      "openapi_schema_refs": [
+        "ProofReceipt",
+        "PanchangaProofArtifact",
+        "MethodDocket",
+        "EphemerisProviderMetadata",
+        "BoundaryVector",
+        "FieldProvenance"
+      ],
+      "operation": "panchanga_summary",
+      "proof_modes_supported": [
+        "none",
+        "compact",
+        "audit",
+        "replay",
+        "membrane"
+      ],
+      "route": "/v3/api/calendar/panchanga",
+      "stable_public": true,
+      "verification_status": "covered"
+    }
+  ],
+  "schema": "parva-route-proof-matrix-v1"
+}

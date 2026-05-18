@@ -11,10 +11,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 SCAN_ROOTS = [
     PROJECT_ROOT / "README.md",
+    PROJECT_ROOT / "AGENTS.md",
     PROJECT_ROOT / "llms.txt",
     PROJECT_ROOT / "llms-full.txt",
     PROJECT_ROOT / "docs",
     PROJECT_ROOT / "examples",
+    PROJECT_ROOT / "reports",
+    PROJECT_ROOT / ".github" / "workflows",
     PROJECT_ROOT / "frontend" / "src",
     PROJECT_ROOT / "packages" / "parva-python",
     PROJECT_ROOT / "packages" / "parva-js",
@@ -36,6 +39,7 @@ SKIP_PARTS = {
     "dist",
     "build",
     ".vite",
+    "external_reviewer_dry_run",
 }
 
 TEXT_EXTS = {".md", ".txt", ".json", ".js", ".jsx", ".ts", ".tsx", ".py", ".yml", ".yaml"}
@@ -86,6 +90,13 @@ def _line_is_safe(line: str, match_start: int, previous_context: str = "", *, jp
     return False
 
 
+def _display_path(path: Path) -> str:
+    try:
+        return path.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def _check_text_files() -> list[str]:
     issues: list[str] = []
     for path in _iter_files():
@@ -93,7 +104,7 @@ def _check_text_files() -> list[str]:
             lines = path.read_text(encoding="utf-8").splitlines()
         except UnicodeDecodeError:
             continue
-        rel = path.relative_to(PROJECT_ROOT).as_posix()
+        rel = _display_path(path)
         if rel in INVENTORY_DOCS:
             continue
         for lineno, line in enumerate(lines, start=1):

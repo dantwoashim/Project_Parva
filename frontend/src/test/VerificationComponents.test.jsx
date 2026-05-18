@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import {
   Confidence,
@@ -95,5 +95,25 @@ describe('verification component extraction', () => {
     expect(screen.getByText(/ready_for_offline_cli_replay/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Boundary vector/i)).toBeInTheDocument();
     expect(screen.getByText(/Not government, legal, tax, payroll, banking/i)).toBeInTheDocument();
+  });
+
+  it('proof viewer handles samples, invalid JSON, detail toggle, and Panchanga metadata', () => {
+    render(<ProofViewerPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /Panchanga sample/i }));
+    expect(screen.getByLabelText(/Ephemeris metadata/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/pinned_panchanga_fixture/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Method dockets/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Review required/i).length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole('button', { name: /Compact/i }));
+    expect(screen.queryByLabelText(/Ephemeris metadata/i)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /Timepack sample/i }));
+    expect(screen.getByText(/timepack_shape_ok|unsupported_artifact_shape/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/payroll_date_risk_not_authority/i).length).toBeGreaterThan(0);
+
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: '{"kind":' } });
+    expect(screen.getByText(/failed_json_parse/i)).toBeInTheDocument();
   });
 });

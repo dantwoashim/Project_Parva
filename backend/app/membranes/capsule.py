@@ -51,13 +51,15 @@ def _proof_requested(value: str | None) -> bool:
 
 
 def proof_response(capsule: dict[str, Any], *, mode: str = "membrane") -> dict[str, Any]:
+    boundary = dict(capsule["boundary"])
+    boundary.setdefault("not_authority", True)
     return {
         "mode": mode,
         "capsule": capsule,
         "identity_hash": capsule["identity_hash"],
         "witness_hash": capsule["witness_hash"],
         "field_provenance": capsule["field_provenance"],
-        "boundary_vector": capsule["boundary"],
+        "boundary_vector": boundary,
         "proof_pack": capsule["proof_pack"],
         "source_docket_refs": capsule["source_docket_ids"],
         "freshness": capsule["boundary"].get("freshness"),

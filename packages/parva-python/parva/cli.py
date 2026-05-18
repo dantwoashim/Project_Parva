@@ -91,10 +91,11 @@ def _markdown_audit_report(report: dict[str, Any]) -> str:
     ]
     for item in report["findings"]:
         issues = ", ".join(item["issues"]) if item["issues"] else "none"
+        heading = item.get("bs_date") or f"row {item.get('row_number', '?')}"
         lines.extend(
             [
                 "",
-                f"### {item['bs_date']}",
+                f"### {heading}",
                 f"- Status: {item['status']}",
                 f"- AD date: {item.get('ad_date') or 'unresolved'}",
                 f"- Issues: {issues}",

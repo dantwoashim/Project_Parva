@@ -4,6 +4,7 @@ import { join, resolve } from 'node:path';
 import test from 'node:test';
 import {
   replayMembrane,
+  replayPanchangaMembrane,
   verifyCivilOperation,
   verifyMembrane,
   verifyPanchangaMembrane,
@@ -100,6 +101,69 @@ test('panchanga fixture verifies with ephemeris metadata', async () => {
   assert.deepEqual(result, { verified: true, reason: 'verified' });
   assert.equal(fixture.membrane.boundary.not_panchanga_authority, true);
   assert.equal(fixture.membrane.ephemeris_metadata.provider_kind, 'pinned_fixture');
+});
+
+test('panchanga replay validates pinned components, metadata, and non-authority boundaries', async () => {
+  const fixture = panchangaFixtures[0];
+  assert.deepEqual(await replayPanchangaMembrane(fixture.membrane, panchangaFixtures), {
+    verified: true,
+    reason: 'panchanga_replayed',
+  });
+
+  const wrongTithi = clone(fixture.membrane);
+  wrongTithi.result.tithi.number = 17;
+  assert.equal((await replayPanchangaMembrane(wrongTithi, panchangaFixtures)).reason, 'panchanga_component_mismatch:tithi.number');
+
+  const wrongNakshatra = clone(fixture.membrane);
+  wrongNakshatra.result.nakshatra.name = 'Bharani';
+  assert.equal(
+    (await replayPanchangaMembrane(wrongNakshatra, panchangaFixtures)).reason,
+    'panchanga_component_mismatch:nakshatra.name',
+  );
+
+  const wrongSunrise = clone(fixture.membrane);
+  wrongSunrise.result.sunrise.local_time = '05:41:30';
+  assert.equal(
+    (await replayPanchangaMembrane(wrongSunrise, panchangaFixtures)).reason,
+    'panchanga_component_mismatch:sunrise.local_time',
+  );
+
+  const changedLocation = clone(fixture.membrane);
+  changedLocation.canonical_query.context.latitude = 28.0;
+  assert.equal((await verifyPanchangaMembrane(changedLocation, panchangaFixtures)).reason, 'identity_hash_mismatch');
+
+  const changedTimezone = clone(fixture.membrane);
+  changedTimezone.canonical_query.context.timezone = 'asia/tokyo';
+  assert.equal((await verifyPanchangaMembrane(changedTimezone, panchangaFixtures)).reason, 'identity_hash_mismatch');
+
+  const changedAyanamsa = clone(fixture.membrane);
+  changedAyanamsa.canonical_query.context.ayanamsa = 'raman';
+  assert.equal((await verifyPanchangaMembrane(changedAyanamsa, panchangaFixtures)).reason, 'identity_hash_mismatch');
+
+  const changedProvider = clone(fixture.membrane);
+  changedProvider.ephemeris_metadata.provider_id = 'other_provider';
+  assert.equal(
+    (await verifyPanchangaMembrane(changedProvider, panchangaFixtures)).reason,
+    'ephemeris_metadata_proof_mismatch',
+  );
+
+  const missingMethodDocket = clone(fixture.membrane);
+  missingMethodDocket.method_docket_refs = [];
+  assert.equal((await verifyPanchangaMembrane(missingMethodDocket, panchangaFixtures)).reason, 'method_dockets_missing');
+
+  const missingBoundary = clone(fixture.membrane);
+  missingBoundary.boundary.not_ritual_final_authority = false;
+  assert.equal(
+    (await verifyPanchangaMembrane(missingBoundary, panchangaFixtures)).reason,
+    'panchanga_not_ritual_final_authority_missing',
+  );
+
+  const fallbackClaimsJpl = clone(fixture.membrane);
+  fallbackClaimsJpl.ephemeris_metadata.provider_kind = 'fallback_approx';
+  fallbackClaimsJpl.ephemeris_metadata.fallback_used = true;
+  fallbackClaimsJpl.ephemeris_metadata.jpl_backed = true;
+  fallbackClaimsJpl.proof_pack.source_artifacts.ephemeris_metadata = clone(fallbackClaimsJpl.ephemeris_metadata);
+  assert.equal((await verifyPanchangaMembrane(fallbackClaimsJpl, panchangaFixtures)).reason, 'fallback_provider_claims_jpl');
 });
 
 test('proofpack and timepack verification use child replay', async () => {
