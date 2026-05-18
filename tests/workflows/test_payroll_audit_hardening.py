@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -62,7 +63,22 @@ def test_payroll_cli_outputs_json_markdown_and_timepack(tmp_path: Path) -> None:
         "--timepack",
         str(timepack_out),
     ]
-    result = subprocess.run(command, cwd=Path.cwd(), text=True, capture_output=True, check=False)
+    pythonpath = os.pathsep.join(
+        [
+            str(Path("packages/parva-python")),
+            str(Path("backend")),
+            str(Path(".")),
+            os.environ.get("PYTHONPATH", ""),
+        ]
+    )
+    result = subprocess.run(
+        command,
+        cwd=Path.cwd(),
+        text=True,
+        capture_output=True,
+        check=False,
+        env={**os.environ, "PYTHONPATH": pythonpath},
+    )
 
     assert result.returncode == 0, result.stderr
     report = json.loads(json_out.read_text(encoding="utf-8"))
