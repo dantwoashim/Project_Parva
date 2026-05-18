@@ -28,6 +28,7 @@ import {
   RedesignTrust,
   RedesignTruthLab,
 } from './redesign/ParvaRedesign.jsx';
+import { ProofViewerPage } from './proof/ProofViewerPage';
 import './styles/tokens.css';
 import './index.css';
 import './styles/layouts.css';
@@ -70,6 +71,10 @@ const routeSeo = {
   '/trust': {
     title: 'Trust - Parva',
     description: 'Inspect Parva reliability, source coverage, method limits, policy, and live trust posture.',
+  },
+  '/proof': {
+    title: 'Proof Viewer - Project Parva',
+    description: 'Inspect Project Parva proof packs, Timepacks, boundary vectors, field provenance, and replay metadata.',
   },
   '/methodology': {
     title: 'Methodology - Parva',
@@ -139,6 +144,7 @@ function AppRoutes() {
         <Route path="/enterprise" element={<RedesignEnterprise />} />
         <Route path="/future-bs" element={<RedesignFutureBsResearch />} />
         <Route path="/trust" element={<RedesignTrust />} />
+        <Route path="/proof" element={<ProofViewerPage />} />
         <Route path="/methodology" element={<RedesignMethodology />} />
         <Route path="/truth-lab" element={<RedesignTruthLab />} />
         <Route path="/about" element={<RedesignAbout />} />

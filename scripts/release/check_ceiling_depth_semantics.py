@@ -73,14 +73,27 @@ def _failures() -> list[str]:
         failures.append("local kernel verifyMembrane must validate identity and witness hashes")
     if "proof_pack_result_hash_mismatch" not in local_kernel or "source_snapshot_hash_mismatch" not in local_kernel:
         failures.append("local kernel verifyMembrane must validate proof-pack and source snapshot linkage")
-    if "replayMembrane" not in local_kernel or "fixture_not_found" not in local_kernel:
-        failures.append("local kernel must perform fixture-backed membrane replay")
+    if "replayMembrane" not in local_kernel or "replayCivilResult" not in local_kernel:
+        failures.append("local kernel must perform formula-based civil membrane replay")
+    local_civil = _read("packages/parva-local-kernel/src/civil.ts")
+    for marker in ("function bsToAd", "function adToBs", "holidayResult", "workingDayResult", "fiscalYearResult", "verifyBsMonthReplay"):
+        if marker not in local_civil:
+            failures.append(f"local kernel civil replay missing {marker}")
     if not (PROJECT_ROOT / "packages/parva-local-kernel/package.json").exists():
         failures.append("local kernel must be a buildable npm package")
     if len(list((PROJECT_ROOT / "tests/fixtures/proof/civil").glob("*.json"))) < 12:
         failures.append("shared civil proof fixtures must cover core replay cases")
     if not list((PROJECT_ROOT / "tests/fixtures/proof/panchanga").glob("*.json")):
         failures.append("Panchanga proof fixtures are missing")
+    for proof_artifact in (
+        "examples/external/proofpacks/civil-conversion.proofpack.json",
+        "examples/external/proofpacks/panchanga-summary.proofpack.json",
+        "examples/external/timepacks/payroll-date-risk.timepack.json",
+        "data/public/release-artifact-manifest.json",
+        "reports/source_coverage/coverage_matrix.json",
+    ):
+        if not (PROJECT_ROOT / proof_artifact).exists():
+            failures.append(f"required proof/release artifact missing: {proof_artifact}")
 
     routes = _read("backend/app/calendar/routes.py")
     if "proof: str | None" not in routes or "build_convert_bs_to_ad_capsule" not in routes:
@@ -90,6 +103,9 @@ def _failures() -> list[str]:
             failures.append(f"calendar route must expose proof mode via {route_marker}")
     if "build_panchanga_summary_capsule" not in routes:
         failures.append("Panchanga route must expose method-docketed proof mode")
+    app = _read("frontend/src/App.jsx")
+    if 'path="/proof"' not in app:
+        failures.append("frontend proof viewer route /proof is missing")
 
     panchanga_provider = _read("backend/app/panchanga/ephemeris_provider.py")
     if "JplEphemerisProvider" not in panchanga_provider or "kernel_hash" not in panchanga_provider:
@@ -108,6 +124,21 @@ def _failures() -> list[str]:
     for route_marker in ("build_fiscal_year_capsule", "build_bs_months_capsule"):
         if route_marker not in enterprise_routes:
             failures.append(f"enterprise route must expose proof mode via {route_marker}")
+
+    public_openapi = _read("docs/api-docs/openapi.public-reference.json")
+    for schema_name in ("ProofReceipt", "ProofPack", "Timepack", "BoundaryVector", "FieldProvenance", "EphemerisProviderMetadata"):
+        if schema_name not in public_openapi:
+            failures.append(f"public OpenAPI missing proof schema {schema_name}")
+
+    verify_public = _read("scripts/release/verify_public.py")
+    for gate in (
+        "check_local_kernel_package.py",
+        "generate_source_coverage_report.py",
+        "verify_release_artifact_manifest.py",
+        "check_public_surface_security.py",
+    ):
+        if gate not in verify_public:
+            failures.append(f"public verification missing semantic gate {gate}")
 
     try:
         ast.parse(_read("backend/app/membranes/capsule.py"))

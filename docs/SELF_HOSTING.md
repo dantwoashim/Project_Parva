@@ -86,7 +86,7 @@ docker run --rm -p 8080:8080 \
   project-parva-cloudrun
 ```
 
-For Cloud Run builds that require JPL-backed precompute, pass both
+For Cloud Run builds that require a configured JPL kernel precompute lane, pass both
 `PARVA_DOWNLOAD_JPL_KERNEL=1` and `PARVA_PRECOMPUTE=1` at build time. Without
 those build args, the container remains backend-only and serves public runtime
 surfaces from checked-in public artifacts and runtime computation.

@@ -34,7 +34,7 @@ function clone(value) {
 test('civil fixtures verify and replay locally', async () => {
   assert.equal(civilFixtures.length >= 12, true);
   for (const fixture of civilFixtures) {
-    const result = await verifyCivilOperation(fixture.membrane, civilFixtures);
+    const result = await verifyCivilOperation(fixture.membrane, []);
     assert.deepEqual(result, { verified: true, reason: 'verified' });
   }
 });
@@ -43,8 +43,29 @@ test('local replay rejects wrong but self-consistent civil result', async () => 
   const fixture = civilFixtures.find((item) => item.operation === 'ad_to_bs');
   const membrane = clone(fixture.membrane);
   membrane.result.bs_date = '2082-01-03';
-  const replay = await replayMembrane(membrane, civilFixtures);
+  const replay = await replayMembrane(membrane, []);
   assert.deepEqual(replay, { verified: false, reason: 'replayed_result_mismatch' });
+});
+
+test('local formula replay covers all civil operations without fixture lookup', async () => {
+  const byName = new Map(civilFixtures.map((fixture) => [fixture.name, fixture.membrane]));
+  const cases = [
+    'bs_to_ad_valid',
+    'ad_to_bs_valid',
+    'validate_bs_date_valid',
+    'validate_bs_date_invalid',
+    'holiday_membership',
+    'holiday_non_membership',
+    'working_day_true',
+    'working_day_false',
+    'fiscal_year_boundary',
+    'bs_months_canonical',
+    'bs_months_static_lookup',
+    'bs_months_compare',
+  ];
+  for (const name of cases) {
+    assert.deepEqual(await replayMembrane(byName.get(name), []), { verified: true, reason: 'replayed' }, name);
+  }
 });
 
 test('local verifier rejects missing field provenance and witness tampering', async () => {
@@ -62,7 +83,15 @@ test('local verifier catches BS month total tampering', async () => {
   const fixture = civilFixtures.find((item) => item.name === 'bs_months_canonical');
   const membrane = clone(fixture.membrane);
   membrane.result.total_days = 1;
-  assert.equal((await replayMembrane(membrane, civilFixtures)).reason, 'replayed_result_mismatch');
+  assert.equal((await replayMembrane(membrane, [])).reason, 'bs_month_total_mismatch');
+});
+
+test('local verifier rejects high authority from sample source dockets', async () => {
+  const fixture = civilFixtures.find((item) => item.name === 'bs_to_ad_valid');
+  const membrane = clone(fixture.membrane);
+  membrane.boundary.authority = 'structured_official';
+  membrane.field_provenance.ad_date.authority = 'structured_official';
+  assert.equal((await verifyMembrane(membrane, { fixtures: [] })).reason, 'authority_overclaim');
 });
 
 test('panchanga fixture verifies with ephemeris metadata', async () => {

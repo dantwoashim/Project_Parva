@@ -11,12 +11,17 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 SCAN_ROOTS = (
     PROJECT_ROOT / "README.md",
+    PROJECT_ROOT / "llms.txt",
+    PROJECT_ROOT / "llms-full.txt",
     PROJECT_ROOT / "docs",
+    PROJECT_ROOT / "examples",
+    PROJECT_ROOT / "reports",
     PROJECT_ROOT / "frontend" / "src",
-    PROJECT_ROOT / "packages" / "parva-python" / "README.md",
-    PROJECT_ROOT / "packages" / "parva-js" / "README.md",
-    PROJECT_ROOT / "packages" / "parva-ai-tools" / "README.md",
-    PROJECT_ROOT / "packages" / "parva-mcp-server" / "README.md",
+    PROJECT_ROOT / "packages" / "parva-python",
+    PROJECT_ROOT / "packages" / "parva-js",
+    PROJECT_ROOT / "packages" / "parva-local-kernel",
+    PROJECT_ROOT / "packages" / "parva-ai-tools",
+    PROJECT_ROOT / "packages" / "parva-mcp-server",
 )
 
 SKIP_PARTS = {
@@ -52,6 +57,11 @@ NEGATION_PATTERNS = (
     re.compile(r"\bnot\b", re.IGNORECASE),
     re.compile(r"\bno\b", re.IGNORECASE),
     re.compile(r"\bnever\s+claim\b", re.IGNORECASE),
+    re.compile(r"\bdo\s+not\s+claim\b", re.IGNORECASE),
+    re.compile(r"\bmust\s+not\s+say\b", re.IGNORECASE),
+    re.compile(r"\bwhat\s+cannot\s+be\s+claimed\b", re.IGNORECASE),
+    re.compile(r"\bforbidden\s+claims\b", re.IGNORECASE),
+    re.compile(r"\bnot_claimable\b", re.IGNORECASE),
     re.compile(r"\bdoes\s+not\b", re.IGNORECASE),
     re.compile(r"\bmust\s+not\b", re.IGNORECASE),
     re.compile(r"\bwithout\s+claiming\b", re.IGNORECASE),

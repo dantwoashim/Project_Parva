@@ -1,0 +1,410 @@
+{
+  "claim_boundary": "coverage_report_not_authority",
+  "matrix_hash": "sha256:9e37d0ffbfcf64750e97fd4338a65b8994c1f161ce2fb323d794b735145e5615",
+  "not_authority": true,
+  "rows": [
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "ad_date",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "convert_bs_to_ad",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2070
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "bs_date",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "ad_to_bs",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2070
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "validity",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "validate_bs_date",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2070
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "membership",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "holiday",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2070
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "working_day",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "working_day",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2070
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "fiscal_year",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "fiscal_year",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2070
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_solar_civil_or_reference_not_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "month_lengths",
+      "method_docket_ids": [
+        "bs_month_canonical_policy_v0"
+      ],
+      "not_authority": true,
+      "operation": "bs_months",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2070
+    },
+    {
+      "authority": "static_reference",
+      "claim_boundary": "sample_source_chain_not_authority",
+      "coverage_status": "covered_by_reference_source_not_official",
+      "eligible_official": false,
+      "field": "ad_date",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "convert_bs_to_ad",
+      "review_required": true,
+      "source_docket_ids": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "year": 2082
+    },
+    {
+      "authority": "static_reference",
+      "claim_boundary": "sample_source_chain_not_authority",
+      "coverage_status": "covered_by_reference_source_not_official",
+      "eligible_official": false,
+      "field": "bs_date",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "ad_to_bs",
+      "review_required": true,
+      "source_docket_ids": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "year": 2082
+    },
+    {
+      "authority": "static_reference",
+      "claim_boundary": "sample_source_chain_not_authority",
+      "coverage_status": "covered_by_reference_source_not_official",
+      "eligible_official": false,
+      "field": "validity",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "validate_bs_date",
+      "review_required": true,
+      "source_docket_ids": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "year": 2082
+    },
+    {
+      "authority": "static_reference",
+      "claim_boundary": "decision_support_not_authority",
+      "coverage_status": "covered_by_reference_source_not_official",
+      "eligible_official": false,
+      "field": "membership",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "holiday",
+      "review_required": true,
+      "source_docket_ids": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "year": 2082
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "working_day",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "working_day",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2082
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "fiscal_year",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "fiscal_year",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2082
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_solar_civil_or_reference_not_authority",
+      "coverage_status": "covered_by_reference_source_not_official",
+      "eligible_official": false,
+      "field": "month_lengths",
+      "method_docket_ids": [
+        "bs_month_canonical_policy_v0"
+      ],
+      "not_authority": true,
+      "operation": "bs_months",
+      "review_required": true,
+      "source_docket_ids": [
+        "parva:src:v1:sample-2082-calendar-notice"
+      ],
+      "year": 2082
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "ad_date",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "convert_bs_to_ad",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2083
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "bs_date",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "ad_to_bs",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2083
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "validity",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "validate_bs_date",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2083
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "membership",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "holiday",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2083
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "working_day",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "working_day",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2083
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "fiscal_year",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "fiscal_year",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2083
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_solar_civil_or_reference_not_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "month_lengths",
+      "method_docket_ids": [
+        "bs_month_canonical_policy_v0"
+      ],
+      "not_authority": true,
+      "operation": "bs_months",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2083
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "ad_date",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "convert_bs_to_ad",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2099
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "bs_date",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "ad_to_bs",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2099
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_conversion_not_source_backed_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "validity",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "validate_bs_date",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2099
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "membership",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "holiday",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2099
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "working_day",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "working_day",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2099
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "fiscal_year",
+      "method_docket_ids": [],
+      "not_authority": true,
+      "operation": "fiscal_year",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2099
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_solar_civil_or_reference_not_authority",
+      "coverage_status": "no_eligible_source_coverage",
+      "eligible_official": false,
+      "field": "month_lengths",
+      "method_docket_ids": [
+        "bs_month_canonical_policy_v0"
+      ],
+      "not_authority": true,
+      "operation": "bs_months",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2099
+    },
+    {
+      "authority": "computed_uncertified",
+      "claim_boundary": "computed_ephemeris_not_panchanga_authority",
+      "coverage_status": "method_backed_with_pinned_fixture",
+      "eligible_official": false,
+      "ephemeris_fixture": "kathmandu_2025_04_14_lahiri",
+      "field": "tithi/nakshatra/yoga/karana/sunrise",
+      "method_docket_ids": [
+        "parva:method:sunrise:v1",
+        "parva:method:tithi:v1",
+        "parva:method:nakshatra:v1",
+        "parva:method:yoga:v1",
+        "parva:method:karana:v1"
+      ],
+      "not_authority": true,
+      "operation": "panchanga_summary",
+      "review_required": true,
+      "source_docket_ids": [],
+      "year": 2082
+    }
+  ],
+  "schema": "parva-source-coverage-v1"
+}

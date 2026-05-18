@@ -212,13 +212,20 @@ class JplEphemerisProvider:
     ephemeris_version: str = "de440"
 
     def _kernel(self) -> Path:
-        configured = self.kernel_path or os.getenv("PARVA_JPL_DE440_KERNEL")
+        configured = self.kernel_path or os.getenv("PARVA_JPL_KERNEL_PATH") or os.getenv("PARVA_JPL_DE440_KERNEL")
         if not configured:
-            raise FileNotFoundError("PARVA_JPL_DE440_KERNEL is not configured")
+            raise FileNotFoundError("PARVA_JPL_KERNEL_PATH/PARVA_JPL_DE440_KERNEL is not configured")
         path = Path(configured).expanduser()
         if not path.exists():
             raise FileNotFoundError("configured JPL kernel does not exist")
         return path
+
+    def _verified_kernel_hash(self, kernel: Path) -> str:
+        actual = _sha256_file(kernel)
+        expected = os.getenv("PARVA_JPL_KERNEL_SHA256", "").strip()
+        if expected and expected != actual and expected != actual.removeprefix("sha256:"):
+            raise ValueError("configured JPL kernel hash does not match PARVA_JPL_KERNEL_SHA256")
+        return actual
 
     def metadata(self) -> dict[str, Any]:
         try:
@@ -242,7 +249,7 @@ class JplEphemerisProvider:
             "provider_kind": self.provider_kind,
             "ephemeris_name": self.ephemeris_name,
             "ephemeris_version": self.ephemeris_version,
-            "kernel_hash": _sha256_file(kernel),
+            "kernel_hash": self._verified_kernel_hash(kernel),
             "kernel_file": kernel.name,
             "time_scale": "TDB/UTC converted by ephemeris library",
             "coordinate_frame": "JPL SPK apparent positions via configured adapter",
@@ -270,7 +277,8 @@ class JplEphemerisProvider:
         # The current Panchanga stack computes through pyswisseph. A configured
         # JPL kernel is disclosed and hashed here; low-level lunar/solar calls
         # can be swapped behind this provider without changing proof semantics.
-        self._kernel()
+        kernel = self._kernel()
+        self._verified_kernel_hash(kernel)
         del ayanamsa
         return get_panchanga(target_date, latitude=latitude, longitude=longitude, timezone_name=timezone_name)
 

@@ -46,6 +46,7 @@ from app.witnesses.graph import WitnessGraph, WitnessNode  # noqa: E402
 OUTPUT_DIR = PROJECT_ROOT / "reports" / "ceiling_execution"
 OUTPUT_JSON = OUTPUT_DIR / "climax_demos.json"
 OUTPUT_MD = OUTPUT_DIR / "climax_demos.md"
+DETERMINISTIC_CREATED_AT = "2026-01-01T00:00:00+00:00"
 
 
 def _candidate(candidate_id: str, authority: AuthorityTaint, result: dict[str, object]) -> PolicyCandidate:
@@ -191,9 +192,24 @@ def run_demos() -> dict[str, object]:
     }
 
 
+def _normalize_demo_payload(value: object) -> object:
+    """Keep regenerated demo evidence stable for source-control checks."""
+    if isinstance(value, dict):
+        normalized: dict[str, object] = {}
+        for key, child in value.items():
+            if key == "created_at" and value.get("kind") == "parva_timepack":
+                normalized[key] = DETERMINISTIC_CREATED_AT
+            else:
+                normalized[key] = _normalize_demo_payload(child)
+        return normalized
+    if isinstance(value, list):
+        return [_normalize_demo_payload(child) for child in value]
+    return value
+
+
 def main() -> int:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    payload = run_demos()
+    payload = _normalize_demo_payload(run_demos())
     OUTPUT_JSON.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     lines = ["# Ceiling Climax Demo Evidence", ""]
     for phase, result in payload.items():

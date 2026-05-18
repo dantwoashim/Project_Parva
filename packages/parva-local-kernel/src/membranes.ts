@@ -1,4 +1,5 @@
 import { stableStringify } from './canonicalize.js';
+import { replayCivilResult, verifyBsMonthReplay } from './civil.js';
 import { sha256Hex } from './hash.js';
 
 export type Membrane = {
@@ -51,8 +52,29 @@ function hasAuthorityOverclaim(membrane: Membrane): boolean {
   const authority = boundary.authority;
   const sourceDockets = (membrane as { source_docket_ids?: unknown }).source_docket_ids;
   const hasSource = Array.isArray(sourceDockets) && sourceDockets.length > 0;
+  const hasSampleSource = Array.isArray(sourceDockets)
+    && sourceDockets.some((source) => typeof source === 'string' && source.includes(':sample-'));
   if ((authority === 'structured_official' || authority === 'archived_official') && !hasSource) {
     return true;
+  }
+  if ((authority === 'structured_official' || authority === 'archived_official') && hasSampleSource) {
+    return true;
+  }
+  for (const provenance of Object.values(membrane.field_provenance ?? {})) {
+    const sourceDocketId = (provenance as { source_docket_id?: unknown }).source_docket_id;
+    if (
+      (provenance.authority === 'structured_official' || provenance.authority === 'archived_official')
+      && typeof sourceDocketId === 'string'
+      && sourceDocketId.includes(':sample-')
+    ) {
+      return true;
+    }
+  }
+  if (operationOf(membrane) === 'bs_months' && authority === 'structured_official') {
+    const result = membrane.result as { selected_method?: unknown; requested_mode?: unknown } | undefined;
+    if (result?.selected_method === 'static_lookup' || result?.requested_mode === 'static_lookup') {
+      return true;
+    }
   }
   if (operationOf(membrane).startsWith('panchanga') && boundary.claim_boundary !== 'computed_ephemeris_not_panchanga_authority') {
     return true;
@@ -121,6 +143,11 @@ export async function verifyMembrane(
   ) {
     return { verified: false, reason: 'source_snapshot_hash_mismatch' };
   }
+  const witnessSourceSnapshotHash = (membrane.witness.method_parameters as { source_snapshot_hash?: unknown } | undefined)
+    ?.source_snapshot_hash;
+  if (typeof membrane.source_snapshot_hash === 'string' && witnessSourceSnapshotHash !== membrane.source_snapshot_hash) {
+    return { verified: false, reason: 'source_snapshot_hash_mismatch' };
+  }
 
   if (options.fixtures) {
     const replay = await replayMembrane(membrane, options.fixtures);
@@ -133,23 +160,22 @@ export async function verifyMembrane(
 }
 
 export async function replayMembrane(membrane: Membrane, fixtures: ProofFixture[]): Promise<VerificationResult> {
-  const fixture = findFixture(membrane, fixtures);
-  if (!fixture) {
-    return { verified: false, reason: 'fixture_not_found' };
+  const operation = operationOf(membrane);
+  try {
+    const replayed = await replayCivilResult(operation, membrane.canonical_query);
+    if (replayed !== null && !deepEqual(membrane.result, replayed)) {
+      return { verified: false, reason: 'replayed_result_mismatch' };
+    }
+    verifyBsMonthReplay(operation, membrane.canonical_query, membrane.result);
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : 'replay_failed';
+    return { verified: false, reason };
   }
-  if (!deepEqual(membrane.result, fixture.expected_replay_result)) {
-    return { verified: false, reason: 'replayed_result_mismatch' };
-  }
-  if (!deepEqual(membrane.canonical_query, fixture.membrane.canonical_query)) {
-    return { verified: false, reason: 'canonical_query_mismatch' };
-  }
-  if (operationOf(membrane) === 'bs_months') {
-    const result = membrane.result as { total_days?: unknown; months?: Array<{ days?: number }> };
-    if (Array.isArray(result.months)) {
-      const total = result.months.reduce((sum, month) => sum + Number(month.days ?? 0), 0);
-      if (total !== result.total_days) {
-        return { verified: false, reason: 'bs_month_total_mismatch' };
-      }
+
+  if (fixtures.length > 0) {
+    const fixture = findFixture(membrane, fixtures);
+    if (fixture && !deepEqual(membrane.canonical_query, fixture.membrane.canonical_query)) {
+      return { verified: false, reason: 'canonical_query_mismatch' };
     }
   }
   return { verified: true, reason: 'replayed' };

@@ -1,0 +1,13 @@
+{
+  "claim_boundary": "configuration_example_not_jpl_validation",
+  "environment": {
+    "PARVA_JPL_KERNEL_PATH": "/absolute/path/to/de440.bsp",
+    "PARVA_JPL_KERNEL_SHA256": "sha256:<expected kernel hash>"
+  },
+  "not_authority": true,
+  "notes": [
+    "Do not commit local JPL kernels.",
+    "Fallback providers must not serialize as JPL-backed.",
+    "Panchanga outputs remain computed, method-dependent, location-sensitive, and not official ritual authority."
+  ]
+}

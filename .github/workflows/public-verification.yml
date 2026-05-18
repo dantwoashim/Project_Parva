@@ -101,13 +101,16 @@ jobs:
         with:
           node-version: "20"
           cache: npm
-          cache-dependency-path: packages/parva-js/package-lock.json
+          cache-dependency-path: |
+            packages/parva-js/package-lock.json
+            packages/parva-local-kernel/package-lock.json
       - name: Install SDK dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -c requirements/constraints.txt -e .[test,dev]
           python -m pip install -e packages/parva-python
           npm --prefix packages/parva-js ci
+          npm --prefix packages/parva-local-kernel ci
       - name: Run SDK and adapter tests
         run: |
           python -m pytest packages/parva-python/tests -q
@@ -116,6 +119,10 @@ jobs:
           python -m build packages/parva-mcp-server
           npm --prefix packages/parva-js test
           cd packages/parva-js
+          npm pack --dry-run
+          cd ../..
+          npm --prefix packages/parva-local-kernel test
+          cd packages/parva-local-kernel
           npm pack --dry-run
           cd ../..
           python -m pytest packages/parva-ai-tools/tests packages/parva-mcp-server/tests -q
@@ -177,6 +184,7 @@ jobs:
           cache-dependency-path: |
             frontend/package-lock.json
             packages/parva-js/package-lock.json
+            packages/parva-local-kernel/package-lock.json
       - name: Install release gate dependencies
         run: |
           python -m pip install --upgrade pip
@@ -184,6 +192,7 @@ jobs:
           python -m pip install -e packages/parva-python
           npm --prefix frontend ci
           npm --prefix packages/parva-js ci
+          npm --prefix packages/parva-local-kernel ci
       - name: Run public release gate
         env:
           PARVA_PYTHON: python

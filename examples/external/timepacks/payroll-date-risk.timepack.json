@@ -1,0 +1,4454 @@
+{
+  "aggregate_witness_hash": "sha256:8b5c94dc02ec551cee00b879966dd0c2bd2f74626a461e78b2ebaf77a2b5114f",
+  "artifact_type": "payroll_date_risk_audit",
+  "boundary_summary": {
+    "claim_boundary": "payroll_date_risk_not_authority",
+    "not_authority": true,
+    "review_required": true
+  },
+  "created_at": "2026-01-01T00:00:00+00:00",
+  "kind": "parva_timepack",
+  "proof_packs": [
+    {
+      "boundary": {
+        "authority": "computed_uncertified",
+        "blocked_use_cases": [
+          "legal_final_authority",
+          "tax_final_authority",
+          "payroll_final_authority",
+          "banking_contract_authority",
+          "government_calendar_publication",
+          "panchanga_final_authority"
+        ],
+        "claim_boundary": "computed_conversion_not_source_backed_authority",
+        "conflict_state": "none",
+        "derivation": "computed_or_source_derived",
+        "flags": [
+          "review_required"
+        ],
+        "freshness": "current_snapshot",
+        "geography_scope": "np:national:default",
+        "ignorance_state": "known",
+        "interpretation_state": "literal",
+        "reproducibility": "local_deterministic",
+        "review_state": "required",
+        "temporal_scope": "supported_public_range",
+        "valid_for": [
+          "technical_reference",
+          "planning_support"
+        ],
+        "warnings": [
+          "review_required"
+        ]
+      },
+      "identity_hash": "parva:id:v1:sha256:40d39d61e7f7047a7a26ce6fa20ca9d32c42d09fee530546945439e9fbe3684e",
+      "kind": "parva_proofpack",
+      "level": "replay",
+      "membrane": {
+        "boundary": {
+          "authority": "computed_uncertified",
+          "blocked_use_cases": [
+            "legal_final_authority",
+            "tax_final_authority",
+            "payroll_final_authority",
+            "banking_contract_authority",
+            "government_calendar_publication",
+            "panchanga_final_authority"
+          ],
+          "claim_boundary": "computed_conversion_not_source_backed_authority",
+          "conflict_state": "none",
+          "derivation": "computed_or_source_derived",
+          "flags": [
+            "review_required"
+          ],
+          "freshness": "current_snapshot",
+          "geography_scope": "np:national:default",
+          "ignorance_state": "known",
+          "interpretation_state": "literal",
+          "reproducibility": "local_deterministic",
+          "review_state": "required",
+          "temporal_scope": "supported_public_range",
+          "valid_for": [
+            "technical_reference",
+            "planning_support"
+          ],
+          "warnings": [
+            "review_required"
+          ]
+        },
+        "canonical_query": {
+          "canonicalization_version": "1.0.0",
+          "context": {
+            "calendar": "bs",
+            "community_id": "official:nepal_government",
+            "locale": "ne-np",
+            "place_id": "np:national:default",
+            "policy_id": "canonical@0.1.0",
+            "timezone": "asia/kathmandu"
+          },
+          "input": {
+            "day": 2,
+            "month": 1,
+            "year": 2082
+          },
+          "operation": "validate_bs_date"
+        },
+        "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":2,\"month\":1,\"year\":2082},\"operation\":\"validate_bs_date\"}",
+        "field_provenance": {
+          "bs_date": {
+            "authority": "computed_uncertified",
+            "derivation": "month_length_boundary_check",
+            "field_path": "bs_date",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "day": {
+            "authority": "computed_uncertified",
+            "derivation": "month_length_boundary_check",
+            "field_path": "day",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "max_day": {
+            "authority": "computed_uncertified",
+            "derivation": "month_length_boundary_check",
+            "field_path": "max_day",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "month": {
+            "authority": "computed_uncertified",
+            "derivation": "month_length_boundary_check",
+            "field_path": "month",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "reason": {
+            "authority": "computed_uncertified",
+            "derivation": "month_length_boundary_check",
+            "field_path": "reason",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "valid": {
+            "authority": "computed_uncertified",
+            "derivation": "month_length_boundary_check",
+            "field_path": "valid",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "year": {
+            "authority": "computed_uncertified",
+            "derivation": "month_length_boundary_check",
+            "field_path": "year",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          }
+        },
+        "identity_hash": "parva:id:v1:sha256:40d39d61e7f7047a7a26ce6fa20ca9d32c42d09fee530546945439e9fbe3684e",
+        "kind": "parva_membrane",
+        "membrane_kind": "positive",
+        "policy_trace": {
+          "decision": {
+            "authority": "computed_uncertified",
+            "claim_boundary": "computed_conversion_not_source_backed_authority",
+            "coverage_status": "no_eligible_source_coverage",
+            "eligible_official": false,
+            "review_required": true
+          },
+          "notes": [],
+          "operation": "validate_bs_date",
+          "policy_id": "canonical@0.1.0",
+          "rules": [
+            "eligible_source_docket_must_cover_requested_temporal_scope",
+            "sample_source_dockets_cannot_upgrade_authority",
+            "unsupported_or_uncovered_results_require_review",
+            "technical_decision_support_not_final_authority"
+          ]
+        },
+        "proof_pack": {
+          "level": "audit",
+          "method_parameters": {
+            "calendar": "BS",
+            "policy_id": "canonical@0.1.0",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "steps": [
+            {
+              "operation": "canonicalize_query",
+              "output_hash": "sha256:40d39d61e7f7047a7a26ce6fa20ca9d32c42d09fee530546945439e9fbe3684e"
+            },
+            {
+              "operation": "validate_bs_date",
+              "output_hash": "sha256:757132bd6211a7b7cfbbc19f0fe0088be431864c5d6251f5f11ff3153e0f666f"
+            }
+          ],
+          "verifier": "parva.validate_bs_date",
+          "verifier_version": "1.0.0"
+        },
+        "result": {
+          "bs_date": "2082-01-02",
+          "day": 2,
+          "max_day": 31,
+          "month": 1,
+          "reason": "valid",
+          "valid": true,
+          "year": 2082
+        },
+        "source_docket_ids": [],
+        "source_resolution": {
+          "authority": "computed_uncertified",
+          "bs_date": "2082-01-02",
+          "claim_boundary": "computed_conversion_not_source_backed_authority",
+          "coverage_status": "no_eligible_source_coverage",
+          "eligible_official": false,
+          "operation": "validate_bs_date",
+          "reason": "no_source_docket_covers_requested_date",
+          "review_required": true,
+          "review_witnesses": [],
+          "source_docket_ids": [],
+          "source_refs": []
+        },
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+        "witness": {
+          "input_hash": "sha256:40d39d61e7f7047a7a26ce6fa20ca9d32c42d09fee530546945439e9fbe3684e",
+          "method_parameters": {
+            "calendar": "BS",
+            "policy_id": "canonical@0.1.0",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "operation": "validate_bs_date",
+          "output_hash": "sha256:757132bd6211a7b7cfbbc19f0fe0088be431864c5d6251f5f11ff3153e0f666f",
+          "source_refs": [],
+          "verifier": "parva.validate_bs_date",
+          "verifier_version": "1.0.0",
+          "witness_id": "parva:wit:v1:sha256:7f67ed96ad3a1ef173b3d12db1110f887124a4dada3754bbdbc08255879eba40"
+        },
+        "witness_hash": "parva:wit:v1:sha256:7f67ed96ad3a1ef173b3d12db1110f887124a4dada3754bbdbc08255879eba40"
+      },
+      "offline_verifier": "parva_membrane_replay_v1",
+      "proofpack_version": "v1",
+      "witness_hash": "parva:wit:v1:sha256:7f67ed96ad3a1ef173b3d12db1110f887124a4dada3754bbdbc08255879eba40"
+    },
+    {
+      "boundary": {
+        "authority": "static_reference",
+        "blocked_use_cases": [
+          "legal_final_authority",
+          "tax_final_authority",
+          "payroll_final_authority",
+          "banking_contract_authority",
+          "government_calendar_publication",
+          "panchanga_final_authority"
+        ],
+        "claim_boundary": "decision_support_not_authority",
+        "conflict_state": "none",
+        "derivation": "computed_or_source_derived",
+        "flags": [
+          "review_required"
+        ],
+        "freshness": "current_snapshot",
+        "geography_scope": "np:national:default",
+        "ignorance_state": "negative_or_failure",
+        "interpretation_state": "literal",
+        "reproducibility": "local_deterministic",
+        "review_state": "required",
+        "temporal_scope": "supported_public_range",
+        "valid_for": [
+          "technical_reference",
+          "planning_support"
+        ],
+        "warnings": [
+          "review_required"
+        ]
+      },
+      "identity_hash": "parva:id:v1:sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869",
+      "kind": "parva_proofpack",
+      "level": "replay",
+      "membrane": {
+        "boundary": {
+          "authority": "static_reference",
+          "blocked_use_cases": [
+            "legal_final_authority",
+            "tax_final_authority",
+            "payroll_final_authority",
+            "banking_contract_authority",
+            "government_calendar_publication",
+            "panchanga_final_authority"
+          ],
+          "claim_boundary": "decision_support_not_authority",
+          "conflict_state": "none",
+          "derivation": "computed_or_source_derived",
+          "flags": [
+            "review_required"
+          ],
+          "freshness": "current_snapshot",
+          "geography_scope": "np:national:default",
+          "ignorance_state": "negative_or_failure",
+          "interpretation_state": "literal",
+          "reproducibility": "local_deterministic",
+          "review_state": "required",
+          "temporal_scope": "supported_public_range",
+          "valid_for": [
+            "technical_reference",
+            "planning_support"
+          ],
+          "warnings": [
+            "review_required"
+          ]
+        },
+        "canonical_query": {
+          "canonicalization_version": "1.0.0",
+          "context": {
+            "calendar": "bs",
+            "community_id": "official:nepal_government",
+            "jurisdiction": "np",
+            "locale": "ne-np",
+            "place_id": "np:national:default",
+            "policy_id": "canonical@0.1.0",
+            "timezone": "asia/kathmandu"
+          },
+          "input": {
+            "day": 2,
+            "month": 1,
+            "profile_id": "nepal_public_general",
+            "year": 2082
+          },
+          "operation": "holiday"
+        },
+        "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":2,\"month\":1,\"profile_id\":\"nepal_public_general\",\"year\":2082},\"operation\":\"holiday\"}",
+        "field_provenance": {
+          "bs_date": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "bs_date",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "holiday": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "holiday",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "is_holiday": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "is_holiday",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "membership_key": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "membership_key",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "membership_proof": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "membership_proof",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "profile_id": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "profile_id",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "source_set": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "source_set",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          }
+        },
+        "identity_hash": "parva:id:v1:sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869",
+        "kind": "parva_membrane",
+        "membrane_kind": "negative",
+        "policy_trace": {
+          "decision": {
+            "authority": "computed_uncertified",
+            "claim_boundary": "decision_support_not_authority",
+            "coverage_status": "no_eligible_source_coverage",
+            "eligible_official": false,
+            "review_required": true
+          },
+          "notes": [
+            "public fixed-date holiday corpus is decision support, not an official holiday notice"
+          ],
+          "operation": "holiday",
+          "policy_id": "canonical@0.1.0",
+          "rules": [
+            "eligible_source_docket_must_cover_requested_temporal_scope",
+            "sample_source_dockets_cannot_upgrade_authority",
+            "unsupported_or_uncovered_results_require_review",
+            "technical_decision_support_not_final_authority"
+          ]
+        },
+        "proof_pack": {
+          "level": "audit",
+          "method_parameters": {
+            "policy_id": "canonical@0.1.0",
+            "profile_id": "nepal_public_general",
+            "source_set": "public_fixed_date_corpus",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "steps": [
+            {
+              "operation": "canonicalize_query",
+              "output_hash": "sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869"
+            },
+            {
+              "operation": "holiday_membership",
+              "output_hash": "sha256:5fdd25eefea8240d25d79ae13f98ab100b3adae9975a55b3e95ab283e396166b"
+            }
+          ],
+          "verifier": "parva.holiday",
+          "verifier_version": "1.0.0"
+        },
+        "result": {
+          "bs_date": "2082-01-02",
+          "holiday": null,
+          "is_holiday": false,
+          "membership_key": "01-02",
+          "membership_proof": {
+            "claim_index_hash": "sha256:f7f108aeec48f650e51add393985f2118f82d55945719586efa8c4b3fdb76479",
+            "proof_type": "non_membership"
+          },
+          "profile_id": "nepal_public_general",
+          "source_set": "public_fixed_date_corpus"
+        },
+        "source_docket_ids": [],
+        "source_resolution": {
+          "authority": "computed_uncertified",
+          "bs_date": "2082-01-02",
+          "claim_boundary": "decision_support_not_authority",
+          "coverage_status": "no_eligible_source_coverage",
+          "eligible_official": false,
+          "operation": "holiday",
+          "reason": "no_source_docket_covers_requested_date",
+          "review_required": true,
+          "review_witnesses": [],
+          "source_docket_ids": [],
+          "source_refs": []
+        },
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+        "witness": {
+          "input_hash": "sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869",
+          "method_parameters": {
+            "policy_id": "canonical@0.1.0",
+            "profile_id": "nepal_public_general",
+            "source_set": "public_fixed_date_corpus",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "operation": "holiday",
+          "output_hash": "sha256:5fdd25eefea8240d25d79ae13f98ab100b3adae9975a55b3e95ab283e396166b",
+          "source_refs": [],
+          "verifier": "parva.holiday",
+          "verifier_version": "1.0.0",
+          "witness_id": "parva:wit:v1:sha256:de53bad6400f258af679bfe323ddcf5eec2cfe53c6a5f61dc73c689027d58b3c"
+        },
+        "witness_hash": "parva:wit:v1:sha256:de53bad6400f258af679bfe323ddcf5eec2cfe53c6a5f61dc73c689027d58b3c"
+      },
+      "offline_verifier": "parva_membrane_replay_v1",
+      "proofpack_version": "v1",
+      "witness_hash": "parva:wit:v1:sha256:de53bad6400f258af679bfe323ddcf5eec2cfe53c6a5f61dc73c689027d58b3c"
+    },
+    {
+      "boundary": {
+        "authority": "computed_uncertified",
+        "blocked_use_cases": [
+          "legal_final_authority",
+          "tax_final_authority",
+          "payroll_final_authority",
+          "banking_contract_authority",
+          "government_calendar_publication",
+          "panchanga_final_authority"
+        ],
+        "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+        "conflict_state": "none",
+        "derivation": "computed_or_source_derived",
+        "flags": [
+          "review_required"
+        ],
+        "freshness": "current_snapshot",
+        "geography_scope": "np:national:default",
+        "ignorance_state": "known",
+        "interpretation_state": "literal",
+        "reproducibility": "local_deterministic",
+        "review_state": "required",
+        "temporal_scope": "supported_public_range",
+        "valid_for": [
+          "technical_reference",
+          "planning_support"
+        ],
+        "warnings": [
+          "review_required"
+        ]
+      },
+      "identity_hash": "parva:id:v1:sha256:89d0a244a48ad550c06da77d6b8564347377c91d35403f1e6604ced05c300422",
+      "kind": "parva_proofpack",
+      "level": "replay",
+      "membrane": {
+        "boundary": {
+          "authority": "computed_uncertified",
+          "blocked_use_cases": [
+            "legal_final_authority",
+            "tax_final_authority",
+            "payroll_final_authority",
+            "banking_contract_authority",
+            "government_calendar_publication",
+            "panchanga_final_authority"
+          ],
+          "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+          "conflict_state": "none",
+          "derivation": "computed_or_source_derived",
+          "flags": [
+            "review_required"
+          ],
+          "freshness": "current_snapshot",
+          "geography_scope": "np:national:default",
+          "ignorance_state": "known",
+          "interpretation_state": "literal",
+          "reproducibility": "local_deterministic",
+          "review_state": "required",
+          "temporal_scope": "supported_public_range",
+          "valid_for": [
+            "technical_reference",
+            "planning_support"
+          ],
+          "warnings": [
+            "review_required"
+          ]
+        },
+        "canonical_query": {
+          "canonicalization_version": "1.0.0",
+          "context": {
+            "calendar": "bs",
+            "community_id": "official:nepal_government",
+            "jurisdiction": "np",
+            "locale": "ne-np",
+            "place_id": "np:national:default",
+            "policy_id": "canonical@0.1.0",
+            "timezone": "asia/kathmandu"
+          },
+          "input": {
+            "day": 2,
+            "decision_intent": "general",
+            "month": 1,
+            "profile_id": "nepal_private_company_default",
+            "year": 2082
+          },
+          "operation": "working_day"
+        },
+        "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":2,\"decision_intent\":\"general\",\"month\":1,\"profile_id\":\"nepal_private_company_default\",\"year\":2082},\"operation\":\"working_day\"}",
+        "field_provenance": {
+          "ad_date": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "ad_date",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "bs_date": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "bs_date",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "decision_intent": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "decision_intent",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "holiday": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "holiday",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "is_business_day": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "is_business_day",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "is_working_day": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "is_working_day",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "profile_id": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "profile_id",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "reason_codes": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "reason_codes",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "requires_human_review": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "requires_human_review",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          }
+        },
+        "identity_hash": "parva:id:v1:sha256:89d0a244a48ad550c06da77d6b8564347377c91d35403f1e6604ced05c300422",
+        "kind": "parva_membrane",
+        "membrane_kind": "positive",
+        "policy_trace": {
+          "decision": {
+            "authority": "computed_uncertified",
+            "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+            "coverage_status": "no_eligible_source_coverage",
+            "eligible_official": false,
+            "review_required": true
+          },
+          "notes": [
+            "working-day results are decision support and must not be used as final payroll/legal authority"
+          ],
+          "operation": "working_day",
+          "policy_id": "canonical@0.1.0",
+          "rules": [
+            "eligible_source_docket_must_cover_requested_temporal_scope",
+            "sample_source_dockets_cannot_upgrade_authority",
+            "unsupported_or_uncovered_results_require_review",
+            "technical_decision_support_not_final_authority"
+          ]
+        },
+        "proof_pack": {
+          "level": "audit",
+          "method_parameters": {
+            "decision_intent": "general",
+            "policy_id": "canonical@0.1.0",
+            "profile_id": "nepal_private_company_default",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "steps": [
+            {
+              "operation": "canonicalize_query",
+              "output_hash": "sha256:89d0a244a48ad550c06da77d6b8564347377c91d35403f1e6604ced05c300422"
+            },
+            {
+              "operation": "working_day_policy",
+              "output_hash": "sha256:522130cd0aa5f33b07977af35753df65504aab9bc42f0450c0958dc22a84ea5d"
+            }
+          ],
+          "verifier": "parva.working_day",
+          "verifier_version": "1.0.0"
+        },
+        "result": {
+          "ad_date": "2025-04-15",
+          "bs_date": "2082-01-02",
+          "decision_intent": "general",
+          "holiday": null,
+          "is_business_day": true,
+          "is_working_day": true,
+          "profile_id": "nepal_private_company_default",
+          "reason_codes": [
+            "WEEKDAY",
+            "NO_MATCHING_PUBLIC_HOLIDAY"
+          ],
+          "requires_human_review": false
+        },
+        "source_docket_ids": [],
+        "source_resolution": {
+          "authority": "computed_uncertified",
+          "bs_date": "2082-01-02",
+          "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+          "coverage_status": "no_eligible_source_coverage",
+          "eligible_official": false,
+          "operation": "working_day",
+          "reason": "no_source_docket_covers_requested_date",
+          "review_required": true,
+          "review_witnesses": [],
+          "source_docket_ids": [],
+          "source_refs": []
+        },
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+        "witness": {
+          "input_hash": "sha256:89d0a244a48ad550c06da77d6b8564347377c91d35403f1e6604ced05c300422",
+          "method_parameters": {
+            "decision_intent": "general",
+            "policy_id": "canonical@0.1.0",
+            "profile_id": "nepal_private_company_default",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "operation": "working_day",
+          "output_hash": "sha256:522130cd0aa5f33b07977af35753df65504aab9bc42f0450c0958dc22a84ea5d",
+          "source_refs": [],
+          "verifier": "parva.working_day",
+          "verifier_version": "1.0.0",
+          "witness_id": "parva:wit:v1:sha256:94e4c7a279fbfc1670103ba81b72a0730de1524aea6f1467f715c3bc19754a61"
+        },
+        "witness_hash": "parva:wit:v1:sha256:94e4c7a279fbfc1670103ba81b72a0730de1524aea6f1467f715c3bc19754a61"
+      },
+      "offline_verifier": "parva_membrane_replay_v1",
+      "proofpack_version": "v1",
+      "witness_hash": "parva:wit:v1:sha256:94e4c7a279fbfc1670103ba81b72a0730de1524aea6f1467f715c3bc19754a61"
+    },
+    {
+      "boundary": {
+        "authority": "computed_uncertified",
+        "blocked_use_cases": [
+          "legal_final_authority",
+          "tax_final_authority",
+          "payroll_final_authority",
+          "banking_contract_authority",
+          "government_calendar_publication",
+          "panchanga_final_authority"
+        ],
+        "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+        "conflict_state": "none",
+        "derivation": "computed_or_source_derived",
+        "flags": [
+          "review_required"
+        ],
+        "freshness": "current_snapshot",
+        "geography_scope": "np:national:default",
+        "ignorance_state": "known",
+        "interpretation_state": "literal",
+        "reproducibility": "local_deterministic",
+        "review_state": "required",
+        "temporal_scope": "supported_public_range",
+        "valid_for": [
+          "technical_reference",
+          "planning_support"
+        ],
+        "warnings": [
+          "review_required"
+        ]
+      },
+      "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+      "kind": "parva_proofpack",
+      "level": "replay",
+      "membrane": {
+        "boundary": {
+          "authority": "computed_uncertified",
+          "blocked_use_cases": [
+            "legal_final_authority",
+            "tax_final_authority",
+            "payroll_final_authority",
+            "banking_contract_authority",
+            "government_calendar_publication",
+            "panchanga_final_authority"
+          ],
+          "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+          "conflict_state": "none",
+          "derivation": "computed_or_source_derived",
+          "flags": [
+            "review_required"
+          ],
+          "freshness": "current_snapshot",
+          "geography_scope": "np:national:default",
+          "ignorance_state": "known",
+          "interpretation_state": "literal",
+          "reproducibility": "local_deterministic",
+          "review_state": "required",
+          "temporal_scope": "supported_public_range",
+          "valid_for": [
+            "technical_reference",
+            "planning_support"
+          ],
+          "warnings": [
+            "review_required"
+          ]
+        },
+        "canonical_query": {
+          "canonicalization_version": "1.0.0",
+          "context": {
+            "calendar": "bs",
+            "community_id": "official:nepal_government",
+            "jurisdiction": "np",
+            "locale": "ne-np",
+            "place_id": "np:national:default",
+            "policy_id": "canonical@0.1.0",
+            "timezone": "asia/kathmandu"
+          },
+          "input": {
+            "bs_year": 2082
+          },
+          "operation": "fiscal_year"
+        },
+        "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"bs_year\":2082},\"operation\":\"fiscal_year\"}",
+        "field_provenance": {
+          "basis": {
+            "authority": "computed_uncertified",
+            "derivation": "nepali_fiscal_boundary_rule",
+            "field_path": "basis",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "end": {
+            "authority": "computed_uncertified",
+            "derivation": "nepali_fiscal_boundary_rule",
+            "field_path": "end",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "fiscal_year": {
+            "authority": "computed_uncertified",
+            "derivation": "nepali_fiscal_boundary_rule",
+            "field_path": "fiscal_year",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "start": {
+            "authority": "computed_uncertified",
+            "derivation": "nepali_fiscal_boundary_rule",
+            "field_path": "start",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          }
+        },
+        "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+        "kind": "parva_membrane",
+        "membrane_kind": "positive",
+        "policy_trace": {
+          "decision": {
+            "authority": "computed_uncertified",
+            "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+            "coverage_status": "no_eligible_source_coverage",
+            "eligible_official": false,
+            "review_required": true
+          },
+          "notes": [
+            "fiscal-year output is decision support, not legal or tax authority"
+          ],
+          "operation": "fiscal_year",
+          "policy_id": "canonical@0.1.0",
+          "rules": [
+            "eligible_source_docket_must_cover_requested_temporal_scope",
+            "sample_source_dockets_cannot_upgrade_authority",
+            "unsupported_or_uncovered_results_require_review",
+            "technical_decision_support_not_final_authority"
+          ]
+        },
+        "proof_pack": {
+          "level": "audit",
+          "method_parameters": {
+            "fiscal_year_start": "BS-04-01",
+            "policy_id": "canonical@0.1.0",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "steps": [
+            {
+              "operation": "canonicalize_query",
+              "output_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520"
+            },
+            {
+              "operation": "fiscal_year_rule",
+              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+            }
+          ],
+          "verifier": "parva.fiscal_year",
+          "verifier_version": "1.0.0"
+        },
+        "result": {
+          "basis": "Nepal fiscal year: Shrawan 1 to Ashadh end",
+          "end": {
+            "ad": "2026-07-16",
+            "bs": "2083-03-32"
+          },
+          "fiscal_year": "2082/83",
+          "start": {
+            "ad": "2025-07-16",
+            "bs": "2082-04-01"
+          }
+        },
+        "source_docket_ids": [],
+        "source_resolution": {
+          "authority": "computed_uncertified",
+          "bs_date": "2082-04-01",
+          "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+          "coverage_status": "no_eligible_source_coverage",
+          "eligible_official": false,
+          "operation": "fiscal_year",
+          "reason": "no_source_docket_covers_requested_date",
+          "review_required": true,
+          "review_witnesses": [],
+          "source_docket_ids": [],
+          "source_refs": []
+        },
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+        "witness": {
+          "input_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+          "method_parameters": {
+            "fiscal_year_start": "BS-04-01",
+            "policy_id": "canonical@0.1.0",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "operation": "fiscal_year",
+          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "source_refs": [],
+          "verifier": "parva.fiscal_year",
+          "verifier_version": "1.0.0",
+          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        },
+        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      },
+      "offline_verifier": "parva_membrane_replay_v1",
+      "proofpack_version": "v1",
+      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+    },
+    {
+      "boundary": {
+        "authority": "static_reference",
+        "blocked_use_cases": [
+          "legal_final_authority",
+          "tax_final_authority",
+          "payroll_final_authority",
+          "banking_contract_authority",
+          "government_calendar_publication",
+          "panchanga_final_authority"
+        ],
+        "claim_boundary": "sample_source_chain_not_authority",
+        "conflict_state": "none",
+        "derivation": "computed_or_source_derived",
+        "flags": [
+          "review_required"
+        ],
+        "freshness": "current_snapshot",
+        "geography_scope": "np:national:default",
+        "ignorance_state": "known",
+        "interpretation_state": "literal",
+        "reproducibility": "local_deterministic",
+        "review_state": "required",
+        "temporal_scope": "supported_public_range",
+        "valid_for": [
+          "technical_reference",
+          "planning_support"
+        ],
+        "warnings": [
+          "review_required"
+        ]
+      },
+      "identity_hash": "parva:id:v1:sha256:c3bbb1e3f552759691bec769bc4de5b1250137ba655be56557ca2d870d4d56d1",
+      "kind": "parva_proofpack",
+      "level": "replay",
+      "membrane": {
+        "boundary": {
+          "authority": "static_reference",
+          "blocked_use_cases": [
+            "legal_final_authority",
+            "tax_final_authority",
+            "payroll_final_authority",
+            "banking_contract_authority",
+            "government_calendar_publication",
+            "panchanga_final_authority"
+          ],
+          "claim_boundary": "sample_source_chain_not_authority",
+          "conflict_state": "none",
+          "derivation": "computed_or_source_derived",
+          "flags": [
+            "review_required"
+          ],
+          "freshness": "current_snapshot",
+          "geography_scope": "np:national:default",
+          "ignorance_state": "known",
+          "interpretation_state": "literal",
+          "reproducibility": "local_deterministic",
+          "review_state": "required",
+          "temporal_scope": "supported_public_range",
+          "valid_for": [
+            "technical_reference",
+            "planning_support"
+          ],
+          "warnings": [
+            "review_required"
+          ]
+        },
+        "canonical_query": {
+          "canonicalization_version": "1.0.0",
+          "context": {
+            "calendar": "bs",
+            "community_id": "official:nepal_government",
+            "locale": "ne-np",
+            "place_id": "np:national:default",
+            "policy_id": "canonical@0.1.0",
+            "timezone": "asia/kathmandu"
+          },
+          "input": {
+            "day": 1,
+            "month": 1,
+            "year": 2082
+          },
+          "operation": "validate_bs_date"
+        },
+        "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":1,\"month\":1,\"year\":2082},\"operation\":\"validate_bs_date\"}",
+        "field_provenance": {
+          "bs_date": {
+            "authority": "static_reference",
+            "derivation": "month_length_boundary_check",
+            "field_path": "bs_date",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "day": {
+            "authority": "static_reference",
+            "derivation": "month_length_boundary_check",
+            "field_path": "day",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "max_day": {
+            "authority": "static_reference",
+            "derivation": "month_length_boundary_check",
+            "field_path": "max_day",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "month": {
+            "authority": "static_reference",
+            "derivation": "month_length_boundary_check",
+            "field_path": "month",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "reason": {
+            "authority": "static_reference",
+            "derivation": "month_length_boundary_check",
+            "field_path": "reason",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "valid": {
+            "authority": "static_reference",
+            "derivation": "month_length_boundary_check",
+            "field_path": "valid",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "year": {
+            "authority": "static_reference",
+            "derivation": "month_length_boundary_check",
+            "field_path": "year",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          }
+        },
+        "identity_hash": "parva:id:v1:sha256:c3bbb1e3f552759691bec769bc4de5b1250137ba655be56557ca2d870d4d56d1",
+        "kind": "parva_membrane",
+        "membrane_kind": "positive",
+        "policy_trace": {
+          "decision": {
+            "authority": "static_reference",
+            "claim_boundary": "sample_source_chain_not_authority",
+            "coverage_status": "covered_by_reference_source_not_official",
+            "eligible_official": false,
+            "review_required": true
+          },
+          "notes": [],
+          "operation": "validate_bs_date",
+          "policy_id": "canonical@0.1.0",
+          "rules": [
+            "eligible_source_docket_must_cover_requested_temporal_scope",
+            "sample_source_dockets_cannot_upgrade_authority",
+            "unsupported_or_uncovered_results_require_review",
+            "technical_decision_support_not_final_authority"
+          ]
+        },
+        "proof_pack": {
+          "level": "audit",
+          "method_parameters": {
+            "calendar": "BS",
+            "policy_id": "canonical@0.1.0",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [
+              "parva:src:v1:sample-2082-calendar-notice"
+            ],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "steps": [
+            {
+              "operation": "canonicalize_query",
+              "output_hash": "sha256:c3bbb1e3f552759691bec769bc4de5b1250137ba655be56557ca2d870d4d56d1"
+            },
+            {
+              "operation": "validate_bs_date",
+              "output_hash": "sha256:6011ac84b10d983280af0c495377a6a7d0952b341b0db208550015b55ea02a6d"
+            }
+          ],
+          "verifier": "parva.validate_bs_date",
+          "verifier_version": "1.0.0"
+        },
+        "result": {
+          "bs_date": "2082-01-01",
+          "day": 1,
+          "max_day": 31,
+          "month": 1,
+          "reason": "valid",
+          "valid": true,
+          "year": 2082
+        },
+        "source_docket_ids": [
+          "parva:src:v1:sample-2082-calendar-notice"
+        ],
+        "source_resolution": {
+          "authority": "static_reference",
+          "bs_date": "2082-01-01",
+          "claim_boundary": "sample_source_chain_not_authority",
+          "coverage_status": "covered_by_reference_source_not_official",
+          "eligible_official": false,
+          "operation": "validate_bs_date",
+          "reason": "covered_source_is_reference_or_sample",
+          "review_required": true,
+          "review_witnesses": [
+            "parva:review:v1:sample"
+          ],
+          "source_docket_ids": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ],
+          "source_refs": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ]
+        },
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+        "witness": {
+          "input_hash": "sha256:c3bbb1e3f552759691bec769bc4de5b1250137ba655be56557ca2d870d4d56d1",
+          "method_parameters": {
+            "calendar": "BS",
+            "policy_id": "canonical@0.1.0",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "operation": "validate_bs_date",
+          "output_hash": "sha256:6011ac84b10d983280af0c495377a6a7d0952b341b0db208550015b55ea02a6d",
+          "source_refs": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ],
+          "verifier": "parva.validate_bs_date",
+          "verifier_version": "1.0.0",
+          "witness_id": "parva:wit:v1:sha256:d9ecb1d3117c049f1b7f219a1f2389bded18dd2801ed142caf850ffc08ca1426"
+        },
+        "witness_hash": "parva:wit:v1:sha256:d9ecb1d3117c049f1b7f219a1f2389bded18dd2801ed142caf850ffc08ca1426"
+      },
+      "offline_verifier": "parva_membrane_replay_v1",
+      "proofpack_version": "v1",
+      "witness_hash": "parva:wit:v1:sha256:d9ecb1d3117c049f1b7f219a1f2389bded18dd2801ed142caf850ffc08ca1426"
+    },
+    {
+      "boundary": {
+        "authority": "static_reference",
+        "blocked_use_cases": [
+          "legal_final_authority",
+          "tax_final_authority",
+          "payroll_final_authority",
+          "banking_contract_authority",
+          "government_calendar_publication",
+          "panchanga_final_authority"
+        ],
+        "claim_boundary": "decision_support_not_authority",
+        "conflict_state": "none",
+        "derivation": "computed_or_source_derived",
+        "flags": [
+          "review_required"
+        ],
+        "freshness": "current_snapshot",
+        "geography_scope": "np:national:default",
+        "ignorance_state": "known",
+        "interpretation_state": "literal",
+        "reproducibility": "local_deterministic",
+        "review_state": "required",
+        "temporal_scope": "supported_public_range",
+        "valid_for": [
+          "technical_reference",
+          "planning_support"
+        ],
+        "warnings": [
+          "review_required"
+        ]
+      },
+      "identity_hash": "parva:id:v1:sha256:07e78d3e44edc01456b7d177bede8255018bb2a7a0b23f2a8593d3d77ef930ac",
+      "kind": "parva_proofpack",
+      "level": "replay",
+      "membrane": {
+        "boundary": {
+          "authority": "static_reference",
+          "blocked_use_cases": [
+            "legal_final_authority",
+            "tax_final_authority",
+            "payroll_final_authority",
+            "banking_contract_authority",
+            "government_calendar_publication",
+            "panchanga_final_authority"
+          ],
+          "claim_boundary": "decision_support_not_authority",
+          "conflict_state": "none",
+          "derivation": "computed_or_source_derived",
+          "flags": [
+            "review_required"
+          ],
+          "freshness": "current_snapshot",
+          "geography_scope": "np:national:default",
+          "ignorance_state": "known",
+          "interpretation_state": "literal",
+          "reproducibility": "local_deterministic",
+          "review_state": "required",
+          "temporal_scope": "supported_public_range",
+          "valid_for": [
+            "technical_reference",
+            "planning_support"
+          ],
+          "warnings": [
+            "review_required"
+          ]
+        },
+        "canonical_query": {
+          "canonicalization_version": "1.0.0",
+          "context": {
+            "calendar": "bs",
+            "community_id": "official:nepal_government",
+            "jurisdiction": "np",
+            "locale": "ne-np",
+            "place_id": "np:national:default",
+            "policy_id": "canonical@0.1.0",
+            "timezone": "asia/kathmandu"
+          },
+          "input": {
+            "day": 1,
+            "month": 1,
+            "profile_id": "nepal_public_general",
+            "year": 2082
+          },
+          "operation": "holiday"
+        },
+        "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":1,\"month\":1,\"profile_id\":\"nepal_public_general\",\"year\":2082},\"operation\":\"holiday\"}",
+        "field_provenance": {
+          "bs_date": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "bs_date",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "holiday": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "holiday",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "is_holiday": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "is_holiday",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "membership_key": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "membership_key",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "membership_proof": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "membership_proof",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "profile_id": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "profile_id",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "source_set": {
+            "authority": "static_reference",
+            "derivation": "fixed_public_corpus_membership",
+            "field_path": "source_set",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          }
+        },
+        "identity_hash": "parva:id:v1:sha256:07e78d3e44edc01456b7d177bede8255018bb2a7a0b23f2a8593d3d77ef930ac",
+        "kind": "parva_membrane",
+        "membrane_kind": "positive",
+        "policy_trace": {
+          "decision": {
+            "authority": "static_reference",
+            "claim_boundary": "decision_support_not_authority",
+            "coverage_status": "covered_by_reference_source_not_official",
+            "eligible_official": false,
+            "review_required": true
+          },
+          "notes": [
+            "public fixed-date holiday corpus is decision support, not an official holiday notice"
+          ],
+          "operation": "holiday",
+          "policy_id": "canonical@0.1.0",
+          "rules": [
+            "eligible_source_docket_must_cover_requested_temporal_scope",
+            "sample_source_dockets_cannot_upgrade_authority",
+            "unsupported_or_uncovered_results_require_review",
+            "technical_decision_support_not_final_authority"
+          ]
+        },
+        "proof_pack": {
+          "level": "audit",
+          "method_parameters": {
+            "policy_id": "canonical@0.1.0",
+            "profile_id": "nepal_public_general",
+            "source_set": "public_fixed_date_corpus",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [
+              "parva:src:v1:sample-2082-calendar-notice"
+            ],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "steps": [
+            {
+              "operation": "canonicalize_query",
+              "output_hash": "sha256:07e78d3e44edc01456b7d177bede8255018bb2a7a0b23f2a8593d3d77ef930ac"
+            },
+            {
+              "operation": "holiday_membership",
+              "output_hash": "sha256:58b07448b425bc4da036a65d7c545d3a1e74a07f9d30fa33d5e091f88f95e74a"
+            }
+          ],
+          "verifier": "parva.holiday",
+          "verifier_version": "1.0.0"
+        },
+        "result": {
+          "bs_date": "2082-01-01",
+          "holiday": {
+            "holiday_id": "bs-new-year",
+            "label": "Nepali New Year",
+            "source_status": "public_fixed_date_observance"
+          },
+          "is_holiday": true,
+          "membership_key": "01-01",
+          "membership_proof": {
+            "claim_index_hash": "sha256:f7f108aeec48f650e51add393985f2118f82d55945719586efa8c4b3fdb76479",
+            "proof_type": "membership"
+          },
+          "profile_id": "nepal_public_general",
+          "source_set": "public_fixed_date_corpus"
+        },
+        "source_docket_ids": [
+          "parva:src:v1:sample-2082-calendar-notice"
+        ],
+        "source_resolution": {
+          "authority": "static_reference",
+          "bs_date": "2082-01-01",
+          "claim_boundary": "decision_support_not_authority",
+          "coverage_status": "covered_by_reference_source_not_official",
+          "eligible_official": false,
+          "operation": "holiday",
+          "reason": "covered_source_is_reference_or_sample",
+          "review_required": true,
+          "review_witnesses": [
+            "parva:review:v1:sample"
+          ],
+          "source_docket_ids": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ],
+          "source_refs": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ]
+        },
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+        "witness": {
+          "input_hash": "sha256:07e78d3e44edc01456b7d177bede8255018bb2a7a0b23f2a8593d3d77ef930ac",
+          "method_parameters": {
+            "policy_id": "canonical@0.1.0",
+            "profile_id": "nepal_public_general",
+            "source_set": "public_fixed_date_corpus",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "operation": "holiday",
+          "output_hash": "sha256:58b07448b425bc4da036a65d7c545d3a1e74a07f9d30fa33d5e091f88f95e74a",
+          "source_refs": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ],
+          "verifier": "parva.holiday",
+          "verifier_version": "1.0.0",
+          "witness_id": "parva:wit:v1:sha256:88c392e98a42b66dbe80477cadab4d0a157228448978ba5325949aa9f926a1f4"
+        },
+        "witness_hash": "parva:wit:v1:sha256:88c392e98a42b66dbe80477cadab4d0a157228448978ba5325949aa9f926a1f4"
+      },
+      "offline_verifier": "parva_membrane_replay_v1",
+      "proofpack_version": "v1",
+      "witness_hash": "parva:wit:v1:sha256:88c392e98a42b66dbe80477cadab4d0a157228448978ba5325949aa9f926a1f4"
+    },
+    {
+      "boundary": {
+        "authority": "computed_uncertified",
+        "blocked_use_cases": [
+          "legal_final_authority",
+          "tax_final_authority",
+          "payroll_final_authority",
+          "banking_contract_authority",
+          "government_calendar_publication",
+          "panchanga_final_authority"
+        ],
+        "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+        "conflict_state": "none",
+        "derivation": "computed_or_source_derived",
+        "flags": [
+          "review_required"
+        ],
+        "freshness": "current_snapshot",
+        "geography_scope": "np:national:default",
+        "ignorance_state": "negative_or_failure",
+        "interpretation_state": "literal",
+        "reproducibility": "local_deterministic",
+        "review_state": "required",
+        "temporal_scope": "supported_public_range",
+        "valid_for": [
+          "technical_reference",
+          "planning_support"
+        ],
+        "warnings": [
+          "review_required"
+        ]
+      },
+      "identity_hash": "parva:id:v1:sha256:efe39333fb9a63cb9f3750c38cdc15dcab181af185bf78d0ab67c6e1b0cca03f",
+      "kind": "parva_proofpack",
+      "level": "replay",
+      "membrane": {
+        "boundary": {
+          "authority": "computed_uncertified",
+          "blocked_use_cases": [
+            "legal_final_authority",
+            "tax_final_authority",
+            "payroll_final_authority",
+            "banking_contract_authority",
+            "government_calendar_publication",
+            "panchanga_final_authority"
+          ],
+          "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+          "conflict_state": "none",
+          "derivation": "computed_or_source_derived",
+          "flags": [
+            "review_required"
+          ],
+          "freshness": "current_snapshot",
+          "geography_scope": "np:national:default",
+          "ignorance_state": "negative_or_failure",
+          "interpretation_state": "literal",
+          "reproducibility": "local_deterministic",
+          "review_state": "required",
+          "temporal_scope": "supported_public_range",
+          "valid_for": [
+            "technical_reference",
+            "planning_support"
+          ],
+          "warnings": [
+            "review_required"
+          ]
+        },
+        "canonical_query": {
+          "canonicalization_version": "1.0.0",
+          "context": {
+            "calendar": "bs",
+            "community_id": "official:nepal_government",
+            "jurisdiction": "np",
+            "locale": "ne-np",
+            "place_id": "np:national:default",
+            "policy_id": "canonical@0.1.0",
+            "timezone": "asia/kathmandu"
+          },
+          "input": {
+            "day": 1,
+            "decision_intent": "general",
+            "month": 1,
+            "profile_id": "nepal_private_company_default",
+            "year": 2082
+          },
+          "operation": "working_day"
+        },
+        "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":1,\"decision_intent\":\"general\",\"month\":1,\"profile_id\":\"nepal_private_company_default\",\"year\":2082},\"operation\":\"working_day\"}",
+        "field_provenance": {
+          "ad_date": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "ad_date",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "bs_date": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "bs_date",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "decision_intent": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "decision_intent",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "holiday": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "holiday",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "is_business_day": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "is_business_day",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "is_working_day": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "is_working_day",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "profile_id": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "profile_id",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "reason_codes": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "reason_codes",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          },
+          "requires_human_review": {
+            "authority": "computed_uncertified",
+            "derivation": "weekday_policy_plus_public_holiday_overlay",
+            "field_path": "requires_human_review",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+            "witness_ids": [
+              "parva:review:v1:sample"
+            ]
+          }
+        },
+        "identity_hash": "parva:id:v1:sha256:efe39333fb9a63cb9f3750c38cdc15dcab181af185bf78d0ab67c6e1b0cca03f",
+        "kind": "parva_membrane",
+        "membrane_kind": "negative",
+        "policy_trace": {
+          "decision": {
+            "authority": "static_reference",
+            "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+            "coverage_status": "covered_by_reference_source_not_official",
+            "eligible_official": false,
+            "review_required": true
+          },
+          "notes": [
+            "working-day results are decision support and must not be used as final payroll/legal authority"
+          ],
+          "operation": "working_day",
+          "policy_id": "canonical@0.1.0",
+          "rules": [
+            "eligible_source_docket_must_cover_requested_temporal_scope",
+            "sample_source_dockets_cannot_upgrade_authority",
+            "unsupported_or_uncovered_results_require_review",
+            "technical_decision_support_not_final_authority"
+          ]
+        },
+        "proof_pack": {
+          "level": "audit",
+          "method_parameters": {
+            "decision_intent": "general",
+            "policy_id": "canonical@0.1.0",
+            "profile_id": "nepal_private_company_default",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [
+              "parva:src:v1:sample-2082-calendar-notice"
+            ],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "steps": [
+            {
+              "operation": "canonicalize_query",
+              "output_hash": "sha256:efe39333fb9a63cb9f3750c38cdc15dcab181af185bf78d0ab67c6e1b0cca03f"
+            },
+            {
+              "operation": "working_day_policy",
+              "output_hash": "sha256:a5f2cc2a242ba2606e4d025a9d274612679a24ea68e68d39ea84918dcc3d1e08"
+            }
+          ],
+          "verifier": "parva.working_day",
+          "verifier_version": "1.0.0"
+        },
+        "result": {
+          "ad_date": "2025-04-14",
+          "bs_date": "2082-01-01",
+          "decision_intent": "general",
+          "holiday": {
+            "holiday_id": "bs-new-year",
+            "label": "Nepali New Year",
+            "source_status": "public_fixed_date_observance"
+          },
+          "is_business_day": false,
+          "is_working_day": false,
+          "profile_id": "nepal_private_company_default",
+          "reason_codes": [
+            "WEEKDAY",
+            "PUBLIC_HOLIDAY_MATCH"
+          ],
+          "requires_human_review": false
+        },
+        "source_docket_ids": [
+          "parva:src:v1:sample-2082-calendar-notice"
+        ],
+        "source_resolution": {
+          "authority": "static_reference",
+          "bs_date": "2082-01-01",
+          "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+          "coverage_status": "covered_by_reference_source_not_official",
+          "eligible_official": false,
+          "operation": "working_day",
+          "reason": "covered_source_is_reference_or_sample",
+          "review_required": true,
+          "review_witnesses": [
+            "parva:review:v1:sample"
+          ],
+          "source_docket_ids": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ],
+          "source_refs": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ]
+        },
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+        "witness": {
+          "input_hash": "sha256:efe39333fb9a63cb9f3750c38cdc15dcab181af185bf78d0ab67c6e1b0cca03f",
+          "method_parameters": {
+            "decision_intent": "general",
+            "policy_id": "canonical@0.1.0",
+            "profile_id": "nepal_private_company_default",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "operation": "working_day",
+          "output_hash": "sha256:a5f2cc2a242ba2606e4d025a9d274612679a24ea68e68d39ea84918dcc3d1e08",
+          "source_refs": [
+            "parva:src:v1:sample-2082-calendar-notice"
+          ],
+          "verifier": "parva.working_day",
+          "verifier_version": "1.0.0",
+          "witness_id": "parva:wit:v1:sha256:c2a8558b809e12ec81235a3a23988d82abb970830ed217179f2e41b012f41812"
+        },
+        "witness_hash": "parva:wit:v1:sha256:c2a8558b809e12ec81235a3a23988d82abb970830ed217179f2e41b012f41812"
+      },
+      "offline_verifier": "parva_membrane_replay_v1",
+      "proofpack_version": "v1",
+      "witness_hash": "parva:wit:v1:sha256:c2a8558b809e12ec81235a3a23988d82abb970830ed217179f2e41b012f41812"
+    },
+    {
+      "boundary": {
+        "authority": "computed_uncertified",
+        "blocked_use_cases": [
+          "legal_final_authority",
+          "tax_final_authority",
+          "payroll_final_authority",
+          "banking_contract_authority",
+          "government_calendar_publication",
+          "panchanga_final_authority"
+        ],
+        "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+        "conflict_state": "none",
+        "derivation": "computed_or_source_derived",
+        "flags": [
+          "review_required"
+        ],
+        "freshness": "current_snapshot",
+        "geography_scope": "np:national:default",
+        "ignorance_state": "known",
+        "interpretation_state": "literal",
+        "reproducibility": "local_deterministic",
+        "review_state": "required",
+        "temporal_scope": "supported_public_range",
+        "valid_for": [
+          "technical_reference",
+          "planning_support"
+        ],
+        "warnings": [
+          "review_required"
+        ]
+      },
+      "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+      "kind": "parva_proofpack",
+      "level": "replay",
+      "membrane": {
+        "boundary": {
+          "authority": "computed_uncertified",
+          "blocked_use_cases": [
+            "legal_final_authority",
+            "tax_final_authority",
+            "payroll_final_authority",
+            "banking_contract_authority",
+            "government_calendar_publication",
+            "panchanga_final_authority"
+          ],
+          "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+          "conflict_state": "none",
+          "derivation": "computed_or_source_derived",
+          "flags": [
+            "review_required"
+          ],
+          "freshness": "current_snapshot",
+          "geography_scope": "np:national:default",
+          "ignorance_state": "known",
+          "interpretation_state": "literal",
+          "reproducibility": "local_deterministic",
+          "review_state": "required",
+          "temporal_scope": "supported_public_range",
+          "valid_for": [
+            "technical_reference",
+            "planning_support"
+          ],
+          "warnings": [
+            "review_required"
+          ]
+        },
+        "canonical_query": {
+          "canonicalization_version": "1.0.0",
+          "context": {
+            "calendar": "bs",
+            "community_id": "official:nepal_government",
+            "jurisdiction": "np",
+            "locale": "ne-np",
+            "place_id": "np:national:default",
+            "policy_id": "canonical@0.1.0",
+            "timezone": "asia/kathmandu"
+          },
+          "input": {
+            "bs_year": 2082
+          },
+          "operation": "fiscal_year"
+        },
+        "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"bs_year\":2082},\"operation\":\"fiscal_year\"}",
+        "field_provenance": {
+          "basis": {
+            "authority": "computed_uncertified",
+            "derivation": "nepali_fiscal_boundary_rule",
+            "field_path": "basis",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "end": {
+            "authority": "computed_uncertified",
+            "derivation": "nepali_fiscal_boundary_rule",
+            "field_path": "end",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "fiscal_year": {
+            "authority": "computed_uncertified",
+            "derivation": "nepali_fiscal_boundary_rule",
+            "field_path": "fiscal_year",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          },
+          "start": {
+            "authority": "computed_uncertified",
+            "derivation": "nepali_fiscal_boundary_rule",
+            "field_path": "start",
+            "flags": [
+              "review_required"
+            ],
+            "policy_id": "canonical@0.1.0",
+            "review_state": "review_required",
+            "source_docket_id": null,
+            "witness_ids": []
+          }
+        },
+        "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+        "kind": "parva_membrane",
+        "membrane_kind": "positive",
+        "policy_trace": {
+          "decision": {
+            "authority": "computed_uncertified",
+            "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+            "coverage_status": "no_eligible_source_coverage",
+            "eligible_official": false,
+            "review_required": true
+          },
+          "notes": [
+            "fiscal-year output is decision support, not legal or tax authority"
+          ],
+          "operation": "fiscal_year",
+          "policy_id": "canonical@0.1.0",
+          "rules": [
+            "eligible_source_docket_must_cover_requested_temporal_scope",
+            "sample_source_dockets_cannot_upgrade_authority",
+            "unsupported_or_uncovered_results_require_review",
+            "technical_decision_support_not_final_authority"
+          ]
+        },
+        "proof_pack": {
+          "level": "audit",
+          "method_parameters": {
+            "fiscal_year_start": "BS-04-01",
+            "policy_id": "canonical@0.1.0",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "source_artifacts": {
+            "source_docket_ids": [],
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "steps": [
+            {
+              "operation": "canonicalize_query",
+              "output_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520"
+            },
+            {
+              "operation": "fiscal_year_rule",
+              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+            }
+          ],
+          "verifier": "parva.fiscal_year",
+          "verifier_version": "1.0.0"
+        },
+        "result": {
+          "basis": "Nepal fiscal year: Shrawan 1 to Ashadh end",
+          "end": {
+            "ad": "2026-07-16",
+            "bs": "2083-03-32"
+          },
+          "fiscal_year": "2082/83",
+          "start": {
+            "ad": "2025-07-16",
+            "bs": "2082-04-01"
+          }
+        },
+        "source_docket_ids": [],
+        "source_resolution": {
+          "authority": "computed_uncertified",
+          "bs_date": "2082-04-01",
+          "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+          "coverage_status": "no_eligible_source_coverage",
+          "eligible_official": false,
+          "operation": "fiscal_year",
+          "reason": "no_source_docket_covers_requested_date",
+          "review_required": true,
+          "review_witnesses": [],
+          "source_docket_ids": [],
+          "source_refs": []
+        },
+        "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+        "witness": {
+          "input_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+          "method_parameters": {
+            "fiscal_year_start": "BS-04-01",
+            "policy_id": "canonical@0.1.0",
+            "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+          },
+          "operation": "fiscal_year",
+          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "source_refs": [],
+          "verifier": "parva.fiscal_year",
+          "verifier_version": "1.0.0",
+          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        },
+        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      },
+      "offline_verifier": "parva_membrane_replay_v1",
+      "proofpack_version": "v1",
+      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+    }
+  ],
+  "replay_instructions": "Run `parva verify-timepack <path>` from a checkout with committed proof fixtures.",
+  "result_summary": {
+    "findings": [
+      {
+        "ad_date": "2025-04-15",
+        "bs_date": "2082-01-02",
+        "claim_boundary": "payroll_date_risk_not_authority",
+        "fix_suggestions": [],
+        "issues": [],
+        "proof_packs": [
+          {
+            "boundary": {
+              "authority": "computed_uncertified",
+              "blocked_use_cases": [
+                "legal_final_authority",
+                "tax_final_authority",
+                "payroll_final_authority",
+                "banking_contract_authority",
+                "government_calendar_publication",
+                "panchanga_final_authority"
+              ],
+              "claim_boundary": "computed_conversion_not_source_backed_authority",
+              "conflict_state": "none",
+              "derivation": "computed_or_source_derived",
+              "flags": [
+                "review_required"
+              ],
+              "freshness": "current_snapshot",
+              "geography_scope": "np:national:default",
+              "ignorance_state": "known",
+              "interpretation_state": "literal",
+              "reproducibility": "local_deterministic",
+              "review_state": "required",
+              "temporal_scope": "supported_public_range",
+              "valid_for": [
+                "technical_reference",
+                "planning_support"
+              ],
+              "warnings": [
+                "review_required"
+              ]
+            },
+            "identity_hash": "parva:id:v1:sha256:40d39d61e7f7047a7a26ce6fa20ca9d32c42d09fee530546945439e9fbe3684e",
+            "kind": "parva_proofpack",
+            "level": "replay",
+            "membrane": {
+              "boundary": {
+                "authority": "computed_uncertified",
+                "blocked_use_cases": [
+                  "legal_final_authority",
+                  "tax_final_authority",
+                  "payroll_final_authority",
+                  "banking_contract_authority",
+                  "government_calendar_publication",
+                  "panchanga_final_authority"
+                ],
+                "claim_boundary": "computed_conversion_not_source_backed_authority",
+                "conflict_state": "none",
+                "derivation": "computed_or_source_derived",
+                "flags": [
+                  "review_required"
+                ],
+                "freshness": "current_snapshot",
+                "geography_scope": "np:national:default",
+                "ignorance_state": "known",
+                "interpretation_state": "literal",
+                "reproducibility": "local_deterministic",
+                "review_state": "required",
+                "temporal_scope": "supported_public_range",
+                "valid_for": [
+                  "technical_reference",
+                  "planning_support"
+                ],
+                "warnings": [
+                  "review_required"
+                ]
+              },
+              "canonical_query": {
+                "canonicalization_version": "1.0.0",
+                "context": {
+                  "calendar": "bs",
+                  "community_id": "official:nepal_government",
+                  "locale": "ne-np",
+                  "place_id": "np:national:default",
+                  "policy_id": "canonical@0.1.0",
+                  "timezone": "asia/kathmandu"
+                },
+                "input": {
+                  "day": 2,
+                  "month": 1,
+                  "year": 2082
+                },
+                "operation": "validate_bs_date"
+              },
+              "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":2,\"month\":1,\"year\":2082},\"operation\":\"validate_bs_date\"}",
+              "field_provenance": {
+                "bs_date": {
+                  "authority": "computed_uncertified",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "bs_date",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "day": {
+                  "authority": "computed_uncertified",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "day",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "max_day": {
+                  "authority": "computed_uncertified",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "max_day",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "month": {
+                  "authority": "computed_uncertified",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "month",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "reason": {
+                  "authority": "computed_uncertified",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "reason",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "valid": {
+                  "authority": "computed_uncertified",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "valid",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "year": {
+                  "authority": "computed_uncertified",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "year",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                }
+              },
+              "identity_hash": "parva:id:v1:sha256:40d39d61e7f7047a7a26ce6fa20ca9d32c42d09fee530546945439e9fbe3684e",
+              "kind": "parva_membrane",
+              "membrane_kind": "positive",
+              "policy_trace": {
+                "decision": {
+                  "authority": "computed_uncertified",
+                  "claim_boundary": "computed_conversion_not_source_backed_authority",
+                  "coverage_status": "no_eligible_source_coverage",
+                  "eligible_official": false,
+                  "review_required": true
+                },
+                "notes": [],
+                "operation": "validate_bs_date",
+                "policy_id": "canonical@0.1.0",
+                "rules": [
+                  "eligible_source_docket_must_cover_requested_temporal_scope",
+                  "sample_source_dockets_cannot_upgrade_authority",
+                  "unsupported_or_uncovered_results_require_review",
+                  "technical_decision_support_not_final_authority"
+                ]
+              },
+              "proof_pack": {
+                "level": "audit",
+                "method_parameters": {
+                  "calendar": "BS",
+                  "policy_id": "canonical@0.1.0",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "source_artifacts": {
+                  "source_docket_ids": [],
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "steps": [
+                  {
+                    "operation": "canonicalize_query",
+                    "output_hash": "sha256:40d39d61e7f7047a7a26ce6fa20ca9d32c42d09fee530546945439e9fbe3684e"
+                  },
+                  {
+                    "operation": "validate_bs_date",
+                    "output_hash": "sha256:757132bd6211a7b7cfbbc19f0fe0088be431864c5d6251f5f11ff3153e0f666f"
+                  }
+                ],
+                "verifier": "parva.validate_bs_date",
+                "verifier_version": "1.0.0"
+              },
+              "result": {
+                "bs_date": "2082-01-02",
+                "day": 2,
+                "max_day": 31,
+                "month": 1,
+                "reason": "valid",
+                "valid": true,
+                "year": 2082
+              },
+              "source_docket_ids": [],
+              "source_resolution": {
+                "authority": "computed_uncertified",
+                "bs_date": "2082-01-02",
+                "claim_boundary": "computed_conversion_not_source_backed_authority",
+                "coverage_status": "no_eligible_source_coverage",
+                "eligible_official": false,
+                "operation": "validate_bs_date",
+                "reason": "no_source_docket_covers_requested_date",
+                "review_required": true,
+                "review_witnesses": [],
+                "source_docket_ids": [],
+                "source_refs": []
+              },
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+              "witness": {
+                "input_hash": "sha256:40d39d61e7f7047a7a26ce6fa20ca9d32c42d09fee530546945439e9fbe3684e",
+                "method_parameters": {
+                  "calendar": "BS",
+                  "policy_id": "canonical@0.1.0",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "operation": "validate_bs_date",
+                "output_hash": "sha256:757132bd6211a7b7cfbbc19f0fe0088be431864c5d6251f5f11ff3153e0f666f",
+                "source_refs": [],
+                "verifier": "parva.validate_bs_date",
+                "verifier_version": "1.0.0",
+                "witness_id": "parva:wit:v1:sha256:7f67ed96ad3a1ef173b3d12db1110f887124a4dada3754bbdbc08255879eba40"
+              },
+              "witness_hash": "parva:wit:v1:sha256:7f67ed96ad3a1ef173b3d12db1110f887124a4dada3754bbdbc08255879eba40"
+            },
+            "offline_verifier": "parva_membrane_replay_v1",
+            "proofpack_version": "v1",
+            "witness_hash": "parva:wit:v1:sha256:7f67ed96ad3a1ef173b3d12db1110f887124a4dada3754bbdbc08255879eba40"
+          },
+          {
+            "boundary": {
+              "authority": "static_reference",
+              "blocked_use_cases": [
+                "legal_final_authority",
+                "tax_final_authority",
+                "payroll_final_authority",
+                "banking_contract_authority",
+                "government_calendar_publication",
+                "panchanga_final_authority"
+              ],
+              "claim_boundary": "decision_support_not_authority",
+              "conflict_state": "none",
+              "derivation": "computed_or_source_derived",
+              "flags": [
+                "review_required"
+              ],
+              "freshness": "current_snapshot",
+              "geography_scope": "np:national:default",
+              "ignorance_state": "negative_or_failure",
+              "interpretation_state": "literal",
+              "reproducibility": "local_deterministic",
+              "review_state": "required",
+              "temporal_scope": "supported_public_range",
+              "valid_for": [
+                "technical_reference",
+                "planning_support"
+              ],
+              "warnings": [
+                "review_required"
+              ]
+            },
+            "identity_hash": "parva:id:v1:sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869",
+            "kind": "parva_proofpack",
+            "level": "replay",
+            "membrane": {
+              "boundary": {
+                "authority": "static_reference",
+                "blocked_use_cases": [
+                  "legal_final_authority",
+                  "tax_final_authority",
+                  "payroll_final_authority",
+                  "banking_contract_authority",
+                  "government_calendar_publication",
+                  "panchanga_final_authority"
+                ],
+                "claim_boundary": "decision_support_not_authority",
+                "conflict_state": "none",
+                "derivation": "computed_or_source_derived",
+                "flags": [
+                  "review_required"
+                ],
+                "freshness": "current_snapshot",
+                "geography_scope": "np:national:default",
+                "ignorance_state": "negative_or_failure",
+                "interpretation_state": "literal",
+                "reproducibility": "local_deterministic",
+                "review_state": "required",
+                "temporal_scope": "supported_public_range",
+                "valid_for": [
+                  "technical_reference",
+                  "planning_support"
+                ],
+                "warnings": [
+                  "review_required"
+                ]
+              },
+              "canonical_query": {
+                "canonicalization_version": "1.0.0",
+                "context": {
+                  "calendar": "bs",
+                  "community_id": "official:nepal_government",
+                  "jurisdiction": "np",
+                  "locale": "ne-np",
+                  "place_id": "np:national:default",
+                  "policy_id": "canonical@0.1.0",
+                  "timezone": "asia/kathmandu"
+                },
+                "input": {
+                  "day": 2,
+                  "month": 1,
+                  "profile_id": "nepal_public_general",
+                  "year": 2082
+                },
+                "operation": "holiday"
+              },
+              "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":2,\"month\":1,\"profile_id\":\"nepal_public_general\",\"year\":2082},\"operation\":\"holiday\"}",
+              "field_provenance": {
+                "bs_date": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "bs_date",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "holiday": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "holiday",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "is_holiday": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "is_holiday",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "membership_key": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "membership_key",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "membership_proof": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "membership_proof",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "profile_id": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "profile_id",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "source_set": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "source_set",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                }
+              },
+              "identity_hash": "parva:id:v1:sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869",
+              "kind": "parva_membrane",
+              "membrane_kind": "negative",
+              "policy_trace": {
+                "decision": {
+                  "authority": "computed_uncertified",
+                  "claim_boundary": "decision_support_not_authority",
+                  "coverage_status": "no_eligible_source_coverage",
+                  "eligible_official": false,
+                  "review_required": true
+                },
+                "notes": [
+                  "public fixed-date holiday corpus is decision support, not an official holiday notice"
+                ],
+                "operation": "holiday",
+                "policy_id": "canonical@0.1.0",
+                "rules": [
+                  "eligible_source_docket_must_cover_requested_temporal_scope",
+                  "sample_source_dockets_cannot_upgrade_authority",
+                  "unsupported_or_uncovered_results_require_review",
+                  "technical_decision_support_not_final_authority"
+                ]
+              },
+              "proof_pack": {
+                "level": "audit",
+                "method_parameters": {
+                  "policy_id": "canonical@0.1.0",
+                  "profile_id": "nepal_public_general",
+                  "source_set": "public_fixed_date_corpus",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "source_artifacts": {
+                  "source_docket_ids": [],
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "steps": [
+                  {
+                    "operation": "canonicalize_query",
+                    "output_hash": "sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869"
+                  },
+                  {
+                    "operation": "holiday_membership",
+                    "output_hash": "sha256:5fdd25eefea8240d25d79ae13f98ab100b3adae9975a55b3e95ab283e396166b"
+                  }
+                ],
+                "verifier": "parva.holiday",
+                "verifier_version": "1.0.0"
+              },
+              "result": {
+                "bs_date": "2082-01-02",
+                "holiday": null,
+                "is_holiday": false,
+                "membership_key": "01-02",
+                "membership_proof": {
+                  "claim_index_hash": "sha256:f7f108aeec48f650e51add393985f2118f82d55945719586efa8c4b3fdb76479",
+                  "proof_type": "non_membership"
+                },
+                "profile_id": "nepal_public_general",
+                "source_set": "public_fixed_date_corpus"
+              },
+              "source_docket_ids": [],
+              "source_resolution": {
+                "authority": "computed_uncertified",
+                "bs_date": "2082-01-02",
+                "claim_boundary": "decision_support_not_authority",
+                "coverage_status": "no_eligible_source_coverage",
+                "eligible_official": false,
+                "operation": "holiday",
+                "reason": "no_source_docket_covers_requested_date",
+                "review_required": true,
+                "review_witnesses": [],
+                "source_docket_ids": [],
+                "source_refs": []
+              },
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+              "witness": {
+                "input_hash": "sha256:a1f7ef066daa59467baaf16a4cc77edb4feee2d30ca55bb915ef01811733f869",
+                "method_parameters": {
+                  "policy_id": "canonical@0.1.0",
+                  "profile_id": "nepal_public_general",
+                  "source_set": "public_fixed_date_corpus",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "operation": "holiday",
+                "output_hash": "sha256:5fdd25eefea8240d25d79ae13f98ab100b3adae9975a55b3e95ab283e396166b",
+                "source_refs": [],
+                "verifier": "parva.holiday",
+                "verifier_version": "1.0.0",
+                "witness_id": "parva:wit:v1:sha256:de53bad6400f258af679bfe323ddcf5eec2cfe53c6a5f61dc73c689027d58b3c"
+              },
+              "witness_hash": "parva:wit:v1:sha256:de53bad6400f258af679bfe323ddcf5eec2cfe53c6a5f61dc73c689027d58b3c"
+            },
+            "offline_verifier": "parva_membrane_replay_v1",
+            "proofpack_version": "v1",
+            "witness_hash": "parva:wit:v1:sha256:de53bad6400f258af679bfe323ddcf5eec2cfe53c6a5f61dc73c689027d58b3c"
+          },
+          {
+            "boundary": {
+              "authority": "computed_uncertified",
+              "blocked_use_cases": [
+                "legal_final_authority",
+                "tax_final_authority",
+                "payroll_final_authority",
+                "banking_contract_authority",
+                "government_calendar_publication",
+                "panchanga_final_authority"
+              ],
+              "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+              "conflict_state": "none",
+              "derivation": "computed_or_source_derived",
+              "flags": [
+                "review_required"
+              ],
+              "freshness": "current_snapshot",
+              "geography_scope": "np:national:default",
+              "ignorance_state": "known",
+              "interpretation_state": "literal",
+              "reproducibility": "local_deterministic",
+              "review_state": "required",
+              "temporal_scope": "supported_public_range",
+              "valid_for": [
+                "technical_reference",
+                "planning_support"
+              ],
+              "warnings": [
+                "review_required"
+              ]
+            },
+            "identity_hash": "parva:id:v1:sha256:89d0a244a48ad550c06da77d6b8564347377c91d35403f1e6604ced05c300422",
+            "kind": "parva_proofpack",
+            "level": "replay",
+            "membrane": {
+              "boundary": {
+                "authority": "computed_uncertified",
+                "blocked_use_cases": [
+                  "legal_final_authority",
+                  "tax_final_authority",
+                  "payroll_final_authority",
+                  "banking_contract_authority",
+                  "government_calendar_publication",
+                  "panchanga_final_authority"
+                ],
+                "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                "conflict_state": "none",
+                "derivation": "computed_or_source_derived",
+                "flags": [
+                  "review_required"
+                ],
+                "freshness": "current_snapshot",
+                "geography_scope": "np:national:default",
+                "ignorance_state": "known",
+                "interpretation_state": "literal",
+                "reproducibility": "local_deterministic",
+                "review_state": "required",
+                "temporal_scope": "supported_public_range",
+                "valid_for": [
+                  "technical_reference",
+                  "planning_support"
+                ],
+                "warnings": [
+                  "review_required"
+                ]
+              },
+              "canonical_query": {
+                "canonicalization_version": "1.0.0",
+                "context": {
+                  "calendar": "bs",
+                  "community_id": "official:nepal_government",
+                  "jurisdiction": "np",
+                  "locale": "ne-np",
+                  "place_id": "np:national:default",
+                  "policy_id": "canonical@0.1.0",
+                  "timezone": "asia/kathmandu"
+                },
+                "input": {
+                  "day": 2,
+                  "decision_intent": "general",
+                  "month": 1,
+                  "profile_id": "nepal_private_company_default",
+                  "year": 2082
+                },
+                "operation": "working_day"
+              },
+              "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":2,\"decision_intent\":\"general\",\"month\":1,\"profile_id\":\"nepal_private_company_default\",\"year\":2082},\"operation\":\"working_day\"}",
+              "field_provenance": {
+                "ad_date": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "ad_date",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "bs_date": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "bs_date",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "decision_intent": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "decision_intent",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "holiday": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "holiday",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "is_business_day": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "is_business_day",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "is_working_day": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "is_working_day",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "profile_id": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "profile_id",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "reason_codes": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "reason_codes",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "requires_human_review": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "requires_human_review",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                }
+              },
+              "identity_hash": "parva:id:v1:sha256:89d0a244a48ad550c06da77d6b8564347377c91d35403f1e6604ced05c300422",
+              "kind": "parva_membrane",
+              "membrane_kind": "positive",
+              "policy_trace": {
+                "decision": {
+                  "authority": "computed_uncertified",
+                  "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                  "coverage_status": "no_eligible_source_coverage",
+                  "eligible_official": false,
+                  "review_required": true
+                },
+                "notes": [
+                  "working-day results are decision support and must not be used as final payroll/legal authority"
+                ],
+                "operation": "working_day",
+                "policy_id": "canonical@0.1.0",
+                "rules": [
+                  "eligible_source_docket_must_cover_requested_temporal_scope",
+                  "sample_source_dockets_cannot_upgrade_authority",
+                  "unsupported_or_uncovered_results_require_review",
+                  "technical_decision_support_not_final_authority"
+                ]
+              },
+              "proof_pack": {
+                "level": "audit",
+                "method_parameters": {
+                  "decision_intent": "general",
+                  "policy_id": "canonical@0.1.0",
+                  "profile_id": "nepal_private_company_default",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "source_artifacts": {
+                  "source_docket_ids": [],
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "steps": [
+                  {
+                    "operation": "canonicalize_query",
+                    "output_hash": "sha256:89d0a244a48ad550c06da77d6b8564347377c91d35403f1e6604ced05c300422"
+                  },
+                  {
+                    "operation": "working_day_policy",
+                    "output_hash": "sha256:522130cd0aa5f33b07977af35753df65504aab9bc42f0450c0958dc22a84ea5d"
+                  }
+                ],
+                "verifier": "parva.working_day",
+                "verifier_version": "1.0.0"
+              },
+              "result": {
+                "ad_date": "2025-04-15",
+                "bs_date": "2082-01-02",
+                "decision_intent": "general",
+                "holiday": null,
+                "is_business_day": true,
+                "is_working_day": true,
+                "profile_id": "nepal_private_company_default",
+                "reason_codes": [
+                  "WEEKDAY",
+                  "NO_MATCHING_PUBLIC_HOLIDAY"
+                ],
+                "requires_human_review": false
+              },
+              "source_docket_ids": [],
+              "source_resolution": {
+                "authority": "computed_uncertified",
+                "bs_date": "2082-01-02",
+                "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                "coverage_status": "no_eligible_source_coverage",
+                "eligible_official": false,
+                "operation": "working_day",
+                "reason": "no_source_docket_covers_requested_date",
+                "review_required": true,
+                "review_witnesses": [],
+                "source_docket_ids": [],
+                "source_refs": []
+              },
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+              "witness": {
+                "input_hash": "sha256:89d0a244a48ad550c06da77d6b8564347377c91d35403f1e6604ced05c300422",
+                "method_parameters": {
+                  "decision_intent": "general",
+                  "policy_id": "canonical@0.1.0",
+                  "profile_id": "nepal_private_company_default",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "operation": "working_day",
+                "output_hash": "sha256:522130cd0aa5f33b07977af35753df65504aab9bc42f0450c0958dc22a84ea5d",
+                "source_refs": [],
+                "verifier": "parva.working_day",
+                "verifier_version": "1.0.0",
+                "witness_id": "parva:wit:v1:sha256:94e4c7a279fbfc1670103ba81b72a0730de1524aea6f1467f715c3bc19754a61"
+              },
+              "witness_hash": "parva:wit:v1:sha256:94e4c7a279fbfc1670103ba81b72a0730de1524aea6f1467f715c3bc19754a61"
+            },
+            "offline_verifier": "parva_membrane_replay_v1",
+            "proofpack_version": "v1",
+            "witness_hash": "parva:wit:v1:sha256:94e4c7a279fbfc1670103ba81b72a0730de1524aea6f1467f715c3bc19754a61"
+          },
+          {
+            "boundary": {
+              "authority": "computed_uncertified",
+              "blocked_use_cases": [
+                "legal_final_authority",
+                "tax_final_authority",
+                "payroll_final_authority",
+                "banking_contract_authority",
+                "government_calendar_publication",
+                "panchanga_final_authority"
+              ],
+              "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+              "conflict_state": "none",
+              "derivation": "computed_or_source_derived",
+              "flags": [
+                "review_required"
+              ],
+              "freshness": "current_snapshot",
+              "geography_scope": "np:national:default",
+              "ignorance_state": "known",
+              "interpretation_state": "literal",
+              "reproducibility": "local_deterministic",
+              "review_state": "required",
+              "temporal_scope": "supported_public_range",
+              "valid_for": [
+                "technical_reference",
+                "planning_support"
+              ],
+              "warnings": [
+                "review_required"
+              ]
+            },
+            "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+            "kind": "parva_proofpack",
+            "level": "replay",
+            "membrane": {
+              "boundary": {
+                "authority": "computed_uncertified",
+                "blocked_use_cases": [
+                  "legal_final_authority",
+                  "tax_final_authority",
+                  "payroll_final_authority",
+                  "banking_contract_authority",
+                  "government_calendar_publication",
+                  "panchanga_final_authority"
+                ],
+                "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                "conflict_state": "none",
+                "derivation": "computed_or_source_derived",
+                "flags": [
+                  "review_required"
+                ],
+                "freshness": "current_snapshot",
+                "geography_scope": "np:national:default",
+                "ignorance_state": "known",
+                "interpretation_state": "literal",
+                "reproducibility": "local_deterministic",
+                "review_state": "required",
+                "temporal_scope": "supported_public_range",
+                "valid_for": [
+                  "technical_reference",
+                  "planning_support"
+                ],
+                "warnings": [
+                  "review_required"
+                ]
+              },
+              "canonical_query": {
+                "canonicalization_version": "1.0.0",
+                "context": {
+                  "calendar": "bs",
+                  "community_id": "official:nepal_government",
+                  "jurisdiction": "np",
+                  "locale": "ne-np",
+                  "place_id": "np:national:default",
+                  "policy_id": "canonical@0.1.0",
+                  "timezone": "asia/kathmandu"
+                },
+                "input": {
+                  "bs_year": 2082
+                },
+                "operation": "fiscal_year"
+              },
+              "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"bs_year\":2082},\"operation\":\"fiscal_year\"}",
+              "field_provenance": {
+                "basis": {
+                  "authority": "computed_uncertified",
+                  "derivation": "nepali_fiscal_boundary_rule",
+                  "field_path": "basis",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "end": {
+                  "authority": "computed_uncertified",
+                  "derivation": "nepali_fiscal_boundary_rule",
+                  "field_path": "end",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "fiscal_year": {
+                  "authority": "computed_uncertified",
+                  "derivation": "nepali_fiscal_boundary_rule",
+                  "field_path": "fiscal_year",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "start": {
+                  "authority": "computed_uncertified",
+                  "derivation": "nepali_fiscal_boundary_rule",
+                  "field_path": "start",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                }
+              },
+              "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+              "kind": "parva_membrane",
+              "membrane_kind": "positive",
+              "policy_trace": {
+                "decision": {
+                  "authority": "computed_uncertified",
+                  "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                  "coverage_status": "no_eligible_source_coverage",
+                  "eligible_official": false,
+                  "review_required": true
+                },
+                "notes": [
+                  "fiscal-year output is decision support, not legal or tax authority"
+                ],
+                "operation": "fiscal_year",
+                "policy_id": "canonical@0.1.0",
+                "rules": [
+                  "eligible_source_docket_must_cover_requested_temporal_scope",
+                  "sample_source_dockets_cannot_upgrade_authority",
+                  "unsupported_or_uncovered_results_require_review",
+                  "technical_decision_support_not_final_authority"
+                ]
+              },
+              "proof_pack": {
+                "level": "audit",
+                "method_parameters": {
+                  "fiscal_year_start": "BS-04-01",
+                  "policy_id": "canonical@0.1.0",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "source_artifacts": {
+                  "source_docket_ids": [],
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "steps": [
+                  {
+                    "operation": "canonicalize_query",
+                    "output_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520"
+                  },
+                  {
+                    "operation": "fiscal_year_rule",
+                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                  }
+                ],
+                "verifier": "parva.fiscal_year",
+                "verifier_version": "1.0.0"
+              },
+              "result": {
+                "basis": "Nepal fiscal year: Shrawan 1 to Ashadh end",
+                "end": {
+                  "ad": "2026-07-16",
+                  "bs": "2083-03-32"
+                },
+                "fiscal_year": "2082/83",
+                "start": {
+                  "ad": "2025-07-16",
+                  "bs": "2082-04-01"
+                }
+              },
+              "source_docket_ids": [],
+              "source_resolution": {
+                "authority": "computed_uncertified",
+                "bs_date": "2082-04-01",
+                "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                "coverage_status": "no_eligible_source_coverage",
+                "eligible_official": false,
+                "operation": "fiscal_year",
+                "reason": "no_source_docket_covers_requested_date",
+                "review_required": true,
+                "review_witnesses": [],
+                "source_docket_ids": [],
+                "source_refs": []
+              },
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+              "witness": {
+                "input_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+                "method_parameters": {
+                  "fiscal_year_start": "BS-04-01",
+                  "policy_id": "canonical@0.1.0",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "operation": "fiscal_year",
+                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "source_refs": [],
+                "verifier": "parva.fiscal_year",
+                "verifier_version": "1.0.0",
+                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              },
+              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            },
+            "offline_verifier": "parva_membrane_replay_v1",
+            "proofpack_version": "v1",
+            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          }
+        ],
+        "risk_score": 0,
+        "status": "pass"
+      },
+      {
+        "ad_date": "2025-04-14",
+        "bs_date": "2082-01-01",
+        "claim_boundary": "payroll_date_risk_not_authority",
+        "fix_suggestions": [
+          "manual_review"
+        ],
+        "issues": [
+          "holiday_conflict",
+          "non_working_day_conflict"
+        ],
+        "proof_packs": [
+          {
+            "boundary": {
+              "authority": "static_reference",
+              "blocked_use_cases": [
+                "legal_final_authority",
+                "tax_final_authority",
+                "payroll_final_authority",
+                "banking_contract_authority",
+                "government_calendar_publication",
+                "panchanga_final_authority"
+              ],
+              "claim_boundary": "sample_source_chain_not_authority",
+              "conflict_state": "none",
+              "derivation": "computed_or_source_derived",
+              "flags": [
+                "review_required"
+              ],
+              "freshness": "current_snapshot",
+              "geography_scope": "np:national:default",
+              "ignorance_state": "known",
+              "interpretation_state": "literal",
+              "reproducibility": "local_deterministic",
+              "review_state": "required",
+              "temporal_scope": "supported_public_range",
+              "valid_for": [
+                "technical_reference",
+                "planning_support"
+              ],
+              "warnings": [
+                "review_required"
+              ]
+            },
+            "identity_hash": "parva:id:v1:sha256:c3bbb1e3f552759691bec769bc4de5b1250137ba655be56557ca2d870d4d56d1",
+            "kind": "parva_proofpack",
+            "level": "replay",
+            "membrane": {
+              "boundary": {
+                "authority": "static_reference",
+                "blocked_use_cases": [
+                  "legal_final_authority",
+                  "tax_final_authority",
+                  "payroll_final_authority",
+                  "banking_contract_authority",
+                  "government_calendar_publication",
+                  "panchanga_final_authority"
+                ],
+                "claim_boundary": "sample_source_chain_not_authority",
+                "conflict_state": "none",
+                "derivation": "computed_or_source_derived",
+                "flags": [
+                  "review_required"
+                ],
+                "freshness": "current_snapshot",
+                "geography_scope": "np:national:default",
+                "ignorance_state": "known",
+                "interpretation_state": "literal",
+                "reproducibility": "local_deterministic",
+                "review_state": "required",
+                "temporal_scope": "supported_public_range",
+                "valid_for": [
+                  "technical_reference",
+                  "planning_support"
+                ],
+                "warnings": [
+                  "review_required"
+                ]
+              },
+              "canonical_query": {
+                "canonicalization_version": "1.0.0",
+                "context": {
+                  "calendar": "bs",
+                  "community_id": "official:nepal_government",
+                  "locale": "ne-np",
+                  "place_id": "np:national:default",
+                  "policy_id": "canonical@0.1.0",
+                  "timezone": "asia/kathmandu"
+                },
+                "input": {
+                  "day": 1,
+                  "month": 1,
+                  "year": 2082
+                },
+                "operation": "validate_bs_date"
+              },
+              "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":1,\"month\":1,\"year\":2082},\"operation\":\"validate_bs_date\"}",
+              "field_provenance": {
+                "bs_date": {
+                  "authority": "static_reference",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "bs_date",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "day": {
+                  "authority": "static_reference",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "day",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "max_day": {
+                  "authority": "static_reference",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "max_day",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "month": {
+                  "authority": "static_reference",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "month",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "reason": {
+                  "authority": "static_reference",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "reason",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "valid": {
+                  "authority": "static_reference",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "valid",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "year": {
+                  "authority": "static_reference",
+                  "derivation": "month_length_boundary_check",
+                  "field_path": "year",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                }
+              },
+              "identity_hash": "parva:id:v1:sha256:c3bbb1e3f552759691bec769bc4de5b1250137ba655be56557ca2d870d4d56d1",
+              "kind": "parva_membrane",
+              "membrane_kind": "positive",
+              "policy_trace": {
+                "decision": {
+                  "authority": "static_reference",
+                  "claim_boundary": "sample_source_chain_not_authority",
+                  "coverage_status": "covered_by_reference_source_not_official",
+                  "eligible_official": false,
+                  "review_required": true
+                },
+                "notes": [],
+                "operation": "validate_bs_date",
+                "policy_id": "canonical@0.1.0",
+                "rules": [
+                  "eligible_source_docket_must_cover_requested_temporal_scope",
+                  "sample_source_dockets_cannot_upgrade_authority",
+                  "unsupported_or_uncovered_results_require_review",
+                  "technical_decision_support_not_final_authority"
+                ]
+              },
+              "proof_pack": {
+                "level": "audit",
+                "method_parameters": {
+                  "calendar": "BS",
+                  "policy_id": "canonical@0.1.0",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "source_artifacts": {
+                  "source_docket_ids": [
+                    "parva:src:v1:sample-2082-calendar-notice"
+                  ],
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "steps": [
+                  {
+                    "operation": "canonicalize_query",
+                    "output_hash": "sha256:c3bbb1e3f552759691bec769bc4de5b1250137ba655be56557ca2d870d4d56d1"
+                  },
+                  {
+                    "operation": "validate_bs_date",
+                    "output_hash": "sha256:6011ac84b10d983280af0c495377a6a7d0952b341b0db208550015b55ea02a6d"
+                  }
+                ],
+                "verifier": "parva.validate_bs_date",
+                "verifier_version": "1.0.0"
+              },
+              "result": {
+                "bs_date": "2082-01-01",
+                "day": 1,
+                "max_day": 31,
+                "month": 1,
+                "reason": "valid",
+                "valid": true,
+                "year": 2082
+              },
+              "source_docket_ids": [
+                "parva:src:v1:sample-2082-calendar-notice"
+              ],
+              "source_resolution": {
+                "authority": "static_reference",
+                "bs_date": "2082-01-01",
+                "claim_boundary": "sample_source_chain_not_authority",
+                "coverage_status": "covered_by_reference_source_not_official",
+                "eligible_official": false,
+                "operation": "validate_bs_date",
+                "reason": "covered_source_is_reference_or_sample",
+                "review_required": true,
+                "review_witnesses": [
+                  "parva:review:v1:sample"
+                ],
+                "source_docket_ids": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ],
+                "source_refs": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ]
+              },
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+              "witness": {
+                "input_hash": "sha256:c3bbb1e3f552759691bec769bc4de5b1250137ba655be56557ca2d870d4d56d1",
+                "method_parameters": {
+                  "calendar": "BS",
+                  "policy_id": "canonical@0.1.0",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "operation": "validate_bs_date",
+                "output_hash": "sha256:6011ac84b10d983280af0c495377a6a7d0952b341b0db208550015b55ea02a6d",
+                "source_refs": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ],
+                "verifier": "parva.validate_bs_date",
+                "verifier_version": "1.0.0",
+                "witness_id": "parva:wit:v1:sha256:d9ecb1d3117c049f1b7f219a1f2389bded18dd2801ed142caf850ffc08ca1426"
+              },
+              "witness_hash": "parva:wit:v1:sha256:d9ecb1d3117c049f1b7f219a1f2389bded18dd2801ed142caf850ffc08ca1426"
+            },
+            "offline_verifier": "parva_membrane_replay_v1",
+            "proofpack_version": "v1",
+            "witness_hash": "parva:wit:v1:sha256:d9ecb1d3117c049f1b7f219a1f2389bded18dd2801ed142caf850ffc08ca1426"
+          },
+          {
+            "boundary": {
+              "authority": "static_reference",
+              "blocked_use_cases": [
+                "legal_final_authority",
+                "tax_final_authority",
+                "payroll_final_authority",
+                "banking_contract_authority",
+                "government_calendar_publication",
+                "panchanga_final_authority"
+              ],
+              "claim_boundary": "decision_support_not_authority",
+              "conflict_state": "none",
+              "derivation": "computed_or_source_derived",
+              "flags": [
+                "review_required"
+              ],
+              "freshness": "current_snapshot",
+              "geography_scope": "np:national:default",
+              "ignorance_state": "known",
+              "interpretation_state": "literal",
+              "reproducibility": "local_deterministic",
+              "review_state": "required",
+              "temporal_scope": "supported_public_range",
+              "valid_for": [
+                "technical_reference",
+                "planning_support"
+              ],
+              "warnings": [
+                "review_required"
+              ]
+            },
+            "identity_hash": "parva:id:v1:sha256:07e78d3e44edc01456b7d177bede8255018bb2a7a0b23f2a8593d3d77ef930ac",
+            "kind": "parva_proofpack",
+            "level": "replay",
+            "membrane": {
+              "boundary": {
+                "authority": "static_reference",
+                "blocked_use_cases": [
+                  "legal_final_authority",
+                  "tax_final_authority",
+                  "payroll_final_authority",
+                  "banking_contract_authority",
+                  "government_calendar_publication",
+                  "panchanga_final_authority"
+                ],
+                "claim_boundary": "decision_support_not_authority",
+                "conflict_state": "none",
+                "derivation": "computed_or_source_derived",
+                "flags": [
+                  "review_required"
+                ],
+                "freshness": "current_snapshot",
+                "geography_scope": "np:national:default",
+                "ignorance_state": "known",
+                "interpretation_state": "literal",
+                "reproducibility": "local_deterministic",
+                "review_state": "required",
+                "temporal_scope": "supported_public_range",
+                "valid_for": [
+                  "technical_reference",
+                  "planning_support"
+                ],
+                "warnings": [
+                  "review_required"
+                ]
+              },
+              "canonical_query": {
+                "canonicalization_version": "1.0.0",
+                "context": {
+                  "calendar": "bs",
+                  "community_id": "official:nepal_government",
+                  "jurisdiction": "np",
+                  "locale": "ne-np",
+                  "place_id": "np:national:default",
+                  "policy_id": "canonical@0.1.0",
+                  "timezone": "asia/kathmandu"
+                },
+                "input": {
+                  "day": 1,
+                  "month": 1,
+                  "profile_id": "nepal_public_general",
+                  "year": 2082
+                },
+                "operation": "holiday"
+              },
+              "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":1,\"month\":1,\"profile_id\":\"nepal_public_general\",\"year\":2082},\"operation\":\"holiday\"}",
+              "field_provenance": {
+                "bs_date": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "bs_date",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "holiday": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "holiday",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "is_holiday": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "is_holiday",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "membership_key": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "membership_key",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "membership_proof": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "membership_proof",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "profile_id": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "profile_id",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "source_set": {
+                  "authority": "static_reference",
+                  "derivation": "fixed_public_corpus_membership",
+                  "field_path": "source_set",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                }
+              },
+              "identity_hash": "parva:id:v1:sha256:07e78d3e44edc01456b7d177bede8255018bb2a7a0b23f2a8593d3d77ef930ac",
+              "kind": "parva_membrane",
+              "membrane_kind": "positive",
+              "policy_trace": {
+                "decision": {
+                  "authority": "static_reference",
+                  "claim_boundary": "decision_support_not_authority",
+                  "coverage_status": "covered_by_reference_source_not_official",
+                  "eligible_official": false,
+                  "review_required": true
+                },
+                "notes": [
+                  "public fixed-date holiday corpus is decision support, not an official holiday notice"
+                ],
+                "operation": "holiday",
+                "policy_id": "canonical@0.1.0",
+                "rules": [
+                  "eligible_source_docket_must_cover_requested_temporal_scope",
+                  "sample_source_dockets_cannot_upgrade_authority",
+                  "unsupported_or_uncovered_results_require_review",
+                  "technical_decision_support_not_final_authority"
+                ]
+              },
+              "proof_pack": {
+                "level": "audit",
+                "method_parameters": {
+                  "policy_id": "canonical@0.1.0",
+                  "profile_id": "nepal_public_general",
+                  "source_set": "public_fixed_date_corpus",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "source_artifacts": {
+                  "source_docket_ids": [
+                    "parva:src:v1:sample-2082-calendar-notice"
+                  ],
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "steps": [
+                  {
+                    "operation": "canonicalize_query",
+                    "output_hash": "sha256:07e78d3e44edc01456b7d177bede8255018bb2a7a0b23f2a8593d3d77ef930ac"
+                  },
+                  {
+                    "operation": "holiday_membership",
+                    "output_hash": "sha256:58b07448b425bc4da036a65d7c545d3a1e74a07f9d30fa33d5e091f88f95e74a"
+                  }
+                ],
+                "verifier": "parva.holiday",
+                "verifier_version": "1.0.0"
+              },
+              "result": {
+                "bs_date": "2082-01-01",
+                "holiday": {
+                  "holiday_id": "bs-new-year",
+                  "label": "Nepali New Year",
+                  "source_status": "public_fixed_date_observance"
+                },
+                "is_holiday": true,
+                "membership_key": "01-01",
+                "membership_proof": {
+                  "claim_index_hash": "sha256:f7f108aeec48f650e51add393985f2118f82d55945719586efa8c4b3fdb76479",
+                  "proof_type": "membership"
+                },
+                "profile_id": "nepal_public_general",
+                "source_set": "public_fixed_date_corpus"
+              },
+              "source_docket_ids": [
+                "parva:src:v1:sample-2082-calendar-notice"
+              ],
+              "source_resolution": {
+                "authority": "static_reference",
+                "bs_date": "2082-01-01",
+                "claim_boundary": "decision_support_not_authority",
+                "coverage_status": "covered_by_reference_source_not_official",
+                "eligible_official": false,
+                "operation": "holiday",
+                "reason": "covered_source_is_reference_or_sample",
+                "review_required": true,
+                "review_witnesses": [
+                  "parva:review:v1:sample"
+                ],
+                "source_docket_ids": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ],
+                "source_refs": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ]
+              },
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+              "witness": {
+                "input_hash": "sha256:07e78d3e44edc01456b7d177bede8255018bb2a7a0b23f2a8593d3d77ef930ac",
+                "method_parameters": {
+                  "policy_id": "canonical@0.1.0",
+                  "profile_id": "nepal_public_general",
+                  "source_set": "public_fixed_date_corpus",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "operation": "holiday",
+                "output_hash": "sha256:58b07448b425bc4da036a65d7c545d3a1e74a07f9d30fa33d5e091f88f95e74a",
+                "source_refs": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ],
+                "verifier": "parva.holiday",
+                "verifier_version": "1.0.0",
+                "witness_id": "parva:wit:v1:sha256:88c392e98a42b66dbe80477cadab4d0a157228448978ba5325949aa9f926a1f4"
+              },
+              "witness_hash": "parva:wit:v1:sha256:88c392e98a42b66dbe80477cadab4d0a157228448978ba5325949aa9f926a1f4"
+            },
+            "offline_verifier": "parva_membrane_replay_v1",
+            "proofpack_version": "v1",
+            "witness_hash": "parva:wit:v1:sha256:88c392e98a42b66dbe80477cadab4d0a157228448978ba5325949aa9f926a1f4"
+          },
+          {
+            "boundary": {
+              "authority": "computed_uncertified",
+              "blocked_use_cases": [
+                "legal_final_authority",
+                "tax_final_authority",
+                "payroll_final_authority",
+                "banking_contract_authority",
+                "government_calendar_publication",
+                "panchanga_final_authority"
+              ],
+              "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+              "conflict_state": "none",
+              "derivation": "computed_or_source_derived",
+              "flags": [
+                "review_required"
+              ],
+              "freshness": "current_snapshot",
+              "geography_scope": "np:national:default",
+              "ignorance_state": "negative_or_failure",
+              "interpretation_state": "literal",
+              "reproducibility": "local_deterministic",
+              "review_state": "required",
+              "temporal_scope": "supported_public_range",
+              "valid_for": [
+                "technical_reference",
+                "planning_support"
+              ],
+              "warnings": [
+                "review_required"
+              ]
+            },
+            "identity_hash": "parva:id:v1:sha256:efe39333fb9a63cb9f3750c38cdc15dcab181af185bf78d0ab67c6e1b0cca03f",
+            "kind": "parva_proofpack",
+            "level": "replay",
+            "membrane": {
+              "boundary": {
+                "authority": "computed_uncertified",
+                "blocked_use_cases": [
+                  "legal_final_authority",
+                  "tax_final_authority",
+                  "payroll_final_authority",
+                  "banking_contract_authority",
+                  "government_calendar_publication",
+                  "panchanga_final_authority"
+                ],
+                "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                "conflict_state": "none",
+                "derivation": "computed_or_source_derived",
+                "flags": [
+                  "review_required"
+                ],
+                "freshness": "current_snapshot",
+                "geography_scope": "np:national:default",
+                "ignorance_state": "negative_or_failure",
+                "interpretation_state": "literal",
+                "reproducibility": "local_deterministic",
+                "review_state": "required",
+                "temporal_scope": "supported_public_range",
+                "valid_for": [
+                  "technical_reference",
+                  "planning_support"
+                ],
+                "warnings": [
+                  "review_required"
+                ]
+              },
+              "canonical_query": {
+                "canonicalization_version": "1.0.0",
+                "context": {
+                  "calendar": "bs",
+                  "community_id": "official:nepal_government",
+                  "jurisdiction": "np",
+                  "locale": "ne-np",
+                  "place_id": "np:national:default",
+                  "policy_id": "canonical@0.1.0",
+                  "timezone": "asia/kathmandu"
+                },
+                "input": {
+                  "day": 1,
+                  "decision_intent": "general",
+                  "month": 1,
+                  "profile_id": "nepal_private_company_default",
+                  "year": 2082
+                },
+                "operation": "working_day"
+              },
+              "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"day\":1,\"decision_intent\":\"general\",\"month\":1,\"profile_id\":\"nepal_private_company_default\",\"year\":2082},\"operation\":\"working_day\"}",
+              "field_provenance": {
+                "ad_date": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "ad_date",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "bs_date": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "bs_date",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "decision_intent": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "decision_intent",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "holiday": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "holiday",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "is_business_day": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "is_business_day",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "is_working_day": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "is_working_day",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "profile_id": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "profile_id",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "reason_codes": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "reason_codes",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                },
+                "requires_human_review": {
+                  "authority": "computed_uncertified",
+                  "derivation": "weekday_policy_plus_public_holiday_overlay",
+                  "field_path": "requires_human_review",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": "parva:src:v1:sample-2082-calendar-notice",
+                  "witness_ids": [
+                    "parva:review:v1:sample"
+                  ]
+                }
+              },
+              "identity_hash": "parva:id:v1:sha256:efe39333fb9a63cb9f3750c38cdc15dcab181af185bf78d0ab67c6e1b0cca03f",
+              "kind": "parva_membrane",
+              "membrane_kind": "negative",
+              "policy_trace": {
+                "decision": {
+                  "authority": "static_reference",
+                  "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                  "coverage_status": "covered_by_reference_source_not_official",
+                  "eligible_official": false,
+                  "review_required": true
+                },
+                "notes": [
+                  "working-day results are decision support and must not be used as final payroll/legal authority"
+                ],
+                "operation": "working_day",
+                "policy_id": "canonical@0.1.0",
+                "rules": [
+                  "eligible_source_docket_must_cover_requested_temporal_scope",
+                  "sample_source_dockets_cannot_upgrade_authority",
+                  "unsupported_or_uncovered_results_require_review",
+                  "technical_decision_support_not_final_authority"
+                ]
+              },
+              "proof_pack": {
+                "level": "audit",
+                "method_parameters": {
+                  "decision_intent": "general",
+                  "policy_id": "canonical@0.1.0",
+                  "profile_id": "nepal_private_company_default",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "source_artifacts": {
+                  "source_docket_ids": [
+                    "parva:src:v1:sample-2082-calendar-notice"
+                  ],
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "steps": [
+                  {
+                    "operation": "canonicalize_query",
+                    "output_hash": "sha256:efe39333fb9a63cb9f3750c38cdc15dcab181af185bf78d0ab67c6e1b0cca03f"
+                  },
+                  {
+                    "operation": "working_day_policy",
+                    "output_hash": "sha256:a5f2cc2a242ba2606e4d025a9d274612679a24ea68e68d39ea84918dcc3d1e08"
+                  }
+                ],
+                "verifier": "parva.working_day",
+                "verifier_version": "1.0.0"
+              },
+              "result": {
+                "ad_date": "2025-04-14",
+                "bs_date": "2082-01-01",
+                "decision_intent": "general",
+                "holiday": {
+                  "holiday_id": "bs-new-year",
+                  "label": "Nepali New Year",
+                  "source_status": "public_fixed_date_observance"
+                },
+                "is_business_day": false,
+                "is_working_day": false,
+                "profile_id": "nepal_private_company_default",
+                "reason_codes": [
+                  "WEEKDAY",
+                  "PUBLIC_HOLIDAY_MATCH"
+                ],
+                "requires_human_review": false
+              },
+              "source_docket_ids": [
+                "parva:src:v1:sample-2082-calendar-notice"
+              ],
+              "source_resolution": {
+                "authority": "static_reference",
+                "bs_date": "2082-01-01",
+                "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                "coverage_status": "covered_by_reference_source_not_official",
+                "eligible_official": false,
+                "operation": "working_day",
+                "reason": "covered_source_is_reference_or_sample",
+                "review_required": true,
+                "review_witnesses": [
+                  "parva:review:v1:sample"
+                ],
+                "source_docket_ids": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ],
+                "source_refs": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ]
+              },
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+              "witness": {
+                "input_hash": "sha256:efe39333fb9a63cb9f3750c38cdc15dcab181af185bf78d0ab67c6e1b0cca03f",
+                "method_parameters": {
+                  "decision_intent": "general",
+                  "policy_id": "canonical@0.1.0",
+                  "profile_id": "nepal_private_company_default",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "operation": "working_day",
+                "output_hash": "sha256:a5f2cc2a242ba2606e4d025a9d274612679a24ea68e68d39ea84918dcc3d1e08",
+                "source_refs": [
+                  "parva:src:v1:sample-2082-calendar-notice"
+                ],
+                "verifier": "parva.working_day",
+                "verifier_version": "1.0.0",
+                "witness_id": "parva:wit:v1:sha256:c2a8558b809e12ec81235a3a23988d82abb970830ed217179f2e41b012f41812"
+              },
+              "witness_hash": "parva:wit:v1:sha256:c2a8558b809e12ec81235a3a23988d82abb970830ed217179f2e41b012f41812"
+            },
+            "offline_verifier": "parva_membrane_replay_v1",
+            "proofpack_version": "v1",
+            "witness_hash": "parva:wit:v1:sha256:c2a8558b809e12ec81235a3a23988d82abb970830ed217179f2e41b012f41812"
+          },
+          {
+            "boundary": {
+              "authority": "computed_uncertified",
+              "blocked_use_cases": [
+                "legal_final_authority",
+                "tax_final_authority",
+                "payroll_final_authority",
+                "banking_contract_authority",
+                "government_calendar_publication",
+                "panchanga_final_authority"
+              ],
+              "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+              "conflict_state": "none",
+              "derivation": "computed_or_source_derived",
+              "flags": [
+                "review_required"
+              ],
+              "freshness": "current_snapshot",
+              "geography_scope": "np:national:default",
+              "ignorance_state": "known",
+              "interpretation_state": "literal",
+              "reproducibility": "local_deterministic",
+              "review_state": "required",
+              "temporal_scope": "supported_public_range",
+              "valid_for": [
+                "technical_reference",
+                "planning_support"
+              ],
+              "warnings": [
+                "review_required"
+              ]
+            },
+            "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+            "kind": "parva_proofpack",
+            "level": "replay",
+            "membrane": {
+              "boundary": {
+                "authority": "computed_uncertified",
+                "blocked_use_cases": [
+                  "legal_final_authority",
+                  "tax_final_authority",
+                  "payroll_final_authority",
+                  "banking_contract_authority",
+                  "government_calendar_publication",
+                  "panchanga_final_authority"
+                ],
+                "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                "conflict_state": "none",
+                "derivation": "computed_or_source_derived",
+                "flags": [
+                  "review_required"
+                ],
+                "freshness": "current_snapshot",
+                "geography_scope": "np:national:default",
+                "ignorance_state": "known",
+                "interpretation_state": "literal",
+                "reproducibility": "local_deterministic",
+                "review_state": "required",
+                "temporal_scope": "supported_public_range",
+                "valid_for": [
+                  "technical_reference",
+                  "planning_support"
+                ],
+                "warnings": [
+                  "review_required"
+                ]
+              },
+              "canonical_query": {
+                "canonicalization_version": "1.0.0",
+                "context": {
+                  "calendar": "bs",
+                  "community_id": "official:nepal_government",
+                  "jurisdiction": "np",
+                  "locale": "ne-np",
+                  "place_id": "np:national:default",
+                  "policy_id": "canonical@0.1.0",
+                  "timezone": "asia/kathmandu"
+                },
+                "input": {
+                  "bs_year": 2082
+                },
+                "operation": "fiscal_year"
+              },
+              "canonical_query_json": "{\"canonicalization_version\":\"1.0.0\",\"context\":{\"calendar\":\"bs\",\"community_id\":\"official:nepal_government\",\"jurisdiction\":\"np\",\"locale\":\"ne-np\",\"place_id\":\"np:national:default\",\"policy_id\":\"canonical@0.1.0\",\"timezone\":\"asia/kathmandu\"},\"input\":{\"bs_year\":2082},\"operation\":\"fiscal_year\"}",
+              "field_provenance": {
+                "basis": {
+                  "authority": "computed_uncertified",
+                  "derivation": "nepali_fiscal_boundary_rule",
+                  "field_path": "basis",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "end": {
+                  "authority": "computed_uncertified",
+                  "derivation": "nepali_fiscal_boundary_rule",
+                  "field_path": "end",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "fiscal_year": {
+                  "authority": "computed_uncertified",
+                  "derivation": "nepali_fiscal_boundary_rule",
+                  "field_path": "fiscal_year",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                },
+                "start": {
+                  "authority": "computed_uncertified",
+                  "derivation": "nepali_fiscal_boundary_rule",
+                  "field_path": "start",
+                  "flags": [
+                    "review_required"
+                  ],
+                  "policy_id": "canonical@0.1.0",
+                  "review_state": "review_required",
+                  "source_docket_id": null,
+                  "witness_ids": []
+                }
+              },
+              "identity_hash": "parva:id:v1:sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+              "kind": "parva_membrane",
+              "membrane_kind": "positive",
+              "policy_trace": {
+                "decision": {
+                  "authority": "computed_uncertified",
+                  "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                  "coverage_status": "no_eligible_source_coverage",
+                  "eligible_official": false,
+                  "review_required": true
+                },
+                "notes": [
+                  "fiscal-year output is decision support, not legal or tax authority"
+                ],
+                "operation": "fiscal_year",
+                "policy_id": "canonical@0.1.0",
+                "rules": [
+                  "eligible_source_docket_must_cover_requested_temporal_scope",
+                  "sample_source_dockets_cannot_upgrade_authority",
+                  "unsupported_or_uncovered_results_require_review",
+                  "technical_decision_support_not_final_authority"
+                ]
+              },
+              "proof_pack": {
+                "level": "audit",
+                "method_parameters": {
+                  "fiscal_year_start": "BS-04-01",
+                  "policy_id": "canonical@0.1.0",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "source_artifacts": {
+                  "source_docket_ids": [],
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "steps": [
+                  {
+                    "operation": "canonicalize_query",
+                    "output_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520"
+                  },
+                  {
+                    "operation": "fiscal_year_rule",
+                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                  }
+                ],
+                "verifier": "parva.fiscal_year",
+                "verifier_version": "1.0.0"
+              },
+              "result": {
+                "basis": "Nepal fiscal year: Shrawan 1 to Ashadh end",
+                "end": {
+                  "ad": "2026-07-16",
+                  "bs": "2083-03-32"
+                },
+                "fiscal_year": "2082/83",
+                "start": {
+                  "ad": "2025-07-16",
+                  "bs": "2082-04-01"
+                }
+              },
+              "source_docket_ids": [],
+              "source_resolution": {
+                "authority": "computed_uncertified",
+                "bs_date": "2082-04-01",
+                "claim_boundary": "decision_support_not_legal_tax_payroll_authority",
+                "coverage_status": "no_eligible_source_coverage",
+                "eligible_official": false,
+                "operation": "fiscal_year",
+                "reason": "no_source_docket_covers_requested_date",
+                "review_required": true,
+                "review_witnesses": [],
+                "source_docket_ids": [],
+                "source_refs": []
+              },
+              "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f",
+              "witness": {
+                "input_hash": "sha256:0be795432d5ba9db445dcb7fe562a43a78425c12396982327203cf7e850fc520",
+                "method_parameters": {
+                  "fiscal_year_start": "BS-04-01",
+                  "policy_id": "canonical@0.1.0",
+                  "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
+                },
+                "operation": "fiscal_year",
+                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "source_refs": [],
+                "verifier": "parva.fiscal_year",
+                "verifier_version": "1.0.0",
+                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              },
+              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            },
+            "offline_verifier": "parva_membrane_replay_v1",
+            "proofpack_version": "v1",
+            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          }
+        ],
+        "risk_score": 50,
+        "status": "review_required"
+      },
+      {
+        "ad_date": null,
+        "bs_date": "2082-01-32",
+        "claim_boundary": "payroll_date_risk_not_authority",
+        "fix_suggestions": [
+          "manual_review"
+        ],
+        "issues": [
+          "invalid_bs_date"
+        ],
+        "proof_packs": [],
+        "risk_score": 25,
+        "status": "review_required"
+      }
+    ],
+    "review_required": 2,
+    "rows": 3
+  },
+  "timepack_version": "v1"
+}

@@ -19,7 +19,8 @@ def test_local_kernel_membrane_verifier_is_not_field_presence_only() -> None:
     assert "source_snapshot_hash_mismatch" in source
     assert "for (const field of Object.keys" in source
     assert "replayMembrane" in source
-    assert "fixture_not_found" in source
+    assert "replayCivilResult" in source
+    assert "authority_overclaim" in source
 
 
 def test_shared_proof_fixtures_exist_for_local_kernel_replay() -> None:

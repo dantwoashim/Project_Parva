@@ -8,6 +8,7 @@ import {
   VerificationStrip,
 } from '../redesign/components/VerificationComponents';
 import { PanchangaProofDrawer } from '../proof/PanchangaProofDrawer';
+import { ProofViewerPage } from '../proof/ProofViewerPage';
 
 describe('verification component extraction', () => {
   it('renders clamped confidence and source dots', () => {
@@ -84,5 +85,15 @@ describe('verification component extraction', () => {
     expect(screen.getByText(/pinned_panchanga_fixture/i)).toBeInTheDocument();
     expect(screen.getByText('computed_ephemeris_not_panchanga_authority')).toBeInTheDocument();
     expect(screen.getByText('Field provenance')).toBeInTheDocument();
+  });
+
+  it('renders the proof viewer without unsafe HTML execution', () => {
+    render(<ProofViewerPage />);
+
+    expect(screen.getByRole('heading', { name: /Inspect Parva proof packs and Timepacks/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/Artifact JSON/i)).toBeInTheDocument();
+    expect(screen.getByText(/ready_for_offline_cli_replay/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Boundary vector/i)).toBeInTheDocument();
+    expect(screen.getByText(/Not government, legal, tax, payroll, banking/i)).toBeInTheDocument();
   });
 });

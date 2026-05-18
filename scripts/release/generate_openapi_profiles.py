@@ -5,9 +5,15 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from openapi_proof_schemas import add_proof_schemas  # noqa: E402
+
 OUTPUT_DIR = Path(os.getenv("PARVA_OPENAPI_PROFILE_DIR", PROJECT_ROOT / "docs" / "api-docs")).resolve()
 PROFILES = ("public_reference", "developer_preview", "enterprise_preview")
 PUBLIC_PROFILES = {"public_reference", "developer_preview"}
@@ -47,6 +53,7 @@ def _write_profile(profile: str) -> tuple[Path, int]:
 
         app = create_app()
         schema = app.openapi()
+        add_proof_schemas(schema)
     finally:
         _restore_env(old_env)
 

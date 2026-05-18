@@ -1,0 +1,31 @@
+{
+  "artifact_count": 6,
+  "artifacts": [
+    {
+      "path": "examples/external/proofpacks/civil-conversion.proofpack.json",
+      "sha256": "689e93fcb9c559041d13e60d1abd50e92bc2619ef9af008ccb2eb402b5bf1ca3"
+    },
+    {
+      "path": "examples/external/proofpacks/panchanga-summary.proofpack.json",
+      "sha256": "e1f2c8a55e1be7793b34505a9e98ffade3fdba270c86bc0b8f00e16d31739dcf"
+    },
+    {
+      "path": "examples/external/proofpacks/payroll-row.proofpack.json",
+      "sha256": "f621053f1534c03409984792b8a3b748bb691b9821b28fc97b543c460ba6a501"
+    },
+    {
+      "path": "examples/external/timepacks/civil-conversion.timepack.json",
+      "sha256": "3e056cfe5c5cdd008be38488221263f9502efb3c4440ba4399a60ade494624ee"
+    },
+    {
+      "path": "examples/external/timepacks/panchanga-summary.timepack.json",
+      "sha256": "ca5d1eb0c8c40df58ceb02cefc7507db8ddc2fb9cc4ed1f14bbcad8d7386f135"
+    },
+    {
+      "path": "examples/external/timepacks/payroll-date-risk.timepack.json",
+      "sha256": "251d5145a7a5ef9dc31e797aac5402de90794bf3fb612c3bda94bd967e0d79b0"
+    }
+  ],
+  "claim_boundary": "offline_review_examples_not_external_validation",
+  "not_authority": true
+}

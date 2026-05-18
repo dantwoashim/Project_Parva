@@ -110,6 +110,8 @@ def _tracked_path_issue(path: str) -> str | None:
         "reports/ceiling_depth/remaining_blockers.md",
         "reports/samples/payroll_date_risk_sample.md",
         "reports/trust-status.json",
+        "reports/source_coverage/coverage_matrix.json",
+        "reports/source_coverage/coverage_matrix.md",
     )
     if path in allowed_reports:
         return None

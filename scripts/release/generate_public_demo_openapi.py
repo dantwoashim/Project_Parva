@@ -5,9 +5,14 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(Path(__file__).resolve().parent) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from openapi_proof_schemas import add_proof_schemas  # noqa: E402
 
 
 def _output_path() -> Path:
@@ -31,6 +36,7 @@ def main() -> int:
 
     app = create_app()
     schema = app.openapi()
+    add_proof_schemas(schema)
     components = schema.setdefault("components", {}).setdefault("schemas", {})
     components.setdefault(
         "SourceAwareMeta",

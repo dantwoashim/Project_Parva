@@ -1184,6 +1184,24 @@
               "title": "Date"
             },
             "description": "Gregorian date in YYYY-MM-DD format"
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
           }
         ],
         "responses": {
@@ -1325,16 +1343,119 @@
         "summary": "Bs To Gregorian Convert",
         "description": "Convert a Bikram Sambat date to Gregorian.",
         "operationId": "bs_to_gregorian_convert_api_calendar_bs_to_gregorian_post",
+        "parameters": [
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to 'membrane' for a replay-verifiable proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to 'membrane' for a replay-verifiable proof capsule."
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/BSConversionRequest"
               }
             }
-          },
-          "required": true
+          }
         },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/calendar/validate-bs-date": {
+      "get": {
+        "tags": [
+          "calendar"
+        ],
+        "summary": "Validate Bs Date Endpoint",
+        "description": "Validate a BS date with optional replay-verifiable proof.",
+        "operationId": "validate_bs_date_endpoint_api_calendar_validate_bs_date_get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 2200,
+              "minimum": 1900,
+              "title": "Year"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Month"
+            }
+          },
+          {
+            "name": "day",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 32,
+              "minimum": 1,
+              "title": "Day"
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1659,6 +1780,121 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "none|compact|audit|replay|membrane",
+              "title": "Proof"
+            },
+            "description": "none|compact|audit|replay|membrane"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Latitude for proof identity",
+              "title": "Lat"
+            },
+            "description": "Latitude for proof identity"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Longitude for proof identity",
+              "title": "Lon"
+            },
+            "description": "Longitude for proof identity"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
+          },
+          {
+            "name": "ephemeris_provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "builtin_swiss_moshier|jpl_de440",
+              "default": "builtin_swiss_moshier",
+              "title": "Ephemeris Provider"
+            },
+            "description": "builtin_swiss_moshier|jpl_de440"
+          },
+          {
+            "name": "ephemeris_fixture_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Pinned fixture id for deterministic replay",
+              "title": "Ephemeris Fixture Id"
+            },
+            "description": "Pinned fixture id for deterministic replay"
+          },
+          {
+            "name": "ayanamsa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Sidereal ayanamsa mode",
+              "default": "lahiri",
+              "title": "Ayanamsa"
+            },
+            "description": "Sidereal ayanamsa mode"
           }
         ],
         "responses": {
@@ -1970,6 +2206,24 @@
               "type": "integer",
               "title": "Bs Year"
             }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
           }
         ],
         "responses": {
@@ -2026,6 +2280,24 @@
               "default": "canonical",
               "title": "Mode"
             }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
           }
         ],
         "responses": {
@@ -2233,16 +2505,132 @@
         ],
         "summary": "Evaluate Compliance Date",
         "operationId": "evaluate_compliance_date_api_compliance_evaluate_date_post",
+        "parameters": [
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ComplianceDateRequest"
               }
             }
-          },
-          "required": true
+          }
         },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/compliance/holiday": {
+      "get": {
+        "tags": [
+          "compliance"
+        ],
+        "summary": "Holiday Lookup",
+        "description": "Check fixed public-corpus holiday membership with optional proof.",
+        "operationId": "holiday_lookup_api_compliance_holiday_get",
+        "parameters": [
+          {
+            "name": "bs_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "BS date in YYYY-MM-DD format.",
+              "title": "Bs Date"
+            },
+            "description": "BS date in YYYY-MM-DD format."
+          },
+          {
+            "name": "ad_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "AD date in YYYY-MM-DD format.",
+              "title": "Ad Date"
+            },
+            "description": "AD date in YYYY-MM-DD format."
+          },
+          {
+            "name": "profile_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "nepal_public_general",
+              "title": "Profile Id"
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -12541,6 +12929,24 @@
               "title": "Date"
             },
             "description": "Gregorian date in YYYY-MM-DD format"
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
           }
         ],
         "responses": {
@@ -12682,16 +13088,119 @@
         "summary": "Bs To Gregorian Convert",
         "description": "Convert a Bikram Sambat date to Gregorian.",
         "operationId": "bs_to_gregorian_convert_v3_api_calendar_bs_to_gregorian_post",
+        "parameters": [
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to 'membrane' for a replay-verifiable proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to 'membrane' for a replay-verifiable proof capsule."
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/BSConversionRequest"
               }
             }
-          },
-          "required": true
+          }
         },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/calendar/validate-bs-date": {
+      "get": {
+        "tags": [
+          "calendar"
+        ],
+        "summary": "Validate Bs Date Endpoint",
+        "description": "Validate a BS date with optional replay-verifiable proof.",
+        "operationId": "validate_bs_date_endpoint_v3_api_calendar_validate_bs_date_get",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 2200,
+              "minimum": 1900,
+              "title": "Year"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Month"
+            }
+          },
+          {
+            "name": "day",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 32,
+              "minimum": 1,
+              "title": "Day"
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -13016,6 +13525,121 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "none|compact|audit|replay|membrane",
+              "title": "Proof"
+            },
+            "description": "none|compact|audit|replay|membrane"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Latitude for proof identity",
+              "title": "Lat"
+            },
+            "description": "Latitude for proof identity"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Longitude for proof identity",
+              "title": "Lon"
+            },
+            "description": "Longitude for proof identity"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
+          },
+          {
+            "name": "ephemeris_provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "builtin_swiss_moshier|jpl_de440",
+              "default": "builtin_swiss_moshier",
+              "title": "Ephemeris Provider"
+            },
+            "description": "builtin_swiss_moshier|jpl_de440"
+          },
+          {
+            "name": "ephemeris_fixture_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Pinned fixture id for deterministic replay",
+              "title": "Ephemeris Fixture Id"
+            },
+            "description": "Pinned fixture id for deterministic replay"
+          },
+          {
+            "name": "ayanamsa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Sidereal ayanamsa mode",
+              "default": "lahiri",
+              "title": "Ayanamsa"
+            },
+            "description": "Sidereal ayanamsa mode"
           }
         ],
         "responses": {
@@ -13327,6 +13951,24 @@
               "type": "integer",
               "title": "Bs Year"
             }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
           }
         ],
         "responses": {
@@ -13383,6 +14025,24 @@
               "default": "canonical",
               "title": "Mode"
             }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
           }
         ],
         "responses": {
@@ -13590,16 +14250,132 @@
         ],
         "summary": "Evaluate Compliance Date",
         "operationId": "evaluate_compliance_date_v3_api_compliance_evaluate_date_post",
+        "parameters": [
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ComplianceDateRequest"
               }
             }
-          },
-          "required": true
+          }
         },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/compliance/holiday": {
+      "get": {
+        "tags": [
+          "compliance"
+        ],
+        "summary": "Holiday Lookup",
+        "description": "Check fixed public-corpus holiday membership with optional proof.",
+        "operationId": "holiday_lookup_v3_api_compliance_holiday_get",
+        "parameters": [
+          {
+            "name": "bs_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "BS date in YYYY-MM-DD format.",
+              "title": "Bs Date"
+            },
+            "description": "BS date in YYYY-MM-DD format."
+          },
+          {
+            "name": "ad_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "AD date in YYYY-MM-DD format.",
+              "title": "Ad Date"
+            },
+            "description": "AD date in YYYY-MM-DD format."
+          },
+          {
+            "name": "profile_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "nepal_public_general",
+              "title": "Profile Id"
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -23620,6 +24396,17 @@
               }
             ],
             "title": "Meta"
+          },
+          "proof": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proof"
           }
         },
         "type": "object",
@@ -27721,6 +28508,289 @@
         },
         "type": "object",
         "title": "WorkingDaySearchRequest"
+      },
+      "BoundaryVector": {
+        "type": "object",
+        "title": "BoundaryVector",
+        "properties": {
+          "authority": {
+            "type": "string"
+          },
+          "claim_boundary": {
+            "type": "string"
+          },
+          "review_state": {
+            "type": "string"
+          },
+          "blocked_use_cases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "not_authority": {
+            "type": "boolean"
+          },
+          "not_panchanga_authority": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FieldProvenance": {
+        "type": "object",
+        "title": "FieldProvenance",
+        "properties": {
+          "field_path": {
+            "type": "string"
+          },
+          "authority": {
+            "type": "string"
+          },
+          "derivation": {
+            "type": "string"
+          },
+          "source_docket_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "witness_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "policy_id": {
+            "type": "string"
+          },
+          "review_state": {
+            "type": "string"
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "MethodDocket": {
+        "type": "object",
+        "title": "MethodDocket",
+        "properties": {
+          "method_id": {
+            "type": "string"
+          },
+          "algorithm": {
+            "type": "string"
+          },
+          "implementation_version": {
+            "type": "string"
+          },
+          "precision_tolerance": {
+            "type": "string"
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EphemerisProviderMetadata": {
+        "type": "object",
+        "title": "EphemerisProviderMetadata",
+        "properties": {
+          "provider_id": {
+            "type": "string"
+          },
+          "provider_kind": {
+            "type": "string"
+          },
+          "ephemeris_name": {
+            "type": "string"
+          },
+          "ephemeris_version": {
+            "type": "string"
+          },
+          "kernel_hash": {
+            "type": "string",
+            "nullable": true
+          },
+          "supported_date_range": {
+            "type": "string"
+          },
+          "fallback_used": {
+            "type": "boolean"
+          },
+          "jpl_backed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PolicyDecisionTrace": {
+        "type": "object",
+        "title": "PolicyDecisionTrace",
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "operation": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "object"
+          },
+          "rules": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ProofReceipt": {
+        "type": "object",
+        "title": "ProofReceipt",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "compact",
+              "audit",
+              "replay",
+              "membrane"
+            ]
+          },
+          "identity_hash": {
+            "type": "string"
+          },
+          "witness_hash": {
+            "type": "string"
+          },
+          "boundary_vector": {
+            "$ref": "#/components/schemas/BoundaryVector"
+          },
+          "field_provenance": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/FieldProvenance"
+            }
+          },
+          "source_docket_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "proof_pack": {
+            "type": "object"
+          }
+        }
+      },
+      "ProofPack": {
+        "type": "object",
+        "title": "ProofPack",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "example": "parva_proofpack"
+          },
+          "proofpack_version": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string"
+          },
+          "identity_hash": {
+            "type": "string"
+          },
+          "witness_hash": {
+            "type": "string"
+          },
+          "boundary": {
+            "$ref": "#/components/schemas/BoundaryVector"
+          },
+          "membrane": {
+            "type": "object"
+          }
+        }
+      },
+      "Timepack": {
+        "type": "object",
+        "title": "Timepack",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "example": "parva_timepack"
+          },
+          "timepack_version": {
+            "type": "string"
+          },
+          "artifact_type": {
+            "type": "string"
+          },
+          "proof_packs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProofPack"
+            }
+          },
+          "aggregate_witness_hash": {
+            "type": "string"
+          },
+          "boundary_summary": {
+            "$ref": "#/components/schemas/BoundaryVector"
+          },
+          "result_summary": {
+            "type": "object"
+          },
+          "replay_instructions": {
+            "type": "string"
+          }
+        }
+      },
+      "PayrollDateRiskReport": {
+        "type": "object",
+        "title": "PayrollDateRiskReport",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "object"
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "claim_boundary": {
+            "type": "string"
+          },
+          "not_authority": {
+            "type": "boolean"
+          }
+        }
       }
     }
   },

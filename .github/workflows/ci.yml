@@ -26,7 +26,9 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
-          cache-dependency-path: packages/parva-js/package-lock.json
+          cache-dependency-path: |
+            packages/parva-js/package-lock.json
+            packages/parva-local-kernel/package-lock.json
 
       - name: Install backend dependencies
         run: |
@@ -34,6 +36,7 @@ jobs:
           python -m pip install -c requirements/constraints.txt -e .[test,dev]
           python -m pip install -e packages/parva-python
           npm --prefix packages/parva-js ci
+          npm --prefix packages/parva-local-kernel ci
 
       - name: Run backend quality gates
         env:
@@ -46,6 +49,10 @@ jobs:
           python scripts/release/verify_clean_clone_assumptions.py
           python scripts/release/check_archive_hygiene.py
           python scripts/release/check_package_readiness.py
+          python scripts/release/check_local_kernel_package.py
+          python scripts/release/generate_source_coverage_report.py --check
+          python scripts/release/verify_release_artifact_manifest.py
+          python scripts/release/check_public_surface_security.py
           python scripts/release/check_mcp_registry_metadata.py
           python scripts/security/scan_repo_secrets.py
           python scripts/release/check_public_safety_gate.py
