@@ -644,7 +644,7 @@ Frontend component size report: 1 production files exceed 700 lines.
  1002 frontend/src/pages/FeedSubscriptionsPage.jsx within-budget budget=1050
 ```
 
-### py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server
+### py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-agent-tools packages/parva-mcp-server
 
 - status: pass
 - exit_code: 0
@@ -686,7 +686,7 @@ All checks passed!
 * Building wheel...
 ```
 
-### py -3.11 -m pytest packages/parva-ai-tools/tests -q
+### py -3.11 -m pytest packages/parva-agent-tools/tests -q
 
 - status: pass
 - exit_code: 0
@@ -697,7 +697,7 @@ All checks passed!
 8 passed in 0.09s
 ```
 
-### py -3.11 packages/parva-ai-tools/examples/basic_usage.py
+### py -3.11 packages/parva-agent-tools/examples/basic_usage.py
 
 - status: pass
 - exit_code: 0

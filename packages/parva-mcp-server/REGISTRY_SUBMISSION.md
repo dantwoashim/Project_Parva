@@ -64,6 +64,5 @@ authority.
 
 ## Example Config
 
-See `examples/claude_desktop_config.example.json` and
-`examples/codex_mcp_config.example.json`. The examples contain no secrets and
-use `--stdio`.
+See `examples/desktop_mcp_config.example.json`. The example contains no secrets
+and uses `--stdio`.

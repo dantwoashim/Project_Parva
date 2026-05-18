@@ -22,7 +22,7 @@ def _tracked_path_issue(path: str) -> str | None:
         "reports/ephemeris_accuracy/solar_ingress_jpl_vs_swiss.json",
         "reports/ephemeris_accuracy/solar_ingress_jpl_vs_swiss.md",
         "reports/external_reviewer_packet/README.md",
-        "reports/external_reviewer_packet/ai_tooling_boundary.md",
+        "reports/external_reviewer_packet/agent_tooling_boundary.md",
         "reports/external_reviewer_packet/architecture_summary.md",
         "reports/external_reviewer_packet/benchmark_summary.md",
         "reports/external_reviewer_packet/ci_status.md",

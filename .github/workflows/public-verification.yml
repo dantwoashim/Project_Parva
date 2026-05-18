@@ -91,7 +91,7 @@ jobs:
           python scripts/release/check_repo_hygiene.py
           python -m pytest tests/evidence tests/conformance tests/vendor_audit -q
 
-  sdk-ai-mcp:
+  sdk-agent-mcp:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -118,7 +118,7 @@ jobs:
         run: |
           python -m pytest packages/parva-python/tests -q
           python -m build packages/parva-python
-          python -m build packages/parva-ai-tools
+          python -m build packages/parva-agent-tools
           python -m build packages/parva-mcp-server
           npm --prefix packages/parva-js test
           cd packages/parva-js
@@ -128,7 +128,7 @@ jobs:
           cd packages/parva-local-kernel
           npm pack --dry-run
           cd ../..
-          python -m pytest packages/parva-ai-tools/tests packages/parva-mcp-server/tests -q
+          python -m pytest packages/parva-agent-tools/tests packages/parva-mcp-server/tests -q
           printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"ci","version":"0"}}}\n' | python -m parva_mcp_server.server --stdio
 
   frontend:

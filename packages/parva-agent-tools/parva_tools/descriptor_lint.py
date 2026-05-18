@@ -1,4 +1,4 @@
-"""Descriptor linting for public-safe Parva AI tool wrappers."""
+"""Descriptor linting for public-safe Parva agent tool wrappers."""
 
 from __future__ import annotations
 

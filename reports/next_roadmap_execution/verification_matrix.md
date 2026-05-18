@@ -37,7 +37,7 @@ Final matrix status: 61 passed, 1 blocked, 0 failed.
 | `py -3.11 scripts/release/check_public_safety_gate.py` | pass | Public safety gate passed. |
 | `py -3.11 scripts/release/check_render_blueprint.py` | pass | Render blueprint passed. |
 | `py -3.11 scripts/release/check_repo_hygiene.py` | pass | Repository hygiene passed. |
-| `py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server` | pass | All checks passed. |
+| `py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-agent-tools packages/parva-mcp-server` | pass | All checks passed. |
 | `py -3.11 -m pytest packages/parva-python/tests -q` | pass | 18 passed. |
 | `py -3.11 -m build packages/parva-python` | blocked | Local Python 3.11 environment lacks the `build` module; repeated `pip install build` attempts timed out against PyPI. |
 | `py -3.11 -m pip wheel packages/parva-python --no-deps --no-build-isolation -w <temp>` | pass | Python SDK wheel built successfully through setuptools/wheel already present in the local toolchain. |
@@ -46,7 +46,7 @@ Final matrix status: 61 passed, 1 blocked, 0 failed.
 | `npm --prefix frontend run lint` under managed Node 20/npm lane | pass | ESLint passed. |
 | `npm --prefix frontend test -- --run` under managed Node 20/npm lane | pass | 27 files, 120 tests passed. |
 | `npm --prefix frontend run build` under managed Node 20/npm lane | pass | Vite production build passed. |
-| `py -3.11 -m pytest packages/parva-ai-tools/tests -q` | pass | 8 passed. |
+| `py -3.11 -m pytest packages/parva-agent-tools/tests -q` | pass | 8 passed. |
 | `py -3.11 -m pytest packages/parva-mcp-server/tests -q` | pass | 8 passed. |
 | `py -3.11 public-benchmark/runners/run_against_static_baseline.py` | pass | 38 tasks, 20.53 percent score. |
 | `py -3.11 public-benchmark/runners/run_against_parva.py` | pass | 38 tasks, 38 passed, 89.47 percent score. |

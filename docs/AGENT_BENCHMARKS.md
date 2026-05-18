@@ -19,4 +19,4 @@ It covers:
 - human-review gates
 - impact tool integration
 
-It does not call external AI services.
+It does not call external model services.

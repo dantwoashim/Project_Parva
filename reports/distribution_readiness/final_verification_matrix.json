@@ -671,7 +671,7 @@
       "ended_at": "2026-05-16T10:36:54.508423+00:00"
     },
     {
-      "command": "py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server",
+      "command": "py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-agent-tools packages/parva-mcp-server",
       "argv": [
         "py",
         "-3.11",
@@ -683,7 +683,7 @@
         "scripts",
         "sdk",
         "packages/parva-python",
-        "packages/parva-ai-tools",
+        "packages/parva-agent-tools",
         "packages/parva-mcp-server"
       ],
       "cwd": ".",
@@ -730,13 +730,13 @@
       "ended_at": "2026-05-16T10:37:06.460753+00:00"
     },
     {
-      "command": "py -3.11 -m pytest packages/parva-ai-tools/tests -q",
+      "command": "py -3.11 -m pytest packages/parva-agent-tools/tests -q",
       "argv": [
         "py",
         "-3.11",
         "-m",
         "pytest",
-        "packages/parva-ai-tools/tests",
+        "packages/parva-agent-tools/tests",
         "-q"
       ],
       "cwd": ".",
@@ -748,11 +748,11 @@
       "ended_at": "2026-05-16T10:37:07.262300+00:00"
     },
     {
-      "command": "py -3.11 packages/parva-ai-tools/examples/basic_usage.py",
+      "command": "py -3.11 packages/parva-agent-tools/examples/basic_usage.py",
       "argv": [
         "py",
         "-3.11",
-        "packages/parva-ai-tools/examples/basic_usage.py"
+        "packages/parva-agent-tools/examples/basic_usage.py"
       ],
       "cwd": ".",
       "status": "pass",

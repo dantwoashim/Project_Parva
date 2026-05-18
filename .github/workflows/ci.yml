@@ -45,7 +45,7 @@ jobs:
         env:
           PYTHONPATH: backend:.
         run: |
-          python -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server
+          python -m ruff check backend tests scripts sdk packages/parva-python packages/parva-agent-tools packages/parva-mcp-server
           python -m pip_audit --strict --requirement requirements/constraints.txt
           npm --prefix packages/parva-js audit --audit-level=high
           python scripts/release/check_repo_hygiene.py

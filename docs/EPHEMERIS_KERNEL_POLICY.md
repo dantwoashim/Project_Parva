@@ -12,7 +12,7 @@ Kernel rules:
 
 - Do not commit large binary kernels.
 - Do not expose local kernel paths through public docs, APIs, OpenAPI examples,
-  SDK defaults, AI tools, MCP resources, or reports.
+  SDK defaults, agent tools, MCP resources, or reports.
 - If a configured kernel is present, verify its hash before using it for a
   research report.
 - If a kernel is absent, return explicit unavailable behavior and keep the

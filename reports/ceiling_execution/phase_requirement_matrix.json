@@ -3,7 +3,7 @@
     {
       "missing": [],
       "phase": "01",
-      "prompt": "PHASE_01_TRUST_TAINT_FIELD_PROVENANCE_POLICY_VM_CODEX_PROMPT.md",
+      "prompt": "PHASE_01_TRUST_TAINT_FIELD_PROVENANCE_POLICY_VM_PROMPT.md",
       "reports": [
         "reports/phase_01_authority_control.md",
         "reports/phase_01_trust_taint_field_provenance_policy_vm.md"
@@ -28,7 +28,7 @@
     {
       "missing": [],
       "phase": "02",
-      "prompt": "PHASE_02_SOURCE_DOCKETS_EXTRACTION_RECEIPTS_ARCHIVE_CODEX_PROMPT.md",
+      "prompt": "PHASE_02_SOURCE_DOCKETS_EXTRACTION_RECEIPTS_ARCHIVE_PROMPT.md",
       "reports": [
         "reports/phase_02_source_dockets.md",
         "reports/phase_02_source_dockets_extraction_receipts_archive.md"
@@ -62,7 +62,7 @@
     {
       "missing": [],
       "phase": "03",
-      "prompt": "PHASE_03_CANONICALIZATION_BOUNDARY_IGNORANCE_CODEX_PROMPT.md",
+      "prompt": "PHASE_03_CANONICALIZATION_BOUNDARY_IGNORANCE_PROMPT.md",
       "reports": [
         "reports/phase_03_canonical_boundary.md",
         "reports/phase_03_canonicalization_boundary_ignorance.md"
@@ -94,7 +94,7 @@
     {
       "missing": [],
       "phase": "04",
-      "prompt": "PHASE_04_STATIC_FORGE_CAUSAL_BITPLANE_FOUNDATION_CODEX_PROMPT.md",
+      "prompt": "PHASE_04_STATIC_FORGE_CAUSAL_BITPLANE_FOUNDATION_PROMPT.md",
       "reports": [
         "reports/phase_04_static_forge.md",
         "reports/phase_04_static_forge_causal_bitplane_foundation.md"
@@ -127,7 +127,7 @@
     {
       "missing": [],
       "phase": "05",
-      "prompt": "PHASE_05_FIRST_MEMBRANE_CAPSULE_ARTIFACT_VERIFY_CODEX_PROMPT.md",
+      "prompt": "PHASE_05_FIRST_MEMBRANE_CAPSULE_ARTIFACT_VERIFY_PROMPT.md",
       "reports": [
         "reports/phase_05_first_membrane.md",
         "reports/phase_05_first_membrane_capsule_artifact_verify.md"
@@ -153,7 +153,7 @@
     {
       "missing": [],
       "phase": "06",
-      "prompt": "PHASE_06_WITNESS_GRAPH_PROOF_ORIGAMI_TIMEPACKS_CODEX_PROMPT.md",
+      "prompt": "PHASE_06_WITNESS_GRAPH_PROOF_ORIGAMI_TIMEPACKS_PROMPT.md",
       "reports": [
         "reports/phase_06_proof_origami_timepacks.md",
         "reports/phase_06_witness_graph_proof_origami_timepacks.md"
@@ -175,7 +175,7 @@
     {
       "missing": [],
       "phase": "07",
-      "prompt": "PHASE_07_CAUSAL_BITPLANE_SOLVER_UNSAT_NEGATIVE_CODEX_PROMPT.md",
+      "prompt": "PHASE_07_CAUSAL_BITPLANE_SOLVER_UNSAT_NEGATIVE_PROMPT.md",
       "reports": [
         "reports/phase_07_causal_bitplane_solver_unsat_negative.md",
         "reports/phase_07_constraint_solver.md"
@@ -199,7 +199,7 @@
     {
       "missing": [],
       "phase": "08",
-      "prompt": "PHASE_08_PAYROLL_DATE_RISK_CONFORMANCE_CAPSULE_CODEX_PROMPT.md",
+      "prompt": "PHASE_08_PAYROLL_DATE_RISK_CONFORMANCE_CAPSULE_PROMPT.md",
       "reports": [
         "reports/phase_08_payroll_conformance.md",
         "reports/phase_08_payroll_date_risk_conformance_capsule.md"
@@ -222,7 +222,7 @@
     {
       "missing": [],
       "phase": "09",
-      "prompt": "PHASE_09_TEMPORAL_IR_TVL_DEVANAGARI_CONSOLE_CODEX_PROMPT.md",
+      "prompt": "PHASE_09_TEMPORAL_IR_TVL_DEVANAGARI_CONSOLE_PROMPT.md",
       "reports": [
         "reports/phase_09_temporal_ir_tvl_devanagari_console.md",
         "reports/phase_09_tvl_devanagari_console.md"
@@ -248,7 +248,7 @@
     {
       "missing": [],
       "phase": "10",
-      "prompt": "PHASE_10_LOCAL_BROWSER_KERNEL_TIMELINE_EMBED_CODEX_PROMPT.md",
+      "prompt": "PHASE_10_LOCAL_BROWSER_KERNEL_TIMELINE_EMBED_PROMPT.md",
       "reports": [
         "reports/phase_10_local_browser_kernel_timeline_embed.md",
         "reports/phase_10_local_kernel_timeline_embed.md"
@@ -275,7 +275,7 @@
     {
       "missing": [],
       "phase": "11",
-      "prompt": "PHASE_11_DIFF_FRESHNESS_LIGHT_CONE_TRANSPARENCY_CODEX_PROMPT.md",
+      "prompt": "PHASE_11_DIFF_FRESHNESS_LIGHT_CONE_TRANSPARENCY_PROMPT.md",
       "reports": [
         "reports/phase_11_diff_freshness_light_cone_transparency.md",
         "reports/phase_11_freshness_transparency.md"
@@ -305,7 +305,7 @@
     {
       "missing": [],
       "phase": "12",
-      "prompt": "PHASE_12_POLYPHONIC_TIME_BRANCH_SKEPTIC_REPORTS_CODEX_PROMPT.md",
+      "prompt": "PHASE_12_POLYPHONIC_TIME_BRANCH_SKEPTIC_REPORTS_PROMPT.md",
       "reports": [
         "reports/phase_12_polyphonic_time.md",
         "reports/phase_12_polyphonic_time_branch_skeptic_reports.md"
@@ -327,7 +327,7 @@
     {
       "missing": [],
       "phase": "13",
-      "prompt": "PHASE_13_TEMPC_OVERLAYS_COUNTERFACTUAL_ENGINE_CODEX_PROMPT.md",
+      "prompt": "PHASE_13_TEMPC_OVERLAYS_COUNTERFACTUAL_ENGINE_PROMPT.md",
       "reports": [
         "reports/phase_13_tempc_overlays.md",
         "reports/phase_13_tempc_overlays_counterfactual_engine.md"
@@ -352,7 +352,7 @@
     {
       "missing": [],
       "phase": "14",
-      "prompt": "PHASE_14_NOTICE_TO_OBLIGATION_COMPLIANCE_EXTENSION_CODEX_PROMPT.md",
+      "prompt": "PHASE_14_NOTICE_TO_OBLIGATION_COMPLIANCE_EXTENSION_PROMPT.md",
       "reports": [
         "reports/phase_14_notice_to_obligation.md",
         "reports/phase_14_notice_to_obligation_compliance_extension.md"
@@ -376,7 +376,7 @@
     {
       "missing": [],
       "phase": "15",
-      "prompt": "PHASE_15_FEDERATED_WITNESS_NETWORK_TEMPORAL_PROOF_ECOSYSTEM_CODEX_PROMPT.md",
+      "prompt": "PHASE_15_FEDERATED_WITNESS_NETWORK_TEMPORAL_PROOF_ECOSYSTEM_PROMPT.md",
       "reports": [
         "reports/phase_15_federated_ecosystem.md",
         "reports/phase_15_federated_witness_network_temporal_proof_ecosystem.md"

@@ -9,7 +9,7 @@ These claims are safe when the corresponding verification commands pass:
   non-authority boundaries.
 - Parva includes local/offline proof fixtures and a buildable local-kernel npm
   package.
-- Parva can help AI agents avoid guessing Nepali dates.
+- Parva can help software agents avoid guessing Nepali dates.
 - Parva can support payroll/date-risk prechecks and technical conformance
   review.
 

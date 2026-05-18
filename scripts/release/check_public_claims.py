@@ -11,9 +11,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 SCAN_ROOTS = (
     PROJECT_ROOT / "README.md",
-    PROJECT_ROOT / "AGENTS.md",
-    PROJECT_ROOT / "llms.txt",
-    PROJECT_ROOT / "llms-full.txt",
     PROJECT_ROOT / "docs",
     PROJECT_ROOT / "examples",
     PROJECT_ROOT / "reports",
@@ -21,7 +18,7 @@ SCAN_ROOTS = (
     PROJECT_ROOT / "packages" / "parva-python",
     PROJECT_ROOT / "packages" / "parva-js",
     PROJECT_ROOT / "packages" / "parva-local-kernel",
-    PROJECT_ROOT / "packages" / "parva-ai-tools",
+    PROJECT_ROOT / "packages" / "parva-agent-tools",
     PROJECT_ROOT / "packages" / "parva-mcp-server",
 )
 

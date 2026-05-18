@@ -4,7 +4,7 @@ Public CI is configured in `.github/workflows/public-verification.yml` for
 pushes to `main`, pull requests to `main`, and manual dispatch.
 
 The workflow uses Python 3.11 and Node 20. It runs environment, backend public,
-governance, SDK/AI/MCP, frontend, benchmark, and release-gate jobs.
+governance, SDK/Agent/MCP, frontend, benchmark, and release-gate jobs.
 
 Last checked after this distribution sprint: 2026-05-16T10:45Z.
 
@@ -21,7 +21,7 @@ The public verification run passed all visible jobs:
 - environment
 - backend-public
 - governance
-- sdk-ai-mcp
+- sdk-agent-mcp
 - frontend
 - benchmark
 - release-gate

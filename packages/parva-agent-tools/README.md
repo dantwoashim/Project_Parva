@@ -1,4 +1,4 @@
-# Parva AI Tools
+# Parva Agent Tools
 
 Safety-bound LangChain and LlamaIndex wrappers for Project Parva public temporal
 tools.

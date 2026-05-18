@@ -12,7 +12,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[2]
 PYTHON_PACKAGES = (
     ROOT / "packages" / "parva-python",
-    ROOT / "packages" / "parva-ai-tools",
+    ROOT / "packages" / "parva-agent-tools",
     ROOT / "packages" / "parva-mcp-server",
 )
 NPM_PACKAGES = (ROOT / "packages" / "parva-js", ROOT / "packages" / "parva-local-kernel")

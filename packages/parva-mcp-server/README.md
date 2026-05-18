@@ -52,7 +52,7 @@ python -m parva_mcp_server.server --check
 ```
 
 `--stdio` runs the live newline-delimited JSON-RPC MCP server process used by
-Claude Desktop, Codex-style MCP clients, and other stdio launchers:
+desktop MCP clients and other stdio launchers:
 
 ```bash
 python -m parva_mcp_server.server --stdio

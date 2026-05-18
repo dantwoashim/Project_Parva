@@ -21,7 +21,7 @@ Baseline captured at the start of this sprint before implementation changes.
 - `python public-benchmark/validate_benchmark.py`: pass, 38 tasks.
 - `python public-benchmark/runners/compare_results.py`: pass, Parva 89.47%
   versus static baseline 20.53%.
-- `python -m pytest packages/parva-ai-tools/tests packages/parva-mcp-server/tests -q`:
+- `python -m pytest packages/parva-agent-tools/tests packages/parva-mcp-server/tests -q`:
   pass, 16 tests.
 
 ## Initial Findings

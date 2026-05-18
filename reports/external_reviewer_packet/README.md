@@ -12,7 +12,7 @@ This packet summarizes the current state of Project Parva for an external techni
 - `trust_boundary_summary.md`
 - `known_limitations.md`
 - `benchmark_summary.md`
-- `ai_tooling_boundary.md`
+- `agent_tooling_boundary.md`
 - `jpl_accuracy_boundary.md`
 - `commercial_readiness.md`
 - `release_readiness.md`

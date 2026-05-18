@@ -16,7 +16,7 @@ Official bodies decide. Parva helps encode, verify, distribute, and test.
 ## Why This Matters
 
 Government systems, schools, banks, cooperatives, payroll vendors, ERP vendors,
-municipal services, and AI tools increasingly need reliable Nepali dates. Today,
+municipal services, and agent tools increasingly need reliable Nepali dates. Today,
 many systems retype calendar data, scrape sources, or guess. That creates
 avoidable errors in deadlines, holidays, payroll cutoffs, repayment reminders,
 public notices, and service schedules.

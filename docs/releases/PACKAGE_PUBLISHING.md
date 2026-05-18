@@ -13,7 +13,7 @@ exist.
 
 - `project-parva-python-sdk` at `packages/parva-python`
 - `@project-parva/parva-js` at `packages/parva-js`
-- `parva-ai-tools` at `packages/parva-ai-tools`
+- `parva-agent-tools` at `packages/parva-agent-tools`
 - `parva-mcp-server` at `packages/parva-mcp-server`
 
 ## Preferred Release Path
@@ -29,7 +29,7 @@ exist.
 ```bash
 python scripts/release/check_package_readiness.py
 python -m build packages/parva-python
-python -m build packages/parva-ai-tools
+python -m build packages/parva-agent-tools
 python -m build packages/parva-mcp-server
 npm --prefix packages/parva-js pack --dry-run
 ```

@@ -1,6 +1,6 @@
-# AI Agent Guide
+# Agent Tooling Guide
 
-Project Parva gives AI agents deterministic Nepali temporal tools. Agents should
+Project Parva gives software agents deterministic Nepali temporal tools. Agents should
 use these tools instead of guessing Bikram Sambat dates, Panchanga signals,
 holidays, fiscal years, or payroll-relevant dates.
 

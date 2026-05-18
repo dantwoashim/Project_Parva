@@ -12,8 +12,8 @@ This report groups the roadmap changes by workstream.
 
 ## Tests
 
-- `packages/parva-ai-tools/tests/conftest.py`
-- `packages/parva-ai-tools/tests/test_safety.py`
+- `packages/parva-agent-tools/tests/conftest.py`
+- `packages/parva-agent-tools/tests/test_safety.py`
 - `packages/parva-mcp-server/tests/conftest.py`
 - `packages/parva-mcp-server/tests/test_manifest.py`
 
@@ -44,7 +44,7 @@ This report groups the roadmap changes by workstream.
 - `public-benchmark/benchmark.json`
 - `public-benchmark/runners/run_against_parva.py`
 - `public-benchmark/runners/run_against_static_baseline.py`
-- `docs/reports/AI_SHOULD_NOT_GUESS_NEPALI_TIME.md`
+- `docs/reports/AGENTS_SHOULD_NOT_GUESS_NEPALI_TIME.md`
 
 ## JPL And Ephemeris
 
@@ -66,15 +66,15 @@ This report groups the roadmap changes by workstream.
 - `rules/holiday_authority/README.md`
 - `reports/external_rules_audit.md`
 
-## AI Tools
+## Agent Tools
 
-- `packages/parva-ai-tools/pyproject.toml`
-- `packages/parva-ai-tools/parva_tools/__init__.py`
-- `packages/parva-ai-tools/parva_tools/schemas.py`
-- `packages/parva-ai-tools/parva_tools/safety.py`
-- `packages/parva-ai-tools/parva_tools/langchain.py`
-- `packages/parva-ai-tools/parva_tools/llamaindex.py`
-- `packages/parva-ai-tools/README.md`
+- `packages/parva-agent-tools/pyproject.toml`
+- `packages/parva-agent-tools/parva_tools/__init__.py`
+- `packages/parva-agent-tools/parva_tools/schemas.py`
+- `packages/parva-agent-tools/parva_tools/safety.py`
+- `packages/parva-agent-tools/parva_tools/langchain.py`
+- `packages/parva-agent-tools/parva_tools/llamaindex.py`
+- `packages/parva-agent-tools/README.md`
 
 ## MCP
 

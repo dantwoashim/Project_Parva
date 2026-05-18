@@ -4,11 +4,11 @@
 [![Public verification](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml)
 ![Benchmark](public-benchmark/results/benchmark.svg)
 
-Proof-carrying Nepali time infrastructure for Bikram Sambat APIs, Panchanga computation, payroll/date-risk validation, and deterministic AI-agent verification.
+Proof-carrying Nepali time infrastructure for Bikram Sambat APIs, Panchanga computation, payroll/date-risk validation, and deterministic software-agent verification.
 
 Project Parva is an open-source temporal infrastructure stack for Nepali date and time systems: BS to AD conversion, AD to BS conversion, Nepali date validation, holidays, working days, fiscal years, BS month metadata, Panchanga signals, source/method provenance, proof receipts, local verification, SDKs, MCP tools, and public reproducibility gates.
 
-It is built for developers searching for a Nepali date API or Bikram Sambat API, software teams validating payroll/fiscal/calendar risk, AI agents that must not guess Nepali dates, and reviewers who need deterministic evidence instead of marketing claims.
+It is built for developers searching for a Nepali date API or Bikram Sambat API, software teams validating payroll/fiscal/calendar risk, software agents that must not guess Nepali dates, and reviewers who need deterministic evidence instead of marketing claims.
 
 ## Start Here
 
@@ -17,7 +17,7 @@ It is built for developers searching for a Nepali date API or Bikram Sambat API,
 - API versioning: [docs/API_VERSIONING_AND_DEPRECATION.md](docs/API_VERSIONING_AND_DEPRECATION.md)
 - Proof mode: [docs/PROOF_MODE.md](docs/PROOF_MODE.md)
 - Panchanga engine: [docs/PANCHANGA_ENGINE.md](docs/PANCHANGA_ENGINE.md)
-- AI agent guide: [docs/AI_AGENT_GUIDE.md](docs/AI_AGENT_GUIDE.md)
+- Agent tooling guide: [docs/AGENT_TOOLING_GUIDE.md](docs/AGENT_TOOLING_GUIDE.md)
 - Safe claims: [docs/SAFE_CLAIMS.md](docs/SAFE_CLAIMS.md)
 - Public benchmark: [public-benchmark/README.md](public-benchmark/README.md)
 - External reviewer packet: [docs/external/REVIEWER_PACKET.md](docs/external/REVIEWER_PACKET.md)
@@ -40,7 +40,7 @@ The hosted API is a public evaluation deployment. First requests may be slower w
 | Payroll/date-risk audit | CSV/API-oriented decision-support checks for invalid dates, holidays, non-working days, fiscal boundaries, and review-required cases |
 | Local verification | Shared proof fixtures and a buildable `@project-parva/local-kernel` npm package for offline replay checks |
 | SDKs | Python and JavaScript clients with proof modes and conservative verification helpers |
-| AI/MCP | Read-only, public-safe AI tool wrappers and MCP adapter surfaces that preserve boundaries and review gates |
+| Agent/MCP | Read-only, public-safe agent tool wrappers and MCP adapter surfaces that preserve boundaries and review gates |
 | Benchmark | Public Nepali Time Reliability Benchmark for deterministic date reasoning, source awareness, and review behavior |
 | Governance | Source/method dockets, public claims checker, route maturity, OpenAPI drift checks, and reproducible public verification |
 
@@ -217,9 +217,9 @@ console.log(payload.proof.identity_hash);
 
 Packages in this repository are prepared for public-beta dry runs. This README does not claim PyPI publication, npm publication, registry acceptance, external certification, or customer adoption.
 
-## AI and MCP Usage
+## Agent and MCP Usage
 
-Parva is useful for AI agents because it gives deterministic temporal tools instead of asking models to guess Nepali dates.
+Parva is useful for software agents because it gives deterministic temporal tools instead of asking models to guess Nepali dates.
 
 Agent-safe surfaces must preserve:
 
@@ -232,11 +232,9 @@ Agent-safe surfaces must preserve:
 
 Packages:
 
-- AI tools: [packages/parva-ai-tools](packages/parva-ai-tools)
+- agent tools: [packages/parva-agent-tools](packages/parva-agent-tools)
 - MCP server: [packages/parva-mcp-server](packages/parva-mcp-server)
-- AI guide: [docs/AI_AGENT_GUIDE.md](docs/AI_AGENT_GUIDE.md)
-- LLM summary: [llms.txt](llms.txt)
-- Full LLM context: [llms-full.txt](llms-full.txt)
+- Agent guide: [docs/AGENT_TOOLING_GUIDE.md](docs/AGENT_TOOLING_GUIDE.md)
 
 ## Architecture Overview
 
@@ -295,7 +293,7 @@ Safe claims when the relevant verification commands pass:
 - Parva supports proof receipts for stable civil temporal operations.
 - Parva supports method-docketed Panchanga computation with explicit non-authority boundaries.
 - Parva can run local/offline verification against committed proof fixtures.
-- Parva can help AI agents avoid guessing Nepali dates.
+- Parva can help software agents avoid guessing Nepali dates.
 - Parva can support payroll/date-risk prechecks and vendor conformance review.
 
 ## Forbidden Claims

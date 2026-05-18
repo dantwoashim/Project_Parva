@@ -225,7 +225,7 @@
       "blocking_reason": null
     },
     {
-      "command": "py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server",
+      "command": "py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-agent-tools packages/parva-mcp-server",
       "status": "pass",
       "exit_code": 0,
       "summary": "All checks passed.",
@@ -267,7 +267,7 @@
       "blocking_reason": null
     },
     {
-      "command": "py -3.11 -m pytest packages/parva-ai-tools/tests packages/parva-mcp-server/tests -q",
+      "command": "py -3.11 -m pytest packages/parva-agent-tools/tests packages/parva-mcp-server/tests -q",
       "status": "pass",
       "exit_code": 0,
       "summary": "11 passed.",

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Agent tools expose deterministic Parva services to humans and AI agents without hallucinating temporal facts.
+Agent tools expose deterministic Parva services to humans and software agents without hallucinating temporal facts.
 
 ## Required tool fields
 

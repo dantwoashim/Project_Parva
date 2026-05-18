@@ -1,6 +1,6 @@
 ---
 status: public-preview
-audience: ai-tooling
+audience: agent-tooling
 ---
 
 # MCP Integration
@@ -22,7 +22,7 @@ python -m parva_mcp_server.server --stdio
 
 `--manifest` prints the descriptor and exits. `--check` validates the descriptor
 and exits. Only `--stdio` starts the long-running JSON-RPC server process that a
-Claude/Codex-style MCP client can launch.
+desktop MCP client can launch.
 
 Distribution metadata lives in `packages/parva-mcp-server/mcp-server.json` and
 can be checked with:

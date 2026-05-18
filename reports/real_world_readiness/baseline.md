@@ -1,4 +1,4 @@
-﻿# Real-World Readiness Baseline
+# Real-World Readiness Baseline
 
 Generated: 2026-05-17
 Commit at baseline: `7ac1c7583c1405923b208d236fa37acfdba9d940`
@@ -18,11 +18,11 @@ Commit at baseline: `7ac1c7583c1405923b208d236fa37acfdba9d940`
 - `py -3.11 scripts/check_path_leaks.py`: passed.
 - `py -3.11 public-benchmark/validate_benchmark.py`: passed, 38 tasks.
 - `py -3.11 public-benchmark/runners/compare_results.py`: passed, Parva 89.47%, static baseline 20.53%.
-- `py -3.11 -m pytest packages/parva-ai-tools/tests packages/parva-mcp-server/tests -q`: passed, 18 tests before MCP stdio work.
+- `py -3.11 -m pytest packages/parva-agent-tools/tests packages/parva-mcp-server/tests -q`: passed, 18 tests before MCP stdio work.
 
 ## MCP Baseline
 
-Before this sprint, `packages/parva-mcp-server` supported `--manifest` and `--check` only. It did not support `--stdio`; the Claude Desktop example launched `--manifest`, which prints JSON and exits. That was not a live MCP server.
+Before this sprint, `packages/parva-mcp-server` supported `--manifest` and `--check` only. It did not support `--stdio`; the desktop MCP client example launched `--manifest`, which prints JSON and exits. That was not a live MCP server.
 
 ## Product Baseline
 

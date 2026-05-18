@@ -1,6 +1,6 @@
 ---
 status: public-preview
-audience: ai-tooling
+audience: agent-tooling
 ---
 
 # MCP Security Policy

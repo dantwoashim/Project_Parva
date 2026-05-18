@@ -4,7 +4,7 @@ Generated: 2026-05-15T19:58:47+05:45
 
 ## Verdict
 
-The release-hardening work moved Project Parva toward deterministic Nepali temporal infrastructure in the requested order: public verification first, developer adoption second, benchmark and accuracy foundations next, then optional AI-tool and MCP adapters, government packet, and vendor packet.
+The release-hardening work moved Project Parva toward deterministic Nepali temporal infrastructure in the requested order: public verification first, developer adoption second, benchmark and accuracy foundations next, then optional agent-tool and MCP adapters, government packet, and vendor packet.
 
 The public verification gate passed after the changes. This report does not claim official government approval, legal authority, tax authority, payroll authority, banking authority, official future BS dates, external certification, customer adoption, or production signing authority.
 
@@ -27,7 +27,7 @@ The public verification gate passed after the changes. This report does not clai
 - Frontend passed: lint, 120 tests, and production build.
 - Python SDK tests passed: 18 tests.
 - JavaScript SDK tests passed: 16 tests.
-- AI-tool and MCP package tests passed: 8 tests each.
+- agent-tool and MCP package tests passed: 8 tests each.
 - Benchmark runners executed: static baseline 20.53 percent, Parva 89.47 percent.
 - JPL kernel hash verifier passed and the solar ingress differential report was generated without exposing local kernel paths.
 - The sample digital Panchanga release checksum verifier passed.

@@ -1,8 +1,8 @@
-# AI Tooling Boundary
+# Agent Tooling Boundary
 
 ## Included
 
-`packages/parva-ai-tools` exposes safe wrappers for stable public capabilities:
+`packages/parva-agent-tools` exposes safe wrappers for stable public capabilities:
 
 - convert BS to AD
 - convert AD to BS
@@ -26,7 +26,7 @@ Each normalized response carries:
 
 ## Excluded
 
-The AI tooling does not expose exact unsupported Future-BS prediction, loan-impact prediction, private source audit, research backtest, calendar stress tests, mutation/admin/trust routes, billing/admin routes, or private route tokens.
+The agent tooling does not expose exact unsupported Future-BS prediction, loan-impact prediction, private source audit, research backtest, calendar stress tests, mutation/admin/trust routes, billing/admin routes, or private route tokens.
 
 ## MCP
 

@@ -18,7 +18,7 @@ Project Parva separates public deterministic temporal computation from private o
 
 - Python SDK: `packages/parva-python`.
 - JavaScript/TypeScript SDK: `packages/parva-js`.
-- AI tool wrappers: `packages/parva-ai-tools`, public-route only.
+- agent tool wrappers: `packages/parva-agent-tools`, public-route only.
 - MCP adapter: `packages/parva-mcp-server`, optional and read-only.
 
 ## Authority Model

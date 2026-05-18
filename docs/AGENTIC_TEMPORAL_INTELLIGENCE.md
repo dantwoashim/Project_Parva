@@ -8,7 +8,7 @@ owner: platform-team
 
 # Agentic Temporal Intelligence
 
-The agent layer exposes deterministic Parva services as safe tools for humans, developers, and AI agents.
+The agent layer exposes deterministic Parva services as safe tools for humans, developers, and software agents.
 
 It is not a chatbot and does not let language text override engine truth.
 

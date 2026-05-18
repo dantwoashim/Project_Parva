@@ -3,7 +3,7 @@ requires = ["setuptools>=82.0.1", "wheel>=0.45.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "parva-ai-tools"
+name = "parva-agent-tools"
 version = "0.3.0a0"
 description = "Safety-bound LangChain and LlamaIndex wrappers for public Project Parva temporal tools."
 readme = "README.md"
@@ -22,7 +22,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/dantwoashim/Project_Parva"
 Repository = "https://github.com/dantwoashim/Project_Parva"
-Documentation = "https://github.com/dantwoashim/Project_Parva/blob/main/packages/parva-ai-tools/README.md"
+Documentation = "https://github.com/dantwoashim/Project_Parva/blob/main/packages/parva-agent-tools/README.md"
 
 [project.optional-dependencies]
 langchain = ["langchain-core>=0.3.0"]

@@ -1,4 +1,4 @@
-"""Public-safe Project Parva wrappers for AI tool frameworks."""
+"""Public-safe Project Parva wrappers for agent tool frameworks."""
 
 from .safety import normalize_tool_response, validate_tool_specs
 from .schemas import TOOL_BY_NAME, TOOL_SPECS, ParvaToolSpec

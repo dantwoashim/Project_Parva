@@ -352,7 +352,7 @@
     },
     {
       "blocking_reason": null,
-      "command": "py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-ai-tools packages/parva-mcp-server",
+      "command": "py -3.11 -m ruff check backend tests scripts sdk packages/parva-python packages/parva-agent-tools packages/parva-mcp-server",
       "exit_code": 0,
       "status": "pass",
       "summary": "All checks passed!"
@@ -373,10 +373,10 @@
     },
     {
       "blocking_reason": null,
-      "command": "py -3.11 -m build packages/parva-ai-tools",
+      "command": "py -3.11 -m build packages/parva-agent-tools",
       "exit_code": 0,
       "status": "pass",
-      "summary": "running egg_info | writing parva_ai_tools.egg-info\\PKG-INFO | writing dependency_links to parva_ai_tools.egg-info\\dependency_links.txt | writing requirements to parva_ai_tools.egg-info\\requires.txt | ... | - setuptools>=82.0.1 | - wheel>=0.45.0 | * Getting build dependencies for wheel... | * Building wheel..."
+      "summary": "running egg_info | writing parva_agent_tools.egg-info\\PKG-INFO | writing dependency_links to parva_agent_tools.egg-info\\dependency_links.txt | writing requirements to parva_agent_tools.egg-info\\requires.txt | ... | - setuptools>=82.0.1 | - wheel>=0.45.0 | * Getting build dependencies for wheel... | * Building wheel..."
     },
     {
       "blocking_reason": null,
@@ -387,14 +387,14 @@
     },
     {
       "blocking_reason": null,
-      "command": "py -3.11 -m pytest packages/parva-ai-tools/tests -q",
+      "command": "py -3.11 -m pytest packages/parva-agent-tools/tests -q",
       "exit_code": 0,
       "status": "pass",
       "summary": "........                                                                 [100%] | 8 passed in 0.04s"
     },
     {
       "blocking_reason": null,
-      "command": "py -3.11 packages/parva-ai-tools/examples/basic_usage.py",
+      "command": "py -3.11 packages/parva-agent-tools/examples/basic_usage.py",
       "exit_code": 0,
       "status": "pass",
       "summary": "decision_support_not_authority | review_required=False"

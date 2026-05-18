@@ -42,7 +42,7 @@ The detailed command matrix is maintained in `reports/release_readiness/final_ve
 ## Additional New Work Checks
 
 - Final verification matrix: 61 passed, 1 blocked, 0 failed.
-- AI-tool tests: 8 passed.
+- agent-tool tests: 8 passed.
 - MCP tests: 8 passed.
 - Benchmark runners: Parva 89.47 percent, static baseline 20.53 percent.
 - JPL kernel hash verifier and solar ingress differential generator passed.

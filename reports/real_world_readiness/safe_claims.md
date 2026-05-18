@@ -3,7 +3,7 @@
 Safe claims must remain tied to command evidence:
 
 - Project Parva provides source-aware Nepali temporal infrastructure for
-  software systems and AI agents.
+  software systems and software agents.
 - Public verification gates exist and can be run from the repository.
 - Benchmark tasks are public-safe and machine-readable.
 - The MCP server supports a live read-only stdio mode when local verification

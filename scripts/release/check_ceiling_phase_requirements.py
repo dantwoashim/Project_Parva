@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-PROMPT_DIR = PROJECT_ROOT / "Project_Parva_Phase_Codex_Prompts"
+PROMPT_DIR = PROJECT_ROOT / "Project_Parva_Phase_Prompts"
 REPORT_DIR = PROJECT_ROOT / "reports" / "ceiling_execution"
 CONFIG_PATH = PROJECT_ROOT / "config" / "ceiling-phase-requirements.json"
 BACKEND_ROOT = PROJECT_ROOT / "backend"
