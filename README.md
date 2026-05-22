@@ -6,7 +6,7 @@
 
 Proof-carrying Nepali time infrastructure for Bikram Sambat APIs, Panchanga computation, payroll/date-risk validation, and deterministic software-agent verification.
 
-Project Parva is an open-source temporal infrastructure stack for Nepali date and time systems: BS to AD conversion, AD to BS conversion, Nepali date validation, holidays, working days, fiscal years, BS month metadata, Panchanga signals, source/method provenance, proof receipts, local verification, SDKs, MCP tools, and public reproducibility gates.
+Project Parva is an open-source Nepali date/time API and conformance project: BS to AD conversion, AD to BS conversion, Nepali date validation, holidays, working days, fiscal years, BS month metadata, Panchanga signals, source/method provenance, proof receipts, local verification, SDKs, MCP tools, and public reproducibility gates.
 
 It is built for developers searching for a Nepali date API or Bikram Sambat API, software teams validating payroll/fiscal/calendar risk, software agents that must not guess Nepali dates, and reviewers who need deterministic evidence instead of marketing claims.
 
@@ -22,6 +22,8 @@ It is built for developers searching for a Nepali date API or Bikram Sambat API,
 - Public benchmark: [public-benchmark/README.md](public-benchmark/README.md)
 - Public conformance index: [docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md](docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md)
 - Public failure classes: [docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md](docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md)
+- Nepal compliance profile: [docs/conformance/nepal-compliance-profile.md](docs/conformance/nepal-compliance-profile.md)
+- Yarsa source-drift case study: [docs/case-studies/yarsa-calendar-source-drift.md](docs/case-studies/yarsa-calendar-source-drift.md)
 - External reviewer packet: [docs/external/REVIEWER_PACKET.md](docs/external/REVIEWER_PACKET.md)
 
 Live public evaluation surfaces:
@@ -45,6 +47,37 @@ The hosted API is a public evaluation deployment. First requests may be slower w
 | Agent/MCP | Read-only, public-safe agent tool wrappers and MCP adapter surfaces that preserve boundaries and review gates |
 | Benchmark | Public Nepali Time Reliability Benchmark for deterministic date reasoning, source awareness, and review behavior |
 | Governance | Source/method dockets, public claims checker, route maturity, OpenAPI drift checks, and reproducible public verification |
+
+## Public Conformance Work
+
+Project Parva tracks public Nepali date regression cases and turns them into
+fixtures or runnable checks where the public evidence is exact enough. The
+suite separates verified cases, reported cases, partial evidence, business
+workflow evidence, and review-needed future-date evidence.
+
+Project Parva's benchmark work contributed a standalone calendar source
+consistency guard to `yarsa/nepal-compliance`. That contribution checked
+duplicated frontend/backend BS month tables without adding a Parva dependency or
+changing upstream runtime behavior.
+
+Run the public issue conformance suite:
+
+```powershell
+py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues
+py -3.11 tools\conformance_runner\run.py --profile nepal-compliance
+py -3.11 -m pytest tests/conformance -q
+```
+
+Conformance docs:
+
+- [Nepali Date Conformance Index](docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md)
+- [Public Nepali Date Failure Classes](docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md)
+- [Nepal Compliance Conformance Profile](docs/conformance/nepal-compliance-profile.md)
+- [Yarsa Calendar Source Drift Case Study](docs/case-studies/yarsa-calendar-source-drift.md)
+- [Conformance Milestone 001](docs/releases/CONFORMANCE_MILESTONE_001.md)
+
+These fixtures are public regression and review artifacts. They are not official
+calendar publication, legal, tax, payroll, banking, or ritual authority.
 
 ## Quickstart
 
