@@ -1,0 +1,89 @@
+{
+  "suite": "public-nepali-date-issues",
+  "version": 1,
+  "description": "Public month-length regression and correction cases.",
+  "cases": [
+    {
+      "id": "leapfrog-70-2082-2083-month-length-cluster",
+      "title": "Leapfrog nepali-date-picker 2082/2083 public month-length regression cluster",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "reported_public_issue",
+      "reported_input": {
+        "bs_years": [2082, 2083],
+        "case_source": "existing Parva public regression fixture"
+      },
+      "reported_expected": {
+        "covered_months": [
+          "2082-01",
+          "2082-02",
+          "2082-03",
+          "2082-04",
+          "2082-06",
+          "2082-08",
+          "2082-09",
+          "2082-10",
+          "2083-06",
+          "2083-08",
+          "2083-09",
+          "2083-10"
+        ]
+      },
+      "reported_actual": {
+        "existing_fixture": "conformance/public-nepali-date-libraries/leapfrog_nepali_date_picker_2082_2083_cases.json"
+      },
+      "parva_expected": {
+        "case_role": "month_length_regression_cluster"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "medium",
+      "authority_boundary": "public issue regression case; not official calendar authority",
+      "safe_claim": "Project Parva tracks Leapfrog issue #70 as a public month-length regression cluster.",
+      "forbidden_claims": [
+        "Do not claim Leapfrog is globally broken.",
+        "Do not treat every issue-reported row as official authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "Exact rows are already preserved in the existing Leapfrog public regression fixture; mixed rows remain review-needed where issue text and Parva's current table differ.",
+      "tags": ["leapfrog", "bs-2082", "bs-2083", "month-length"]
+    },
+    {
+      "id": "medic-bikram-sambat-26-2081-2082-month-corrections",
+      "title": "Medic bikram-sambat 2081/2082 month-length correction report",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "reported_public_issue_partial",
+      "reported_input": {
+        "bs_years": [2081, 2082]
+      },
+      "reported_expected": null,
+      "reported_actual": {
+        "summary": "Public issue concerns month-length correction rows for BS 2081/2082."
+      },
+      "parva_expected": {
+        "case_role": "manual_review_target"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "needs_manual_verification",
+      "authority_boundary": "public correction report; exact rows require manual verification before executable use",
+      "safe_claim": "This issue is tracked as a month-length correction review target.",
+      "forbidden_claims": [
+        "Do not invent correction rows.",
+        "Do not claim official authority from the issue alone."
+      ],
+      "recommended_action": "manual_verification_required",
+      "notes": "Keep non-executable until exact correction rows are represented from public issue text or verified research artifacts.",
+      "tags": ["medic", "bikram-sambat", "month-length", "review-needed"]
+    }
+  ]
+}

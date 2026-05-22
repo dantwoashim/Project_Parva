@@ -1,0 +1,88 @@
+{
+  "suite": "public-nepali-date-issues",
+  "version": 1,
+  "description": "Public source-drift cases where duplicated Nepali calendar data disagreed inside an overlapping range.",
+  "cases": [
+    {
+      "id": "yarsa-257-258-2087-mangsir-source-drift",
+      "title": "Yarsa nepal-compliance frontend/backend BS month table drift for BS 2087 Mangsir",
+      "source_project": "yarsa/nepal-compliance",
+      "source_url": "https://github.com/yarsa/nepal-compliance",
+      "source_issue_url": "https://github.com/yarsa/nepal-compliance/issues/257",
+      "source_pr_url": "https://github.com/yarsa/nepal-compliance/pull/258",
+      "source_commit": "c220a9e",
+      "failure_class": "frontend_backend_source_drift",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2087,
+        "bs_month": 8,
+        "bs_month_name": "Mangsir"
+      },
+      "reported_expected": {
+        "shift_examples": [
+          {
+            "bs_date": "2088-01-01",
+            "backend_ad": "2031-04-15",
+            "frontend_ad": "2031-04-16"
+          },
+          {
+            "bs_date": "2089-12-30",
+            "backend_ad": "2033-04-13",
+            "frontend_ad": "2033-04-14"
+          }
+        ]
+      },
+      "reported_actual": {
+        "backend_month_days": 29,
+        "frontend_month_days": 30
+      },
+      "parva_expected": {
+        "case_role": "source_drift_consistency_fixture"
+      },
+      "executable": true,
+      "runner_operation": "source_drift",
+      "confidence": "high",
+      "authority_boundary": "public repository consistency case; not official Nepali date authority",
+      "safe_claim": "Project Parva benchmark work contributed a merged standalone Nepali calendar source consistency guard to yarsa/nepal-compliance.",
+      "forbidden_claims": [
+        "Do not claim Yarsa changed its product to depend on Parva.",
+        "Do not claim production impact from this fixture.",
+        "Do not claim official calendar authority from this benchmark."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The merged upstream contribution compared duplicated backend CSV and frontend JS calendar tables without changing runtime behavior.",
+      "tags": ["yarsa", "source-drift", "bs-2087", "mangsir"]
+    },
+    {
+      "id": "node-nepali-datetime-82-source-provenance",
+      "title": "node-nepali-datetime public source-disagreement discussion",
+      "source_project": "opensource-nepal/node-nepali-datetime",
+      "source_url": "https://github.com/opensource-nepal/node-nepali-datetime",
+      "source_issue_url": "https://github.com/opensource-nepal/node-nepali-datetime/issues/82",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "source_provenance",
+      "evidence_level": "reported_public_issue",
+      "reported_input": null,
+      "reported_expected": null,
+      "reported_actual": {
+        "summary": "Public issue discusses BS month-length disagreement across sources."
+      },
+      "parva_expected": {
+        "case_role": "source_comparison_benchmark"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "medium",
+      "authority_boundary": "public source-disagreement evidence; not an authority determination",
+      "safe_claim": "This issue is tracked as evidence that source provenance matters for Nepali date conformance.",
+      "forbidden_claims": [
+        "Do not claim one source is official unless independently established.",
+        "Do not claim the project is globally incorrect."
+      ],
+      "recommended_action": "manual_verification_required",
+      "notes": "Use as a provenance benchmark until exact source rows and authority status are independently represented.",
+      "tags": ["node-nepali-datetime", "source-provenance", "month-length"]
+    }
+  ]
+}

@@ -1,0 +1,320 @@
+{
+  "version": "0.1",
+  "case_set": "public_nepali_date_library_regression_cases",
+  "description": "Public issue regression cases from leapfrogtechnology/nepali-date-picker around BS 2082 and 2083 month-day and off-by-one reports.",
+  "source_project": "leapfrogtechnology/nepali-date-picker",
+  "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+  "source_commit": "bce7cdaa155a6ec389a7a227eb4295fb392135a6",
+  "source_commit_date": "2024-06-12",
+  "source_package_version": "2.0.2",
+  "authority_boundary": "public_issue_regression_case_not_official_authority",
+  "issue_summaries": [
+    {
+      "issue": 66,
+      "url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/66",
+      "title": "Date Mismatch for 2082 B.S.",
+      "state": "open",
+      "classification": "insufficient_public_detail",
+      "notes": "Reports incorrect month days for BS 2082 but does not list exact month-day values."
+    },
+    {
+      "issue": 68,
+      "url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/68",
+      "title": "Date Mismatch for latest year",
+      "state": "open",
+      "classification": "insufficient_public_detail",
+      "notes": "Reports incorrect month days for BS 2082 but does not list exact month-day values."
+    },
+    {
+      "issue": 69,
+      "url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/69",
+      "title": "Date Mismatch in FY 2082",
+      "state": "open",
+      "classification": "reproduced_with_issue_created_date",
+      "notes": "The body says today was Jestha 5 Monday while the picker showed Jestha 6 Monday. The deterministic candidate below uses the GitHub issue creation date, 2025-05-19."
+    },
+    {
+      "issue": 70,
+      "url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "title": "Date Mismatch because of wrong core calendar data",
+      "state": "open",
+      "classification": "deterministic_public_issue_cases",
+      "notes": "Lists concrete BS 2082 and 2083 month-day differences. Some issue-reported expected values differ from Parva's current verified table and are preserved as issue text, not treated as authority."
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "leapfrog-issue-70-2082-baisakh-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2082, "bs_month": 1, "bs_month_name": "Baisakh" },
+      "expected": {
+        "issue_reported": { "month_days": 31 },
+        "observed_current_source": { "month_days": 30, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 31, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 30 days for BS 2082 Baisakh while the public issue reports 31."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2082-jestha-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2082, "bs_month": 2, "bs_month_name": "Jestha" },
+      "expected": {
+        "issue_reported": { "month_days": 31 },
+        "observed_current_source": { "month_days": 32, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 31, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 32 days for BS 2082 Jestha while the public issue reports 31."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2082-asar-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2082, "bs_month": 3, "bs_month_name": "Asar" },
+      "expected": {
+        "issue_reported": { "month_days": 32 },
+        "observed_current_source": { "month_days": 31, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 31, "matches_issue_reported": false }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "The public issue reports 32 days for BS 2082 Asar. Parva currently returns 31, so this row preserves the issue text as a public regression report without upgrading it to authority."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2082-shrawan-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2082, "bs_month": 4, "bs_month_name": "Shrawan" },
+      "expected": {
+        "issue_reported": { "month_days": 31 },
+        "observed_current_source": { "month_days": 32, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 32, "matches_issue_reported": false }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "The public issue reports 31 days for BS 2082 Shrawan. Parva currently returns 32, so this row is kept as issue evidence requiring review."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2082-asoj-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2082, "bs_month": 6, "bs_month_name": "Asoj" },
+      "expected": {
+        "issue_reported": { "month_days": 31 },
+        "observed_current_source": { "month_days": 30, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 31, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 30 days for BS 2082 Asoj while the public issue reports 31."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2082-mangsir-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2082, "bs_month": 8, "bs_month_name": "Mangsir" },
+      "expected": {
+        "issue_reported": { "month_days": 29 },
+        "observed_current_source": { "month_days": 30, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 29, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 30 days for BS 2082 Mangsir while the public issue reports 29."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2082-poush-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2082, "bs_month": 9, "bs_month_name": "Poush" },
+      "expected": {
+        "issue_reported": { "month_days": 30 },
+        "observed_current_source": { "month_days": 29, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 30, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 29 days for BS 2082 Poush while the public issue reports 30."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2082-magh-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2082, "bs_month": 10, "bs_month_name": "Magh" },
+      "expected": {
+        "issue_reported": { "month_days": 29 },
+        "observed_current_source": { "month_days": 30, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 29, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 30 days for BS 2082 Magh while the public issue reports 29."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2083-asoj-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2083, "bs_month": 6, "bs_month_name": "Asoj" },
+      "expected": {
+        "issue_reported": { "month_days": 31 },
+        "observed_current_source": { "month_days": 30, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 31, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 30 days for BS 2083 Asoj while the public issue reports 31."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2083-mangsir-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2083, "bs_month": 8, "bs_month_name": "Mangsir" },
+      "expected": {
+        "issue_reported": { "month_days": 29 },
+        "observed_current_source": { "month_days": 30, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 29, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 30 days for BS 2083 Mangsir while the public issue reports 29."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2083-poush-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2083, "bs_month": 9, "bs_month_name": "Poush" },
+      "expected": {
+        "issue_reported": { "month_days": 30 },
+        "observed_current_source": { "month_days": 29, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 30, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 29 days for BS 2083 Poush while the public issue reports 30."
+    },
+    {
+      "case_id": "leapfrog-issue-70-2083-magh-month-days",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "month_days", "bs_year": 2083, "bs_month": 10, "bs_month_name": "Magh" },
+      "expected": {
+        "issue_reported": { "month_days": 29 },
+        "observed_current_source": { "month_days": 30, "reproduction_status": "still_reproduces" },
+        "parva": { "month_days": 29, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 70,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70",
+      "status": "public_issue_reported",
+      "failure_class": "month_length_mismatch",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "Current Leapfrog source returns 30 days for BS 2083 Magh while the public issue reports 29."
+    },
+    {
+      "case_id": "leapfrog-issue-69-2025-05-19-ad-to-bs",
+      "operation": "public_nepali_date_library_regression",
+      "input": { "check": "ad_to_bs", "ad_date": "2025-05-19" },
+      "expected": {
+        "issue_reported": { "bs_date": { "year": 2082, "month": 2, "day": 5 } },
+        "observed_current_source": { "bs_date": { "year": 2082, "month": 2, "day": 6 }, "reproduction_status": "still_reproduces_with_issue_created_date" },
+        "parva": { "bs_date": { "year": 2082, "month": 2, "day": 5 }, "matches_issue_reported": true }
+      },
+      "source_policy": "public_issue_regression_case",
+      "publication_status": "needs_review",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue": 69,
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/69",
+      "status": "public_issue_reported_with_inferred_ad_date",
+      "failure_class": "off_by_one",
+      "authority_boundary": "public_issue_regression_case_not_official_authority",
+      "production_impact_claimed": false,
+      "notes": "The issue says today was Jestha 5 Monday and was created on 2025-05-19. Current Leapfrog source returns 2082-02-06 for that AD date."
+    }
+  ]
+}

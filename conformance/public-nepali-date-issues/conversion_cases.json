@@ -1,0 +1,109 @@
+{
+  "suite": "public-nepali-date-issues",
+  "version": 1,
+  "description": "Public BS/AD conversion mismatch and boundary cases.",
+  "cases": [
+    {
+      "id": "go-nepali-15-2024-06-14-ad-to-bs-boundary",
+      "title": "go-nepali AD 2024-06-14 month-boundary conversion report",
+      "source_project": "opensource-nepal/go-nepali",
+      "source_url": "https://github.com/opensource-nepal/go-nepali",
+      "source_issue_url": "https://github.com/opensource-nepal/go-nepali/issues/15",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "ad_to_bs_conversion_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "ad_date": "2024-06-14"
+      },
+      "reported_expected": {
+        "bs_date": { "year": 2081, "month": 2, "day": 32 }
+      },
+      "reported_actual": {
+        "bs_date": { "year": 2081, "month": 3, "day": 1 }
+      },
+      "parva_expected": {
+        "bs_date": { "year": 2081, "month": 2, "day": 32 }
+      },
+      "executable": true,
+      "runner_operation": "ad_to_bs",
+      "confidence": "high",
+      "authority_boundary": "public issue regression case checked against Parva's current supported table; not official authority",
+      "safe_claim": "Parva includes go-nepali issue #15 as an executable AD-to-BS boundary regression fixture.",
+      "forbidden_claims": [
+        "Do not claim production impact.",
+        "Do not claim official date authority from this issue."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "This executable fixture checks that Parva maps AD 2024-06-14 to BS 2081-02-32.",
+      "tags": ["go-nepali", "ad-to-bs", "month-boundary", "2081"]
+    },
+    {
+      "id": "leapfrog-13-2018-03-12-range-error",
+      "title": "Leapfrog nepali-date-picker reported RangeError for getBsDateByAdDate(2018, 03, 12)",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue_url": "https://github.com/leapfrogtechnology/nepali-date-picker/issues/13",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "ad_to_bs_conversion_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "ad_date": "2018-03-12"
+      },
+      "reported_expected": null,
+      "reported_actual": {
+        "error": "RangeError about bsMonth range 1 to 12"
+      },
+      "parva_expected": {
+        "bs_date": { "year": 2074, "month": 11, "day": 28 }
+      },
+      "executable": true,
+      "runner_operation": "ad_to_bs",
+      "confidence": "medium",
+      "authority_boundary": "public issue regression case checked against Parva's current supported conversion behavior",
+      "safe_claim": "Parva tracks Leapfrog issue #13 as a public conversion/range-error regression case.",
+      "forbidden_claims": [
+        "Do not claim the upstream library is generally unusable.",
+        "Do not claim official date authority from this issue."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public report gives the input and thrown error. Parva's current behavior is represented as a local executable check.",
+      "tags": ["leapfrog", "ad-to-bs", "range-error"]
+    },
+    {
+      "id": "leapfrog-33-35-april-2021-boundary",
+      "title": "Leapfrog April 2021 off-by-one and boundary conversion reports",
+      "source_project": "leapfrogtechnology/nepali-date-picker",
+      "source_url": "https://github.com/leapfrogtechnology/nepali-date-picker",
+      "source_issue_url": null,
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "bs_to_ad_conversion_mismatch",
+      "evidence_level": "reported_public_issue_partial",
+      "reported_input": {
+        "issue_refs": ["33", "35"],
+        "reported_period": "April 2021"
+      },
+      "reported_expected": null,
+      "reported_actual": {
+        "summary": "Reported off-by-one or boundary behavior around April 2021."
+      },
+      "parva_expected": {
+        "case_role": "manual_review_target"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "needs_manual_verification",
+      "authority_boundary": "partial public issue evidence; exact values required before executable use",
+      "safe_claim": "These reports are tracked as April 2021 boundary-conversion review targets.",
+      "forbidden_claims": [
+        "Do not invent exact expected values.",
+        "Do not claim upstream production impact."
+      ],
+      "recommended_action": "manual_verification_required",
+      "notes": "Keep documented-only until exact input/expected/actual rows are verified from public issue text or local research artifacts.",
+      "tags": ["leapfrog", "boundary", "april-2021", "review-needed"]
+    }
+  ]
+}

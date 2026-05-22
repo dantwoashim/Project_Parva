@@ -1,0 +1,69 @@
+{
+  "suite": "public-nepali-date-issues",
+  "version": 1,
+  "description": "Public business workflow evidence where Nepali date support affects product requirements.",
+  "cases": [
+    {
+      "id": "erpnext-31245-bs-support-request",
+      "title": "ERPNext Bikram Sambat support request",
+      "source_project": "frappe/erpnext",
+      "source_url": "https://github.com/frappe/erpnext",
+      "source_issue_url": "https://github.com/frappe/erpnext/issues/31245",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "business_workflow_gap",
+      "evidence_level": "business_wedge",
+      "reported_input": null,
+      "reported_expected": null,
+      "reported_actual": {
+        "summary": "Public request for BS support in a business workflow system."
+      },
+      "parva_expected": {
+        "case_role": "business_workflow_evidence"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "medium",
+      "authority_boundary": "business workflow evidence; not a bug fixture and not proof of production impact",
+      "safe_claim": "This issue is tracked as evidence that BS support matters in business workflow software.",
+      "forbidden_claims": [
+        "Do not claim ERPNext is wrong.",
+        "Do not claim payroll, tax, or accounting authority."
+      ],
+      "recommended_action": "business_evidence",
+      "notes": "Use as market/workflow context only.",
+      "tags": ["erpnext", "business-workflow", "bs-support"]
+    },
+    {
+      "id": "frappe-books-787-bs-support-request",
+      "title": "Frappe Books Nepali date support request",
+      "source_project": "frappe/books",
+      "source_url": "https://github.com/frappe/books",
+      "source_issue_url": "https://github.com/frappe/books/issues/787",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "business_workflow_gap",
+      "evidence_level": "business_wedge",
+      "reported_input": null,
+      "reported_expected": null,
+      "reported_actual": {
+        "summary": "Public request for Nepali date support in accounting-oriented software."
+      },
+      "parva_expected": {
+        "case_role": "business_workflow_evidence"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "medium",
+      "authority_boundary": "business workflow evidence; not a bug fixture and not proof of production impact",
+      "safe_claim": "This issue is tracked as evidence that Nepali date support appears in accounting workflow requests.",
+      "forbidden_claims": [
+        "Do not claim Frappe Books is wrong.",
+        "Do not claim accounting or tax authority."
+      ],
+      "recommended_action": "business_evidence",
+      "notes": "Use as workflow context, not executable conformance data.",
+      "tags": ["frappe-books", "business-workflow", "bs-support"]
+    }
+  ]
+}

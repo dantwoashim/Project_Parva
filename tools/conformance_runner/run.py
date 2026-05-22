@@ -28,6 +28,17 @@ CASE_FILES = [
     "release/release_manifest_cases.json",
     "future-risk-shape/public_safe_cases.json",
     "panchanga-shape/public_safe_shape_cases.json",
+    "public-nepali-date-libraries/leapfrog_nepali_date_picker_2082_2083_cases.json",
+]
+
+PUBLIC_ISSUE_CASE_FILES = [
+    "source_drift_cases.json",
+    "month_length_cases.json",
+    "conversion_cases.json",
+    "invalid_date_cases.json",
+    "range_boundary_cases.json",
+    "future_uncertainty_cases.json",
+    "business_workflow_cases.json",
 ]
 
 PUBLICATION_STATUSES = {
@@ -42,6 +53,44 @@ PUBLICATION_STATUSES = {
 }
 
 RISK_LABELS = {"GREEN", "YELLOW", "RED"}
+
+PUBLIC_ISSUE_FAILURE_CLASSES = {
+    "frontend_backend_source_drift",
+    "month_length_mismatch",
+    "year_total_mismatch",
+    "bs_to_ad_conversion_mismatch",
+    "ad_to_bs_conversion_mismatch",
+    "roundtrip_mismatch",
+    "invalid_bs_date_accepted",
+    "unsupported_lower_range",
+    "unsupported_upper_range",
+    "future_bs_uncertainty",
+    "fiscal_year_boundary",
+    "payroll_date_risk",
+    "holiday_working_day",
+    "panchanga",
+    "business_workflow_gap",
+    "source_provenance",
+    "other",
+}
+
+PUBLIC_ISSUE_EVIDENCE_LEVELS = {
+    "verified_public_issue",
+    "reported_public_issue",
+    "reported_public_issue_partial",
+    "narrative_evidence",
+    "business_wedge",
+    "review_needed",
+}
+
+PUBLIC_ISSUE_RECOMMENDED_ACTIONS = {
+    "fixture_only",
+    "upstream_comment",
+    "upstream_pr_candidate",
+    "business_evidence",
+    "monitor",
+    "manual_verification_required",
+}
 
 FORBIDDEN_PUBLIC_KEYS = {
     "predicted" + "_days",
@@ -71,6 +120,17 @@ class ConformanceError(ValueError):
     pass
 
 
+@dataclass
+class PublicIssueSummary:
+    total: int
+    executed: int
+    passed: int
+    failed: int
+    skipped: int
+    review_needed: int
+    results: list[CaseResult]
+
+
 def _load_json(path: Path) -> dict[str, Any]:
     try:
         with path.open("r", encoding="utf-8") as handle:
@@ -80,6 +140,15 @@ def _load_json(path: Path) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ConformanceError(f"{path}: root must be an object")
     return payload
+
+
+def _case_value(case: dict[str, Any], key: str) -> Any:
+    value = case.get(key)
+    if value is None:
+        return {}
+    if not isinstance(value, dict):
+        raise ConformanceError(f"{case.get('id', '<unknown>')}: {key} must be an object or null")
+    return value
 
 
 def _display_path(path: Path) -> str:
@@ -262,7 +331,143 @@ def _run_local_case(case: dict[str, Any]) -> None:
                     raise ConformanceError(f"{case['case_id']}: panchanga {parent}.{field} missing")
         return
 
+    if operation == "public_nepali_date_library_regression":
+        from app.calendar.bikram_sambat import days_in_bs_month
+
+        if case.get("authority_boundary") != "public_issue_regression_case_not_official_authority":
+            raise ConformanceError(f"{case['case_id']}: public issue boundary missing")
+        if case.get("production_impact_claimed") is not False:
+            raise ConformanceError(f"{case['case_id']}: production impact must not be claimed")
+
+        check = input_payload.get("check")
+        parva_expected = expected.get("parva")
+        if not isinstance(parva_expected, dict):
+            raise ConformanceError(f"{case['case_id']}: parva expected behavior missing")
+
+        if check == "month_days":
+            actual = days_in_bs_month(int(input_payload["bs_year"]), int(input_payload["bs_month"]))
+            _assert_equal(actual, parva_expected["month_days"], case["case_id"])
+            return
+
+        if check == "ad_to_bs":
+            bs_year, bs_month, bs_day = gregorian_to_bs(date.fromisoformat(str(input_payload["ad_date"])))
+            actual = {"year": bs_year, "month": bs_month, "day": bs_day}
+            _assert_equal(actual, parva_expected["bs_date"], case["case_id"])
+            return
+
+        raise ConformanceError(f"{case['case_id']}: unsupported public library regression check {check!r}")
+
     raise ConformanceError(f"{case['case_id']}: unsupported operation {operation!r}")
+
+
+def _validate_public_issue_case(case: dict[str, Any], path: Path, index: int) -> None:
+    context = f"{_display_path(path)} cases[{index}]"
+    required = [
+        "id",
+        "title",
+        "source_project",
+        "source_url",
+        "source_issue_url",
+        "source_pr_url",
+        "source_commit",
+        "failure_class",
+        "evidence_level",
+        "reported_input",
+        "reported_expected",
+        "reported_actual",
+        "parva_expected",
+        "executable",
+        "runner_operation",
+        "confidence",
+        "authority_boundary",
+        "safe_claim",
+        "forbidden_claims",
+        "recommended_action",
+        "notes",
+        "tags",
+    ]
+    _require_keys(case, required, context)
+    if case["failure_class"] not in PUBLIC_ISSUE_FAILURE_CLASSES:
+        raise ConformanceError(f"{context}: invalid failure_class {case['failure_class']!r}")
+    if case["evidence_level"] not in PUBLIC_ISSUE_EVIDENCE_LEVELS:
+        raise ConformanceError(f"{context}: invalid evidence_level {case['evidence_level']!r}")
+    if case["recommended_action"] not in PUBLIC_ISSUE_RECOMMENDED_ACTIONS:
+        raise ConformanceError(f"{context}: invalid recommended_action {case['recommended_action']!r}")
+    if case["confidence"] not in {"high", "medium", "low", "needs_manual_verification"}:
+        raise ConformanceError(f"{context}: invalid confidence {case['confidence']!r}")
+    if not isinstance(case["executable"], bool):
+        raise ConformanceError(f"{context}: executable must be boolean")
+    if case["executable"] and not case["runner_operation"]:
+        raise ConformanceError(f"{context}: executable cases require runner_operation")
+    if case["evidence_level"] == "verified_public_issue":
+        if case["reported_input"] is None:
+            raise ConformanceError(f"{context}: verified_public_issue requires reported_input")
+        if case["reported_expected"] is None and case["reported_actual"] is None:
+            raise ConformanceError(
+                f"{context}: verified_public_issue requires reported_expected or reported_actual"
+            )
+    if not str(case["authority_boundary"]).strip():
+        raise ConformanceError(f"{context}: authority_boundary must be non-empty")
+    if not str(case["safe_claim"]).strip():
+        raise ConformanceError(f"{context}: safe_claim must be non-empty")
+    forbidden_claims = case["forbidden_claims"]
+    if not isinstance(forbidden_claims, list) or not forbidden_claims:
+        raise ConformanceError(f"{context}: forbidden_claims must be a non-empty array")
+    if not isinstance(case["tags"], list):
+        raise ConformanceError(f"{context}: tags must be an array")
+
+
+def _run_public_issue_case(case: dict[str, Any]) -> None:
+    from app.calendar.bikram_sambat import days_in_bs_month, gregorian_to_bs, is_valid_bs_date
+
+    operation = case["runner_operation"]
+    reported_input = _case_value(case, "reported_input")
+    parva_expected = _case_value(case, "parva_expected")
+
+    if operation == "documented_only":
+        return
+
+    if operation == "source_drift":
+        reported_expected = _case_value(case, "reported_expected")
+        reported_actual = _case_value(case, "reported_actual")
+        for key in ("backend_month_days", "frontend_month_days"):
+            if key not in reported_actual:
+                raise ConformanceError(f"{case['id']}: source_drift missing {key}")
+        if reported_actual["backend_month_days"] == reported_actual["frontend_month_days"]:
+            raise ConformanceError(f"{case['id']}: source_drift case does not contain a drift")
+        if reported_expected and "shift_examples" in reported_expected:
+            for example in reported_expected["shift_examples"]:
+                if example.get("backend_ad") == example.get("frontend_ad"):
+                    raise ConformanceError(f"{case['id']}: shift example has no date shift")
+        return
+
+    if operation == "month_length":
+        actual = days_in_bs_month(int(reported_input["bs_year"]), int(reported_input["bs_month"]))
+        _assert_equal(actual, parva_expected["month_days"], case["id"])
+        return
+
+    if operation == "ad_to_bs":
+        bs_year, bs_month, bs_day = gregorian_to_bs(date.fromisoformat(str(reported_input["ad_date"])))
+        _assert_equal(
+            {"year": bs_year, "month": bs_month, "day": bs_day},
+            parva_expected["bs_date"],
+            case["id"],
+        )
+        return
+
+    if operation == "validate_bs_date":
+        bs_date = reported_input["bs_date"]
+        actual = is_valid_bs_date(int(bs_date["year"]), int(bs_date["month"]), int(bs_date["day"]))
+        _assert_equal(actual, parva_expected["valid"], case["id"])
+        return
+
+    if operation == "range_boundary":
+        expected_state = parva_expected.get("state")
+        if expected_state not in {"unsupported_lower_range", "unsupported_upper_range", "review_needed"}:
+            raise ConformanceError(f"{case['id']}: unsupported range_boundary state {expected_state!r}")
+        return
+
+    raise ConformanceError(f"{case['id']}: unsupported public issue runner_operation {operation!r}")
 
 
 def _api_json(base_url: str, method: str, path: str, payload: dict[str, Any] | None = None) -> Any:
@@ -315,6 +520,24 @@ def _load_case_files(case_root: Path) -> list[tuple[Path, dict[str, Any]]]:
     return loaded
 
 
+def _load_public_issue_files(case_root: Path) -> list[tuple[Path, dict[str, Any]]]:
+    suite_root = case_root / "public-nepali-date-issues"
+    loaded: list[tuple[Path, dict[str, Any]]] = []
+    for relative in PUBLIC_ISSUE_CASE_FILES:
+        path = suite_root / relative
+        if not path.exists():
+            raise ConformanceError(f"missing public issue case file: {path}")
+        payload = _load_json(path)
+        _require_keys(payload, ["suite", "version", "description", "cases"], _display_path(path))
+        if payload["suite"] != "public-nepali-date-issues":
+            raise ConformanceError(f"{_display_path(path)}: suite must be public-nepali-date-issues")
+        if not isinstance(payload["cases"], list):
+            raise ConformanceError(f"{_display_path(path)}: cases must be an array")
+        _assert_no_forbidden_text(path, payload)
+        loaded.append((path, payload))
+    return loaded
+
+
 def run(case_root: Path, *, api_base_url: str | None = None) -> tuple[int, list[CaseResult]]:
     results: list[CaseResult] = []
     loaded = _load_case_files(case_root)
@@ -333,9 +556,50 @@ def run(case_root: Path, *, api_base_url: str | None = None) -> tuple[int, list[
     return failures, results
 
 
+def run_public_issue_suite(case_root: Path) -> PublicIssueSummary:
+    results: list[CaseResult] = []
+    loaded = _load_public_issue_files(case_root)
+    seen_ids: set[str] = set()
+    review_needed = 0
+    for path, payload in loaded:
+        for index, case in enumerate(payload["cases"]):
+            case_id = str(case.get("id") or f"{path.name}:{index}")
+            try:
+                _validate_public_issue_case(case, path, index)
+                if case_id in seen_ids:
+                    raise ConformanceError(f"duplicate public issue case id: {case_id}")
+                seen_ids.add(case_id)
+                if case["confidence"] == "needs_manual_verification" or case["evidence_level"] in {
+                    "reported_public_issue_partial",
+                    "review_needed",
+                }:
+                    review_needed += 1
+                if not case["executable"]:
+                    results.append(CaseResult(case_id, True, "skipped: documented-only public issue", _display_path(path)))
+                    continue
+                _run_public_issue_case(case)
+                results.append(CaseResult(case_id, True, "passed", _display_path(path)))
+            except Exception as exc:  # noqa: BLE001
+                results.append(CaseResult(case_id, False, str(exc), _display_path(path)))
+    failed = sum(1 for result in results if not result.passed)
+    skipped = sum(1 for result in results if result.message.startswith("skipped:"))
+    executed = len(results) - skipped
+    passed = executed - failed
+    return PublicIssueSummary(
+        total=len(results),
+        executed=executed,
+        passed=passed,
+        failed=failed,
+        skipped=skipped,
+        review_needed=review_needed,
+        results=results,
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run the public Parva conformance suite.")
     parser.add_argument("--case-root", default=str(ROOT / "conformance"), help="Case root directory")
+    parser.add_argument("--suite", default="default", choices=["default", "public-nepali-date-issues"])
     parser.add_argument("--api", action="store_true", help="Also run supported cases against API")
     args = parser.parse_args(argv)
 
@@ -347,6 +611,21 @@ def main(argv: list[str] | None = None) -> int:
             return 2
 
     try:
+        if args.suite == "public-nepali-date-issues":
+            summary = run_public_issue_suite(Path(args.case_root))
+            print("Parva public issue conformance summary")
+            print(f"case_root: {Path(args.case_root)}")
+            print(f"total: {summary.total}")
+            print(f"executed: {summary.executed}")
+            print(f"passed: {summary.passed}")
+            print(f"failed: {summary.failed}")
+            print(f"skipped: {summary.skipped}")
+            print(f"review_needed: {summary.review_needed}")
+            for result in summary.results:
+                status = "PASS" if result.passed else "FAIL"
+                print(f"{status} {result.file} :: {result.case_id} :: {result.message}")
+            return 1 if summary.failed else 0
+
         failures, results = run(Path(args.case_root), api_base_url=api_base_url)
     except Exception as exc:  # noqa: BLE001
         print(f"Conformance setup failed: {exc}", file=sys.stderr)

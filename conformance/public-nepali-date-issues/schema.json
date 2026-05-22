@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-parva.local/schemas/public-nepali-date-issues.schema.json",
+  "title": "Project Parva public Nepali date issue fixture pack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["suite", "version", "description", "cases"],
+  "properties": {
+    "suite": { "const": "public-nepali-date-issues" },
+    "version": { "type": "integer", "minimum": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "metadata_only": { "type": "boolean" },
+    "cases": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/case" }
+    }
+  },
+  "$defs": {
+    "nullableObject": {
+      "anyOf": [
+        { "type": "object" },
+        { "type": "null" }
+      ]
+    },
+    "nullableString": {
+      "anyOf": [
+        { "type": "string" },
+        { "type": "null" }
+      ]
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "source_project",
+        "source_url",
+        "source_issue_url",
+        "source_pr_url",
+        "source_commit",
+        "failure_class",
+        "evidence_level",
+        "reported_input",
+        "reported_expected",
+        "reported_actual",
+        "parva_expected",
+        "executable",
+        "runner_operation",
+        "confidence",
+        "authority_boundary",
+        "safe_claim",
+        "forbidden_claims",
+        "recommended_action",
+        "notes",
+        "tags"
+      ],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "source_project": { "type": "string", "minLength": 1 },
+        "source_url": { "type": "string", "minLength": 1 },
+        "source_issue_url": { "$ref": "#/$defs/nullableString" },
+        "source_pr_url": { "$ref": "#/$defs/nullableString" },
+        "source_commit": { "$ref": "#/$defs/nullableString" },
+        "failure_class": {
+          "enum": [
+            "frontend_backend_source_drift",
+            "month_length_mismatch",
+            "year_total_mismatch",
+            "bs_to_ad_conversion_mismatch",
+            "ad_to_bs_conversion_mismatch",
+            "roundtrip_mismatch",
+            "invalid_bs_date_accepted",
+            "unsupported_lower_range",
+            "unsupported_upper_range",
+            "future_bs_uncertainty",
+            "fiscal_year_boundary",
+            "payroll_date_risk",
+            "holiday_working_day",
+            "panchanga",
+            "business_workflow_gap",
+            "source_provenance",
+            "other"
+          ]
+        },
+        "evidence_level": {
+          "enum": [
+            "verified_public_issue",
+            "reported_public_issue",
+            "reported_public_issue_partial",
+            "narrative_evidence",
+            "business_wedge",
+            "review_needed"
+          ]
+        },
+        "reported_input": { "$ref": "#/$defs/nullableObject" },
+        "reported_expected": { "$ref": "#/$defs/nullableObject" },
+        "reported_actual": { "$ref": "#/$defs/nullableObject" },
+        "parva_expected": { "$ref": "#/$defs/nullableObject" },
+        "executable": { "type": "boolean" },
+        "runner_operation": { "$ref": "#/$defs/nullableString" },
+        "confidence": {
+          "enum": ["high", "medium", "low", "needs_manual_verification"]
+        },
+        "authority_boundary": { "type": "string", "minLength": 1 },
+        "safe_claim": { "type": "string", "minLength": 1 },
+        "forbidden_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "recommended_action": {
+          "enum": [
+            "fixture_only",
+            "upstream_comment",
+            "upstream_pr_candidate",
+            "business_evidence",
+            "monitor",
+            "manual_verification_required"
+          ]
+        },
+        "notes": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "executable": { "const": true } },
+            "required": ["executable"]
+          },
+          "then": {
+            "properties": { "runner_operation": { "type": "string", "minLength": 1 } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "evidence_level": { "const": "verified_public_issue" } },
+            "required": ["evidence_level"]
+          },
+          "then": {
+            "properties": {
+              "reported_input": { "type": "object" }
+            },
+            "anyOf": [
+              { "properties": { "reported_expected": { "type": "object" } } },
+              { "properties": { "reported_actual": { "type": "object" } } }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

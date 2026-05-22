@@ -1,0 +1,38 @@
+{
+  "suite": "public-nepali-date-issues",
+  "version": 1,
+  "description": "Public future-BS uncertainty evidence.",
+  "cases": [
+    {
+      "id": "node-nepali-datetime-121-future-date-accuracy",
+      "title": "node-nepali-datetime future Nepali date accuracy discussion",
+      "source_project": "opensource-nepal/node-nepali-datetime",
+      "source_url": "https://github.com/opensource-nepal/node-nepali-datetime",
+      "source_issue_url": "https://github.com/opensource-nepal/node-nepali-datetime/issues/121",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "future_bs_uncertainty",
+      "evidence_level": "narrative_evidence",
+      "reported_input": null,
+      "reported_expected": null,
+      "reported_actual": {
+        "summary": "Public discussion about future Nepali date accuracy and uncertainty."
+      },
+      "parva_expected": {
+        "case_role": "review_needed_future_boundary"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "needs_manual_verification",
+      "authority_boundary": "future BS uncertainty evidence; not an exact future-date authority claim",
+      "safe_claim": "This issue supports Parva's review-needed model for future BS data.",
+      "forbidden_claims": [
+        "Do not claim future BS dates are guaranteed.",
+        "Do not publish exact unsupported future dates as settled output."
+      ],
+      "recommended_action": "monitor",
+      "notes": "Use as public evidence for uncertainty labeling rather than executable conversion truth.",
+      "tags": ["node-nepali-datetime", "future-bs", "review-needed"]
+    }
+  ]
+}

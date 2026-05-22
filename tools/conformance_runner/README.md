@@ -17,3 +17,13 @@ PARVA_CONFORMANCE_BASE_URL=http://localhost:8000 python tools/conformance_runner
 API mode is intentionally limited. It checks public conversion endpoints where practical and still validates all local case structure.
 
 The runner exits with status `1` if any case file is malformed, unsafe, or fails its local checks.
+
+Public issue conformance suite:
+
+```bash
+python tools/conformance_runner/run.py --suite public-nepali-date-issues
+```
+
+This suite executes only cases with enough deterministic public detail. Partial
+issue reports and business workflow evidence are counted as documented-only
+skips, not failures.

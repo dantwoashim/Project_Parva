@@ -1,0 +1,43 @@
+{
+  "suite": "public-nepali-date-issues",
+  "version": 1,
+  "description": "Public invalid BS date acceptance cases.",
+  "cases": [
+    {
+      "id": "cht-core-7925-invalid-kartik-2079-accepted",
+      "title": "CHT Core invalid BS date accepted after valid edit flow",
+      "source_project": "medic/cht-core",
+      "source_url": "https://github.com/medic/cht-core",
+      "source_issue_url": "https://github.com/medic/cht-core/issues/7925",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "invalid_bs_date_accepted",
+      "evidence_level": "reported_public_issue",
+      "reported_input": {
+        "bs_date": { "year": 2079, "month": 7, "day": 99 },
+        "reported_text": "99 Kartik 2079"
+      },
+      "reported_expected": {
+        "valid": false
+      },
+      "reported_actual": {
+        "summary": "Public issue reports invalid BS date accepted in an edit-after-valid flow."
+      },
+      "parva_expected": {
+        "valid": false
+      },
+      "executable": true,
+      "runner_operation": "validate_bs_date",
+      "confidence": "medium",
+      "authority_boundary": "public invalid-date validation case; not a claim about all CHT Core date flows",
+      "safe_claim": "Parva tracks this as an invalid BS date validation conformance case.",
+      "forbidden_claims": [
+        "Do not claim the upstream product is globally broken.",
+        "Do not claim production impact without explicit evidence."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The executable check covers Parva's handling of the concrete invalid date shape from the public report.",
+      "tags": ["cht-core", "invalid-date", "kartik", "2079"]
+    }
+  ]
+}

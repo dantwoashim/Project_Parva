@@ -1,0 +1,32 @@
+{
+  "suite": "public-nepali-date-issues",
+  "version": 1,
+  "metadata_only": true,
+  "description": "Metadata index for the first public Nepali date issue conformance evidence set. Category files contain the executable runner cases.",
+  "cases": [
+    {
+      "id": "public-issue-index-yarsa-257-258",
+      "title": "Yarsa nepal-compliance merged source-drift benchmark contribution",
+      "source_project": "yarsa/nepal-compliance",
+      "source_url": "https://github.com/yarsa/nepal-compliance",
+      "source_issue_url": "https://github.com/yarsa/nepal-compliance/issues/257",
+      "source_pr_url": "https://github.com/yarsa/nepal-compliance/pull/258",
+      "source_commit": "c220a9e",
+      "failure_class": "frontend_backend_source_drift",
+      "evidence_level": "verified_public_issue",
+      "reported_input": { "bs_year": 2087, "bs_month": 8, "bs_month_name": "Mangsir" },
+      "reported_expected": { "backend_month_days": 29, "frontend_month_days": 30 },
+      "reported_actual": { "merged_upstream_pr": true },
+      "parva_expected": { "case_file": "source_drift_cases.json" },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "high",
+      "authority_boundary": "public repository consistency case; not official Nepali date authority",
+      "safe_claim": "The merged benchmark contribution is part of Parva's public conformance evidence map.",
+      "forbidden_claims": ["Do not claim upstream adoption of Parva."],
+      "recommended_action": "fixture_only",
+      "notes": "Metadata-only index entry; executable check is in source_drift_cases.json.",
+      "tags": ["metadata-index", "yarsa", "source-drift"]
+    }
+  ]
+}

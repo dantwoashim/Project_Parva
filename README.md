@@ -20,6 +20,8 @@ It is built for developers searching for a Nepali date API or Bikram Sambat API,
 - Agent tooling guide: [docs/AGENT_TOOLING_GUIDE.md](docs/AGENT_TOOLING_GUIDE.md)
 - Safe claims: [docs/SAFE_CLAIMS.md](docs/SAFE_CLAIMS.md)
 - Public benchmark: [public-benchmark/README.md](public-benchmark/README.md)
+- Public conformance index: [docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md](docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md)
+- Public failure classes: [docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md](docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md)
 - External reviewer packet: [docs/external/REVIEWER_PACKET.md](docs/external/REVIEWER_PACKET.md)
 
 Live public evaluation surfaces:

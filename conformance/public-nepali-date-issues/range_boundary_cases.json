@@ -1,0 +1,73 @@
+{
+  "suite": "public-nepali-date-issues",
+  "version": 1,
+  "description": "Public lower-bound and upper-bound range evidence.",
+  "cases": [
+    {
+      "id": "odk-pre-1951-lower-bound-range",
+      "title": "ODK forum and bikram-sambat lower-bound date range discussion",
+      "source_project": "ODK forum / medic/bikram-sambat",
+      "source_url": "https://forum.getodk.org/",
+      "source_issue_url": null,
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "unsupported_lower_range",
+      "evidence_level": "reported_public_issue_partial",
+      "reported_input": {
+        "range_note": "DOB before 1951"
+      },
+      "reported_expected": null,
+      "reported_actual": {
+        "summary": "Public discussion concerns lower-bound unsupported date handling."
+      },
+      "parva_expected": {
+        "state": "unsupported_lower_range"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "needs_manual_verification",
+      "authority_boundary": "range-boundary evidence; exact date required before executable use",
+      "safe_claim": "Parva tracks this as lower-bound range evidence for conformance design.",
+      "forbidden_claims": [
+        "Do not invent exact DOB values.",
+        "Do not claim official lower-bound authority from this discussion."
+      ],
+      "recommended_action": "manual_verification_required",
+      "notes": "Use as range-boundary evidence until an exact public input/expected/actual case is represented.",
+      "tags": ["odk", "lower-range", "dob", "review-needed"]
+    },
+    {
+      "id": "subeshb1-71-upper-range-above-2090-12-30",
+      "title": "Subeshb1 Nepali-Date upper range issue above BS 2090-12-30",
+      "source_project": "subeshb1/Nepali-Date",
+      "source_url": "https://github.com/subeshb1/Nepali-Date",
+      "source_issue_url": null,
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "unsupported_upper_range",
+      "evidence_level": "reported_public_issue_partial",
+      "reported_input": {
+        "range_note": "above BS 2090-12-30"
+      },
+      "reported_expected": null,
+      "reported_actual": {
+        "summary": "Reported upper-range failure above BS 2090-12-30."
+      },
+      "parva_expected": {
+        "state": "unsupported_upper_range"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "needs_manual_verification",
+      "authority_boundary": "range-boundary public issue evidence; exact date required before executable use",
+      "safe_claim": "Parva tracks this as an upper-range boundary review case.",
+      "forbidden_claims": [
+        "Do not invent exact failing values.",
+        "Do not claim full upstream correctness status."
+      ],
+      "recommended_action": "manual_verification_required",
+      "notes": "Keep non-executable until exact issue URL and failing input are represented.",
+      "tags": ["subeshb1", "upper-range", "review-needed"]
+    }
+  ]
+}
