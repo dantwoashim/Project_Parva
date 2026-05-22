@@ -14,7 +14,7 @@ psycopg-binary==3.3.4
 redis==7.4.0
 ruff==0.8.4
 setuptools==82.0.1
-starlette==0.52.1
+starlette==1.0.1
 timezonefinder==8.2.0
 tzdata==2025.3
 uvicorn==0.23.0
