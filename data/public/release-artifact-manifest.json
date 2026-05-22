@@ -56,14 +56,14 @@
       "sha256": "sha256:7d33ff5e0c19b0f7ddf376fabf2fe3f63a0b8702cacb1eb024d49ea465147326"
     },
     {
-      "bytes": 746,
+      "bytes": 753,
       "path": "packages/parva-js/package.json",
-      "sha256": "sha256:6b08410b312c12d6002938d83cd1ec84c4488b2cfbb32dd272625358c6b9a4a1"
+      "sha256": "sha256:c46e40f4deca16b9789364fc6189acba50d07fb9a517829e074ebffad21d8054"
     },
     {
-      "bytes": 756,
+      "bytes": 763,
       "path": "packages/parva-local-kernel/package.json",
-      "sha256": "sha256:ee9bd5169a4141efa8daa3082acbc99e4a86b697432c99b3ec7f2f4316b772dc"
+      "sha256": "sha256:6a31475908cc8be1b4bb906f37a82c0a27064eeff8eb47d3731abf2932927d74"
     },
     {
       "bytes": 1003,
@@ -198,7 +198,7 @@
   ],
   "claim_boundary": "release_artifact_manifest_not_external_validation",
   "generated_at": "reproducible",
-  "git_commit_at_generation": "b734f5abe37f9163b1698a390e9881e09ec38c39",
+  "git_commit_at_generation": "5020301ff2ada4126d36ad38b7c8d7d2e975c76c",
   "not_authority": true,
   "schema": "parva-release-artifact-manifest-v1",
   "verification_summary": {

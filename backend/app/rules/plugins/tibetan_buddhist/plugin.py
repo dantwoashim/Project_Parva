@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from app.calendar.calculator_v2 import calculate_festival_v2
+from app.rules.festival_engine import calculate_festival_v2
 from app.rules.plugins.base import ObservanceDate, ObservanceRule
 
 _RULES = [

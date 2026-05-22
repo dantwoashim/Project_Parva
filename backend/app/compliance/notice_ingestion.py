@@ -56,7 +56,9 @@ def _extract_notice(text: str) -> NoticeExtraction:
     deadline = fields.get("deadline") or (date_matches[-1] if date_matches else None)
     if not deadline:
         raise ValueError("notice requires an explicit BS deadline")
-    review_status = "review_required" if any(token in text.lower() for token in ("approx", "unclear", "tentative")) else "review_required"
+    review_status = "ambiguous_review_required" if any(
+        token in text.lower() for token in ("approx", "unclear", "tentative")
+    ) else "review_required"
     return NoticeExtraction(
         issuer=fields.get("issuer", "unreviewed_notice_issuer"),
         publication_date=fields.get("published"),
@@ -73,8 +75,9 @@ def _extract_notice(text: str) -> NoticeExtraction:
 def ingest_notice(text: str, *, source_docket_id: str = "parva:src:v1:review-required-notice") -> dict:
     extraction = _extract_notice(text)
     year, month, day = (int(part) for part in extraction.deadline.split("-"))
+    docket_id = source_docket_id
     docket = {
-        "source_docket_id": source_docket_id,
+        "source_docket_id": docket_id,
         "source_text_hash": f"sha256:{canonical_json_hash({'text': text})}",
         "source_text_hash_boundary": "notice_source_text_not_legal_authority",
         "review_required": True,
@@ -90,7 +93,7 @@ def ingest_notice(text: str, *, source_docket_id: str = "parva:src:v1:review-req
     obligation = Obligation(
         obligation_id=f"parva:obl:v1:{canonical_json_hash({'deadline': extraction.deadline, 'source': source_docket_id})[:16]}",
         claim_type="deadline_claim",
-        source_docket_id=docket["source_docket_id"],
+        source_docket_id=docket_id,
         applicability={
             "entity_type": extraction.affected_party,
             "jurisdiction": extraction.jurisdiction,

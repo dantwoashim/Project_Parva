@@ -47,7 +47,8 @@ jobs:
         run: |
           python -m ruff check backend tests scripts sdk packages/parva-python packages/parva-agent-tools packages/parva-mcp-server
           python -m pip_audit --strict --requirement requirements/constraints.txt
-          npm --prefix packages/parva-js audit --audit-level=high
+          npm --prefix packages/parva-js audit --audit-level=moderate
+          npm --prefix packages/parva-local-kernel audit --audit-level=moderate
           python scripts/release/check_repo_hygiene.py
           python scripts/release/verify_clean_clone_assumptions.py
           python scripts/release/check_archive_hygiene.py
@@ -56,6 +57,7 @@ jobs:
           python scripts/release/generate_source_coverage_report.py --check
           python scripts/release/verify_release_artifact_manifest.py
           python scripts/release/check_public_surface_security.py
+          python scripts/release/check_python_module_size.py
           python scripts/release/check_mcp_registry_metadata.py
           python scripts/security/scan_repo_secrets.py
           python scripts/release/check_public_safety_gate.py
@@ -115,7 +117,7 @@ jobs:
 
       - name: Run frontend quality gates
         run: |
-          npm --prefix frontend audit --audit-level=high
+          npm --prefix frontend audit --audit-level=moderate
           python scripts/frontend/check_component_size.py
           npm --prefix frontend run lint
           npm --prefix frontend test -- --run

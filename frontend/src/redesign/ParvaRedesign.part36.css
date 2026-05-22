@@ -1,0 +1,66 @@
+@media (max-width: 860px) {
+  :root {
+    --mobile-nav-space: 0px;
+  }
+
+  .parva-app {
+    padding-bottom: 0;
+  }
+
+  .parva-topbar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px 14px 10px;
+  }
+
+  .top-actions {
+    display: none !important;
+  }
+
+  .top-nav {
+    display: flex !important;
+    gap: 6px;
+    width: 100%;
+    overflow-x: auto;
+    padding: 4px 1px 7px;
+    scrollbar-width: none;
+  }
+
+  .top-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .top-nav a {
+    flex: 0 0 auto;
+    min-height: 38px;
+    padding: 0 13px;
+    border: 1px solid rgb(31 24 16 / 10%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 74%);
+    box-shadow: none;
+  }
+
+  .top-nav a.active {
+    border-color: rgb(40 111 88 / 26%);
+    background: var(--green-soft);
+    color: var(--green);
+  }
+
+  .bottom-nav {
+    display: none !important;
+  }
+
+  .mobile-context-bar {
+    top: 86px;
+    width: min(100% - 28px, 720px);
+    margin-top: 10px;
+  }
+
+  .page-shell {
+    padding-top: 20px;
+  }
+
+  .sample-chart-preview {
+    width: min(100%, 280px);
+  }
+}

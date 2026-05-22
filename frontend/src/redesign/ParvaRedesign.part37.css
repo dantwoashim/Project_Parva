@@ -1,0 +1,557 @@
+@media (max-width: 860px) {
+  .parva-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 42;
+    grid-template-columns: auto minmax(0, 1fr) 34px;
+    gap: 8px;
+    padding: 9px 12px 8px;
+    border-bottom-color: rgb(24 32 26 / 8%);
+    background: rgb(255 255 255 / 94%);
+    backdrop-filter: blur(18px);
+  }
+
+  .brand-mark {
+    gap: 7px;
+    font-size: 1.28rem;
+  }
+
+  .brand-symbol {
+    width: 24px;
+    height: 24px;
+  }
+
+  .brand-symbol::before,
+  .brand-symbol::after,
+  .brand-symbol span::before,
+  .brand-symbol span::after {
+    width: 7px;
+    height: 7px;
+    border-width: 1.5px;
+  }
+
+  .brand-symbol::before,
+  .brand-symbol span::before {
+    left: 6px;
+  }
+
+  .brand-symbol::after {
+    top: 6px;
+  }
+
+  .brand-symbol span::after {
+    top: 6px;
+  }
+
+  .top-nav {
+    grid-column: 1 / -1;
+    gap: 5px;
+    margin-right: -12px;
+    padding: 0 12px 1px 0;
+  }
+
+  .top-nav a {
+    min-height: 31px;
+    padding: 0 10px;
+    border-color: rgb(24 32 26 / 9%);
+    background: rgb(246 247 244 / 72%);
+    color: #4d574e;
+    font-size: 0.72rem;
+    font-weight: 820;
+  }
+
+  .top-nav a.active {
+    border-color: rgb(36 63 104 / 18%);
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+
+  .mobile-inline-context {
+    display: grid;
+    align-content: center;
+    min-width: 0;
+    min-height: 32px;
+    padding: 3px 9px;
+    border: 1px solid rgb(24 32 26 / 9%);
+    border-radius: 8px;
+    background: rgb(246 247 244 / 78%);
+    color: var(--muted);
+    box-shadow: 0 8px 20px rgb(24 32 26 / 5%);
+  }
+
+  .mobile-inline-context span,
+  .mobile-inline-context strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-inline-context span {
+    font-size: 0.62rem;
+    font-weight: 820;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .mobile-inline-context strong {
+    color: var(--ink);
+    font-size: 0.74rem;
+  }
+
+  .mobile-inline-search {
+    display: grid;
+    width: 34px;
+    min-height: 32px;
+    place-items: center;
+    border: 1px solid rgb(24 32 26 / 9%);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--blue);
+    font-size: 0.96rem;
+  }
+
+  .mobile-context-bar {
+    display: none !important;
+  }
+
+  .page-shell {
+    width: min(100% - 24px, 720px);
+    padding-top: 14px;
+  }
+
+  .page-hero {
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .page-hero h1 {
+    font-size: clamp(1.95rem, 10vw, 2.18rem);
+    line-height: 1.01;
+  }
+
+  .page-hero p {
+    max-width: 34rem;
+    font-size: 0.9rem;
+    line-height: 1.48;
+  }
+
+  .hero-actions {
+    gap: 7px;
+  }
+
+  .page-hero .hero-actions > *,
+  .primary-button,
+  .ghost-button {
+    min-height: 40px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+  }
+
+  .panel,
+  .best-answer-card,
+  .best-constraint-card,
+  .festival-command-panel,
+  .festival-list-card,
+  .conversion-panel {
+    border-color: rgb(24 32 26 / 9%);
+    box-shadow: 0 10px 28px rgb(24 32 26 / 5%);
+  }
+
+  .verification-strip,
+  .planner-validation-strip,
+  .date-semantics-strip,
+  .birth-trust-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    background: rgb(24 32 26 / 8%);
+  }
+
+  .verification-strip div,
+  .planner-validation-strip div,
+  .date-semantics-strip div,
+  .birth-trust-strip div {
+    min-height: 82px;
+    padding: 12px;
+    border: 0;
+    background: var(--surface);
+  }
+
+  .verification-strip div:last-child,
+  .planner-validation-strip div:last-child,
+  .date-semantics-strip div:last-child {
+    border-bottom: 0;
+  }
+
+  .verification-strip span,
+  .verification-strip small,
+  .planner-validation-strip span,
+  .planner-validation-strip small,
+  .date-semantics-strip span,
+  .date-semantics-strip small,
+  .birth-trust-strip span,
+  .birth-trust-strip small {
+    white-space: normal;
+  }
+
+  .verification-strip strong,
+  .planner-validation-strip strong,
+  .date-semantics-strip strong,
+  .birth-trust-strip strong {
+    white-space: normal;
+    line-height: 1.2;
+  }
+
+  .birth-trust-strip div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .birth-page .birth-trust-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .birth-page .birth-trust-strip div,
+  .birth-page .birth-trust-strip div:last-child {
+    grid-column: auto;
+    min-height: 66px;
+    padding: 9px 8px;
+  }
+
+  .birth-page .birth-trust-strip div > span {
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+  }
+
+  .birth-page .birth-trust-strip strong {
+    font-size: 0.82rem;
+  }
+
+  .birth-page .birth-trust-strip small {
+    display: none;
+  }
+
+  .best-time-page .planner-validation-strip div {
+    min-height: 58px;
+    padding: 9px 10px;
+  }
+
+  .best-time-page .planner-validation-strip small {
+    display: none;
+  }
+
+  .best-time-page .selected-window ul {
+    margin-bottom: 4px;
+    padding-left: 18px;
+  }
+
+  .best-time-page .selected-window li:nth-child(n + 4) {
+    display: none;
+  }
+
+  .festivals-page .festival-status-bar {
+    padding: 9px 11px;
+  }
+
+  .festival-list-card {
+    border-radius: 8px;
+  }
+
+  .festival-list-card__button {
+    grid-template-columns: 46px minmax(0, 1fr);
+    align-items: start;
+    gap: 9px;
+    padding: 8px;
+  }
+
+  .festival-list-card__media .festival-art {
+    width: 42px;
+    height: 42px;
+  }
+
+  .festival-list-card__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .festival-list-card__kicker {
+    gap: 5px;
+  }
+
+  .festival-list-card__kicker em {
+    padding: 2px 5px;
+    font-size: 0.54rem;
+  }
+
+  .festival-list-card__kicker em:nth-child(3) {
+    display: none;
+  }
+
+  .festival-list-card__main {
+    gap: 3px;
+  }
+
+  .festival-list-card__main > strong {
+    font-size: 0.94rem;
+  }
+
+  .festival-list-card__main small {
+    display: none;
+  }
+
+  .festival-list-card__dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .festival-list-card__dates b,
+  .festival-list-card__dates span {
+    width: auto;
+    font-size: 0.64rem;
+    white-space: normal;
+  }
+
+  .festival-list-card__dates span {
+    display: none;
+  }
+
+  .festival-list-card__dates em {
+    width: auto;
+    padding: 2px 6px;
+    font-size: 0.54rem;
+  }
+
+  .birth-form {
+    padding: 14px;
+  }
+
+  .birth-form label {
+    gap: 5px;
+    margin-top: 14px;
+    font-size: 0.86rem;
+  }
+
+  .birth-form input,
+  .birth-form select {
+    height: 40px;
+    min-height: 40px;
+    padding-inline: 12px;
+  }
+
+  .coordinate-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .method-strip,
+  .missing-field-list {
+    padding: 10px 11px;
+    border-radius: 8px;
+  }
+
+  .method-strip small {
+    display: none;
+  }
+
+  .birth-form-actions {
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .festival-list-card {
+    border-radius: 8px;
+  }
+
+  .festival-list-card__button {
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .festival-list-card__media .festival-art {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+  }
+
+  .festival-list-card__main {
+    gap: 5px;
+  }
+
+  .festival-list-card__main > strong {
+    font-size: 1.06rem;
+    line-height: 1.12;
+  }
+
+  .festival-list-card__kicker,
+  .festival-list-card__main small {
+    font-size: 0.66rem;
+  }
+
+  .festival-list-card__main > span:last-child {
+    -webkit-line-clamp: 2;
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .festival-list-card__dates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .festival-list-card__dates b,
+  .festival-list-card__dates span {
+    font-size: 0.72rem;
+  }
+
+  .festival-list-card:not(.is-expanded) .festival-list-card__actions {
+    display: none;
+  }
+
+  .festival-list-card__expand {
+    min-width: 0;
+    min-height: 30px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 0.68rem;
+    justify-content: start;
+  }
+
+  .festival-status-bar {
+    align-items: start;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+
+  .festival-status-bar div {
+    gap: 6px;
+  }
+
+  .festival-status-bar strong {
+    font-size: 1.15rem;
+  }
+
+  .festival-status-bar span,
+  .festival-status-bar p {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .best-answer-grid {
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .best-answer-card,
+  .best-constraint-card {
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .best-answer-card h2,
+  .best-constraint-card h2 {
+    font-size: 1.72rem;
+  }
+
+  .best-answer-card > div {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .best-answer-card span {
+    padding: 9px 8px;
+  }
+
+  .best-answer-card span strong {
+    font-size: 0.82rem;
+  }
+
+  .best-answer-card span small {
+    font-size: 0.62rem;
+  }
+
+  .birth-workspace {
+    gap: 12px;
+  }
+
+  .kundali-card {
+    order: initial;
+    min-height: auto;
+    padding: 14px;
+    padding-bottom: 14px;
+  }
+
+  .sample-chart-preview {
+    width: min(100%, 238px);
+    margin-bottom: 16px;
+  }
+
+  .chart-loading {
+    min-height: auto;
+    padding: 12px;
+  }
+
+  .birth-form label {
+    gap: 6px;
+  }
+
+  .birth-form input,
+  .birth-form select {
+    min-height: 42px;
+    border-radius: 8px;
+  }
+
+  .birth-form-actions {
+    margin-top: 16px;
+  }
+
+  .parva-footer {
+    width: min(100% - 24px, 720px);
+    margin-top: 12px;
+    padding-bottom: 22px;
+  }
+
+  .footer-main {
+    gap: 14px;
+    padding: 22px 0 16px;
+  }
+
+  .footer-logo {
+    margin-bottom: 10px;
+  }
+
+  .footer-brand p {
+    font-size: 0.82rem;
+    line-height: 1.48;
+  }
+
+  .footer-status {
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .footer-status span {
+    min-height: 28px;
+    padding: 0 9px;
+    font-size: 0.7rem;
+  }
+
+  .footer-link-grid {
+    display: none;
+  }
+
+  .footer-bottom {
+    gap: 6px;
+    padding-top: 12px;
+    font-size: 0.7rem;
+  }
+}

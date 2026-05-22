@@ -1,0 +1,25 @@
+@media (prefers-reduced-motion: no-preference) {
+  .page-hero,
+  .panel,
+  .festival-list-card,
+  .festival-command-panel,
+  .planner-shell,
+  .trust-metric-card,
+  .trust-link-grid a {
+    animation: fadeInUp 520ms var(--motion) both;
+  }
+
+  .panel:nth-of-type(2),
+  .festival-list-card:nth-child(2),
+  .trust-metric-card:nth-child(2),
+  .trust-link-grid a:nth-child(2) {
+    animation-delay: 60ms;
+  }
+
+  .panel:nth-of-type(3),
+  .festival-list-card:nth-child(3),
+  .trust-metric-card:nth-child(3),
+  .trust-link-grid a:nth-child(3) {
+    animation-delay: 120ms;
+  }
+}

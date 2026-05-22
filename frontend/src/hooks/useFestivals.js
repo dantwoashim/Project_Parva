@@ -25,6 +25,7 @@ export function useFestivals({ category, search, qualityBand = "computed", algor
     const [error, setError] = useState(null);
 
     const fetchFestivals = useCallback(async () => {
+        await Promise.resolve();
         setLoading(true);
         setError(null);
 
@@ -53,7 +54,13 @@ export function useFestivals({ category, search, qualityBand = "computed", algor
     }, [category, search, qualityBand, algorithmicOnly]);
 
     useEffect(() => {
-        fetchFestivals();
+        let cancelled = false;
+        queueMicrotask(() => {
+            if (!cancelled) void fetchFestivals();
+        });
+        return () => {
+            cancelled = true;
+        };
     }, [fetchFestivals]);
 
     return {
@@ -117,12 +124,18 @@ export function useFestivalDetail(festivalId, year = null) {
 
     useEffect(() => {
         if (!festivalId) {
-            setFestival(null);
-            setDates(null);
-            setNearbyFestivals([]);
-            setCompleteness(null);
-            setMeta(null);
-            return;
+            let cancelled = false;
+            queueMicrotask(() => {
+                if (cancelled) return;
+                setFestival(null);
+                setDates(null);
+                setNearbyFestivals([]);
+                setCompleteness(null);
+                setMeta(null);
+            });
+            return () => {
+                cancelled = true;
+            };
         }
 
         const fetchDetail = async () => {
@@ -153,7 +166,7 @@ export function useFestivalDetail(festivalId, year = null) {
             }
         };
 
-        fetchDetail();
+        void fetchDetail();
     }, [festivalId, year]);
 
     return { festival, dates, nearbyFestivals, completeness, meta, loading, error };
@@ -173,8 +186,13 @@ export function useFestivalDates(festivalId, years = 3) {
 
     useEffect(() => {
         if (!festivalId) {
-            setDates([]);
-            return;
+            let cancelled = false;
+            queueMicrotask(() => {
+                if (!cancelled) setDates([]);
+            });
+            return () => {
+                cancelled = true;
+            };
         }
 
         const fetchDates = async () => {
@@ -192,7 +210,7 @@ export function useFestivalDates(festivalId, years = 3) {
             }
         };
 
-        fetchDates();
+        void fetchDates();
     }, [festivalId, years]);
 
     return { dates, loading, error };

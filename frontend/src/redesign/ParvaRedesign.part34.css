@@ -1,0 +1,167 @@
+@media (max-width: 860px) {
+  :root {
+    --mobile-nav-space: calc(98px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .parva-app {
+    padding-bottom: var(--mobile-nav-space);
+  }
+
+  .parva-topbar {
+    height: auto;
+    min-height: 0;
+    box-shadow: none;
+  }
+
+  .page-shell,
+  .parva-footer {
+    width: min(100% - 28px, 720px);
+  }
+
+  .page-hero h1 {
+    font-size: 2.28rem;
+  }
+
+  .page-hero .hero-actions {
+    width: 100%;
+  }
+
+  .page-hero .hero-actions > * {
+    width: 100%;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+
+  .mobile-date-card,
+  .mobile-place-card,
+  .mobile-search-button,
+  .bottom-nav {
+    border-radius: 8px;
+  }
+
+  .bottom-nav a {
+    border-radius: 6px;
+  }
+
+  .planner-shell,
+  .festival-workspace,
+  .panchanga-workspace,
+  .birth-workspace,
+  .detail-workspace {
+    margin-bottom: 22px;
+  }
+
+  .verification-strip,
+  .best-answer-grid,
+  .planner-validation-strip,
+  .date-semantics-strip,
+  .place-context-card dl,
+  .birth-trust-strip,
+  .trust-limits-strip,
+  .search-command-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .verification-strip div,
+  .planner-validation-strip div,
+  .date-semantics-strip div {
+    border-right: 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(31 24 16 / 9%);
+  }
+
+  .verification-strip div:last-child,
+  .planner-validation-strip div:last-child,
+  .date-semantics-strip div:last-child {
+    border-bottom: 0;
+  }
+
+  .best-answer-card {
+    grid-template-columns: 1fr;
+  }
+
+  .best-answer-card .primary-button {
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+  }
+
+  .best-answer-card > div {
+    grid-template-columns: 1fr;
+  }
+
+  .place-context-card {
+    padding: 20px;
+  }
+
+  .place-privacy-row {
+    display: grid;
+  }
+
+  .place-privacy-row strong {
+    text-align: left;
+  }
+
+  .conversion-dock {
+    display: grid;
+    width: min(100% - 28px, 720px);
+    margin-top: 20px;
+  }
+
+  .conversion-dock nav {
+    justify-content: stretch;
+  }
+
+  .conversion-dock a {
+    flex: 1 1 140px;
+  }
+
+  .bottom-nav {
+    position: fixed;
+    right: 12px;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    left: 12px;
+    z-index: 60;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    min-height: 58px;
+    padding: 6px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(31 24 16 / 10%);
+    background: rgb(255 253 249 / 94%);
+    box-shadow: 0 20px 60px rgb(31 24 16 / 16%);
+    backdrop-filter: blur(18px);
+  }
+
+  .intent-panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    padding: 18px;
+  }
+
+  .intent-panel h2,
+  .intent-panel p {
+    grid-column: 1 / -1;
+  }
+
+  .intent-panel h2 {
+    margin-bottom: 4px;
+  }
+
+  .intent-panel button {
+    min-height: 42px;
+    margin: 0;
+    padding: 0 11px;
+    text-align: center;
+  }
+
+  .intent-panel p {
+    display: none;
+  }
+}

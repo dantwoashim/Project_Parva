@@ -10,6 +10,8 @@ which requires special handling in many datetime libraries.
 from datetime import date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+from .julian import julian_day_to_datetime
+
 # =============================================================================
 # NEPAL TIMEZONE
 # =============================================================================
@@ -232,8 +234,5 @@ def jd_to_nepal_datetime(jd: float) -> datetime:
     Returns:
         Datetime in Nepal time
     """
-    # Import here to avoid circular import
-    from .swiss_eph import julian_day_to_datetime
-
     utc_dt = julian_day_to_datetime(jd)
     return to_nepal_time(utc_dt)

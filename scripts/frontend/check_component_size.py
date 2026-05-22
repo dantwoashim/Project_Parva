@@ -8,14 +8,10 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 FRONTEND_SRC = PROJECT_ROOT / "frontend" / "src"
-SOURCE_SUFFIXES = {".js", ".jsx", ".ts", ".tsx"}
+SOURCE_SUFFIXES = {".css", ".js", ".jsx", ".ts", ".tsx"}
 WARN_LINE_BUDGET = 700
 FAIL_LINE_BUDGET = 1_000
-GRANDFATHERED_LINE_BUDGETS = {
-    # FeedSubscriptionsPage predates the public-beta shell and is scheduled for
-    # follow-up extraction; keep the allowance narrow and explicit.
-    Path("frontend/src/pages/FeedSubscriptionsPage.jsx"): 1_050,
-}
+GRANDFATHERED_LINE_BUDGETS: dict[Path, int] = {}
 
 
 def _is_test_path(path: Path) -> bool:

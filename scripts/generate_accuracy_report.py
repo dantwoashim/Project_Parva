@@ -28,7 +28,7 @@ def run_benchmark():
     """Compare V2 calculator output against ground truth for all years."""
     sys.path.insert(0, str(PROJECT_ROOT / "backend"))
 
-    from app.calendar.calculator_v2 import calculate_festival_v2
+    from app.rules.festival_engine import calculate_festival_v2
 
     overrides = _load_overrides()
     results = {

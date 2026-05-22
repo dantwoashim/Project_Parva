@@ -31,7 +31,7 @@ export function useTemples() {
             }
         };
 
-        fetchTemples();
+        void fetchTemples();
     }, []);
 
     return { temples, loading, error };
@@ -47,8 +47,13 @@ export function useTemplesForFestival(festivalId) {
 
     useEffect(() => {
         if (!festivalId) {
-            setTemples([]);
-            return;
+            let cancelled = false;
+            queueMicrotask(() => {
+                if (!cancelled) setTemples([]);
+            });
+            return () => {
+                cancelled = true;
+            };
         }
 
         const fetchTemples = async () => {
@@ -70,7 +75,7 @@ export function useTemplesForFestival(festivalId) {
             }
         };
 
-        fetchTemples();
+        void fetchTemples();
     }, [festivalId]);
 
     return { temples, loading, error };
@@ -86,8 +91,13 @@ export function useTempleDetail(templeId) {
 
     useEffect(() => {
         if (!templeId) {
-            setTemple(null);
-            return;
+            let cancelled = false;
+            queueMicrotask(() => {
+                if (!cancelled) setTemple(null);
+            });
+            return () => {
+                cancelled = true;
+            };
         }
 
         const fetchTemple = async () => {
@@ -104,7 +114,7 @@ export function useTempleDetail(templeId) {
             }
         };
 
-        fetchTemple();
+        void fetchTemple();
     }, [templeId]);
 
     return { temple, loading, error };

@@ -35,6 +35,18 @@ def test_notice_ingestion_extracts_structured_fields_from_template() -> None:
     assert obligation["required_action"] == "Submit date-risk audit export."
 
 
+def test_notice_ingestion_distinguishes_ambiguous_review_status() -> None:
+    flow = ingest_notice(
+        """
+        issuer: Fictional cooperative board
+        deadline: 2082-04-31
+        action: Submit approximate date-risk audit export.
+        """
+    )
+
+    assert flow["extraction_receipt"]["review_status"] == "ambiguous_review_required"
+
+
 def test_notice_ingestion_requires_deadline() -> None:
     try:
         ingest_notice("issuer: sample\naction: Review only")

@@ -35,8 +35,8 @@ from app.services.compliance_service import (
     previous_working_day_payload,
 )
 from app.services.enterprise_calendar_service import parse_ad_date, parse_bs_date
+from app.services.release_context import active_release_id
 from app.services.timegraph_service import build_public_timegraph, trace_url_for_fact
-from app.services.trust_infrastructure_service import active_release_id
 from app.timegraph.fact_ids import (
     ad_bs_fact_id,
     bs_ad_fact_id,

@@ -110,6 +110,12 @@ The backend accepts either `CORS_ALLOW_ORIGINS` or `PARVA_CORS_ORIGINS`. Use the
 
 Do not set the public Render demo to `PARVA_ENV=production` unless Redis-backed rate limiting and all production checks are configured. `production` is the strict private or hardened deployment profile. The public demo profile is `public`.
 
+The repository Docker images also default to the `public` profile so a smoke
+container does not claim hardened production posture without injected Redis and
+source metadata. Operators who need a strict production container should set at
+least `PARVA_ENV=production`, `PARVA_SOURCE_URL`, `PARVA_RATE_LIMIT_BACKEND=redis`,
+and `PARVA_REDIS_URL` at deployment time.
+
 ## Rate limits, metrics, and security headers
 
 The public demo may use the in-process rate limiter because it is a lightweight

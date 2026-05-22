@@ -153,9 +153,7 @@
           "replacement": "app.rules.service",
           "allowed_importers": [
             "app.calendar",
-            "app.rules.service",
-            "app.rules.execution",
-            "app.rules.plugins.*"
+            "app.rules.festival_engine"
           ]
         }
       ],

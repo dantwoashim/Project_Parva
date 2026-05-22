@@ -2,7 +2,6 @@ import {
   useEffect,
   useState,
   Link,
-  NavLink,
   feedAPI,
   policyAPI,
   reliabilityAPI,
@@ -14,6 +13,14 @@ import {
   PageHero,
 } from './ExperienceCommon.jsx';
 import benchmarkSummary from '../../data/benchmarkSummary.json';
+import {
+  TrustLimitsStrip,
+  TrustLoading,
+  TrustMetricCard,
+  TrustPageFrame,
+} from './TrustPageParts.jsx';
+import { DEFAULT_PUBLIC_DOCS_URL } from '../../config/publicEndpoints.js';
+import { formatBytes, formatPercent, trustValue } from './trustPageUtils.js';
 
 export function RedesignIntegrations() {
   const [payload, setPayload] = useState(null);
@@ -86,22 +93,6 @@ export function RedesignIntegrations() {
   );
 }
 
-function trustValue(value, fallback = 'Unavailable') {
-  if (value === 0) return '0';
-  if (value === false) return 'No';
-  if (value === true) return 'Yes';
-  if (value === undefined || value === null || value === '') return fallback;
-  return String(value);
-}
-
-function formatBytes(value) {
-  const bytes = Number(value);
-  if (!Number.isFinite(bytes) || bytes <= 0) return 'Unavailable';
-  if (bytes > 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-  if (bytes > 1024) return `${Math.round(bytes / 1024)} KB`;
-  return `${bytes} B`;
-}
-
 function useTrustSurface() {
   const [payload, setPayload] = useState({
     runtime: null,
@@ -157,103 +148,6 @@ function useTrustSurface() {
   return { ...payload, loading: status.loading, error: status.error };
 }
 
-function TrustNav({ current }) {
-  const items = [
-    { id: 'trust', label: 'Trust', to: '/trust' },
-    { id: 'methodology', label: 'Methodology', to: '/methodology' },
-    { id: 'truth', label: 'Truth Lab', to: '/truth-lab' },
-    { id: 'about', label: 'About', to: '/about' },
-    { id: 'policy', label: 'API Policy', to: '/policy' },
-  ];
-  return (
-    <nav className="trust-nav" aria-label="Trust pages">
-      {items.map((item) => (
-        <NavLink key={item.id} to={item.to} className={item.id === current ? 'is-current' : undefined}>
-          {item.label}
-        </NavLink>
-      ))}
-    </nav>
-  );
-}
-
-function TrustLoading({ loading, error }) {
-  if (loading) {
-    return (
-      <article className="trust-alert">
-        <span aria-hidden="true" />
-        <div>
-          <strong>Loading backend trust surfaces</strong>
-          <p>Policy, reliability, benchmark, source review, and boundary data are being fetched live.</p>
-        </div>
-      </article>
-    );
-  }
-  if (error) {
-    return (
-      <article className="trust-alert is-error">
-        <span aria-hidden="true" />
-        <div>
-          <strong>Trust data unavailable</strong>
-          <p>{error}</p>
-        </div>
-      </article>
-    );
-  }
-  return null;
-}
-
-function TrustMetricCard({ eyebrow, title, value, detail, actionTo, actionLabel }) {
-  if (value === 'Unavailable' && !detail) return null;
-  return (
-    <article className="trust-metric-card">
-      <p className="eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
-      <strong>{value}</strong>
-      <p>{detail}</p>
-      {actionTo ? <Link className="text-link" to={actionTo}>{actionLabel || 'Open'}</Link> : null}
-    </article>
-  );
-}
-
-function formatPercent(value) {
-  return `${Number(value || 0).toFixed(2)}%`;
-}
-
-function TrustLimitsStrip({ runtime = {}, policy = {} }) {
-  const warnings = runtime.warnings || [];
-  return (
-    <section className="trust-limits-strip" aria-label="Known trust limits">
-      <div>
-        <span>Known limits</span>
-        <strong>{warnings.length ? `${warnings.length} warnings` : 'No runtime warnings'}</strong>
-        <small>{warnings[0] || 'Live feed did not report runtime warnings.'}</small>
-      </div>
-      <div>
-        <span>Advisory boundary</span>
-        <strong>{readableCategory(policy.usage || 'Informational')}</strong>
-        <small>{trustValue(policy.advisory, 'Verify ritual-critical decisions locally.')}</small>
-      </div>
-      <div>
-        <span>Failure posture</span>
-        <strong>Show uncertainty</strong>
-        <small>Missing feeds should hide claims instead of presenting fake certainty.</small>
-      </div>
-    </section>
-  );
-}
-
-function TrustPageFrame({ current, eyebrow, title, body, action, children }) {
-  return (
-    <AppChrome>
-      <main className="page-shell trust-page-shell">
-        <PageHero eyebrow={eyebrow} title={title} body={body} action={action} />
-        <TrustNav current={current} />
-        {children}
-      </main>
-    </AppChrome>
-  );
-}
-
 const infrastructureFeatures = [
   ['Calendar conversion', 'BS to AD, AD to BS, validation, today context, and calendar metadata for software systems.'],
   ['Fiscal-year logic', 'Nepali fiscal boundaries, reporting periods, and date-range helpers for operational workflows.'],
@@ -279,7 +173,7 @@ function InfrastructureFeatureGrid() {
 function PublicCtaRow() {
   return (
     <div className="public-cta-row">
-      <a className="primary-button" href="https://api.prabinghimire1.com.np/docs">Open API docs</a>
+      <a className="primary-button" href={DEFAULT_PUBLIC_DOCS_URL}>Open API docs</a>
       <a className="ghost-button" href="https://github.com/dantwoashim/Project_Parva">GitHub</a>
       <Link className="ghost-button" to="/policy">Read API policy</Link>
       <Link className="ghost-button" to="/trust">Review source posture</Link>
@@ -490,7 +384,7 @@ export function RedesignTrust() {
           ['Methodology', 'How date, place, source, and risk state become a result.', '/methodology'],
           ['Truth Lab', 'Live reliability status, benchmark manifests, source review queues, and boundary suites.', '/truth-lab'],
           ['API Policy', 'The exact advisory policy returned by the backend for consumers and integrators.', '/policy'],
-          ['API Docs', 'Public OpenAPI docs for stable route inspection.', 'https://api.prabinghimire1.com.np/docs'],
+          ['API Docs', 'Public OpenAPI docs for stable route inspection.', DEFAULT_PUBLIC_DOCS_URL],
           ['Verification reports', 'Reviewer packet and public verification evidence in the source repo.', 'https://github.com/dantwoashim/Project_Parva/tree/main/reports/external_reviewer_packet'],
           ['Known limitations', 'Supported ranges, authority boundaries, and unavailable external dependencies.', 'https://github.com/dantwoashim/Project_Parva/blob/main/docs/KNOWN_LIMITATIONS.md'],
           ['About', 'What Parva is, what it is not, and how to use it responsibly.', '/about'],

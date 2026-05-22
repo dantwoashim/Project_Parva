@@ -7,11 +7,11 @@ from typing import Any
 from fastapi import APIRouter, Header, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 
+from app.services.rulelang_evidence_service import build_rule_execution_evidence_packet
 from app.services.trust_infrastructure_service import (
     TrustInfrastructureError,
     build_compliance_decision_evidence_packet,
     build_date_conversion_evidence_packet,
-    build_rule_execution_evidence_packet,
     diff_releases_payload,
     get_release_payload,
     get_source_payload,

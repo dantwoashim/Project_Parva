@@ -4,13 +4,66 @@
 from __future__ import annotations
 
 import ast
+import json
+import sys
+from copy import deepcopy
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+BACKEND_ROOT = PROJECT_ROOT / "backend"
+if str(BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(BACKEND_ROOT))
 
 
 def _read(path: str) -> str:
     return (PROJECT_ROOT / path).read_text(encoding="utf-8")
+
+
+def _read_json(path: str) -> dict:
+    return json.loads((PROJECT_ROOT / path).read_text(encoding="utf-8"))
+
+
+def _verify_replay_artifacts() -> list[str]:
+    from app.membranes.proofpack import verify_proof_pack
+    from app.membranes.timepack import verify_timepack
+
+    failures: list[str] = []
+    proofpacks = (
+        "examples/external/proofpacks/civil-conversion.proofpack.json",
+        "examples/external/proofpacks/panchanga-summary.proofpack.json",
+        "examples/external/proofpacks/payroll-row.proofpack.json",
+    )
+    timepacks = (
+        "examples/external/timepacks/civil-conversion.timepack.json",
+        "examples/external/timepacks/panchanga-summary.timepack.json",
+        "examples/external/timepacks/payroll-date-risk.timepack.json",
+    )
+
+    for path in proofpacks:
+        ok, reason = verify_proof_pack(_read_json(path))
+        if not ok:
+            failures.append(f"{path} failed proofpack verification: {reason}")
+
+    for path in timepacks:
+        ok, reason = verify_timepack(_read_json(path))
+        if not ok:
+            failures.append(f"{path} failed Timepack verification: {reason}")
+
+    civil = _read_json("examples/external/proofpacks/civil-conversion.proofpack.json")
+    tampered_civil = deepcopy(civil)
+    tampered_civil["membrane"]["result"]["ad_date"] = "2099-01-01"
+    ok, reason = verify_proof_pack(tampered_civil)
+    if ok or reason == "verified":
+        failures.append("tampered civil proofpack unexpectedly verified")
+
+    payroll = _read_json("examples/external/timepacks/payroll-date-risk.timepack.json")
+    tampered_payroll = deepcopy(payroll)
+    tampered_payroll["aggregate_witness_hash"] = "sha256:tampered"
+    ok, reason = verify_timepack(tampered_payroll)
+    if ok or reason != "timepack_aggregate_hash_mismatch":
+        failures.append("tampered payroll Timepack did not fail aggregate hash verification")
+
+    return failures
 
 
 def _failures() -> list[str]:
@@ -160,6 +213,11 @@ def _failures() -> list[str]:
         ast.parse(_read("backend/app/panchanga/proof.py"))
     except SyntaxError as exc:
         failures.append(f"proof-system Python syntax error: {exc}")
+
+    try:
+        failures.extend(_verify_replay_artifacts())
+    except Exception as exc:  # noqa: BLE001
+        failures.append(f"proof artifact evidence verification failed: {exc}")
 
     return failures
 

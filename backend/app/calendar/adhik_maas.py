@@ -29,8 +29,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from .ephemeris.swiss_eph import EphemerisError
 from .ephemeris.time_utils import to_nepal_time
+from .lunar_month_names import get_lunar_month_name as _solar_lunar_month_name
 from .sankranti import (
-    BS_MONTH_NAMES,
     RASHI_NAMES,
     get_sun_rashi_at_time,
 )
@@ -161,8 +161,7 @@ def get_lunar_month_name(purnima_time: datetime) -> str:
     Returns:
         Lunar month name (BS month name, solar-based)
     """
-    rashi = get_sun_rashi_at_time(purnima_time)
-    return BS_MONTH_NAMES[rashi]
+    return _solar_lunar_month_name(purnima_time)
 
 
 def analyze_lunar_month(after: datetime) -> Dict[str, Any]:

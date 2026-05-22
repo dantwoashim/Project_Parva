@@ -13,8 +13,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
-from app.calendar.calculator_v2 import calculate_festival_v2, get_festival_rules_v3
 from app.engine.manifest import build_engine_manifest
+from app.rules.festival_engine import calculate_festival_v2, get_festival_rules_v3
 from app.sources.loader import JsonSourceLoader
 
 try:

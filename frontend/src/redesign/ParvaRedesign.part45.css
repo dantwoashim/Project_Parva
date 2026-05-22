@@ -1,0 +1,33 @@
+
+/* Final mobile navigation and context spacing overrides. */
+.mobile-date-card,
+.mobile-place-card,
+.mobile-search-button {
+  display: grid !important;
+  align-items: center !important;
+  padding: 8px 12px !important;
+}
+
+.mobile-date-card {
+  gap: 3px !important;
+}
+
+.mobile-date-card small,
+.mobile-date-card strong,
+.mobile-place-card strong {
+  display: block !important;
+}
+
+.mobile-date-card small {
+  margin: 0 !important;
+  font-size: 0.72rem !important;
+  letter-spacing: 0.12em !important;
+}
+
+.mobile-date-card strong,
+.mobile-place-card strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

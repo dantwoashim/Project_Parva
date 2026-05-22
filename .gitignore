@@ -25,6 +25,8 @@ frontend/public/festival-images/*.png
 .env
 .env.*
 !.env.example
+!.env.local.example
+!.env.production.example
 
 # OS/editor
 .DS_Store

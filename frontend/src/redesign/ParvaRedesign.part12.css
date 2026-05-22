@@ -1,0 +1,42 @@
+
+/* Automated accessibility gate repairs: these protect hit-area and focus regressions. */
+.parva-app .brand-mark {
+  min-height: 44px;
+  padding: 0 4px;
+}
+
+.parva-app .top-nav a,
+.parva-app .text-link,
+.parva-app .compact-link,
+.parva-app .next-festival-card a,
+.parva-app .evidence-mini-panel a,
+.parva-app .regional-note-card a,
+.parva-app .observance-note-panel a,
+.parva-app .festival-related-list a {
+  min-height: 40px;
+  align-items: center;
+}
+
+.parva-app input,
+.parva-app select,
+.parva-app textarea,
+.parva-app .festival-search-control input,
+.parva-app .search-field input,
+.parva-app .search-dialog input {
+  min-height: 40px;
+}
+
+.parva-app .search-field button,
+.parva-app .close-button,
+.parva-app .mobile-inline-search {
+  min-width: 40px;
+  min-height: 40px;
+}
+
+.parva-app input:focus-visible,
+.parva-app select:focus-visible,
+.parva-app textarea:focus-visible {
+  outline: 3px solid rgb(22 136 77 / 34%) !important;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgb(22 136 77 / 10%);
+}

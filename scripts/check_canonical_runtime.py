@@ -58,7 +58,12 @@ def module_name_for_path(path: Path) -> str:
 
 
 def imported_modules(path: Path) -> set[str]:
-    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    source = path.read_text(encoding="utf-8")
+    if source.startswith("\ufeff"):
+        raise CanonicalRuntimeError(
+            f"{path.relative_to(PROJECT_ROOT)} starts with a UTF-8 BOM; rewrite it as UTF-8 without BOM."
+        )
+    tree = ast.parse(source, filename=str(path))
     imports: set[str] = set()
     module_name = module_name_for_path(path)
     package_parts = module_name.split(".")[:-1]

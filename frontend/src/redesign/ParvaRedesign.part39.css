@@ -1,0 +1,320 @@
+@media (max-width: 860px) {
+  .parva-topbar {
+    gap: 5px;
+    padding: 6px 10px 6px;
+  }
+
+  .brand-mark {
+    width: 26px;
+    overflow: hidden;
+  }
+
+  .brand-mark > span:last-child {
+    display: none;
+  }
+
+  .mobile-inline-context {
+    min-height: 29px;
+    padding: 2px 8px;
+  }
+
+  .mobile-inline-context span {
+    font-size: 0.56rem;
+  }
+
+  .mobile-inline-context strong {
+    font-size: 0.7rem;
+  }
+
+  .mobile-inline-search {
+    width: 34px;
+    min-height: 32px;
+  }
+
+  .top-nav {
+    gap: 4px;
+    padding-bottom: 0;
+  }
+
+  .top-nav a {
+    min-height: 28px;
+    padding: 0 9px;
+    font-size: 0.68rem;
+  }
+
+  .page-shell {
+    padding-top: 10px;
+  }
+
+  .page-hero {
+    margin-bottom: 11px;
+  }
+
+  .today-page .page-hero h1,
+  .best-time-page .page-hero h1,
+  .birth-page .page-hero h1,
+  .festivals-page .page-hero h1 {
+    font-size: clamp(1.8rem, 8.8vw, 2.05rem);
+  }
+
+  .today-page .verification-strip {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    margin-bottom: 10px;
+  }
+
+  .today-page .verification-strip div {
+    min-height: 58px;
+    padding: 10px 11px;
+  }
+
+  .today-page .verification-strip div:nth-child(2),
+  .today-page .verification-strip div:nth-child(4) {
+    display: none;
+  }
+
+  .today-page .panchanga-panel .fact-row {
+    display: none;
+  }
+
+  .panchanga-panel {
+    padding: 12px;
+  }
+
+  .panchanga-panel .panel-heading {
+    align-items: start;
+    margin-bottom: 10px;
+  }
+
+  .panchanga-panel .panel-heading .compact-link {
+    min-height: 0;
+    align-self: center;
+    font-size: 0.76rem;
+  }
+
+  .panchanga-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    overflow: hidden;
+    border: 1px solid rgb(24 32 26 / 8%);
+    border-radius: 8px 8px 0 0;
+    background: rgb(24 32 26 / 8%);
+  }
+
+  .panchanga-grid .info-cell:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .info-cell {
+    min-height: 72px;
+    padding: 11px;
+    border: 0;
+    border-radius: 0;
+    background: var(--surface);
+  }
+
+  .cell-icon {
+    width: 27px;
+    height: 27px;
+    margin-bottom: 7px;
+    font-size: 0.96rem;
+  }
+
+  .info-cell small {
+    font-size: 0.63rem;
+  }
+
+  .info-cell strong {
+    margin-top: 3px;
+    font-size: 1rem;
+  }
+
+  .info-cell em {
+    display: none;
+  }
+
+  .fact-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    border-top: 1px solid rgb(24 32 26 / 8%);
+    background: rgb(24 32 26 / 8%);
+  }
+
+  .fact-row .info-cell {
+    min-height: 60px;
+    padding: 10px;
+  }
+
+  .fact-row .info-cell strong {
+    font-size: 0.92rem;
+  }
+
+  .fact-confidence {
+    grid-column: 1 / -1;
+    min-height: 48px;
+    padding: 10px;
+    background: var(--surface);
+    font-size: 0.74rem;
+  }
+
+  .source-dots {
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .observance-panel,
+  .best-overview,
+  .timeline-panel,
+  .quality-panel,
+  .source-panel,
+  .conversion-panel {
+    padding: 12px;
+  }
+
+  .observance-row {
+    gap: 8px;
+  }
+
+  .observance-card {
+    grid-template-columns: 32px minmax(0, 1fr);
+    min-height: 64px;
+    padding: 9px;
+  }
+
+  .observance-card > span {
+    width: 32px;
+    height: 32px;
+    font-size: 0.82rem;
+  }
+
+  .observance-card strong {
+    font-size: 0.82rem;
+    line-height: 1.25;
+  }
+
+  .observance-card small {
+    font-size: 0.68rem;
+  }
+
+  .best-window-row {
+    gap: 8px;
+  }
+
+  .mini-window {
+    min-height: 84px;
+    padding: 10px;
+  }
+
+  .mini-window strong {
+    font-size: 0.86rem;
+  }
+
+  .mini-window small {
+    font-size: 0.66rem;
+  }
+
+  .timeline-item {
+    min-height: 50px;
+    padding: 7px 8px;
+  }
+
+  .quality-row {
+    gap: 12px;
+  }
+
+  .score-ring {
+    width: 86px;
+    height: 86px;
+  }
+
+  .score-ring strong {
+    font-size: 1.7rem;
+  }
+
+  .festival-status-bar {
+    margin-bottom: -2px;
+  }
+
+  .festival-list-card__button {
+    grid-template-columns: 50px minmax(0, 1fr);
+    padding: 9px;
+  }
+
+  .festival-list-card__media .festival-art {
+    width: 46px;
+    height: 46px;
+  }
+
+  .festival-list-card__kicker em {
+    padding: 3px 6px;
+    font-size: 0.58rem;
+    letter-spacing: 0.02em;
+  }
+
+  .festival-list-card__kicker em:nth-child(2) {
+    display: none;
+  }
+
+  .festival-list-card__main > strong {
+    font-size: 0.98rem;
+  }
+
+  .festival-list-card__main small {
+    font-size: 0.7rem;
+  }
+
+  .festival-list-card__main > span:last-child {
+    display: none;
+  }
+
+  .festival-list-card__dates {
+    grid-template-columns: 1fr;
+    gap: 3px;
+    padding: 7px;
+  }
+
+  .festival-list-card__dates b,
+  .festival-list-card__dates span {
+    font-size: 0.66rem;
+  }
+
+  .festival-list-card__dates em {
+    width: 100%;
+    justify-content: center;
+    padding: 3px 6px;
+    font-size: 0.58rem;
+  }
+
+  .festival-list-card__expand {
+    display: none;
+  }
+
+  .today-page .location-mini,
+  .best-time-page .page-hero .hero-actions {
+    display: none;
+  }
+
+  .today-page .page-hero {
+    margin-bottom: 8px;
+  }
+
+  .today-page .page-hero p,
+  .best-time-page .page-hero p {
+    max-width: 28rem;
+  }
+
+  .birth-page .page-hero {
+    gap: 9px;
+  }
+
+  .birth-page .page-hero .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    width: 100%;
+  }
+
+  .birth-page .page-hero .hero-actions > * {
+    width: auto;
+    min-height: 38px;
+  }
+}

@@ -18,8 +18,8 @@ from typing import Dict
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.calendar.bikram_sambat import get_bs_month_name, gregorian_to_bs
-from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
 from app.calendar.panchanga import get_panchanga
+from app.rules.festival_engine import calculate_festival_v2, list_festivals_v2
 
 
 def generate_festival_package(year: int) -> Dict:

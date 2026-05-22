@@ -1,0 +1,32 @@
+@media (max-width: 982px) {
+  .parva-topbar {
+    grid-template-columns: 1fr !important;
+    align-items: start !important;
+  }
+
+  .top-nav {
+    justify-content: start !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    padding-bottom: 4px !important;
+  }
+
+  .top-nav a {
+    flex: 1 1 calc(33.333% - 8px) !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .top-actions {
+    display: none !important;
+  }
+
+  .mobile-context-bar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .mobile-search-button {
+    grid-column: 1 / -1;
+    width: 100% !important;
+  }
+}

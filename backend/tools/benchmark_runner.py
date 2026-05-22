@@ -19,8 +19,8 @@ from typing import Dict
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.calendar.bikram_sambat import bs_to_gregorian, gregorian_to_bs
-from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
 from app.calendar.tithi.tithi_udaya import get_udaya_tithi
+from app.rules.festival_engine import calculate_festival_v2, list_festivals_v2
 
 # ── Benchmark Test Suites ─────────────────────────────────────────
 

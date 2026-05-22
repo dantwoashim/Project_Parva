@@ -21,8 +21,8 @@ class EvalResult:
 
 def evaluate_v3():
     """Evaluate calculator_v2 and show what it calculates."""
-    from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
     from app.calendar.tithi import get_udaya_tithi
+    from app.rules.festival_engine import calculate_festival_v2, list_festivals_v2
 
     print("=" * 70)
     print("FESTIVAL DATE CALCULATOR V2 - EPHEMERIS VERIFICATION")

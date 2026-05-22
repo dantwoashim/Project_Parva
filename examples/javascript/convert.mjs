@@ -1,7 +1,9 @@
-import { ParvaClient } from "../../packages/parva-js/dist/index.js";
+import { loadParvaClient, resolveApiBase } from './_preflight.mjs';
+
+const { ParvaClient } = await loadParvaClient();
 
 const parva = new ParvaClient({
-  baseUrl: process.env.PARVA_API_BASE || "https://api.prabinghimire1.com.np/v3/api",
+  baseUrl: resolveApiBase(),
 });
 
 const payload = {

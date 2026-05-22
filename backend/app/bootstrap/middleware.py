@@ -738,6 +738,8 @@ def _engine_track_for_path(path: str) -> str:
 
 _STRICT_CSP = "default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
 
+# FastAPI's Swagger/ReDoc HTML still needs inline bootstrapping and jsdelivr assets.
+# Keep this exception path-scoped; all API/runtime routes use _STRICT_CSP.
 _API_DOCS_CSP = (
     "default-src 'self'; "
     "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "

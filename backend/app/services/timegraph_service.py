@@ -921,42 +921,6 @@ def list_conflicts_payload(
     }
 
 
-def fact_ids_for_date_conversion_result(result: dict[str, Any]) -> list[str]:
-    fact_ids: list[str] = []
-    gregorian = result.get("gregorian")
-    if isinstance(gregorian, str):
-        fact_ids.append(ad_bs_fact_id(gregorian))
-    bs = result.get("bikram_sambat") or result.get("bs")
-    if isinstance(bs, dict):
-        try:
-            year = int(bs["year"])
-            month = int(bs["month"])
-            day = int(bs["day"])
-            fact_ids.append(bs_ad_fact_id(year, month, day))
-            fact_ids.append(fiscal_period_fact_id(year, month, day))
-        except (KeyError, TypeError, ValueError):
-            pass
-    return _dedupe(fact_ids)
-
-
-def fact_ids_for_compliance_result(result: dict[str, Any]) -> list[str]:
-    profile_id = str(result.get("profile_id") or "")
-    date_block = result.get("date") if isinstance(result.get("date"), dict) else {}
-    bs_date = date_block.get("bs") if isinstance(date_block, dict) else None
-    if not profile_id or not isinstance(bs_date, str):
-        return []
-    try:
-        year, month, day = (int(part) for part in bs_date.split("-"))
-    except ValueError:
-        return [profile_policy_fact_id(profile_id)]
-    return [
-        profile_policy_fact_id(profile_id),
-        working_day_fact_id(profile_id, year, month, day),
-        fiscal_period_fact_id(year, month, day),
-        bs_ad_fact_id(year, month, day),
-    ]
-
-
 def trace_url_for_fact(fact_id: str) -> str:
     return _trace_url_for_fact(fact_id)
 

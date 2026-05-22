@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import secrets
 import uuid
@@ -300,6 +301,7 @@ class BillingService:
 
         return {
             "checkout_id": payment_id,
+            "claim_token": self._claim_token_for_checkout(payment_id),
             "customer_id": customer["id"],
             "subscription_id": subscription_id,
             "invoice_id": invoice_id,
@@ -327,6 +329,14 @@ class BillingService:
             return f"{self.settings.esewa_base_url}/epay/main?pid={payment_reference}"
         return f"/pricing/checkout/{payment_reference}?provider=esewa"
 
+    def _claim_token_for_checkout(self, checkout_id: str) -> str:
+        digest = hmac.new(
+            self.settings.api_key_pepper.encode("utf-8"),
+            f"checkout-claim:{checkout_id}".encode("utf-8"),
+            hashlib.sha256,
+        ).hexdigest()
+        return f"claim_{digest}"
+
     def get_checkout(self, checkout_id: str) -> dict[str, Any] | None:
         row = self.store.fetchone(
             f"""
@@ -342,7 +352,9 @@ class BillingService:
             """,
             (checkout_id, checkout_id),
         )
-        return row
+        if not row:
+            return None
+        return dict(row)
 
     def verify_checkout(
         self,
@@ -426,6 +438,7 @@ class BillingService:
         self,
         checkout_id: str,
         *,
+        claim_token: str | None = None,
         name: str | None = None,
         actor_principal: str | None = None,
         route: str | None = None,
@@ -435,6 +448,12 @@ class BillingService:
         checkout = self.get_checkout(checkout_id)
         if not checkout:
             raise ValueError("Checkout not found.")
+        expected_claim_token = self._claim_token_for_checkout(str(checkout["id"]))
+        if not claim_token or not hmac.compare_digest(
+            claim_token,
+            expected_claim_token,
+        ):
+            raise BillingAuthError(403, "Valid checkout claim token required.")
         if checkout["subscription_status"] != "active":
             raise BillingAuthError(403, "Subscription is not active yet.")
         existing = self.store.fetchone(
@@ -485,7 +504,7 @@ class BillingService:
         }
         self.record_audit_event(
             action="api_key.create",
-            actor_principal=actor_principal or f"checkout:{checkout_id}",
+            actor_principal=actor_principal or f"checkout:{checkout['id']}",
             route=route,
             object_type="api_key",
             object_id=key_id,
@@ -493,7 +512,11 @@ class BillingService:
             after=public_key_record,
             request_id=request_id,
             source_ip=source_ip,
-            metadata={"checkout_id": checkout_id, "key_prefix": key_prefix},
+            metadata={
+                "checkout_id": checkout["id"],
+                "key_prefix": key_prefix,
+                "claim_token_used": bool(claim_token),
+            },
         )
         return {
             "api_key": full_key,

@@ -1,0 +1,16 @@
+@media (max-width: 980px) {
+  .pricing-grid,
+  .commerce-workspace,
+  .usage-console {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-card {
+    min-height: 0;
+  }
+
+  .payment-qr-preview,
+  .payment-qr-preview.compact {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+}

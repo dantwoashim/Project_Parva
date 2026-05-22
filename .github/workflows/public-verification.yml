@@ -88,6 +88,7 @@ jobs:
           python scripts/conformance/generate_conformance_report.py --input samples/conformance/vendor_input_sample.csv --json-out samples/conformance/conformance_report_sample.json --md-out samples/conformance/conformance_report_sample.md
           python scripts/vendor_audit/run_vendor_date_risk_audit.py --input samples/vendor-date-risk-audit/input_sample.csv --json-out samples/vendor-date-risk-audit/output_report_sample.json --md-out samples/vendor-date-risk-audit/output_report_sample.md
           python scripts/frontend/check_component_size.py
+          python scripts/release/check_python_module_size.py
           python scripts/release/check_repo_hygiene.py
           python -m pytest tests/evidence tests/conformance tests/vendor_audit -q
 
@@ -121,10 +122,12 @@ jobs:
           python -m build packages/parva-agent-tools
           python -m build packages/parva-mcp-server
           npm --prefix packages/parva-js test
+          npm --prefix packages/parva-js audit --audit-level=moderate
           cd packages/parva-js
           npm pack --dry-run
           cd ../..
           npm --prefix packages/parva-local-kernel test
+          npm --prefix packages/parva-local-kernel audit --audit-level=moderate
           cd packages/parva-local-kernel
           npm pack --dry-run
           cd ../..
@@ -145,6 +148,7 @@ jobs:
         run: npm --prefix frontend ci
       - name: Run frontend gates
         run: |
+          npm --prefix frontend audit --audit-level=moderate
           npm --prefix frontend run lint
           npm --prefix frontend test -- --run
           npm --prefix frontend run build

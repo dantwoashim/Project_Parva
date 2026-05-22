@@ -1,0 +1,12 @@
+@media (max-width: 860px) {
+  .parva-app .brand-mark,
+  .parva-app .top-nav a,
+  .parva-app .mobile-inline-context,
+  .parva-app .mobile-inline-search {
+    min-height: 44px;
+  }
+
+  .parva-app .mobile-inline-search {
+    width: 44px;
+  }
+}

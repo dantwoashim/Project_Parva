@@ -15,8 +15,8 @@ from typing import Any, Dict, List
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.calendar.calculator_v2 import calculate_festival_v2, list_festivals_v2
 from app.provenance.snapshot import create_snapshot
+from app.rules.festival_engine import calculate_festival_v2, list_festivals_v2
 
 
 def generate_snapshot(years: List[int] = None) -> Dict[str, Any]:

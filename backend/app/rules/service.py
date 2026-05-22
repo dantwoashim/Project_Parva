@@ -6,7 +6,7 @@ from datetime import date, timedelta
 from typing import Any
 
 from app.cache import load_precomputed_festivals_between, load_precomputed_festivals_between_report
-from app.calendar.calculator_v2 import (
+from app.rules.festival_engine import (
     FestivalDate,
     calculate_festival_v2,
     get_festival_info_v2,

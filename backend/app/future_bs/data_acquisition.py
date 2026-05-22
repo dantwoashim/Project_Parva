@@ -1190,7 +1190,7 @@ def write_corpus_quality_report(metrics: dict[str, Any]) -> None:
         f"- Human/manual review required: {metrics['manual_review_required_count']}",
         f"- Official-claim usable month rows: {metrics['usable_for_official_claim_count']}",
         "",
-        "Tier 5/6 witnesses are useful for reconstruction and cross-checking, but they are not official truth.",
+        "Tier 5/6 witnesses are useful for reconstruction and cross-checking, but they are not official authority.",
     ]
     (CORPUS_DIR / "corpus_quality_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 

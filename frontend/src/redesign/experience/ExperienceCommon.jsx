@@ -303,9 +303,15 @@ function SearchDialog({ onClose }) {
   useEffect(() => {
     const value = query.trim();
     if (value.length < 2) {
-      setResults([]);
-      setLoading(false);
-      return undefined;
+      let cancelled = false;
+      queueMicrotask(() => {
+        if (cancelled) return;
+        setResults([]);
+        setLoading(false);
+      });
+      return () => {
+        cancelled = true;
+      };
     }
 
     let cancelled = false;

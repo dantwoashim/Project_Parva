@@ -59,7 +59,10 @@ function createMemoryStorage() {
 }
 
 function ensureStorage(name) {
-  const storage = window[name];
+  const descriptor = Object.getOwnPropertyDescriptor(window, name);
+  const storage = descriptor && Object.prototype.hasOwnProperty.call(descriptor, 'value')
+    ? descriptor.value
+    : null;
   if (
     storage
     && typeof storage.clear === 'function'

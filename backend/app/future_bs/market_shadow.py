@@ -1,7 +1,7 @@
 """Market-shadow witnesses for future-BS risk analysis.
 
 HamroPatro and static/legacy tables are treated as market-continuity signals,
-not official truth. This module exposes them for disagreement analysis without
+not official authority. This module exposes them for disagreement analysis without
 letting them affect official claim-readiness.
 """
 
@@ -55,7 +55,7 @@ def market_shadow_payload(bs_year: int, bs_month: int) -> dict[str, Any]:
         "hamropatro_shadow_prediction": hamro,
         "source_policy": "hamropatro_shadow_experimental",
         "official_claim_usable": False,
-        "claim_boundary": "Market-shadow signals are disagreement evidence only, not official truth.",
+        "claim_boundary": "Market-shadow signals are disagreement evidence only, not official authority.",
     }
 
 

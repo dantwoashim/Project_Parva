@@ -4,13 +4,16 @@ from __future__ import annotations
 
 import json
 import logging
+import math
 import secrets
 from asyncio import to_thread
 from datetime import datetime, timezone
+from ipaddress import ip_address
 from typing import Any, Literal
+from urllib.parse import urlparse
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field, HttpUrl, field_validator
 
 from app.billing import BillingAuthError, get_billing_service
 from app.billing.plans import FREE_DAILY_LIMIT, FREE_MONTHLY_LIMIT
@@ -42,17 +45,77 @@ class CheckoutRequest(BaseModel):
 class VerifyCheckoutRequest(BaseModel):
     status: str = Field(min_length=1, max_length=80)
     provider_reference: str | None = Field(default=None, max_length=180)
+    provider: Literal["manual", "khalti", "esewa", "payoneer"] = "manual"
     raw_payload: dict[str, Any] | None = None
+
+    @field_validator("raw_payload")
+    @classmethod
+    def _validate_raw_payload(cls, value: dict[str, Any] | None) -> dict[str, Any] | None:
+        if value is None:
+            return None
+        encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), default=str)
+        if len(encoded.encode("utf-8")) > 4096:
+            raise ValueError("raw_payload must be 4096 bytes or smaller")
+
+        def walk(node: Any, *, depth: int) -> None:
+            if depth > 5:
+                raise ValueError("raw_payload nesting depth must be 5 or less")
+            if isinstance(node, dict):
+                if len(node) > 40:
+                    raise ValueError("raw_payload objects may contain at most 40 keys")
+                for key, child in node.items():
+                    if not isinstance(key, str) or len(key) > 120:
+                        raise ValueError("raw_payload keys must be strings up to 120 characters")
+                    walk(child, depth=depth + 1)
+            elif isinstance(node, list):
+                if len(node) > 40:
+                    raise ValueError("raw_payload arrays may contain at most 40 items")
+                for child in node:
+                    walk(child, depth=depth + 1)
+            elif isinstance(node, float) and not math.isfinite(node):
+                raise ValueError("raw_payload numbers must be finite")
+            elif not isinstance(node, (str, int, float, bool, type(None))):
+                raise ValueError("raw_payload values must be JSON primitives, arrays, or objects")
+
+        walk(value, depth=0)
+        return value
 
 
 class CreateKeyRequest(BaseModel):
     checkout_id: str
+    claim_token: str | None = Field(default=None, min_length=32, max_length=160)
     name: str | None = Field(default=None, max_length=120)
 
 
 class WebhookRequest(BaseModel):
     url: HttpUrl
-    event_types: list[str] = Field(default_factory=lambda: ["festival.upcoming"])
+    event_types: list[str] = Field(default_factory=lambda: ["festival.upcoming"], min_length=1, max_length=12)
+
+    @field_validator("url")
+    @classmethod
+    def _reject_private_webhook_destinations(cls, value: HttpUrl) -> HttpUrl:
+        host = (urlparse(str(value)).hostname or "").strip().lower()
+        if host in {"localhost", "localhost.localdomain"} or host.endswith(".local"):
+            raise ValueError("webhook URL host must not be localhost or .local")
+        try:
+            address = ip_address(host)
+        except ValueError:
+            return value
+        if address.is_private or address.is_loopback or address.is_link_local or address.is_reserved:
+            raise ValueError("webhook URL host must not be private, loopback, link-local, or reserved IP")
+        return value
+
+    @field_validator("event_types")
+    @classmethod
+    def _validate_event_types(cls, value: list[str]) -> list[str]:
+        allowed = {"festival.upcoming", "calendar.release", "trust.release"}
+        normalized = [item.strip() for item in value if item.strip()]
+        if len(normalized) != len(set(normalized)):
+            raise ValueError("event_types must not contain duplicates")
+        unsupported = sorted(set(normalized) - allowed)
+        if unsupported:
+            raise ValueError(f"unsupported webhook event types: {', '.join(unsupported)}")
+        return normalized
 
 
 class MarkInvoicePaidRequest(BaseModel):
@@ -203,6 +266,7 @@ async def create_api_key(payload: CreateKeyRequest, request: Request):
             request,
             "create_api_key_for_checkout",
             payload.checkout_id,
+            claim_token=payload.claim_token,
             name=payload.name,
             **_audit_context(request),
         )

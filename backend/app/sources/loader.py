@@ -64,7 +64,7 @@ class JsonSourceLoader(SourceInterface):
             ambiguous_records += int(meta.get("ambiguous_records", 0) or 0)
             invalid_records += int(meta.get("invalid_records", 0) or 0)
 
-        merged_payload = {
+        merged_payload: dict[str, Any] = {
             "_meta": {
                 "name": "Project Parva MoHA Ground Truth Baseline",
                 "source_files": [path.name for path in sorted(ground_truth_dir.glob("baseline_*.json"))],

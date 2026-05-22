@@ -8,6 +8,35 @@ import subprocess
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+TEXT_FILE_SUFFIXES = {
+    ".css",
+    ".csv",
+    ".html",
+    ".js",
+    ".json",
+    ".jsx",
+    ".md",
+    ".mjs",
+    ".py",
+    ".toml",
+    ".ts",
+    ".tsx",
+    ".txt",
+    ".yaml",
+    ".yml",
+}
+WINDOWS_RESERVED_PATH_CHARS = set('<>:"\\|?*')
+WINDOWS_RESERVED_SEGMENTS = {
+    "CON",
+    "PRN",
+    "AUX",
+    "NUL",
+    *(f"COM{index}" for index in range(1, 10)),
+    *(f"LPT{index}" for index in range(1, 10)),
+}
+
+
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -136,23 +165,61 @@ def _tracked_path_issue(path: str) -> str | None:
     return None
 
 
+def _path_portability_issue(path: str) -> str | None:
+    if any(ord(char) < 32 for char in path):
+        return "control character in tracked path"
+    if any(char in WINDOWS_RESERVED_PATH_CHARS for char in path):
+        return "Windows-reserved character in tracked path"
+
+    for segment in path.split("/"):
+        if not segment:
+            continue
+        if segment.endswith((" ", ".")):
+            return "Windows-hostile trailing space or dot in tracked path"
+        stem = segment.split(".", 1)[0].upper()
+        if stem in WINDOWS_RESERVED_SEGMENTS:
+            return "Windows-reserved path segment"
+
+    return None
+
+
+def _has_utf8_bom(path: Path) -> bool:
+    if path.suffix.lower() not in TEXT_FILE_SUFFIXES:
+        return False
+    try:
+        with path.open("rb") as handle:
+            return handle.read(3) == b"\xef\xbb\xbf"
+    except OSError:
+        return False
+
+
 def main() -> int:
     issues: list[str] = []
 
     tracked = subprocess.run(
-        ["git", "ls-files"],
+        ["git", "ls-files", "-z"],
         cwd=PROJECT_ROOT,
         check=False,
         capture_output=True,
-        text=True,
     )
     if tracked.returncode == 0:
-        for path in tracked.stdout.splitlines():
-            if not (PROJECT_ROOT / path).exists():
+        tracked_paths = [
+            item.decode("utf-8", errors="surrogateescape")
+            for item in tracked.stdout.split(b"\0")
+            if item
+        ]
+        for path in tracked_paths:
+            tracked_path = PROJECT_ROOT / path
+            if not tracked_path.exists():
                 continue
+            portability_issue = _path_portability_issue(path)
+            if portability_issue:
+                issues.append(f"{path}: {portability_issue}")
             issue = _tracked_path_issue(path)
             if issue:
                 issues.append(f"{path}: {issue}")
+            if _has_utf8_bom(tracked_path):
+                issues.append(f"{path}: UTF-8 BOM is not allowed in tracked text files")
 
     root_package = PROJECT_ROOT / "package.json"
     if root_package.exists():

@@ -69,6 +69,7 @@
 
     function apiBase(query) {
       const configured = document.body.dataset.apiBase || query.get('api_base');
+      // Static embed exception: keep this fallback in sync with frontend/src/config/publicEndpoints.js.
       return (configured || 'https://api.prabinghimire1.com.np/v3/api').replace(/\/+$/, '');
     }
 

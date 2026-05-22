@@ -20,6 +20,35 @@ def test_classify_request_defaults_unknown_api_routes_to_denied():
     assert requirement.admin_only is True
 
 
+def test_billing_route_policies_are_explicit():
+    cases = {
+        ("GET", "/v3/api/billing/plans"): (False, "billing_plans_public"),
+        ("POST", "/v3/api/billing/checkout"): (False, "billing_checkout_create_public"),
+        ("GET", "/v3/api/billing/checkout/pay_123"): (False, "billing_checkout_status_public"),
+        ("POST", "/v3/api/billing/checkout/pay_123/verify"): (
+            False,
+            "billing_checkout_verify_public_or_admin",
+        ),
+        ("POST", "/v3/api/keys"): (False, "billing_key_claim_public"),
+        ("DELETE", "/v3/api/keys/key_123"): (True, "billing_key_revoke"),
+        ("GET", "/v3/api/me/usage"): (False, "billing_usage_public_or_key"),
+        ("POST", "/v3/api/webhooks"): (True, "billing_webhook_create"),
+    }
+
+    for (method, path), (required, policy_name) in cases.items():
+        requirement = classify_request(path, method)
+        assert requirement.required is required
+        assert requirement.policy_name == policy_name
+
+
+def test_unknown_billing_subroutes_require_admin():
+    requirement = classify_request("/v3/api/billing/internal-surprise", "POST")
+
+    assert requirement.required is True
+    assert requirement.policy_name == "billing_unclassified_admin"
+    assert requirement.admin_only is True
+
+
 def test_find_unclassified_api_routes_reports_missing_policies():
     app = FastAPI()
 

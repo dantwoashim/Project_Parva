@@ -335,7 +335,7 @@ def current_state_summary() -> dict[str, Any]:
         },
         "why_broad_99_not_proven": [
             "Official strict corpus remains far below the required case threshold.",
-            "Mixed-source and HamroPatro agreement are useful diagnostics but not official truth.",
+            "Mixed-source and HamroPatro agreement are useful diagnostics but not official authority.",
             "No-leakage broad rolling agreement remains below 95% in current diagnostics.",
         ],
     }

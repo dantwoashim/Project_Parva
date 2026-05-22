@@ -3,233 +3,24 @@ import { UtilityPageHeader } from '../consumer/UtilityPages';
 import { feedAPI } from '../services/api';
 import { useFestivals } from '../hooks/useFestivals';
 import { useMemberContext } from '../context/useMemberContext';
+import {
+  AdvancedLinkField,
+  ConnectedIntegrationCard,
+  FeedPresetCard,
+  PlatformPanel,
+} from './FeedSubscriptionCards.jsx';
+import {
+  buildIntegrationId,
+  detectDeviceProfile,
+  detectPlatformFamily,
+  FALLBACK_PLATFORM_GUIDES,
+  formatDateWindow,
+  formatFeedDate,
+  buildFallbackPresets,
+  orderPlatformsForDevice,
+  sortSavedIntegrations,
+} from './feedSubscriptionUtils.js';
 import './FeedSubscriptionsPage.css';
-
-function detectDeviceProfile() {
-  if (typeof navigator === 'undefined') {
-    return {
-      platform: 'google',
-      title: 'Google Calendar works well from a desktop browser.',
-      description: 'Copy the feed link first, then finish the subscription in Google Calendar from URL.',
-      badge: 'Desktop-friendly flow',
-    };
-  }
-
-  const userAgent = navigator.userAgent.toLowerCase();
-  const isAppleDevice = /(iphone|ipad|ipod|macintosh|mac os x)/.test(userAgent);
-  const isAndroid = /android/.test(userAgent);
-  const isMobile = /(iphone|ipad|ipod|android|mobile)/.test(userAgent);
-
-  if (isAppleDevice) {
-    return {
-      platform: 'apple',
-      title: 'This device can open Apple Calendar directly.',
-      description: 'Apple devices can subscribe in one jump with the webcal link, so this is the shortest path.',
-      badge: 'Best on iPhone, iPad, and Mac',
-    };
-  }
-
-  if (isAndroid || isMobile) {
-    return {
-      platform: 'google',
-      title: 'Google Calendar still needs one desktop step.',
-      description: 'Copy the feed on this device now, then paste it into Google Calendar from a computer browser when you are ready.',
-      badge: 'Copy now, finish on desktop',
-    };
-  }
-
-  return {
-    platform: 'google',
-    title: 'Google Calendar works well from this browser.',
-    description: 'Parva will copy the link first, then open Google Calendar where you can paste it into From URL.',
-    badge: 'Best on desktop browsers',
-  };
-}
-
-function formatFeedDate(value) {
-  if (!value) return 'Not available yet';
-  try {
-    return new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
-  } catch {
-    return value;
-  }
-}
-
-function formatDateWindow(windowValue) {
-  if (!windowValue?.start || !windowValue?.end) return 'Date window unavailable';
-  return `${formatFeedDate(windowValue.start)} - ${formatFeedDate(windowValue.end)}`;
-}
-
-function detectPlatformFamily(platform) {
-  if (platform.startsWith('apple')) return 'apple';
-  if (platform.startsWith('google')) return 'google';
-  return 'manual';
-}
-
-function buildIntegrationId(platform, feedKey, festivalIds = []) {
-  if (feedKey === 'custom') {
-    const selection = [...festivalIds].sort().join('-') || 'selection';
-    return `${platform}-${feedKey}-${selection}`;
-  }
-  return `${platform}-${feedKey}`;
-}
-
-function integrationPlatformLabel(integration) {
-  if (integration.platformFamily === 'apple') return 'Apple Calendar';
-  if (integration.platformFamily === 'google') return 'Google Calendar';
-  return 'Calendar file or direct feed';
-}
-
-const FALLBACK_PLATFORM_GUIDES = {
-  apple: {
-    title: 'Apple Calendar',
-    badge: 'Best on iPhone, iPad, and Mac',
-    description: 'Open the subscription link directly and Apple Calendar handles the rest.',
-    cta_label: 'Open in Apple Calendar',
-    copy_label: 'Copy Apple subscription link',
-    sync_expectation: 'Subscribed calendars usually refresh automatically after you confirm the subscription.',
-    steps: [
-      'Tap the Apple button.',
-      'Confirm the subscription inside Calendar.',
-      'Keep the calendar enabled so future updates continue to sync.',
-    ],
-  },
-  google: {
-    title: 'Google Calendar',
-    badge: 'Desktop browser required',
-    description: 'Google subscribes to public calendar feeds from a URL on desktop web.',
-    cta_label: 'Copy link and open Google Calendar',
-    copy_label: 'Copy Google feed link',
-    sync_expectation: 'Google Calendar subscriptions can take several hours to refresh after you add the URL.',
-    steps: [
-      'Copy the feed link first.',
-      'Open Google Calendar on your computer.',
-      'Use Other calendars > From URL and paste the link.',
-    ],
-  },
-  manual: {
-    title: 'Any calendar app',
-    badge: 'Manual or advanced setup',
-    description: 'Use the direct feed URL or download an ICS file for other apps and workflows.',
-    cta_label: 'Download .ics',
-    copy_label: 'Copy direct link',
-    sync_expectation: 'Use this route for Outlook, Fantastical, or when you want a one-off ICS file.',
-    steps: [
-      'Copy the direct calendar link or download the ICS file.',
-      'Paste it into Outlook, Fantastical, or another calendar app.',
-      'Use the advanced field only when you need the raw link.',
-    ],
-  },
-};
-
-function FeedPresetCard({ item, isActive, onSelect }) {
-  return (
-    <button
-      type="button"
-      className={`feeds-preset ${isActive ? 'feeds-preset--active' : ''}`}
-      onClick={() => onSelect(item.key)}
-    >
-      <span className="feeds-preset__eyebrow">
-        {item.key === 'all' ? 'Recommended' : item.category || 'Preset'}
-      </span>
-      <strong>{item.title}</strong>
-      <p>{item.description}</p>
-    </button>
-  );
-}
-
-function PlatformPanel({
-  platformKey,
-  guide,
-  onConnect,
-  onCopy,
-  onDownload,
-  onShare,
-  copied,
-  recommended,
-}) {
-  return (
-    <article className={`ink-card feeds-platform feeds-platform--${platformKey}`}>
-      <div className="feeds-platform__hero">
-        <div className="feeds-platform__badges">
-          <span className="feeds-platform__badge">{guide.badge}</span>
-          {recommended ? <span className="feeds-platform__badge feeds-platform__badge--recommended">Best for this device</span> : null}
-        </div>
-        <h2>{guide.title}</h2>
-        <p>{guide.description}</p>
-        {guide.sync_expectation ? <p className="feeds-platform__sync">{guide.sync_expectation}</p> : null}
-      </div>
-
-      <div className="feeds-platform__actions">
-        <button type="button" className="btn btn-primary btn-sm" onClick={() => onConnect(platformKey)}>
-          {guide.cta_label || (platformKey === 'apple' ? 'Open subscription' : platformKey === 'google' ? 'Copy link and open Google Calendar' : 'Open download')}
-        </button>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={() => onCopy(platformKey)}>
-          {copied === platformKey ? 'Copied' : guide.copy_label || 'Copy link'}
-        </button>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={onDownload}>
-          Download .ics
-        </button>
-        <button type="button" className="btn btn-ghost btn-sm" onClick={onShare}>
-          Share
-        </button>
-      </div>
-
-      <ol className="feeds-platform__steps">
-        {guide.steps.map((step) => (
-          <li key={step}>{step}</li>
-        ))}
-      </ol>
-    </article>
-  );
-}
-
-function AdvancedLinkField({ label, value }) {
-  return (
-    <details className="feed-card__advanced">
-      <summary>{label}</summary>
-      <label className="ink-input feed-card__advanced-field">
-        <span>Calendar link</span>
-        <input readOnly value={value} onFocus={(event) => event.target.select()} />
-      </label>
-    </details>
-  );
-}
-
-function ConnectedIntegrationCard({ integration, onOpen, onCopy, onRemove }) {
-  return (
-    <article className="ink-card feeds-connection-card">
-      <div className="feeds-connection-card__copy">
-        <div className="feeds-connection-card__head">
-          <span className="feeds-page__eyebrow">Connected</span>
-          <strong>{integration.title}</strong>
-        </div>
-        <p>{integrationPlatformLabel(integration)}</p>
-        <div className="feeds-connection-card__meta">
-          {integration.feedKind ? <span>{integration.feedKind === 'custom' ? 'Custom feed' : 'Preset feed'}</span> : null}
-          {integration.feedTitle ? <span>{integration.feedTitle}</span> : null}
-          {integration.selectionCount ? <span>{integration.selectionCount} selected</span> : null}
-        </div>
-        {integration.nextEvent?.summary ? (
-          <p>{`Next: ${integration.nextEvent.summary}${integration.nextEvent.start_date ? ` • ${formatFeedDate(integration.nextEvent.start_date)}` : ''}`}</p>
-        ) : null}
-        {integration.syncExpectation ? <p>{integration.syncExpectation}</p> : null}
-      </div>
-      <div className="feeds-connection-card__actions">
-        <button type="button" className="btn btn-secondary btn-sm" onClick={() => onOpen(integration)}>
-          Reopen
-        </button>
-        <button type="button" className="btn btn-secondary btn-sm" onClick={() => onCopy(integration)}>
-          Copy link
-        </button>
-        <button type="button" className="btn btn-ghost btn-sm" onClick={() => onRemove(integration)}>
-          Remove
-        </button>
-      </div>
-    </article>
-  );
-}
-
 export function FeedSubscriptionsPage() {
   const { state, startIntegration, removeIntegration } = useMemberContext();
   const [years, setYears] = useState(2);
@@ -240,13 +31,10 @@ export function FeedSubscriptionsPage() {
   const [catalog, setCatalog] = useState(null);
   const [customPlan, setCustomPlan] = useState(null);
   const [setupState, setSetupState] = useState(null);
-
   const { festivals, loading, error } = useFestivals({ qualityBand: 'all', algorithmicOnly: false });
   const deviceProfile = useMemo(() => detectDeviceProfile(), []);
-
   useEffect(() => {
     let cancelled = false;
-
     async function loadCatalog() {
       try {
         const payload = await feedAPI.getCatalog({ years, lang });
@@ -268,86 +56,7 @@ export function FeedSubscriptionsPage() {
     return festivals.filter((festival) => `${festival.name} ${festival.name_nepali || ''}`.toLowerCase().includes(normalized));
   }, [festivals, query]);
 
-  const fallbackPresets = useMemo(() => ([
-    {
-      key: 'all',
-      title: 'All Festivals',
-      description: 'The broadest Parva calendar, best for most personal use.',
-      feed_url: feedAPI.getAllLink(years, lang),
-      apple_subscribe_url: feedAPI.getAppleSubscribeLink(feedAPI.getAllLink(years, lang)),
-      google_copy_url: feedAPI.getAllLink(years, lang),
-      download_url: feedAPI.getDownloadLink(feedAPI.getAllLink(years, lang)),
-      platform_links: {
-        apple: {
-          open_url: feedAPI.getAppleSubscribeLink(feedAPI.getAllLink(years, lang)),
-          copy_url: feedAPI.getAllLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getAllLink(years, lang)),
-        },
-        google: {
-          open_url: feedAPI.getGoogleSetupUrl(),
-          copy_url: feedAPI.getAllLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getAllLink(years, lang)),
-        },
-        manual: {
-          open_url: feedAPI.getDownloadLink(feedAPI.getAllLink(years, lang)),
-          copy_url: feedAPI.getAllLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getAllLink(years, lang)),
-        },
-      },
-    },
-    {
-      key: 'national',
-      title: 'National Holidays',
-      description: 'A lighter calendar focused on major public observances.',
-      feed_url: feedAPI.getNationalLink(years, lang),
-      apple_subscribe_url: feedAPI.getAppleSubscribeLink(feedAPI.getNationalLink(years, lang)),
-      google_copy_url: feedAPI.getNationalLink(years, lang),
-      download_url: feedAPI.getDownloadLink(feedAPI.getNationalLink(years, lang)),
-      platform_links: {
-        apple: {
-          open_url: feedAPI.getAppleSubscribeLink(feedAPI.getNationalLink(years, lang)),
-          copy_url: feedAPI.getNationalLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getNationalLink(years, lang)),
-        },
-        google: {
-          open_url: feedAPI.getGoogleSetupUrl(),
-          copy_url: feedAPI.getNationalLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getNationalLink(years, lang)),
-        },
-        manual: {
-          open_url: feedAPI.getDownloadLink(feedAPI.getNationalLink(years, lang)),
-          copy_url: feedAPI.getNationalLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getNationalLink(years, lang)),
-        },
-      },
-    },
-    {
-      key: 'newari',
-      title: 'Newari Festivals',
-      description: 'A focused calendar for Kathmandu Valley and Newar observances.',
-      feed_url: feedAPI.getNewariLink(years, lang),
-      apple_subscribe_url: feedAPI.getAppleSubscribeLink(feedAPI.getNewariLink(years, lang)),
-      google_copy_url: feedAPI.getNewariLink(years, lang),
-      download_url: feedAPI.getDownloadLink(feedAPI.getNewariLink(years, lang)),
-      platform_links: {
-        apple: {
-          open_url: feedAPI.getAppleSubscribeLink(feedAPI.getNewariLink(years, lang)),
-          copy_url: feedAPI.getNewariLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getNewariLink(years, lang)),
-        },
-        google: {
-          open_url: feedAPI.getGoogleSetupUrl(),
-          copy_url: feedAPI.getNewariLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getNewariLink(years, lang)),
-        },
-        manual: {
-          open_url: feedAPI.getDownloadLink(feedAPI.getNewariLink(years, lang)),
-          copy_url: feedAPI.getNewariLink(years, lang),
-          download_url: feedAPI.getDownloadLink(feedAPI.getNewariLink(years, lang)),
-        },
-      },
-    },
-  ]), [lang, years]);
+  const fallbackPresets = useMemo(() => buildFallbackPresets(feedAPI, years, lang), [lang, years]);
 
   const presets = useMemo(
     () => catalog?.presets || catalog?.data?.presets || fallbackPresets,
@@ -370,10 +79,7 @@ export function FeedSubscriptionsPage() {
     [effectiveActivePreset, presets],
   );
   const recommendedPlatform = deviceProfile.platform;
-  const orderedPlatforms = useMemo(() => {
-    const base = ['apple', 'google'];
-    return base.sort((left, right) => (left === recommendedPlatform ? -1 : right === recommendedPlatform ? 1 : 0));
-  }, [recommendedPlatform]);
+  const orderedPlatforms = useMemo(() => orderPlatformsForDevice(recommendedPlatform), [recommendedPlatform]);
 
   const customLink = useMemo(() => {
     if (!selectedIds.length) return '';
@@ -384,16 +90,7 @@ export function FeedSubscriptionsPage() {
     () => festivals.filter((festival) => selectedIds.includes(festival.id)).map((festival) => festival.name),
     [festivals, selectedIds],
   );
-  const savedIntegrations = useMemo(
-    () => [...(state.integrations || [])].sort((left, right) => {
-      const parsedLeft = left?.createdAt ? Date.parse(left.createdAt) : 0;
-      const parsedRight = right?.createdAt ? Date.parse(right.createdAt) : 0;
-      const leftTime = Number.isFinite(parsedLeft) ? parsedLeft : 0;
-      const rightTime = Number.isFinite(parsedRight) ? parsedRight : 0;
-      return rightTime - leftTime;
-    }),
-    [state.integrations],
-  );
+  const savedIntegrations = useMemo(() => sortSavedIntegrations(state.integrations), [state.integrations]);
 
   useEffect(() => {
     if (!selectedIds.length) {

@@ -30,7 +30,8 @@ def test_billing_checkout_activation_and_api_key_usage(monkeypatch, caplog):
         },
     )
     assert checkout_response.status_code == 200
-    checkout_id = checkout_response.json()["checkout_id"]
+    checkout = checkout_response.json()
+    checkout_id = checkout["checkout_id"]
 
     invalid = client.get("/v3/api/calendar/today", headers={"X-API-Key": "bad-key"})
     assert invalid.status_code == 401
@@ -67,7 +68,10 @@ def test_billing_checkout_activation_and_api_key_usage(monkeypatch, caplog):
         for entry in audit_entries
     )
 
-    key_response = client.post("/v3/api/keys", json={"checkout_id": checkout_id})
+    key_response = client.post(
+        "/v3/api/keys",
+        json={"checkout_id": checkout_id, "claim_token": checkout["claim_token"]},
+    )
     assert key_response.status_code == 200
     api_key = key_response.json()["api_key"]
     assert api_key.startswith("parva_live_")
@@ -77,6 +81,47 @@ def test_billing_checkout_activation_and_api_key_usage(monkeypatch, caplog):
     usage = usage_response.json()
     assert usage["tier"] == "starter"
     assert usage["limit"] == 5000
+
+
+def test_billing_key_claim_token_is_required(monkeypatch):
+    client = _client(monkeypatch)
+
+    checkout_response = client.post(
+        "/v3/api/billing/checkout",
+        json={
+            "email": "token-customer@example.com",
+            "tier": "starter",
+            "provider": "manual_bank_qr",
+        },
+    )
+    assert checkout_response.status_code == 200
+    payload = checkout_response.json()
+
+    paid_response = client.post(
+        f"/v3/api/admin/invoices/{payload['invoice_id']}/mark-paid",
+        headers={"Authorization": "Bearer parva-test-admin-token"},
+        json={"provider_reference": "manual-qr-paid"},
+    )
+    assert paid_response.status_code == 200
+
+    missing_claim = client.post(
+        "/v3/api/keys",
+        json={"checkout_id": payload["checkout_id"]},
+    )
+    assert missing_claim.status_code == 403
+
+    invalid_claim = client.post(
+        "/v3/api/keys",
+        json={"checkout_id": payload["checkout_id"], "claim_token": "claim_" + "0" * 64},
+    )
+    assert invalid_claim.status_code == 403
+
+    valid_claim = client.post(
+        "/v3/api/keys",
+        json={"checkout_id": payload["checkout_id"], "claim_token": payload["claim_token"]},
+    )
+    assert valid_claim.status_code == 200
+    assert valid_claim.json()["api_key"].startswith("parva_live_")
 
 
 def test_payoneer_manual_invoice_requires_admin_confirmation(monkeypatch):
@@ -94,7 +139,10 @@ def test_payoneer_manual_invoice_requires_admin_confirmation(monkeypatch):
     payload = checkout_response.json()
     assert payload["status"] == "manual_invoice"
 
-    key_response = client.post("/v3/api/keys", json={"checkout_id": payload["checkout_id"]})
+    key_response = client.post(
+        "/v3/api/keys",
+        json={"checkout_id": payload["checkout_id"], "claim_token": payload["claim_token"]},
+    )
     assert key_response.status_code == 403
 
     paid_response = client.post(
@@ -105,7 +153,10 @@ def test_payoneer_manual_invoice_requires_admin_confirmation(monkeypatch):
     assert paid_response.status_code == 200
     assert paid_response.json()["status"] == "paid"
 
-    activated_key = client.post("/v3/api/keys", json={"checkout_id": payload["checkout_id"]})
+    activated_key = client.post(
+        "/v3/api/keys",
+        json={"checkout_id": payload["checkout_id"], "claim_token": payload["claim_token"]},
+    )
     assert activated_key.status_code == 200
     assert activated_key.json()["api_key"].startswith("parva_live_")
 

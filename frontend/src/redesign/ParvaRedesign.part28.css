@@ -1,0 +1,18 @@
+@media (max-width: 1180px) {
+  .festival-hero-actions {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .festival-hero-actions .festival-search-control,
+  .festival-hero-actions .sort-control {
+    min-width: 0;
+    flex: 1 1 240px;
+  }
+
+  .festival-expanded-lead,
+  .festival-expanded-grid,
+  .festival-story-grid {
+    grid-template-columns: 1fr;
+  }
+}

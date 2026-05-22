@@ -98,8 +98,8 @@ def _fetch_inprocess(spec: RequestSpec) -> FetchResult:
         os.environ.setdefault("PARVA_SHOW_PRIVATE_SCHEMA", "false")
         os.environ.setdefault("PARVA_RATE_LIMIT_ENABLED", "false")
         os.environ.setdefault("PARVA_REQUIRE_PRECOMPUTED", "false")
-        from fastapi.testclient import TestClient
         from app.bootstrap.app_factory import create_app
+        from fastapi.testclient import TestClient
 
         _INPROCESS_CLIENT = TestClient(create_app())
 

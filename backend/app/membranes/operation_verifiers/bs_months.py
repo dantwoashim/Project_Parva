@@ -2,15 +2,16 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from app.membranes.operation_verifiers.common import verify_common_replay
 from app.membranes.source_resolution import resolve_bs_months_source
+from app.services.bs_month_metadata_service import BsMonthCalculationMode
 from app.services.enterprise_calendar_service import bs_months_payload
 
 
 def _expected(bs_year: int, mode: str) -> dict[str, Any]:
-    payload = bs_months_payload(bs_year, mode=mode, trace_id=None)
+    payload = bs_months_payload(bs_year, mode=cast(BsMonthCalculationMode, mode), trace_id=None)
     return {
         "bs_year": payload["bs_year"],
         "requested_mode": payload["requested_mode"],

@@ -1,0 +1,46 @@
+
+/* Final accessibility floor: keep tappable/focusable controls above audit minimums. */
+.parva-app a[href] {
+  display: inline-flex;
+  min-width: 36px;
+  min-height: 40px;
+  align-items: center;
+}
+
+.parva-app button {
+  min-width: 36px;
+  min-height: 40px;
+}
+
+.parva-app .calendar-grid button {
+  min-height: 40px !important;
+}
+
+.parva-app .top-nav a,
+.parva-app .brand-mark {
+  min-height: 44px !important;
+}
+
+.parva-app .brand-mark {
+  min-width: 44px !important;
+}
+
+.parva-app input,
+.parva-app select,
+.parva-app textarea {
+  min-height: 40px !important;
+}
+
+.parva-app input[type="date"],
+.parva-app input[type="time"] {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.parva-app input:focus-visible,
+.parva-app select:focus-visible,
+.parva-app textarea:focus-visible {
+  outline: 3px solid rgb(22 136 77 / 36%) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgb(22 136 77 / 12%) !important;
+}

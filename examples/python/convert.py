@@ -1,11 +1,11 @@
 from __future__ import annotations
 
 import json
-import os
 
 from parva import ParvaClient
+from preflight import resolve_api_base
 
-client = ParvaClient(base_url=os.environ.get("PARVA_API_BASE", "https://api.prabinghimire1.com.np/v3/api"))
+client = ParvaClient(base_url=resolve_api_base())
 
 payload = {
     "ad_to_bs": client.ad_to_bs("2026-04-14"),

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -38,9 +39,22 @@ def _python_version(command: list[str]) -> tuple[int, int] | None:
         return None
 
 
+def _configured_python_candidates(configured: str | None = None, args: str | None = None) -> list[list[str]]:
+    configured = os.getenv("PARVA_PYTHON", "").strip() if configured is None else configured.strip()
+    args = os.getenv("PARVA_PYTHON_ARGS", "").strip() if args is None else args.strip()
+    if not configured:
+        return []
+
+    extra_args = shlex.split(args, posix=os.name != "nt") if args else []
+    candidates = [[configured, *extra_args]]
+    split_configured = shlex.split(configured, posix=os.name != "nt")
+    if len(split_configured) > 1:
+        candidates.append([*split_configured, *extra_args])
+    return candidates
+
+
 def _resolve_python311() -> list[str]:
-    configured = os.getenv("PARVA_PYTHON", "").strip()
-    candidates: list[list[str]] = [[configured]] if configured else []
+    candidates: list[list[str]] = _configured_python_candidates()
     candidates.append([sys.executable])
 
     py_launcher = shutil.which("py")
@@ -57,7 +71,8 @@ def _resolve_python311() -> list[str]:
             return command
 
     raise SystemExit(
-        "Unable to find Python 3.11. Set PARVA_PYTHON to a Python 3.11 executable or install Python 3.11 on PATH."
+        "Unable to find Python 3.11. Set PARVA_PYTHON to a Python 3.11 executable "
+        "or use PARVA_PYTHON=py with PARVA_PYTHON_ARGS=-3.11."
     )
 
 
@@ -104,6 +119,7 @@ def main() -> int:
         ("public safety gate", [*python, "scripts/release/check_public_safety_gate.py"]),
         ("documentation links", [*python, "scripts/check_docs_links.py"]),
         ("canonical runtime registry", [*python, "scripts/check_canonical_runtime.py"]),
+        ("backend import cycles", [*python, "scripts/release/check_import_cycles.py", "backend/app"]),
         ("maturity lanes", [*python, "scripts/check_maturity_lanes.py"]),
         ("Render public blueprint", [*python, "scripts/release/check_render_blueprint.py"]),
         ("temporal trust verification", [*python, "scripts/parva_trust_verify.py"]),
@@ -121,6 +137,9 @@ def main() -> int:
         ("ceiling climax demos", [*python, "scripts/release/run_ceiling_climax_demos.py"]),
         ("public claims", [*python, "scripts/release/check_public_claims.py"]),
         ("public surface security", [*python, "scripts/release/check_public_surface_security.py"]),
+        ("Python module size", [*python, "scripts/release/check_python_module_size.py"]),
+        ("TypeScript module size", [*python, "scripts/release/check_ts_module_size.py"]),
+        ("mypy scope ratchet", [*python, "scripts/release/check_mypy_scope.py"]),
         ("CI Node 24 readiness", [*python, "scripts/release/check_ci_node24_readiness.py"]),
         ("Panchanga JPL lane report", [*python, "scripts/release/check_jpl_lane.py", "--check"]),
         ("route proof contract matrix", [*python, "scripts/release/generate_route_proof_matrix.py", "--check"]),
@@ -149,9 +168,13 @@ def main() -> int:
         ),
         ("Python package SDK tests", [*python, "-m", "pytest", "packages/parva-python/tests", "-q"]),
         ("frontend lint", build_npm_command(["--prefix", "frontend", "run", "lint"], node_runtime)),
+        ("frontend dependency audit", build_npm_command(["--prefix", "frontend", "audit", "--audit-level=moderate"], node_runtime)),
         ("frontend tests", build_npm_command(["--prefix", "frontend", "test", "--", "--run"], node_runtime)),
         ("frontend build", build_npm_command(["--prefix", "frontend", "run", "build"], node_runtime)),
+        ("JavaScript SDK dependency audit", build_npm_command(["--prefix", "packages/parva-js", "audit", "--audit-level=moderate"], node_runtime)),
         ("JavaScript SDK tests", build_npm_command(["--prefix", "packages/parva-js", "test"], node_runtime)),
+        ("local kernel dependency audit", build_npm_command(["--prefix", "packages/parva-local-kernel", "audit", "--audit-level=moderate"], node_runtime)),
+        ("local kernel tests", build_npm_command(["--prefix", "packages/parva-local-kernel", "test"], node_runtime)),
     ]
 
     for label, command in checks:

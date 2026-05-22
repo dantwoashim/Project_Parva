@@ -14,10 +14,10 @@ from typing import Any, Optional
 
 from app.calendar.bikram_sambat import bs_to_gregorian, gregorian_to_bs
 from app.calendar.bs_year import bs_solar_year_for_gregorian_year
-from app.calendar.calculator_v2 import calculate_festival_v2
 from app.calendar.lunar_calendar import find_festival_in_lunar_month
 from app.calendar.sankranti import find_makara_sankranti, find_mesh_sankranti
 from app.calendar.tithi.tithi_boundaries import find_next_tithi as find_next_tithi_boundary
+from app.rules.festival_engine import calculate_festival_v2
 
 from .schema_v4 import FestivalRuleV4
 

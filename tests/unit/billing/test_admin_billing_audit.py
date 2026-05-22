@@ -39,6 +39,7 @@ def test_billing_admin_actions_are_persistently_audited_without_secret_key_mater
     )
     created = service.create_api_key_for_checkout(
         checkout["checkout_id"],
+        claim_token=checkout["claim_token"],
         actor_principal="admin",
         route="/v3/api/keys",
         request_id="req-2",
@@ -75,8 +76,14 @@ def test_checkout_key_creation_is_idempotent_after_payment_verification():
     )
     service.verify_checkout(checkout["checkout_id"], status="paid")
 
-    first = service.create_api_key_for_checkout(checkout["checkout_id"])
-    second = service.create_api_key_for_checkout(checkout["checkout_id"])
+    first = service.create_api_key_for_checkout(
+        checkout["checkout_id"],
+        claim_token=checkout["claim_token"],
+    )
+    second = service.create_api_key_for_checkout(
+        checkout["checkout_id"],
+        claim_token=checkout["claim_token"],
+    )
 
     assert first["key"]["id"] == second["key"]["id"]
     assert second["api_key"] is None

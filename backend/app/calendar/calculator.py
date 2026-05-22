@@ -30,6 +30,9 @@ from pydantic import BaseModel, ConfigDict
 from .bikram_sambat import bs_to_gregorian
 from .tithi.tithi_boundaries import find_next_tithi
 
+# Compatibility surface: keep existing imports working, but route new behavior
+# through the canonical calendar/tithi modules instead of expanding this file.
+
 # Compatibility constants for existing code
 PAKSHA_SHUKLA = "shukla"
 PAKSHA_KRISHNA = "krishna"

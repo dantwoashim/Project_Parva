@@ -33,6 +33,7 @@
 
     function apiBase(query) {
       const configured = document.body.dataset.apiBase || query.get('api_base');
+      // Static embed exception: keep this fallback in sync with frontend/src/config/publicEndpoints.js.
       return (configured || 'https://api.prabinghimire1.com.np/v3/api').replace(/\/+$/, '');
     }
 
@@ -88,7 +89,11 @@
 
         if (!items.length) {
           const empty = document.createElement('li');
-          empty.innerHTML = '<span>No festivals in this window.</span><strong>-</strong>';
+          const label = document.createElement('span');
+          label.textContent = 'No festivals in this window.';
+          const count = document.createElement('strong');
+          count.textContent = '-';
+          empty.append(label, count);
           list.appendChild(empty);
           return;
         }

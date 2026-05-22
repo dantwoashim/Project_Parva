@@ -189,7 +189,7 @@ def evaluate_festival(
     Returns:
         EvaluationResult with pass/fail and details
     """
-    from app.calendar.calculator_v2 import calculate_festival_v2
+    from app.rules.festival_engine import calculate_festival_v2
 
     expected = datetime.strptime(expected_date_str, "%Y-%m-%d").date()
     year = expected.year

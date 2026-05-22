@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE = 'https://api.prabinghimire1.com.np/v3/api';
+import { DEFAULT_PUBLIC_API_BASE } from '../config/publicEndpoints.js';
 
 function trimSlash(value) {
   return String(value || '').trim().replace(/\/+$/, '');
@@ -10,7 +10,7 @@ export function resolveApiBase(env = import.meta.env) {
     return explicitBase;
   }
 
-  return DEFAULT_API_BASE;
+  return DEFAULT_PUBLIC_API_BASE;
 }
 
 export const API_BASE = resolveApiBase();

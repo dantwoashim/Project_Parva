@@ -43,7 +43,7 @@ come only from source-policy final-test rows, currently the official-verified
 2078-2083 window.
 
 Weak third-party and needs-review rows can appear in the verification target
-queue, but they do not become official truth and do not support official-grade
+queue, but they do not become official authority and do not support official-grade
 accuracy claims.
 
 ## Command

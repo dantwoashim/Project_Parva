@@ -1,0 +1,160 @@
+/* Final public shell overrides must stay last in this file. */
+.parva-topbar {
+  grid-template-columns: auto minmax(0, 1fr) auto !important;
+  gap: clamp(14px, 2vw, 28px) !important;
+  min-height: 78px !important;
+  height: auto !important;
+  padding: 14px clamp(18px, 3vw, 40px) !important;
+}
+
+.mobile-inline-context,
+.mobile-inline-search {
+  display: none !important;
+}
+
+.top-actions {
+  grid-column: auto !important;
+  display: flex !important;
+  justify-content: end !important;
+  padding: 0 !important;
+}
+
+.top-actions .place-pill,
+.top-actions .profile-chip {
+  display: none !important;
+}
+
+.top-actions .icon-button {
+  width: auto !important;
+  min-width: 82px !important;
+  padding: 0 14px !important;
+  font-size: 0 !important;
+}
+
+.top-actions .icon-button::before {
+  content: "Trust";
+  font-size: 0.86rem;
+}
+
+.top-actions .search-trigger {
+  width: auto !important;
+  min-width: 130px;
+}
+
+.top-actions .search-trigger > span:first-child,
+.top-actions .search-trigger kbd {
+  display: none !important;
+}
+
+.mobile-context-bar {
+  position: relative !important;
+  top: auto !important;
+  z-index: 20;
+  display: grid !important;
+  grid-template-columns: minmax(220px, 1fr) minmax(180px, 0.75fr) auto;
+  gap: 10px;
+  width: min(calc(100% - 48px), 1400px);
+  margin: 12px auto 0;
+  padding: 10px;
+  border: 1px solid rgb(31 24 16 / 9%);
+  border-radius: var(--radius-card);
+  background: rgb(255 253 248 / 86%);
+  box-shadow: var(--soft-shadow);
+  backdrop-filter: blur(14px);
+}
+
+.mobile-date-card,
+.mobile-place-card,
+.mobile-search-button {
+  min-height: 48px !important;
+  border-radius: var(--radius-control) !important;
+  box-shadow: none !important;
+}
+
+.mobile-place-card {
+  grid-template-columns: minmax(0, 1fr) !important;
+  max-width: none !important;
+}
+
+.mobile-place-card > span {
+  display: none !important;
+}
+
+.mobile-search-button {
+  width: auto !important;
+  min-width: 104px !important;
+  padding: 0 14px !important;
+  font-size: 0 !important;
+}
+
+.mobile-search-button::before {
+  content: "Search";
+  font-size: 0.86rem;
+  font-weight: 750;
+}
+
+.location-mini small {
+  display: none !important;
+}
+
+.location-mini::after {
+  content: "Open place context";
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.place-search-helper {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.place-context-card > div > p:not(.eyebrow):not(.place-context-meta) {
+  display: none !important;
+}
+
+.mini-window > span,
+.panchanga-table article > span,
+.place-buttons button > span,
+.place-suggestions button > span {
+  font-size: 0 !important;
+}
+
+.mini-window > span::before {
+  content: "Window";
+  font-size: 0.72rem;
+}
+
+.panchanga-table article > span::before {
+  content: "Signal";
+  font-size: 0.72rem;
+}
+
+.place-buttons button > span::before,
+.place-suggestions button > span::before {
+  content: "Place";
+  font-size: 0.72rem;
+}
+
+.search-field > span {
+  display: none !important;
+}
+
+.search-field button,
+.swap-button {
+  font-size: 0 !important;
+}
+
+.search-field button::before {
+  content: "Clear";
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.swap-button::before {
+  content: "Reset";
+  font-size: 0.74rem;
+  font-weight: 750;
+}

@@ -48,7 +48,7 @@ class EvalResult:
 
 def evaluate_v2(acceptable_variance: int = 1, use_overrides: bool = True) -> List[EvalResult]:
     """Run evaluation using calculator_v2."""
-    from app.calendar.calculator_v2 import calculate_festival_v2
+    from app.rules.festival_engine import calculate_festival_v2
 
     results = []
 

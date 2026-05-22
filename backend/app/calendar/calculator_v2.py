@@ -29,6 +29,9 @@ from .lunar_calendar import (
 )
 from .sankranti import find_makara_sankranti, find_mesh_sankranti
 
+# Compatibility surface: preserve the historical V2 entry points, but add new
+# festival behavior through the canonical rule and calendar packages.
+
 # =============================================================================
 # FESTIVAL RULES V3 LOADER
 # =============================================================================

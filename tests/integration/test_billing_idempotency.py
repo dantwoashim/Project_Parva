@@ -43,8 +43,12 @@ def test_manual_payment_activation_and_key_creation_are_idempotent(monkeypatch):
     assert first_paid.json()["status"] == "paid"
     assert second_paid.json()["status"] == "paid"
 
-    first_key = client.post("/v3/api/keys", json={"checkout_id": checkout["checkout_id"]})
-    second_key = client.post("/v3/api/keys", json={"checkout_id": checkout["checkout_id"]})
+    claim_payload = {
+        "checkout_id": checkout["checkout_id"],
+        "claim_token": checkout["claim_token"],
+    }
+    first_key = client.post("/v3/api/keys", json=claim_payload)
+    second_key = client.post("/v3/api/keys", json=claim_payload)
 
     assert first_key.status_code == 200
     assert second_key.status_code == 200

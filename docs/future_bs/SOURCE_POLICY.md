@@ -24,7 +24,7 @@ Calendar evidence is classified by source strength:
 
 Only official verified evidence and carefully reviewed printed evidence can support official-grade claims.
 
-Weak, third-party, software-table, or market-shadow sources may help identify disagreement clusters and review targets. They do not become official truth and do not drive public claim-readiness.
+Weak, third-party, software-table, or market-shadow sources may help identify disagreement clusters and review targets. They do not become official authority and do not drive public claim-readiness.
 
 All future-BS outputs must preserve the claim boundary:
 

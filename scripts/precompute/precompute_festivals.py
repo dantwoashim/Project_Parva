@@ -14,7 +14,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.calendar.calculator_v2 import (  # noqa: E402
+from app.rules.festival_engine import (  # noqa: E402
     calculate_festival_v2,
     list_festivals_v2,
 )

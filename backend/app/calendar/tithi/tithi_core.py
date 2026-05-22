@@ -27,6 +27,7 @@ from ..ephemeris.swiss_eph import (
     LON_KATHMANDU,
     calculate_sunrise,
 )
+from ..lunar_month_names import get_lunar_month_name as get_sankranti_lunar_month_name
 
 # =============================================================================
 # TITHI NAMES
@@ -286,8 +287,6 @@ def get_lunar_month_name(purnima_time: datetime) -> str:
     """
     if not isinstance(purnima_time, datetime):
         raise TypeError("purnima_time must be a datetime")
-
-    from ..adhik_maas import get_lunar_month_name as get_sankranti_lunar_month_name
 
     return get_sankranti_lunar_month_name(purnima_time)
 

@@ -23,8 +23,13 @@ FIXTURE_ROOT = PROJECT_ROOT / "data" / "ephemeris" / "fixtures"
 
 
 class EphemerisProvider(Protocol):
-    provider_id: str
-    provider_kind: str
+    @property
+    def provider_id(self) -> str:
+        """Stable provider identifier."""
+
+    @property
+    def provider_kind(self) -> str:
+        """Provider class used in proof metadata."""
 
     def metadata(self) -> dict[str, Any]:
         """Return replay-relevant provider metadata."""

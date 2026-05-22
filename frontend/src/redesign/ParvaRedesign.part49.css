@@ -1,0 +1,17 @@
+@media (max-width: 640px) {
+  .infrastructure-hero h1 {
+    font-size: clamp(2.15rem, 12vw, 3.1rem);
+  }
+
+  .infrastructure-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .public-cta-row {
+    display: grid;
+  }
+
+  .public-cta-row > * {
+    width: 100%;
+  }
+}

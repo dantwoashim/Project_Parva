@@ -26,8 +26,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PARVA_SERVE_FRONTEND=true \
     PARVA_ENABLE_EXPERIMENTAL_API=false \
     PARVA_RATE_LIMIT_ENABLED=true \
+    PARVA_RATE_LIMIT_BACKEND=memory \
+    PARVA_REQUIRE_PRECOMPUTED=false \
     PARVA_JPL_DE440_KERNEL=/app/data/ephemeris/jpl/de440.bsp \
-    PARVA_ENV=production
+    PARVA_ENV=public
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \

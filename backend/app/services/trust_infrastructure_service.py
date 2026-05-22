@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
@@ -19,10 +18,14 @@ from app.services.calendar_conversion_service import (
     parse_iso_date,
 )
 from app.services.compliance_service import evaluate_date_payload
+from app.services.release_context import DEFAULT_RELEASE_ID, active_release_id
+from app.services.timegraph_fact_links import (
+    fact_ids_for_compliance_result,
+    fact_ids_for_date_conversion_result,
+)
 
 PROJECT_ROOT = project_root()
 PUBLIC_RELEASE_DIR = data_dir() / "public" / "releases"
-DEFAULT_RELEASE_ID = "parva-bs-public-demo"
 DEFAULT_MANIFEST_PATH = PUBLIC_RELEASE_DIR / f"{DEFAULT_RELEASE_ID}.manifest.json"
 DEFAULT_SOURCE_REGISTRY_PATH = PUBLIC_RELEASE_DIR / f"{DEFAULT_RELEASE_ID}.sources.json"
 DEFAULT_TRUST_LOG_PATH = data_dir() / "public" / "trust" / "parva-trust-log.jsonl"
@@ -56,10 +59,6 @@ def sha256_file(path: Path) -> str:
     if path.suffix.lower() in TEXT_HASH_SUFFIXES:
         data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
     return hashlib.sha256(data).hexdigest()
-
-
-def active_release_id() -> str:
-    return os.getenv("PARVA_ACTIVE_RELEASE_ID", DEFAULT_RELEASE_ID).strip() or DEFAULT_RELEASE_ID
 
 
 def _repo_path(relative_path: str) -> Path:
@@ -378,40 +377,6 @@ def build_compliance_decision_evidence_packet(
     )
 
 
-def build_rule_execution_evidence_packet(
-    *,
-    release_id: str | None = None,
-    rule_id: str,
-    input_payload: dict[str, Any],
-    trace_id: str | None = None,
-    generated_at: str | None = None,
-) -> dict[str, Any]:
-    selected = resolve_release_id(release_id)
-    from app.services.rulelang_service import RuleLangError, evaluate_rule_payload  # noqa: PLC0415
-
-    try:
-        result = evaluate_rule_payload(
-            rule_id,
-            input_payload,
-            release_id=selected,
-            trace_id=trace_id,
-            include_evidence=False,
-        )
-    except RuleLangError as exc:
-        raise TrustInfrastructureError(str(exc), status_code=exc.status_code) from exc
-    return build_evidence_packet(
-        packet_type="rule_execution",
-        input_payload={
-            "rule_id": rule_id,
-            "input": input_payload,
-        },
-        result=result,
-        release_id=selected,
-        trace_id=trace_id,
-        generated_at=generated_at,
-    )
-
-
 def _parse_bs_date_string(value: str) -> tuple[int, int, int]:
     parts = value.split("-")
     if len(parts) != 3:
@@ -435,10 +400,6 @@ def build_evidence_packet(
     manifest = _load_manifest(release_id)
     raw_meta = result.get("meta")
     meta = cast(dict[str, Any], raw_meta) if isinstance(raw_meta, dict) else {}
-    from app.services.timegraph_service import (  # noqa: PLC0415
-        fact_ids_for_compliance_result,
-        fact_ids_for_date_conversion_result,
-    )
 
     if packet_type == "date_conversion":
         fact_ids = fact_ids_for_date_conversion_result(result)

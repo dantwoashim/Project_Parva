@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 from app.boundary.vector import BoundaryVector
 from app.calendar.bikram_sambat import (
@@ -405,9 +405,10 @@ def build_fiscal_year_capsule(bs_year: int) -> dict[str, Any]:
 
 
 def build_bs_months_capsule(bs_year: int, *, mode: str = "canonical") -> dict[str, Any]:
+    from app.services.bs_month_metadata_service import BsMonthCalculationMode
     from app.services.enterprise_calendar_service import bs_months_payload
 
-    payload = bs_months_payload(bs_year, mode=mode, trace_id=None)
+    payload = bs_months_payload(bs_year, mode=cast(BsMonthCalculationMode, mode), trace_id=None)
     result = {
         "bs_year": payload["bs_year"],
         "requested_mode": payload["requested_mode"],

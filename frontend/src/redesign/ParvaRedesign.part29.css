@@ -1,0 +1,148 @@
+@media (max-width: 720px) {
+  .festivals-page {
+    width: min(100% - 28px, 1560px);
+  }
+
+  .festival-status-bar {
+    display: grid;
+    gap: 8px;
+  }
+
+  .festival-status-bar p {
+    text-align: left;
+  }
+
+  .festival-list-card {
+    border-radius: 14px;
+    contain-intrinsic-size: 184px;
+  }
+
+  .festival-list-card__button {
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    min-height: 0;
+    padding: 12px;
+  }
+
+  .festival-list-card__media {
+    padding: 0;
+  }
+
+  .festival-list-card__media .festival-art {
+    width: 68px;
+    height: 68px;
+    min-height: 0;
+    border-radius: 13px;
+  }
+
+  .festival-list-card__body {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0;
+    gap: 10px;
+  }
+
+  .festival-list-card__main > strong {
+    font-size: 1.28rem;
+    line-height: 1.08;
+  }
+
+  .festival-list-card__main > span:last-child {
+    -webkit-line-clamp: 2;
+  }
+
+  .festival-list-card__dates {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .festival-list-card__expand {
+    width: 100%;
+  }
+
+  .festival-list-card__dates b,
+  .festival-list-card__dates span {
+    white-space: normal;
+  }
+
+  .festival-list-card__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .festival-list-card__actions button,
+  .festival-list-card__actions a {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .festival-list-card__quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 0 12px 12px;
+  }
+
+  .festival-list-card__quick-actions button,
+  .festival-list-card__quick-actions a {
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 0.72rem;
+    text-align: center;
+  }
+
+  .festival-expanded-panel {
+    margin: 0 16px 16px;
+    padding: 16px;
+  }
+
+  .festival-expanded-lead dl {
+    grid-template-columns: 1fr;
+  }
+
+  .festival-expanded-lead dl div,
+  .festival-expanded-lead dl div:nth-child(odd),
+  .festival-expanded-lead dl div:nth-last-child(-n + 2) {
+    border-right: 0;
+    border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--line);
+  }
+
+  .festival-expanded-lead dl div:last-child {
+    border-bottom: 0;
+  }
+
+  .festival-ritual-steps li {
+    grid-template-columns: 1fr;
+  }
+
+  .festival-ritual-steps p {
+    grid-column: 1;
+  }
+
+  .festival-filter-layer {
+    align-items: end;
+    justify-items: stretch;
+  }
+
+  .festival-filter-sheet {
+    width: auto;
+    height: min(84vh, 720px);
+    margin: 10px;
+    border-radius: 24px 24px 18px 18px;
+  }
+
+  .festival-filter-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .festival-filter-actions .primary-button {
+    grid-column: 1 / -1;
+  }
+
+  .chip-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

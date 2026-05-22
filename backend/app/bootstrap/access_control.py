@@ -45,6 +45,41 @@ PROVENANCE_READ_PREFIXES = (
 )
 PROVENANCE_PREFIXES = ("/api/provenance", "/v3/api/provenance")
 API_PREFIXES = ("/api/", "/v2/api/", "/v3/api/", "/v4/api/", "/v5/api/")
+
+
+def _canonical_api_path(path: str) -> str:
+    if path.startswith("/v3/api/"):
+        return "/api/" + path.removeprefix("/v3/api/")
+    return path
+
+
+def _billing_requirement(path: str, method: str) -> AccessRequirement | None:
+    canonical = _canonical_api_path(path)
+    method = method.upper()
+    if canonical == "/api/billing/plans" and method == "GET":
+        return AccessRequirement(required=False, policy_name="billing_plans_public")
+    if canonical == "/api/billing/checkout" and method == "POST":
+        return AccessRequirement(required=False, policy_name="billing_checkout_create_public")
+    if canonical.startswith("/api/billing/checkout/"):
+        if canonical.endswith("/verify") and method == "POST":
+            return AccessRequirement(required=False, policy_name="billing_checkout_verify_public_or_admin")
+        if method == "GET":
+            return AccessRequirement(required=False, policy_name="billing_checkout_status_public")
+    if canonical == "/api/keys" and method == "POST":
+        return AccessRequirement(required=False, policy_name="billing_key_claim_public")
+    if canonical.startswith("/api/keys/") and method == "DELETE":
+        return AccessRequirement(required=True, policy_name="billing_key_revoke", scope="commercial.read")
+    if canonical == "/api/me/usage" and method == "GET":
+        return AccessRequirement(required=False, policy_name="billing_usage_public_or_key")
+    if canonical == "/api/webhooks" and method == "GET":
+        return AccessRequirement(required=False, policy_name="billing_webhooks_hidden")
+    if canonical == "/api/webhooks" and method == "POST":
+        return AccessRequirement(required=True, policy_name="billing_webhook_create", scope="commercial.read")
+    if canonical.startswith(("/api/billing", "/api/keys", "/api/me/usage", "/api/webhooks")):
+        return AccessRequirement(required=True, policy_name="billing_unclassified_admin", admin_only=True)
+    return None
+
+
 @dataclass(frozen=True)
 class Principal:
     principal_type: str
@@ -183,8 +218,9 @@ def classify_request(path: str, method: str) -> AccessRequirement:
     if path.startswith(("/api/admin", "/v3/api/admin", "/v2/api/admin", "/v4/api/admin", "/v5/api/admin")):
         return AccessRequirement(required=True, policy_name="billing_admin", admin_only=True)
 
-    if path.startswith(("/api/billing", "/v3/api/billing", "/api/keys", "/v3/api/keys", "/api/me/usage", "/v3/api/me/usage", "/api/webhooks", "/v3/api/webhooks")):
-        return AccessRequirement(required=False, policy_name="billing")
+    billing_requirement = _billing_requirement(path, method)
+    if billing_requirement is not None:
+        return billing_requirement
 
     for policy in ROUTE_POLICY_REGISTRY:
         if policy.matches(path, method):

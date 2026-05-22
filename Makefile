@@ -1,5 +1,5 @@
 PYTHON ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; elif command -v python3.11 >/dev/null 2>&1; then echo python3.11; else echo python; fi)
-NPM ?= npx -y -p node@20 -p npm@10 npm
+NPM ?= $(shell $(PYTHON) scripts/resolve_npm_command.py)
 
 .PHONY: install install-backend install-sdk install-frontend dev dev-backend dev-frontend dev-local \
 	test test-backend test-frontend lint lint-backend lint-frontend build build-frontend \

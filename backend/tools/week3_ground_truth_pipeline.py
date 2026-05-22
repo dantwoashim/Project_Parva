@@ -270,7 +270,7 @@ def _rule_group(festival_id: str) -> str:
 def build_discrepancy_and_scorecard(
     baseline: Dict[str, Any],
 ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-    from app.calendar.calculator_v2 import calculate_festival_v2
+    from app.rules.festival_engine import calculate_festival_v2
 
     records = baseline.get("records", [])
     usable_records = [r for r in records if r.get("status") == "usable" and r.get("gregorian_date")]

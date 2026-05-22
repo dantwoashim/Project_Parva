@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from datetime import date
 from typing import Any
 
@@ -9,6 +10,7 @@ from fastapi import Request
 from fastapi.responses import PlainTextResponse
 
 from app.integrations import build_ical_feed, collect_feed_events
+from app.integrations.ical import FeedEvent
 
 _PRESET_CONFIGS = (
     {
@@ -117,12 +119,12 @@ def _webcal_url(url: str) -> str:
     return url
 
 
-def _summarize_events(events: list[object], *, include_highlights: bool) -> dict[str, Any]:
+def _summarize_events(events: Sequence[FeedEvent], *, include_highlights: bool) -> dict[str, Any]:
     today = date.today()
     first_event = events[0] if events else None
     last_event = events[-1] if events else None
     upcoming = next((event for event in events if event.end_date >= today), None)
-    payload = {
+    payload: dict[str, Any] = {
         "event_count": len(events),
         "date_window": {
             "start": first_event.start_date.isoformat(),
@@ -239,15 +241,15 @@ def build_catalog_response(
     platform_actions = platform_variant == "rich"
     presets = [
         build_feed_manifest(
-            key=preset["key"],
-            title=preset["title"],
-            description=preset["description"],
+            key=str(preset["key"]),
+            title=str(preset["title"]),
+            description=str(preset["description"]),
             request=request,
             route_name=route_names[preset["key"]],
             years=years,
             lang=lang,
             start_year=start_year,
-            category=preset["category"],
+            category=str(preset["category"]) if preset["category"] else None,
             platform_actions=platform_actions,
         )
         for preset in _PRESET_CONFIGS

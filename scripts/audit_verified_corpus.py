@@ -7,6 +7,7 @@ import argparse
 import csv
 import hashlib
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -55,6 +56,20 @@ VALID_STATUSES = {
 }
 
 
+class MissingPrivateCorpusError(FileNotFoundError):
+    """Raised when the private Future-BS corpus is intentionally absent."""
+
+
+def _missing_private_corpus_message(path: Path) -> str:
+    return (
+        f"Future-BS verified month corpus is missing: {path}. "
+        "This is a private/wide-corpus input intentionally absent from public clones. "
+        "Provide the corpus with --corpus or restore data/future_bs/corpus/verified_month_lengths.csv "
+        "from the private source archive before running this audit. "
+        "The script will not create an empty replacement because that would weaken accuracy evidence."
+    )
+
+
 def row_checksum(row: dict[str, str]) -> str:
     parts = [
         row.get("bs_year", ""),
@@ -80,6 +95,11 @@ def normalize_row(row: dict[str, str]) -> dict[str, str]:
 
 
 def audit(path: Path, *, fix_checksums: bool = False) -> tuple[dict, list[dict[str, str]]]:
+    if not path.exists():
+        raise MissingPrivateCorpusError(_missing_private_corpus_message(path))
+    if fix_checksums and not path.is_file():
+        raise MissingPrivateCorpusError(_missing_private_corpus_message(path))
+
     rows: list[dict[str, str]] = []
     issues: list[dict[str, str]] = []
     source_counts: dict[str, int] = {}
@@ -169,7 +189,11 @@ def main() -> int:
         default=Path("data/future_bs/corpus/audit_log.jsonl"),
     )
     args = parser.parse_args()
-    summary, _ = audit(args.corpus, fix_checksums=args.fix_checksums)
+    try:
+        summary, _ = audit(args.corpus, fix_checksums=args.fix_checksums)
+    except MissingPrivateCorpusError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
     args.audit_log.parent.mkdir(parents=True, exist_ok=True)
     audit_entry = {
         "timestamp": datetime.now(timezone.utc).isoformat(),

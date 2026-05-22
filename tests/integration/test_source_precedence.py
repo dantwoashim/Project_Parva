@@ -1,7 +1,7 @@
 """Source precedence tests (Week 8)."""
 
-from app.calendar.calculator_v2 import calculate_festival_v2
 from app.calendar.overrides import get_festival_override, get_festival_override_info
+from app.rules.festival_engine import calculate_festival_v2
 from app.sources.loader import DEFAULT_PRIORITY, get_source_loader
 
 
