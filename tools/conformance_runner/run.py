@@ -41,6 +41,8 @@ PUBLIC_ISSUE_CASE_FILES = [
     "business_workflow_cases.json",
 ]
 
+PROFILE_DIR = ROOT / "conformance" / "profiles"
+
 PUBLICATION_STATUSES = {
     "official_verified",
     "printed_verified",
@@ -556,7 +558,7 @@ def run(case_root: Path, *, api_base_url: str | None = None) -> tuple[int, list[
     return failures, results
 
 
-def run_public_issue_suite(case_root: Path) -> PublicIssueSummary:
+def run_public_issue_suite(case_root: Path, case_ids: set[str] | None = None) -> PublicIssueSummary:
     results: list[CaseResult] = []
     loaded = _load_public_issue_files(case_root)
     seen_ids: set[str] = set()
@@ -564,6 +566,8 @@ def run_public_issue_suite(case_root: Path) -> PublicIssueSummary:
     for path, payload in loaded:
         for index, case in enumerate(payload["cases"]):
             case_id = str(case.get("id") or f"{path.name}:{index}")
+            if case_ids is not None and case_id not in case_ids:
+                continue
             try:
                 _validate_public_issue_case(case, path, index)
                 if case_id in seen_ids:
@@ -596,10 +600,48 @@ def run_public_issue_suite(case_root: Path) -> PublicIssueSummary:
     )
 
 
+def _load_profile(profile_name: str) -> dict[str, Any]:
+    path = PROFILE_DIR / f"{profile_name}.json"
+    payload = _load_json(path)
+    _require_keys(
+        payload,
+        [
+            "id",
+            "description",
+            "target_workflows",
+            "related_public_cases",
+            "checks",
+            "authority_boundary",
+            "status",
+        ],
+        _display_path(path),
+    )
+    if payload["id"] != profile_name:
+        raise ConformanceError(f"{_display_path(path)}: profile id must be {profile_name!r}")
+    if not isinstance(payload["related_public_cases"], list) or not payload["related_public_cases"]:
+        raise ConformanceError(f"{_display_path(path)}: related_public_cases must be non-empty")
+    if not str(payload["authority_boundary"]).strip():
+        raise ConformanceError(f"{_display_path(path)}: authority_boundary must be non-empty")
+    return payload
+
+
+def run_profile(profile_name: str, case_root: Path) -> tuple[dict[str, Any], PublicIssueSummary]:
+    profile = _load_profile(profile_name)
+    case_ids = {str(case_id) for case_id in profile["related_public_cases"]}
+    summary = run_public_issue_suite(case_root, case_ids=case_ids)
+    missing = case_ids - {result.case_id for result in summary.results}
+    if missing:
+        raise ConformanceError(
+            f"profile {profile_name!r} references unknown public issue cases: {', '.join(sorted(missing))}"
+        )
+    return profile, summary
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run the public Parva conformance suite.")
     parser.add_argument("--case-root", default=str(ROOT / "conformance"), help="Case root directory")
     parser.add_argument("--suite", default="default", choices=["default", "public-nepali-date-issues"])
+    parser.add_argument("--profile", choices=["nepal-compliance"], help="Run a named conformance profile")
     parser.add_argument("--api", action="store_true", help="Also run supported cases against API")
     args = parser.parse_args(argv)
 
@@ -611,6 +653,23 @@ def main(argv: list[str] | None = None) -> int:
             return 2
 
     try:
+        if args.profile:
+            profile, summary = run_profile(args.profile, Path(args.case_root))
+            print("Parva conformance profile summary")
+            print(f"profile: {profile['id']}")
+            print(f"description: {profile['description']}")
+            print(f"case_root: {Path(args.case_root)}")
+            print(f"total: {summary.total}")
+            print(f"executed: {summary.executed}")
+            print(f"passed: {summary.passed}")
+            print(f"failed: {summary.failed}")
+            print(f"skipped: {summary.skipped}")
+            print(f"review_needed: {summary.review_needed}")
+            for result in summary.results:
+                status = "PASS" if result.passed else "FAIL"
+                print(f"{status} {result.file} :: {result.case_id} :: {result.message}")
+            return 1 if summary.failed else 0
+
         if args.suite == "public-nepali-date-issues":
             summary = run_public_issue_suite(Path(args.case_root))
             print("Parva public issue conformance summary")

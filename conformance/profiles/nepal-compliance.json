@@ -1,0 +1,68 @@
+{
+  "id": "nepal-compliance",
+  "description": "Conformance profile for Nepal-facing ERP, accounting, payroll, and compliance workflows that handle BS/AD dates.",
+  "target_workflows": [
+    "invoice and document posting dates",
+    "payroll periods and salary slips",
+    "fiscal year classification",
+    "attendance and leave date ranges",
+    "frontend/backend date conversion consistency",
+    "future BS review and source-status handling"
+  ],
+  "related_public_cases": [
+    "yarsa-257-258-2087-mangsir-source-drift",
+    "yarsa-252-payroll-asoj-month-duration",
+    "go-nepali-15-2024-06-14-ad-to-bs-boundary",
+    "node-nepali-datetime-82-source-provenance",
+    "node-nepali-datetime-121-future-date-accuracy",
+    "medic-bikram-sambat-26-2081-2082-month-corrections",
+    "leapfrog-70-2082-2083-month-length-cluster",
+    "cht-core-7925-invalid-kartik-2079-accepted",
+    "erpnext-31245-bs-support-request",
+    "frappe-books-787-bs-support-request"
+  ],
+  "checks": [
+    {
+      "id": "frontend_backend_calendar_source_consistency",
+      "description": "Compare duplicated frontend and backend BS month tables when a project stores both.",
+      "status": "covered_by_public_case"
+    },
+    {
+      "id": "month_length_validation",
+      "description": "Check BS month day counts for reported public mismatch rows where exact values are available.",
+      "status": "covered_by_public_cases"
+    },
+    {
+      "id": "bs_ad_roundtrip",
+      "description": "Check BS/AD conversion boundaries and roundtrip-sensitive dates.",
+      "status": "covered_by_public_cases"
+    },
+    {
+      "id": "invalid_bs_date_rejection",
+      "description": "Reject impossible BS dates instead of accepting malformed or out-of-range day/month combinations.",
+      "status": "covered_by_public_case"
+    },
+    {
+      "id": "fiscal_year_boundary_classification",
+      "description": "Classify BS/AD fiscal year edges with explicit boundary handling.",
+      "status": "planned_profile_extension"
+    },
+    {
+      "id": "payroll_month_duration_review",
+      "description": "Flag payroll periods whose BS month duration is reported or computed inconsistently.",
+      "status": "manual_reproduction_required"
+    },
+    {
+      "id": "future_bs_review_needed_classification",
+      "description": "Keep future BS data behind review-needed/source-status boundaries when public issue evidence shows uncertainty.",
+      "status": "covered_by_public_case"
+    },
+    {
+      "id": "holiday_working_day_placeholder",
+      "description": "Reserved for source-backed holiday and working-day fixtures when public data is represented.",
+      "status": "placeholder_without_authority_claim"
+    }
+  ],
+  "authority_boundary": "This profile is decision-support and conformance-test guidance only; it is not government, legal, tax, payroll, banking, or official calendar authority.",
+  "status": "public_conformance_profile_v1"
+}
