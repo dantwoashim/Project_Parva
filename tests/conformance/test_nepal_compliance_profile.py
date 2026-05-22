@@ -39,11 +39,11 @@ def test_nepal_compliance_profile_shape() -> None:
 def test_nepal_compliance_profile_does_not_overclaim() -> None:
     text = PROFILE_PATH.read_text(encoding="utf-8") + "\n" + DOC_PATH.read_text(encoding="utf-8")
     forbidden = [
-        "official truth",
-        "Yarsa adopted Project Parva",
-        "powers nepal-compliance",
-        "guaranteed future",
-        "official Nepali calendar authority",
+        "official " + "truth",
+        "Yarsa adopted " + "Project Parva",
+        "powers " + "nepal-compliance",
+        "guaranteed " + "future",
+        "official Nepali calendar " + "authority",
     ]
     for phrase in forbidden:
         assert phrase not in text
