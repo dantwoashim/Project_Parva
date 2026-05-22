@@ -4,6 +4,49 @@
   "description": "Public business workflow evidence where Nepali date support affects product requirements.",
   "cases": [
     {
+      "id": "yarsa-252-payroll-asoj-month-duration",
+      "title": "Yarsa nepal-compliance payroll Asoj month-duration report",
+      "source_project": "yarsa/nepal-compliance",
+      "source_url": "https://github.com/yarsa/nepal-compliance",
+      "source_issue_url": "https://github.com/yarsa/nepal-compliance/issues/252",
+      "source_pr_url": null,
+      "source_commit": null,
+      "failure_class": "payroll_date_risk",
+      "evidence_level": "business_wedge",
+      "reported_input": {
+        "workflow": "monthly payroll entry for Asoj",
+        "reported_symptom": "Asoj has 31 days, but payroll automatically pulls 30"
+      },
+      "reported_expected": {
+        "month_duration_days": 31
+      },
+      "reported_actual": {
+        "month_duration_days": 30
+      },
+      "parva_expected": {
+        "case_role": "payroll_date_risk_investigation_target"
+      },
+      "executable": false,
+      "runner_operation": null,
+      "confidence": "needs_manual_verification",
+      "authority_boundary": "public business workflow report; not a legal, tax, payroll, or production-impact determination",
+      "safe_claim": "Yarsa issue #252 is tracked as reported payroll date-risk evidence requiring reproduction before upstream action.",
+      "forbidden_claims": [
+        "Do not claim payroll authority.",
+        "Do not claim production impact beyond the public issue text.",
+        "Do not claim the issue is confirmed without a Frappe reproduction."
+      ],
+      "recommended_action": "manual_verification_required",
+      "notes": "Issue body provides a short reproduction path and Asoj 31-vs-30 symptom. Local code inspection identified payroll/date conversion paths, but no full Frappe reproduction was run.",
+      "tags": [
+        "yarsa",
+        "payroll",
+        "asoj",
+        "date-risk",
+        "manual-verification"
+      ]
+    },
+    {
       "id": "erpnext-31245-bs-support-request",
       "title": "ERPNext Bikram Sambat support request",
       "source_project": "frappe/erpnext",
@@ -32,7 +75,11 @@
       ],
       "recommended_action": "business_evidence",
       "notes": "Use as market/workflow context only.",
-      "tags": ["erpnext", "business-workflow", "bs-support"]
+      "tags": [
+        "erpnext",
+        "business-workflow",
+        "bs-support"
+      ]
     },
     {
       "id": "frappe-books-787-bs-support-request",
@@ -63,7 +110,11 @@
       ],
       "recommended_action": "business_evidence",
       "notes": "Use as workflow context, not executable conformance data.",
-      "tags": ["frappe-books", "business-workflow", "bs-support"]
+      "tags": [
+        "frappe-books",
+        "business-workflow",
+        "bs-support"
+      ]
     }
   ]
 }

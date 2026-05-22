@@ -50,6 +50,8 @@ Examples:
 - `opensource-nepal/go-nepali`
   [Issue #15](https://github.com/opensource-nepal/go-nepali/issues/15):
   AD `2024-06-14`, expected BS `2081-02-32`, actual BS `2081-03-01`.
+  Current upstream checkout `e85acd1` returns BS `2081-02-32`, so Parva keeps
+  this as a fixed historical regression fixture.
 - Leapfrog issue references #33/#35 around April 2021 boundary behavior, kept
   as partial until exact rows are verified.
 
@@ -93,6 +95,10 @@ treating unsupported future dates as settled output.
 
 Examples:
 
+- `yarsa/nepal-compliance`
+  [Issue #252](https://github.com/yarsa/nepal-compliance/issues/252), tracked
+  as reported payroll date-risk evidence around Asoj month duration. This is not
+  executable until reproduced in a Frappe/bench environment.
 - `frappe/erpnext`
   [Issue #31245](https://github.com/frappe/erpnext/issues/31245)
 - `frappe/books`
@@ -102,8 +108,8 @@ These are business workflow signals, not executable bug fixtures. They show
 that Nepali date support appears in accounting, fiscal-year, invoice, and
 workflow contexts. They do not establish production impact by themselves.
 
-Yarsa issue #252 remains a possible future business workflow target, but it
-should only be used after careful reproduction.
+These cases should be used as workflow evidence and conformance design input,
+not as legal, tax, payroll, or production-impact conclusions.
 
 ## What Parva Does Not Claim
 

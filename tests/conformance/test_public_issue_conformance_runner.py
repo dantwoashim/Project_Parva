@@ -14,10 +14,10 @@ ROOT = Path(__file__).resolve().parents[2]
 def test_public_issue_runner_discovers_suite() -> None:
     summary = conformance_run.run_public_issue_suite(ROOT / "conformance")
 
-    assert summary.total == 13
+    assert summary.total == 14
     assert summary.executed == 4
     assert summary.failed == 0
-    assert summary.skipped == 9
+    assert summary.skipped == 10
     assert summary.review_needed >= 5
     assert {result.case_id for result in summary.results} >= {
         "yarsa-257-258-2087-mangsir-source-drift",
@@ -37,9 +37,9 @@ def test_public_issue_cli_summary_output() -> None:
 
     assert result.returncode == 0
     assert "Parva public issue conformance summary" in result.stdout
-    assert "total: 13" in result.stdout
+    assert "total: 14" in result.stdout
     assert "executed: 4" in result.stdout
-    assert "skipped: 9" in result.stdout
+    assert "skipped: 10" in result.stdout
 
 
 def test_public_issue_runner_fails_on_malformed_fixture_copy(tmp_path: Path) -> None:

@@ -156,6 +156,7 @@ def test_expected_initial_evidence_set_is_represented() -> None:
         "cht-core-7925-invalid-kartik-2079-accepted",
         "odk-pre-1951-lower-bound-range",
         "subeshb1-71-upper-range-above-2090-12-30",
+        "yarsa-252-payroll-asoj-month-duration",
         "erpnext-31245-bs-support-request",
         "frappe-books-787-bs-support-request",
     }

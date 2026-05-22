@@ -51,7 +51,12 @@
       ],
       "recommended_action": "fixture_only",
       "notes": "The merged upstream contribution compared duplicated backend CSV and frontend JS calendar tables without changing runtime behavior.",
-      "tags": ["yarsa", "source-drift", "bs-2087", "mangsir"]
+      "tags": [
+        "yarsa",
+        "source-drift",
+        "bs-2087",
+        "mangsir"
+      ]
     },
     {
       "id": "node-nepali-datetime-82-source-provenance",
@@ -63,26 +68,356 @@
       "source_commit": null,
       "failure_class": "source_provenance",
       "evidence_level": "reported_public_issue",
-      "reported_input": null,
-      "reported_expected": null,
+      "reported_input": {
+        "bs_years": [
+          2082,
+          2083,
+          2084,
+          2085,
+          2086,
+          2087,
+          2088
+        ],
+        "sources_compared": [
+          "current library data",
+          "Hamro Patro",
+          "Nepali Patro"
+        ]
+      },
+      "reported_expected": {
+        "issue_rows": {
+          "2082": {
+            "current_data": [
+              30,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "hamro_patro_data": [
+              30,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "nepali_patro_data": [
+              31,
+              31,
+              31,
+              32,
+              31,
+              31,
+              30,
+              29,
+              30,
+              29,
+              30,
+              30
+            ]
+          },
+          "2083": {
+            "current_data": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "hamro_patro_data": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "nepali_patro_data": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              31,
+              30,
+              29,
+              30,
+              29,
+              30,
+              30
+            ]
+          },
+          "2084": {
+            "current_data": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "hamro_patro_data": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "nepali_patro_data": [
+              31,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              29,
+              30,
+              31
+            ]
+          },
+          "2085": {
+            "current_data": [
+              31,
+              32,
+              31,
+              32,
+              30,
+              31,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "hamro_patro_data": [
+              31,
+              32,
+              31,
+              32,
+              30,
+              31,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "nepali_patro_data": [
+              30,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              29,
+              31
+            ]
+          },
+          "2086": {
+            "current_data": [
+              30,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "hamro_patro_data": [
+              30,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "nepali_patro_data": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              31,
+              30,
+              29,
+              30,
+              29,
+              30,
+              30
+            ]
+          },
+          "2087": {
+            "current_data": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              31,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "hamro_patro_data": [
+              31,
+              31,
+              32,
+              31,
+              31,
+              31,
+              30,
+              30,
+              30,
+              30,
+              30,
+              30
+            ],
+            "nepali_patro_data": [
+              31,
+              31,
+              32,
+              32,
+              31,
+              30,
+              30,
+              29,
+              30,
+              29,
+              30,
+              30
+            ]
+          },
+          "2088": {
+            "current_data": [
+              30,
+              31,
+              32,
+              32,
+              30,
+              31,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "hamro_patro_data": [
+              30,
+              31,
+              32,
+              32,
+              30,
+              31,
+              30,
+              30,
+              29,
+              30,
+              30,
+              30
+            ],
+            "nepali_patro_data": [
+              31,
+              32,
+              31,
+              32,
+              31,
+              30,
+              30,
+              30,
+              29,
+              29,
+              30,
+              31
+            ]
+          }
+        }
+      },
       "reported_actual": {
-        "summary": "Public issue discusses BS month-length disagreement across sources."
+        "summary": "Public issue lists source rows that disagree across current data, Hamro Patro, and Nepali Patro for BS 2082-2088."
       },
       "parva_expected": {
         "case_role": "source_comparison_benchmark"
       },
       "executable": false,
       "runner_operation": null,
-      "confidence": "medium",
+      "confidence": "high",
       "authority_boundary": "public source-disagreement evidence; not an authority determination",
       "safe_claim": "This issue is tracked as evidence that source provenance matters for Nepali date conformance.",
       "forbidden_claims": [
         "Do not claim one source is official unless independently established.",
         "Do not claim the project is globally incorrect."
       ],
-      "recommended_action": "manual_verification_required",
-      "notes": "Use as a provenance benchmark until exact source rows and authority status are independently represented.",
-      "tags": ["node-nepali-datetime", "source-provenance", "month-length"]
+      "recommended_action": "upstream_comment",
+      "notes": "Exact rows are represented from the public issue body as source-comparison evidence. They remain non-executable because the issue itself does not establish a final authority source.",
+      "tags": [
+        "node-nepali-datetime",
+        "source-provenance",
+        "month-length"
+      ]
     }
   ]
 }

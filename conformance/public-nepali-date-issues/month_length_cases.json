@@ -14,7 +14,10 @@
       "failure_class": "month_length_mismatch",
       "evidence_level": "reported_public_issue",
       "reported_input": {
-        "bs_years": [2082, 2083],
+        "bs_years": [
+          2082,
+          2083
+        ],
         "case_source": "existing Parva public regression fixture"
       },
       "reported_expected": {
@@ -50,7 +53,12 @@
       ],
       "recommended_action": "fixture_only",
       "notes": "Exact rows are already preserved in the existing Leapfrog public regression fixture; mixed rows remain review-needed where issue text and Parva's current table differ.",
-      "tags": ["leapfrog", "bs-2082", "bs-2083", "month-length"]
+      "tags": [
+        "leapfrog",
+        "bs-2082",
+        "bs-2083",
+        "month-length"
+      ]
     },
     {
       "id": "medic-bikram-sambat-26-2081-2082-month-corrections",
@@ -58,32 +66,129 @@
       "source_project": "medic/bikram-sambat",
       "source_url": "https://github.com/medic/bikram-sambat",
       "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
-      "source_pr_url": null,
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
       "source_commit": null,
       "failure_class": "month_length_mismatch",
-      "evidence_level": "reported_public_issue_partial",
+      "evidence_level": "reported_public_issue",
       "reported_input": {
-        "bs_years": [2081, 2082]
+        "correction_rows": [
+          {
+            "bs_year": 2081,
+            "bs_month": 11,
+            "incorrect_days": 30,
+            "correct_days": 29
+          },
+          {
+            "bs_year": 2081,
+            "bs_month": 12,
+            "incorrect_days": 30,
+            "correct_days": 31
+          },
+          {
+            "bs_year": 2082,
+            "bs_month": 1,
+            "incorrect_days": 30,
+            "correct_days": 31
+          },
+          {
+            "bs_year": 2082,
+            "bs_month": 2,
+            "incorrect_days": 32,
+            "correct_days": 31
+          },
+          {
+            "bs_year": 2082,
+            "bs_month": 3,
+            "incorrect_days": 31,
+            "correct_days": 32
+          },
+          {
+            "bs_year": 2082,
+            "bs_month": 4,
+            "incorrect_days": 32,
+            "correct_days": 31
+          },
+          {
+            "bs_year": 2082,
+            "bs_month": 6,
+            "incorrect_days": 30,
+            "correct_days": 31
+          },
+          {
+            "bs_year": 2082,
+            "bs_month": 8,
+            "incorrect_days": 30,
+            "correct_days": 29
+          },
+          {
+            "bs_year": 2082,
+            "bs_month": 9,
+            "incorrect_days": 29,
+            "correct_days": 30
+          },
+          {
+            "bs_year": 2082,
+            "bs_month": 10,
+            "incorrect_days": 30,
+            "correct_days": 29
+          }
+        ]
       },
-      "reported_expected": null,
+      "reported_expected": {
+        "source_issue_correction_rows": "public issue lists incorrect and correct day counts for each row"
+      },
       "reported_actual": {
-        "summary": "Public issue concerns month-length correction rows for BS 2081/2082."
+        "prior_rows_cited_in_issue": {
+          "2081": [
+            31,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            30,
+            30,
+            30
+          ],
+          "2082": [
+            30,
+            32,
+            31,
+            32,
+            31,
+            30,
+            30,
+            30,
+            29,
+            30,
+            30,
+            30
+          ]
+        }
       },
       "parva_expected": {
         "case_role": "manual_review_target"
       },
       "executable": false,
       "runner_operation": null,
-      "confidence": "needs_manual_verification",
+      "confidence": "high",
       "authority_boundary": "public correction report; exact rows require manual verification before executable use",
       "safe_claim": "This issue is tracked as a month-length correction review target.",
       "forbidden_claims": [
         "Do not invent correction rows.",
         "Do not claim official authority from the issue alone."
       ],
-      "recommended_action": "manual_verification_required",
-      "notes": "Keep non-executable until exact correction rows are represented from public issue text or verified research artifacts.",
-      "tags": ["medic", "bikram-sambat", "month-length", "review-needed"]
+      "recommended_action": "fixture_only",
+      "notes": "Exact correction rows are represented from the public issue body. The upstream issue is closed with PR #27, so Parva keeps this as a historical month-length correction benchmark.",
+      "tags": [
+        "medic",
+        "bikram-sambat",
+        "month-length",
+        "review-needed"
+      ]
     }
   ]
 }

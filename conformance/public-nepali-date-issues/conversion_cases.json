@@ -9,7 +9,7 @@
       "source_project": "opensource-nepal/go-nepali",
       "source_url": "https://github.com/opensource-nepal/go-nepali",
       "source_issue_url": "https://github.com/opensource-nepal/go-nepali/issues/15",
-      "source_pr_url": null,
+      "source_pr_url": "https://github.com/opensource-nepal/go-nepali/pull/16",
       "source_commit": null,
       "failure_class": "ad_to_bs_conversion_mismatch",
       "evidence_level": "verified_public_issue",
@@ -17,13 +17,40 @@
         "ad_date": "2024-06-14"
       },
       "reported_expected": {
-        "bs_date": { "year": 2081, "month": 2, "day": 32 }
+        "bs_date": {
+          "year": 2081,
+          "month": 2,
+          "day": 32
+        }
       },
       "reported_actual": {
-        "bs_date": { "year": 2081, "month": 3, "day": 1 }
+        "bs_date": {
+          "year": 2081,
+          "month": 3,
+          "day": 1
+        },
+        "upstream_current_behavior": {
+          "checked_commit": "e85acd1",
+          "checked_on": "2026-05-22",
+          "ad_2024_06_13": {
+            "year": 2081,
+            "month": 2,
+            "day": 31
+          },
+          "ad_2024_06_14": {
+            "year": 2081,
+            "month": 2,
+            "day": 32
+          },
+          "status": "appears_fixed_upstream"
+        }
       },
       "parva_expected": {
-        "bs_date": { "year": 2081, "month": 2, "day": 32 }
+        "bs_date": {
+          "year": 2081,
+          "month": 2,
+          "day": 32
+        }
       },
       "executable": true,
       "runner_operation": "ad_to_bs",
@@ -35,8 +62,13 @@
         "Do not claim official date authority from this issue."
       ],
       "recommended_action": "fixture_only",
-      "notes": "This executable fixture checks that Parva maps AD 2024-06-14 to BS 2081-02-32.",
-      "tags": ["go-nepali", "ad-to-bs", "month-boundary", "2081"]
+      "notes": "Current upstream checkout e85acd1 maps AD 2024-06-14 to BS 2081-02-32. Parva keeps this as a historical executable regression fixture rather than a PR target.",
+      "tags": [
+        "go-nepali",
+        "ad-to-bs",
+        "month-boundary",
+        "2081"
+      ]
     },
     {
       "id": "leapfrog-13-2018-03-12-range-error",
@@ -56,7 +88,11 @@
         "error": "RangeError about bsMonth range 1 to 12"
       },
       "parva_expected": {
-        "bs_date": { "year": 2074, "month": 11, "day": 28 }
+        "bs_date": {
+          "year": 2074,
+          "month": 11,
+          "day": 28
+        }
       },
       "executable": true,
       "runner_operation": "ad_to_bs",
@@ -69,7 +105,11 @@
       ],
       "recommended_action": "fixture_only",
       "notes": "The public report gives the input and thrown error. Parva's current behavior is represented as a local executable check.",
-      "tags": ["leapfrog", "ad-to-bs", "range-error"]
+      "tags": [
+        "leapfrog",
+        "ad-to-bs",
+        "range-error"
+      ]
     },
     {
       "id": "leapfrog-33-35-april-2021-boundary",
@@ -82,7 +122,10 @@
       "failure_class": "bs_to_ad_conversion_mismatch",
       "evidence_level": "reported_public_issue_partial",
       "reported_input": {
-        "issue_refs": ["33", "35"],
+        "issue_refs": [
+          "33",
+          "35"
+        ],
         "reported_period": "April 2021"
       },
       "reported_expected": null,
@@ -103,7 +146,12 @@
       ],
       "recommended_action": "manual_verification_required",
       "notes": "Keep documented-only until exact input/expected/actual rows are verified from public issue text or local research artifacts.",
-      "tags": ["leapfrog", "boundary", "april-2021", "review-needed"]
+      "tags": [
+        "leapfrog",
+        "boundary",
+        "april-2021",
+        "review-needed"
+      ]
     }
   ]
 }
