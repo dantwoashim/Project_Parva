@@ -4,11 +4,21 @@
 [![Public verification](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml)
 ![Benchmark](public-benchmark/results/benchmark.svg)
 
-Proof-carrying Nepali time infrastructure for Bikram Sambat APIs, Panchanga computation, payroll/date-risk validation, and deterministic software-agent verification.
+Project Parva is an open-source Nepali date/time API and conformance project.
 
-Project Parva is an open-source Nepali date/time API and conformance project: BS to AD conversion, AD to BS conversion, Nepali date validation, holidays, working days, fiscal years, BS month metadata, Panchanga signals, source/method provenance, proof receipts, local verification, SDKs, MCP tools, and public reproducibility gates.
+It covers BS to AD, AD to BS, Nepali date validation, holidays, working days,
+Nepal fiscal year logic, BS month metadata, Panchanga computation, proof
+receipts, local verification, SDKs, MCP tools, and public regression fixtures.
 
-It is built for developers searching for a Nepali date API or Bikram Sambat API, software teams validating payroll/fiscal/calendar risk, software agents that must not guess Nepali dates, and reviewers who need deterministic evidence instead of marketing claims.
+The project exists because Nepali date bugs often hide until a boundary is hit:
+a frontend calendar table disagrees with backend data, a payroll month has the
+wrong number of days, a datepicker accepts an invalid BS date, or a future BS
+date changes after someone already used it in a workflow.
+
+Parva treats those cases as conformance problems, not just conversion problems.
+It records source and method provenance, separates exact evidence from
+review-needed evidence, and gives developers a way to test what their Nepali
+calendar API or Nepali date converter is actually doing.
 
 ## Start Here
 
@@ -34,6 +44,78 @@ Live public evaluation surfaces:
 
 The hosted API is a public evaluation deployment. First requests may be slower when the instance wakes up.
 
+## Why This Exists
+
+Most Nepali date bugs are small on paper and expensive in context.
+
+Many systems carry hardcoded Bikram Sambat month tables. A backend CSV, a
+frontend Nepali datepicker bundle, and a reporting job can each have their own
+copy. They may all look reasonable until one month differs by a day.
+
+That one day can move:
+
+- a payroll period,
+- a fiscal-year boundary,
+- a certificate or DOB validation,
+- an invoice/report date,
+- an attendance or leave record,
+- a future BS date that should have stayed review-needed.
+
+Software agents add another failure mode: if the tool does not expose source,
+confidence, and boundary data, the model will often answer as if the date is
+settled. Parva is built to make those boundaries visible.
+
+The project turns public Nepali date failures into fixtures and checks where
+the evidence is exact enough. When the evidence is partial, it stays marked for
+review instead of becoming a fake assertion.
+
+## Free Nepali Date Risk Audit
+
+If you maintain Nepal-facing payroll, ERP, accounting, attendance, school,
+cooperative, public-service, government-form, or datepicker software, you can
+send one small workflow or sample output.
+
+No integration required. No dependency required. No sales call required. No
+authority claim.
+
+Good inputs:
+
+- 10 sample BS/AD date outputs
+- one payroll, fiscal-year, invoice, attendance, report, certificate, or DOB workflow
+- one public repo, issue, Nepali datepicker, or library case
+- one real edge case your team has seen in production or testing
+
+Checks:
+
+- BS/AD conversion boundaries
+- invalid BS dates
+- month lengths
+- frontend/backend calendar source drift
+- fiscal and payroll month boundaries
+- holiday and working-day assumptions
+- future BS dates that should be marked review-needed
+
+You get:
+
+- a short technical report
+- pass, warning, and review-needed findings
+- suggested regression tests
+- source and provenance notes
+- authority-boundary notes
+
+Request one:
+
+- GitHub: [dantwoashim](https://github.com/dantwoashim)
+- Email: <protaku272@gmail.com>
+
+Fast conformance path:
+
+```powershell
+py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues
+py -3.11 tools\conformance_runner\run.py --profile nepal-compliance
+py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues --write-report reports\conformance\public-issue-suite-summary.json
+```
+
 ## What Parva Does
 
 | Area | What it provides |
@@ -50,36 +132,52 @@ The hosted API is a public evaluation deployment. First requests may be slower w
 
 ## Public Conformance Work
 
-Project Parva tracks public Nepali date regression cases and turns them into
-fixtures or runnable checks where the public evidence is exact enough. The
-suite separates verified cases, reported cases, partial evidence, business
-workflow evidence, and review-needed future-date evidence.
+Parva tracks public Nepali date issues and turns them into fixtures or runnable
+checks when the evidence is exact enough. The suite separates verified public
+issues, reported issues, partial evidence, business workflow evidence, and
+future-date review cases.
 
 Project Parva's benchmark work contributed a standalone calendar source
-consistency guard to `yarsa/nepal-compliance`. That contribution checked
-duplicated frontend/backend BS month tables without adding a Parva dependency or
-changing upstream runtime behavior.
+consistency guard to `yarsa/nepal-compliance`.
+
+That check compared duplicated frontend/backend BS month tables. It did not add
+a Parva dependency, change upstream runtime behavior, or prove production
+impact.
 
 Run the public issue conformance suite:
 
 ```powershell
 py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues
-py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues --write-report reports\conformance\public-issue-suite-summary.json
 py -3.11 tools\conformance_runner\run.py --profile nepal-compliance
+py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues --write-report reports\conformance\public-issue-suite-summary.json
 py -3.11 -m pytest tests/conformance -q
 ```
 
 Conformance docs:
 
-- [Nepali Date Conformance Index](docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md)
-- [Public Nepali Date Failure Classes](docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md)
-- [Generated artifact: Public Issue Suite Summary](reports/conformance/public-issue-suite-summary.md)
-- [Nepal Compliance Conformance Profile](docs/conformance/nepal-compliance-profile.md)
-- [Yarsa Calendar Source Drift Case Study](docs/case-studies/yarsa-calendar-source-drift.md)
+- [Public conformance index](docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md)
+- [Failure classes from public issues](docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md)
+- [Generated artifact: public issue summary](reports/conformance/public-issue-suite-summary.md)
+- [Nepal compliance profile](docs/conformance/nepal-compliance-profile.md)
+- [Yarsa source-drift case study](docs/case-studies/yarsa-calendar-source-drift.md)
 - [Conformance Milestone 001](docs/releases/CONFORMANCE_MILESTONE_001.md)
 
-These fixtures are public regression and review artifacts. They are not official
-calendar publication, legal, tax, payroll, banking, or ritual authority.
+These fixtures are public regression and review artifacts. They are not
+calendar publication, legal guidance, tax guidance, payroll approval, banking
+guidance, or ritual authority.
+
+## Who This Helps
+
+- Date library maintainers who want regression cases from real public issues.
+- ERP, payroll, accounting, school, cooperative, and attendance teams that need
+  safer BS/AD boundaries.
+- Reviewers of public-service or government-form workflows where invalid BS
+  dates should not slip through.
+- Developers building a Nepali calendar API, Bikram Sambat API, or Nepali
+  datepicker regression suite.
+- Software-agent and MCP tool builders who need deterministic answers with
+  proof receipts instead of guessed dates.
+- Auditors and maintainers who need source notes, not broad claims.
 
 ## Quickstart
 
@@ -169,7 +267,7 @@ Panchanga proof currently covers method-docketed `panchanga_summary` with pinned
 
 ## Panchanga Engine
 
-Parva computes Panchanga signals as method-backed astronomical outputs, not as official Panchanga authority.
+Parva computes Panchanga signals as method-backed astronomical outputs, not as a final almanac, publication, or ritual decision source.
 
 The proof-carrying Panchanga layer records:
 
@@ -337,11 +435,11 @@ Safe claims when the relevant verification commands pass:
 
 Do not claim:
 
-- government authority
-- legal, tax, payroll, or banking authority
+- government approval or public-office endorsement
+- legal, tax, payroll, or banking decision authority
 - religious or ritual final authority
-- official future date authority
-- official Panchanga authority
+- settled authority for unsupported future BS dates
+- final Panchanga or ritual authority
 - external certification
 - PyPI/npm publication unless the package is actually published
 - MCP registry acceptance unless accepted by a registry
