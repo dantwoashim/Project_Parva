@@ -151,6 +151,8 @@ def _tracked_path_issue(path: str) -> str | None:
         "reports/external/reviewer_dry_audit.md",
         "reports/external_reviewer_dry_run/review_report.json",
         "reports/external_reviewer_dry_run/review_report.md",
+        "reports/conformance/public-issue-suite-summary.json",
+        "reports/conformance/public-issue-suite-summary.md",
     )
     if path in allowed_reports:
         return None
