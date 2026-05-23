@@ -170,7 +170,21 @@
         }
       },
       "parva_expected": {
-        "case_role": "manual_review_target"
+        "case_role": "month_length_correction_cluster",
+        "executable_rows": [
+          "medic-26-2081-11-month-length-correction",
+          "medic-26-2081-12-month-length-correction",
+          "medic-26-2082-01-month-length-correction",
+          "medic-26-2082-02-month-length-correction",
+          "medic-26-2082-06-month-length-correction",
+          "medic-26-2082-08-month-length-correction",
+          "medic-26-2082-09-month-length-correction",
+          "medic-26-2082-10-month-length-correction"
+        ],
+        "review_needed_rows": [
+          "2082-03",
+          "2082-04"
+        ]
       },
       "executable": false,
       "runner_operation": null,
@@ -182,13 +196,375 @@
         "Do not claim official authority from the issue alone."
       ],
       "recommended_action": "fixture_only",
-      "notes": "Exact correction rows are represented from the public issue body. The upstream issue is closed with PR #27, so Parva keeps this as a historical month-length correction benchmark.",
+      "notes": "Exact correction rows are represented from the public issue body. Eight rows are split into executable historical regression fixtures where Parva current data matches the public correction row. The 2082-03 and 2082-04 rows remain review-needed because they currently conflict with Parva source policy and require source adjudication before becoming executable assertions. The upstream issue is closed with PR #27.",
+      "tags": [
+        "bikram-sambat",
+        "medic",
+        "month-length",
+        "review-needed",
+        "split-executable-rows"
+      ]
+    },
+    {
+      "id": "medic-26-2081-11-month-length-correction",
+      "title": "Medic bikram-sambat issue #26 2081 Falgun month-length correction",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2081,
+        "bs_month": 11,
+        "bs_month_name": "Falgun",
+        "public_issue_row": "2081|11|30|29"
+      },
+      "reported_expected": {
+        "month_days": 29,
+        "source": "public issue #26 correction row"
+      },
+      "reported_actual": {
+        "incorrect_month_days_cited_by_issue": 30
+      },
+      "parva_expected": {
+        "month_days": 29
+      },
+      "executable": true,
+      "runner_operation": "month_length",
+      "confidence": "high",
+      "authority_boundary": "public correction row from upstream issue; not official calendar source material",
+      "safe_claim": "Project Parva executes the Medic issue #26 2081-11 month-length correction row as a public regression fixture.",
+      "forbidden_claims": [
+        "Do not claim Medic is globally broken.",
+        "Do not claim the issue row is official calendar authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public issue lists this exact incorrect/correct day-count row, and Parva current month-length data matches the corrected value. The upstream issue is closed by PR #27, so this is treated as historical public regression evidence.",
       "tags": [
         "medic",
         "bikram-sambat",
         "month-length",
-        "review-needed"
+        "historical-regression",
+        "executable"
+      ]
+    },
+    {
+      "id": "medic-26-2081-12-month-length-correction",
+      "title": "Medic bikram-sambat issue #26 2081 Chaitra month-length correction",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2081,
+        "bs_month": 12,
+        "bs_month_name": "Chaitra",
+        "public_issue_row": "2081|12|30|31"
+      },
+      "reported_expected": {
+        "month_days": 31,
+        "source": "public issue #26 correction row"
+      },
+      "reported_actual": {
+        "incorrect_month_days_cited_by_issue": 30
+      },
+      "parva_expected": {
+        "month_days": 31
+      },
+      "executable": true,
+      "runner_operation": "month_length",
+      "confidence": "high",
+      "authority_boundary": "public correction row from upstream issue; not official calendar source material",
+      "safe_claim": "Project Parva executes the Medic issue #26 2081-12 month-length correction row as a public regression fixture.",
+      "forbidden_claims": [
+        "Do not claim Medic is globally broken.",
+        "Do not claim the issue row is official calendar authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public issue lists this exact incorrect/correct day-count row, and Parva current month-length data matches the corrected value. The upstream issue is closed by PR #27, so this is treated as historical public regression evidence.",
+      "tags": [
+        "medic",
+        "bikram-sambat",
+        "month-length",
+        "historical-regression",
+        "executable"
+      ]
+    },
+    {
+      "id": "medic-26-2082-01-month-length-correction",
+      "title": "Medic bikram-sambat issue #26 2082 Baisakh month-length correction",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2082,
+        "bs_month": 1,
+        "bs_month_name": "Baisakh",
+        "public_issue_row": "2082|1|30|31"
+      },
+      "reported_expected": {
+        "month_days": 31,
+        "source": "public issue #26 correction row"
+      },
+      "reported_actual": {
+        "incorrect_month_days_cited_by_issue": 30
+      },
+      "parva_expected": {
+        "month_days": 31
+      },
+      "executable": true,
+      "runner_operation": "month_length",
+      "confidence": "high",
+      "authority_boundary": "public correction row from upstream issue; not official calendar source material",
+      "safe_claim": "Project Parva executes the Medic issue #26 2082-01 month-length correction row as a public regression fixture.",
+      "forbidden_claims": [
+        "Do not claim Medic is globally broken.",
+        "Do not claim the issue row is official calendar authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public issue lists this exact incorrect/correct day-count row, and Parva current month-length data matches the corrected value. The upstream issue is closed by PR #27, so this is treated as historical public regression evidence.",
+      "tags": [
+        "medic",
+        "bikram-sambat",
+        "month-length",
+        "historical-regression",
+        "executable"
+      ]
+    },
+    {
+      "id": "medic-26-2082-02-month-length-correction",
+      "title": "Medic bikram-sambat issue #26 2082 Jestha month-length correction",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2082,
+        "bs_month": 2,
+        "bs_month_name": "Jestha",
+        "public_issue_row": "2082|2|32|31"
+      },
+      "reported_expected": {
+        "month_days": 31,
+        "source": "public issue #26 correction row"
+      },
+      "reported_actual": {
+        "incorrect_month_days_cited_by_issue": 32
+      },
+      "parva_expected": {
+        "month_days": 31
+      },
+      "executable": true,
+      "runner_operation": "month_length",
+      "confidence": "high",
+      "authority_boundary": "public correction row from upstream issue; not official calendar source material",
+      "safe_claim": "Project Parva executes the Medic issue #26 2082-02 month-length correction row as a public regression fixture.",
+      "forbidden_claims": [
+        "Do not claim Medic is globally broken.",
+        "Do not claim the issue row is official calendar authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public issue lists this exact incorrect/correct day-count row, and Parva current month-length data matches the corrected value. The upstream issue is closed by PR #27, so this is treated as historical public regression evidence.",
+      "tags": [
+        "medic",
+        "bikram-sambat",
+        "month-length",
+        "historical-regression",
+        "executable"
+      ]
+    },
+    {
+      "id": "medic-26-2082-06-month-length-correction",
+      "title": "Medic bikram-sambat issue #26 2082 Asoj month-length correction",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2082,
+        "bs_month": 6,
+        "bs_month_name": "Asoj",
+        "public_issue_row": "2082|6|30|31"
+      },
+      "reported_expected": {
+        "month_days": 31,
+        "source": "public issue #26 correction row"
+      },
+      "reported_actual": {
+        "incorrect_month_days_cited_by_issue": 30
+      },
+      "parva_expected": {
+        "month_days": 31
+      },
+      "executable": true,
+      "runner_operation": "month_length",
+      "confidence": "high",
+      "authority_boundary": "public correction row from upstream issue; not official calendar source material",
+      "safe_claim": "Project Parva executes the Medic issue #26 2082-06 month-length correction row as a public regression fixture.",
+      "forbidden_claims": [
+        "Do not claim Medic is globally broken.",
+        "Do not claim the issue row is official calendar authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public issue lists this exact incorrect/correct day-count row, and Parva current month-length data matches the corrected value. The upstream issue is closed by PR #27, so this is treated as historical public regression evidence.",
+      "tags": [
+        "medic",
+        "bikram-sambat",
+        "month-length",
+        "historical-regression",
+        "executable"
+      ]
+    },
+    {
+      "id": "medic-26-2082-08-month-length-correction",
+      "title": "Medic bikram-sambat issue #26 2082 Mangsir month-length correction",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2082,
+        "bs_month": 8,
+        "bs_month_name": "Mangsir",
+        "public_issue_row": "2082|8|30|29"
+      },
+      "reported_expected": {
+        "month_days": 29,
+        "source": "public issue #26 correction row"
+      },
+      "reported_actual": {
+        "incorrect_month_days_cited_by_issue": 30
+      },
+      "parva_expected": {
+        "month_days": 29
+      },
+      "executable": true,
+      "runner_operation": "month_length",
+      "confidence": "high",
+      "authority_boundary": "public correction row from upstream issue; not official calendar source material",
+      "safe_claim": "Project Parva executes the Medic issue #26 2082-08 month-length correction row as a public regression fixture.",
+      "forbidden_claims": [
+        "Do not claim Medic is globally broken.",
+        "Do not claim the issue row is official calendar authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public issue lists this exact incorrect/correct day-count row, and Parva current month-length data matches the corrected value. The upstream issue is closed by PR #27, so this is treated as historical public regression evidence.",
+      "tags": [
+        "medic",
+        "bikram-sambat",
+        "month-length",
+        "historical-regression",
+        "executable"
+      ]
+    },
+    {
+      "id": "medic-26-2082-09-month-length-correction",
+      "title": "Medic bikram-sambat issue #26 2082 Poush month-length correction",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2082,
+        "bs_month": 9,
+        "bs_month_name": "Poush",
+        "public_issue_row": "2082|9|29|30"
+      },
+      "reported_expected": {
+        "month_days": 30,
+        "source": "public issue #26 correction row"
+      },
+      "reported_actual": {
+        "incorrect_month_days_cited_by_issue": 29
+      },
+      "parva_expected": {
+        "month_days": 30
+      },
+      "executable": true,
+      "runner_operation": "month_length",
+      "confidence": "high",
+      "authority_boundary": "public correction row from upstream issue; not official calendar source material",
+      "safe_claim": "Project Parva executes the Medic issue #26 2082-09 month-length correction row as a public regression fixture.",
+      "forbidden_claims": [
+        "Do not claim Medic is globally broken.",
+        "Do not claim the issue row is official calendar authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public issue lists this exact incorrect/correct day-count row, and Parva current month-length data matches the corrected value. The upstream issue is closed by PR #27, so this is treated as historical public regression evidence.",
+      "tags": [
+        "medic",
+        "bikram-sambat",
+        "month-length",
+        "historical-regression",
+        "executable"
+      ]
+    },
+    {
+      "id": "medic-26-2082-10-month-length-correction",
+      "title": "Medic bikram-sambat issue #26 2082 Magh month-length correction",
+      "source_project": "medic/bikram-sambat",
+      "source_url": "https://github.com/medic/bikram-sambat",
+      "source_issue_url": "https://github.com/medic/bikram-sambat/issues/26",
+      "source_pr_url": "https://github.com/medic/bikram-sambat/pull/27",
+      "source_commit": null,
+      "failure_class": "month_length_mismatch",
+      "evidence_level": "verified_public_issue",
+      "reported_input": {
+        "bs_year": 2082,
+        "bs_month": 10,
+        "bs_month_name": "Magh",
+        "public_issue_row": "2082|10|30|29"
+      },
+      "reported_expected": {
+        "month_days": 29,
+        "source": "public issue #26 correction row"
+      },
+      "reported_actual": {
+        "incorrect_month_days_cited_by_issue": 30
+      },
+      "parva_expected": {
+        "month_days": 29
+      },
+      "executable": true,
+      "runner_operation": "month_length",
+      "confidence": "high",
+      "authority_boundary": "public correction row from upstream issue; not official calendar source material",
+      "safe_claim": "Project Parva executes the Medic issue #26 2082-10 month-length correction row as a public regression fixture.",
+      "forbidden_claims": [
+        "Do not claim Medic is globally broken.",
+        "Do not claim the issue row is official calendar authority."
+      ],
+      "recommended_action": "fixture_only",
+      "notes": "The public issue lists this exact incorrect/correct day-count row, and Parva current month-length data matches the corrected value. The upstream issue is closed by PR #27, so this is treated as historical public regression evidence.",
+      "tags": [
+        "medic",
+        "bikram-sambat",
+        "month-length",
+        "historical-regression",
+        "executable"
       ]
     }
   ]
 }
+

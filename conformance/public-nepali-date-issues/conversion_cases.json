@@ -31,7 +31,7 @@
         },
         "upstream_current_behavior": {
           "checked_commit": "e85acd1",
-          "checked_on": "2026-05-22",
+          "checked_on": "2026-05-23",
           "ad_2024_06_13": {
             "year": 2081,
             "month": 2,
@@ -42,7 +42,8 @@
             "month": 2,
             "day": 32
           },
-          "status": "appears_fixed_upstream"
+          "status": "appears_fixed_upstream",
+          "regression_test_pr": "https://github.com/opensource-nepal/go-nepali/pull/34"
         }
       },
       "parva_expected": {
@@ -62,7 +63,7 @@
         "Do not claim official date authority from this issue."
       ],
       "recommended_action": "fixture_only",
-      "notes": "Current upstream checkout e85acd1 maps AD 2024-06-14 to BS 2081-02-32. Parva keeps this as a historical executable regression fixture rather than a PR target.",
+      "notes": "Current upstream checkout e85acd1 maps AD 2024-06-14 to BS 2081-02-32. Parva keeps this as a historical executable regression fixture. A tiny upstream regression-test PR was opened as opensource-nepal/go-nepali#34.",
       "tags": [
         "go-nepali",
         "ad-to-bs",

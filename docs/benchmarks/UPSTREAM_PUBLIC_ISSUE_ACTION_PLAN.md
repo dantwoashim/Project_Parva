@@ -13,7 +13,7 @@ help maintainers without adding pressure or dependency.
 
 | Target | Status | Evidence level | Parva action | Upstream action |
 |---|---|---:|---|---|
-| opensource-nepal/go-nepali #15 | Closed; current checkout fixed | Verified exact issue | Historical executable regression fixture | Comment posted; no PR opened |
+| opensource-nepal/go-nepali #15 | Closed; current checkout fixed | Verified exact issue | Historical executable regression fixture | Comment posted; tiny regression-test PR opened |
 | opensource-nepal/node-nepali-datetime #82 | Public source rows available | Reported public issue | Source-provenance fixture with exact issue rows | Draft comment only |
 | opensource-nepal/node-nepali-datetime #121 | Open known issue | Narrative evidence | Future BS review-needed fixture | Comment posted; no PR opened |
 | medic/bikram-sambat #26 | Closed with PR #27 | Reported public issue | Exact correction rows preserved | No comment unless useful later |
@@ -59,7 +59,7 @@ help maintainers without adding pressure or dependency.
 
 | Target | Recommendation | Reason |
 |---|---|---|
-| go-nepali #15 | Comment posted | Already fixed upstream; the comment records the issue as historical public regression evidence. No PR, dependency, or integration was requested. |
+| go-nepali #15 | Comment posted; regression-test PR opened | Already fixed upstream; current tests did not include the exact AD `2024-06-14` to BS `2081-02-32` boundary from issue #15. The PR is test-only and does not request a dependency or integration. |
 | node-nepali-datetime #82 | Comment draft only | Useful source-provenance evidence; no need to choose a canonical source upstream. |
 | node-nepali-datetime #121 | Comment posted | Aligns with review-needed future date language. No PR, dependency, or integration was requested. |
 | medic/bikram-sambat #26 | No action now | Closed and represented as historical evidence. |
@@ -84,9 +84,12 @@ help maintainers without adding pressure or dependency.
   - Upstream comment: posted
   - Comment URL: <https://github.com/opensource-nepal/go-nepali/issues/15#issuecomment-4522000828>
   - Status: historical regression fixture; current upstream behavior appears fixed.
-  - Upstream PR: not opened
+  - Upstream PR: opened
+  - PR URL: <https://github.com/opensource-nepal/go-nepali/pull/34>
+  - Assessment: [go-nepali issue #15 regression PR assessment](../research/go-nepali-15-regression-pr-assessment.md)
   - Notes: the comment records the issue as public AD to BS conversion boundary
-    regression evidence for Parva's conformance suite. No dependency,
+    regression evidence for Parva's conformance suite. The PR adds only a
+    regression test for the already-fixed boundary case. No dependency,
     integration, maintainer approval, or authority claim was made.
 - `opensource-nepal/node-nepali-datetime #121`
   - Upstream comment: posted

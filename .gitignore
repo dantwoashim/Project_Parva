@@ -39,6 +39,11 @@ build/
 coverage/
 output/
 reports/
+!/reports/
+/reports/*
+!/reports/conformance/
+!/reports/conformance/public-issue-suite-summary.json
+!/reports/conformance/public-issue-suite-summary.md
 benchmark/results/
 tmp/
 *.zip

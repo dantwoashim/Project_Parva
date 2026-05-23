@@ -64,6 +64,7 @@ Run the public issue conformance suite:
 
 ```powershell
 py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues
+py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues --write-report reports\conformance\public-issue-suite-summary.json
 py -3.11 tools\conformance_runner\run.py --profile nepal-compliance
 py -3.11 -m pytest tests/conformance -q
 ```
@@ -72,6 +73,7 @@ Conformance docs:
 
 - [Nepali Date Conformance Index](docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md)
 - [Public Nepali Date Failure Classes](docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md)
+- [Generated artifact: Public Issue Suite Summary](reports/conformance/public-issue-suite-summary.md)
 - [Nepal Compliance Conformance Profile](docs/conformance/nepal-compliance-profile.md)
 - [Yarsa Calendar Source Drift Case Study](docs/case-studies/yarsa-calendar-source-drift.md)
 - [Conformance Milestone 001](docs/releases/CONFORMANCE_MILESTONE_001.md)

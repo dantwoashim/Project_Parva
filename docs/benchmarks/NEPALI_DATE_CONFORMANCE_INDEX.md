@@ -48,7 +48,7 @@ future-date uncertainty, and workflow risk.
 | `LEAPFROG-13` | `leapfrogtechnology/nepali-date-picker` | [Issue #13](https://github.com/leapfrogtechnology/nepali-date-picker/issues/13) | Conversion/range error | `verified_public_issue` | Yes | Yes | Public issue | AD-to-BS range-error fixture | Parva tracks the reported input and verifies its own bounded conversion behavior. |
 | `LEAPFROG-33-35` | `leapfrogtechnology/nepali-date-picker` | Public issue references #33/#35 | April 2021 boundary conversion | `reported_public_issue_partial` | No | No | Public issue reports | Manual review target | These reports are tracked as boundary-conversion candidates. |
 | `GO-NEPALI-15` | `opensource-nepal/go-nepali` | [Issue #15](https://github.com/opensource-nepal/go-nepali/issues/15) | AD-to-BS month-boundary mismatch | `verified_public_issue` | Yes | Yes | Closed; current checkout appears fixed | Historical executable conversion fixture | Parva includes AD `2024-06-14` as a month-boundary regression case. |
-| `MEDIC-BIKRAM-SAMBAT-26` | `medic/bikram-sambat` | [Issue #26](https://github.com/medic/bikram-sambat/issues/26) | 2081/2082 month-length correction | `reported_public_issue` | Yes | No | Closed with PR #27 | Historical correction-row benchmark | Parva preserves the public correction rows as month-length evidence. |
+| `MEDIC-BIKRAM-SAMBAT-26` | `medic/bikram-sambat` | [Issue #26](https://github.com/medic/bikram-sambat/issues/26), [PR #27](https://github.com/medic/bikram-sambat/pull/27) | 2081/2082 month-length correction | `verified_public_issue` for exact rows represented as executable cases; `review_needed` for rows requiring source adjudication | Yes | Eight correction rows are executable | Closed with PR #27 | Historical correction-row benchmark | Parva executes the public correction rows that match its current source policy and keeps conflicting rows marked for review. |
 | `NODE-NEPALI-DATETIME-82` | `opensource-nepal/node-nepali-datetime` | [Issue #82](https://github.com/opensource-nepal/node-nepali-datetime/issues/82) | Source provenance / source disagreement | `reported_public_issue` | Yes, source rows | No | Public issue marked done in project view | Source-comparison benchmark | Parva tracks it as evidence that source provenance matters. |
 | `NODE-NEPALI-DATETIME-121` | `opensource-nepal/node-nepali-datetime` | [Issue #121](https://github.com/opensource-nepal/node-nepali-datetime/issues/121) | Future BS uncertainty | `narrative_evidence` | No | No | Public issue | Future review-boundary evidence | Parva uses it to support review-needed future-date handling. |
 | `CHT-CORE-7925` | `medic/cht-core` | [Issue #7925](https://github.com/medic/cht-core/issues/7925) | Invalid BS date accepted | `reported_public_issue` | Yes, bounded form | Yes | Public issue | Invalid date fixture | Parva checks that an invalid Kartik 2079 date shape is rejected. |
@@ -76,6 +76,19 @@ What it checked:
 
 This is an upstream benchmark contribution inspired by Parva's conformance work.
 It is not a dependency relationship, adoption claim, or production-impact claim.
+
+## Generated Public Suite Report
+
+The current report is committed at
+[generated artifact: `reports/conformance/public-issue-suite-summary.md`](../../reports/conformance/public-issue-suite-summary.md)
+with machine-readable JSON at
+[generated artifact: `reports/conformance/public-issue-suite-summary.json`](../../reports/conformance/public-issue-suite-summary.json).
+
+Regenerate it with:
+
+```powershell
+py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues --write-report reports\conformance\public-issue-suite-summary.json
+```
 
 ## Safe Claims
 

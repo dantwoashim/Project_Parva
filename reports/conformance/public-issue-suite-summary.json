@@ -1,0 +1,233 @@
+{
+  "suite": "public-nepali-date-issues",
+  "generated_at": "2026-05-23T11:39:56Z",
+  "repository_commit": "5d326c35c99195da78cc7a1abe51c6ca1e2056ad",
+  "summary": {
+    "total_cases": 22,
+    "executed": 12,
+    "passed": 12,
+    "failed": 0,
+    "skipped": 10,
+    "review_needed": 5
+  },
+  "executable_case_ids": [
+    "cht-core-7925-invalid-kartik-2079-accepted",
+    "go-nepali-15-2024-06-14-ad-to-bs-boundary",
+    "leapfrog-13-2018-03-12-range-error",
+    "medic-26-2081-11-month-length-correction",
+    "medic-26-2081-12-month-length-correction",
+    "medic-26-2082-01-month-length-correction",
+    "medic-26-2082-02-month-length-correction",
+    "medic-26-2082-06-month-length-correction",
+    "medic-26-2082-08-month-length-correction",
+    "medic-26-2082-09-month-length-correction",
+    "medic-26-2082-10-month-length-correction",
+    "yarsa-257-258-2087-mangsir-source-drift"
+  ],
+  "skipped_case_ids": [
+    {
+      "case_id": "node-nepali-datetime-82-source-provenance",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "leapfrog-70-2082-2083-month-length-cluster",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "medic-bikram-sambat-26-2081-2082-month-corrections",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "leapfrog-33-35-april-2021-boundary",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "odk-pre-1951-lower-bound-range",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "subeshb1-71-upper-range-above-2090-12-30",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "node-nepali-datetime-121-future-date-accuracy",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "yarsa-252-payroll-asoj-month-duration",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "erpnext-31245-bs-support-request",
+      "reason": "documented-only public issue"
+    },
+    {
+      "case_id": "frappe-books-787-bs-support-request",
+      "reason": "documented-only public issue"
+    }
+  ],
+  "review_needed_case_ids": [
+    "leapfrog-33-35-april-2021-boundary",
+    "node-nepali-datetime-121-future-date-accuracy",
+    "odk-pre-1951-lower-bound-range",
+    "subeshb1-71-upper-range-above-2090-12-30",
+    "yarsa-252-payroll-asoj-month-duration"
+  ],
+  "failure_class_counts": {
+    "ad_to_bs_conversion_mismatch": 2,
+    "bs_to_ad_conversion_mismatch": 1,
+    "business_workflow_gap": 2,
+    "frontend_backend_source_drift": 1,
+    "future_bs_uncertainty": 1,
+    "invalid_bs_date_accepted": 1,
+    "month_length_mismatch": 10,
+    "payroll_date_risk": 1,
+    "source_provenance": 1,
+    "unsupported_lower_range": 1,
+    "unsupported_upper_range": 1
+  },
+  "evidence_level_counts": {
+    "business_wedge": 3,
+    "narrative_evidence": 1,
+    "reported_public_issue": 4,
+    "reported_public_issue_partial": 3,
+    "verified_public_issue": 11
+  },
+  "results": [
+    {
+      "case_id": "yarsa-257-258-2087-mangsir-source-drift",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\source_drift_cases.json"
+    },
+    {
+      "case_id": "node-nepali-datetime-82-source-provenance",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\source_drift_cases.json"
+    },
+    {
+      "case_id": "leapfrog-70-2082-2083-month-length-cluster",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-bikram-sambat-26-2081-2082-month-corrections",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-26-2081-11-month-length-correction",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-26-2081-12-month-length-correction",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-26-2082-01-month-length-correction",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-26-2082-02-month-length-correction",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-26-2082-06-month-length-correction",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-26-2082-08-month-length-correction",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-26-2082-09-month-length-correction",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "medic-26-2082-10-month-length-correction",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\month_length_cases.json"
+    },
+    {
+      "case_id": "go-nepali-15-2024-06-14-ad-to-bs-boundary",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\conversion_cases.json"
+    },
+    {
+      "case_id": "leapfrog-13-2018-03-12-range-error",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\conversion_cases.json"
+    },
+    {
+      "case_id": "leapfrog-33-35-april-2021-boundary",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\conversion_cases.json"
+    },
+    {
+      "case_id": "cht-core-7925-invalid-kartik-2079-accepted",
+      "status": "passed",
+      "message": "passed",
+      "case_file": "conformance\\public-nepali-date-issues\\invalid_date_cases.json"
+    },
+    {
+      "case_id": "odk-pre-1951-lower-bound-range",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\range_boundary_cases.json"
+    },
+    {
+      "case_id": "subeshb1-71-upper-range-above-2090-12-30",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\range_boundary_cases.json"
+    },
+    {
+      "case_id": "node-nepali-datetime-121-future-date-accuracy",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\future_uncertainty_cases.json"
+    },
+    {
+      "case_id": "yarsa-252-payroll-asoj-month-duration",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\business_workflow_cases.json"
+    },
+    {
+      "case_id": "erpnext-31245-bs-support-request",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\business_workflow_cases.json"
+    },
+    {
+      "case_id": "frappe-books-787-bs-support-request",
+      "status": "skipped",
+      "message": "skipped: documented-only public issue",
+      "case_file": "conformance\\public-nepali-date-issues\\business_workflow_cases.json"
+    }
+  ],
+  "authority_boundary": "Public issue fixtures are regression and conformance evidence, not official calendar source material or upstream approval.",
+  "safe_claim": "Project Parva runs a public Nepali date issue conformance suite with explicit evidence levels and review-needed boundaries.",
+  "no_official_authority_statement": "This report is not a legal, payroll, banking, ritual, or calendar-publication authority."
+}

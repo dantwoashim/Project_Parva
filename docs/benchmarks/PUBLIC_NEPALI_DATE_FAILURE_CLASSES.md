@@ -43,6 +43,11 @@ table differences can shift later conversions. Public issue text is not
 automatically authority. Exact rows should be represented separately from
 Parva's current expected behavior.
 
+Medic issue #26 now contributes eight executable historical correction-row
+fixtures where the public issue row matches Parva's current source policy. Two
+additional public rows remain review-needed because they need source
+adjudication before becoming executable assertions.
+
 ## Failure Class 3: BS/AD Boundary Conversion Mismatch
 
 Examples:
@@ -137,3 +142,10 @@ Add a new case only when the following are clear:
 
 When exact values are missing, mark the case as `reported_public_issue_partial`
 or `review_needed` and keep it out of executable checks.
+
+## Generated Report
+
+The public issue suite summary is available in Markdown at
+[generated artifact: `reports/conformance/public-issue-suite-summary.md`](../../reports/conformance/public-issue-suite-summary.md)
+and JSON at
+[generated artifact: `reports/conformance/public-issue-suite-summary.json`](../../reports/conformance/public-issue-suite-summary.json).

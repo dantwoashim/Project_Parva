@@ -24,6 +24,7 @@ do not become authority claims.
 - Fixture schema and category fixture packs.
 - Conformance runner support for `public-nepali-date-issues`.
 - Profile runner support for `nepal-compliance`.
+- Generated public issue suite summary in JSON and Markdown.
 - Yarsa source-drift case study.
 - Nepal compliance conformance profile.
 - Upstream public issue action plan.
@@ -47,6 +48,7 @@ Expected final validation commands:
 ```powershell
 py -3.11 -m pytest tests/conformance -q
 py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues
+py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues --write-report reports\conformance\public-issue-suite-summary.json
 py -3.11 tools\conformance_runner\run.py --profile nepal-compliance
 py -3.11 tools\conformance_runner\run.py
 py -3.11 scripts\check_docs_links.py
@@ -56,6 +58,11 @@ py -3.11 -m ruff check .
 ```
 
 These commands should pass before this milestone is treated as published.
+
+Current generated report artifacts:
+
+- [Generated artifact JSON summary](../../reports/conformance/public-issue-suite-summary.json)
+- [Generated artifact Markdown summary](../../reports/conformance/public-issue-suite-summary.md)
 
 ## Safe Claims
 

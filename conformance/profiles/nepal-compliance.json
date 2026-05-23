@@ -19,7 +19,15 @@
     "leapfrog-70-2082-2083-month-length-cluster",
     "cht-core-7925-invalid-kartik-2079-accepted",
     "erpnext-31245-bs-support-request",
-    "frappe-books-787-bs-support-request"
+    "frappe-books-787-bs-support-request",
+    "medic-26-2081-11-month-length-correction",
+    "medic-26-2081-12-month-length-correction",
+    "medic-26-2082-01-month-length-correction",
+    "medic-26-2082-02-month-length-correction",
+    "medic-26-2082-06-month-length-correction",
+    "medic-26-2082-08-month-length-correction",
+    "medic-26-2082-09-month-length-correction",
+    "medic-26-2082-10-month-length-correction"
   ],
   "checks": [
     {

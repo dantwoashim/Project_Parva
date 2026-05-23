@@ -5,12 +5,14 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from collections import Counter
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -637,12 +639,190 @@ def run_profile(profile_name: str, case_root: Path) -> tuple[dict[str, Any], Pub
     return profile, summary
 
 
+def _git_commit() -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    commit = result.stdout.strip()
+    return commit or None
+
+
+def _public_issue_cases_by_id(
+    case_root: Path,
+    case_ids: set[str] | None = None,
+) -> dict[str, dict[str, Any]]:
+    cases: dict[str, dict[str, Any]] = {}
+    for _path, payload in _load_public_issue_files(case_root):
+        for case in payload["cases"]:
+            case_id = str(case["id"])
+            if case_ids is not None and case_id not in case_ids:
+                continue
+            cases[case_id] = case
+    return cases
+
+
+def _public_issue_report(
+    summary: PublicIssueSummary,
+    case_root: Path,
+    *,
+    suite_name: str,
+    case_ids: set[str] | None = None,
+) -> dict[str, Any]:
+    cases_by_id = _public_issue_cases_by_id(case_root, case_ids=case_ids)
+    result_by_id = {result.case_id: result for result in summary.results}
+
+    executable_case_ids = sorted(
+        case_id
+        for case_id, case in cases_by_id.items()
+        if case.get("executable") and case_id in result_by_id
+    )
+    skipped_case_ids = [
+        {
+            "case_id": result.case_id,
+            "reason": result.message.removeprefix("skipped: ").strip(),
+        }
+        for result in summary.results
+        if result.message.startswith("skipped:")
+    ]
+    review_needed_case_ids = sorted(
+        case_id
+        for case_id, case in cases_by_id.items()
+        if case_id in result_by_id
+        and (
+            case.get("confidence") == "needs_manual_verification"
+            or case.get("evidence_level") in {"reported_public_issue_partial", "review_needed"}
+        )
+    )
+
+    failure_class_counts = Counter(str(case.get("failure_class")) for case in cases_by_id.values())
+    evidence_level_counts = Counter(str(case.get("evidence_level")) for case in cases_by_id.values())
+
+    return {
+        "suite": suite_name,
+        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "repository_commit": _git_commit(),
+        "summary": {
+            "total_cases": summary.total,
+            "executed": summary.executed,
+            "passed": summary.passed,
+            "failed": summary.failed,
+            "skipped": summary.skipped,
+            "review_needed": summary.review_needed,
+        },
+        "executable_case_ids": executable_case_ids,
+        "skipped_case_ids": skipped_case_ids,
+        "review_needed_case_ids": review_needed_case_ids,
+        "failure_class_counts": dict(sorted(failure_class_counts.items())),
+        "evidence_level_counts": dict(sorted(evidence_level_counts.items())),
+        "results": [
+            {
+                "case_id": result.case_id,
+                "status": "passed"
+                if result.passed and not result.message.startswith("skipped:")
+                else "skipped"
+                if result.message.startswith("skipped:")
+                else "failed",
+                "message": result.message,
+                "case_file": result.file,
+            }
+            for result in summary.results
+        ],
+        "authority_boundary": "Public issue fixtures are regression and conformance evidence, not official calendar source material or upstream approval.",
+        "safe_claim": "Project Parva runs a public Nepali date issue conformance suite with explicit evidence levels and review-needed boundaries.",
+        "no_official_authority_statement": "This report is not a legal, payroll, banking, ritual, or calendar-publication authority.",
+    }
+
+
+def _write_public_issue_report(report: dict[str, Any], json_path: Path) -> tuple[Path, Path]:
+    json_path = json_path if json_path.is_absolute() else ROOT / json_path
+    md_path = json_path.with_suffix(".md")
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    md_path.write_text(_public_issue_report_markdown(report), encoding="utf-8")
+    return json_path, md_path
+
+
+def _public_issue_report_markdown(report: dict[str, Any]) -> str:
+    summary = report["summary"]
+    lines = [
+        "# Public Nepali Date Issue Conformance Summary",
+        "",
+        "## Summary",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+        f"| Total cases | {summary['total_cases']} |",
+        f"| Executed | {summary['executed']} |",
+        f"| Passed | {summary['passed']} |",
+        f"| Failed | {summary['failed']} |",
+        f"| Skipped/documented | {summary['skipped']} |",
+        f"| Review-needed | {summary['review_needed']} |",
+        "",
+        f"- Suite: `{report['suite']}`",
+        f"- Generated at: `{report['generated_at']}`",
+        f"- Repository commit: `{report.get('repository_commit') or 'unknown'}`",
+        "",
+        "## Executed Cases",
+        "",
+    ]
+    for case_id in report["executable_case_ids"]:
+        lines.append(f"- `{case_id}`")
+    if not report["executable_case_ids"]:
+        lines.append("- None")
+
+    lines.extend(["", "## Skipped/documented Cases", ""])
+    for item in report["skipped_case_ids"]:
+        lines.append(f"- `{item['case_id']}`: {item['reason']}")
+    if not report["skipped_case_ids"]:
+        lines.append("- None")
+
+    lines.extend(["", "## Review-needed Cases", ""])
+    for case_id in report["review_needed_case_ids"]:
+        lines.append(f"- `{case_id}`")
+    if not report["review_needed_case_ids"]:
+        lines.append("- None")
+
+    lines.extend(["", "## Failure-class Breakdown", ""])
+    for key, value in report["failure_class_counts"].items():
+        lines.append(f"- `{key}`: {value}")
+
+    lines.extend(["", "## Evidence-level Breakdown", ""])
+    for key, value in report["evidence_level_counts"].items():
+        lines.append(f"- `{key}`: {value}")
+
+    lines.extend(
+        [
+            "",
+            "## Authority Boundary",
+            "",
+            report["authority_boundary"],
+            "",
+            report["safe_claim"],
+            "",
+            report["no_official_authority_statement"],
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run the public Parva conformance suite.")
     parser.add_argument("--case-root", default=str(ROOT / "conformance"), help="Case root directory")
     parser.add_argument("--suite", default="default", choices=["default", "public-nepali-date-issues"])
     parser.add_argument("--profile", choices=["nepal-compliance"], help="Run a named conformance profile")
     parser.add_argument("--api", action="store_true", help="Also run supported cases against API")
+    parser.add_argument(
+        "--write-report",
+        help="Write a public issue suite report. The Markdown report is written next to the JSON path.",
+    )
     args = parser.parse_args(argv)
 
     api_base_url = None
@@ -668,6 +848,17 @@ def main(argv: list[str] | None = None) -> int:
             for result in summary.results:
                 status = "PASS" if result.passed else "FAIL"
                 print(f"{status} {result.file} :: {result.case_id} :: {result.message}")
+            if args.write_report:
+                case_ids = {str(case_id) for case_id in profile["related_public_cases"]}
+                report = _public_issue_report(
+                    summary,
+                    Path(args.case_root),
+                    suite_name=f"profile:{profile['id']}",
+                    case_ids=case_ids,
+                )
+                json_path, md_path = _write_public_issue_report(report, Path(args.write_report))
+                print(f"wrote_report_json: {_display_path(json_path)}")
+                print(f"wrote_report_md: {_display_path(md_path)}")
             return 1 if summary.failed else 0
 
         if args.suite == "public-nepali-date-issues":
@@ -683,7 +874,20 @@ def main(argv: list[str] | None = None) -> int:
             for result in summary.results:
                 status = "PASS" if result.passed else "FAIL"
                 print(f"{status} {result.file} :: {result.case_id} :: {result.message}")
+            if args.write_report:
+                report = _public_issue_report(
+                    summary,
+                    Path(args.case_root),
+                    suite_name="public-nepali-date-issues",
+                )
+                json_path, md_path = _write_public_issue_report(report, Path(args.write_report))
+                print(f"wrote_report_json: {_display_path(json_path)}")
+                print(f"wrote_report_md: {_display_path(md_path)}")
             return 1 if summary.failed else 0
+
+        if args.write_report:
+            print("--write-report is supported for public issue suites and profiles only", file=sys.stderr)
+            return 2
 
         failures, results = run(Path(args.case_root), api_base_url=api_base_url)
     except Exception as exc:  # noqa: BLE001
