@@ -13,9 +13,9 @@ help maintainers without adding pressure or dependency.
 
 | Target | Status | Evidence level | Parva action | Upstream action |
 |---|---|---:|---|---|
-| opensource-nepal/go-nepali #15 | Closed; current checkout fixed | Verified exact issue | Historical executable regression fixture | Draft comment only |
+| opensource-nepal/go-nepali #15 | Closed; current checkout fixed | Verified exact issue | Historical executable regression fixture | Comment posted; no PR opened |
 | opensource-nepal/node-nepali-datetime #82 | Public source rows available | Reported public issue | Source-provenance fixture with exact issue rows | Draft comment only |
-| opensource-nepal/node-nepali-datetime #121 | Open known issue | Narrative evidence | Future BS review-needed fixture | Draft comment only |
+| opensource-nepal/node-nepali-datetime #121 | Open known issue | Narrative evidence | Future BS review-needed fixture | Comment posted; no PR opened |
 | medic/bikram-sambat #26 | Closed with PR #27 | Reported public issue | Exact correction rows preserved | No comment unless useful later |
 | leapfrogtechnology/nepali-date-picker #70 | Open; repo appears low-activity | Reported public issue | Fixture-only benchmark evidence | Draft comment only |
 | yarsa/nepal-compliance #252 | Open; reproduction incomplete | Business wedge | Payroll date-risk investigation target | No comment yet |
@@ -59,9 +59,9 @@ help maintainers without adding pressure or dependency.
 
 | Target | Recommendation | Reason |
 |---|---|---|
-| go-nepali #15 | Comment draft only | Already fixed upstream; fixture link may be useful but no PR is needed. |
+| go-nepali #15 | Comment posted | Already fixed upstream; the comment records the issue as historical public regression evidence. No PR, dependency, or integration was requested. |
 | node-nepali-datetime #82 | Comment draft only | Useful source-provenance evidence; no need to choose a canonical source upstream. |
-| node-nepali-datetime #121 | Comment draft only | Aligns with review-needed future date language. |
+| node-nepali-datetime #121 | Comment posted | Aligns with review-needed future date language. No PR, dependency, or integration was requested. |
 | medic/bikram-sambat #26 | No action now | Closed and represented as historical evidence. |
 | Leapfrog #70 | Fixture only | Repo appears low-activity; avoid low-value PR churn. |
 | Yarsa #252 | Manual verification required | Do not comment until a concrete reproduction exists. |
@@ -80,9 +80,26 @@ help maintainers without adding pressure or dependency.
 
 ## Day 3 Posted Comments Status
 
-No upstream comments were posted in this pass. Drafts are prepared in
-`docs/outreach/upstream-comment-drafts.md` and should be posted only after a
-maintainer-safe review of the final public links.
+- `opensource-nepal/go-nepali #15`
+  - Upstream comment: posted
+  - Comment URL: <https://github.com/opensource-nepal/go-nepali/issues/15#issuecomment-4522000828>
+  - Status: historical regression fixture; current upstream behavior appears fixed.
+  - Upstream PR: not opened
+  - Notes: the comment records the issue as public AD to BS conversion boundary
+    regression evidence for Parva's conformance suite. No dependency,
+    integration, maintainer approval, or authority claim was made.
+- `opensource-nepal/node-nepali-datetime #121`
+  - Upstream comment: posted
+  - Comment URL: <https://github.com/opensource-nepal/node-nepali-datetime/issues/121#issuecomment-4524796914>
+  - Status: public future-BS uncertainty and review-needed conformance evidence.
+  - Upstream PR: not opened
+  - Notes: the comment records the issue as public conformance evidence for
+    review-needed future-date boundaries. No dependency, integration,
+    maintainer approval, or authority claim was made.
+
+Drafts for other targets remain in `docs/outreach/upstream-comment-drafts.md`
+and should be posted only after a maintainer-safe review of the final public
+links.
 
 ## Day 4 Follow-Up Targets
 
