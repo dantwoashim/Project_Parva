@@ -14,7 +14,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Plugin validation suite")
     parser.add_argument(
         "--fixture",
-        default="tests/fixtures/plugins/plugin_validation_cases.json",
+        default="data/validation/public/plugins/plugin_validation_cases.json",
         help="Fixture path",
     )
     parser.add_argument(

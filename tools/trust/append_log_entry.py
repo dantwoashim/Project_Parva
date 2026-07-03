@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import time
+from contextlib import suppress
 from pathlib import Path
 from uuid import uuid4
 
@@ -80,19 +81,19 @@ def append_log_entry(
     while lock_fd is None:
         try:
             lock_fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-        except FileExistsError:
+        except FileExistsError as exc:
             if time.monotonic() >= deadline:
-                raise TrustToolError(f"timed out waiting for transparency log lock: {lock_path}")
+                raise TrustToolError(
+                    f"timed out waiting for transparency log lock: {lock_path}"
+                ) from exc
             time.sleep(0.1)
     try:
         with log_path.open("a", encoding="utf-8", newline="\n") as handle:
             handle.write(json.dumps(entry, sort_keys=True) + "\n")
     finally:
         os.close(lock_fd)
-        try:
+        with suppress(FileNotFoundError):
             lock_path.unlink()
-        except FileNotFoundError:
-            pass
     return entry
 
 

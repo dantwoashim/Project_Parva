@@ -14,8 +14,8 @@ def test_temples_list_returns_mappable_locations():
 
     sample = payload['temples'][0]
     assert 'coordinates' in sample
-    assert isinstance(sample['coordinates']['lat'], (int, float))
-    assert isinstance(sample['coordinates']['lng'], (int, float))
+    assert isinstance(sample['coordinates']['lat'], int | float)
+    assert isinstance(sample['coordinates']['lng'], int | float)
 
 
 def test_temples_filtered_by_festival_dashain():
@@ -38,5 +38,5 @@ def test_temple_roles_for_festival_include_coordinates():
     sample = payload['temples'][0]
     assert 'temple' in sample
     assert 'role' in sample
-    assert isinstance(sample['temple']['coordinates']['lat'], (int, float))
-    assert isinstance(sample['temple']['coordinates']['lng'], (int, float))
+    assert isinstance(sample['temple']['coordinates']['lat'], int | float)
+    assert isinstance(sample['temple']['coordinates']['lng'], int | float)

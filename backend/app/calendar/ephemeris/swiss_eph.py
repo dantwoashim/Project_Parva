@@ -126,7 +126,10 @@ def get_ephemeris_info() -> dict:
         "ayanamsa": cfg.ayanamsa,
         "coordinate_system": cfg.coordinate_system,
         "library": "pyswisseph",
-        "notes": "Using built-in Swiss/Moshier ephemeris. For higher accuracy, configure JPL DE431.",
+        "notes": (
+            "Using built-in Swiss/Moshier ephemeris. "
+            "For higher accuracy, configure JPL DE431."
+        ),
     }
 
 
@@ -255,7 +258,7 @@ def get_sun_longitude(
         longitude = result[0][0]  # First element is longitude
         return longitude % 360
     except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
-        raise EphemerisError(f"Failed to calculate Sun position: {e}")
+        raise EphemerisError(f"Failed to calculate Sun position: {e}") from e
 
 
 def get_moon_longitude(
@@ -290,7 +293,7 @@ def get_moon_longitude(
         longitude = result[0][0]
         return longitude % 360
     except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
-        raise EphemerisError(f"Failed to calculate Moon position: {e}")
+        raise EphemerisError(f"Failed to calculate Moon position: {e}") from e
 
 
 def get_sun_moon_positions(
@@ -328,7 +331,7 @@ def get_sun_moon_positions(
 
         return (sun_long, moon_long)
     except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
-        raise EphemerisError(f"Failed to calculate positions: {e}")
+        raise EphemerisError(f"Failed to calculate positions: {e}") from e
 
 
 # =============================================================================
@@ -357,7 +360,7 @@ def get_ayanamsa(dt: datetime) -> float:
         ayanamsa = swe.get_ayanamsa_ut(jd)
         return ayanamsa
     except (swe.Error, EphemerisError, TypeError, ValueError) as e:
-        raise EphemerisError(f"Failed to get ayanamsa: {e}")
+        raise EphemerisError(f"Failed to get ayanamsa: {e}") from e
 
 
 # =============================================================================
@@ -433,7 +436,7 @@ def calculate_sunrise(
         # A wrong sunrise time would corrupt udaya tithi calculations
         raise EphemerisError(
             f"Sunrise calculation failed for {date_val} at ({latitude}, {longitude}): {e}"
-        )
+        ) from e
 
 
 def calculate_sunset(
@@ -485,7 +488,7 @@ def calculate_sunset(
         return julian_day_to_datetime(jd_sunset)
 
     except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
-        raise EphemerisError(f"Sunset calculation failed for {date_val}: {e}")
+        raise EphemerisError(f"Sunset calculation failed for {date_val}: {e}") from e
 
 
 # =============================================================================

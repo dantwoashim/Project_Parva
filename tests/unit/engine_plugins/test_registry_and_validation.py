@@ -6,6 +6,8 @@ from pathlib import Path
 from app.engine.plugins import get_plugin_registry
 from app.engine.plugins.validation import PluginValidationSuite
 
+PUBLIC_PLUGIN_FIXTURES = Path("data/validation/public/plugins")
+
 
 def test_registry_lists_expected_plugins():
     registry = get_plugin_registry()
@@ -29,14 +31,14 @@ def test_bs_plugin_conversion_basic():
 
 def test_validation_suite_with_fixture_passes():
     suite = PluginValidationSuite()
-    cases = suite.load_cases(Path("tests/fixtures/plugins/plugin_validation_cases.json"))
+    cases = suite.load_cases(PUBLIC_PLUGIN_FIXTURES / "plugin_validation_cases.json")
     report = suite.run(cases)
     assert report["failed"] == 0
 
 
 def test_stage1_validation_fixture_covers_first_four_plugins():
     suite = PluginValidationSuite()
-    cases = suite.load_cases(Path("tests/fixtures/plugins/plugin_validation_stage1_cases.json"))
+    cases = suite.load_cases(PUBLIC_PLUGIN_FIXTURES / "plugin_validation_stage1_cases.json")
     report = suite.run(cases)
 
     assert report["failed"] == 0

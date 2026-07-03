@@ -35,7 +35,14 @@ def main() -> None:
         "sankrantis": rows,
     }
 
-    path = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "sankranti_24.json"
+    path = (
+        Path(__file__).resolve().parents[2]
+        / "data"
+        / "validation"
+        / "public"
+        / "calendar"
+        / "sankranti_24.json"
+    )
     path.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(path)
 

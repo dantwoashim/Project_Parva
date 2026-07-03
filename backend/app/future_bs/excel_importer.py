@@ -9,9 +9,10 @@ import re
 import zipfile
 from pathlib import Path
 from typing import Any
-from xml.etree import ElementTree
+from xml.etree import ElementTree  # nosec B405
 
 MONTH_COUNT = 12
+FORBIDDEN_XML_MARKERS = (b"<!DOCTYPE", b"<!ENTITY")
 
 
 def _rows_from_csv_bytes(data: bytes) -> list[list[str]]:
@@ -24,7 +25,7 @@ def _shared_strings(archive: zipfile.ZipFile) -> list[str]:
         raw = archive.read("xl/sharedStrings.xml")
     except KeyError:
         return []
-    root = ElementTree.fromstring(raw)
+    root = _parse_xlsx_xml(raw)
     ns = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
     strings = []
     for item in root.findall("x:si", ns):
@@ -36,7 +37,7 @@ def _shared_strings(archive: zipfile.ZipFile) -> list[str]:
 def _rows_from_xlsx_bytes(data: bytes) -> list[list[str]]:
     with zipfile.ZipFile(io.BytesIO(data)) as archive:
         strings = _shared_strings(archive)
-        root = ElementTree.fromstring(archive.read("xl/worksheets/sheet1.xml"))
+        root = _parse_xlsx_xml(archive.read("xl/worksheets/sheet1.xml"))
     ns = {"x": "http://schemas.openxmlformats.org/spreadsheetml/2006/main"}
     rows: list[list[str]] = []
     for row in root.findall(".//x:row", ns):
@@ -50,6 +51,13 @@ def _rows_from_xlsx_bytes(data: bytes) -> list[list[str]]:
         if any(values):
             rows.append(values)
     return rows
+
+
+def _parse_xlsx_xml(raw: bytes) -> ElementTree.Element:
+    upper = raw.upper()
+    if any(marker in upper for marker in FORBIDDEN_XML_MARKERS):
+        raise ValueError("XLSX XML must not contain DTD or entity declarations.")
+    return ElementTree.fromstring(raw)  # nosec B314
 
 
 def _normalize_rows(rows: list[list[str]]) -> list[dict[str, Any]]:

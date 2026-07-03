@@ -142,7 +142,7 @@ def _safe_int(value: object) -> Optional[int]:
 
 
 def _stable_ingested_id(prefix: str, raw: str) -> str:
-    digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:10]
+    digest = hashlib.sha1(raw.encode("utf-8"), usedforsecurity=False).hexdigest()[:10]
     return f"{prefix}-{digest}"
 
 
@@ -467,7 +467,7 @@ def _promote_computed_baseline(merged: Dict[str, FestivalRuleV4]) -> None:
             rule.confidence = "medium"
 
         if "computed-promoted" not in rule.tags:
-            rule.tags = sorted(set(rule.tags + ["computed-promoted", "quality-validated"]))
+            rule.tags = sorted({*rule.tags, "computed-promoted", "quality-validated"})
 
         # Keep source lineage intact, but indicate execution path for the promoted set.
         if rule.source == "rule_ingestion_seed_v1":
@@ -584,7 +584,7 @@ def build_canonical_catalog() -> FestivalRuleCatalogV4:
         if profile_ids:
             rule.profile_ids = profile_ids
             rule.has_variant_profiles = True
-            rule.tags = sorted(set(rule.tags + ["has-variants"]))
+            rule.tags = sorted({*rule.tags, "has-variants"})
             if rule.rule_family == "unknown":
                 rule.rule_family = "profile_variant"
         else:

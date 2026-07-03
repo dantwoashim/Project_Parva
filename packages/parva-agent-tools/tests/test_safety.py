@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+import pytest
 from parva_tools.descriptor_lint import lint_tool_descriptors
-from parva_tools.langchain import build_langchain_tools, call_tool
+from parva_tools.langchain import PublicRouteClient, build_langchain_tools, call_tool
 from parva_tools.llamaindex import build_llamaindex_tools
 from parva_tools.safety import (
     FORBIDDEN_ROUTE_FRAGMENTS,
@@ -67,6 +68,11 @@ def test_call_tool_uses_public_route_client_shape():
     result = call_tool("parva_get_fiscal_year", {"bs_year": 2082}, client=FakeClient())
     assert result["answer"]["route"] == "/v3/api/enterprise/fiscal-year/{bs_year}"
     assert result["claim_boundary"] == "decision_support_not_authority"
+
+
+def test_public_route_client_rejects_non_http_origin():
+    with pytest.raises(ValueError, match="base_url"):
+        PublicRouteClient(base_url="file:///tmp/parva")
 
 
 def test_tool_names_are_exact_public_safe_set():

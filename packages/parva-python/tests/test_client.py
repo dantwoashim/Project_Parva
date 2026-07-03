@@ -52,6 +52,17 @@ def test_base_url_override_and_timeout_are_passed_to_transport() -> None:
     ]
 
 
+def test_client_rejects_non_http_urls() -> None:
+    with pytest.raises(ValueError, match="base_url"):
+        ParvaClient(base_url="file:///tmp/parva", transport=lambda *_args: {})
+
+    with pytest.raises(ValueError, match="future_bs_capabilities_url"):
+        ParvaClient(
+            future_bs_capabilities_url="file:///tmp/capabilities.json",
+            transport=lambda *_args: {},
+        )
+
+
 def test_future_capabilities_uses_public_v4_endpoint() -> None:
     calls = []
 

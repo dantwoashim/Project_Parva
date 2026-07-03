@@ -543,22 +543,26 @@ def get_festival_override_info(
         return None
     all_candidates = _candidate_rows(fest)
     selected_identity = _candidate_identity(selected)
-    normalized_candidates = [
-        {
-            "start": date.fromisoformat(candidate["start"]),
-            "source": candidate.get("source"),
-            "source_family": candidate.get("source_family"),
-            "confidence": candidate.get("confidence"),
-            "notes": candidate.get("notes"),
-        }
+    normalized_candidate_pairs = [
+        (
+            {
+                "start": date.fromisoformat(candidate["start"]),
+                "source": candidate.get("source"),
+                "source_family": candidate.get("source_family"),
+                "confidence": candidate.get("confidence"),
+                "notes": candidate.get("notes"),
+            },
+            candidate,
+        )
         for candidate in all_candidates
         if candidate.get("start")
     ]
     alternates = [
         candidate
-        for candidate, raw in zip(normalized_candidates, all_candidates)
+        for candidate, raw in normalized_candidate_pairs
         if _candidate_identity(raw) != selected_identity
     ]
+    normalized_candidates = [candidate for candidate, _raw in normalized_candidate_pairs]
     suggested_profile_id = None
     suggested_start = None
     suggested_reason = None

@@ -1,7 +1,16 @@
+import asyncio
+import json
+import logging
 from pathlib import Path
 from types import SimpleNamespace
 
-from app.bootstrap.middleware import _client_ip, _should_rate_limit, _wants_data_meta_envelope
+import pytest
+from app.bootstrap.middleware import (
+    _client_ip,
+    _should_rate_limit,
+    _wants_data_meta_envelope,
+    build_request_context,
+)
 from app.bootstrap.settings import AppSettings
 
 
@@ -73,3 +82,26 @@ def test_data_meta_envelope_opt_in_detects_header():
 
 def test_data_meta_envelope_opt_in_detects_query_param():
     assert _wants_data_meta_envelope(_scope("/v3/api/festivals/timeline", query_string=b"envelope=data-meta")) is True
+
+
+def test_request_context_logs_exception_type_before_reraising(caplog):
+    request = SimpleNamespace(
+        headers={"x-request-id": "req-error"},
+        state=SimpleNamespace(),
+        client=SimpleNamespace(host="127.0.0.1"),
+        url=SimpleNamespace(path="/boom"),
+        method="GET",
+    )
+
+    async def call_next(_request):
+        raise ValueError("boom")
+
+    middleware = build_request_context(product_version="test-version", settings=_settings())
+
+    with caplog.at_level(logging.ERROR, logger="parva.request"), pytest.raises(ValueError):
+        asyncio.run(middleware(request, call_next))
+
+    payload = json.loads(caplog.records[-1].message)
+    assert payload["event"] == "request.error"
+    assert payload["request_id"] == "req-error"
+    assert payload["exception_type"] == "ValueError"

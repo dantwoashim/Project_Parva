@@ -60,8 +60,10 @@ class ParvaClient:
         retry_base_delay: float = 0.25,
         retry_sleep: Sleep | None = None,
     ) -> None:
-        self.base_url = base_url.rstrip("/")
-        self.future_bs_capabilities_url = future_bs_capabilities_url
+        self.base_url = _validated_http_url(base_url, "base_url").rstrip("/")
+        self.future_bs_capabilities_url = _validated_http_url(
+            future_bs_capabilities_url, "future_bs_capabilities_url"
+        )
         self.timeout = timeout
         self._transport = transport
         self.max_retries = max(0, max_retries)
@@ -888,7 +890,7 @@ class ParvaClient:
 
         request = urllib.request.Request(url, data=data, headers=headers, method=method)
         try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            with urllib.request.urlopen(request, timeout=self.timeout) as response:  # nosec B310
                 return _decode_response(response.read(), response.status)
         except urllib.error.HTTPError as exc:
             body = exc.read()
@@ -908,13 +910,20 @@ def _is_retryable_error(exc: ParvaAPIError) -> bool:
     return exc.status in _RETRYABLE_STATUSES
 
 
+def _validated_http_url(url: str, field_name: str) -> str:
+    parsed = urllib.parse.urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise ValueError(f"{field_name} must be an absolute http(s) URL")
+    return url
+
+
 def _retry_delay_seconds(exc: ParvaAPIError | None, attempt: int, base_delay: float) -> float:
     if exc is not None and exc.status == 429:
         retry_after = _parse_retry_after_seconds(exc.headers.get("Retry-After"))
         if retry_after is not None:
             return retry_after
     exponential = base_delay * (2**attempt)
-    jitter = random.uniform(0.0, base_delay) if base_delay > 0 else 0.0
+    jitter = random.uniform(0.0, base_delay) if base_delay > 0 else 0.0  # nosec B311
     return exponential + jitter
 
 

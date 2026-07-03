@@ -206,7 +206,8 @@ async def bs_to_gregorian_convert(
         return response
     except ValueError as e:
         from fastapi import HTTPException
-        raise HTTPException(status_code=400, detail=str(e))
+
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @router.get("/validate-bs-date")

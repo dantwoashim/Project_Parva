@@ -63,7 +63,7 @@ def main() -> int:
     known_limits_doc = PROJECT_ROOT / "docs" / "KNOWN_LIMITS.md"
     third_party_doc = PROJECT_ROOT / "THIRD_PARTY_NOTICES.md"
 
-    for label, path, actual in (
+    for label, _path, actual in (
         ("root pyproject", root_pyproject, _project_license(root_pyproject)),
         ("sdk pyproject", sdk_pyproject, _project_license(sdk_pyproject)),
         ("frontend package.json", frontend_package, _package_license(frontend_package)),

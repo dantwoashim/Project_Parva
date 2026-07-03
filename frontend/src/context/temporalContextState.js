@@ -49,15 +49,13 @@ export function createInitialState() {
 export function loadInitialState() {
   const baseState = createInitialState();
 
-  if (
-    typeof localStorage === 'undefined'
-    || typeof localStorage.getItem !== 'function'
-  ) {
+  const storage = resolveTemporalStorage();
+  if (!storage || typeof storage.getItem !== 'function') {
     return baseState;
   }
 
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = storage.getItem(STORAGE_KEY);
     if (!raw) return baseState;
     const parsed = JSON.parse(raw);
     const hydrated = reducer(baseState, { type: 'hydrate', payload: parsed });
@@ -67,6 +65,28 @@ export function loadInitialState() {
     };
   } catch {
     return baseState;
+  }
+}
+
+function resolveTemporalStorage(options = {}) {
+  if (Object.prototype.hasOwnProperty.call(options, 'storage')) {
+    return options.storage;
+  }
+  if (typeof window === 'undefined') return null;
+  return window.localStorage ?? null;
+}
+
+export function persistState(state, options = {}) {
+  const storage = resolveTemporalStorage(options);
+  if (!storage || typeof storage.setItem !== 'function') {
+    return false;
+  }
+
+  try {
+    storage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
+  } catch {
+    return false;
   }
 }
 

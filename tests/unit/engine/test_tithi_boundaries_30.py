@@ -8,7 +8,14 @@ from pathlib import Path
 
 from app.calendar.tithi.tithi_udaya import detect_ksheepana, detect_vriddhi, get_udaya_tithi
 
-FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "tithi_boundaries_30.json"
+FIXTURE = (
+    Path(__file__).resolve().parents[3]
+    / "data"
+    / "validation"
+    / "public"
+    / "calendar"
+    / "tithi_boundaries_30.json"
+)
 
 
 def test_boundary_fixture_has_expected_sample_size():

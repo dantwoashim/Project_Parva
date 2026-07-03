@@ -106,7 +106,7 @@ class TestSwissEphemeris:
         
         assert 0 <= moon_long < 360
     
-    def test_sunrise_calculation(self, kathmandu_coords):
+    def test_sunrise_calculation(self):
         """Test sunrise calculation for Kathmandu."""
         from app.calendar.ephemeris.swiss_eph import calculate_sunrise
         from app.calendar.ephemeris.time_utils import to_nepal_time

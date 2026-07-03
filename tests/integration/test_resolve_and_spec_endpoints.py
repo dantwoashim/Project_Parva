@@ -22,6 +22,13 @@ def test_resolve_endpoint_returns_expected_sections():
     assert body["trace"]["trace_id"].startswith("tr_")
 
 
+def test_resolve_endpoint_rejects_compact_date_format():
+    resp = client.get("/v3/api/resolve", params={"date": "20261015"})
+
+    assert resp.status_code == 400
+    assert resp.json()["detail"] == "Invalid date format, use YYYY-MM-DD"
+
+
 def test_spec_conformance_endpoint_returns_report():
     resp = client.get("/v3/api/spec/conformance", headers=TRUST_HEADERS)
     assert resp.status_code == 200

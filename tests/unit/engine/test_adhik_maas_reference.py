@@ -7,7 +7,14 @@ from pathlib import Path
 
 from app.calendar.lunar_calendar import get_lunar_year
 
-FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "adhik_maas_reference.json"
+FIXTURE = (
+    Path(__file__).resolve().parents[3]
+    / "data"
+    / "validation"
+    / "public"
+    / "calendar"
+    / "adhik_maas_reference.json"
+)
 
 
 def test_adhik_reference_fixture_shape():

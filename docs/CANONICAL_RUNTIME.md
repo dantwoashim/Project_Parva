@@ -30,7 +30,7 @@ The registry covers these public concepts:
 | Trust release artifact model | `backend/app/services/trust_infrastructure_service.py`, `backend/app/services/trust_surface_service.py`, `data/public/` | none |
 | Protocol schema source | `backend/app/services/protocol_service.py`, `specs/parva-protocol/`, `schemas/parva-protocol/` | none |
 | CLI and verification scripts | `scripts/parva_validate.py`, `scripts/release/verify_public.py`, `scripts/check_canonical_runtime.py` | none |
-| Frontend API client | `frontend/src/services/apiCore.js`, `frontend/src/services/api.js`, `frontend/src/services/apiContracts.js` | page-specific clients are compatibility helpers |
+| Frontend API client | `frontend/src/services/api.js`, `frontend/src/services/apiContracts.js`, `frontend/src/services/apiBase.js` | removed page-specific client helpers stay unsupported |
 | SDKs | `packages/parva-python`, `packages/parva-js` | `sdk/python` is compatibility scaffolding |
 | Runtime validation artifacts | `data/validation/public/`, `backend/data/public_artifacts/` | `tests/fixtures/` is test-only and not a public runtime dependency |
 
@@ -62,8 +62,9 @@ The public reproducibility gate also runs the canonical runtime checker through
 
 Public route quality, plugin quality, and reliability outputs use
 `data/validation/public/` or `backend/data/public_artifacts/`. Tests can still
-keep their own fixtures under `tests/fixtures/`, but production code must not
-load them directly.
+keep non-public fixtures under `tests/fixtures/`, but public validation inputs
+live under `data/validation/public/` and production code must not load
+`tests/fixtures/` directly.
 
 ## Compatibility Cleanup
 

@@ -418,7 +418,7 @@ def calendar_month_payload(*, year: int, month: int, profile: Optional[str]) -> 
         summaries = occurrence_map.get(current, [])
         if not profile:
             summaries = []
-            for festival_id, dates in rule_service.on_date(current):
+            for festival_id, _dates in rule_service.on_date(current):
                 festival = repo.get_by_id(festival_id)
                 if festival:
                     summaries.append(repo.to_summary(festival))
@@ -507,7 +507,7 @@ def festival_detail_payload(
     nearby = []
     if dates:
         search_start = dates.start_date - timedelta(days=15)
-        for fid, fdates in rule_service.upcoming(search_start, days=45)[:5]:
+        for fid, _fdates in rule_service.upcoming(search_start, days=45)[:5]:
             if fid != festival_id:
                 f = repo.get_by_id(fid)
                 if f:

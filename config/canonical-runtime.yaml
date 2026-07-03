@@ -438,11 +438,9 @@
       "owner_team": "Frontend",
       "canonical_modules": [],
       "canonical_paths": [
-        "frontend/src/services/apiCore.js",
         "frontend/src/services/api.js",
         "frontend/src/services/apiContracts.js",
-        "frontend/src/services/apiBase.js",
-        "frontend/src/types/api.ts"
+        "frontend/src/services/apiBase.js"
       ],
       "public_routes": [
         "/v3/api/*"
@@ -534,32 +532,9 @@
         {"path": "tests/integration/test_boundary_suite_api.py", "status": "exists"},
         {"path": "tests/unit/engine_plugins/test_registry_and_validation.py", "status": "exists"}
       ],
-      "compatibility_modules": [
-        "tests/fixtures"
-      ],
+      "compatibility_modules": [],
       "deprecated_modules": [],
-      "deprecated_paths": [
-        {
-          "path": "tests/fixtures/plugins",
-          "status": "test_only_source_copy",
-          "replacement": "data/validation/public/plugins"
-        },
-        {
-          "path": "tests/fixtures/tithi_boundaries_30.json",
-          "status": "test_only_source_copy",
-          "replacement": "data/validation/public/calendar/tithi_boundaries_30.json"
-        },
-        {
-          "path": "tests/fixtures/sankranti_24.json",
-          "status": "test_only_source_copy",
-          "replacement": "data/validation/public/calendar/sankranti_24.json"
-        },
-        {
-          "path": "tests/fixtures/adhik_maas_reference.json",
-          "status": "test_only_source_copy",
-          "replacement": "data/validation/public/calendar/adhik_maas_reference.json"
-        }
-      ],
+      "deprecated_paths": [],
       "research_private_dependencies": [],
       "verification_command": "python -m pytest tests/unit/reliability/test_boundary_suite.py tests/integration/test_boundary_suite_api.py tests/unit/engine_plugins/test_registry_and_validation.py -q"
     },

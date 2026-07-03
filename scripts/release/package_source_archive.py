@@ -133,8 +133,8 @@ def _tracked_source_paths() -> list[Path]:
             continue
         try:
             relative = Path(raw.decode("utf-8"))
-        except UnicodeDecodeError:
-            raise SystemExit("Unable to decode git-tracked path as UTF-8.")
+        except UnicodeDecodeError as exc:
+            raise SystemExit("Unable to decode git-tracked path as UTF-8.") from exc
         path = PROJECT_ROOT / relative
         if path.is_file() and not _should_skip(path):
             paths.append(path)

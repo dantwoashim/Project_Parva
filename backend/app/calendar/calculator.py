@@ -379,7 +379,7 @@ def calculate_festival_date(
     except (FestivalCalculationError, TypeError, ValueError, KeyError) as e:
         raise FestivalCalculationError(
             f"Failed to calculate {festival_id} for {gregorian_year}: {e}"
-        )
+        ) from e
 
 
 def _calculate_solar_festival(
@@ -413,7 +413,7 @@ def _calculate_solar_festival(
         end_date = start_date + timedelta(days=rule.duration - 1)
         return DateRange(start=start_date, end=end_date, year=bs_year)
     except ValueError as e:
-        raise FestivalCalculationError(f"Invalid BS date for {festival_id}: {e}")
+        raise FestivalCalculationError(f"Invalid BS date for {festival_id}: {e}") from e
 
 
 def _calculate_lunar_festival(
@@ -444,10 +444,10 @@ def _calculate_lunar_festival(
         try:
             bs_year = gregorian_year + 56
             month_start = bs_to_gregorian(bs_year, rule.bs_month, 1)
-        except ValueError:
+        except ValueError as exc:
             raise FestivalCalculationError(
                 f"Cannot find BS month {rule.bs_month} in {gregorian_year}"
-            )
+            ) from exc
 
     # Verify this is in the correct Gregorian year
     if month_start.year != gregorian_year:

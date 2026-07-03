@@ -18,12 +18,9 @@
     "test:a11y:live": "node scripts/accessibility_walkthrough.mjs"
   },
   "dependencies": {
-    "date-fns": "^4.1.0",
-    "leaflet": "^1.9.4",
     "prop-types": "^15.8.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
@@ -41,6 +38,6 @@
     "jsdom": "^27.0.1",
     "playwright": "^1.58.2",
     "vite": "^7.2.4",
-    "vitest": "^3.2.4"
+    "vitest": "^4.1.8"
   }
 }

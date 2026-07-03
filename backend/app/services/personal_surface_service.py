@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from typing import Optional
 
 from app.calendar.bikram_sambat import (
@@ -96,7 +96,7 @@ def _format_local_time(value: str | dict | None, fallback: str = "Time pending")
     if not value:
         return fallback
     if isinstance(value, str) and "T" not in value:
-        parsed = datetime.strptime(value, "%H:%M:%S")
+        parsed = datetime.combine(date.min, time.fromisoformat(value))
         return _round_to_display_minute(parsed).strftime("%I:%M %p").lstrip("0")
     parsed = datetime.fromisoformat(value)
     return _round_to_display_minute(parsed).strftime("%I:%M %p").lstrip("0")

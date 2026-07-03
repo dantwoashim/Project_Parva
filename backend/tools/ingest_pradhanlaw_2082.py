@@ -60,17 +60,16 @@ class TableParser(HTMLParser):
         self.current_row: List[str] = []
         self.rows: List[List[str]] = []
 
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag, _attrs):
         if tag == "td":
             self.in_td = True
 
     def handle_endtag(self, tag):
         if tag == "td":
             self.in_td = False
-        if tag == "tr":
-            if self.current_row:
-                self.rows.append([c.strip() for c in self.current_row if c.strip()])
-                self.current_row = []
+        if tag == "tr" and self.current_row:
+            self.rows.append([c.strip() for c in self.current_row if c.strip()])
+            self.current_row = []
 
     def handle_data(self, data):
         if self.in_td:

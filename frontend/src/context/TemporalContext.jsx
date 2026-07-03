@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { TemporalContext } from './temporalContextShared';
-import { STORAGE_KEY, loadInitialState, reducer } from './temporalContextState';
+import { loadInitialState, persistState, reducer } from './temporalContextState';
 
 export function TemporalProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, undefined, loadInitialState);
@@ -14,14 +14,7 @@ export function TemporalProvider({ children }) {
   const setLastViewed = useCallback((path) => dispatch({ type: 'setLastViewed', payload: path }), []);
 
   useEffect(() => {
-    try {
-      if (typeof localStorage?.setItem !== 'function') {
-        return;
-      }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {
-      // Ignore local storage write issues.
-    }
+    persistState(state);
   }, [state]);
 
   const value = useMemo(() => ({

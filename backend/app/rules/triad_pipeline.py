@@ -65,7 +65,9 @@ def _evidence_payload(rule: FestivalRuleV4) -> dict[str, Any]:
     source_evidence_ids = [rule.source]
     source_line = (rule.rule or {}).get("source_line")
     if source_line:
-        digest = hashlib.sha1(str(source_line).encode("utf-8")).hexdigest()[:12]
+        digest = hashlib.sha1(
+            str(source_line).encode("utf-8"), usedforsecurity=False
+        ).hexdigest()[:12]
         source_evidence_ids.append(f"source-line:{digest}")
 
     return {

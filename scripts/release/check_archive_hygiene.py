@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 import tarfile
 import tempfile
@@ -81,6 +82,24 @@ def check_readme_report_links(root: Path) -> list[str]:
     return issues
 
 
+def _safe_extract_tar(archive: tarfile.TarFile, destination: Path) -> None:
+    destination_root = destination.resolve()
+    for member in archive.getmembers():
+        member_path = (destination / member.name).resolve()
+        if destination_root != member_path and destination_root not in member_path.parents:
+            raise RuntimeError(f"Archive member escapes extraction root: {member.name}")
+        if member.isdir():
+            member_path.mkdir(parents=True, exist_ok=True)
+            continue
+        if not member.isfile():
+            raise RuntimeError(f"Archive member is not a regular file: {member.name}")
+        member_path.parent.mkdir(parents=True, exist_ok=True)
+        with archive.extractfile(member) as source, member_path.open("wb") as target:
+            if source is None:
+                raise RuntimeError(f"Archive member cannot be read: {member.name}")
+            shutil.copyfileobj(source, target)
+
+
 def check_git_archive() -> list[str]:
     issues: list[str] = []
     with tempfile.TemporaryDirectory(prefix="parva-archive-") as tmp:
@@ -92,7 +111,7 @@ def check_git_archive() -> list[str]:
         extract_root = tmp_path / "extract"
         extract_root.mkdir()
         with tarfile.open(archive_path) as archive:
-            archive.extractall(extract_root)
+            _safe_extract_tar(archive, extract_root)
 
         for path in extract_root.rglob("*"):
             rel = path.relative_to(extract_root).as_posix().lower()

@@ -24,7 +24,9 @@ router = APIRouter(prefix="/api", tags=["resolve"])
 
 def _parse_date(value: str) -> date:
     try:
-        return datetime.strptime(value, "%Y-%m-%d").date()
+        if len(value) != 10 or value[4] != "-" or value[7] != "-":
+            raise ValueError
+        return date.fromisoformat(value)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail="Invalid date format, use YYYY-MM-DD") from exc
 

@@ -2,6 +2,7 @@ import {
   STORAGE_KEY,
   createInitialState,
   loadInitialState,
+  persistState,
   reducer,
   todayIso,
 } from '../context/temporalContextState';
@@ -64,6 +65,29 @@ describe('temporal context state', () => {
   it('preserves dawn-paper as a distinct theme', () => {
     const state = reducer(createInitialState(), { type: 'setTheme', payload: 'dawn-paper' });
     expect(state.theme).toBe('dawn-paper');
+  });
+
+  it('persists state through an injected storage boundary', () => {
+    const memoryStorage = {
+      setItem: vi.fn(),
+    };
+    const state = createInitialState();
+
+    expect(persistState(state, { storage: memoryStorage })).toBe(true);
+    expect(memoryStorage.setItem).toHaveBeenCalledWith(STORAGE_KEY, JSON.stringify(state));
+  });
+
+  it('reports unavailable or failing storage without throwing', () => {
+    const state = createInitialState();
+
+    expect(persistState(state, { storage: null })).toBe(false);
+    expect(persistState(state, {
+      storage: {
+        setItem: vi.fn(() => {
+          throw new Error('quota exceeded');
+        }),
+      },
+    })).toBe(false);
   });
 
   it('allows supported language changes instead of forcing english', () => {

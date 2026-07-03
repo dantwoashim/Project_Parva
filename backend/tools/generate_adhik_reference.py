@@ -37,7 +37,14 @@ def main() -> None:
         "years": rows,
     }
 
-    path = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "adhik_maas_reference.json"
+    path = (
+        Path(__file__).resolve().parents[2]
+        / "data"
+        / "validation"
+        / "public"
+        / "calendar"
+        / "adhik_maas_reference.json"
+    )
     path.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(path)
 

@@ -14,7 +14,9 @@ from .schemas import TOOL_BY_NAME, TOOL_SPECS, ParvaToolSpec
 
 class PublicRouteClient:
     def __init__(self, base_url: str | None = None, timeout: float = 10.0) -> None:
-        self.base_url = (base_url or os.getenv("PARVA_PUBLIC_ORIGIN") or "https://api.prabinghimire1.com.np").rstrip("/")
+        self.base_url = _validated_http_origin(
+            base_url or os.getenv("PARVA_PUBLIC_ORIGIN") or "https://api.prabinghimire1.com.np"
+        ).rstrip("/")
         self.timeout = timeout
 
     def request(self, method: str, route: str, payload: dict[str, Any]) -> dict[str, Any]:
@@ -30,11 +32,18 @@ class PublicRouteClient:
             headers["Content-Type"] = "application/json"
             data = json.dumps(payload).encode("utf-8")
         request = urllib.request.Request(url, data=data, headers=headers, method=method)
-        with urllib.request.urlopen(request, timeout=self.timeout) as response:  # noqa: S310
+        with urllib.request.urlopen(request, timeout=self.timeout) as response:  # nosec B310
             decoded = json.loads(response.read().decode("utf-8"))
         if not isinstance(decoded, dict):
             raise TypeError("Parva API returned a non-object payload")
         return decoded
+
+
+def _validated_http_origin(base_url: str) -> str:
+    parsed = urllib.parse.urlparse(base_url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        raise ValueError("base_url must be an absolute http(s) URL")
+    return base_url
 
 
 def call_tool(name: str, arguments: dict[str, Any] | None = None, *, client: Any = None) -> dict[str, Any]:
@@ -55,7 +64,7 @@ def build_langchain_tools(client: Any = None) -> list[Any]:
     validate_tool_specs()
     try:
         from langchain_core.tools import StructuredTool
-    except Exception:  # noqa: BLE001 - optional dependency fallback.
+    except Exception:
         return [_fallback_descriptor(spec) for spec in TOOL_SPECS]
 
     tools = []

@@ -201,9 +201,9 @@ def build_request_context(*, product_version: str, settings: AppSettings):
 
         try:
             response = await call_next(request)
-        except Exception:
+        except Exception as exc:
             latency_ms = round((time.perf_counter() - started) * 1000.0, 2)
-            logger.error(
+            logger.exception(
                 json.dumps(
                     {
                         "event": "request.error",
@@ -212,6 +212,7 @@ def build_request_context(*, product_version: str, settings: AppSettings):
                         "method": request.method,
                         "latency_ms": latency_ms,
                         "version": product_version,
+                        "exception_type": type(exc).__name__,
                     }
                 )
             )

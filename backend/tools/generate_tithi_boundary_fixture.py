@@ -48,7 +48,14 @@ def main() -> None:
         "samples": rows,
     }
 
-    path = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "tithi_boundaries_30.json"
+    path = (
+        Path(__file__).resolve().parents[2]
+        / "data"
+        / "validation"
+        / "public"
+        / "calendar"
+        / "tithi_boundaries_30.json"
+    )
     path.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(path)
 

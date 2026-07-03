@@ -105,7 +105,7 @@ def _evaluate_sankranti_boundaries() -> dict[str, Any]:
                 }
             )
             continue
-        for expected, actual in zip(expected_rows, actual_rows):
+        for expected, actual in zip(expected_rows, actual_rows, strict=True):
             expected_dt = datetime.fromisoformat(expected["datetime_utc"])
             delta_seconds = abs((actual["datetime_utc"] - expected_dt).total_seconds())
             if (

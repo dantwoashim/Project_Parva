@@ -17,7 +17,6 @@ The frontend is capability-aware. Route visibility is controlled by the route pr
 Canonical capability files:
 
 - `frontend/src/config/routeCapabilities.js`
-- `frontend/src/config/capabilityMap.js`
 - `frontend/src/navigation/routeManifest.js`
 - `frontend/src/hooks/useBackendCapabilities.js`
 
