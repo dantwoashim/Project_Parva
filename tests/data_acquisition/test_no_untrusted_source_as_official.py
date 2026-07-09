@@ -1,4 +1,4 @@
-from app.future_bs import data_acquisition as da
+from app.research.future_bs import data_acquisition as da
 
 
 def test_untrusted_sources_are_never_official_claim_sources():

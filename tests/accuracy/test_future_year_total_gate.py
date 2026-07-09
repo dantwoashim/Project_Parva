@@ -1,6 +1,6 @@
 """Accuracy-level guard for invalid future year totals."""
 
-from app.future_bs.year_total_gate import year_total_gate
+from app.research.future_bs.year_total_gate import year_total_gate
 
 
 def test_invalid_future_year_total_is_never_claimable():

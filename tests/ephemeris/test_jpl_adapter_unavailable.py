@@ -3,8 +3,8 @@ from __future__ import annotations
 import json
 
 import pytest
-from app.future_bs.ephemeris.base import EphemerisUnavailableError
-from app.future_bs.ephemeris.jpl_spice_adapter import JPLSpiceAdapter
+from app.research.future_bs.ephemeris.base import EphemerisUnavailableError
+from app.research.future_bs.ephemeris.jpl_spice_adapter import JPLSpiceAdapter
 
 
 def test_missing_jpl_kernel_reports_unavailable_without_path_leak(tmp_path) -> None:

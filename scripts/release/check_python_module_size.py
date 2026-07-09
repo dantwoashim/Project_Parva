@@ -10,9 +10,9 @@ DEFAULT_FAIL_LINES = 1_000
 GRANDFATHERED_BUDGETS = {
     Path("backend/app/services/rulelang_service.py"): 1_760,
     Path("packages/parva-python/parva/client.py"): 1_680,
-    Path("backend/app/future_bs/data_acquisition.py"): 1_360,
+    Path("backend/app/research/future_bs/data_acquisition.py"): 1_360,
     Path("backend/app/services/timegraph_service.py"): 1_120,
-    Path("backend/app/future_bs/month_start/inversion_workbench.py"): 1_000,
+    Path("backend/app/research/future_bs/month_start/inversion_workbench.py"): 1_000,
 }
 CHECK_ROOTS = (
     PROJECT_ROOT / "backend" / "app",

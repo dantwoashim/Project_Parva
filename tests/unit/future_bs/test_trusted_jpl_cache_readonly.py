@@ -1,5 +1,5 @@
 import pytest
-from app.future_bs.solar_ingress_cache import (
+from app.research.future_bs.solar_ingress_cache import (
     cached_events_for_gregorian_year,
     solar_ingress_cache_status,
 )

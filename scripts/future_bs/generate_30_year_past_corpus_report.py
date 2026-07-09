@@ -14,7 +14,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.future_bs import data_acquisition as da  # noqa: E402
+from app.research.future_bs import data_acquisition as da  # noqa: E402
 
 OUT_CSV = PROJECT_ROOT / "data" / "future_bs" / "corpus" / "reconstructed_30_past_year_month_lengths.csv"
 OUT_JSON = PROJECT_ROOT / "data" / "future_bs" / "data_acquisition" / "thirty_year_past_reconstruction_report.json"

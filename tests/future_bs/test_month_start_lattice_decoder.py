@@ -1,4 +1,4 @@
-from app.future_bs.sequence.month_start_lattice_decoder import decode_month_start_lattice
+from app.research.future_bs.sequence.month_start_lattice_decoder import decode_month_start_lattice
 
 
 def test_month_start_lattice_decoder_marks_invalid_years_non_claimable(tmp_path):

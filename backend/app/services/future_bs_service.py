@@ -6,21 +6,21 @@ from typing import Any
 
 from app.calendar.constants import BS_MONTH_NAMES
 from app.core.source_metadata import build_research_claim_meta
-from app.future_bs.backtest import backtest_model as computational_backtest_model
-from app.future_bs.backtest import full_replay_backtest, rolling_validation
-from app.future_bs.boundary_risk import boundary_risk_payload
-from app.future_bs.compare import compare_external_sheet as future_compare_external_sheet
-from app.future_bs.compare import external_year_map as future_external_year_map
-from app.future_bs.ensemble import CALIBRATION_VERSION, METHOD_VERSION
-from app.future_bs.ensemble import predict_year as future_predict_year
-from app.future_bs.excel_importer import import_month_lengths_base64
-from app.future_bs.explain import explain_prediction_month
-from app.future_bs.exports import predictions_to_csv as future_predictions_to_csv
-from app.future_bs.exports import predictions_to_xlsx as future_predictions_to_xlsx
-from app.future_bs.loan_impact import simulate_loan_impact as future_simulate_loan_impact
-from app.future_bs.models import PREDICTION_MAX_YEAR
-from app.future_bs.residual_analysis import residual_summary
-from app.future_bs.run_registry import get_model_run, list_model_runs
+from app.research.future_bs.backtest import backtest_model as computational_backtest_model
+from app.research.future_bs.backtest import full_replay_backtest, rolling_validation
+from app.research.future_bs.boundary_risk import boundary_risk_payload
+from app.research.future_bs.compare import compare_external_sheet as future_compare_external_sheet
+from app.research.future_bs.compare import external_year_map as future_external_year_map
+from app.research.future_bs.ensemble import CALIBRATION_VERSION, METHOD_VERSION
+from app.research.future_bs.ensemble import predict_year as future_predict_year
+from app.research.future_bs.excel_importer import import_month_lengths_base64
+from app.research.future_bs.explain import explain_prediction_month
+from app.research.future_bs.exports import predictions_to_csv as future_predictions_to_csv
+from app.research.future_bs.exports import predictions_to_xlsx as future_predictions_to_xlsx
+from app.research.future_bs.loan_impact import simulate_loan_impact as future_simulate_loan_impact
+from app.research.future_bs.models import PREDICTION_MAX_YEAR
+from app.research.future_bs.residual_analysis import residual_summary
+from app.research.future_bs.run_registry import get_model_run, list_model_runs
 
 
 def _validate_month(month: int) -> None:

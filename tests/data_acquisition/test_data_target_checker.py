@@ -1,4 +1,4 @@
-from app.future_bs import data_acquisition as da
+from app.research.future_bs import data_acquisition as da
 
 
 def test_data_target_checker_fails_when_reconstruction_is_insufficient(monkeypatch):

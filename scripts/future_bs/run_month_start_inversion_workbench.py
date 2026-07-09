@@ -13,7 +13,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.future_bs.month_start.inversion_workbench import (  # noqa: E402
+from app.research.future_bs.month_start.inversion_workbench import (  # noqa: E402
     DEFAULT_MAX_YEAR,
     DEFAULT_OUTPUT_DIR,
     run_month_start_inversion_workbench,

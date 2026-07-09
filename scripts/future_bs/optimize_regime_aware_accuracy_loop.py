@@ -17,15 +17,15 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.calendar.constants import BS_MONTH_NAMES  # noqa: E402
-from app.future_bs.corpus import corpus_rows  # noqa: E402
-from app.future_bs.legacy_cycle_predictor import predict_legacy_cycle  # noqa: E402
-from app.future_bs.market_shadow import hamropatro_shadow_years  # noqa: E402
-from app.future_bs.model_search.regime_candidate_runner import (  # noqa: E402
+from app.research.future_bs.corpus import corpus_rows  # noqa: E402
+from app.research.future_bs.legacy_cycle_predictor import predict_legacy_cycle  # noqa: E402
+from app.research.future_bs.market_shadow import hamropatro_shadow_years  # noqa: E402
+from app.research.future_bs.model_search.regime_candidate_runner import (  # noqa: E402
     RegimeCandidate,
     acceptance_gate,
     candidate_prediction,
 )
-from app.future_bs.source_policy import PUBLICATION_STATUS, policy_rows  # noqa: E402
+from app.research.future_bs.source_policy import PUBLICATION_STATUS, policy_rows  # noqa: E402
 
 OUT_DIR = PROJECT_ROOT / "data" / "future_bs" / "accuracy_lab"
 REPORTS = {

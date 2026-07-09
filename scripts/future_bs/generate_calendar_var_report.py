@@ -16,7 +16,7 @@ for path in (BACKEND_ROOT, SCRIPT_ROOT):
         sys.path.insert(0, str(path))
 
 from _report_io import write_json, write_simple_pdf  # noqa: E402
-from app.future_bs.calendar_var import calendar_var_payload  # noqa: E402
+from app.research.future_bs.calendar_var import calendar_var_payload  # noqa: E402
 from app.services.future_bs_service import predict_bs_year  # noqa: E402
 
 

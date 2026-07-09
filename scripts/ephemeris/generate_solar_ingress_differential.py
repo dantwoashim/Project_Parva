@@ -16,9 +16,9 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 import swisseph as swe  # noqa: E402
-from app.future_bs.astronomy_confidence import classify_astronomy_confidence  # noqa: E402
-from app.future_bs.ephemeris.jpl_spice_adapter import JPLSpiceAdapter  # noqa: E402
-from app.future_bs.ephemeris.swiss_adapter import SwissEphemerisAdapter  # noqa: E402
+from app.research.future_bs.astronomy_confidence import classify_astronomy_confidence  # noqa: E402
+from app.research.future_bs.ephemeris.jpl_spice_adapter import JPLSpiceAdapter  # noqa: E402
+from app.research.future_bs.ephemeris.swiss_adapter import SwissEphemerisAdapter  # noqa: E402
 
 from scripts.ephemeris.verify_kernel_hashes import verify  # noqa: E402
 

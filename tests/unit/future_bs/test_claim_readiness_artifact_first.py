@@ -1,4 +1,4 @@
-from app.future_bs import claim_readiness as module
+from app.research.future_bs import claim_readiness as module
 
 
 def test_claim_readiness_default_does_not_call_live_backtest(monkeypatch):

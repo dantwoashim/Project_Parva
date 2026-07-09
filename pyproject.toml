@@ -47,7 +47,7 @@ research = [
 
 [tool.pytest.ini_options]
 pythonpath = [".", "backend"]
-testpaths = ["tests", "backend/tests"]
+testpaths = ["tests"]
 markers = [
     "private_source: requires private source archives that are intentionally absent from public clones",
     "wide_corpus: requires the wide BS corpus or source-rich historical fixtures",
@@ -87,9 +87,9 @@ files = [
     "backend/app/sources",
     "backend/app/panchanga",
     "backend/app/compliance",
-    "backend/app/future_bs/rule_inversion",
-    "backend/app/future_bs/truth_fusion/consensus_truth_selector.py",
-    "backend/app/future_bs/active_learning/promotion_plan.py",
+    "backend/app/research/future_bs/rule_inversion",
+    "backend/app/research/future_bs/truth_fusion/consensus_truth_selector.py",
+    "backend/app/research/future_bs/active_learning/promotion_plan.py",
 ]
 
 [tool.setuptools]

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pytest
-from app.future_bs.excel_importer import _parse_xlsx_xml, import_month_lengths_bytes
+from app.research.future_bs.excel_importer import _parse_xlsx_xml, import_month_lengths_bytes
 
 
 def test_import_month_lengths_csv_parses_valid_rows():

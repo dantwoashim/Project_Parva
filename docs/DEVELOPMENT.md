@@ -22,13 +22,17 @@ If Python 3.11 is not first on PATH, point the public verification scripts at it
 PARVA_PYTHON=/path/to/python3.11 python scripts/verify_environment.py
 ```
 
+The repository does not auto-reexec Python through `sitecustomize.py`. This is
+intentional: interpreter selection should be explicit and reproducible rather
+than hidden in a repo-local startup hook.
+
 Windows PowerShell example:
 
 ```powershell
 $env:PATH="C:\Users\<you>\AppData\Local\Programs\Python\Python311;C:\Users\<you>\AppData\Local\Programs\Python\Python311\Scripts;" + $env:PATH
 python --version
 node --version
-python scripts/verify_environment.py
+py -3.11 scripts/verify_environment.py
 ```
 
 On macOS or Linux:
@@ -230,6 +234,12 @@ If `scripts/verify_environment.py` reports a Python mismatch, use Python 3.11 ex
 
 ```bash
 PARVA_PYTHON=/path/to/python3.11 python scripts/release/verify_public.py
+```
+
+Windows PowerShell:
+
+```powershell
+py -3.11 scripts/release/verify_public.py
 ```
 
 ### Missing Private Source Archive

@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import pytest
-from app.future_bs import ensemble
-from app.future_bs.backtest import backtest_model
-from app.future_bs.solar_ingress_predictor import (
+from app.research.future_bs import ensemble
+from app.research.future_bs.backtest import backtest_model
+from app.research.future_bs.solar_ingress_predictor import (
     predict_solar_ingress_year,
     solar_civil_training_summary,
 )

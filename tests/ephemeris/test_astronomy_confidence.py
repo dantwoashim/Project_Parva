@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.future_bs.astronomy_confidence import classify_astronomy_confidence
+from app.research.future_bs.astronomy_confidence import classify_astronomy_confidence
 
 
 def test_confidence_separates_astronomy_from_civil_authority() -> None:

@@ -1,4 +1,4 @@
-from app.future_bs.perturbation_robustness import perturbation_payload
+from app.research.future_bs.perturbation_robustness import perturbation_payload
 
 
 def test_perturbation_payload_has_scenarios_and_reasons():

@@ -1,4 +1,4 @@
-from app.future_bs.sequence_decoder import decode_year_sequence
+from app.research.future_bs.sequence_decoder import decode_year_sequence
 
 
 def test_sequence_decoder_selects_valid_total_with_supported_adjustment():

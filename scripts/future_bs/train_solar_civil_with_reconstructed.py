@@ -17,13 +17,13 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.calendar.constants import BS_MONTH_LENGTHS, BS_MONTH_NAMES  # noqa: E402
-from app.future_bs.models import MONTH_DAY_VALUES  # noqa: E402
-from app.future_bs.solar_ingress_predictor import (  # noqa: E402
+from app.research.future_bs.models import MONTH_DAY_VALUES  # noqa: E402
+from app.research.future_bs.solar_ingress_predictor import (  # noqa: E402
     REFERENCE_TRAINING_SOURCE_POLICY,
     predict_solar_ingress_year,
     solar_civil_training_summary,
 )
-from app.future_bs.source_policy import PUBLICATION_STATUS, policy_rows  # noqa: E402
+from app.research.future_bs.source_policy import PUBLICATION_STATUS, policy_rows  # noqa: E402
 
 OUT_DIR = PROJECT_ROOT / "data" / "future_bs" / "accuracy_lab"
 DEFAULT_JSON = OUT_DIR / "solar_civil_reconstructed_training_report.json"

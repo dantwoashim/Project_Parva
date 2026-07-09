@@ -1,4 +1,4 @@
-from app.future_bs import data_acquisition as da
+from app.research.future_bs import data_acquisition as da
 
 
 def test_human_review_queue_prioritizes_conflicts(tmp_path, monkeypatch):

@@ -15,10 +15,10 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.calendar.constants import BS_MONTH_NAMES  # noqa: E402
-from app.future_bs.backtest import backtest_model  # noqa: E402
-from app.future_bs.ensemble import compute_year_live  # noqa: E402
-from app.future_bs.models import METHOD_VERSION  # noqa: E402
-from app.future_bs.run_registry import build_run_metadata, write_run_metadata  # noqa: E402
+from app.research.future_bs.backtest import backtest_model  # noqa: E402
+from app.research.future_bs.ensemble import compute_year_live  # noqa: E402
+from app.research.future_bs.models import METHOD_VERSION  # noqa: E402
+from app.research.future_bs.run_registry import build_run_metadata, write_run_metadata  # noqa: E402
 
 
 def _compact_prediction(payload: dict) -> dict:

@@ -36,7 +36,7 @@ def _load_mypy_files() -> list[str]:
 
 
 def _is_production_python(path: str) -> bool:
-    if path.startswith(("tests/", "backend/tests/")):
+    if path.startswith("tests/"):
         return False
     if "/tests/" in path or path.endswith("_test.py"):
         return False

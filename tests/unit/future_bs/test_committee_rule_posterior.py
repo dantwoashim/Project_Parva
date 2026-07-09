@@ -1,4 +1,4 @@
-from app.future_bs.committee_rule_posterior import committee_rule_posterior
+from app.research.future_bs.committee_rule_posterior import committee_rule_posterior
 
 
 def test_committee_posterior_is_computed_and_normalized():

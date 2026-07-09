@@ -22,14 +22,17 @@ a fresh clone can find the right reference without guessing.
 - [API Reference](API_REFERENCE.md)
 - [API Reference v3](API_REFERENCE_V3.md)
 - [Deployment](DEPLOYMENT.md)
+- [Architecture](architecture/ARCHITECTURE.md)
+- [Architecture Migration Status](architecture/MIGRATION_STATUS.md)
 - [Performance Notes](PERFORMANCE.md)
 - [Public API Boundary](PUBLIC_API_BOUNDARY.md)
 - [Known Limitations](KNOWN_LIMITATIONS.md)
 - [Security Policy](../SECURITY.md)
-- [Security Engineering Notes](SECURITY.md)
+- [Security Engineering Index](SECURITY.md)
 - [Versioning](VERSIONING.md)
 - [API Versioning and Deprecation](API_VERSIONING_AND_DEPRECATION.md)
 - [Error Model](ERROR_MODEL.md)
+- [Artifact Policy](../artifacts/POLICY.md)
 
 ## Trust, Source Policy, and Protocol
 

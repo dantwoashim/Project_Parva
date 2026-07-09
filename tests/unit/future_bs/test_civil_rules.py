@@ -1,7 +1,7 @@
 """Civil month-start rule tests."""
 
-from app.future_bs.civil_rules import ASSIGNMENT_RULES, assign_with_rule
-from app.future_bs.solar_ingress_engine import events_around_bs_year
+from app.research.future_bs.civil_rules import ASSIGNMENT_RULES, assign_with_rule
+from app.research.future_bs.solar_ingress_engine import events_around_bs_year
 
 
 def test_civil_rules_return_dates_and_metadata():

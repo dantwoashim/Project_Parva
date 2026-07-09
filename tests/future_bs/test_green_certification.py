@@ -1,4 +1,4 @@
-from app.future_bs.risk.green_certification import certify_green_predictions
+from app.research.future_bs.risk.green_certification import certify_green_predictions
 
 
 def test_green_certification_rejects_wide_sets():

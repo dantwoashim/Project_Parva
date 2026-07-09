@@ -1,4 +1,4 @@
-from app.future_bs.truth_fusion.weak_label_fusion import fuse_month_start_candidates
+from app.research.future_bs.truth_fusion.weak_label_fusion import fuse_month_start_candidates
 
 
 def test_weak_label_fusion_produces_posteriors():

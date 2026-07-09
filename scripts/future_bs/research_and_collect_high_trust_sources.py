@@ -12,7 +12,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.future_bs.high_trust_acquisition import research_and_collect_high_trust_sources  # noqa: E402,I001
+from app.research.future_bs.high_trust_acquisition import research_and_collect_high_trust_sources  # noqa: E402,I001
 
 
 def main() -> int:

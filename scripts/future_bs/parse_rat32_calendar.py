@@ -13,7 +13,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.future_bs.data_acquisition import (  # noqa: E402
+from app.research.future_bs.data_acquisition import (  # noqa: E402
     WITNESS_DIR,
     WITNESS_FIELDS,
     extract_rat32_pages,

@@ -1,5 +1,16 @@
-"""Future BS month-length prediction and risk-engine package."""
+"""Compatibility namespace for the Future BS research package.
 
-from .ensemble import METHOD_VERSION, compute_year_live, predict_year
+The implementation lives in :mod:`app.research.future_bs`. This package keeps
+the historical ``app.future_bs.*`` import path working for existing scripts,
+tests, and compatibility surfaces while the repository adopts physical research
+lanes.
+"""
 
-__all__ = ["METHOD_VERSION", "compute_year_live", "predict_year"]
+from __future__ import annotations
+
+from importlib import import_module
+from pathlib import Path
+
+_implementation = import_module("app.research.future_bs")
+__all__ = getattr(_implementation, "__all__", [])
+__path__ = [str(Path(__file__).resolve().parents[1] / "research" / "future_bs")]

@@ -772,7 +772,7 @@ def build_engine_headers(
         ephemeris_value = ephemeris_header_value()
         if request.url.path.startswith("/v4/api/future-bs"):
             try:
-                from app.future_bs.solar_ingress_engine import active_ephemeris_label
+                from app.research.future_bs.solar_ingress_engine import active_ephemeris_label
 
                 if active_ephemeris_label() == "jpl_de440":
                     ephemeris_value = "jpl-de440-lahiri-sidereal"

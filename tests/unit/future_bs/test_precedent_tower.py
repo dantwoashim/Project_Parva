@@ -1,4 +1,4 @@
-from app.future_bs.precedent_tower import precedent_tower
+from app.research.future_bs.precedent_tower import precedent_tower
 
 
 def test_precedent_tower_returns_real_cases():

@@ -98,6 +98,9 @@ data/source_archive/
 !data/source_archive/
 data/source_archive/*
 !data/source_archive/README.md
+!data/source_archive/moha/
+data/source_archive/moha/*
+!data/source_archive/moha/manifest.json
 data/source_inventory/
 data/source_inventory/hamropatro_calendar_sources.json
 data/source_inventory/ratopati_month_coverage_2000_2100.json

@@ -1,4 +1,4 @@
-from app.future_bs.risk_thresholds import classify_prediction_risk
+from app.research.future_bs.risk_thresholds import classify_prediction_risk
 
 
 def test_wide_prediction_set_cannot_be_green():

@@ -18,10 +18,10 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.calendar.constants import BS_MONTH_NAMES  # noqa: E402
-from app.future_bs.corpus import corpus_rows  # noqa: E402
-from app.future_bs.hamropatro_shadow import HAMROPATRO_MONTH_LENGTHS_PATH  # noqa: E402
-from app.future_bs.models import MONTH_DAY_VALUES  # noqa: E402
-from app.future_bs.solar_ingress_predictor import (  # noqa: E402
+from app.research.future_bs.corpus import corpus_rows  # noqa: E402
+from app.research.future_bs.hamropatro_shadow import HAMROPATRO_MONTH_LENGTHS_PATH  # noqa: E402
+from app.research.future_bs.models import MONTH_DAY_VALUES  # noqa: E402
+from app.research.future_bs.solar_ingress_predictor import (  # noqa: E402
     CALIBRATED_RECENT_RULE,
     CALIBRATED_REFERENCE_RULE,
     CIVIL_DECISION_KNN_RULE,
@@ -30,7 +30,7 @@ from app.future_bs.solar_ingress_predictor import (  # noqa: E402
     predict_solar_ingress_year,
     predict_with_rule,
 )
-from app.future_bs.source_policy import PUBLICATION_STATUS, policy_rows  # noqa: E402
+from app.research.future_bs.source_policy import PUBLICATION_STATUS, policy_rows  # noqa: E402
 
 OUT_DIR = PROJECT_ROOT / "data" / "future_bs" / "accuracy_lab"
 DEFAULT_JSON = OUT_DIR / "solar_civil_before_after_2000_2099_metrics.json"

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from app.future_bs.backtest import backtest_model
+from app.research.future_bs.backtest import backtest_model
 
 
 def test_green_zone_cases_are_correct_on_current_official_holdout():

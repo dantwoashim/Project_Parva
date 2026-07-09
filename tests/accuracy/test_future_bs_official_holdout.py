@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from app.future_bs.backtest import backtest_model
+from app.research.future_bs.backtest import backtest_model
 
 ROOT = Path(__file__).resolve().parents[2]
 THRESHOLDS = ROOT / "data" / "future_bs" / "benchmarks" / "accuracy_thresholds.json"

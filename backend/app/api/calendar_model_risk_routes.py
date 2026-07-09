@@ -7,7 +7,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
-from app.future_bs.report_store import list_reports, load_report
+from app.research.future_bs.report_store import list_reports, load_report
 from app.services.calendar_model_risk_service import (
     audit_external_sheet_response,
     calendar_var_response,

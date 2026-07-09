@@ -6,7 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from app.future_bs.run_registry import DEFAULT_RUN_ID, get_model_run
+from app.research.future_bs.run_registry import DEFAULT_RUN_ID, get_model_run
 
 
 def _stable_hash(payload: dict) -> str:

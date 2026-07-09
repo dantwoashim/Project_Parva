@@ -1,4 +1,4 @@
-from app.future_bs.data_acquisition import source_policy
+from app.research.future_bs.data_acquisition import source_policy
 
 
 def test_source_trust_scoring_orders_official_above_weak_sources():

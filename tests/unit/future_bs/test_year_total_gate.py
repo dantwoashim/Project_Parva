@@ -1,6 +1,6 @@
 """Strict future-year total gate tests."""
 
-from app.future_bs.year_total_gate import apply_year_total_gate, year_total_gate
+from app.research.future_bs.year_total_gate import apply_year_total_gate, year_total_gate
 
 
 def test_year_total_gate_accepts_normal_future_totals():

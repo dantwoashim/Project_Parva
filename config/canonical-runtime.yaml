@@ -208,7 +208,8 @@
       "deprecated_modules": [],
       "deprecated_paths": [],
       "research_private_dependencies": [
-        "app.future_bs.source_policy"
+        "app.future_bs.source_policy",
+        "app.research.future_bs.source_policy"
       ],
       "verification_command": "python -m pytest tests/contract/test_source_metadata_contract.py tests/accuracy/test_source_policy_separation.py tests/unit/sources/test_source_validation.py -q"
     },
@@ -597,12 +598,18 @@
     ],
     "research_private_modules": [
       "app.future_bs",
+      "app.research.future_bs",
       "app.services.future_bs_service",
       "app.future_bs.backtest",
+      "app.research.future_bs.backtest",
       "app.future_bs.exports",
+      "app.research.future_bs.exports",
       "app.future_bs.report_store",
+      "app.research.future_bs.report_store",
       "app.future_bs.residual_analysis",
-      "app.future_bs.schedule_simulator"
+      "app.research.future_bs.residual_analysis",
+      "app.future_bs.schedule_simulator",
+      "app.research.future_bs.schedule_simulator"
     ],
     "research_private_allowed_public_route_importers": [],
     "forbidden_imports": [

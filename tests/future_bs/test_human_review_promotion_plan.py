@@ -1,6 +1,6 @@
 import csv
 
-from app.future_bs.active_learning import promotion_plan
+from app.research.future_bs.active_learning import promotion_plan
 
 
 def test_human_review_promotion_plan_has_top_rows(tmp_path, monkeypatch):

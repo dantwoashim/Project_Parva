@@ -1,4 +1,4 @@
-from app.future_bs.accuracy_objective import objective_from_counts
+from app.research.future_bs.accuracy_objective import objective_from_counts
 
 
 def test_objective_heavily_penalizes_wrong_green():

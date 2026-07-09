@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from time import perf_counter
 
-from app.future_bs.ensemble import compute_year_live, predict_year
+from app.research.future_bs.ensemble import compute_year_live, predict_year
 
 
 def test_cached_live_year_compute_is_under_300ms():

@@ -11,7 +11,7 @@ BACKEND = PROJECT_ROOT / "backend"
 if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
 
-from app.future_bs.hamropatro_shadow import write_hamropatro_shadow_artifacts  # noqa: E402
+from app.research.future_bs.hamropatro_shadow import write_hamropatro_shadow_artifacts  # noqa: E402
 
 
 def main() -> None:

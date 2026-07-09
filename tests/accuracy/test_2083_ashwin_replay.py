@@ -1,4 +1,4 @@
-from app.future_bs.red_team_2083 import replay_2083_ashwin
+from app.research.future_bs.red_team_2083 import replay_2083_ashwin
 
 
 def test_2083_ashwin_replay_generates_policy_artifact():

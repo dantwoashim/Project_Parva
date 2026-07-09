@@ -1,4 +1,4 @@
-from app.future_bs import data_acquisition as da
+from app.research.future_bs import data_acquisition as da
 
 
 def test_month_start_reconstruction_derives_lengths(tmp_path, monkeypatch):

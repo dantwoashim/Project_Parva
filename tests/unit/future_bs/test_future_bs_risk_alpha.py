@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 from app.bootstrap.app_factory import create_app
-from app.future_bs.risk import (
+from app.research.future_bs.risk import (
     FutureBSRiskInput,
     RiskLabel,
     assess_month_assumption,

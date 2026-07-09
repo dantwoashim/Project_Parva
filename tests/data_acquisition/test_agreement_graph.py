@@ -1,4 +1,4 @@
-from app.future_bs import data_acquisition as da
+from app.research.future_bs import data_acquisition as da
 
 
 def test_agreement_graph_prefers_higher_trust_candidate(tmp_path, monkeypatch):

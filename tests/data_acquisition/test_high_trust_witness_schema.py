@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 
 import pytest
-from app.future_bs.high_trust_acquisition import HIGH_TRUST_FIELDS
+from app.research.future_bs.high_trust_acquisition import HIGH_TRUST_FIELDS
 
 
 def test_high_trust_witness_outputs_follow_schema():

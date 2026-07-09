@@ -1,7 +1,7 @@
 """Corpus and source registry tests."""
 
-from app.future_bs.corpus import corpus_summary, get_corpus_row, load_corpus
-from app.future_bs.source_registry import load_source_registry, source_payload
+from app.research.future_bs.corpus import corpus_summary, get_corpus_row, load_corpus
+from app.research.future_bs.source_registry import load_source_registry, source_payload
 
 
 def test_corpus_loads_source_labeled_rows():

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from app.future_bs.solar_ingress_cache import (
+from app.research.future_bs.solar_ingress_cache import (
     cached_events_for_gregorian_year,
     load_solar_ingress_cache,
 )
@@ -22,7 +22,7 @@ def test_solar_ingress_public_sample_loads_de440_events():
 
 
 def test_cached_year_uses_configured_private_cache_path(monkeypatch):
-    from app.future_bs import solar_ingress_cache
+    from app.research.future_bs import solar_ingress_cache
 
     monkeypatch.setattr(solar_ingress_cache, "DEFAULT_EVENTS_PATH", SAMPLE_CACHE)
     solar_ingress_cache.load_solar_ingress_cache.cache_clear()
@@ -35,7 +35,7 @@ def test_cached_year_uses_configured_private_cache_path(monkeypatch):
 
 
 def test_trusted_sample_can_serve_readonly_when_live_ephemeris_is_swiss(monkeypatch):
-    from app.future_bs import solar_ingress_cache
+    from app.research.future_bs import solar_ingress_cache
 
     monkeypatch.setattr(solar_ingress_cache, "DEFAULT_EVENTS_PATH", SAMPLE_CACHE)
     solar_ingress_cache.load_solar_ingress_cache.cache_clear()

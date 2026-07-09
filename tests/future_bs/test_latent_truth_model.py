@@ -1,4 +1,4 @@
-from app.future_bs.truth_fusion.latent_truth_model import infer_latent_truth
+from app.research.future_bs.truth_fusion.latent_truth_model import infer_latent_truth
 
 
 def test_latent_truth_model_marks_review_cases():

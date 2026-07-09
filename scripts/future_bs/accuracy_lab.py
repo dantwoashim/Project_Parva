@@ -28,7 +28,7 @@ if os.getenv("PARVA_SCRIPT_REEXEC") != "1":
         completed = subprocess.run([python_executable, *sys.argv], env=env)
         raise SystemExit(completed.returncode)
 
-from app.future_bs.accuracy_lab import run_accuracy_loop  # noqa: E402
+from app.research.future_bs.accuracy_lab import run_accuracy_loop  # noqa: E402
 
 
 def main() -> int:

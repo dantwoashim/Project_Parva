@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import subprocess
 
-from app.future_bs.models import METHOD_VERSION, MONTH_DAY_VALUES
-from app.future_bs.precomputed_store import load_precomputed_predictions
+from app.research.future_bs.models import METHOD_VERSION, MONTH_DAY_VALUES
+from app.research.future_bs.precomputed_store import load_precomputed_predictions
 
 
 def _load_available_predictions():

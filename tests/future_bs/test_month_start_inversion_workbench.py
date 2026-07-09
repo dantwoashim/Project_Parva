@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 import pytest
-from app.future_bs.month_start.inversion_workbench import (
+from app.research.future_bs.month_start.inversion_workbench import (
     PUBLICATION_STATUS,
     build_month_start_inversion_workbench,
     run_month_start_inversion_workbench,

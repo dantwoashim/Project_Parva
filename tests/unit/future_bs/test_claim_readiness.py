@@ -1,4 +1,4 @@
-from app.future_bs.claim_readiness import claim_readiness_report
+from app.research.future_bs.claim_readiness import claim_readiness_report
 
 
 def test_claim_readiness_is_honest_and_fast_shape():

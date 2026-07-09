@@ -15,8 +15,8 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.future_bs.ephemeris import JPLDe440Adapter  # noqa: E402
-from app.future_bs.solar_ingress_engine import (  # noqa: E402
+from app.research.future_bs.ephemeris import JPLDe440Adapter  # noqa: E402
+from app.research.future_bs.solar_ingress_engine import (  # noqa: E402
     _gregorian_sankranti_events,  # noqa: E402
     _jpl_gregorian_sankranti_events,  # noqa: E402
 )

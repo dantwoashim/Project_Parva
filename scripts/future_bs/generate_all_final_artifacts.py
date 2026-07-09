@@ -31,14 +31,14 @@ if os.getenv("PARVA_SCRIPT_REEXEC") != "1":
         raise SystemExit(completed.returncode)
 
 from _report_io import write_json, write_simple_xlsx  # noqa: E402
-from app.future_bs.accuracy_lab import run_accuracy_loop  # noqa: E402
-from app.future_bs.backtest import rolling_validation  # noqa: E402
-from app.future_bs.calendar_var import calendar_var_payload  # noqa: E402
-from app.future_bs.claim_readiness import claim_readiness_report  # noqa: E402
-from app.future_bs.compare import compare_external_sheet  # noqa: E402
-from app.future_bs.red_team_2083 import replay_2083_ashwin  # noqa: E402
-from app.future_bs.report_store import save_report  # noqa: E402
-from app.future_bs.year_total_gate import year_total_gate  # noqa: E402
+from app.research.future_bs.accuracy_lab import run_accuracy_loop  # noqa: E402
+from app.research.future_bs.backtest import rolling_validation  # noqa: E402
+from app.research.future_bs.calendar_var import calendar_var_payload  # noqa: E402
+from app.research.future_bs.claim_readiness import claim_readiness_report  # noqa: E402
+from app.research.future_bs.compare import compare_external_sheet  # noqa: E402
+from app.research.future_bs.red_team_2083 import replay_2083_ashwin  # noqa: E402
+from app.research.future_bs.report_store import save_report  # noqa: E402
+from app.research.future_bs.year_total_gate import year_total_gate  # noqa: E402
 from app.services.future_bs_service import predict_bs_year  # noqa: E402
 
 REPORTS_DIR = PROJECT_ROOT / "data" / "future_bs" / "reports"

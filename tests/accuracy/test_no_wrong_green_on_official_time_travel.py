@@ -1,4 +1,4 @@
-from app.future_bs.backtest import rolling_validation
+from app.research.future_bs.backtest import rolling_validation
 
 
 def test_no_wrong_green_on_selected_official_time_travel():

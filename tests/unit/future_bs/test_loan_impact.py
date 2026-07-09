@@ -1,6 +1,9 @@
 """Loan impact tests."""
 
-from app.future_bs.day_count_conventions import SUPPORTED_DAY_COUNT_METHODS, interest_difference
+from app.research.future_bs.day_count_conventions import (
+    SUPPORTED_DAY_COUNT_METHODS,
+    interest_difference,
+)
 
 
 def test_day_count_methods_are_registered():

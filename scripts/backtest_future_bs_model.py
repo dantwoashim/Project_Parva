@@ -13,7 +13,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.future_bs.backtest import (  # noqa: E402
+from app.research.future_bs.backtest import (  # noqa: E402
     backtest_model,
     full_replay_backtest,
     rolling_validation,

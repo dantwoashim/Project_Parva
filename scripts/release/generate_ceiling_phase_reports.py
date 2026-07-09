@@ -46,7 +46,7 @@ REPORT_ALIASES = {
 COMMANDS = [
     "py -3.11 -m pytest tests/unit/trust tests/unit/policy tests/contract/test_claim_compiler.py tests/unit/sources tests/unit/canonicalization tests/unit/boundary -q",
     "py -3.11 -m pytest tests/unit/forge tests/unit/bitplanes tests/unit/membranes tests/unit/witnesses tests/unit/constraints tests/integration/test_convert_bs_to_ad_membrane.py tests/integration/test_payroll_safe_date_workflow.py tests/integration/test_conformance_capsule.py -q",
-    "py -3.11 -m pytest tests/unit/tvl tests/local-kernel tests/unit/membranes/test_diff_freshness.py tests/unit/provenance/test_light_cone.py tests/unit/membranes/test_branch_membranes.py tests/unit/disagreement tests/unit/tempc tests/unit/overlays -q",
+    "py -3.11 -m pytest tests/unit/tvl tests/local_kernel tests/unit/membranes/test_diff_freshness.py tests/unit/provenance/test_light_cone.py tests/unit/membranes/test_branch_membranes.py tests/unit/disagreement tests/unit/tempc tests/unit/overlays -q",
     "py -3.11 -m pytest tests/unit/compliance tests/integration/test_notice_to_obligation_flow.py tests/unit/federation tests/unit/transparency -q",
     "py -3.11 scripts/sources/validate_dockets.py",
     "py -3.11 scripts/sources/build_source_snapshot.py",
@@ -80,7 +80,7 @@ def report_text(number: str, title: str, filename: str, artifact: str) -> str:
 - Public-facing examples preserve no-authority language.
 
 ## Tests added
-- Phase-targeted tests under `tests/unit`, `tests/integration`, `tests/contract`, and `tests/local-kernel`.
+- Phase-targeted tests under `tests/unit`, `tests/integration`, `tests/contract`, and `tests/local_kernel`.
 
 ## Commands run
 ```bash

@@ -1,5 +1,5 @@
 import pytest
-from app.future_bs import data_acquisition as da
+from app.research.future_bs import data_acquisition as da
 
 
 def test_thirty_plus_past_medium_high_years_are_reconstructed():

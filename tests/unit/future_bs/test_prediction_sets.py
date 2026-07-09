@@ -1,6 +1,6 @@
 """Prediction set helper tests."""
 
-from app.future_bs.prediction_sets import prediction_set_payload
+from app.research.future_bs.prediction_sets import prediction_set_payload
 
 
 def test_prediction_sets_include_second_candidate_when_needed():

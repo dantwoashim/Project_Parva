@@ -1,5 +1,5 @@
 import pytest
-from app.future_bs.calendar_var import calendar_var_payload
+from app.research.future_bs.calendar_var import calendar_var_payload
 from app.services.future_bs_service import predict_bs_year
 
 pytestmark = pytest.mark.research_artifact

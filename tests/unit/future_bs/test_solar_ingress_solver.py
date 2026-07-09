@@ -2,7 +2,7 @@
 
 from datetime import datetime, timezone
 
-from app.future_bs.solar_ingress_solver import bracket_crossing, solve_solar_ingress
+from app.research.future_bs.solar_ingress_solver import bracket_crossing, solve_solar_ingress
 
 
 def test_solar_ingress_solver_returns_event_payload():

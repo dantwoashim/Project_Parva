@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.future_bs.ayanamsha_calibration import ayanamsha_calibration_summary
+from app.research.future_bs.ayanamsha_calibration import ayanamsha_calibration_summary
 
 
 def test_ayanamsha_summary_is_marked_as_candidate_registry_not_calibration():

@@ -3,7 +3,7 @@ import json
 import subprocess
 from pathlib import Path
 
-from app.future_bs.source_policy import POLICIES
+from app.research.future_bs.source_policy import POLICIES
 
 ROOT = Path("data/future_bs/accuracy_lab")
 

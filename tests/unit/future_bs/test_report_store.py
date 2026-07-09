@@ -1,4 +1,4 @@
-from app.future_bs.report_store import (
+from app.research.future_bs.report_store import (
     list_reports,
     load_report,
     missing_report_payload,

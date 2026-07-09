@@ -1,4 +1,4 @@
-from app.future_bs.truth_fusion.source_independence import build_source_independence_graph
+from app.research.future_bs.truth_fusion.source_independence import build_source_independence_graph
 
 
 def test_source_independence_graph_has_nodes():

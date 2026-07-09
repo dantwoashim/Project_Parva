@@ -1,4 +1,4 @@
-from app.future_bs.regime.regime_model import detect_regime_changes
+from app.research.future_bs.regime.regime_model import detect_regime_changes
 
 
 def test_regime_change_detection_assigns_regimes():

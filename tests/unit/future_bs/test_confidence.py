@@ -1,8 +1,8 @@
 """Probability and confidence tests."""
 
-from app.future_bs.boundary_risk import boundary_risk_payload
-from app.future_bs.confidence import confidence_label, score_confidence
-from app.future_bs.probability import weighted_probability, winning_days
+from app.research.future_bs.boundary_risk import boundary_risk_payload
+from app.research.future_bs.confidence import confidence_label, score_confidence
+from app.research.future_bs.probability import weighted_probability, winning_days
 
 
 def test_probability_selects_weighted_winner():

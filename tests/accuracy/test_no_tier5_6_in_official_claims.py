@@ -1,4 +1,4 @@
-from app.future_bs.source_policy import policy_rows
+from app.research.future_bs.source_policy import policy_rows
 
 
 def test_tier_5_6_rows_do_not_enter_official_claims():

@@ -1,0 +1,26 @@
+{
+  "source_family": "moha_public_holiday_pdfs",
+  "description": "Tracked Ministry of Home Affairs public holiday source PDFs used as public source archive evidence.",
+  "files": [
+    {
+      "path": "data/source_archive/moha/2080_public_holidays.pdf",
+      "sha256": "AA496F5B368BAC1052DD89EC845D3B479FDE1838DC6AD5F900D6184864233E02",
+      "size_bytes": 7043590
+    },
+    {
+      "path": "data/source_archive/moha/2081_public_holidays.pdf",
+      "sha256": "8B6A61842C934415ED3AAC56B000FDBB1D298DCE01FBC8100441DA1E09DC93EF",
+      "size_bytes": 8994732
+    },
+    {
+      "path": "data/source_archive/moha/2082_public_holidays.pdf",
+      "sha256": "FF66950DD42B5E79EF5977B9D55A7973445F7C6BD1AADA7450416B23424D5674",
+      "size_bytes": 7813768
+    },
+    {
+      "path": "data/source_archive/moha/2083_public_holidays.pdf",
+      "sha256": "FFBABF83CAD254B485504627F9E47FCE6C1A7A28E2693A399AE88BF9C0279A29",
+      "size_bytes": 8618093
+    }
+  ]
+}

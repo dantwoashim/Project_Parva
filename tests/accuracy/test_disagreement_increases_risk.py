@@ -1,4 +1,7 @@
-from app.future_bs.model_search.regime_candidate_runner import RegimeCandidate, candidate_prediction
+from app.research.future_bs.model_search.regime_candidate_runner import (
+    RegimeCandidate,
+    candidate_prediction,
+)
 
 
 def test_solar_market_disagreement_increases_risk():

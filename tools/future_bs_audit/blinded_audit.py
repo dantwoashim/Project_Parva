@@ -14,7 +14,7 @@ BACKEND_ROOT = ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.future_bs.risk import FutureBSRiskInput, aggregate_blinded_audit  # noqa: E402
+from app.research.future_bs.risk import FutureBSRiskInput, aggregate_blinded_audit  # noqa: E402
 
 REQUIRED_COLUMNS = {"bs_year", "bs_month", "month_length"}
 

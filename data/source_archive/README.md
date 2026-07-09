@@ -1,11 +1,13 @@
 # Source Archive Boundary
 
-This directory is intentionally empty in the public repository.
+This directory stores source archives and retrieval evidence when the file is
+intentionally part of the public repository.
 
-Public verification must not require files in this directory. Private or
-source-rich verification may populate it explicitly with source archives,
-checksums, and retrieval metadata outside the public clone.
+Public verification must not require private-only source archives. Private or
+source-rich verification may still populate this directory explicitly with
+additional source archives, checksums, and retrieval metadata outside the public
+clone.
 
-Large government or publisher source files should be tracked only when their
-license, provenance, checksum, and public-release purpose are clear. Otherwise
-they should live in a controlled release artifact or private source archive.
+Tracked source archives must have clear provenance, checksum coverage, and a
+public-release purpose. Large government or publisher files without that
+metadata should live in a controlled release artifact or private source archive.

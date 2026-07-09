@@ -1,4 +1,4 @@
-from app.future_bs.source_policy import policy_metrics
+from app.research.future_bs.source_policy import policy_metrics
 
 
 def test_source_policy_metrics_are_separated():

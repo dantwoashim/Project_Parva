@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.future_bs.rule_inversion.effective_cutoff import estimate_effective_cutoffs
+from app.research.future_bs.rule_inversion.effective_cutoff import estimate_effective_cutoffs
 
 
 def test_effective_cutoff_estimator_marks_minute_level_cutoff_as_limited():

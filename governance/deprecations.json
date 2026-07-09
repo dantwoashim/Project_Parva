@@ -1,0 +1,29 @@
+{
+  "schema_version": "2026-07-09.deprecations",
+  "entries": [
+    {
+      "surface": "app.future_bs",
+      "kind": "python_import_namespace",
+      "replacement": "app.research.future_bs",
+      "status": "compatibility_shim",
+      "sunset": "after_next_public_minor_release",
+      "notes": "Historical imports remain supported while Future BS implementation lives under the research lane."
+    },
+    {
+      "surface": "docs/SECURITY.md",
+      "kind": "documentation_path",
+      "replacement": "SECURITY.md",
+      "status": "compatibility_pointer",
+      "sunset": "no_sunset_external_links_may_exist",
+      "notes": "Root SECURITY.md is authoritative."
+    },
+    {
+      "surface": "governance/SECURITY.md",
+      "kind": "documentation_path",
+      "replacement": "SECURITY.md",
+      "status": "compatibility_pointer",
+      "sunset": "no_sunset_external_links_may_exist",
+      "notes": "Root SECURITY.md is authoritative."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 import pytest
-from app.future_bs.corpus import corpus_rows
-from app.future_bs.shadow_residual_correction import (
+from app.research.future_bs.corpus import corpus_rows
+from app.research.future_bs.shadow_residual_correction import (
     apply_shadow_residual_rules,
     predict_shadow_corrected_year,
     train_shadow_residual_rules,

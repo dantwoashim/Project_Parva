@@ -221,7 +221,7 @@
         "static/parva-embed.js",
         "examples/embed/basic.html",
         "docs/spec/PARVA_EMBED_PROTOCOL_v1.md",
-        "tests/local-kernel"
+        "tests/local_kernel"
       ]
     },
     {

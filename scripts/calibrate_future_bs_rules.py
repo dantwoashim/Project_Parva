@@ -13,7 +13,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.future_bs.calibration import (  # noqa: E402
+from app.research.future_bs.calibration import (  # noqa: E402
     calibrate_month_cutoffs,
     write_calibration_artifacts,
 )

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from app.future_bs.program_synthesis.program_search import run_program_synthesis
+from app.research.future_bs.program_synthesis.program_search import run_program_synthesis
 
 
 def test_candidate_rule_selection_reports_bounded_search_not_open_ended_synthesis():
