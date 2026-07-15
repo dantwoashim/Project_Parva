@@ -821,10 +821,10 @@
     },
     {
       "festival_id": "nag-panchami",
-      "gregorian": "2026-07-27",
-      "source": "override",
-      "confidence": "official",
-      "notes": ""
+      "gregorian": "2026-08-17",
+      "source": "hamropatro_2083_public_calendar",
+      "confidence": "secondary",
+      "notes": "BS 2083-05-01 (Bhadra 1), Sawan Shukla Panchami"
     },
     {
       "festival_id": "bhai-tika",

@@ -27,7 +27,12 @@ TEST_CASES_V2 = [
     # SECONDARY LUNAR FESTIVALS
     ("gai-jatra", "2026-08-12", "nepal_gov", "Shrawan Krishna 1"),
     ("krishna-janmashtami", "2026-08-19", "estimated", "Shrawan Krishna 8"),
-    ("nag-panchami", "2026-07-27", "estimated", "Shrawan Shukla 5"),
+    (
+        "nag-panchami",
+        "2026-08-17",
+        "hamropatro_2083_public_calendar",
+        "BS 2083 Bhadra 1, Sawan Shukla 5",
+    ),
     ("chhath", "2026-11-12", "estimated", "Kartik Shukla 6"),
     ("mha-puja", "2026-11-11", "estimated", "Nepal Sambat New Year (Mha Puja)"),
     ("bhai-tika", "2026-11-12", "estimated", "Kartik Shukla 2"),

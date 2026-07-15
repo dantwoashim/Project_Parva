@@ -191,7 +191,10 @@
       "notes": "BS 2083-05-19 (भदौ १९) (घ) श्रीकृष्ण जन्माष्टमी [ocr_confidence=high]"
     },
     "nag-panchami": {
-      "start": "2026-07-27"
+      "start": "2026-08-17",
+      "source": "hamropatro_2083_public_calendar",
+      "confidence": "secondary",
+      "notes": "BS 2083-05-01 (Bhadra 1), Sawan Shukla Panchami"
     },
     "bhai-tika": {
       "start": "2026-11-12"

@@ -173,6 +173,20 @@ class TestUpcomingFestivals:
             assert festival["days_until"] >= 0
             assert festival["date_status"] == "available"
 
+    def test_upcoming_uses_verified_nag_panchami_2083_date(self):
+        """Upcoming festivals exposes Nag Panchami on Bhadra 1, 2083."""
+        response = client.get(
+            "/api/festivals/upcoming",
+            params={"days": 90, "from_date": "2026-07-15"},
+        )
+        assert response.status_code == 200
+
+        festivals = {festival["id"]: festival for festival in response.json()["festivals"]}
+        nag_panchami = festivals["nag-panchami"]
+        assert nag_panchami["start_date"] == "2026-08-17"
+        assert nag_panchami["end_date"] == "2026-08-17"
+        assert nag_panchami["days_until_start"] == 33
+
 
 class TestCalendarAccuracy:
     """Test calendar calculations match official dates."""

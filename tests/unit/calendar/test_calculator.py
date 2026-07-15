@@ -88,6 +88,13 @@ class TestCalculateFestivalDate:
         assert result.start.month in [8, 9]  # Aug-Sept
         assert result.duration_days == 8
 
+    def test_nag_panchami_2083_verified_date(self):
+        """Nag Panchami 2083 falls on Bhadra 1, 2083 (August 17, 2026)."""
+        result = calculate_festival_date("nag-panchami", 2026)
+        assert result.start == date(2026, 8, 17)
+        assert result.end == date(2026, 8, 17)
+        assert result.duration_days == 1
+
     def test_invalid_festival_raises(self):
         """Invalid festival ID raises exception."""
         with pytest.raises((ValueError, KeyError)):

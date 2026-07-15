@@ -12,9 +12,9 @@
     },
     {
       "year": 2026,
-      "expected_start_date": "2026-07-17",
-      "expected_end_date": "2026-07-17",
-      "method": "rule_dsl_lunar_month_v1",
+      "expected_start_date": "2026-08-17",
+      "expected_end_date": "2026-08-17",
+      "method": "verified_calendar_override",
       "status": "passed"
     },
     {
