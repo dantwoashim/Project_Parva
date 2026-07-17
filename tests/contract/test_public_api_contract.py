@@ -264,3 +264,17 @@ def test_panchanga_endpoint_emits_replayable_method_docketed_membrane() -> None:
     assert capsule["boundary"]["not_panchanga_authority"] is True
     assert capsule["boundary"]["not_ritual_final_authority"] is True
     assert verify_membrane(capsule) == (True, "verified")
+
+
+def test_panchanga_endpoint_rejects_reserved_jpl_calculation_provider() -> None:
+    response = client.get(
+        "/v3/api/calendar/panchanga",
+        params={
+            "date": "2025-04-14",
+            "proof": "replay",
+            "ephemeris_provider": "jpl_de440",
+        },
+    )
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "REQUEST_VALIDATION_ERROR"

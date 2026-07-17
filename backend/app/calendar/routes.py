@@ -6,7 +6,7 @@ Endpoints for calendar conversion and tithi information.
 """
 
 from datetime import date, datetime
-from typing import Optional
+from typing import Literal, Optional
 
 from fastapi import APIRouter, Query, Request
 from pydantic import BaseModel
@@ -334,7 +334,10 @@ async def get_panchanga_endpoint(
     lat: Optional[float] = Query(None, description="Latitude for proof identity"),
     lon: Optional[float] = Query(None, description="Longitude for proof identity"),
     tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
-    ephemeris_provider: str = Query("builtin_swiss_moshier", description="builtin_swiss_moshier|jpl_de440"),
+    ephemeris_provider: Literal["builtin_swiss_moshier", "pinned_panchanga_fixture"] = Query(
+        "builtin_swiss_moshier",
+        description="Calculation provider used for proof output",
+    ),
     ephemeris_fixture_id: Optional[str] = Query(None, description="Pinned fixture id for deterministic replay"),
     ayanamsa: str = Query("lahiri", description="Sidereal ayanamsa mode"),
 ):

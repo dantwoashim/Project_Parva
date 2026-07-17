@@ -36,8 +36,8 @@ docker build -t project-parva .
 
 The default Docker build does not fetch the JPL DE440 kernel from NASA during
 image construction. That keeps a fresh public clone reproducible without a live
-third-party download. If you need live JPL-backed regeneration inside the image,
-opt in explicitly:
+third-party download. To include a validated DE440 file for metadata inspection
+or separate research tooling, opt in explicitly:
 
 ```bash
 docker build \

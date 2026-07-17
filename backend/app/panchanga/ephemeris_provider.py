@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import os
 from dataclasses import dataclass
@@ -16,6 +15,7 @@ from app.calendar.ephemeris.swiss_eph import (
     get_ephemeris_info,
 )
 from app.calendar.panchanga import get_panchanga
+from app.panchanga.spk_kernel import validate_planetary_spk
 from app.sources.hashing import canonical_json_hash
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -44,14 +44,6 @@ class EphemerisProvider(Protocol):
         ayanamsa: str,
     ) -> dict[str, Any]:
         """Compute or load Panchanga values for a specific location/date."""
-
-
-def _sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return f"sha256:{digest.hexdigest()}"
 
 
 def _sha256_json_file(path: Path) -> str:
@@ -214,13 +206,13 @@ class FixtureEphemerisProvider:
 
 
 @dataclass(frozen=True)
-class JplEphemerisProvider:
-    """JPL provider interface with explicit kernel configuration and hash disclosure."""
+class JplKernelMetadataProvider:
+    """Validated JPL kernel metadata without a calculation-provider claim."""
 
     kernel_path: str | None = None
-    provider_id: str = "jpl_de440"
-    provider_kind: str = "jpl_kernel"
-    ephemeris_name: str = "JPL DE440-family SPK"
+    provider_id: str = "jpl_de440_kernel_metadata"
+    provider_kind: str = "verified_kernel_metadata_only"
+    ephemeris_name: str = "JPL DE440-family SPK metadata"
     ephemeris_version: str = "de440"
 
     def _kernel(self) -> Path:
@@ -232,12 +224,19 @@ class JplEphemerisProvider:
             raise FileNotFoundError("configured JPL kernel does not exist")
         return path
 
-    def _verified_kernel_hash(self, kernel: Path) -> str:
-        actual = _sha256_file(kernel)
+    def _validated_kernel(self, kernel: Path) -> tuple[str, int]:
         expected = os.getenv("PARVA_JPL_KERNEL_SHA256", "").strip()
-        if expected and expected != actual and expected != actual.removeprefix("sha256:"):
-            raise ValueError("configured JPL kernel hash does not match PARVA_JPL_KERNEL_SHA256")
-        return actual
+        if not expected:
+            raise ValueError("PARVA_JPL_KERNEL_SHA256 is required for a configured JPL kernel")
+        configured_size = os.getenv("PARVA_JPL_KERNEL_SIZE", "").strip()
+        expected_size = int(configured_size) if configured_size else None
+        inventory = validate_planetary_spk(
+            kernel,
+            expected_sha256=expected,
+            expected_size=expected_size,
+        )
+        normalized_hash = expected.lower().removeprefix("sha256:")
+        return f"sha256:{normalized_hash}", len(inventory.segments)
 
     def metadata(self) -> dict[str, Any]:
         try:
@@ -250,31 +249,32 @@ class JplEphemerisProvider:
                 "ephemeris_version": self.ephemeris_version,
                 "kernel_hash": None,
                 "available": False,
+                "calculation_available": False,
+                "jpl_backed": False,
                 "boundary_vector": {
-                    "claim_boundary": "jpl_unavailable_not_used",
+                    "claim_boundary": "jpl_kernel_metadata_unavailable_not_used",
                     "not_authority": True,
                     "review_required": True,
                 },
             }
+        kernel_hash, segment_count = self._validated_kernel(kernel)
         return {
             "provider_id": self.provider_id,
             "provider_kind": self.provider_kind,
             "ephemeris_name": self.ephemeris_name,
             "ephemeris_version": self.ephemeris_version,
-            "kernel_hash": self._verified_kernel_hash(kernel),
+            "kernel_hash": kernel_hash,
             "kernel_file": kernel.name,
-            "time_scale": "TDB/UTC converted by ephemeris library",
-            "coordinate_frame": "JPL SPK apparent positions via configured adapter",
-            "precision_tolerance": "kernel/provider dependent",
-            "supported_date_range": "configured kernel range",
+            "segment_count": segment_count,
             "source_or_method_docket": "parva.panchanga.method_dockets.v1",
             "boundary_vector": {
-                "claim_boundary": "computed_ephemeris_not_panchanga_authority",
+                "claim_boundary": "verified_kernel_metadata_not_calculation_output",
                 "not_authority": True,
                 "review_required": True,
             },
             "available": True,
-            "jpl_backed": True,
+            "calculation_available": False,
+            "jpl_backed": False,
         }
 
     def panchanga_for(
@@ -286,13 +286,15 @@ class JplEphemerisProvider:
         timezone_name: str,
         ayanamsa: str,
     ) -> dict[str, Any]:
-        # The current Panchanga stack computes through pyswisseph. A configured
-        # JPL kernel is disclosed and hashed here; low-level lunar/solar calls
-        # can be swapped behind this provider without changing proof semantics.
-        kernel = self._kernel()
-        self._verified_kernel_hash(kernel)
-        del ayanamsa
-        return get_panchanga(target_date, latitude=latitude, longitude=longitude, timezone_name=timezone_name)
+        del target_date, latitude, longitude, timezone_name, ayanamsa
+        raise ValueError(
+            "JPL DE440 is registered as verified kernel metadata only; "
+            "no JPL Panchanga calculation provider is available"
+        )
+
+
+# Compatibility import for integrations that previously inspected kernel metadata.
+JplEphemerisProvider = JplKernelMetadataProvider
 
 
 def provider_from_id(provider_id: str, *, fixture_id: str | None = None) -> EphemerisProvider:
@@ -304,7 +306,10 @@ def provider_from_id(provider_id: str, *, fixture_id: str | None = None) -> Ephe
             raise ValueError("fixture provider requires fixture_id")
         return FixtureEphemerisProvider(fixture_id=fixture_id)
     if normalized in {"jpl_de440", "jpl"}:
-        return JplEphemerisProvider()
+        raise ValueError(
+            "jpl_de440 cannot be selected for Panchanga calculations; "
+            "only verified kernel metadata is implemented"
+        )
     raise ValueError(f"unsupported ephemeris provider: {provider_id}")
 
 
@@ -329,6 +334,7 @@ __all__ = [
     "EphemerisProvider",
     "FixtureEphemerisProvider",
     "JplEphemerisProvider",
+    "JplKernelMetadataProvider",
     "method_dockets",
     "provider_from_id",
     "sunrise_payload",

@@ -5,8 +5,10 @@ audience: astronomical-computation
 
 # JPL DE440 Integration
 
-JPL DE440 is a deterministic astronomical truth tower for research and
-cross-checking. It is not a public official BS prediction engine.
+JPL DE440 is a deterministic astronomical reference for research and
+cross-checking. It is not a public official BS prediction engine. Project Parva
+currently validates configured SPK files and exposes metadata only; it does not
+yet expose an independent JPL calculation backend.
 
 ## Role
 
@@ -29,7 +31,7 @@ JPL cannot replace:
 - fiscal, working-day, payroll, tax, or banking rules,
 - published source authority.
 
-## Pipeline
+## Target Pipeline
 
 ```text
 DE440 or DE441 SPK kernel
@@ -46,8 +48,8 @@ DE440 or DE441 SPK kernel
 ## Runtime Boundary
 
 Public verification does not require JPL kernels. If no kernel is configured,
-the JPL adapter reports unavailable and public routes continue to use the safe
-public fallback.
+the metadata provider reports unavailable and public routes continue to use the
+declared Swiss/Moshier or fixture provider.
 
 If a kernel is configured, operators must run:
 
@@ -55,5 +57,6 @@ If a kernel is configured, operators must run:
 python scripts/ephemeris/verify_kernel_hashes.py
 ```
 
-Only relative policy ids and hash status should appear in public reports. Local
-operator paths remain private.
+Kernel presence never enables the reserved `jpl_de440` Panchanga provider id.
+Only relative policy ids, structural validation state, and hash status should
+appear in public reports. Local operator paths remain private.

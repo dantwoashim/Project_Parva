@@ -11,6 +11,7 @@ Panchanga outputs are computed and method-docketed. They must disclose:
 - method dockets
 - non-authority boundaries
 
-The repository uses a pinned fixture slice for deterministic tests and exposes a
-JPL provider interface for locally configured kernels. It does not bundle large
-JPL kernels and does not claim official Panchanga or ritual authority.
+The repository uses a pinned fixture slice for deterministic tests. Locally
+configured JPL files can be validated and disclosed as metadata, but they are
+not selectable Panchanga calculation providers. The repository does not bundle
+large JPL kernels and does not claim official Panchanga or ritual authority.

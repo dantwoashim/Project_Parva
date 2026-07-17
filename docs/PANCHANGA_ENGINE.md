@@ -35,11 +35,10 @@ Proof-mode Panchanga queries make defaults explicit:
 - `builtin_swiss_moshier`: built-in Swiss/Moshier fallback approximation.
 - `pinned_panchanga_fixture`: committed deterministic fixture slice for tests
   and local replay.
-- `jpl_de440`: JPL DE440-family provider interface using
-  `PARVA_JPL_DE440_KERNEL` when configured.
 
-The repository does not bundle large JPL kernels. If no kernel exists, JPL is
-unavailable and must not be silently claimed.
+The reserved `jpl_de440` calculation-provider id is rejected. A separately
+configured DE440-family file can be validated for metadata inspection, but it
+cannot produce Panchanga output through this provider surface.
 
 ## Boundaries
 

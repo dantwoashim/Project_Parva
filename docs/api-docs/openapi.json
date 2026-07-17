@@ -1859,12 +1859,16 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "builtin_swiss_moshier",
+                "pinned_panchanga_fixture"
+              ],
               "type": "string",
-              "description": "builtin_swiss_moshier|jpl_de440",
+              "description": "Calculation provider used for proof output",
               "default": "builtin_swiss_moshier",
               "title": "Ephemeris Provider"
             },
-            "description": "builtin_swiss_moshier|jpl_de440"
+            "description": "Calculation provider used for proof output"
           },
           {
             "name": "ephemeris_fixture_id",
@@ -13219,12 +13223,16 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "builtin_swiss_moshier",
+                "pinned_panchanga_fixture"
+              ],
               "type": "string",
-              "description": "builtin_swiss_moshier|jpl_de440",
+              "description": "Calculation provider used for proof output",
               "default": "builtin_swiss_moshier",
               "title": "Ephemeris Provider"
             },
-            "description": "builtin_swiss_moshier|jpl_de440"
+            "description": "Calculation provider used for proof output"
           },
           {
             "name": "ephemeris_fixture_id",

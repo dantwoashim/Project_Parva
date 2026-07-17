@@ -20,7 +20,7 @@ ayanamsa-dependent. Hidden defaults are not allowed in proof mode; Kathmandu,
 `Asia/Kathmandu`, Lahiri ayanamsa, and the selected ephemeris provider are all
 explicit query inputs.
 
-JPL support is an interface and configuration path. The repository does not
-bundle large JPL kernels. Local deployments may configure a JPL DE440-family
-kernel with `PARVA_JPL_DE440_KERNEL`; pinned fixture slices are used for
-deterministic tests.
+The repository does not bundle large JPL kernels. Local deployments may
+validate a configured DE440-family file for metadata inspection, but the file
+is not a selectable Panchanga calculation provider. Pinned fixture slices are
+used for deterministic tests.
