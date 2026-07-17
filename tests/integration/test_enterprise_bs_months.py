@@ -14,6 +14,26 @@ def _days(body: dict) -> list[int]:
     return [int(row["days"]) for row in body["months"]]
 
 
+def test_2082_canonical_uses_structured_published_calendar_data() -> None:
+    response = client.get("/v3/api/enterprise/bs-months/2082")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["selected_method"] == "source_backed_lookup"
+    assert body["selected_mode"] == "source_backed_lookup"
+    assert body["confidence"] == "official_verified"
+    assert body["source_status"] == "structured_official"
+    assert body["review_required"] is False
+    assert body["boundary"]["authority"] == "structured_official"
+    assert body["boundary"]["review_state"] == "not_required"
+    assert body["field_provenance"]["months"]["flags"] == []
+    assert body["meta"]["source"]["id"] == "parva_structured_official_bs_window"
+    assert _days(body)[2:4] == [32, 31]
+    assert body["months"][2]["end_ad"] == "2025-07-16"
+    assert body["months"][3]["start_ad"] == "2025-07-17"
+    assert body["months"][3]["end_ad"] == "2025-08-16"
+
+
 def test_2087_default_canonical_does_not_emit_static_table_truth() -> None:
     response = client.get("/v3/api/enterprise/bs-months/2087")
 

@@ -72,7 +72,7 @@ def test_rule_evaluation_returns_decision_trace_meta_and_fact_ids() -> None:
     assert body["rule_id"] == "last_working_day_of_nepali_month"
     assert body["decision"]["status"] == "approved"
     assert body["decision"]["requires_human_review"] is False
-    assert body["output"]["payroll_date"]["bs"] == "2082-04-31"
+    assert body["output"]["payroll_date"]["bs"] == "2082-04-30"
     assert body["trace"]["steps"]
     assert "fact_month_length_bs_2082_04" in body["fact_ids"]
     assert body["meta"]["claim_boundary"] == "enterprise_decision_support_not_legal_authority"
@@ -83,7 +83,7 @@ def test_while_loop_rule_moves_weekend_backward() -> None:
         "/v3/api/rules/payroll_previous_working_day_if_non_working/evaluate",
         json={
             "input": {
-                "bs_date": "2082-04-04",
+                "bs_date": "2082-04-03",
                 "profile_id": "nepal_private_company_default",
             }
         },
@@ -91,7 +91,7 @@ def test_while_loop_rule_moves_weekend_backward() -> None:
 
     assert response.status_code == 200
     body = response.json()
-    assert body["output"]["payroll_date"]["bs"] == "2082-04-03"
+    assert body["output"]["payroll_date"]["bs"] == "2082-04-02"
     assert body["decision"]["status"] == "approved"
     assert any(step["operation"] == "while" for step in body["trace"]["steps"])
 
@@ -156,7 +156,9 @@ def test_unknown_and_forbidden_functions_are_rejected() -> None:
     base_rule["steps"][0]["set"]["value"]["call"] = "unsupported_calendar_magic"
     validation = validate_rule_payload(base_rule)
     assert validation["valid"] is False
-    assert any("unsupported function unsupported_calendar_magic" in error for error in validation["errors"])
+    assert any(
+        "unsupported function unsupported_calendar_magic" in error for error in validation["errors"]
+    )
 
 
 def test_loop_limits_fail_with_structured_reason_code() -> None:
@@ -235,7 +237,9 @@ def test_custom_rule_api_and_explain_endpoint_work() -> None:
     assert evaluate_response.json()["decision"]["status"] == "approved"
     assert explain_response.status_code == 200
     assert explain_response.json()["trace"]["steps"]
-    assert "Rule last_working_day_of_nepali_month" in explain_response.json()["explanation"]["summary"]
+    assert (
+        "Rule last_working_day_of_nepali_month" in explain_response.json()["explanation"]["summary"]
+    )
 
 
 def test_rule_execution_evidence_packet_integrates_with_trust_layer() -> None:

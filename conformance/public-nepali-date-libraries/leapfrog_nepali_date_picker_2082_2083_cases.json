@@ -39,7 +39,7 @@
       "title": "Date Mismatch because of wrong core calendar data",
       "state": "open",
       "classification": "deterministic_public_issue_cases",
-      "notes": "Lists concrete BS 2082 and 2083 month-day differences. Some issue-reported expected values differ from Parva's current verified table and are preserved as issue text, not treated as authority."
+      "notes": "Lists concrete BS 2082 and 2083 month-day differences. Parva's values are independently checked against the Government of Nepal Department of Information and Broadcasting 2082 calendar; the issue remains regression evidence rather than calendar authority."
     }
   ],
   "cases": [
@@ -92,7 +92,7 @@
       "expected": {
         "issue_reported": { "month_days": 32 },
         "observed_current_source": { "month_days": 31, "reproduction_status": "still_reproduces" },
-        "parva": { "month_days": 31, "matches_issue_reported": false }
+        "parva": { "month_days": 32, "matches_issue_reported": true }
       },
       "source_policy": "public_issue_regression_case",
       "publication_status": "needs_review",
@@ -104,7 +104,7 @@
       "failure_class": "month_length_mismatch",
       "authority_boundary": "public_issue_regression_case_not_official_authority",
       "production_impact_claimed": false,
-      "notes": "The public issue reports 32 days for BS 2082 Asar. Parva currently returns 31, so this row preserves the issue text as a public regression report without upgrading it to authority."
+      "notes": "The public issue reports 32 days for BS 2082 Asar. Parva returns 32 after independent verification against the Government of Nepal Department of Information and Broadcasting 2082 calendar."
     },
     {
       "case_id": "leapfrog-issue-70-2082-shrawan-month-days",
@@ -113,7 +113,7 @@
       "expected": {
         "issue_reported": { "month_days": 31 },
         "observed_current_source": { "month_days": 32, "reproduction_status": "still_reproduces" },
-        "parva": { "month_days": 32, "matches_issue_reported": false }
+        "parva": { "month_days": 31, "matches_issue_reported": true }
       },
       "source_policy": "public_issue_regression_case",
       "publication_status": "needs_review",
@@ -125,7 +125,7 @@
       "failure_class": "month_length_mismatch",
       "authority_boundary": "public_issue_regression_case_not_official_authority",
       "production_impact_claimed": false,
-      "notes": "The public issue reports 31 days for BS 2082 Shrawan. Parva currently returns 32, so this row is kept as issue evidence requiring review."
+      "notes": "The public issue reports 31 days for BS 2082 Shrawan. Parva returns 31 after independent verification against the Government of Nepal Department of Information and Broadcasting 2082 calendar."
     },
     {
       "case_id": "leapfrog-issue-70-2082-asoj-month-days",

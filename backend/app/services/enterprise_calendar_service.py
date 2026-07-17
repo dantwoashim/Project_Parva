@@ -247,7 +247,13 @@ def _bs_month_field_provenance(
     *,
     mode: BsMonthCalculationMode,
 ) -> ProvenanceMap:
-    if mode == "static_lookup":
+    source_backed_canonical = (
+        mode == "canonical" and metadata.get("source_status") == "structured_official"
+    )
+    if source_backed_canonical:
+        authority = AuthorityTaint.STRUCTURED_OFFICIAL
+        derivation = "structured_official_calendar_lookup"
+    elif mode == "static_lookup":
         authority = AuthorityTaint.STATIC_REFERENCE
         derivation = "static_lookup_compatibility_reference"
     elif mode == "compare":
@@ -257,7 +263,8 @@ def _bs_month_field_provenance(
         authority = AuthorityTaint.COMPUTED_UNCERTIFIED
         derivation = "solar_civil_sankranti_computation"
 
-    flags = frozenset({TaintFlag.REVIEW_REQUIRED})
+    flags = frozenset() if source_backed_canonical else frozenset({TaintFlag.REVIEW_REQUIRED})
+    review_state = "accepted" if source_backed_canonical else "review_required"
     policy_id = "enterprise_bs_months@v1"
     fields = {
         "months": FieldProvenance(
@@ -265,7 +272,7 @@ def _bs_month_field_provenance(
             authority,
             derivation,
             policy_id=policy_id,
-            review_state="review_required",
+            review_state=review_state,
             flags=flags,
         ),
         "total_days": FieldProvenance(
@@ -273,23 +280,23 @@ def _bs_month_field_provenance(
             authority,
             derivation,
             policy_id=policy_id,
-            review_state="review_required",
+            review_state=review_state,
             flags=flags,
         ),
         "selected_method": FieldProvenance(
             "selected_method",
-            AuthorityTaint.COMPUTED_UNCERTIFIED,
+            authority,
             "policy_selected_method",
             policy_id=policy_id,
-            review_state="review_required",
+            review_state=review_state,
             flags=flags,
         ),
         "claim_boundary": FieldProvenance(
             "claim_boundary",
-            AuthorityTaint.COMPUTED_UNCERTIFIED,
+            authority,
             "policy_boundary_label",
             policy_id=policy_id,
-            review_state="review_required",
+            review_state=review_state,
             flags=flags,
         ),
     }
@@ -308,8 +315,12 @@ def _bs_month_field_provenance(
 def _bs_month_boundary(metadata: dict[str, Any], provenance: ProvenanceMap) -> dict[str, Any]:
     boundary = BoundaryVector.from_provenance(provenance).as_dict()
     boundary["claim_boundary"] = metadata.get("claim_boundary") or boundary["claim_boundary"]
-    boundary["blocked_use_cases"] = metadata.get("blocked_use_cases") or boundary["blocked_use_cases"]
-    boundary["review_state"] = "required" if metadata.get("review_required", True) else boundary["review_state"]
+    boundary["blocked_use_cases"] = (
+        metadata.get("blocked_use_cases") or boundary["blocked_use_cases"]
+    )
+    boundary["review_state"] = (
+        "required" if metadata.get("review_required", True) else boundary["review_state"]
+    )
     boundary["not_authority"] = True
     return boundary
 
@@ -331,7 +342,9 @@ def _bs_month_result(metadata: dict[str, Any], *, mode: BsMonthCalculationMode) 
     }
 
 
-def _bs_month_policy_decision(metadata: dict[str, Any], *, mode: BsMonthCalculationMode) -> dict[str, Any]:
+def _bs_month_policy_decision(
+    metadata: dict[str, Any], *, mode: BsMonthCalculationMode
+) -> dict[str, Any]:
     if mode == "compare":
         return {
             "policy": "enterprise_bs_months@v1",
@@ -345,12 +358,17 @@ def _bs_month_policy_decision(metadata: dict[str, Any], *, mode: BsMonthCalculat
             "not_authority": True,
         }
     canonical_decision = metadata.get("canonical_decision") or {}
+    review_trace = (
+        "published_calendar_data_selected_for_supported_year"
+        if not metadata.get("review_required", True)
+        else "review_required_for_legal_tax_payroll_banking_government_or_panchanga_use"
+    )
     return {
         "policy": canonical_decision.get("policy", "enterprise_bs_months@v1"),
         "selected_mode": metadata.get("selected_mode") or metadata["calculation_mode"],
         "decision_trace": [
             canonical_decision.get("reason", "explicit mode selected"),
-            "review_required_for_legal_tax_payroll_banking_government_or_panchanga_use",
+            review_trace,
         ],
         "claim_boundary": metadata.get("claim_boundary"),
         "not_authority": True,
@@ -390,6 +408,8 @@ def _bs_month_claim_meta(
     mode: BsMonthCalculationMode,
     confidence: str,
 ) -> dict[str, Any]:
+    if mode == "canonical" and confidence == "official_verified":
+        return build_bs_claim_meta(bs_year, trace_id=trace_id, result_class=result_class)
     if mode == "static_lookup":
         return build_claim_meta(
             source=STATIC_LOOKUP_TABLE,
@@ -514,7 +534,9 @@ def convert_one(mode: str, value: str) -> dict[str, Any]:
     raise ValueError("mode must be 'ad_to_bs' or 'bs_to_ad'.")
 
 
-def bulk_convert_payload(mode: str, dates: list[str], *, trace_id: str | None = None) -> dict[str, Any]:
+def bulk_convert_payload(
+    mode: str, dates: list[str], *, trace_id: str | None = None
+) -> dict[str, Any]:
     results = []
     success = 0
     for value in dates:
@@ -548,7 +570,9 @@ def bulk_convert_payload(mode: str, dates: list[str], *, trace_id: str | None = 
     }
 
 
-def validate_cases_payload(cases: list[dict[str, Any]], *, trace_id: str | None = None) -> dict[str, Any]:
+def validate_cases_payload(
+    cases: list[dict[str, Any]], *, trace_id: str | None = None
+) -> dict[str, Any]:
     results = []
     passed = 0
     failed = 0
@@ -652,7 +676,9 @@ def capabilities_payload(*, trace_id: str | None = None) -> dict[str, Any]:
             ),
         },
         "policy": get_policy_metadata(),
-        "meta": _claim_meta_for_year(2078, trace_id=trace_id, result_class="enterprise_capabilities"),
+        "meta": _claim_meta_for_year(
+            2078, trace_id=trace_id, result_class="enterprise_capabilities"
+        ),
     }
 
 

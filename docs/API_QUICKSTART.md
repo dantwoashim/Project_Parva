@@ -82,11 +82,11 @@ curl https://api.prabinghimire1.com.np/v3/api/enterprise/fiscal-year/2082
 curl https://api.prabinghimire1.com.np/v3/api/enterprise/bs-months/2082
 ```
 
-By default this uses the canonical Phase 00 trust-arrest policy, which selects
-the solar-civil sankranti computation path and returns
-`calculation_mode: "canonical"` with `selected_mode: "solar_civil"`. Static
-table lookup is retained only as an explicit compatibility/reference mode and
-is marked unverified and review-required:
+For a year backed by structured published-calendar data, canonical mode selects
+the source-backed month-length lookup and returns
+`selected_mode: "source_backed_lookup"`. For other years, canonical mode uses the solar-civil
+sankranti computation and marks the result for review. Static table lookup also
+remains available as an explicit compatibility/reference mode:
 
 ```bash
 curl "https://api.prabinghimire1.com.np/v3/api/enterprise/bs-months/2082?mode=static_lookup"

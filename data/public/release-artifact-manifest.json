@@ -23,7 +23,7 @@
     {
       "bytes": 1179,
       "path": "examples/external/reviewer-bundle/manifest.json",
-      "sha256": "sha256:a5469f00632ebb130d5c478f5bc382fb5937ba072d03406bbef2a95e48d0a42e"
+      "sha256": "sha256:ff2de97703312db6f53fb4e02943a0afd5d125d6d9966befcc00ab847ddd1107"
     },
     {
       "bytes": 15689,
@@ -36,24 +36,24 @@
       "sha256": "sha256:6cf6559686567915879fc974763353092395dd82e43f758d267084ede82e04d0"
     },
     {
-      "bytes": 185647,
+      "bytes": 186890,
       "path": "examples/external/timepacks/payroll-date-risk.timepack.json",
-      "sha256": "sha256:d8f1bfbddee9e24fda40cc2c39765016e218bd956ef5e174c2386325ce2906bc"
+      "sha256": "sha256:62980b41b8dffa9b412ce51e1f0ea1c7ed73e756f640788f431304d72cb8e588"
     },
     {
-      "bytes": 236042,
+      "bytes": 236013,
       "path": "examples/payroll/ugly.report.example.json",
-      "sha256": "sha256:f0c32761b106f7c0f2b11ee32b01f0bd1ab9594d1b044753d0dd4133f145a97e"
+      "sha256": "sha256:4dce86920607a693412e4165928b2ca5ab2c31c1532684b9ea66a763a1641d8b"
     },
     {
-      "bytes": 1378,
+      "bytes": 1362,
       "path": "examples/payroll/ugly.report.example.md",
-      "sha256": "sha256:d245f5c24e5b9100c3f9a97451a252fd2063c990c12530bb023ec8913f534626"
+      "sha256": "sha256:612c11f1bcb1bbb8e74432cd68d01df9b6ad842e69100fe0fbdb5ea103a47efb"
     },
     {
-      "bytes": 455807,
+      "bytes": 455776,
       "path": "examples/payroll/ugly.report.example.timepack.json",
-      "sha256": "sha256:7d33ff5e0c19b0f7ddf376fabf2fe3f63a0b8702cacb1eb024d49ea465147326"
+      "sha256": "sha256:99860c2b0d53d8606235e04a8b2828b6eeb6eff3b0d5c8f1c472bad1b84b64cc"
     },
     {
       "bytes": 753,
@@ -131,24 +131,44 @@
       "sha256": "sha256:fd59824427e853a000b3a277859f64a147d4913c5f0e23ead37ebe13c36ffbab"
     },
     {
+      "bytes": 6672,
+      "path": "tests/fixtures/proof/civil/ad_to_bs_asar_end.json",
+      "sha256": "sha256:bebcc89c8ab3c88788ad51c493fd2149313b3befec7a5f97e5fc7f3a588fb5fd"
+    },
+    {
+      "bytes": 6675,
+      "path": "tests/fixtures/proof/civil/ad_to_bs_shrawan_end.json",
+      "sha256": "sha256:0c99c1c9b8ea99888beac2ec9470809933d53e33d5b75c75be8c643d011f1d2e"
+    },
+    {
       "bytes": 7280,
       "path": "tests/fixtures/proof/civil/ad_to_bs_valid.json",
       "sha256": "sha256:3f5b8c2c8ed6d073e2689d71b9e4970499fc436fb97f55c0a405feee2dfb53b6"
     },
     {
-      "bytes": 20653,
+      "bytes": 20767,
       "path": "tests/fixtures/proof/civil/bs_months_canonical.json",
-      "sha256": "sha256:1c27df222fdcbf6090d523e0535dd864da6e7d565df21f1e6f636fc074f627fa"
+      "sha256": "sha256:628672ea9021f574644a299454dd306040584a2f6186c867ece933741ec5c364"
     },
     {
-      "bytes": 86037,
+      "bytes": 86139,
       "path": "tests/fixtures/proof/civil/bs_months_compare.json",
-      "sha256": "sha256:14cc8f33019d23c1294ad7171cdb826ff9778d025c24808b4c2c62921eb19d0e"
+      "sha256": "sha256:85b8c56247c09eb66289019bd8179a54af2ceb9c762a31dfbbc5461b6d3f3c71"
     },
     {
       "bytes": 18056,
       "path": "tests/fixtures/proof/civil/bs_months_static_lookup.json",
-      "sha256": "sha256:0afd40b94ef465c6c1a22599abe5e71be7ea20165378e0ee0bca2a2ffa1d87db"
+      "sha256": "sha256:6e7b88a21f7f4d34d4b68779921bd7aab0f044a554fc65cce8aa693ca686b622"
+    },
+    {
+      "bytes": 5610,
+      "path": "tests/fixtures/proof/civil/bs_to_ad_asar_end.json",
+      "sha256": "sha256:fff60be8e6d66281f4a1d2a5d08372ff9977ddfc051988b28524f0cba6c81b78"
+    },
+    {
+      "bytes": 5613,
+      "path": "tests/fixtures/proof/civil/bs_to_ad_shrawan_end.json",
+      "sha256": "sha256:1689bd86271691402a17a9447c5fea361790fa1cfd979473184dd5bf62f59540"
     },
     {
       "bytes": 5984,
@@ -158,7 +178,7 @@
     {
       "bytes": 7200,
       "path": "tests/fixtures/proof/civil/fiscal_year_boundary.json",
-      "sha256": "sha256:d58b39bd81f7f8aacac58d77d50817ae8d00811d0f4232ac8591bb7f461980ae"
+      "sha256": "sha256:869b884b386facbe924a5a0a71c3589f0fbd1c2a869b7a1f2dc3199885ff80bd"
     },
     {
       "bytes": 9944,
@@ -181,6 +201,11 @@
       "sha256": "sha256:a633e727403db4316bce0daa7cb205864a09dfecc8db0aeca7c5c73a3203a9dc"
     },
     {
+      "bytes": 8067,
+      "path": "tests/fixtures/proof/civil/validate_bs_shrawan_32_invalid.json",
+      "sha256": "sha256:e87f6f6b954284438ae30b911aa1751ddffbb0104b1d96e46a5550571cf6f356"
+    },
+    {
       "bytes": 9886,
       "path": "tests/fixtures/proof/civil/working_day_false.json",
       "sha256": "sha256:fa42b0d51aaaef8729b1f128a0ec0d15b4358b3e89b87430f83e43cd1584f7c6"
@@ -198,7 +223,7 @@
   ],
   "claim_boundary": "release_artifact_manifest_not_external_validation",
   "generated_at": "reproducible",
-  "git_commit_at_generation": "5020301ff2ada4126d36ad38b7c8d7d2e975c76c",
+  "git_commit_at_generation": "8fe272fd66d04c9680a5bdccde3a2670201e4038",
   "not_authority": true,
   "schema": "parva-release-artifact-manifest-v1",
   "verification_summary": {

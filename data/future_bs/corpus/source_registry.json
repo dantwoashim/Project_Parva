@@ -25,8 +25,16 @@
     "structured_official_repo_artifact": {
       "source_type": "official_verified",
       "verification_status": "verified",
-      "years": "2078-2083 BS",
+      "years": "2078-2081 and 2083 BS",
       "description": "Public official holdout rows retained for validation posture examples."
+    },
+    "doib_table_calendar_2082": {
+      "source_type": "official_verified",
+      "verification_status": "verified",
+      "years": "2082 BS",
+      "description": "Government of Nepal Department of Information and Broadcasting table calendar for 2082 BS.",
+      "url": "https://doib.gov.np/content/13180/table-calendar-2082/",
+      "normalized_artifact": "data/sources/normalized/calendar/doib_2082_month_lengths.json"
     }
   }
 }

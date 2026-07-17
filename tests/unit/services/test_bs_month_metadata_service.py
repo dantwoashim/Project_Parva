@@ -6,16 +6,18 @@ from app.calendar.sankranti import compute_bs_month_lengths
 from app.services.bs_month_metadata_service import build_bs_month_metadata
 
 
-def test_canonical_month_metadata_is_default_computation_base() -> None:
+def test_canonical_month_metadata_prefers_verified_source_data() -> None:
     payload = build_bs_month_metadata(2082)
 
     assert payload["calculation_mode"] == "canonical"
-    assert payload["selected_mode"] == "solar_civil"
-    assert payload["engine"] == "bs_month_canonical_policy_v0"
-    assert [row["days"] for row in payload["months"]] == compute_bs_month_lengths(2082)
-    assert payload["confidence"] == "canonical_solar_civil_computed"
-    assert payload["source_status"] == "computed_solar_civil"
-    assert payload["review_required"] is True
+    assert payload["selected_mode"] == "source_backed_lookup"
+    assert payload["engine"] == "bs_month_canonical_policy_v1"
+    assert [row["days"] for row in payload["months"]] == [
+        days_in_bs_month(2082, month) for month in range(1, 13)
+    ]
+    assert payload["confidence"] == "official_verified"
+    assert payload["source_status"] == "structured_official"
+    assert payload["review_required"] is False
     assert all(row["not_authority"] is True for row in payload["months"])
 
 

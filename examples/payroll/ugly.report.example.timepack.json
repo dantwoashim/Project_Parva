@@ -1,5 +1,5 @@
 {
-  "aggregate_witness_hash": "sha256:9cf8fbe37d761f9e2f64dd8dce7addceaf84c9c98f9a669ea2d9560a85d09455",
+  "aggregate_witness_hash": "sha256:3e7b8b7e4bf72f00e53ed0b604dda38e25547e5754f07c87af0c40127d4c8074",
   "artifact_type": "payroll_date_risk_audit",
   "boundary_summary": {
     "claim_boundary": "payroll_date_risk_not_authority",
@@ -1008,7 +1008,7 @@
             },
             {
               "operation": "fiscal_year_rule",
-              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+              "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
             }
           ],
           "verifier": "parva.fiscal_year",
@@ -1022,7 +1022,7 @@
           },
           "fiscal_year": "2082/83",
           "start": {
-            "ad": "2025-07-16",
+            "ad": "2025-07-17",
             "bs": "2082-04-01"
           }
         },
@@ -1049,17 +1049,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "fiscal_year",
-          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
           "source_refs": [],
           "verifier": "parva.fiscal_year",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
         },
-        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
     },
     {
       "boundary": {
@@ -2151,7 +2151,7 @@
             },
             {
               "operation": "fiscal_year_rule",
-              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+              "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
             }
           ],
           "verifier": "parva.fiscal_year",
@@ -2165,7 +2165,7 @@
           },
           "fiscal_year": "2082/83",
           "start": {
-            "ad": "2025-07-16",
+            "ad": "2025-07-17",
             "bs": "2082-04-01"
           }
         },
@@ -2192,17 +2192,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "fiscal_year",
-          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
           "source_refs": [],
           "verifier": "parva.fiscal_year",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
         },
-        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
     },
     {
       "boundary": {
@@ -2414,7 +2414,7 @@
             },
             {
               "operation": "validate_bs_date",
-              "output_hash": "sha256:c5f9eb0229256517d4e6357a37dd7b382ae4a9b9e65c774e69df80c9b1bc2b97"
+              "output_hash": "sha256:0200084939458bd588b742ff1b2c9c1ff70e48bf5738f32c278caf0812dd61d9"
             }
           ],
           "verifier": "parva.validate_bs_date",
@@ -2423,7 +2423,7 @@
         "result": {
           "bs_date": "2082-04-01",
           "day": 1,
-          "max_day": 32,
+          "max_day": 31,
           "month": 4,
           "reason": "valid",
           "valid": true,
@@ -2452,17 +2452,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "validate_bs_date",
-          "output_hash": "sha256:c5f9eb0229256517d4e6357a37dd7b382ae4a9b9e65c774e69df80c9b1bc2b97",
+          "output_hash": "sha256:0200084939458bd588b742ff1b2c9c1ff70e48bf5738f32c278caf0812dd61d9",
           "source_refs": [],
           "verifier": "parva.validate_bs_date",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:457f97251390c21f18d6d191ba22d0fc08ba3ddfbf0edcf98cbb56391b24c1c5"
+          "witness_id": "parva:wit:v1:sha256:777dcc9a3ae6367bb78d0b86bfa6f43adc76381c9a4a4b81a4ca7c4ffa83c49f"
         },
-        "witness_hash": "parva:wit:v1:sha256:457f97251390c21f18d6d191ba22d0fc08ba3ddfbf0edcf98cbb56391b24c1c5"
+        "witness_hash": "parva:wit:v1:sha256:777dcc9a3ae6367bb78d0b86bfa6f43adc76381c9a4a4b81a4ca7c4ffa83c49f"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:457f97251390c21f18d6d191ba22d0fc08ba3ddfbf0edcf98cbb56391b24c1c5"
+      "witness_hash": "parva:wit:v1:sha256:777dcc9a3ae6367bb78d0b86bfa6f43adc76381c9a4a4b81a4ca7c4ffa83c49f"
     },
     {
       "boundary": {
@@ -2973,14 +2973,14 @@
             },
             {
               "operation": "working_day_policy",
-              "output_hash": "sha256:3f22f24a0309d7e84cd577110521b31e0cabe84ceb5346b1b21cfc57a979a632"
+              "output_hash": "sha256:86a847a3640ae7cab4b736912a42e6a7dc18b19dd00b1d38d43115bc3a86c2e8"
             }
           ],
           "verifier": "parva.working_day",
           "verifier_version": "1.0.0"
         },
         "result": {
-          "ad_date": "2025-07-16",
+          "ad_date": "2025-07-17",
           "bs_date": "2082-04-01",
           "decision_intent": "general",
           "holiday": null,
@@ -3018,17 +3018,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "working_day",
-          "output_hash": "sha256:3f22f24a0309d7e84cd577110521b31e0cabe84ceb5346b1b21cfc57a979a632",
+          "output_hash": "sha256:86a847a3640ae7cab4b736912a42e6a7dc18b19dd00b1d38d43115bc3a86c2e8",
           "source_refs": [],
           "verifier": "parva.working_day",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:fc6a6081aa8d7277b5c181e479dcc0c4185979a989571184a45e27222ad9fa62"
+          "witness_id": "parva:wit:v1:sha256:f4553c9b4f37b6429bec2cff976c59e89055b1f1d720604cadbe8c168cfb8722"
         },
-        "witness_hash": "parva:wit:v1:sha256:fc6a6081aa8d7277b5c181e479dcc0c4185979a989571184a45e27222ad9fa62"
+        "witness_hash": "parva:wit:v1:sha256:f4553c9b4f37b6429bec2cff976c59e89055b1f1d720604cadbe8c168cfb8722"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:fc6a6081aa8d7277b5c181e479dcc0c4185979a989571184a45e27222ad9fa62"
+      "witness_hash": "parva:wit:v1:sha256:f4553c9b4f37b6429bec2cff976c59e89055b1f1d720604cadbe8c168cfb8722"
     },
     {
       "boundary": {
@@ -3205,7 +3205,7 @@
             },
             {
               "operation": "fiscal_year_rule",
-              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+              "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
             }
           ],
           "verifier": "parva.fiscal_year",
@@ -3219,7 +3219,7 @@
           },
           "fiscal_year": "2082/83",
           "start": {
-            "ad": "2025-07-16",
+            "ad": "2025-07-17",
             "bs": "2082-04-01"
           }
         },
@@ -3246,17 +3246,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "fiscal_year",
-          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
           "source_refs": [],
           "verifier": "parva.fiscal_year",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
         },
-        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
     },
     {
       "boundary": {
@@ -4258,7 +4258,7 @@
             },
             {
               "operation": "fiscal_year_rule",
-              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+              "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
             }
           ],
           "verifier": "parva.fiscal_year",
@@ -4272,7 +4272,7 @@
           },
           "fiscal_year": "2082/83",
           "start": {
-            "ad": "2025-07-16",
+            "ad": "2025-07-17",
             "bs": "2082-04-01"
           }
         },
@@ -4299,17 +4299,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "fiscal_year",
-          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
           "source_refs": [],
           "verifier": "parva.fiscal_year",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
         },
-        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
     },
     {
       "boundary": {
@@ -5311,7 +5311,7 @@
             },
             {
               "operation": "fiscal_year_rule",
-              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+              "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
             }
           ],
           "verifier": "parva.fiscal_year",
@@ -5325,7 +5325,7 @@
           },
           "fiscal_year": "2082/83",
           "start": {
-            "ad": "2025-07-16",
+            "ad": "2025-07-17",
             "bs": "2082-04-01"
           }
         },
@@ -5352,17 +5352,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "fiscal_year",
-          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
           "source_refs": [],
           "verifier": "parva.fiscal_year",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
         },
-        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
     }
   ],
   "replay_instructions": "Run `parva verify-timepack <path>` from a checkout with committed proof fixtures.",
@@ -6389,7 +6389,7 @@
                   },
                   {
                     "operation": "fiscal_year_rule",
-                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                    "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
                   }
                 ],
                 "verifier": "parva.fiscal_year",
@@ -6403,7 +6403,7 @@
                 },
                 "fiscal_year": "2082/83",
                 "start": {
-                  "ad": "2025-07-16",
+                  "ad": "2025-07-17",
                   "bs": "2082-04-01"
                 }
               },
@@ -6430,17 +6430,17 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "fiscal_year",
-                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
                 "source_refs": [],
                 "verifier": "parva.fiscal_year",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+                "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
               },
-              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
           }
         ],
         "risk_score": 0,
@@ -7627,7 +7627,7 @@
                   },
                   {
                     "operation": "fiscal_year_rule",
-                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                    "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
                   }
                 ],
                 "verifier": "parva.fiscal_year",
@@ -7641,7 +7641,7 @@
                 },
                 "fiscal_year": "2082/83",
                 "start": {
-                  "ad": "2025-07-16",
+                  "ad": "2025-07-17",
                   "bs": "2082-04-01"
                 }
               },
@@ -7668,17 +7668,17 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "fiscal_year",
-                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
                 "source_refs": [],
                 "verifier": "parva.fiscal_year",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+                "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
               },
-              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
           }
         ],
         "risk_score": 100,
@@ -7687,7 +7687,7 @@
         "status": "review_required"
       },
       {
-        "ad_date": "2025-07-16",
+        "ad_date": "2025-07-17",
         "bs_date": "2082-04-01",
         "claim_boundary": "payroll_date_risk_not_authority",
         "diagnostics": [
@@ -7698,7 +7698,6 @@
           "manual_review"
         ],
         "issues": [
-          "bs_ad_mismatch",
           "fiscal_boundary_ambiguity"
         ],
         "original_row": {
@@ -7922,7 +7921,7 @@
                   },
                   {
                     "operation": "validate_bs_date",
-                    "output_hash": "sha256:c5f9eb0229256517d4e6357a37dd7b382ae4a9b9e65c774e69df80c9b1bc2b97"
+                    "output_hash": "sha256:0200084939458bd588b742ff1b2c9c1ff70e48bf5738f32c278caf0812dd61d9"
                   }
                 ],
                 "verifier": "parva.validate_bs_date",
@@ -7931,7 +7930,7 @@
               "result": {
                 "bs_date": "2082-04-01",
                 "day": 1,
-                "max_day": 32,
+                "max_day": 31,
                 "month": 4,
                 "reason": "valid",
                 "valid": true,
@@ -7960,17 +7959,17 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "validate_bs_date",
-                "output_hash": "sha256:c5f9eb0229256517d4e6357a37dd7b382ae4a9b9e65c774e69df80c9b1bc2b97",
+                "output_hash": "sha256:0200084939458bd588b742ff1b2c9c1ff70e48bf5738f32c278caf0812dd61d9",
                 "source_refs": [],
                 "verifier": "parva.validate_bs_date",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:457f97251390c21f18d6d191ba22d0fc08ba3ddfbf0edcf98cbb56391b24c1c5"
+                "witness_id": "parva:wit:v1:sha256:777dcc9a3ae6367bb78d0b86bfa6f43adc76381c9a4a4b81a4ca7c4ffa83c49f"
               },
-              "witness_hash": "parva:wit:v1:sha256:457f97251390c21f18d6d191ba22d0fc08ba3ddfbf0edcf98cbb56391b24c1c5"
+              "witness_hash": "parva:wit:v1:sha256:777dcc9a3ae6367bb78d0b86bfa6f43adc76381c9a4a4b81a4ca7c4ffa83c49f"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:457f97251390c21f18d6d191ba22d0fc08ba3ddfbf0edcf98cbb56391b24c1c5"
+            "witness_hash": "parva:wit:v1:sha256:777dcc9a3ae6367bb78d0b86bfa6f43adc76381c9a4a4b81a4ca7c4ffa83c49f"
           },
           {
             "boundary": {
@@ -8481,14 +8480,14 @@
                   },
                   {
                     "operation": "working_day_policy",
-                    "output_hash": "sha256:3f22f24a0309d7e84cd577110521b31e0cabe84ceb5346b1b21cfc57a979a632"
+                    "output_hash": "sha256:86a847a3640ae7cab4b736912a42e6a7dc18b19dd00b1d38d43115bc3a86c2e8"
                   }
                 ],
                 "verifier": "parva.working_day",
                 "verifier_version": "1.0.0"
               },
               "result": {
-                "ad_date": "2025-07-16",
+                "ad_date": "2025-07-17",
                 "bs_date": "2082-04-01",
                 "decision_intent": "general",
                 "holiday": null,
@@ -8526,17 +8525,17 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "working_day",
-                "output_hash": "sha256:3f22f24a0309d7e84cd577110521b31e0cabe84ceb5346b1b21cfc57a979a632",
+                "output_hash": "sha256:86a847a3640ae7cab4b736912a42e6a7dc18b19dd00b1d38d43115bc3a86c2e8",
                 "source_refs": [],
                 "verifier": "parva.working_day",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:fc6a6081aa8d7277b5c181e479dcc0c4185979a989571184a45e27222ad9fa62"
+                "witness_id": "parva:wit:v1:sha256:f4553c9b4f37b6429bec2cff976c59e89055b1f1d720604cadbe8c168cfb8722"
               },
-              "witness_hash": "parva:wit:v1:sha256:fc6a6081aa8d7277b5c181e479dcc0c4185979a989571184a45e27222ad9fa62"
+              "witness_hash": "parva:wit:v1:sha256:f4553c9b4f37b6429bec2cff976c59e89055b1f1d720604cadbe8c168cfb8722"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:fc6a6081aa8d7277b5c181e479dcc0c4185979a989571184a45e27222ad9fa62"
+            "witness_hash": "parva:wit:v1:sha256:f4553c9b4f37b6429bec2cff976c59e89055b1f1d720604cadbe8c168cfb8722"
           },
           {
             "boundary": {
@@ -8713,7 +8712,7 @@
                   },
                   {
                     "operation": "fiscal_year_rule",
-                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                    "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
                   }
                 ],
                 "verifier": "parva.fiscal_year",
@@ -8727,7 +8726,7 @@
                 },
                 "fiscal_year": "2082/83",
                 "start": {
-                  "ad": "2025-07-16",
+                  "ad": "2025-07-17",
                   "bs": "2082-04-01"
                 }
               },
@@ -8754,22 +8753,22 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "fiscal_year",
-                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
                 "source_refs": [],
                 "verifier": "parva.fiscal_year",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+                "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
               },
-              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
           }
         ],
-        "risk_score": 50,
+        "risk_score": 25,
         "row_number": 5,
-        "severity": "medium",
+        "severity": "low",
         "status": "review_required"
       },
       {
@@ -9798,7 +9797,7 @@
                   },
                   {
                     "operation": "fiscal_year_rule",
-                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                    "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
                   }
                 ],
                 "verifier": "parva.fiscal_year",
@@ -9812,7 +9811,7 @@
                 },
                 "fiscal_year": "2082/83",
                 "start": {
-                  "ad": "2025-07-16",
+                  "ad": "2025-07-17",
                   "bs": "2082-04-01"
                 }
               },
@@ -9839,17 +9838,17 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "fiscal_year",
-                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
                 "source_refs": [],
                 "verifier": "parva.fiscal_year",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+                "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
               },
-              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
           }
         ],
         "risk_score": 50,
@@ -10884,7 +10883,7 @@
                   },
                   {
                     "operation": "fiscal_year_rule",
-                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                    "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
                   }
                 ],
                 "verifier": "parva.fiscal_year",
@@ -10898,7 +10897,7 @@
                 },
                 "fiscal_year": "2082/83",
                 "start": {
-                  "ad": "2025-07-16",
+                  "ad": "2025-07-17",
                   "bs": "2082-04-01"
                 }
               },
@@ -10925,17 +10924,17 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "fiscal_year",
-                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
                 "source_refs": [],
                 "verifier": "parva.fiscal_year",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+                "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
               },
-              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
           }
         ],
         "risk_score": 75,

@@ -115,15 +115,15 @@
     },
     {
       "category": "invalid_bs_dates",
-      "http_status": 200,
+      "http_status": 400,
       "id": "invalid_004",
-      "score": 90,
+      "score": 60,
       "signals": {
         "correctness": true,
         "machine_readable_structure": true,
-        "review_gate_behavior": false,
-        "source_awareness": true,
-        "uncertainty_handling": true
+        "review_gate_behavior": true,
+        "source_awareness": false,
+        "uncertainty_handling": false
       },
       "status": "pass"
     },
@@ -381,15 +381,15 @@
     },
     {
       "category": "payroll_repayment_review_gates",
-      "http_status": 200,
+      "http_status": 400,
       "id": "review_001",
-      "score": 100,
+      "score": 60,
       "signals": {
         "correctness": true,
         "machine_readable_structure": true,
         "review_gate_behavior": true,
-        "source_awareness": true,
-        "uncertainty_handling": true
+        "source_awareness": false,
+        "uncertainty_handling": false
       },
       "status": "pass"
     },
@@ -905,8 +905,8 @@
     "failed": 0,
     "max_score": 6400,
     "passed": 64,
-    "score": 5580,
-    "score_percent": 87.19,
+    "score": 5510,
+    "score_percent": 86.09,
     "total": 64
   }
 }

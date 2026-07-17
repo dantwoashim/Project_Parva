@@ -17,7 +17,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const BS_YEARS: Record<number, BsYearData> = {
   2082: {
     startAd: '2025-04-14',
-    months: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+    months: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
   },
   2083: {
     startAd: '2026-04-14',

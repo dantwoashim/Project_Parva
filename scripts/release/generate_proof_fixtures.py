@@ -44,9 +44,14 @@ def _fixture(name: str, membrane: dict[str, Any]) -> dict[str, Any]:
 def _write_civil_fixtures() -> None:
     cases = {
         "bs_to_ad_valid": build_convert_bs_to_ad_capsule(2082, 1, 1),
+        "bs_to_ad_asar_end": build_convert_bs_to_ad_capsule(2082, 3, 32),
+        "bs_to_ad_shrawan_end": build_convert_bs_to_ad_capsule(2082, 4, 31),
         "ad_to_bs_valid": build_ad_to_bs_capsule(date(2025, 4, 14)),
+        "ad_to_bs_asar_end": build_ad_to_bs_capsule(date(2025, 7, 16)),
+        "ad_to_bs_shrawan_end": build_ad_to_bs_capsule(date(2025, 8, 16)),
         "validate_bs_date_valid": build_validate_bs_date_capsule(2082, 1, 1),
         "validate_bs_date_invalid": build_validate_bs_date_capsule(2082, 1, 32),
+        "validate_bs_shrawan_32_invalid": build_validate_bs_date_capsule(2082, 4, 32),
         "holiday_membership": build_holiday_capsule(2082, 1, 1),
         "holiday_non_membership": build_holiday_capsule(2082, 1, 2),
         "working_day_true": build_working_day_capsule(2082, 1, 2),

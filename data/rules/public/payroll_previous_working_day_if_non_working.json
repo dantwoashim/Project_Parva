@@ -75,11 +75,11 @@
     {
       "name": "moves_saturday_to_previous_working_day",
       "input": {
-        "bs_date": "2082-04-04",
+        "bs_date": "2082-04-03",
         "profile_id": "nepal_private_company_default"
       },
       "expect": {
-        "output.payroll_date.bs": "2082-04-03",
+        "output.payroll_date.bs": "2082-04-02",
         "decision.status": "approved"
       }
     }

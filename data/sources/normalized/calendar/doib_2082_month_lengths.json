@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "source": {
+    "publisher": "Government of Nepal, Department of Information and Broadcasting",
+    "page_url": "https://doib.gov.np/content/13180/table-calendar-2082/",
+    "artifact_url": "https://giwmscdnone.gov.np/media/pdf_upload/Table%20calendar%202082_Final_kngovbv.pdf",
+    "source_type": "official_government_calendar",
+    "retrieved_on": "2026-07-17"
+  },
+  "bs_year": 2082,
+  "month_lengths": [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+  "boundary_evidence": [
+    {
+      "bs_date": "2082-03-32",
+      "ad_date": "2025-07-16",
+      "pdf_page_index": 4
+    },
+    {
+      "bs_date": "2082-04-01",
+      "ad_date": "2025-07-17",
+      "pdf_page_index": 5
+    },
+    {
+      "bs_date": "2082-04-31",
+      "ad_date": "2025-08-16",
+      "pdf_page_index": 5
+    },
+    {
+      "bs_date": "2082-05-01",
+      "ad_date": "2025-08-17",
+      "pdf_page_index": 6
+    }
+  ],
+  "corroborating_sources": [
+    "https://www.hamropatro.com/calendar/2082/3",
+    "https://www.hamropatro.com/calendar/2082/4",
+    "https://github.com/medic/bikram-sambat/issues/26",
+    "https://github.com/medic/bikram-sambat/pull/27",
+    "https://github.com/leapfrogtechnology/nepali-date-picker/issues/70"
+  ]
+}

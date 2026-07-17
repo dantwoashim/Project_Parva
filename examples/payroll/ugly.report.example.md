@@ -35,9 +35,9 @@ This report is decision support only. It is not legal, tax, payroll, banking, go
 
 ### 2082-04-01
 - Status: review_required
-- AD date: 2025-07-16
-- Issues: bs_ad_mismatch, fiscal_boundary_ambiguity
-- Risk score: 50
+- AD date: 2025-07-17
+- Issues: fiscal_boundary_ambiguity
+- Risk score: 25
 
 ### 2082-12-01
 - Status: review_required

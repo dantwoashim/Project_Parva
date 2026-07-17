@@ -8,11 +8,12 @@ from typing import Any, Literal
 
 from app.calendar.bikram_sambat import bs_to_gregorian, days_in_bs_month, get_bs_month_name
 from app.calendar.ephemeris.swiss_eph import EphemerisError
+from app.calendar.provenance import get_bs_year_provenance, is_structured_official_year
 from app.calendar.sankranti import compute_bs_month_lengths, get_bs_month_start
 
 BsMonthCalculationMode = Literal["canonical", "solar_civil", "static_lookup", "compare"]
 
-CANONICAL_ENGINE = "bs_month_canonical_policy_v0"
+CANONICAL_ENGINE = "bs_month_canonical_policy_v1"
 SOLAR_CIVIL_ENGINE = "solar_civil_sankranti_v1"
 STATIC_COMPAT_ENGINE = "static_lookup_compatibility_v1"
 COMPARE_ENGINE = "bs_month_compare_v1"
@@ -44,6 +45,9 @@ def build_bs_month_metadata(
 
 
 def _canonical_month_metadata(bs_year: int) -> dict[str, Any]:
+    if is_structured_official_year(bs_year):
+        return _canonical_source_backed_metadata(bs_year)
+
     selected = deepcopy(_solar_civil_month_metadata(bs_year))
     selected["calculation_mode"] = "canonical"
     selected["selected_mode"] = "solar_civil"
@@ -54,7 +58,7 @@ def _canonical_month_metadata(bs_year: int) -> dict[str, Any]:
     selected["authority"] = "computed_reference_not_authority"
     selected["claim_boundary"] = "computed_solar_civil_not_official_calendar_authority"
     selected["canonical_decision"] = {
-        "policy": "phase_00_trust_arrest_v0",
+        "policy": "solar_fallback_canonical_v1",
         "selected_mode": "solar_civil",
         "reason": (
             "Static lookup is compatibility/reference data only. Canonical BS month "
@@ -69,6 +73,46 @@ def _canonical_month_metadata(bs_year: int) -> dict[str, Any]:
         month["engine"] = CANONICAL_ENGINE
         month["review_required"] = True
         month["authority"] = "computed_reference_not_authority"
+    return selected
+
+
+def _canonical_source_backed_metadata(bs_year: int) -> dict[str, Any]:
+    provenance = get_bs_year_provenance(bs_year)
+    selected = deepcopy(_static_lookup_month_metadata(bs_year))
+    selected.update(
+        {
+            "calculation_mode": "canonical",
+            "selected_mode": "source_backed_lookup",
+            "engine": CANONICAL_ENGINE,
+            "confidence": "official_verified",
+            "source_range": provenance.source_range,
+            "source_status": provenance.source_status,
+            "compatibility_mode": "static_lookup",
+            "review_required": False,
+            "authority": "official_source_interpretation",
+            "claim_boundary": "official_source_interpretation_not_legal_or_payroll_authority",
+            "provenance_note": provenance.note,
+            "canonical_decision": {
+                "policy": "source_backed_canonical_v1",
+                "selected_mode": "source_backed_lookup",
+                "reason": (
+                    "Structured published-calendar data is available for this BS year, "
+                    "so canonical metadata selects the verified month-length lookup."
+                ),
+                "solar_civil_allowed": "explicit_mode_or_compare_branch_only",
+            },
+        }
+    )
+    for month in selected["months"]:
+        month.update(
+            {
+                "calculation_mode": "canonical",
+                "selected_mode": "source_backed_lookup",
+                "engine": CANONICAL_ENGINE,
+                "review_required": False,
+                "authority": "official_source_interpretation",
+            }
+        )
     return selected
 
 
@@ -198,5 +242,7 @@ def _month_payload(
         "engine": engine,
         "not_authority": True,
         "review_required": calculation_mode == "static_lookup",
-        "authority": "static_reference" if calculation_mode == "static_lookup" else "computed_reference_not_authority",
+        "authority": "static_reference"
+        if calculation_mode == "static_lookup"
+        else "computed_reference_not_authority",
     }

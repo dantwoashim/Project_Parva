@@ -58,7 +58,7 @@ def test_evaluate_normal_working_day_for_private_profile() -> None:
 
     assert response.status_code == 200
     body = response.json()
-    assert body["date"] == {"bs": "2082-04-02", "ad": "2025-07-17"}
+    assert body["date"] == {"bs": "2082-04-02", "ad": "2025-07-18"}
     assert body["decision"]["is_working_day"] is True
     assert body["decision"]["requires_human_review"] is False
     assert "WEEKDAY" in body["decision"]["reason_codes"]
@@ -69,7 +69,7 @@ def test_evaluate_normal_working_day_for_private_profile() -> None:
 def test_evaluate_saturday_weekend_for_private_profile() -> None:
     response = client.post(
         "/v3/api/compliance/evaluate-date",
-        json={"profile_id": "nepal_private_company_default", "bs_date": "2082-04-04"},
+        json={"profile_id": "nepal_private_company_default", "bs_date": "2082-04-03"},
     )
 
     assert response.status_code == 200
@@ -97,18 +97,18 @@ def test_evaluate_public_fixed_date_holiday_from_public_corpus() -> None:
 def test_next_previous_and_add_working_day_helpers_are_bounded_and_source_aware() -> None:
     next_response = client.post(
         "/v3/api/compliance/next-working-day",
-        json={"profile_id": "nepal_private_company_default", "bs_date": "2082-04-04"},
+        json={"profile_id": "nepal_private_company_default", "bs_date": "2082-04-03"},
     )
     assert next_response.status_code == 200
-    assert next_response.json()["date"] == {"bs": "2082-04-05", "ad": "2025-07-20"}
+    assert next_response.json()["date"] == {"bs": "2082-04-04", "ad": "2025-07-20"}
     assert next_response.json()["iterations"] == 1
 
     previous_response = client.post(
         "/v3/api/compliance/previous-working-day",
-        json={"profile_id": "nepal_private_company_default", "bs_date": "2082-04-04"},
+        json={"profile_id": "nepal_private_company_default", "bs_date": "2082-04-03"},
     )
     assert previous_response.status_code == 200
-    assert previous_response.json()["date"] == {"bs": "2082-04-03", "ad": "2025-07-18"}
+    assert previous_response.json()["date"] == {"bs": "2082-04-02", "ad": "2025-07-18"}
 
     add_response = client.post(
         "/v3/api/compliance/add-working-days",
@@ -119,7 +119,7 @@ def test_next_previous_and_add_working_day_helpers_are_bounded_and_source_aware(
         },
     )
     assert add_response.status_code == 200
-    assert add_response.json()["date"] == {"bs": "2082-04-05", "ad": "2025-07-20"}
+    assert add_response.json()["date"] == {"bs": "2082-04-05", "ad": "2025-07-21"}
     assert _meta(add_response.json())["trace_id"] == add_response.headers["X-Request-ID"]
 
 
@@ -130,8 +130,8 @@ def test_month_closing_day_and_fiscal_period() -> None:
     )
     assert closing.status_code == 200
     closing_body = closing.json()
-    assert closing_body["last_calendar_day"] == {"bs": "2082-04-32", "ad": "2025-08-16"}
-    assert closing_body["last_working_day"] == {"bs": "2082-04-31", "ad": "2025-08-15"}
+    assert closing_body["last_calendar_day"] == {"bs": "2082-04-31", "ad": "2025-08-16"}
+    assert closing_body["last_working_day"] == {"bs": "2082-04-30", "ad": "2025-08-15"}
 
     fiscal = client.post(
         "/v3/api/compliance/fiscal-period",
@@ -167,7 +167,7 @@ def test_compliance_rejects_unsupported_or_ambiguous_inputs() -> None:
         json={
             "profile_id": "nepal_private_company_default",
             "bs_date": "2082-04-02",
-            "ad_date": "2025-07-17",
+            "ad_date": "2025-07-18",
         },
     )
     assert ambiguous.status_code == 400
@@ -205,4 +205,6 @@ def test_public_demo_route_profile_excludes_compliance_preview(monkeypatch) -> N
 
     public_demo_client = TestClient(create_app())
     assert public_demo_client.get("/v3/api/compliance/profiles").status_code == 404
-    assert "/v3/api/compliance/profiles" not in public_demo_client.get("/openapi.json").json()["paths"]
+    assert (
+        "/v3/api/compliance/profiles" not in public_demo_client.get("/openapi.json").json()["paths"]
+    )

@@ -45,8 +45,8 @@
         "blocked": 0,
         "failed": 0,
         "max_score": 1000,
-        "score": 660,
-        "score_percent": 66.0,
+        "score": 630,
+        "score_percent": 63.0,
         "tasks": 10
       },
       "panchanga_tithi_at_sunrise": {
@@ -61,8 +61,8 @@
         "blocked": 0,
         "failed": 0,
         "max_score": 300,
-        "score": 300,
-        "score_percent": 100.0,
+        "score": 260,
+        "score_percent": 86.67,
         "tasks": 3
       },
       "source_confidence_evidence_metadata": {
@@ -167,13 +167,13 @@
   },
   "claim_boundary": "technical_benchmark_not_authority",
   "generated_at": "2026-05-17T13:04:30+05:45",
-  "parva_score_percent": 87.19,
+  "parva_score_percent": 86.09,
   "review_gate_performance": {
     "passed": 10,
     "score_percent": 100.0,
     "tasks": 10
   },
-  "score_gap_percent": 67.81,
+  "score_gap_percent": 66.71,
   "source": "public-benchmark/results/comparison.json",
   "static_score_percent": 19.38,
   "task_count": 64

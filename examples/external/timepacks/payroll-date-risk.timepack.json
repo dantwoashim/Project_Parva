@@ -1,5 +1,5 @@
 {
-  "aggregate_witness_hash": "sha256:8b5c94dc02ec551cee00b879966dd0c2bd2f74626a461e78b2ebaf77a2b5114f",
+  "aggregate_witness_hash": "sha256:26941f970dc6dc38bd7e28234c2ea3fe5cc4e817602ad602a689bb64987d40c5",
   "artifact_type": "payroll_date_risk_audit",
   "boundary_summary": {
     "claim_boundary": "payroll_date_risk_not_authority",
@@ -1009,7 +1009,7 @@
             },
             {
               "operation": "fiscal_year_rule",
-              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+              "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
             }
           ],
           "verifier": "parva.fiscal_year",
@@ -1023,7 +1023,7 @@
           },
           "fiscal_year": "2082/83",
           "start": {
-            "ad": "2025-07-16",
+            "ad": "2025-07-17",
             "bs": "2082-04-01"
           }
         },
@@ -1050,17 +1050,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "fiscal_year",
-          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
           "source_refs": [],
           "verifier": "parva.fiscal_year",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
         },
-        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
     },
     {
       "boundary": {
@@ -2152,7 +2152,7 @@
             },
             {
               "operation": "fiscal_year_rule",
-              "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+              "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
             }
           ],
           "verifier": "parva.fiscal_year",
@@ -2166,7 +2166,7 @@
           },
           "fiscal_year": "2082/83",
           "start": {
-            "ad": "2025-07-16",
+            "ad": "2025-07-17",
             "bs": "2082-04-01"
           }
         },
@@ -2193,17 +2193,17 @@
             "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
           },
           "operation": "fiscal_year",
-          "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+          "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
           "source_refs": [],
           "verifier": "parva.fiscal_year",
           "verifier_version": "1.0.0",
-          "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+          "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
         },
-        "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+        "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
       },
       "offline_verifier": "parva_membrane_replay_v1",
       "proofpack_version": "v1",
-      "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+      "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
     }
   ],
   "replay_instructions": "Run `parva verify-timepack <path>` from a checkout with committed proof fixtures.",
@@ -2213,8 +2213,19 @@
         "ad_date": "2025-04-15",
         "bs_date": "2082-01-02",
         "claim_boundary": "payroll_date_risk_not_authority",
+        "diagnostics": [
+          "unknown_columns:expected_behavior"
+        ],
+        "expected_ad_date": "2025-04-15",
         "fix_suggestions": [],
         "issues": [],
+        "original_row": {
+          "actual_ad_date": "2025-04-15",
+          "bs_date": "2082-01-02",
+          "employee_id": "sample-001",
+          "expected_behavior": "working_day",
+          "workflow_type": "payroll_cutoff"
+        },
         "proof_packs": [
           {
             "boundary": {
@@ -3216,7 +3227,7 @@
                   },
                   {
                     "operation": "fiscal_year_rule",
-                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                    "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
                   }
                 ],
                 "verifier": "parva.fiscal_year",
@@ -3230,7 +3241,7 @@
                 },
                 "fiscal_year": "2082/83",
                 "start": {
-                  "ad": "2025-07-16",
+                  "ad": "2025-07-17",
                   "bs": "2082-04-01"
                 }
               },
@@ -3257,26 +3268,32 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "fiscal_year",
-                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
                 "source_refs": [],
                 "verifier": "parva.fiscal_year",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+                "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
               },
-              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
           }
         ],
         "risk_score": 0,
+        "row_number": 1,
+        "severity": "none",
         "status": "pass"
       },
       {
         "ad_date": "2025-04-14",
         "bs_date": "2082-01-01",
         "claim_boundary": "payroll_date_risk_not_authority",
+        "diagnostics": [
+          "unknown_columns:expected_behavior"
+        ],
+        "expected_ad_date": "2025-04-14",
         "fix_suggestions": [
           "manual_review"
         ],
@@ -3284,6 +3301,13 @@
           "holiday_conflict",
           "non_working_day_conflict"
         ],
+        "original_row": {
+          "actual_ad_date": "2025-04-14",
+          "bs_date": "2082-01-01",
+          "employee_id": "sample-002",
+          "expected_behavior": "working_day",
+          "workflow_type": "payroll_cutoff"
+        },
         "proof_packs": [
           {
             "boundary": {
@@ -4375,7 +4399,7 @@
                   },
                   {
                     "operation": "fiscal_year_rule",
-                    "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b"
+                    "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c"
                   }
                 ],
                 "verifier": "parva.fiscal_year",
@@ -4389,7 +4413,7 @@
                 },
                 "fiscal_year": "2082/83",
                 "start": {
-                  "ad": "2025-07-16",
+                  "ad": "2025-07-17",
                   "bs": "2082-04-01"
                 }
               },
@@ -4416,34 +4440,49 @@
                   "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
                 },
                 "operation": "fiscal_year",
-                "output_hash": "sha256:1df736216e99484dfb0e5f8760c3dbc0672d96c4f6b73c9a4a5ce6076944c38b",
+                "output_hash": "sha256:d9003ce4c41ceca81d4a4b0a22b1cfd27bc94b05500243508f7588670ca3694c",
                 "source_refs": [],
                 "verifier": "parva.fiscal_year",
                 "verifier_version": "1.0.0",
-                "witness_id": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+                "witness_id": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
               },
-              "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+              "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
             },
             "offline_verifier": "parva_membrane_replay_v1",
             "proofpack_version": "v1",
-            "witness_hash": "parva:wit:v1:sha256:811ddc9a940794fa437fb7c8ee58dcc0b8e8fba1f31fa7c8bad2108007e37284"
+            "witness_hash": "parva:wit:v1:sha256:6a9d3378643b6fc8bad07e60066811530b64c3415114960c6e9b74f830502d3d"
           }
         ],
         "risk_score": 50,
+        "row_number": 2,
+        "severity": "low",
         "status": "review_required"
       },
       {
         "ad_date": null,
         "bs_date": "2082-01-32",
         "claim_boundary": "payroll_date_risk_not_authority",
+        "diagnostics": [
+          "unknown_columns:expected_behavior"
+        ],
+        "expected_ad_date": null,
         "fix_suggestions": [
           "manual_review"
         ],
         "issues": [
           "invalid_bs_date"
         ],
+        "original_row": {
+          "actual_ad_date": "",
+          "bs_date": "2082-01-32",
+          "employee_id": "sample-003",
+          "expected_behavior": "valid_bs_date",
+          "workflow_type": "payroll_cutoff"
+        },
         "proof_packs": [],
         "risk_score": 25,
+        "row_number": 3,
+        "severity": "high",
         "status": "review_required"
       }
     ],

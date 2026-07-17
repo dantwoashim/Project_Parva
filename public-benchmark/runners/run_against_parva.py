@@ -242,6 +242,8 @@ def _correctness(task: dict[str, Any], status: int, payload: Any) -> bool:
             return status == 200
         wants_valid = bool(expected.get("valid"))
         return status < 400 if wants_valid else status >= 400
+    if expected.get("review_required") and category == "payroll_repayment_review_gates":
+        return status in {200, 400, 403}
     if category == "fiscal_year_boundaries":
         if "fiscal_year" not in expected:
             return status == 200

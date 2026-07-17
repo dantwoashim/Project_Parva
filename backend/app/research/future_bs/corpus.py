@@ -24,7 +24,9 @@ PRIVATE_CORPUS_PATH = (
 LEGACY_PRIVATE_CORPUS_PATH = (
     PROJECT_ROOT / "data" / "future_bs" / "corpus" / "verified_month_lengths.csv"
 )
-PUBLIC_CORPUS_PATH = PROJECT_ROOT / "data" / "future_bs" / "public" / "official_holdout_2078_2083.csv"
+PUBLIC_CORPUS_PATH = (
+    PROJECT_ROOT / "data" / "future_bs" / "public" / "official_holdout_2078_2083.csv"
+)
 CORPUS_PATH = LEGACY_PRIVATE_CORPUS_PATH
 CORPUS_ID = "source_labeled_month_lengths"
 CORPUS_VERSION = "source_policy_public_or_private_v2"
@@ -132,6 +134,15 @@ def load_corpus() -> dict[int, CorpusRow]:
             months = [int(raw[column]) for column in MONTH_COLUMNS]
             if len(months) != 12 or any(days < 29 or days > 32 for days in months):
                 raise ValueError(f"Invalid month lengths in corpus row {bs_year}.")
+            if (
+                raw["source_type"] == "official_verified"
+                and raw["verification_status"] == "verified"
+                and bs_year in BS_MONTH_LENGTHS
+                and months != BS_MONTH_LENGTHS[bs_year]
+            ):
+                raise ValueError(
+                    f"Verified corpus row {bs_year} disagrees with the canonical BS table."
+                )
             rows[bs_year] = CorpusRow(
                 bs_year=bs_year,
                 months=months,
@@ -167,7 +178,9 @@ def get_corpus_row(bs_year: int) -> CorpusRow:
     try:
         return load_corpus()[bs_year]
     except KeyError as exc:
-        raise ValueError(f"BS year {bs_year} is outside corpus range {corpus_range_label()}.") from exc
+        raise ValueError(
+            f"BS year {bs_year} is outside corpus range {corpus_range_label()}."
+        ) from exc
 
 
 def known_months(bs_year: int) -> list[int]:
@@ -194,7 +207,9 @@ def corpus_summary() -> dict[str, Any]:
     quality_level_counts: dict[str, int] = {}
     for row in rows:
         counts[row.source_type] = counts.get(row.source_type, 0) + 1
-        verification_counts[row.verification_status] = verification_counts.get(row.verification_status, 0) + 1
+        verification_counts[row.verification_status] = (
+            verification_counts.get(row.verification_status, 0) + 1
+        )
         quality_key = f"level_{row.source_quality_level}"
         quality_level_counts[quality_key] = quality_level_counts.get(quality_key, 0) + 1
     train_allowed = sum(row.training_allowed for row in rows)

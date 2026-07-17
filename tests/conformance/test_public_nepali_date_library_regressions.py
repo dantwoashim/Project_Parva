@@ -43,7 +43,9 @@ def test_leapfrog_public_regression_fixture_schema_and_boundaries() -> None:
         assert case["source_policy"] == "public_issue_regression_case"
         assert case["authority_boundary"] == "public_issue_regression_case_not_official_authority"
         assert case["production_impact_claimed"] is False
-        assert case["expected"]["observed_current_source"]["reproduction_status"].startswith("still_reproduces")
+        assert case["expected"]["observed_current_source"]["reproduction_status"].startswith(
+            "still_reproduces"
+        )
         assert "parva" in case["expected"]
 
 
@@ -68,8 +70,10 @@ def test_issue_70_month_day_cases_are_represented() -> None:
         (2083, 10),
     }
 
-    review_rows = [case for case in issue_70_cases if not case["expected"]["parva"]["matches_issue_reported"]]
-    assert {case["input"]["bs_month_name"] for case in review_rows} == {"Asar", "Shrawan"}
+    review_rows = [
+        case for case in issue_70_cases if not case["expected"]["parva"]["matches_issue_reported"]
+    ]
+    assert review_rows == []
 
 
 def test_public_regression_cases_are_loaded_by_conformance_runner() -> None:

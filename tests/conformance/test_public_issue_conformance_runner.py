@@ -24,6 +24,8 @@ def test_public_issue_runner_discovers_suite() -> None:
         "go-nepali-15-2024-06-14-ad-to-bs-boundary",
         "cht-core-7925-invalid-kartik-2079-accepted",
         "medic-26-2081-11-month-length-correction",
+        "medic-26-2082-03-month-length-correction",
+        "medic-26-2082-04-month-length-correction",
         "medic-26-2082-10-month-length-correction",
     }
 
@@ -39,8 +41,8 @@ def test_public_issue_cli_summary_output() -> None:
 
     assert result.returncode == 0
     assert "Parva public issue conformance summary" in result.stdout
-    assert "total: 22" in result.stdout
-    assert "executed: 12" in result.stdout
+    assert "total: 24" in result.stdout
+    assert "executed: 14" in result.stdout
     assert "failed: 0" in result.stdout
 
 

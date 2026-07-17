@@ -23,7 +23,7 @@
     },
     {
       "path": "examples/external/timepacks/payroll-date-risk.timepack.json",
-      "sha256": "251d5145a7a5ef9dc31e797aac5402de90794bf3fb612c3bda94bd967e0d79b0"
+      "sha256": "459504d6f97c90920da68f18cde5dd2a1b3f795e5c78600eeab3297a2c830d7f"
     }
   ],
   "claim_boundary": "offline_review_examples_not_external_validation",

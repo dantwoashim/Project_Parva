@@ -31,8 +31,8 @@
       {
         "authority": "static_reference",
         "calculation_mode": "static_lookup",
-        "days": 31,
-        "end_ad": "2025-07-15",
+        "days": 32,
+        "end_ad": "2025-07-16",
         "engine": "static_lookup_compatibility_v1",
         "month": 3,
         "name": "Ashadh",
@@ -43,14 +43,14 @@
       {
         "authority": "static_reference",
         "calculation_mode": "static_lookup",
-        "days": 32,
+        "days": 31,
         "end_ad": "2025-08-16",
         "engine": "static_lookup_compatibility_v1",
         "month": 4,
         "name": "Shrawan",
         "not_authority": true,
         "review_required": true,
-        "start_ad": "2025-07-16"
+        "start_ad": "2025-07-17"
       },
       {
         "authority": "static_reference",
@@ -356,7 +356,7 @@
         },
         {
           "operation": "bs_months_metadata",
-          "output_hash": "sha256:d59abbcee10cf139edef2150624729fd8555e8ab1252cec8d2d8e551061fb5e7"
+          "output_hash": "sha256:3978a77abd29a9d5f748a60145a7361b559b53d1c58cd0f584b84e66386bf445"
         }
       ],
       "verifier": "parva.bs_months",
@@ -394,8 +394,8 @@
         {
           "authority": "static_reference",
           "calculation_mode": "static_lookup",
-          "days": 31,
-          "end_ad": "2025-07-15",
+          "days": 32,
+          "end_ad": "2025-07-16",
           "engine": "static_lookup_compatibility_v1",
           "month": 3,
           "name": "Ashadh",
@@ -406,14 +406,14 @@
         {
           "authority": "static_reference",
           "calculation_mode": "static_lookup",
-          "days": 32,
+          "days": 31,
           "end_ad": "2025-08-16",
           "engine": "static_lookup_compatibility_v1",
           "month": 4,
           "name": "Shrawan",
           "not_authority": true,
           "review_required": true,
-          "start_ad": "2025-07-16"
+          "start_ad": "2025-07-17"
         },
         {
           "authority": "static_reference",
@@ -549,13 +549,13 @@
         "source_snapshot_hash": "sha256:38fff53db3a28435c8b478d430c17a48136eb0818610e2573b55ab952cc1338f"
       },
       "operation": "bs_months",
-      "output_hash": "sha256:d59abbcee10cf139edef2150624729fd8555e8ab1252cec8d2d8e551061fb5e7",
+      "output_hash": "sha256:3978a77abd29a9d5f748a60145a7361b559b53d1c58cd0f584b84e66386bf445",
       "source_refs": [],
       "verifier": "parva.bs_months",
       "verifier_version": "1.0.0",
-      "witness_id": "parva:wit:v1:sha256:cb2a782e8b53f8bc5f05a1f83cefeb46f0eeddab7361920e8d772cfbf38a1c2c"
+      "witness_id": "parva:wit:v1:sha256:f20c9ee5e94f77e66b84fc2956227f2281ca493d8431ebbe27fcf9653400d6a8"
     },
-    "witness_hash": "parva:wit:v1:sha256:cb2a782e8b53f8bc5f05a1f83cefeb46f0eeddab7361920e8d772cfbf38a1c2c"
+    "witness_hash": "parva:wit:v1:sha256:f20c9ee5e94f77e66b84fc2956227f2281ca493d8431ebbe27fcf9653400d6a8"
   },
   "name": "bs_months_static_lookup",
   "operation": "bs_months"
