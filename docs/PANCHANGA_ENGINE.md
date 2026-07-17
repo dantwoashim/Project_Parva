@@ -40,6 +40,11 @@ The reserved `jpl_de440` calculation-provider id is rejected. A separately
 configured DE440-family file can be validated for metadata inspection, but it
 cannot produce Panchanga output through this provider surface.
 
+The built-in provider supports `lahiri`, `raman`, and `kp` as immutable
+request profiles. The selected profile is applied to the calculation under the
+shared Swiss Ephemeris state lock, restored after the request, and reported as
+`effective_ayanamsa` in proof metadata.
+
 ## Boundaries
 
 Every serious Panchanga proof result must include:

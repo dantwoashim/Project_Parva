@@ -203,10 +203,20 @@ def build_panchanga_payload(
     *,
     risk_mode: str = "standard",
     trace_id: str | None = None,
+    latitude: float = 27.7172,
+    longitude: float = 85.3240,
+    timezone_name: str = "Asia/Kathmandu",
+    ayanamsa: str = "lahiri",
 ) -> dict[str, Any]:
-    from app.calendar.panchanga import get_panchanga
+    from app.panchanga.ephemeris_provider import BuiltInApproxProvider
 
-    cached_payload = load_precomputed_panchanga(target_date)
+    default_context = (
+        latitude == 27.7172
+        and longitude == 85.3240
+        and timezone_name == "Asia/Kathmandu"
+        and ayanamsa == "lahiri"
+    )
+    cached_payload = load_precomputed_panchanga(target_date) if default_context else None
     if cached_payload:
         response = dict(cached_payload)
         response["date"] = target_date.isoformat()
@@ -219,6 +229,17 @@ def build_panchanga_payload(
             "hit": True,
             "source": "precomputed",
         }
+        response["observation_context"] = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "timezone": timezone_name,
+            "ayanamsa": ayanamsa,
+        }
+        ephemeris = dict(response.get("ephemeris") or {})
+        ephemeris.setdefault("mode", "swiss_moshier")
+        ephemeris.setdefault("ayanamsa", ayanamsa)
+        ephemeris.setdefault("coordinate_system", "sidereal")
+        response["ephemeris"] = ephemeris
         meta = _calendar_meta(
             engine_path=str(
                 (((response.get("panchanga") or {}).get("tithi") or {}).get("method"))
@@ -254,7 +275,13 @@ def build_panchanga_payload(
         return response
 
     try:
-        panchanga = get_panchanga(target_date)
+        panchanga = BuiltInApproxProvider().panchanga_for(
+            target_date,
+            latitude=latitude,
+            longitude=longitude,
+            timezone_name=timezone_name,
+            ayanamsa=ayanamsa,
+        )
     except (KeyError, TypeError, ValueError, RuntimeError) as exc:
         raise HTTPException(
             status_code=503,
@@ -330,6 +357,14 @@ def build_panchanga_payload(
             "mode": panchanga.get("mode", "swiss_moshier"),
             "accuracy": panchanga.get("accuracy", "arcsecond"),
             "library": panchanga.get("library", "pyswisseph"),
+            "ayanamsa": panchanga.get("ayanamsa", ayanamsa),
+            "coordinate_system": panchanga.get("coordinate_system", "sidereal"),
+        },
+        "observation_context": {
+            "latitude": latitude,
+            "longitude": longitude,
+            "timezone": timezone_name,
+            "ayanamsa": panchanga.get("ayanamsa", ayanamsa),
         },
         "cache": {
             "hit": False,

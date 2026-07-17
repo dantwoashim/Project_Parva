@@ -51,7 +51,7 @@ def test_panchanga_strict_mode_abstains_near_boundary(monkeypatch):
     monkeypatch.setattr(
         panchanga_module,
         "get_panchanga",
-        lambda target_date: {
+            lambda target_date, **_context: {
             "tithi": {"number": 14, "name": "Chaturdashi", "paksha": "krishna", "progress": 0.02},
             "nakshatra": {"number": 10, "name": "Magha", "pada": 1},
             "yoga": {"number": 5, "name": "Saubhagya"},

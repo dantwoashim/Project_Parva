@@ -20,6 +20,8 @@ from typing import TYPE_CHECKING, Optional, Tuple
 
 import swisseph as swe
 
+from app.engine.swiss_state import SWISS_EPHEMERIS_LOCK
+
 from .time_utils import resolve_observer_timezone
 
 if TYPE_CHECKING:
@@ -44,8 +46,8 @@ SUN = swe.SUN
 MOON = swe.MOON
 
 # Calculation flags
-SIDEREAL_FLAGS = swe.FLG_SIDEREAL | swe.FLG_SPEED
-TROPICAL_FLAGS = swe.FLG_SPEED
+SIDEREAL_FLAGS = swe.FLG_MOSEPH | swe.FLG_SIDEREAL | swe.FLG_SPEED
+TROPICAL_FLAGS = swe.FLG_MOSEPH | swe.FLG_SPEED
 
 # Ayanamsa modes
 AYANAMSA_LAHIRI = swe.SIDM_LAHIRI
@@ -99,27 +101,27 @@ def init_ephemeris(ayanamsa: int = AYANAMSA_LAHIRI) -> None:
     """
     global _initialized
 
-    # Set sidereal mode with Lahiri ayanamsa
-    swe.set_sid_mode(ayanamsa)
+    with SWISS_EPHEMERIS_LOCK:
+        swe.set_sid_mode(ayanamsa)
+        _initialized = True
 
     # Note: NOT setting swe.set_ephe_path() - using built-in Moshier
     # This is honest about what we're actually using
 
-    _initialized = True
-
-
 def _ensure_initialized() -> None:
     """Ensure ephemeris is initialized before calculations."""
-    global _initialized
-    if not _initialized:
-        init_ephemeris()
+    with SWISS_EPHEMERIS_LOCK:
+        if not _initialized:
+            from app.engine.ephemeris_config import get_ephemeris_config
+
+            init_ephemeris(get_ephemeris_config().ayanamsa_code)
 
 
-def get_ephemeris_info() -> dict:
+def get_ephemeris_info(config: Optional["EphemerisConfig"] = None) -> dict:
     """Return metadata about the ephemeris mode in use."""
     from app.engine.ephemeris_config import get_ephemeris_config
 
-    cfg = get_ephemeris_config()
+    cfg = config or get_ephemeris_config()
     return {
         "mode": EPHEMERIS_MODE,
         "accuracy": EPHEMERIS_ACCURACY,
@@ -249,12 +251,13 @@ def get_sun_longitude(
 
     cfg = config or get_ephemeris_config()
     use_sidereal = sidereal if sidereal is not None else cfg.coordinate_system == "sidereal"
-    if use_sidereal:
-        swe.set_sid_mode(cfg.ayanamsa_code)
     flags = SIDEREAL_FLAGS if use_sidereal else TROPICAL_FLAGS
 
     try:
-        result = swe.calc_ut(jd, SUN, flags)
+        with SWISS_EPHEMERIS_LOCK:
+            if use_sidereal:
+                swe.set_sid_mode(cfg.ayanamsa_code)
+            result = swe.calc_ut(jd, SUN, flags)
         longitude = result[0][0]  # First element is longitude
         return longitude % 360
     except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
@@ -284,12 +287,13 @@ def get_moon_longitude(
 
     cfg = config or get_ephemeris_config()
     use_sidereal = sidereal if sidereal is not None else cfg.coordinate_system == "sidereal"
-    if use_sidereal:
-        swe.set_sid_mode(cfg.ayanamsa_code)
     flags = SIDEREAL_FLAGS if use_sidereal else TROPICAL_FLAGS
 
     try:
-        result = swe.calc_ut(jd, MOON, flags)
+        with SWISS_EPHEMERIS_LOCK:
+            if use_sidereal:
+                swe.set_sid_mode(cfg.ayanamsa_code)
+            result = swe.calc_ut(jd, MOON, flags)
         longitude = result[0][0]
         return longitude % 360
     except (swe.Error, EphemerisError, IndexError, TypeError, ValueError) as e:
@@ -318,13 +322,14 @@ def get_sun_moon_positions(
 
     cfg = config or get_ephemeris_config()
     use_sidereal = sidereal if sidereal is not None else cfg.coordinate_system == "sidereal"
-    if use_sidereal:
-        swe.set_sid_mode(cfg.ayanamsa_code)
     flags = SIDEREAL_FLAGS if use_sidereal else TROPICAL_FLAGS
 
     try:
-        sun_result = swe.calc_ut(jd, SUN, flags)
-        moon_result = swe.calc_ut(jd, MOON, flags)
+        with SWISS_EPHEMERIS_LOCK:
+            if use_sidereal:
+                swe.set_sid_mode(cfg.ayanamsa_code)
+            sun_result = swe.calc_ut(jd, SUN, flags)
+            moon_result = swe.calc_ut(jd, MOON, flags)
 
         sun_long = sun_result[0][0] % 360
         moon_long = moon_result[0][0] % 360
@@ -339,7 +344,7 @@ def get_sun_moon_positions(
 # =============================================================================
 
 
-def get_ayanamsa(dt: datetime) -> float:
+def get_ayanamsa(dt: datetime, config: Optional["EphemerisConfig"] = None) -> float:
     """
     Get the ayanamsa value (precession correction) for a given date.
 
@@ -356,8 +361,13 @@ def get_ayanamsa(dt: datetime) -> float:
 
     jd = get_julian_day(dt)
 
+    from app.engine.ephemeris_config import get_ephemeris_config
+
+    cfg = config or get_ephemeris_config()
     try:
-        ayanamsa = swe.get_ayanamsa_ut(jd)
+        with SWISS_EPHEMERIS_LOCK:
+            swe.set_sid_mode(cfg.ayanamsa_code)
+            ayanamsa = swe.get_ayanamsa_ut(jd)
         return ayanamsa
     except (swe.Error, EphemerisError, TypeError, ValueError) as e:
         raise EphemerisError(f"Failed to get ayanamsa: {e}") from e
@@ -410,14 +420,16 @@ def calculate_sunrise(
         # The center-crossing time is useful for some astronomical work but reads
         # about a minute late for sunrise and a minute early for sunset.
         # geopos: (longitude, latitude, altitude)
-        result = swe.rise_trans(
-            jd_start,  # tjdut
-            SUN,  # body
-            swe.CALC_RISE,  # rsmi
-            (longitude, latitude, altitude),  # geopos
-            0.0,  # atpress (default)
-            0.0,  # attemp (default)
-        )
+        with SWISS_EPHEMERIS_LOCK:
+            result = swe.rise_trans(
+                jd_start,  # tjdut
+                SUN,  # body
+                swe.CALC_RISE,  # rsmi
+                (longitude, latitude, altitude),  # geopos
+                0.0,  # atpress (default)
+                0.0,  # attemp (default)
+                swe.FLG_MOSEPH,
+            )
 
         # result is (res_flag, tret_tuple)
         # res_flag: 0 = found, -2 = circumpolar
@@ -470,14 +482,16 @@ def calculate_sunset(
     jd_start = get_julian_day(local_midnight.astimezone(timezone.utc))
 
     try:
-        result = swe.rise_trans(
-            jd_start,  # tjdut
-            SUN,  # body
-            swe.CALC_SET,  # rsmi
-            (longitude, latitude, altitude),  # geopos
-            0.0,  # atpress (default)
-            0.0,  # attemp (default)
-        )
+        with SWISS_EPHEMERIS_LOCK:
+            result = swe.rise_trans(
+                jd_start,  # tjdut
+                SUN,  # body
+                swe.CALC_SET,  # rsmi
+                (longitude, latitude, altitude),  # geopos
+                0.0,  # atpress (default)
+                0.0,  # attemp (default)
+                swe.FLG_MOSEPH,
+            )
 
         if result[0] < 0:
             raise EphemerisError(

@@ -339,7 +339,10 @@ async def get_panchanga_endpoint(
         description="Calculation provider used for proof output",
     ),
     ephemeris_fixture_id: Optional[str] = Query(None, description="Pinned fixture id for deterministic replay"),
-    ayanamsa: str = Query("lahiri", description="Sidereal ayanamsa mode"),
+    ayanamsa: Literal["lahiri", "raman", "kp"] = Query(
+        "lahiri",
+        description="Effective sidereal ayanamsa profile",
+    ),
 ):
     """
     Get complete panchanga (5-element Hindu calendar) for a date.
@@ -348,21 +351,26 @@ async def get_panchanga_endpoint(
     Includes: Tithi, Nakshatra, Yoga, Karana, Vaara (weekday).
     """
     target_date = _parse_iso_date(date_str) if date_str else datetime.now().date()
+    latitude = float(lat) if lat is not None else 27.7172
+    longitude = float(lon) if lon is not None else 85.3240
+    timezone_name = tz or "Asia/Kathmandu"
     payload = await run_cpu_bound(
         build_panchanga_payload,
         target_date,
         risk_mode=risk_mode,
         trace_id=_trace_id(request),
+        latitude=latitude,
+        longitude=longitude,
+        timezone_name=timezone_name,
+        ayanamsa=ayanamsa,
     )
     if _proof_requested(proof):
-        latitude = float(lat) if lat is not None else 27.7172
-        longitude = float(lon) if lon is not None else 85.3240
         capsule = await run_cpu_bound(
             build_panchanga_summary_capsule,
             target_date,
             latitude=latitude,
             longitude=longitude,
-            timezone_name=tz or "Asia/Kathmandu",
+            timezone_name=timezone_name,
             provider_id=ephemeris_provider,
             fixture_id=ephemeris_fixture_id,
             ayanamsa=ayanamsa,

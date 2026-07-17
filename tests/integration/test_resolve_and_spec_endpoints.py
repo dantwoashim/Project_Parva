@@ -22,6 +22,17 @@ def test_resolve_endpoint_returns_expected_sections():
     assert body["trace"]["trace_id"].startswith("tr_")
 
 
+def test_resolve_uses_one_location_for_tithi_and_nested_panchanga():
+    resp = client.get(
+        "/v3/api/resolve",
+        params={"date": "2026-10-15", "latitude": 40.7128, "longitude": -74.0060},
+    )
+
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["tithi"]["sunrise_utc"] == body["panchanga"]["sunrise"]["utc"]
+
+
 def test_resolve_endpoint_rejects_compact_date_format():
     resp = client.get("/v3/api/resolve", params={"date": "20261015"})
 

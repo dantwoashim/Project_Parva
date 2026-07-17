@@ -25,5 +25,9 @@ Supported provider classes:
 provider. The current JPL surface validates and discloses configured kernel
 metadata only. It never labels Swiss/Moshier Panchanga output as JPL output.
 
+Built-in sidereal calculations accept the explicit `lahiri`, `raman`, and `kp`
+profiles. The effective profile must drive the calculation and appear in the
+result and proof metadata.
+
 No provider confers government, religious, ritual, legal, tax, payroll, banking,
 or official Panchanga authority.

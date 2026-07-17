@@ -102,7 +102,7 @@ def get_panchanga(
     karana_num, karana_name = get_karana(sunrise_utc)
 
     # Get vaara (weekday)
-    vaara_num, vaara_sanskrit, vaara_english = get_vaara(sunrise_utc)
+    vaara_num, vaara_sanskrit, vaara_english = get_vaara(sunrise_utc, local_tz=observer_tz)
 
     # Get rashis (zodiac signs)
     sun_rashi_num, sun_rashi_sanskrit, sun_rashi_english = get_sun_rashi(sunrise_utc)

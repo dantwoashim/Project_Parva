@@ -7,14 +7,14 @@ import os
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any, Protocol, cast
 
 from app.calendar.ephemeris.swiss_eph import (
     calculate_sunrise,
     calculate_sunset,
     get_ephemeris_info,
 )
-from app.calendar.panchanga import get_panchanga
+from app.engine.ephemeris_config import Ayanamsa, EphemerisConfig, ephemeris_config_scope
 from app.panchanga.spk_kernel import validate_planetary_spk
 from app.sources.hashing import canonical_json_hash
 
@@ -31,7 +31,7 @@ class EphemerisProvider(Protocol):
     def provider_kind(self) -> str:
         """Provider class used in proof metadata."""
 
-    def metadata(self) -> dict[str, Any]:
+    def metadata(self, *, ayanamsa: str | None = None) -> dict[str, Any]:
         """Return replay-relevant provider metadata."""
 
     def panchanga_for(
@@ -108,8 +108,17 @@ class BuiltInApproxProvider:
     ephemeris_name: str = "Swiss Ephemeris built-in Moshier"
     ephemeris_version: str = "pyswisseph_builtin"
 
-    def metadata(self) -> dict[str, Any]:
-        info = get_ephemeris_info()
+    @staticmethod
+    def _config(ayanamsa: str | None) -> EphemerisConfig:
+        normalized = (ayanamsa or "lahiri").strip().lower()
+        if normalized not in {"lahiri", "raman", "kp"}:
+            raise ValueError(f"unsupported ayanamsa: {ayanamsa}")
+        return EphemerisConfig(ayanamsa=cast(Ayanamsa, normalized), ephemeris_mode="moshier")
+
+    def metadata(self, *, ayanamsa: str | None = None) -> dict[str, Any]:
+        config = self._config(ayanamsa)
+        with ephemeris_config_scope(config):
+            info = get_ephemeris_info(config)
         return {
             "provider_id": self.provider_id,
             "provider_kind": self.provider_kind,
@@ -120,6 +129,7 @@ class BuiltInApproxProvider:
             "coordinate_frame": info.get("coordinate_system", "sidereal"),
             "precision_tolerance": info.get("accuracy", "arcsecond"),
             "supported_date_range": "pyswisseph builtin range",
+            "effective_ayanamsa": config.ayanamsa,
             "source_or_method_docket": "parva.panchanga.method_dockets.v1",
             "boundary_vector": {
                 "claim_boundary": "computed_ephemeris_not_panchanga_authority",
@@ -139,8 +149,16 @@ class BuiltInApproxProvider:
         timezone_name: str,
         ayanamsa: str,
     ) -> dict[str, Any]:
-        del ayanamsa
-        return get_panchanga(target_date, latitude=latitude, longitude=longitude, timezone_name=timezone_name)
+        from app.calendar.panchanga import get_panchanga
+
+        config = self._config(ayanamsa)
+        with ephemeris_config_scope(config):
+            return get_panchanga(
+                target_date,
+                latitude=latitude,
+                longitude=longitude,
+                timezone_name=timezone_name,
+            )
 
 
 @dataclass(frozen=True)
@@ -158,8 +176,10 @@ class FixtureEphemerisProvider:
     def _payload(self) -> dict[str, Any]:
         return json.loads(self.fixture_path.read_text(encoding="utf-8"))
 
-    def metadata(self) -> dict[str, Any]:
+    def metadata(self, *, ayanamsa: str | None = None) -> dict[str, Any]:
         payload = self._payload()
+        if ayanamsa is not None and payload["query"].get("ayanamsa") != ayanamsa:
+            raise ValueError("fixture ayanamsa does not match requested ayanamsa")
         return {
             "provider_id": self.provider_id,
             "provider_kind": self.provider_kind,
@@ -238,7 +258,8 @@ class JplKernelMetadataProvider:
         normalized_hash = expected.lower().removeprefix("sha256:")
         return f"sha256:{normalized_hash}", len(inventory.segments)
 
-    def metadata(self) -> dict[str, Any]:
+    def metadata(self, *, ayanamsa: str | None = None) -> dict[str, Any]:
+        del ayanamsa
         try:
             kernel = self._kernel()
         except FileNotFoundError:

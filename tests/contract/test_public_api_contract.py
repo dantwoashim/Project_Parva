@@ -278,3 +278,31 @@ def test_panchanga_endpoint_rejects_reserved_jpl_calculation_provider() -> None:
 
     assert response.status_code == 422
     assert response.json()["error"]["code"] == "REQUEST_VALIDATION_ERROR"
+
+
+def test_panchanga_endpoint_uses_one_effective_observation_profile() -> None:
+    response = client.get(
+        "/v3/api/calendar/panchanga",
+        params={
+            "date": "2026-02-06",
+            "proof": "replay",
+            "lat": 40.7128,
+            "lon": -74.0060,
+            "tz": "America/New_York",
+            "ayanamsa": "raman",
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["observation_context"] == {
+        "latitude": 40.7128,
+        "longitude": -74.006,
+        "timezone": "America/New_York",
+        "ayanamsa": "raman",
+    }
+    assert body["ephemeris"]["ayanamsa"] == "raman"
+    capsule = body["proof"]["capsule"]
+    assert capsule["canonical_query"]["context"]["ayanamsa"] == "raman"
+    assert capsule["canonical_query"]["context"]["latitude"] == 40.7128
+    assert capsule["ephemeris_metadata"]["effective_ayanamsa"] == "raman"

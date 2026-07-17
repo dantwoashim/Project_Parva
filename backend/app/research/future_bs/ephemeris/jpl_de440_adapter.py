@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from threading import Lock
 
 import swisseph as swe
 
+from app.engine.swiss_state import SWISS_EPHEMERIS_LOCK
+
 from .base import EphemerisAdapter, EphemerisUnavailableError
 
-_SWISSEPH_LOCK = Lock()
+_SWISSEPH_LOCK = SWISS_EPHEMERIS_LOCK
 
 _SIDEREAL_MODES = {
     "lahiri": swe.SIDM_LAHIRI,

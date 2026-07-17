@@ -9,6 +9,7 @@ import swisseph as swe
 
 from app.calendar.ephemeris.swiss_eph import _ensure_initialized, get_julian_day
 from app.engine.ephemeris_config import get_ephemeris_config
+from app.engine.swiss_state import SWISS_EPHEMERIS_LOCK
 
 RASHI_NAMES = [
     ("Mesha", "Aries"),
@@ -72,30 +73,31 @@ def get_all_graha_positions(dt: datetime, *, sidereal: bool = True) -> dict[str,
     jd = get_julian_day(dt)
     cfg = get_ephemeris_config()
 
-    flags = swe.FLG_SPEED
-    if sidereal:
-        swe.set_sid_mode(cfg.ayanamsa_code)
-        flags |= swe.FLG_SIDEREAL
+    with SWISS_EPHEMERIS_LOCK:
+        flags = swe.FLG_MOSEPH | swe.FLG_SPEED
+        if sidereal:
+            swe.set_sid_mode(cfg.ayanamsa_code)
+            flags |= swe.FLG_SIDEREAL
 
-    positions: dict[str, Any] = {}
+        positions: dict[str, Any] = {}
 
-    for graha_id, swe_body in PLANET_ORDER.items():
-        result = swe.calc_ut(jd, swe_body, flags)
-        longitude = result[0][0] % 360
-        speed = result[0][3]
-        positions[graha_id] = _format_position(longitude, speed, graha_id=graha_id)
+        for graha_id, swe_body in PLANET_ORDER.items():
+            result = swe.calc_ut(jd, swe_body, flags)
+            longitude = result[0][0] % 360
+            speed = result[0][3]
+            positions[graha_id] = _format_position(longitude, speed, graha_id=graha_id)
 
-    node = swe.calc_ut(jd, swe.MEAN_NODE, flags)
-    rahu_long = node[0][0] % 360
-    rahu_speed = node[0][3]
-    positions["rahu"] = _format_position(rahu_long, rahu_speed, graha_id="rahu")
-    positions["rahu"]["is_retrograde"] = True
+        node = swe.calc_ut(jd, swe.MEAN_NODE, flags)
+        rahu_long = node[0][0] % 360
+        rahu_speed = node[0][3]
+        positions["rahu"] = _format_position(rahu_long, rahu_speed, graha_id="rahu")
+        positions["rahu"]["is_retrograde"] = True
 
-    ketu_long = (rahu_long + 180.0) % 360
-    positions["ketu"] = _format_position(ketu_long, rahu_speed, graha_id="ketu")
-    positions["ketu"]["is_retrograde"] = True
+        ketu_long = (rahu_long + 180.0) % 360
+        positions["ketu"] = _format_position(ketu_long, rahu_speed, graha_id="ketu")
+        positions["ketu"]["is_retrograde"] = True
 
-    return positions
+        return positions
 
 
 def get_graha_position(dt: datetime, graha_id: str, *, sidereal: bool = True) -> dict[str, Any]:

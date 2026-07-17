@@ -89,7 +89,7 @@ def build_panchanga_summary_capsule(
     sunrise_rule: str = "udaya_at_local_sunrise",
 ) -> dict[str, Any]:
     provider = provider_from_id(provider_id, fixture_id=fixture_id)
-    provider_meta = provider.metadata()
+    provider_meta = provider.metadata(ayanamsa=ayanamsa)
     raw = provider.panchanga_for(
         target_date,
         latitude=latitude,

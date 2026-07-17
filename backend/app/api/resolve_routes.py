@@ -6,7 +6,7 @@ from datetime import date, datetime, timezone
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.api.v5_types import ResolveResult
+from app.api.v5_types import CalculationTraceV2, ResolveResult
 from app.calendar.bikram_sambat import (
     get_bs_confidence,
     get_bs_estimated_error_days,
@@ -46,22 +46,22 @@ def _build_bs_payload(target_date: date) -> dict:
 
 def _build_tithi_payload(target_date: date, latitude: float, longitude: float) -> dict:
     udaya = get_udaya_tithi(target_date, latitude=latitude, longitude=longitude)
+    sunrise_local = udaya.get("sunrise_local")
+    sunrise_utc = udaya.get("sunrise")
     return {
         "display_number": udaya.get("tithi"),
         "absolute_number": udaya.get("tithi_absolute"),
         "name": udaya.get("name"),
         "paksha": udaya.get("paksha"),
         "method": "ephemeris_udaya",
-        "sunrise_local": udaya.get("sunrise_local").isoformat()
-        if udaya.get("sunrise_local")
-        else None,
-        "sunrise_utc": udaya.get("sunrise").isoformat() if udaya.get("sunrise") else None,
+        "sunrise_local": sunrise_local.isoformat() if sunrise_local is not None else None,
+        "sunrise_utc": sunrise_utc.isoformat() if sunrise_utc is not None else None,
         "progress": udaya.get("progress"),
     }
 
 
-def _build_panchanga_payload(target_date: date) -> dict:
-    panchanga_raw = get_panchanga(target_date)
+def _build_panchanga_payload(target_date: date, latitude: float, longitude: float) -> dict:
+    panchanga_raw = get_panchanga(target_date, latitude=latitude, longitude=longitude)
     return {
         "tithi": panchanga_raw.get("tithi", {}),
         "nakshatra": panchanga_raw.get("nakshatra", {}),
@@ -97,7 +97,7 @@ def _build_trace_payload(
     bs: dict,
     tithi: dict,
     observances: list[dict],
-) -> dict:
+) -> CalculationTraceV2:
     trace_payload = create_reason_trace(
         trace_type="resolve_context",
         subject={"date": target_date.isoformat(), "profile": profile},
@@ -137,15 +137,15 @@ def _build_trace_payload(
             "source": "resolve_endpoint_v5_track",
         },
     )
-    return {
-        "trace_id": trace_payload.get("trace_id"),
-        "trace_type": trace_payload.get("trace_type"),
-        "subject": trace_payload.get("subject", {}),
-        "inputs": trace_payload.get("inputs", {}),
-        "outputs": trace_payload.get("outputs", {}),
-        "steps": trace_payload.get("steps", []),
-        "provenance": trace_payload.get("provenance", {}),
-    }
+    return CalculationTraceV2(
+        trace_id=str(trace_payload["trace_id"]),
+        trace_type=str(trace_payload["trace_type"]),
+        subject=trace_payload.get("subject", {}),
+        inputs=trace_payload.get("inputs", {}),
+        outputs=trace_payload.get("outputs", {}),
+        steps=trace_payload.get("steps", []),
+        provenance=trace_payload.get("provenance", {}),
+    )
 
 
 @router.get("/resolve", response_model=ResolveResult)
@@ -165,7 +165,7 @@ async def resolve_temporal_context(
     target_date = _parse_date(date_value)
     bs = _build_bs_payload(target_date)
     tithi = _build_tithi_payload(target_date, latitude, longitude)
-    panchanga = _build_panchanga_payload(target_date)
+    panchanga = _build_panchanga_payload(target_date, latitude, longitude)
     observances = _build_observances_payload(target_date)
     trace = (
         _build_trace_payload(

@@ -1893,12 +1893,17 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "lahiri",
+                "raman",
+                "kp"
+              ],
               "type": "string",
-              "description": "Sidereal ayanamsa mode",
+              "description": "Effective sidereal ayanamsa profile",
               "default": "lahiri",
               "title": "Ayanamsa"
             },
-            "description": "Sidereal ayanamsa mode"
+            "description": "Effective sidereal ayanamsa profile"
           }
         ],
         "responses": {
@@ -13257,12 +13262,17 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "lahiri",
+                "raman",
+                "kp"
+              ],
               "type": "string",
-              "description": "Sidereal ayanamsa mode",
+              "description": "Effective sidereal ayanamsa profile",
               "default": "lahiri",
               "title": "Ayanamsa"
             },
-            "description": "Sidereal ayanamsa mode"
+            "description": "Effective sidereal ayanamsa profile"
           }
         ],
         "responses": {
