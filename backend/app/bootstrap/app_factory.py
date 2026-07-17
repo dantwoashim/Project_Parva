@@ -177,6 +177,7 @@ def _validate_startup(settings) -> tuple[dict[str, Any], object]:
     rate_limit_backend = create_rate_limiter_backend(
         backend_name=settings.rate_limit_backend,
         redis_url=settings.redis_url,
+        memory_max_buckets=settings.rate_limit_max_buckets,
     )
     return startup_checks, rate_limit_backend
 

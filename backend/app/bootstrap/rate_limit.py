@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import time
-from collections import defaultdict, deque
+from collections import OrderedDict, deque
 from dataclasses import dataclass
 from threading import Lock
 from typing import Protocol
@@ -38,12 +38,39 @@ class RateLimiterUnavailable(RuntimeError):
     """Raised when a selected shared limiter cannot make a safe decision."""
 
 
-class InMemoryRateLimiterBackend:
-    """Development-friendly in-process rate limiter."""
+@dataclass
+class _MemoryBucket:
+    entries: deque[float]
+    expires_at: float
 
-    def __init__(self) -> None:
+
+class InMemoryRateLimiterBackend:
+    """Bounded in-process rate limiter for one-worker deployments."""
+
+    def __init__(self, *, max_buckets: int = 10_000) -> None:
+        if max_buckets < 1:
+            raise ValueError("In-memory rate limiter max_buckets must be positive.")
         self._lock = Lock()
-        self._buckets: dict[tuple[str, str], deque[float]] = defaultdict(deque)
+        self._max_buckets = max_buckets
+        self._buckets: OrderedDict[tuple[str, str], _MemoryBucket] = OrderedDict()
+
+    @property
+    def bucket_count(self) -> int:
+        with self._lock:
+            return len(self._buckets)
+
+    def _evict_expired(self, now: float) -> None:
+        expired = [key for key, state in self._buckets.items() if state.expires_at <= now]
+        for key in expired:
+            self._buckets.pop(key, None)
+
+    def _new_bucket(self, bucket_key: tuple[str, str], now: float) -> _MemoryBucket:
+        self._evict_expired(now)
+        if len(self._buckets) >= self._max_buckets:
+            self._buckets.popitem(last=False)
+        state = _MemoryBucket(entries=deque(), expires_at=now)
+        self._buckets[bucket_key] = state
+        return state
 
     def check(
         self,
@@ -53,9 +80,16 @@ class InMemoryRateLimiterBackend:
         policy: RatePolicy,
         now: float,
     ) -> RateLimitDecision:
+        if policy.limit < 1 or policy.window_seconds < 1:
+            raise ValueError("Rate-limit policy requires positive limit and window_seconds.")
         bucket_key = (bucket, identifier)
         with self._lock:
-            entries = self._buckets[bucket_key]
+            state = self._buckets.get(bucket_key)
+            if state is None:
+                state = self._new_bucket(bucket_key, now)
+            else:
+                self._buckets.move_to_end(bucket_key)
+            entries = state.entries
             cutoff = now - policy.window_seconds
             while entries and entries[0] <= cutoff:
                 entries.popleft()
@@ -65,6 +99,7 @@ class InMemoryRateLimiterBackend:
                 return RateLimitDecision(allowed=False, remaining=0, retry_after=retry_after)
 
             entries.append(now)
+            state.expires_at = now + policy.window_seconds
             remaining = max(policy.limit - len(entries), 0)
             return RateLimitDecision(allowed=True, remaining=remaining)
 
@@ -185,10 +220,11 @@ def create_rate_limiter_backend(
     *,
     backend_name: str,
     redis_url: str | None = None,
+    memory_max_buckets: int = 10_000,
 ) -> RateLimiterBackend:
     normalized = (backend_name or "memory").strip().lower()
     if normalized == "memory":
-        return InMemoryRateLimiterBackend()
+        return InMemoryRateLimiterBackend(max_buckets=memory_max_buckets)
     if normalized == "redis":
         return RedisRateLimiterBackend(redis_url or "")
     raise ValueError(

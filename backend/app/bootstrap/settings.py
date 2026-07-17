@@ -85,6 +85,7 @@ class AppSettings:
     api_keys: dict[str, APIKeyRecord] = field(default_factory=dict)
     rate_limit_enabled: bool = True
     rate_limit_backend: str = "memory"
+    rate_limit_max_buckets: int = 10_000
     redis_url: str | None = None
     require_precomputed: bool = False
     prewarm_hotset: bool = False
@@ -293,6 +294,8 @@ def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
     backend = settings.rate_limit_backend.strip().lower()
     if backend not in {"memory", "redis"}:
         errors.append("PARVA_RATE_LIMIT_BACKEND must be either memory or redis.")
+    if settings.rate_limit_max_buckets < 1:
+        errors.append("PARVA_RATE_LIMIT_MAX_BUCKETS must be a positive integer.")
     if backend == "redis" and not settings.redis_url:
         errors.append("PARVA_REDIS_URL is required when PARVA_RATE_LIMIT_BACKEND=redis.")
     if _is_deployed_environment(settings.environment) and backend == "memory":
@@ -390,6 +393,7 @@ def load_settings() -> AppSettings:
             default=environment.strip().lower() not in TEST_ENV_VALUES,
         ),
         rate_limit_backend=(os.getenv("PARVA_RATE_LIMIT_BACKEND", "memory").strip() or "memory"),
+        rate_limit_max_buckets=int(os.getenv("PARVA_RATE_LIMIT_MAX_BUCKETS", "10000")),
         redis_url=_parse_optional_text(os.getenv("PARVA_REDIS_URL")),
         require_precomputed=require_precomputed,
         prewarm_hotset=_parse_bool(
