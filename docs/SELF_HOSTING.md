@@ -42,13 +42,15 @@ opt in explicitly:
 ```bash
 docker build \
   --build-arg PARVA_DOWNLOAD_JPL_KERNEL=1 \
-  --build-arg PARVA_JPL_DE440_MD5=c9d581bfd84209dbeee8b1583939b148 \
+  --build-arg PARVA_JPL_DE440_SHA256=a4ce9bf9b3282becc9f4b2ac3cebe03a2ae7599981aabd7265fd8482fff7c4b5 \
+  --build-arg PARVA_JPL_DE440_SIZE=119799808 \
   -t project-parva .
 ```
 
-The download script verifies the kernel checksum before storing it. Deployments
-can also mount a preverified `.bsp` file and set `PARVA_JPL_DE440_KERNEL` to
-that path.
+The download script verifies the kernel SHA-256, exact byte size, DAF/SPK file
+record, segment inventory, and Sun/Earth/Moon coverage before storing it.
+Deployments can also mount a preverified `.bsp` file and set
+`PARVA_JPL_DE440_KERNEL` to that path.
 
 Run a low-friction local container:
 

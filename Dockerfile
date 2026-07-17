@@ -14,7 +14,8 @@ FROM python:3.11.11-slim-bookworm
 WORKDIR /app
 
 ARG PARVA_DOWNLOAD_JPL_KERNEL=0
-ARG PARVA_JPL_DE440_MD5=c9d581bfd84209dbeee8b1583939b148
+ARG PARVA_JPL_DE440_SHA256=a4ce9bf9b3282becc9f4b2ac3cebe03a2ae7599981aabd7265fd8482fff7c4b5
+ARG PARVA_JPL_DE440_SIZE=119799808
 ARG PARVA_PRECOMPUTE=0
 ARG PARVA_PRECOMPUTE_START_YEAR
 ARG PARVA_PRECOMPUTE_END_YEAR
@@ -49,7 +50,8 @@ RUN mkdir -p /app/data/ephemeris/jpl \
     && if [ "$PARVA_DOWNLOAD_JPL_KERNEL" = "1" ]; then \
          python /app/scripts/download_jpl_kernel.py \
            --kernel de440 \
-           --md5 "$PARVA_JPL_DE440_MD5" \
+           --sha256 "$PARVA_JPL_DE440_SHA256" \
+           --size "$PARVA_JPL_DE440_SIZE" \
            --output /app/data/ephemeris/jpl/de440.bsp \
            --quiet; \
        else \
