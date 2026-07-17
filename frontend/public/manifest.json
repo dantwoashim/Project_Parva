@@ -31,7 +31,7 @@
     {
       "name": "Today",
       "short_name": "Today",
-      "description": "See today's BS/AD, panchanga, and timing context"
+      "description": "See today's BS/AD, panchanga, and timing context",
       "url": "/today"
     }
   ]
