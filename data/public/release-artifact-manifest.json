@@ -91,9 +91,9 @@
       "sha256": "sha256:ee06351653123b3b8262f6a3407905f1022d30fa97b6b0a8c6a4fb75f680b602"
     },
     {
-      "bytes": 1455,
+      "bytes": 1612,
       "path": "reports/panchanga/jpl_lane_report.json",
-      "sha256": "sha256:6b0b5d3469fd1aff5e74713b006a8bf28397d3a5f69d458ce08e9aa6fb6fa7bb"
+      "sha256": "sha256:41f6390f731896209b082291074ea162017f53bd1fda1bc6cb338ae9d0e478a0"
     },
     {
       "bytes": 768,
@@ -223,7 +223,7 @@
   ],
   "claim_boundary": "release_artifact_manifest_not_external_validation",
   "generated_at": "reproducible",
-  "git_commit_at_generation": "8fe272fd66d04c9680a5bdccde3a2670201e4038",
+  "git_commit_at_generation": "77bf41d8a3533ddb3119763a9eb676772328d368",
   "not_authority": true,
   "schema": "parva-release-artifact-manifest-v1",
   "verification_summary": {
