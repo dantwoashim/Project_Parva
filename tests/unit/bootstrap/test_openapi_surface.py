@@ -200,3 +200,21 @@ def test_openapi_surface_setting_is_validated(monkeypatch) -> None:
     settings = load_settings()
 
     assert any("PARVA_OPENAPI_SURFACE" in error for error in validate_settings(settings))
+
+
+def test_render_internet_deployment_defaults_to_canonical_surface(monkeypatch) -> None:
+    monkeypatch.setenv("PARVA_ENV", "public")
+    monkeypatch.setenv("PARVA_EXPOSURE", "internet")
+    monkeypatch.setenv("RENDER", "true")
+    monkeypatch.delenv("PARVA_OPENAPI_SURFACE", raising=False)
+
+    assert load_settings().openapi_surface == "canonical"
+
+
+def test_explicit_surface_overrides_render_default(monkeypatch) -> None:
+    monkeypatch.setenv("PARVA_ENV", "public")
+    monkeypatch.setenv("PARVA_EXPOSURE", "internet")
+    monkeypatch.setenv("RENDER", "true")
+    monkeypatch.setenv("PARVA_OPENAPI_SURFACE", "full")
+
+    assert load_settings().openapi_surface == "full"

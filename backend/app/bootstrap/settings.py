@@ -13,9 +13,7 @@ from app.core.paths import frontend_dist_dir, project_root
 PROJECT_ROOT = project_root()
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
 PRODUCTION_ENV_VALUES: Final[frozenset[str]] = frozenset({"production"})
-INTERNET_ENV_VALUES: Final[frozenset[str]] = frozenset(
-    {"public", "production", "staging"}
-)
+INTERNET_ENV_VALUES: Final[frozenset[str]] = frozenset({"public", "production", "staging"})
 VALID_EXPOSURES: Final[frozenset[str]] = frozenset({"internet", "local", "private"})
 VALID_OPENAPI_SURFACES: Final[frozenset[str]] = frozenset({"canonical", "full"})
 TEST_ENV_VALUES: Final[frozenset[str]] = frozenset({"test"})
@@ -211,6 +209,15 @@ def _default_exposure(environment: str) -> str:
     return "private"
 
 
+def _default_openapi_surface(exposure: str) -> str:
+    configured = os.getenv("PARVA_OPENAPI_SURFACE")
+    if configured is not None and configured.strip():
+        return configured.strip().lower()
+    if exposure == "internet" and _parse_bool(os.getenv("RENDER")):
+        return "canonical"
+    return "full"
+
+
 def _is_production_environment(environment: str) -> bool:
     return environment.strip().lower() in PRODUCTION_ENV_VALUES
 
@@ -221,13 +228,8 @@ def _validate_exposure(settings: AppSettings) -> list[str]:
     if exposure not in VALID_EXPOSURES:
         supported = ", ".join(sorted(VALID_EXPOSURES))
         errors.append(f"PARVA_EXPOSURE must be one of: {supported}.")
-    if (
-        settings.environment.strip().lower() in INTERNET_ENV_VALUES
-        and exposure != "internet"
-    ):
-        errors.append(
-            "PARVA_ENV=public, staging, or production requires PARVA_EXPOSURE=internet."
-        )
+    if settings.environment.strip().lower() in INTERNET_ENV_VALUES and exposure != "internet":
+        errors.append("PARVA_ENV=public, staging, or production requires PARVA_EXPOSURE=internet.")
     return errors
 
 
@@ -439,19 +441,14 @@ def load_settings() -> AppSettings:
         serve_frontend=_parse_bool(os.getenv("PARVA_SERVE_FRONTEND"), default=False),
         frontend_dist=_frontend_dist_from_env(),
         debug=_parse_bool(os.getenv("PARVA_DEBUG"), default=False),
-        openapi_surface=(
-            os.getenv("PARVA_OPENAPI_SURFACE", "full").strip().lower() or "full"
-        ),
+        openapi_surface=_default_openapi_surface(exposure),
         max_request_bytes=int(os.getenv("PARVA_MAX_REQUEST_BYTES", "1048576")),
         max_query_length=int(os.getenv("PARVA_MAX_QUERY_LENGTH", "4096")),
         admin_token=admin_token,
         api_keys=_parse_api_keys(os.getenv("PARVA_API_KEYS", ""), environment=environment),
         rate_limit_enabled=_parse_bool(
             os.getenv("PARVA_RATE_LIMIT_ENABLED"),
-            default=(
-                exposure == "internet"
-                or environment.strip().lower() not in TEST_ENV_VALUES
-            ),
+            default=(exposure == "internet" or environment.strip().lower() not in TEST_ENV_VALUES),
         ),
         rate_limit_backend=(os.getenv("PARVA_RATE_LIMIT_BACKEND", "memory").strip() or "memory"),
         rate_limit_max_buckets=int(os.getenv("PARVA_RATE_LIMIT_MAX_BUCKETS", "10000")),
