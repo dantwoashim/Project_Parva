@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import pytest
 from app.bootstrap.rate_limit import (
     InMemoryRateLimiterBackend,
+    RateLimiterUnavailable,
     RatePolicy,
     RedisRateLimiterBackend,
 )
@@ -57,6 +59,33 @@ def test_redis_rate_limiter_denies_and_computes_retry_after_from_oldest_score():
     assert decision.allowed is False
     assert decision.remaining == 0
     assert decision.retry_after == 50
+
+
+@pytest.mark.parametrize("result", [None, [], [1, 2], ["invalid", 2, 0]])
+def test_redis_rate_limiter_fails_closed_on_invalid_responses(result):
+    backend = _backend_with_result(result)
+
+    with pytest.raises(RateLimiterUnavailable):
+        backend.check(
+            identifier="demo",
+            bucket="calendar",
+            policy=RatePolicy(limit=3, window_seconds=60),
+            now=1000.0,
+        )
+
+
+def test_redis_rate_limiter_accepts_binary_redis_values():
+    backend = _backend_with_result([b"1", b"2", b"0"])
+
+    decision = backend.check(
+        identifier="demo",
+        bucket="calendar",
+        policy=RatePolicy(limit=3, window_seconds=60),
+        now=1000.0,
+    )
+
+    assert decision.allowed is True
+    assert decision.remaining == 1
 
 
 def test_memory_rate_limiter_enforces_policy() -> None:

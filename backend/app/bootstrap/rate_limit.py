@@ -199,21 +199,27 @@ return {1, current + 1, 0}
                 "Redis rate limiter is unavailable; request denied by fail-closed policy."
             ) from exc
 
-        if not isinstance(execution_results, (list, tuple)) or len(execution_results) != 3:
-            raise RuntimeError("Redis rate limiter returned an unexpected result.")
+        try:
+            if not isinstance(execution_results, (list, tuple)) or len(execution_results) != 3:
+                raise ValueError("unexpected result shape")
 
-        allowed_flag, current_count, oldest_score = execution_results
-        allowed = bool(int(allowed_flag))
-        current = int(current_count)
+            allowed_flag, current_count, oldest_score = execution_results
+            allowed = bool(int(allowed_flag))
+            current = int(current_count)
 
-        if allowed:
-            remaining = max(policy.limit - current, 0)
-            return RateLimitDecision(allowed=True, remaining=remaining)
+            if allowed:
+                remaining = max(policy.limit - current, 0)
+                return RateLimitDecision(allowed=True, remaining=remaining)
 
-        retry_after = policy.window_seconds
-        if oldest_score:
-            retry_after = max(1, int(policy.window_seconds - (now - float(oldest_score))))
-        return RateLimitDecision(allowed=False, remaining=0, retry_after=retry_after)
+            retry_after = policy.window_seconds
+            if oldest_score:
+                retry_after = max(1, int(policy.window_seconds - (now - float(oldest_score))))
+            return RateLimitDecision(allowed=False, remaining=0, retry_after=retry_after)
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise RateLimiterUnavailable(
+                "Redis rate limiter returned an invalid response; request denied by "
+                "fail-closed policy."
+            ) from exc
 
 
 def create_rate_limiter_backend(

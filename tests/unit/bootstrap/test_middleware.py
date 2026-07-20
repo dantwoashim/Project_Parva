@@ -9,8 +9,10 @@ from app.bootstrap.middleware import (
     _client_ip,
     _should_rate_limit,
     _wants_data_meta_envelope,
+    build_rate_limit_guard,
     build_request_context,
 )
+from app.bootstrap.rate_limit import RateLimiterUnavailable
 from app.bootstrap.settings import AppSettings
 
 
@@ -75,6 +77,37 @@ def test_rate_limiter_skips_frontend_routes_and_assets():
     assert _should_rate_limit("/") is False
     assert _should_rate_limit("/today") is False
     assert _should_rate_limit("/assets/FeedSubscriptionsPage-DgZZ0dbC.css") is False
+
+
+def test_rate_limiter_unavailability_returns_fail_closed_503():
+    class _UnavailableBackend:
+        def check(self, **_kwargs):
+            raise RateLimiterUnavailable("invalid Redis response")
+
+    request = SimpleNamespace(
+        state=SimpleNamespace(
+            principal=SimpleNamespace(principal_type="free_ip", principal_id="203.0.113.1"),
+            request_id="req-rate-limit",
+            client_ip="203.0.113.1",
+        ),
+        url=SimpleNamespace(path="/v3/api/calendar/today"),
+    )
+    route_called = False
+
+    async def call_next(_request):
+        nonlocal route_called
+        route_called = True
+
+    middleware = build_rate_limit_guard(
+        settings=_settings(),
+        backend=_UnavailableBackend(),
+    )
+    response = asyncio.run(middleware(request, call_next))
+
+    assert response.status_code == 503
+    assert response.headers["retry-after"] == "60"
+    assert json.loads(response.body)["rate_limit_policy"] == "fail_closed"
+    assert route_called is False
 
 
 def test_data_meta_envelope_opt_in_detects_header():
