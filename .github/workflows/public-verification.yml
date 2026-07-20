@@ -113,6 +113,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -c requirements/constraints.txt -e .[test,dev]
           python -m pip install -e packages/parva-python
+          python -m pip install -e packages/parva-mcp-server
           npm --prefix packages/parva-js ci
           npm --prefix packages/parva-local-kernel ci
       - name: Run SDK and adapter tests
