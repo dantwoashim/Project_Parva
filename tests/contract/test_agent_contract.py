@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from app.bootstrap.app_factory import create_app
 from app.services.agent_service import (
+    AgentError,
     agent_tools_payload,
     check_human_review_payload,
     draft_rule_payload,
@@ -18,6 +19,9 @@ def test_tool_registry_contains_supported_public_tools() -> None:
     assert "parva.verify_temporal_claim" in names
     assert "parva.plan_schedule" in names
     assert "parva.simulate_impact" in names
+    assert "parva.get_festival_date" in names
+    assert "parva.get_panchanga_summary" in names
+    assert "parva.get_benchmark_summary" in names
 
 
 def test_intent_resolver_detects_claim() -> None:
@@ -56,6 +60,23 @@ def test_run_tool_is_allowlisted() -> None:
     assert result["evidence"]["fact_ids"]
 
 
+def test_run_tool_normalizes_invalid_bs_dates() -> None:
+    try:
+        run_tool_payload("parva.convert_date", {"bs_date": "2082-04-32"})
+    except AgentError as exc:
+        assert exc.code == "INVALID_INPUT"
+        assert exc.status_code == 400
+    else:
+        raise AssertionError("invalid BS date was accepted")
+
+
+def test_run_tool_reads_current_benchmark_artifact() -> None:
+    result = run_tool_payload("parva.get_benchmark_summary", {})
+    summary = result["result"]
+    assert summary["task_count"] == 64
+    assert summary["parva_score_percent"] == 86.09
+
+
 def test_agent_api_endpoints() -> None:
     app = create_app()
     client = TestClient(app)
@@ -66,3 +87,9 @@ def test_agent_api_endpoints() -> None:
     )
     assert response.status_code == 200
     assert response.json()["status"] == "verified"
+    invalid = client.post(
+        "/v3/api/agent/run-tool",
+        json={"tool_name": "parva.convert_date", "input": {"bs_date": "2082-04-32"}},
+    )
+    assert invalid.status_code == 400
+    assert invalid.json()["detail"]["code"] == "INVALID_INPUT"

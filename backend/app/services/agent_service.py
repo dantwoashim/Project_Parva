@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import json
+import os
 import re
+from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
@@ -119,6 +122,9 @@ def agent_tools_payload() -> dict[str, Any]:
         _tool("parva.simulate_impact", "Run bounded public impact simulation.", {"change_set": "object"}, "public"),
         _tool("parva.check_human_review_required", "Evaluate human review gates for an agent decision.", {"decision": "object"}, "public"),
         _tool("parva.get_capabilities", "Return agent-safe capabilities.", {}, "public"),
+        _tool("parva.get_festival_date", "Calculate one supported festival date.", {"festival_id": "string", "year": "integer"}, "public"),
+        _tool("parva.get_panchanga_summary", "Return a bounded panchanga summary for one AD date.", {"date": "string"}, "public"),
+        _tool("parva.get_benchmark_summary", "Return the generated public benchmark summary.", {}, "public"),
     ]
     return {"tools": tools, "count": len(tools), "meta": _agent_meta()["meta"]}
 
@@ -420,14 +426,18 @@ def draft_rule_payload(text: str, *, profile_id: str = "nepal_private_company_de
     }
 
 
-def run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str, Any]:
+def _run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str, Any]:
     tools = {tool["name"] for tool in agent_tools_payload()["tools"]}
     if tool_name not in tools:
         raise AgentError(f"tool is unavailable: {tool_name}", code="TOOL_UNAVAILABLE", status_code=404)
     if tool_name == "parva.get_capabilities":
         result = agent_capabilities_payload()
     elif tool_name == "parva.verify_temporal_claim":
-        result = verify_temporal_claim_payload(str(input_payload.get("claim") or ""), context=input_payload.get("context") or {})
+        result = verify_temporal_claim_payload(
+            str(input_payload.get("claim") or ""),
+            context=input_payload.get("context") or {},
+            include_evidence=bool(input_payload.get("include_evidence", False)),
+        )
     elif tool_name == "parva.plan_schedule":
         result = plan_schedule_payload(
             schedule_type=str(input_payload.get("schedule_type") or "payroll"),
@@ -478,6 +488,12 @@ def run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str,
         result = check_human_review_payload(input_payload)
     elif tool_name == "parva.get_today":
         result = build_conversion_payload(parse_iso_date(now_utc()[:10]))
+    elif tool_name == "parva.get_festival_date":
+        result = _festival_date_tool(input_payload)
+    elif tool_name == "parva.get_panchanga_summary":
+        result = _panchanga_summary_tool(input_payload)
+    elif tool_name == "parva.get_benchmark_summary":
+        result = _benchmark_summary_tool()
     else:
         raise AgentError(f"tool is not implemented in public preview: {tool_name}", code="TOOL_UNAVAILABLE", status_code=404)
     return {
@@ -487,6 +503,17 @@ def run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str,
         "evidence": _extract_evidence(result),
         "meta": _agent_meta()["meta"],
     }
+
+
+def run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str, Any]:
+    """Execute one allowlisted tool and normalize user input failures."""
+    try:
+        return _run_tool_payload(tool_name, input_payload)
+    except AgentError:
+        raise
+    except (KeyError, ValueError) as exc:
+        message = str(exc).strip().strip("'") or "Invalid temporal tool input"
+        raise AgentError(message, code="INVALID_INPUT", status_code=400) from exc
 
 
 def agent_manifest_payload() -> dict[str, Any]:
@@ -507,6 +534,97 @@ def _convert_tool(input_payload: dict[str, Any]) -> dict[str, Any]:
     if input_payload.get("ad_date"):
         return build_conversion_payload(parse_iso_date(str(input_payload["ad_date"])))
     raise AgentError("bs_date or ad_date is required", code="INVALID_INPUT")
+
+
+def _festival_date_tool(input_payload: dict[str, Any]) -> dict[str, Any]:
+    from app.services.calendar_surface_service import (
+        FestivalCalculationUnavailableError,
+        FestivalNotFoundError,
+        build_festival_calculation_payload,
+    )
+
+    festival_id = str(input_payload.get("festival_id") or "").strip()
+    if not festival_id:
+        raise AgentError("festival_id is required", code="INVALID_INPUT")
+    try:
+        year = int(input_payload.get("year"))
+    except (TypeError, ValueError) as exc:
+        raise AgentError("year must be an integer", code="INVALID_INPUT") from exc
+    try:
+        return build_festival_calculation_payload(
+            festival_id,
+            year,
+            trace_id=_new_trace_id(),
+        )
+    except FestivalNotFoundError as exc:
+        raise AgentError(str(exc), code="TOOL_UNAVAILABLE", status_code=404) from exc
+    except FestivalCalculationUnavailableError as exc:
+        raise AgentError(str(exc), code="TOOL_UNAVAILABLE", status_code=503) from exc
+
+
+def _panchanga_summary_tool(input_payload: dict[str, Any]) -> dict[str, Any]:
+    from fastapi import HTTPException
+
+    from app.services.calendar_surface_service import build_panchanga_payload
+
+    date_value = str(input_payload.get("date") or "").strip()
+    if not date_value:
+        raise AgentError("date is required", code="INVALID_INPUT")
+    try:
+        return build_panchanga_payload(
+            parse_iso_date(date_value),
+            risk_mode=str(input_payload.get("risk_mode") or "standard"),
+            trace_id=_new_trace_id(),
+            latitude=float(input_payload.get("latitude", 27.7172)),
+            longitude=float(input_payload.get("longitude", 85.3240)),
+            timezone_name=str(input_payload.get("timezone") or "Asia/Kathmandu"),
+            ayanamsa=str(input_payload.get("ayanamsa") or "lahiri"),
+        )
+    except HTTPException as exc:
+        raise AgentError(
+            str(exc.detail),
+            code="TOOL_UNAVAILABLE",
+            status_code=int(exc.status_code),
+        ) from exc
+
+
+def _benchmark_summary_tool() -> dict[str, Any]:
+    configured = os.getenv("PARVA_BENCHMARK_SUMMARY_PATH", "").strip()
+    path = (
+        Path(configured).expanduser().resolve()
+        if configured
+        else Path(__file__).resolve().parents[3]
+        / "public-benchmark"
+        / "results"
+        / "benchmark-summary.json"
+    )
+    if not path.is_file():
+        raise AgentError(
+            "The generated public benchmark summary is unavailable.",
+            code="TOOL_UNAVAILABLE",
+            status_code=503,
+        )
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise AgentError(
+            "The generated public benchmark summary cannot be read.",
+            code="TOOL_UNAVAILABLE",
+            status_code=503,
+        ) from exc
+    required = {
+        "claim_boundary",
+        "parva_score_percent",
+        "static_score_percent",
+        "task_count",
+    }
+    if not isinstance(payload, dict) or not required.issubset(payload):
+        raise AgentError(
+            "The generated public benchmark summary has an invalid schema.",
+            code="TOOL_UNAVAILABLE",
+            status_code=503,
+        )
+    return payload
 
 
 def _unsupported_claim(claim: str, status: str, codes: list[str], *, warning: str | None = None) -> dict[str, Any]:

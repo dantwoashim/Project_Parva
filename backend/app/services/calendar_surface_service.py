@@ -34,6 +34,14 @@ from app.services.trust_surface_service import (
 from app.uncertainty import build_bs_uncertainty, build_panchanga_uncertainty
 
 
+class FestivalNotFoundError(ValueError):
+    """Raised when a requested festival id is not in the public rule registry."""
+
+
+class FestivalCalculationUnavailableError(RuntimeError):
+    """Raised when a known festival cannot be calculated for the requested year."""
+
+
 def build_provenance(
     *,
     festival_id: Optional[str] = None,
@@ -46,6 +54,47 @@ def build_provenance(
         calendar_context=calendar_context,
         create_if_missing=True,
     )
+
+
+def build_festival_calculation_payload(
+    festival_id: str,
+    year: int,
+    *,
+    trace_id: str | None = None,
+) -> dict[str, Any]:
+    """Build the canonical public payload for one festival calculation."""
+    normalized_id = str(festival_id or "").strip()
+    if not normalized_id:
+        raise FestivalNotFoundError("festival_id is required")
+    if year < 2000 or year > 2100:
+        raise ValueError("year must be between 2000 and 2100")
+
+    rule_service = get_rule_service()
+    result = rule_service.calculate(normalized_id, year)
+    if result is None:
+        if rule_service.info(normalized_id) is None:
+            raise FestivalNotFoundError(f"Unknown festival: {normalized_id}")
+        raise FestivalCalculationUnavailableError(
+            f"Could not calculate {normalized_id} for {year}"
+        )
+
+    return {
+        "festival_id": normalized_id,
+        "year": year,
+        "start": result.start_date.isoformat(),
+        "end": result.end_date.isoformat(),
+        "duration_days": result.duration_days,
+        "method": result.method,
+        "lunar_month": result.lunar_month,
+        "is_adhik_year": result.is_adhik_year,
+        "engine_version": "v3",
+        "provenance": build_provenance(festival_id=normalized_id, year=year),
+        "policy": get_policy_metadata(),
+        "meta": build_calculated_claim_meta(
+            trace_id=trace_id,
+            result_class="festival_calculation",
+        ),
+    }
 
 
 def parse_iso_date(date_str: str) -> date:

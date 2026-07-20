@@ -24,7 +24,6 @@ from app.membranes.capsule import (
 )
 from app.panchanga.proof import build_panchanga_summary_capsule
 from app.policy import get_policy_metadata
-from app.rules import get_rule_service
 from app.services.calendar_conversion_service import (
     build_bs_to_gregorian_payload,
     build_compare_conversion_payload,
@@ -35,7 +34,10 @@ from app.services.calendar_conversion_service import (
     parse_iso_date as service_parse_iso_date,
 )
 from app.services.calendar_surface_service import (
+    FestivalCalculationUnavailableError,
+    FestivalNotFoundError,
     build_calendar_proof_capsule,
+    build_festival_calculation_payload,
     build_panchanga_payload,
     build_panchanga_range_payload,
     build_provenance,
@@ -453,35 +455,17 @@ async def calculate_festival_endpoint(
     """
     from fastapi import HTTPException
 
-    rule_service = get_rule_service()
-    result = await run_cpu_bound(rule_service.calculate, festival_id, year)
-
-    if result is None:
-        info = rule_service.info(festival_id)
-        if info is None:
-            raise HTTPException(status_code=404, detail=f"Unknown festival: {festival_id}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Could not calculate {festival_id} for {year}",
-        )
-
-    return {
-        "festival_id": festival_id,
-        "year": year,
-        "start": result.start_date.isoformat(),
-        "end": result.end_date.isoformat(),
-        "duration_days": result.duration_days,
-        "method": result.method,
-        "lunar_month": result.lunar_month,
-        "is_adhik_year": result.is_adhik_year,
-        "engine_version": "v3",
-        "provenance": build_provenance(festival_id=festival_id, year=year),
-        "policy": get_policy_metadata(),
-        "meta": build_calculated_claim_meta(
+    try:
+        return await run_cpu_bound(
+            build_festival_calculation_payload,
+            festival_id,
+            year,
             trace_id=_trace_id(request),
-            result_class="festival_calculation",
-        ),
-    }
+        )
+    except FestivalNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except FestivalCalculationUnavailableError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
 
 @router.get("/festivals/upcoming")
