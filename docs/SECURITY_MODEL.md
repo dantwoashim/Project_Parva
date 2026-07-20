@@ -31,13 +31,14 @@ tools, billing state, generated trust artifacts, and frontend/static surfaces.
 - Admin principals can mutate billing/admin state and provenance/trust surfaces.
 - Local CLI scripts can regenerate artifacts, but public runtime must not rely on
   private data or test-only fixtures.
-- Production and staging deployments are not allowed to silently use process-local
-  rate limiting, SQLite billing storage, unsigned provenance mutation mode, debug
-  mode, private route profiles, or missing source publication metadata.
+- Internet-exposed deployments cannot silently use process-local rate limiting,
+  SQLite billing storage, unsigned provenance mutation mode, debug mode, private
+  route profiles, or missing source publication metadata.
 
 ## Security Invariants
 
-- Production and staging fail closed on unsafe configuration.
+- Internet exposure fails closed on unsafe configuration, including the public
+  Render profile and custom environment names.
 - Admin mutations require admin auth, local-only semantics, or an explicit
   non-production guard.
 - Billing secrets are never stored in plaintext; new API keys use versioned

@@ -64,9 +64,11 @@ docker run --rm -p 8000:8000 \
 For a real production deployment, provide:
 
 - `PARVA_ENV=production`
+- `PARVA_EXPOSURE=internet`
 - `PARVA_SOURCE_URL=<public repo or exact source archive>`
 - `PARVA_RATE_LIMIT_BACKEND=redis`
 - `PARVA_REDIS_URL=<your redis connection string>`
+- `PARVA_PROVENANCE_ATTESTATION_KEY=<deployment secret>`
 
 ## Cloud Run backend-only container
 
@@ -77,10 +79,12 @@ docker build -f Dockerfile.cloudrun -t project-parva-cloudrun .
 docker run --rm -p 8080:8080 \
   -e PORT=8080 \
   -e PARVA_ENV=production \
+  -e PARVA_EXPOSURE=internet \
   -e PARVA_SERVE_FRONTEND=false \
   -e PARVA_SOURCE_URL=https://github.com/example/project-parva \
   -e PARVA_RATE_LIMIT_BACKEND=redis \
   -e PARVA_REDIS_URL=rediss://default:<password>@example.upstash.io:6379 \
+  -e PARVA_PROVENANCE_ATTESTATION_KEY=<deployment-secret> \
   -e PARVA_REQUIRE_PRECOMPUTED=false \
   -e PARVA_PLACE_SEARCH_ALLOW_REMOTE=false \
   -e PARVA_PLACE_SEARCH_PROVIDER_CHAIN=offline \

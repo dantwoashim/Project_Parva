@@ -32,7 +32,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PARVA_JPL_DE440_KERNEL=/app/data/ephemeris/jpl/de440.bsp \
     PARVA_JPL_KERNEL_SHA256=sha256:${PARVA_JPL_DE440_SHA256} \
     PARVA_JPL_KERNEL_SIZE=${PARVA_JPL_DE440_SIZE} \
-    PARVA_ENV=public
+    PARVA_ENV=development
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \

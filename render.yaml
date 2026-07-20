@@ -13,6 +13,8 @@ services:
         value: backend
       - key: PARVA_ROUTE_PROFILE
         value: developer_preview
+      - key: PARVA_ADMIN_TOKEN
+        generateValue: true
       - key: PARVA_ENABLE_EXPERIMENTAL_API
         value: "false"
       - key: PARVA_ALLOW_EXPERIMENTAL_IN_PROD
@@ -21,12 +23,22 @@ services:
         value: "false"
       - key: PARVA_ENV
         value: public
+      - key: PARVA_EXPOSURE
+        value: internet
       - key: PARVA_SOURCE_URL
         value: https://github.com/dantwoashim/Project_Parva
       - key: PARVA_RATE_LIMIT_ENABLED
         value: "true"
       - key: PARVA_RATE_LIMIT_BACKEND
         value: memory
+      - key: PARVA_SINGLE_PROCESS_RATE_LIMIT
+        value: "true"
+      - key: PARVA_RATE_LIMIT_MAX_BUCKETS
+        value: "10000"
+      - key: PARVA_REQUIRE_SIGNED_PROVENANCE_MUTATIONS
+        value: "true"
+      - key: PARVA_PROVENANCE_ATTESTATION_KEY
+        generateValue: true
       - key: PARVA_REQUIRE_PRECOMPUTED
         value: "false"
       - key: PARVA_PREWARM_HOTSET

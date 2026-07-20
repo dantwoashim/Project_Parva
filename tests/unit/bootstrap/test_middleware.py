@@ -17,6 +17,7 @@ from app.bootstrap.settings import AppSettings
 def _settings(*, trusted_proxy_ips=frozenset()):
     return AppSettings(
         environment="test",
+        exposure="local",
         license_mode="AGPL-3.0-or-later",
         source_url=None,
         route_profile="full",

@@ -141,6 +141,7 @@ def test_public_demo_profile_keeps_safe_trust_endpoints(monkeypatch) -> None:
     monkeypatch.setenv("PARVA_ENV", "public")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
     monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
 
     from app.bootstrap.app_factory import create_app
 

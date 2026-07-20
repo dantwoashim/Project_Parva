@@ -52,6 +52,7 @@ def _public_client(monkeypatch) -> TestClient:
     monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "false")
     monkeypatch.setenv("PARVA_SHOW_PRIVATE_SCHEMA", "false")
     monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
     return TestClient(create_app())
 
 

@@ -200,6 +200,7 @@ def test_public_demo_route_profile_excludes_compliance_preview(monkeypatch) -> N
     monkeypatch.setenv("PARVA_ENV", "public")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
     monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
 
     from app.bootstrap.app_factory import create_app
 

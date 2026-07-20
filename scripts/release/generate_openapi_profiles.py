@@ -26,6 +26,8 @@ def _base_env(profile: str) -> dict[str, str]:
         "PARVA_SHOW_PRIVATE_SCHEMA": "false",
         "PARVA_ENV": "public" if profile in PUBLIC_PROFILES else "test",
         "PARVA_SOURCE_URL": "https://github.com/dantwoashim/Project_Parva",
+        "PARVA_ADMIN_TOKEN": "test-openapi-admin-token",
+        "PARVA_PROVENANCE_ATTESTATION_KEY": "test-provenance-key",
         "PARVA_REQUIRE_PRECOMPUTED": "false",
         "PARVA_SERVE_FRONTEND": "false",
         "PARVA_RATE_LIMIT_ENABLED": "false",

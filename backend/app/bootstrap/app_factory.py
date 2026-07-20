@@ -53,7 +53,6 @@ DEFAULT_CORS_HEADERS = [
     "X-Parva-Envelope",
     "X-Request-ID",
 ]
-DEPLOYED_ENVIRONMENTS = {"production", "staging"}
 RESERVED_FRONTEND_PREFIXES = (
     "api",
     "v2",
@@ -85,11 +84,13 @@ def _is_immutable_frontend_asset(path: str) -> bool:
     return any(normalized.startswith(prefix) for prefix in IMMUTABLE_FRONTEND_PREFIXES)
 
 
-def _cors_origins_from_env() -> list[str]:
+def _cors_origins_from_env(*, internet_exposed: bool = False) -> list[str]:
     import os
 
     raw = os.getenv("CORS_ALLOW_ORIGINS", "").strip() or os.getenv("PARVA_CORS_ORIGINS", "").strip()
     if not raw:
+        if internet_exposed:
+            return []
         return list(DEFAULT_CORS_ORIGINS)
     origins = [item.strip() for item in raw.split(",") if item.strip()]
     return origins or list(DEFAULT_CORS_ORIGINS)
@@ -128,7 +129,7 @@ def _build_startup_checks(settings) -> dict[str, Any]:
         "config": {"required": True, "ok": True, "detail": "validated"},
         "festival_catalog": festival_catalog_check,
         "source_code": {
-            "required": settings.environment.lower() == "production",
+            "required": settings.is_internet_exposed,
             "ok": bool(settings.source_url),
             "detail": settings.source_url
             or "Set PARVA_SOURCE_URL to a public repository or source archive.",
@@ -139,7 +140,7 @@ def _build_startup_checks(settings) -> dict[str, Any]:
             "detail": cache_stats,
         },
         "frontend_dist": {
-            "required": settings.serve_frontend and settings.environment.lower() == "production",
+            "required": settings.serve_frontend and settings.is_internet_exposed,
             "ok": frontend_index.exists(),
             "path": str(frontend_index),
         },
@@ -170,7 +171,7 @@ def _validate_startup(settings) -> tuple[dict[str, Any], object]:
         raise RuntimeError(f"Startup validation failed: {detail}")
     if settings.require_precomputed and not startup_checks["checks"]["precomputed"]["ok"]:
         raise RuntimeError(
-            "Startup validation failed: production profile requires precomputed artifacts. "
+            "Startup validation failed: deployment profile requires precomputed artifacts. "
             "Run the precompute pipeline or set PARVA_REQUIRE_PRECOMPUTED=false explicitly."
         )
 
@@ -187,6 +188,7 @@ def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, obje
     app.state.enable_experimental_api = settings.enable_experimental_api
     app.state.enable_research_api = settings.enable_research_api
     app.state.environment = settings.environment
+    app.state.exposure = settings.exposure
     app.state.route_profile = settings.route_profile
     app.state.license_mode = settings.license_mode
     app.state.serve_frontend = settings.serve_frontend
@@ -198,8 +200,8 @@ def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, obje
 
 
 def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
-    cors_origins = _cors_origins_from_env()
-    if settings.environment.strip().lower() in DEPLOYED_ENVIRONMENTS:
+    cors_origins = _cors_origins_from_env(internet_exposed=settings.is_internet_exposed)
+    if settings.is_internet_exposed:
         localhost_origins = [
             origin
             for origin in cors_origins
@@ -207,7 +209,7 @@ def _install_middleware(app: FastAPI, settings, rate_limit_backend) -> None:
         ]
         if localhost_origins:
             raise RuntimeError(
-                "Startup validation failed: production or staging CORS origins cannot include localhost."
+                "Startup validation failed: internet-exposed CORS origins cannot include localhost."
             )
     app.add_middleware(
         CORSMiddleware,
@@ -368,6 +370,7 @@ def _register_root_and_health_routes(app: FastAPI, settings) -> None:
             "public_profile": "v3",
             "experimental_api_enabled": settings.enable_experimental_api,
             "environment": settings.environment,
+            "exposure": settings.exposure,
             "serve_frontend": settings.serve_frontend,
             "access_model": {
                 "name": "public_compute_with_admin_mutations",
@@ -396,6 +399,7 @@ def _register_root_and_health_routes(app: FastAPI, settings) -> None:
             "public_profile": "v3",
             "experimental_api_enabled": settings.enable_experimental_api,
             "environment": settings.environment,
+            "exposure": settings.exposure,
             "serve_frontend": settings.serve_frontend,
             "startup": app.state.startup_checks,
             "prewarm": app.state.prewarm,
@@ -419,6 +423,7 @@ def _register_root_and_health_routes(app: FastAPI, settings) -> None:
             "status": "ready" if app.state.startup_checks.get("ready") else "not_ready",
             "version": PRODUCT_VERSION,
             **_service_metadata(settings),
+            "exposure": settings.exposure,
             "checks": app.state.startup_checks.get("checks", {}),
             "prewarm": app.state.prewarm,
         }

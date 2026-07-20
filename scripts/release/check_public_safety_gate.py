@@ -85,6 +85,7 @@ def _reset_env() -> None:
     os.environ["PARVA_SHOW_PRIVATE_SCHEMA"] = "false"
     os.environ["PARVA_RATE_LIMIT_ENABLED"] = "false"
     os.environ["PARVA_REQUIRE_PRECOMPUTED"] = "false"
+    os.environ["PARVA_PROVENANCE_ATTESTATION_KEY"] = "test-provenance-key"
 
 
 def _client(*, public_demo: bool = False, allow_future: bool = False) -> TestClient:

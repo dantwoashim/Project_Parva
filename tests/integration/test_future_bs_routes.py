@@ -125,6 +125,7 @@ def test_public_demo_profile_only_exposes_demo_api_paths(monkeypatch):
     monkeypatch.setenv("PARVA_ENV", "public")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
     monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
 
     from app.bootstrap.app_factory import create_app
 
@@ -156,6 +157,7 @@ def test_public_demo_blocks_unverified_future_bs_to_ad_by_default(monkeypatch):
     monkeypatch.setenv("PARVA_ENV", "public")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
     monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
     monkeypatch.delenv("PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION", raising=False)
 
     from app.bootstrap.app_factory import create_app
@@ -187,6 +189,7 @@ def test_public_unverified_future_bs_to_ad_requires_explicit_flag(monkeypatch):
     monkeypatch.setenv("PARVA_ENV", "public")
     monkeypatch.setenv("PARVA_SOURCE_URL", "https://github.com/dantwoashim/Project_Parva")
     monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
     monkeypatch.setenv("PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION", "true")
 
     from app.bootstrap.app_factory import create_app

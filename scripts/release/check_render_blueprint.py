@@ -43,9 +43,13 @@ def main() -> int:
         "PARVA_ALLOW_EXPERIMENTAL_IN_PROD": "false",
         "PARVA_SHOW_PRIVATE_SCHEMA": "false",
         "PARVA_ENV": "public",
+        "PARVA_EXPOSURE": "internet",
         "PARVA_SOURCE_URL": "https://github.com/dantwoashim/Project_Parva",
         "PARVA_RATE_LIMIT_ENABLED": "true",
         "PARVA_RATE_LIMIT_BACKEND": "memory",
+        "PARVA_SINGLE_PROCESS_RATE_LIMIT": "true",
+        "PARVA_RATE_LIMIT_MAX_BUCKETS": "10000",
+        "PARVA_REQUIRE_SIGNED_PROVENANCE_MUTATIONS": "true",
         "PARVA_REQUIRE_PRECOMPUTED": "false",
         "PARVA_SERVE_FRONTEND": "false",
         "CORS_ALLOW_ORIGINS": (
@@ -67,9 +71,12 @@ def main() -> int:
     if "PARVA_REDIS_URL" in envs:
         failures.append("Public-demo Render blueprint should not require Redis.")
 
-    admin_token = envs.get("PARVA_ADMIN_TOKEN", {}).get("value", "")
-    if admin_token:
-        failures.append("PARVA_ADMIN_TOKEN must not be hard-coded in render.yaml.")
+    for key in ("PARVA_ADMIN_TOKEN", "PARVA_PROVENANCE_ATTESTATION_KEY"):
+        config = envs.get(key, {})
+        if config.get("generateValue") != "true":
+            failures.append(f"{key} must use generateValue: true in render.yaml.")
+        if config.get("value"):
+            failures.append(f"{key} must not be hard-coded in render.yaml.")
 
     api_keys = envs.get("PARVA_API_KEYS", {}).get("value", "")
     if "parva-dev-read-key" in api_keys:

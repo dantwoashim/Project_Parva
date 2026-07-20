@@ -45,7 +45,7 @@ def test_public_profile_rejects_full_private_surface(monkeypatch):
     monkeypatch.setenv("PARVA_ENV", "public")
     monkeypatch.setenv("PARVA_ROUTE_PROFILE", "full_dev")
 
-    assert any("cannot mount private or full-dev routes" in error for error in _errors(monkeypatch))
+    assert any("cannot use research_private" in error for error in _errors(monkeypatch))
 
 
 def test_deployed_provenance_mutations_must_be_signed(monkeypatch):

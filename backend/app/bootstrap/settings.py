@@ -13,8 +13,10 @@ from app.core.paths import frontend_dist_dir, project_root
 PROJECT_ROOT = project_root()
 DEV_ENV_VALUES = {"dev", "development", "local", "test"}
 PRODUCTION_ENV_VALUES: Final[frozenset[str]] = frozenset({"production"})
-DEPLOYED_ENV_VALUES: Final[frozenset[str]] = frozenset({"production", "staging"})
-PUBLIC_ENV_VALUES: Final[frozenset[str]] = frozenset({"public", "production"})
+INTERNET_ENV_VALUES: Final[frozenset[str]] = frozenset(
+    {"public", "production", "staging"}
+)
+VALID_EXPOSURES: Final[frozenset[str]] = frozenset({"internet", "local", "private"})
 TEST_ENV_VALUES: Final[frozenset[str]] = frozenset({"test"})
 VALID_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
     {
@@ -29,14 +31,17 @@ VALID_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
         "full_dev",
     }
 )
-PUBLIC_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
-    {"minimal_public", "public_demo", "public_reference", "developer_preview"}
+INTERNET_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
+    {
+        "minimal_public",
+        "public_demo",
+        "public_reference",
+        "developer_preview",
+        "enterprise_preview",
+    }
 )
 RESEARCH_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
     {"research_private", "internal_lab", "full_dev"}
-)
-PRODUCTION_REJECTED_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
-    {"research_private", "internal_lab", "full", "full_dev"}
 )
 DEFAULT_TEST_ADMIN_TOKEN = "-".join(("parva", "test", "admin", "token"))
 DEFAULT_TEST_READ_KEY = "-".join(("parva", "test", "read", "key"))
@@ -69,6 +74,7 @@ class APIKeyRecord:
 @dataclass(frozen=True)
 class AppSettings:
     environment: str
+    exposure: str
     license_mode: str
     source_url: str | None
     route_profile: str
@@ -86,6 +92,7 @@ class AppSettings:
     rate_limit_enabled: bool = True
     rate_limit_backend: str = "memory"
     rate_limit_max_buckets: int = 10_000
+    single_process_rate_limit: bool = False
     redis_url: str | None = None
     require_precomputed: bool = False
     prewarm_hotset: bool = False
@@ -108,6 +115,17 @@ class AppSettings:
     @property
     def is_dev_environment(self) -> bool:
         return self.environment.strip().lower() in DEV_ENV_VALUES
+
+    @property
+    def is_internet_exposed(self) -> bool:
+        return (
+            self.exposure.strip().lower() == "internet"
+            or self.environment.strip().lower() in INTERNET_ENV_VALUES
+        )
+
+    @property
+    def is_local_exposure(self) -> bool:
+        return self.exposure.strip().lower() == "local" and not self.is_internet_exposed
 
 
 def _allow_test_only_credentials(environment: str) -> bool:
@@ -179,16 +197,36 @@ def _default_environment() -> str:
     return "development"
 
 
+def _default_exposure(environment: str) -> str:
+    configured = os.getenv("PARVA_EXPOSURE")
+    if configured is not None and configured.strip():
+        return configured.strip().lower()
+    normalized = environment.strip().lower()
+    if normalized in INTERNET_ENV_VALUES:
+        return "internet"
+    if normalized in DEV_ENV_VALUES:
+        return "local"
+    return "private"
+
+
 def _is_production_environment(environment: str) -> bool:
     return environment.strip().lower() in PRODUCTION_ENV_VALUES
 
 
-def _is_deployed_environment(environment: str) -> bool:
-    return environment.strip().lower() in DEPLOYED_ENV_VALUES
-
-
-def _is_local_environment(environment: str) -> bool:
-    return environment.strip().lower() in DEV_ENV_VALUES | TEST_ENV_VALUES
+def _validate_exposure(settings: AppSettings) -> list[str]:
+    errors: list[str] = []
+    exposure = settings.exposure.strip().lower()
+    if exposure not in VALID_EXPOSURES:
+        supported = ", ".join(sorted(VALID_EXPOSURES))
+        errors.append(f"PARVA_EXPOSURE must be one of: {supported}.")
+    if (
+        settings.environment.strip().lower() in INTERNET_ENV_VALUES
+        and exposure != "internet"
+    ):
+        errors.append(
+            "PARVA_ENV=public, staging, or production requires PARVA_EXPOSURE=internet."
+        )
+    return errors
 
 
 def _validate_license_mode(settings: AppSettings) -> list[str]:
@@ -206,19 +244,18 @@ def _validate_source_url(settings: AppSettings) -> list[str]:
         errors.append("PARVA_SOURCE_URL must be an absolute http(s) URL or an absolute site path.")
     if settings.source_url == "/source":
         errors.append("PARVA_SOURCE_URL cannot point to /source itself.")
-    if _is_deployed_environment(settings.environment) and not settings.source_url:
+    if settings.is_internet_exposed and not settings.source_url:
         errors.append(
-            "Production and staging deployments must publish corresponding source code via PARVA_SOURCE_URL. "
-            "Use PARVA_ENV=public for the public Render demo profile."
+            "Internet-exposed deployments must publish corresponding source code via PARVA_SOURCE_URL."
         )
     return errors
 
 
 def _validate_admin_and_debug_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
-    if _is_deployed_environment(settings.environment) and settings.debug:
-        errors.append("PARVA_DEBUG=true is not allowed in production or staging.")
-    if _is_deployed_environment(settings.environment):
+    if settings.is_internet_exposed and settings.debug:
+        errors.append("PARVA_DEBUG=true is not allowed for internet-exposed deployments.")
+    if settings.is_internet_exposed:
         admin_surface_profiles = {"developer_preview", "enterprise_preview", "full", "full_dev"}
         if (
             settings.route_profile in admin_surface_profiles
@@ -226,17 +263,18 @@ def _validate_admin_and_debug_settings(settings: AppSettings) -> list[str]:
             or settings.billing_enabled
         ) and not settings.admin_token:
             errors.append(
-                "Production and staging admin, billing, or mutation surfaces require PARVA_ADMIN_TOKEN."
+                "Internet-exposed admin, billing, or mutation surfaces require PARVA_ADMIN_TOKEN."
             )
     return errors
 
 
 def _validate_experimental_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
-    if _is_production_environment(settings.environment) and settings.enable_experimental_api:
+    if settings.is_internet_exposed and settings.enable_experimental_api:
         if not settings.allow_experimental_in_prod:
             errors.append(
-                "Experimental routes require PARVA_ALLOW_EXPERIMENTAL_IN_PROD=true in production."
+                "Experimental routes on an internet-exposed deployment require "
+                "PARVA_ALLOW_EXPERIMENTAL_IN_PROD=true."
             )
     if settings.enable_experimental_api and not settings.admin_token:
         errors.append("Experimental routes require PARVA_ADMIN_TOKEN.")
@@ -262,18 +300,10 @@ def _validate_route_profile(settings: AppSettings) -> list[str]:
         supported = ", ".join(sorted(VALID_ROUTE_PROFILES))
         return [f"PARVA_ROUTE_PROFILE must be one of: {supported}."]
     errors: list[str] = []
-    if settings.environment.strip().lower() in PUBLIC_ENV_VALUES and (
-        settings.route_profile not in PUBLIC_ROUTE_PROFILES
-    ):
+    if settings.is_internet_exposed and settings.route_profile not in INTERNET_ROUTE_PROFILES:
         errors.append(
-            "PARVA_ENV=public or production public profile cannot mount private or full-dev routes. "
-            "Use a public route profile or a controlled non-public deployment profile."
-        )
-    if _is_deployed_environment(settings.environment) and (
-        settings.route_profile in PRODUCTION_REJECTED_ROUTE_PROFILES
-    ):
-        errors.append(
-            "Production and staging deployments cannot use research_private, internal_lab, full, or full_dev route profiles."
+            "Internet-exposed deployments cannot use research_private, internal_lab, full, "
+            "or full_dev route profiles."
         )
     return errors
 
@@ -281,8 +311,8 @@ def _validate_route_profile(settings: AppSettings) -> list[str]:
 def _validate_trusted_proxy_settings(settings: AppSettings) -> list[str]:
     if "*" not in settings.trusted_proxy_ips:
         return []
-    if _is_deployed_environment(settings.environment):
-        return ["PARVA_TRUSTED_PROXY_IPS=* is not allowed in production or staging."]
+    if settings.is_internet_exposed:
+        return ["PARVA_TRUSTED_PROXY_IPS=* is not allowed for internet-exposed deployments."]
     return []
 
 
@@ -298,26 +328,40 @@ def _validate_rate_limit_settings(settings: AppSettings) -> list[str]:
         errors.append("PARVA_RATE_LIMIT_MAX_BUCKETS must be a positive integer.")
     if backend == "redis" and not settings.redis_url:
         errors.append("PARVA_REDIS_URL is required when PARVA_RATE_LIMIT_BACKEND=redis.")
-    if _is_deployed_environment(settings.environment) and backend == "memory":
+    if settings.single_process_rate_limit and backend != "memory":
         errors.append(
-            "Production and staging deployments must use PARVA_RATE_LIMIT_BACKEND=redis for distributed throttling. "
-            "Use PARVA_ENV=public for the public Render demo profile."
+            "PARVA_SINGLE_PROCESS_RATE_LIMIT=true is valid only with "
+            "PARVA_RATE_LIMIT_BACKEND=memory."
+        )
+    if (
+        settings.is_internet_exposed
+        and backend == "memory"
+        and not settings.single_process_rate_limit
+    ):
+        errors.append(
+            "Internet-exposed deployments must use PARVA_RATE_LIMIT_BACKEND=redis for "
+            "distributed throttling, or explicitly set PARVA_SINGLE_PROCESS_RATE_LIMIT=true "
+            "for a one-process public demo."
         )
     return errors
 
 
 def _validate_provenance_settings(settings: AppSettings) -> list[str]:
-    if not _is_deployed_environment(settings.environment):
+    if not settings.is_internet_exposed:
         return []
     if not settings.require_signed_provenance_mutations:
-        return ["PARVA_REQUIRE_SIGNED_PROVENANCE_MUTATIONS=false is not allowed in production or staging."]
+        return [
+            "PARVA_REQUIRE_SIGNED_PROVENANCE_MUTATIONS=false is not allowed for "
+            "internet-exposed deployments."
+        ]
     key_configured = bool(
         os.getenv("PARVA_PROVENANCE_ATTESTATION_KEY", "").strip()
         or os.getenv("PARVA_PROVENANCE_ATTESTATION_KEY_FILE", "").strip()
     )
     if not key_configured:
         return [
-            "Production and staging provenance mutations require PARVA_PROVENANCE_ATTESTATION_KEY or PARVA_PROVENANCE_ATTESTATION_KEY_FILE."
+            "Internet-exposed provenance mutations require PARVA_PROVENANCE_ATTESTATION_KEY "
+            "or PARVA_PROVENANCE_ATTESTATION_KEY_FILE."
         ]
     return []
 
@@ -329,12 +373,12 @@ def _validate_billing_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
     if not settings.database_url:
         errors.append("PARVA_DATABASE_URL is required when PARVA_BILLING_ENABLED=true.")
-    if _is_deployed_environment(settings.environment):
+    if settings.is_internet_exposed:
         if settings.database_url and not settings.database_url.startswith(
             ("postgres://", "postgresql://")
         ):
-            errors.append("Production and staging billing requires a Postgres PARVA_DATABASE_URL.")
-    if not _is_local_environment(settings.environment):
+            errors.append("Internet-exposed billing requires a Postgres PARVA_DATABASE_URL.")
+    if not settings.is_local_exposure:
         if settings.api_key_pepper == "parva-local-development-pepper":
             errors.append(
                 "Billing requires PARVA_API_KEY_PEPPER outside local, test, or development."
@@ -343,7 +387,7 @@ def _validate_billing_settings(settings: AppSettings) -> list[str]:
 
 
 def _validate_frontend_settings(settings: AppSettings) -> list[str]:
-    if not settings.serve_frontend or not _is_production_environment(settings.environment):
+    if not settings.serve_frontend or not settings.is_internet_exposed:
         return []
 
     index_path = settings.frontend_dist / "index.html"
@@ -354,6 +398,7 @@ def _validate_frontend_settings(settings: AppSettings) -> list[str]:
 
 def load_settings() -> AppSettings:
     environment = _default_environment()
+    exposure = _default_exposure(environment)
     admin_token = os.getenv("PARVA_ADMIN_TOKEN", "").strip() or None
     if admin_token is None and _allow_test_only_credentials(environment):
         admin_token = DEFAULT_TEST_ADMIN_TOKEN
@@ -366,6 +411,7 @@ def load_settings() -> AppSettings:
 
     return AppSettings(
         environment=environment,
+        exposure=exposure,
         license_mode=os.getenv("PARVA_LICENSE_MODE", "AGPL-3.0-or-later").strip()
         or "AGPL-3.0-or-later",
         source_url=_parse_optional_text(os.getenv("PARVA_SOURCE_URL")),
@@ -390,10 +436,16 @@ def load_settings() -> AppSettings:
         api_keys=_parse_api_keys(os.getenv("PARVA_API_KEYS", ""), environment=environment),
         rate_limit_enabled=_parse_bool(
             os.getenv("PARVA_RATE_LIMIT_ENABLED"),
-            default=environment.strip().lower() not in TEST_ENV_VALUES,
+            default=(
+                exposure == "internet"
+                or environment.strip().lower() not in TEST_ENV_VALUES
+            ),
         ),
         rate_limit_backend=(os.getenv("PARVA_RATE_LIMIT_BACKEND", "memory").strip() or "memory"),
         rate_limit_max_buckets=int(os.getenv("PARVA_RATE_LIMIT_MAX_BUCKETS", "10000")),
+        single_process_rate_limit=_parse_bool(
+            os.getenv("PARVA_SINGLE_PROCESS_RATE_LIMIT"), default=False
+        ),
         redis_url=_parse_optional_text(os.getenv("PARVA_REDIS_URL")),
         require_precomputed=require_precomputed,
         prewarm_hotset=_parse_bool(
@@ -422,13 +474,14 @@ def load_settings() -> AppSettings:
         esewa_return_url=_parse_optional_text(os.getenv("PARVA_ESEWA_RETURN_URL")),
         require_signed_provenance_mutations=_parse_bool(
             os.getenv("PARVA_REQUIRE_SIGNED_PROVENANCE_MUTATIONS"),
-            default=_is_deployed_environment(environment),
+            default=exposure == "internet",
         ),
     )
 
 
 def validate_settings(settings: AppSettings) -> list[str]:
     errors: list[str] = []
+    errors.extend(_validate_exposure(settings))
     errors.extend(_validate_license_mode(settings))
     errors.extend(_validate_source_url(settings))
     errors.extend(_validate_route_profile(settings))

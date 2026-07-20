@@ -28,6 +28,8 @@ def main() -> int:
     os.environ["PARVA_SHOW_PRIVATE_SCHEMA"] = "false"
     os.environ["PARVA_ENV"] = "public"
     os.environ["PARVA_SOURCE_URL"] = "https://github.com/dantwoashim/Project_Parva"
+    os.environ["PARVA_ADMIN_TOKEN"] = "test-openapi-admin-token"
+    os.environ["PARVA_PROVENANCE_ATTESTATION_KEY"] = "test-provenance-key"
     os.environ["PARVA_REQUIRE_PRECOMPUTED"] = "false"
     os.environ["PARVA_SERVE_FRONTEND"] = "false"
     os.environ.setdefault("PARVA_RATE_LIMIT_ENABLED", "false")

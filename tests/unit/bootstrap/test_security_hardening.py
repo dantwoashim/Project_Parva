@@ -64,5 +64,5 @@ def test_production_rejects_localhost_cors_origins(monkeypatch):
     monkeypatch.setenv("PARVA_PROVENANCE_ATTESTATION_KEY", "test-provenance-key")
     monkeypatch.setenv("CORS_ALLOW_ORIGINS", "http://localhost:5173")
 
-    with pytest.raises(RuntimeError, match="production or staging CORS origins cannot include localhost"):
+    with pytest.raises(RuntimeError, match="internet-exposed CORS origins cannot include localhost"):
         create_app()

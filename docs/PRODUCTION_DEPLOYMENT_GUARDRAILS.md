@@ -8,17 +8,22 @@ owner: platform-team
 
 # Production Deployment Guardrails
 
-Production and staging are treated as deployed environments. They must provide
-explicit security configuration instead of inheriting local/demo defaults.
+Every internet-facing process uses `PARVA_EXPOSURE=internet`. The `public`,
+`staging`, and `production` environments select that exposure automatically and
+cannot downgrade it.
 
-## Required In Production/Staging
+## Required For Internet Exposure
 
-- `PARVA_ENV=production` or `PARVA_ENV=staging`.
+- `PARVA_ENV=public`, `PARVA_ENV=staging`, or `PARVA_ENV=production`.
+- `PARVA_EXPOSURE=internet`.
 - `PARVA_SOURCE_URL` pointing to the corresponding published source.
 - `PARVA_ROUTE_PROFILE` set to a public/deployed-safe profile such as
   `public_reference`, `public_demo`, `minimal_public`, `developer_preview`, or
   `enterprise_preview`.
-- `PARVA_RATE_LIMIT_BACKEND=redis` and `PARVA_REDIS_URL`.
+- `PARVA_RATE_LIMIT_BACKEND=redis` and `PARVA_REDIS_URL` for shared enforcement.
+- A one-process public demo may use `PARVA_RATE_LIMIT_BACKEND=memory` only with
+  `PARVA_SINGLE_PROCESS_RATE_LIMIT=true` and a bounded
+  `PARVA_RATE_LIMIT_MAX_BUCKETS` value.
 - `PARVA_PROVENANCE_ATTESTATION_KEY` or
   `PARVA_PROVENANCE_ATTESTATION_KEY_FILE`.
 - `PARVA_REQUIRE_SIGNED_PROVENANCE_MUTATIONS=true`.
@@ -27,13 +32,12 @@ explicit security configuration instead of inheriting local/demo defaults.
 - `PARVA_BILLING_ENABLED=true` deployments must use a Postgres
   `PARVA_DATABASE_URL` and a non-default `PARVA_API_KEY_PEPPER`.
 - `PARVA_TRUSTED_PROXY_IPS` must name exact trusted proxies; `*` is rejected.
-- CORS origins must be explicit and cannot include localhost in production or
-  staging.
+- CORS origins must be explicit and cannot include localhost.
 
-## Rejected In Production/Staging
+## Rejected For Internet Exposure
 
 - `PARVA_DEBUG=true`.
-- `PARVA_RATE_LIMIT_BACKEND=memory`.
+- Process-local rate limiting without `PARVA_SINGLE_PROCESS_RATE_LIMIT=true`.
 - Route profiles `research_private`, `internal_lab`, `full`, or `full_dev`.
 - Unsigned provenance mutation mode.
 - SQLite billing storage when billing is enabled.
