@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from datetime import date, datetime, timezone
+
 from app.bootstrap.app_factory import create_app
+from app.core.clock import FixedClock
 from app.services.agent_service import (
     AgentError,
     agent_tools_payload,
@@ -75,6 +78,26 @@ def test_run_tool_reads_current_benchmark_artifact() -> None:
     summary = result["result"]
     assert summary["task_count"] == 64
     assert summary["parva_score_percent"] == 86.09
+
+
+def test_today_tool_uses_the_supplied_nepal_civil_date() -> None:
+    result = run_tool_payload("parva.get_today", {}, today=date(2026, 7, 16))
+
+    assert result["result"]["gregorian"] == "2026-07-16"
+
+
+def test_agent_api_today_tracks_kathmandu_midnight() -> None:
+    app = create_app()
+    app.state.clock = FixedClock(datetime(2026, 7, 15, 18, 15, tzinfo=timezone.utc))
+    client = TestClient(app)
+
+    response = client.post(
+        "/v3/api/agent/run-tool",
+        json={"tool_name": "parva.get_today", "input": {}},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["result"]["gregorian"] == "2026-07-16"
 
 
 def test_agent_api_endpoints() -> None:

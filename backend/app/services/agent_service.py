@@ -5,11 +5,13 @@ from __future__ import annotations
 import json
 import os
 import re
+from datetime import date
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
 from app.calendar.bikram_sambat import bs_to_gregorian
+from app.core.clock import civil_date
 from app.services.calendar_conversion_service import (
     build_bs_to_gregorian_payload,
     build_conversion_payload,
@@ -25,7 +27,6 @@ from app.services.rulelang_service import (
 from app.services.timegraph_service import trace_fact_payload
 from app.services.trust_infrastructure_service import (
     build_date_conversion_evidence_packet,
-    now_utc,
     resolve_release_id,
 )
 
@@ -426,7 +427,12 @@ def draft_rule_payload(text: str, *, profile_id: str = "nepal_private_company_de
     }
 
 
-def _run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str, Any]:
+def _run_tool_payload(
+    tool_name: str,
+    input_payload: dict[str, Any],
+    *,
+    today: date,
+) -> dict[str, Any]:
     tools = {tool["name"] for tool in agent_tools_payload()["tools"]}
     if tool_name not in tools:
         raise AgentError(f"tool is unavailable: {tool_name}", code="TOOL_UNAVAILABLE", status_code=404)
@@ -464,6 +470,7 @@ def _run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str
             profile_id=str(input_payload.get("profile_id") or "nepal_private_company_default"),
             bs_date=input_payload.get("bs_date"),
             ad_date=input_payload.get("ad_date"),
+            today=today,
         )
     elif tool_name == "parva.validate_date":
         if not input_payload.get("bs_date"):
@@ -481,13 +488,14 @@ def _run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str
             bs_date=input_payload.get("bs_date"),
             ad_date=input_payload.get("ad_date"),
             decision_intent=str(input_payload.get("decision_intent") or "general"),
+            today=today,
         )
     elif tool_name == "parva.convert_date":
         result = _convert_tool(input_payload)
     elif tool_name == "parva.check_human_review_required":
         result = check_human_review_payload(input_payload)
     elif tool_name == "parva.get_today":
-        result = build_conversion_payload(parse_iso_date(now_utc()[:10]))
+        result = build_conversion_payload(today)
     elif tool_name == "parva.get_festival_date":
         result = _festival_date_tool(input_payload)
     elif tool_name == "parva.get_panchanga_summary":
@@ -505,10 +513,15 @@ def _run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str
     }
 
 
-def run_tool_payload(tool_name: str, input_payload: dict[str, Any]) -> dict[str, Any]:
+def run_tool_payload(
+    tool_name: str,
+    input_payload: dict[str, Any],
+    *,
+    today: date | None = None,
+) -> dict[str, Any]:
     """Execute one allowlisted tool and normalize user input failures."""
     try:
-        return _run_tool_payload(tool_name, input_payload)
+        return _run_tool_payload(tool_name, input_payload, today=today or civil_date())
     except AgentError:
         raise
     except (KeyError, ValueError) as exc:

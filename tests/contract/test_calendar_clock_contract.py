@@ -85,6 +85,8 @@ def test_forecast_default_year_changes_at_new_year_without_restart(monkeypatch) 
     "relative_path",
     [
         "backend/app/services/calendar_surface_service.py",
+        "backend/app/services/agent_service.py",
+        "backend/app/services/compliance_service.py",
         "backend/app/api/public_demo_routes.py",
         "backend/app/calendar/routes.py",
         "backend/app/api/forecast_routes.py",

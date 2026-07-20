@@ -8,6 +8,7 @@ from typing import Any, Literal
 
 from app.calendar.bikram_sambat import bs_to_gregorian, days_in_bs_month, gregorian_to_bs
 from app.calendar.fiscal import fiscal_period_for_bs_date
+from app.core.clock import civil_date
 from app.core.source_metadata import (
     COMPLIANCE_BOUNDARY,
     ENTERPRISE_COMPLIANCE_PROFILES,
@@ -291,10 +292,16 @@ def evaluate_date_payload(
     ad_date: str | None = None,
     decision_intent: str = "general",
     trace_id: str | None = None,
+    today: date | None = None,
 ) -> dict[str, Any]:
     profile = _get_profile(profile_id)
     normalized = _normalize_date(bs_date=bs_date, ad_date=ad_date)
-    decision = _evaluate_normalized(profile, normalized, decision_intent=decision_intent)
+    decision = _evaluate_normalized(
+        profile,
+        normalized,
+        decision_intent=decision_intent,
+        today=today,
+    )
     return _decision_payload(
         profile=profile,
         normalized=normalized,
@@ -444,6 +451,7 @@ def fiscal_period_payload(
     bs_date: str | None = None,
     ad_date: str | None = None,
     trace_id: str | None = None,
+    today: date | None = None,
 ) -> dict[str, Any]:
     profile = _get_profile(profile_id)
     normalized = _normalize_date(bs_date=bs_date, ad_date=ad_date)
@@ -452,7 +460,12 @@ def fiscal_period_payload(
         int(normalized["bs_month"]),
         int(normalized["bs_day"]),
     )
-    decision = _evaluate_normalized(profile, normalized, decision_intent="fiscal")
+    decision = _evaluate_normalized(
+        profile,
+        normalized,
+        decision_intent="fiscal",
+        today=today,
+    )
     return {
         **_decision_payload(
             profile=profile,
@@ -512,6 +525,7 @@ def _evaluate_normalized(
     normalized: dict[str, Any],
     *,
     decision_intent: str,
+    today: date | None = None,
 ) -> dict[str, Any]:
     ad = normalized["ad_date"]
     bs_year = int(normalized["bs_year"])
@@ -551,7 +565,7 @@ def _evaluate_normalized(
         reason_codes.append("PROFILE_REQUIRES_OFFICIAL_SOURCE")
         review_required = True
 
-    if ad > date.today() and profile.risk_policy.future_dates_require_review:
+    if ad > (today or civil_date()) and profile.risk_policy.future_dates_require_review:
         reason_codes.append("FUTURE_DATE_REVIEW_REQUIRED")
         review_required = True
 

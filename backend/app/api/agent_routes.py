@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
 from app.services.agent_service import (
@@ -26,6 +26,7 @@ from app.services.timegraph_service import TimeGraphError
 from app.services.trust_infrastructure_service import TrustInfrastructureError
 
 from ._async_utils import run_cpu_bound
+from ._clock import request_civil_date
 
 router = APIRouter(prefix="/api/agent", tags=["agent"])
 
@@ -149,8 +150,13 @@ async def draft_rule(payload: DraftRuleRequest) -> dict[str, Any]:
 
 
 @router.post("/run-tool")
-async def run_tool(payload: RunToolRequest) -> dict[str, Any]:
+async def run_tool(payload: RunToolRequest, request: Request) -> dict[str, Any]:
     try:
-        return await run_cpu_bound(run_tool_payload, payload.tool_name, payload.input)
+        return await run_cpu_bound(
+            run_tool_payload,
+            payload.tool_name,
+            payload.input,
+            today=request_civil_date(request),
+        )
     except (AgentError, RuleLangError, ImpactError, TimeGraphError, TrustInfrastructureError) as exc:
         _raise_agent_error(exc)
