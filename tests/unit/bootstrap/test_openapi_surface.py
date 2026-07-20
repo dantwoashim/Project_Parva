@@ -105,6 +105,49 @@ def test_curate_openapi_schema_keeps_only_reachable_components() -> None:
     assert set(curated["components"]["schemas"]) == {"Health", "HealthStatus"}
 
 
+def test_curate_openapi_schema_normalizes_open_object_defaults() -> None:
+    schema = {
+        "paths": {
+            "/health/ready": {
+                "get": {
+                    "responses": {
+                        "200": {
+                            "description": "Ready",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "additionalProperties": True,
+                                    }
+                                }
+                            },
+                        },
+                        "503": {
+                            "description": "Invalid extension shape",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "type": "object",
+                                        "additionalProperties": False,
+                                    }
+                                }
+                            },
+                        },
+                    }
+                }
+            }
+        }
+    }
+
+    curated = curate_openapi_schema(schema)
+    responses = curated["paths"]["/health/ready"]["get"]["responses"]
+
+    assert "additionalProperties" not in responses["200"]["content"]["application/json"]["schema"]
+    assert (
+        responses["503"]["content"]["application/json"]["schema"]["additionalProperties"] is False
+    )
+
+
 def test_canonical_app_exposes_the_intended_documented_contract(monkeypatch) -> None:
     app = _configure_canonical_app(monkeypatch)
     schema = app.openapi()

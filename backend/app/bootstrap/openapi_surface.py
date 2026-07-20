@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import heapq
 from copy import deepcopy
 from dataclasses import dataclass
 from typing import Any, Final
@@ -140,15 +141,28 @@ def _component_refs(value: Any) -> set[tuple[str, str]]:
     return refs
 
 
+def _drop_explicit_open_object_defaults(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {
+            key: _drop_explicit_open_object_defaults(item)
+            for key, item in value.items()
+            if not (key == "additionalProperties" and item is True)
+        }
+    if isinstance(value, list):
+        return [_drop_explicit_open_object_defaults(item) for item in value]
+    return value
+
+
 def _reachable_components(
     source_components: dict[str, Any], paths: dict[str, Any]
 ) -> dict[str, Any]:
     retained: dict[str, dict[str, Any]] = {}
     pending = list(_component_refs(paths))
+    heapq.heapify(pending)
     visited: set[tuple[str, str]] = set()
 
     while pending:
-        section, name = pending.pop()
+        section, name = heapq.heappop(pending)
         key = (section, name)
         if key in visited:
             continue
@@ -159,7 +173,8 @@ def _reachable_components(
             continue
         component = deepcopy(source_section[name])
         retained.setdefault(section, {})[name] = component
-        pending.extend(_component_refs(component) - visited)
+        for component_ref in _component_refs(component) - visited:
+            heapq.heappush(pending, component_ref)
 
     # Security requirements refer to schemes by name rather than through $ref.
     security_schemes = source_components.get("securitySchemes")
@@ -198,7 +213,10 @@ def curate_openapi_schema(schema: dict[str, Any]) -> dict[str, Any]:
         curated["components"] = _reachable_components(source_components, curated_paths)
     curated["tags"] = deepcopy(CANONICAL_TAGS)
     curated["x-parva-openapi-surface"] = "canonical"
-    return curated
+    normalized = _drop_explicit_open_object_defaults(curated)
+    if not isinstance(normalized, dict):  # pragma: no cover - curated is always a mapping.
+        raise TypeError("Curated OpenAPI schema must be a mapping")
+    return normalized
 
 
 def install_openapi_surface(app: FastAPI, *, surface: str) -> None:
