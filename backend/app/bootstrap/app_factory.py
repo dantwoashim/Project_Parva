@@ -25,6 +25,7 @@ from app.bootstrap.middleware import (
     build_rate_limit_guard,
     build_request_context,
 )
+from app.bootstrap.openapi_surface import install_openapi_surface
 from app.bootstrap.rate_limit import create_rate_limiter_backend
 from app.bootstrap.router_registry import register_routers
 from app.bootstrap.settings import load_settings, validate_settings
@@ -305,38 +306,38 @@ def _register_exception_handlers(app: FastAPI) -> None:
 
 
 def _register_version_docs_routes(app: FastAPI, *, enable_experimental_api: bool) -> None:
-    @app.get("/v3/openapi.json")
+    @app.get("/v3/openapi.json", include_in_schema=False)
     async def v3_openapi():
         return app.openapi()
 
-    @app.get("/v3/docs", name="v3_docs")
+    @app.get("/v3/docs", name="v3_docs", include_in_schema=False)
     async def v3_docs():
         return RedirectResponse(url="/docs")
 
     if not enable_experimental_api:
         return
 
-    @app.get("/v2/openapi.json")
+    @app.get("/v2/openapi.json", include_in_schema=False)
     async def v2_openapi():
         return app.openapi()
 
-    @app.get("/v2/docs", name="v2_docs")
+    @app.get("/v2/docs", name="v2_docs", include_in_schema=False)
     async def v2_docs():
         return RedirectResponse(url="/docs")
 
-    @app.get("/v4/openapi.json")
+    @app.get("/v4/openapi.json", include_in_schema=False)
     async def v4_openapi():
         return app.openapi()
 
-    @app.get("/v4/docs", name="v4_docs")
+    @app.get("/v4/docs", name="v4_docs", include_in_schema=False)
     async def v4_docs():
         return RedirectResponse(url="/docs")
 
-    @app.get("/v5/openapi.json")
+    @app.get("/v5/openapi.json", include_in_schema=False)
     async def v5_openapi():
         return app.openapi()
 
-    @app.get("/v5/docs", name="v5_docs")
+    @app.get("/v5/docs", name="v5_docs", include_in_schema=False)
     async def v5_docs():
         return RedirectResponse(url="/docs")
 
@@ -492,8 +493,18 @@ def create_app() -> FastAPI:
 
     app = FastAPI(
         title="Project Parva API",
-        description="Nepal Festival Discovery System",
+        description=(
+            "Nepali calendar and temporal services for BS/AD conversion, Panchanga, "
+            "festivals, fiscal rules, calendar integrations, and future-BS research."
+        ),
         version=PRODUCT_VERSION,
+        swagger_ui_parameters={
+            "defaultModelsExpandDepth": -1,
+            "displayRequestDuration": True,
+            "docExpansion": "list",
+            "filter": True,
+            "persistAuthorization": True,
+        },
     )
     _initialize_app_state(app, settings, startup_checks)
     _install_middleware(app, settings, rate_limit_backend)
@@ -517,5 +528,6 @@ def create_app() -> FastAPI:
     _register_source_route(app, settings)
     _register_root_and_health_routes(app, settings)
     _register_frontend_spa_route(app, settings)
+    install_openapi_surface(app, surface=settings.openapi_surface)
     _prewarm_runtime_hotset(app, settings)
     return app

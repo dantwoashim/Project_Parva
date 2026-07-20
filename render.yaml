@@ -13,6 +13,8 @@ services:
         value: backend
       - key: PARVA_ROUTE_PROFILE
         value: developer_preview
+      - key: PARVA_OPENAPI_SURFACE
+        value: canonical
       - key: PARVA_ADMIN_TOKEN
         generateValue: true
       - key: PARVA_ENABLE_EXPERIMENTAL_API

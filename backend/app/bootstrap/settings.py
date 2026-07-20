@@ -17,6 +17,7 @@ INTERNET_ENV_VALUES: Final[frozenset[str]] = frozenset(
     {"public", "production", "staging"}
 )
 VALID_EXPOSURES: Final[frozenset[str]] = frozenset({"internet", "local", "private"})
+VALID_OPENAPI_SURFACES: Final[frozenset[str]] = frozenset({"canonical", "full"})
 TEST_ENV_VALUES: Final[frozenset[str]] = frozenset({"test"})
 VALID_ROUTE_PROFILES: Final[frozenset[str]] = frozenset(
     {
@@ -88,6 +89,7 @@ class AppSettings:
     max_query_length: int
     admin_token: str | None
     debug: bool = False
+    openapi_surface: str = "full"
     api_keys: dict[str, APIKeyRecord] = field(default_factory=dict)
     rate_limit_enabled: bool = True
     rate_limit_backend: str = "memory"
@@ -308,6 +310,13 @@ def _validate_route_profile(settings: AppSettings) -> list[str]:
     return errors
 
 
+def _validate_openapi_surface(settings: AppSettings) -> list[str]:
+    if settings.openapi_surface in VALID_OPENAPI_SURFACES:
+        return []
+    supported = ", ".join(sorted(VALID_OPENAPI_SURFACES))
+    return [f"PARVA_OPENAPI_SURFACE must be one of: {supported}."]
+
+
 def _validate_trusted_proxy_settings(settings: AppSettings) -> list[str]:
     if "*" not in settings.trusted_proxy_ips:
         return []
@@ -430,6 +439,9 @@ def load_settings() -> AppSettings:
         serve_frontend=_parse_bool(os.getenv("PARVA_SERVE_FRONTEND"), default=False),
         frontend_dist=_frontend_dist_from_env(),
         debug=_parse_bool(os.getenv("PARVA_DEBUG"), default=False),
+        openapi_surface=(
+            os.getenv("PARVA_OPENAPI_SURFACE", "full").strip().lower() or "full"
+        ),
         max_request_bytes=int(os.getenv("PARVA_MAX_REQUEST_BYTES", "1048576")),
         max_query_length=int(os.getenv("PARVA_MAX_QUERY_LENGTH", "4096")),
         admin_token=admin_token,
@@ -485,6 +497,7 @@ def validate_settings(settings: AppSettings) -> list[str]:
     errors.extend(_validate_license_mode(settings))
     errors.extend(_validate_source_url(settings))
     errors.extend(_validate_route_profile(settings))
+    errors.extend(_validate_openapi_surface(settings))
     errors.extend(_validate_admin_and_debug_settings(settings))
     errors.extend(_validate_trusted_proxy_settings(settings))
     errors.extend(_validate_experimental_settings(settings))

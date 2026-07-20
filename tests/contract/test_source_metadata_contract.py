@@ -122,16 +122,15 @@ def test_unsupported_calendar_range_returns_clear_error() -> None:
     assert "Year must be between" in body["error"]["message"]
 
 
-def test_static_openapi_docs_include_source_aware_metadata_schema() -> None:
+def test_static_openapi_docs_include_referenced_provenance_metadata_schema() -> None:
     schema_path = Path("docs/api-docs/openapi.json")
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
 
     schemas = schema["components"]["schemas"]
-    assert "SourceAwareMeta" in schemas
-    source_meta = schemas["SourceAwareMeta"]
-    assert "source" in source_meta["properties"]
-    assert "confidence" in source_meta["properties"]
-    assert "data_version" in source_meta["properties"]
-    assert "claim_boundary" in source_meta["properties"]
-    assert "warnings" in source_meta["properties"]
-    assert "trace_id" in source_meta["properties"]
+    assert "SourceAwareMeta" not in schemas
+    assert "ProvenanceMeta" in schemas
+    provenance_meta = schemas["ProvenanceMeta"]
+    assert "dataset_hash" in provenance_meta["properties"]
+    assert "rules_hash" in provenance_meta["properties"]
+    assert "snapshot_id" in provenance_meta["properties"]
+    assert "verify_url" in provenance_meta["properties"]

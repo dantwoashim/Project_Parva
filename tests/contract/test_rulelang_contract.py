@@ -276,14 +276,14 @@ def test_public_demo_profile_includes_rules_but_not_full_compliance_routes(monke
     assert "/v3/api/compliance/profiles" not in paths
 
 
-def test_static_openapi_docs_include_rulelang_schemas() -> None:
+def test_static_openapi_docs_exclude_rulelang_preview_surface() -> None:
     schema = json.loads(Path("docs/api-docs/openapi.json").read_text(encoding="utf-8"))
     schemas = schema["components"]["schemas"]
 
-    assert "RuleDefinition" in schemas
-    assert "RuleExecutionResult" in schemas
-    assert "RuleTraceStep" in schemas
-    assert "/v3/api/rules/capabilities" in schema["paths"]
+    assert "RuleDefinition" not in schemas
+    assert "RuleExecutionResult" not in schemas
+    assert "RuleTraceStep" not in schemas
+    assert "/v3/api/rules/capabilities" not in schema["paths"]
 
 
 def test_rulelang_does_not_expose_unsafe_execution_surface() -> None:

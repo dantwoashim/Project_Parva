@@ -22,10 +22,34 @@ def _output_path() -> Path:
     return PROJECT_ROOT / "docs" / "api-docs" / "openapi.json"
 
 
+def _write_schema(schema: dict) -> int:
+    schema["servers"] = [
+        {
+            "url": os.getenv(
+                "PARVA_PUBLIC_DEMO_SERVER",
+                "https://api.prabinghimire1.com.np",
+            ),
+            "description": "Project Parva public API",
+        }
+    ]
+    output_path = _output_path()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        json.dumps(schema, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
+    try:
+        rendered_path = output_path.relative_to(PROJECT_ROOT)
+    except ValueError:
+        rendered_path = output_path
+    print(f"Wrote {rendered_path} with {len(schema.get('paths', {}))} paths.")
+    return 0
+
+
 def main() -> int:
     os.environ["PARVA_ROUTE_PROFILE"] = os.getenv("PARVA_ROUTE_PROFILE", "developer_preview")
     os.environ["PARVA_ENABLE_EXPERIMENTAL_API"] = "false"
     os.environ["PARVA_SHOW_PRIVATE_SCHEMA"] = "false"
+    os.environ["PARVA_OPENAPI_SURFACE"] = "canonical"
     os.environ["PARVA_ENV"] = "public"
     os.environ["PARVA_SOURCE_URL"] = "https://github.com/dantwoashim/Project_Parva"
     os.environ["PARVA_ADMIN_TOKEN"] = "test-openapi-admin-token"
@@ -38,6 +62,9 @@ def main() -> int:
 
     app = create_app()
     schema = app.openapi()
+    if schema.get("x-parva-openapi-surface") == "canonical":
+        return _write_schema(schema)
+
     add_proof_contract_references(schema)
     components = schema.setdefault("components", {}).setdefault("schemas", {})
     components.setdefault(
@@ -489,24 +516,7 @@ def main() -> int:
                 "additionalProperties": True,
             },
         )
-    schema["servers"] = [
-        {
-            "url": os.getenv(
-                "PARVA_PUBLIC_DEMO_SERVER",
-                "https://project-parva-public-demo.onrender.com",
-            ),
-            "description": "Render public demo backend",
-        }
-    ]
-    output_path = _output_path()
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(json.dumps(schema, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    try:
-        rendered_path = output_path.relative_to(PROJECT_ROOT)
-    except ValueError:
-        rendered_path = output_path
-    print(f"Wrote {rendered_path} with {len(schema.get('paths', {}))} paths.")
-    return 0
+    return _write_schema(schema)
 
 
 if __name__ == "__main__":

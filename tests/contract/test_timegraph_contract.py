@@ -160,12 +160,12 @@ def test_public_demo_profile_includes_safe_timegraph_routes(monkeypatch) -> None
     assert "/v3/api/compliance/profiles" not in paths
 
 
-def test_static_openapi_docs_include_timegraph_schemas() -> None:
+def test_static_openapi_docs_exclude_timegraph_preview_surface() -> None:
     schema = json.loads(Path("docs/api-docs/openapi.json").read_text(encoding="utf-8"))
     schemas = schema["components"]["schemas"]
 
-    assert "TemporalFact" in schemas
-    assert "TimeGraphRelationship" in schemas
-    assert "TimeGraphConflict" in schemas
-    assert "TimeGraphQuery" in schemas
-    assert "/v3/api/timegraph/facts" in schema["paths"]
+    assert "TemporalFact" not in schemas
+    assert "TimeGraphRelationship" not in schemas
+    assert "TimeGraphConflict" not in schemas
+    assert "TimeGraphQuery" not in schemas
+    assert "/v3/api/timegraph/facts" not in schema["paths"]
