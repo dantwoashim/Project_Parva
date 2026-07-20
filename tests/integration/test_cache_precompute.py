@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import date, datetime, timezone
 
+from app.core.clock import FixedClock
 from app.main import app
 from fastapi.testclient import TestClient
 
@@ -72,15 +73,13 @@ def test_panchanga_endpoint_uses_precomputed_cache(monkeypatch, tmp_path):
 
 def test_upcoming_festivals_uses_precomputed_cache(monkeypatch, tmp_path):
     import app.cache.precomputed as precomputed_module
-    import app.calendar.routes as calendar_routes
-
-    class FakeDate(date):
-        @classmethod
-        def today(cls):
-            return cls(2028, 1, 1)
 
     monkeypatch.setattr(precomputed_module, "PRECOMPUTE_DIR", tmp_path)
-    monkeypatch.setattr(calendar_routes, "date", FakeDate)
+    monkeypatch.setattr(
+        app.state,
+        "clock",
+        FixedClock(datetime(2027, 12, 31, 18, 15, tzinfo=timezone.utc)),
+    )
 
     _write_json(
         tmp_path / "festivals_2028.json",

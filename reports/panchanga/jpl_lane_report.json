@@ -7,6 +7,7 @@
       "review_required": true
     },
     "coordinate_frame": "sidereal",
+    "effective_ayanamsa": "lahiri",
     "ephemeris_name": "Swiss Ephemeris built-in Moshier",
     "ephemeris_version": "pyswisseph_builtin",
     "fallback_used": true,
@@ -23,15 +24,17 @@
   "jpl_metadata": {
     "available": false,
     "boundary_vector": {
-      "claim_boundary": "jpl_unavailable_not_used",
+      "claim_boundary": "jpl_kernel_metadata_unavailable_not_used",
       "not_authority": true,
       "review_required": true
     },
-    "ephemeris_name": "JPL DE440-family SPK",
+    "calculation_available": false,
+    "ephemeris_name": "JPL DE440-family SPK metadata",
     "ephemeris_version": "de440",
+    "jpl_backed": false,
     "kernel_hash": null,
-    "provider_id": "jpl_de440",
-    "provider_kind": "jpl_kernel"
+    "provider_id": "jpl_de440_kernel_metadata",
+    "provider_kind": "verified_kernel_metadata_only"
   },
   "real_jpl_kernel_claimed": false,
   "schema": "parva-jpl-lane-report-v1",
