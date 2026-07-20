@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from datetime import date
 from typing import Optional
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Request
 
+from app.api._clock import request_civil_date
+from app.core.clock import DEFAULT_CIVIL_TIMEZONE
 from app.forecast import build_error_curve, forecast_festivals, list_default_forecast_festivals
 from app.policy import get_policy_metadata
 
@@ -39,13 +40,18 @@ async def forecast_festival_dates(
 
 @router.get("/error-curve")
 async def forecast_error_curve(
-    start_year: int = Query(date.today().year, ge=1900, le=2300),
-    end_year: int = Query(date.today().year + 25, ge=1900, le=2300),
+    request: Request,
+    start_year: int | None = Query(None, ge=1900, le=2300),
+    end_year: int | None = Query(None, ge=1900, le=2300),
+    tz: str = Query(DEFAULT_CIVIL_TIMEZONE, description="IANA timezone"),
 ):
-    curve = build_error_curve(start_year, end_year)
+    current_year = request_civil_date(request, tz).year
+    resolved_start = start_year if start_year is not None else current_year
+    resolved_end = end_year if end_year is not None else min(resolved_start + 25, 2300)
+    curve = build_error_curve(resolved_start, resolved_end)
     return {
-        "start_year": min(start_year, end_year),
-        "end_year": max(start_year, end_year),
+        "start_year": min(resolved_start, resolved_end),
+        "end_year": max(resolved_start, resolved_end),
         "points": curve,
         "policy": get_policy_metadata(),
     }

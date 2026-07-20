@@ -7,6 +7,8 @@ Provides complete tithi calculation functionality using Swiss Ephemeris.
 from datetime import date, datetime, timezone
 from typing import Optional
 
+from app.core.clock import require_aware_datetime
+
 from ..ephemeris.positions import get_tithi_angle
 from .tithi_boundaries import (
     find_next_tithi,
@@ -70,8 +72,7 @@ def calculate_moon_phase(target_date: date) -> float:
     """
     if isinstance(target_date, datetime):
         dt = target_date
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
+        require_aware_datetime(dt, parameter="target_date")
     else:
         dt = datetime.combine(target_date, datetime.min.time()).replace(tzinfo=timezone.utc)
     angle = get_tithi_angle(dt) % 360.0
@@ -81,6 +82,7 @@ def calculate_moon_phase(target_date: date) -> float:
 def find_purnima(after_date: date) -> Optional[datetime]:
     """Find next Purnima (full moon) moment after a date."""
     if isinstance(after_date, datetime):
+        require_aware_datetime(after_date, parameter="after_date")
         start = after_date
     else:
         start = datetime.combine(after_date, datetime.min.time()).replace(tzinfo=timezone.utc)
@@ -93,6 +95,7 @@ def find_purnima(after_date: date) -> Optional[datetime]:
 def find_amavasya(after_date: date) -> Optional[datetime]:
     """Find next Amavasya (new moon) moment after a date."""
     if isinstance(after_date, datetime):
+        require_aware_datetime(after_date, parameter="after_date")
         start = after_date
     else:
         start = datetime.combine(after_date, datetime.min.time()).replace(tzinfo=timezone.utc)
@@ -173,8 +176,7 @@ def get_moon_phase_name(date_or_tithi) -> str:
             return _moon_phase_from_tithi(info["display_number"], info["paksha"])
 
         dt = date_or_tithi
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
+        require_aware_datetime(dt, parameter="date_or_tithi")
         angle = get_tithi_angle(dt)
         return _moon_phase_from_angle(angle)
 

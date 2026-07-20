@@ -8,14 +8,14 @@ from __future__ import annotations
 from datetime import date, datetime, time, timezone
 
 from app.calendar.ephemeris.time_utils import NEPAL_TZ
+from app.core.clock import require_aware_datetime
 
 
 def ensure_utc(dt: datetime | date) -> datetime:
     """Normalize date/datetime to timezone-aware UTC datetime."""
     if isinstance(dt, date) and not isinstance(dt, datetime):
         return datetime.combine(dt, time.min, tzinfo=timezone.utc)
-    if dt.tzinfo is None:
-        return dt.replace(tzinfo=timezone.utc)
+    require_aware_datetime(dt, parameter="dt")
     return dt.astimezone(timezone.utc)
 
 

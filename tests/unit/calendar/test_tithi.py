@@ -9,7 +9,7 @@ Tests cover:
 - Moon phase names
 """
 
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import pytest
 from app.calendar.tithi import (
@@ -67,6 +67,13 @@ class TestTithiCalculation:
         # Near new moon should be either last tithi of Krishna or first of Shukla
         assert 1 <= tithi <= 15
         assert paksha in (PAKSHA_SHUKLA, PAKSHA_KRISHNA)
+
+    def test_naive_datetime_is_rejected(self):
+        with pytest.raises(ValueError, match="dt must be timezone-aware"):
+            calculate_tithi(datetime(2023, 1, 21, 12, 0))
+
+        aware = calculate_tithi(datetime(2023, 1, 21, 12, 0, tzinfo=timezone.utc))
+        assert 1 <= aware["number"] <= 30
 
     def test_tithi_range(self):
         """Test that tithi is always 1-15."""

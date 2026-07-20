@@ -5,13 +5,15 @@ Calendar API Routes
 Endpoints for calendar conversion and tithi information.
 """
 
-from datetime import date, datetime
+from datetime import date
 from typing import Literal, Optional
 
 from fastapi import APIRouter, Query, Request
 from pydantic import BaseModel
 
 from app.api._async_utils import run_cpu_bound
+from app.api._clock import request_civil_date
+from app.core.clock import DEFAULT_CIVIL_TIMEZONE
 from app.core.source_metadata import build_calculated_claim_meta
 from app.membranes.capsule import (
     _proof_requested,
@@ -130,7 +132,7 @@ async def convert_date(
         ...,
         alias="date",
         description="Gregorian date in YYYY-MM-DD format",
-        examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
+        openapi_examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
     ),
     proof: str | None = Query(None, description="Set to membrane/compact/audit/replay for a proof capsule."),
 ):
@@ -155,7 +157,7 @@ async def compare_convert(
         ...,
         alias="date",
         description="Gregorian date in YYYY-MM-DD format",
-        examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
+        openapi_examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
     )
 ):
     """
@@ -235,24 +237,38 @@ async def validate_bs_date_endpoint(
 async def get_today(
     request: Request,
     risk_mode: str = Query("standard", description="standard|strict"),
+    tz: str = Query(DEFAULT_CIVIL_TIMEZONE, description="IANA timezone"),
 ):
     """
     Get calendar information for today.
     Uses udaya tithi (official sunrise-based) for accuracy.
     """
-    return build_today_payload(risk_mode=risk_mode, trace_id=_trace_id(request))
+    today = request_civil_date(request, tz)
+    return build_today_payload(
+        risk_mode=risk_mode,
+        trace_id=_trace_id(request),
+        today=today,
+        timezone_name=tz,
+    )
 
 
 @router.get("/today/proof-capsule")
 async def get_today_proof_capsule(
     request: Request,
     risk_mode: str = Query("strict", description="standard|strict"),
+    tz: str = Query(DEFAULT_CIVIL_TIMEZONE, description="IANA timezone"),
 ):
-    payload = build_today_payload(risk_mode=risk_mode, trace_id=_trace_id(request))
+    today = request_civil_date(request, tz)
+    payload = build_today_payload(
+        risk_mode=risk_mode,
+        trace_id=_trace_id(request),
+        today=today,
+        timezone_name=tz,
+    )
     return build_calendar_proof_capsule(
         surface="today",
         payload=payload,
-        request={"risk_mode": risk_mode},
+        request={"risk_mode": risk_mode, "timezone": tz},
     )
 
 
@@ -263,7 +279,7 @@ async def get_tithi_endpoint(
         ...,
         alias="date",
         description="Gregorian date in YYYY-MM-DD format",
-        examples={"default": {"summary": "Sample date", "value": "2026-02-15"}},
+        openapi_examples={"default": {"summary": "Sample date", "value": "2026-02-15"}},
     ),
     latitude: float = Query(27.7172, ge=-90.0, le=90.0, description="Latitude"),
     longitude: float = Query(85.3240, ge=-180.0, le=180.0, description="Longitude"),
@@ -327,13 +343,13 @@ async def get_panchanga_endpoint(
         None,
         alias="date",
         description="Gregorian date in YYYY-MM-DD format",
-        examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
+        openapi_examples={"default": {"summary": "Sample date", "value": "2026-02-15"}}
     ),
     risk_mode: str = Query("standard", description="standard|strict"),
     proof: str | None = Query(None, description="none|compact|audit|replay|membrane"),
     lat: Optional[float] = Query(None, description="Latitude for proof identity"),
     lon: Optional[float] = Query(None, description="Longitude for proof identity"),
-    tz: Optional[str] = Query("Asia/Kathmandu", description="IANA timezone"),
+    tz: Optional[str] = Query(DEFAULT_CIVIL_TIMEZONE, description="IANA timezone"),
     ephemeris_provider: Literal["builtin_swiss_moshier", "pinned_panchanga_fixture"] = Query(
         "builtin_swiss_moshier",
         description="Calculation provider used for proof output",
@@ -350,10 +366,14 @@ async def get_panchanga_endpoint(
     Uses Swiss Ephemeris for accurate astronomical calculations.
     Includes: Tithi, Nakshatra, Yoga, Karana, Vaara (weekday).
     """
-    target_date = _parse_iso_date(date_str) if date_str else datetime.now().date()
+    timezone_name = tz or DEFAULT_CIVIL_TIMEZONE
+    target_date = (
+        _parse_iso_date(date_str)
+        if date_str
+        else request_civil_date(request, timezone_name)
+    )
     latitude = float(lat) if lat is not None else 27.7172
     longitude = float(lon) if lon is not None else 85.3240
-    timezone_name = tz or "Asia/Kathmandu"
     payload = await run_cpu_bound(
         build_panchanga_payload,
         target_date,
@@ -467,7 +487,8 @@ async def calculate_festival_endpoint(
 @router.get("/festivals/upcoming")
 async def get_upcoming_festivals_endpoint(
     request: Request,
-    days: int = Query(30, description="Days to look ahead", ge=1, le=365)
+    days: int = Query(30, description="Days to look ahead", ge=1, le=365),
+    tz: str = Query(DEFAULT_CIVIL_TIMEZONE, description="IANA timezone"),
 ):
     """
     Get all festivals occurring within the next N days.
@@ -476,8 +497,9 @@ async def get_upcoming_festivals_endpoint(
     return await run_cpu_bound(
         build_upcoming_festivals_payload,
         days,
-        today=date.today(),
+        today=request_civil_date(request, tz),
         trace_id=_trace_id(request),
+        timezone_name=tz,
     )
 
 

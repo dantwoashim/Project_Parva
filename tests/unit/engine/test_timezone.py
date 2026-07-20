@@ -13,13 +13,17 @@ from app.engine.time_utils import ensure_utc, from_npt, to_npt
     [
         (datetime(2026, 2, 7, 0, 0, tzinfo=timezone.utc), 0),
         (datetime(2026, 2, 7, 5, 45, tzinfo=NEPAL_TZ), 0),
-        (datetime(2026, 2, 7, 0, 0), 0),
     ],
 )
 def test_ensure_utc_normalizes_to_utc(input_dt, expected_hour):
     normalized = ensure_utc(input_dt)
     assert normalized.tzinfo == timezone.utc
     assert normalized.hour == expected_hour
+
+
+def test_ensure_utc_rejects_naive_datetime() -> None:
+    with pytest.raises(ValueError, match="dt must be timezone-aware"):
+        ensure_utc(datetime(2026, 2, 7, 0, 0))
 
 
 def test_ensure_utc_from_date_assumes_midnight_utc():

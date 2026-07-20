@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from datetime import date
-
 from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel
 
+from app.api._clock import request_civil_date
+from app.core.clock import DEFAULT_CIVIL_TIMEZONE
 from app.services.calendar_conversion_service import (
     build_bs_to_gregorian_payload,
     build_conversion_payload,
@@ -26,8 +26,13 @@ class BSConversionRequest(BaseModel):
 
 
 @router.get("/today")
-async def get_today(risk_mode: str = Query("standard", description="standard|strict")):
-    return build_today_payload(risk_mode=risk_mode)
+async def get_today(
+    request: Request,
+    risk_mode: str = Query("standard", description="standard|strict"),
+    tz: str = Query(DEFAULT_CIVIL_TIMEZONE, description="IANA timezone"),
+):
+    today = request_civil_date(request, tz)
+    return build_today_payload(risk_mode=risk_mode, today=today, timezone_name=tz)
 
 
 @router.get("/convert")
@@ -36,7 +41,7 @@ async def convert_date(
         ...,
         alias="date",
         description="Gregorian date in YYYY-MM-DD format",
-        examples={"default": {"summary": "Sample date", "value": "2026-04-14"}},
+        openapi_examples={"default": {"summary": "Sample date", "value": "2026-04-14"}},
     )
 ):
     gregorian_date = parse_iso_date(date_str)
@@ -58,18 +63,25 @@ async def bs_to_gregorian_convert(payload: BSConversionRequest, request: Request
 
 @router.get("/panchanga")
 async def get_panchanga_endpoint(
+    request: Request,
     date_str: str | None = Query(
         None,
         alias="date",
         description="Gregorian date in YYYY-MM-DD format",
-        examples={"default": {"summary": "Sample date", "value": "2026-04-14"}},
+        openapi_examples={"default": {"summary": "Sample date", "value": "2026-04-14"}},
     ),
     risk_mode: str = Query("standard", description="standard|strict"),
+    tz: str = Query(DEFAULT_CIVIL_TIMEZONE, description="IANA timezone"),
 ):
     from app.services.calendar_surface_service import build_panchanga_payload
 
-    target_date = parse_iso_date(date_str) if date_str else date.today()
-    return await run_cpu_bound(build_panchanga_payload, target_date, risk_mode=risk_mode)
+    target_date = parse_iso_date(date_str) if date_str else request_civil_date(request, tz)
+    return await run_cpu_bound(
+        build_panchanga_payload,
+        target_date,
+        risk_mode=risk_mode,
+        timezone_name=tz,
+    )
 
 
 __all__ = ["router"]

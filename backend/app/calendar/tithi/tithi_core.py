@@ -11,8 +11,10 @@ Each tithi spans exactly 12° of elongation.
 Formula: tithi = floor(elongation / 12°) + 1
 """
 
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from typing import Any, Dict, Optional, Tuple
+
+from app.core.clock import require_aware_datetime
 
 from ..ephemeris.positions import (
     TITHI_SPAN,
@@ -62,13 +64,12 @@ TITHI_15_KRISHNA = "Amavasya"  # New Moon
 # =============================================================================
 
 
-def calculate_tithi(dt) -> Dict[str, Any]:
+def calculate_tithi(dt: date | datetime) -> Dict[str, Any]:
     """
     Calculate complete tithi information for a given datetime.
 
     Args:
-        dt: Datetime (UTC or with timezone preferred) or date object.
-            If a date is provided, assumes midnight UTC for backward compatibility.
+        dt: A timezone-aware datetime, or a date interpreted as midnight UTC.
 
     Returns:
         Dictionary with tithi details:
@@ -80,7 +81,7 @@ def calculate_tithi(dt) -> Dict[str, Any]:
         - elongation: Raw elongation angle
 
     Example:
-        >>> calculate_tithi(datetime(2026, 2, 6, 6, 0, 0))
+        >>> calculate_tithi(datetime(2026, 2, 6, 6, 0, 0, tzinfo=timezone.utc))
         {
             'number': 20,
             'display_number': 5,
@@ -90,14 +91,12 @@ def calculate_tithi(dt) -> Dict[str, Any]:
             'elongation': 233.39
         }
     """
-    from datetime import timezone as tz
-
-    # Convert date to datetime if needed
     if isinstance(dt, date) and not isinstance(dt, datetime):
-        dt = datetime.combine(dt, datetime.min.time()).replace(tzinfo=tz.utc)
-    elif isinstance(dt, datetime) and dt.tzinfo is None:
-        # Add UTC timezone if missing
-        dt = dt.replace(tzinfo=tz.utc)
+        dt = datetime.combine(dt, datetime.min.time(), tzinfo=timezone.utc)
+    elif isinstance(dt, datetime):
+        require_aware_datetime(dt, parameter="dt")
+    else:
+        raise TypeError("dt must be a date or timezone-aware datetime")
 
     elongation = get_tithi_angle(dt)
     tithi_num = get_tithi_number(elongation)
@@ -204,8 +203,8 @@ def is_same_tithi(dt1: datetime, dt2: datetime) -> bool:
     Returns:
         True if same absolute tithi (1-30)
     """
-    elongation1 = get_tithi_angle(dt1)
-    elongation2 = get_tithi_angle(dt2)
+    elongation1 = get_tithi_angle(require_aware_datetime(dt1, parameter="dt1"))
+    elongation2 = get_tithi_angle(require_aware_datetime(dt2, parameter="dt2"))
 
     tithi1 = int(elongation1 / TITHI_SPAN) + 1
     tithi2 = int(elongation2 / TITHI_SPAN) + 1
@@ -224,8 +223,8 @@ def tithi_difference(dt1: datetime, dt2: datetime) -> int:
     Returns:
         Number of complete tithis between dt1 and dt2
     """
-    elongation1 = get_tithi_angle(dt1)
-    elongation2 = get_tithi_angle(dt2)
+    elongation1 = get_tithi_angle(require_aware_datetime(dt1, parameter="dt1"))
+    elongation2 = get_tithi_angle(require_aware_datetime(dt2, parameter="dt2"))
 
     tithi1 = int(elongation1 / TITHI_SPAN)
     tithi2 = int(elongation2 / TITHI_SPAN)
@@ -287,6 +286,7 @@ def get_lunar_month_name(purnima_time: datetime) -> str:
     """
     if not isinstance(purnima_time, datetime):
         raise TypeError("purnima_time must be a datetime")
+    require_aware_datetime(purnima_time, parameter="purnima_time")
 
     return get_sankranti_lunar_month_name(purnima_time)
 

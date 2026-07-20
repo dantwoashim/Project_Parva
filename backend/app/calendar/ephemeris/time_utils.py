@@ -10,6 +10,8 @@ which requires special handling in many datetime libraries.
 from datetime import date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+from app.core.clock import require_aware_datetime
+
 from .julian import julian_day_to_datetime
 
 # =============================================================================
@@ -36,7 +38,7 @@ def to_nepal_time(dt: datetime) -> datetime:
     Convert any datetime to Nepal Standard Time (UTC+5:45).
 
     Args:
-        dt: Datetime (if naive, assumes UTC)
+        dt: Timezone-aware datetime
 
     Returns:
         Datetime in Nepal Standard Time
@@ -45,12 +47,7 @@ def to_nepal_time(dt: datetime) -> datetime:
         >>> to_nepal_time(datetime(2026, 2, 6, 0, 0, tzinfo=timezone.utc))
         datetime(2026, 2, 6, 5, 45, tzinfo=NEPAL_TZ)
     """
-    # If naive, assume UTC
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
-
-    # Convert to Nepal time
-    return dt.astimezone(NEPAL_TZ)
+    return require_aware_datetime(dt, parameter="dt").astimezone(NEPAL_TZ)
 
 
 def to_utc(dt: datetime) -> datetime:
@@ -58,7 +55,7 @@ def to_utc(dt: datetime) -> datetime:
     Convert any datetime to UTC.
 
     Args:
-        dt: Datetime (if naive, assumes Nepal time)
+        dt: Timezone-aware datetime
 
     Returns:
         Datetime in UTC
@@ -67,12 +64,7 @@ def to_utc(dt: datetime) -> datetime:
         >>> to_utc(datetime(2026, 2, 6, 5, 45, tzinfo=NEPAL_TZ))
         datetime(2026, 2, 6, 0, 0, tzinfo=timezone.utc)
     """
-    # If naive, assume Nepal time
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=NEPAL_TZ)
-
-    # Convert to UTC
-    return dt.astimezone(timezone.utc)
+    return require_aware_datetime(dt, parameter="dt").astimezone(timezone.utc)
 
 
 def resolve_observer_timezone(timezone_name: str | None = None):

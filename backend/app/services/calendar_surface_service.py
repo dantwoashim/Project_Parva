@@ -15,6 +15,7 @@ from app.calendar.bikram_sambat import (
     get_bs_source_range,
     gregorian_to_bs,
 )
+from app.core.clock import DEFAULT_CIVIL_TIMEZONE, SYSTEM_CLOCK, Clock, civil_date
 from app.core.source_metadata import (
     PUBLIC_FESTIVAL_RULES,
     build_bs_claim_meta,
@@ -158,8 +159,15 @@ def build_compare_conversion_payload(gregorian_date: date, *, trace_id: str | No
     return conversion_service.build_compare_conversion_payload(gregorian_date, trace_id=trace_id)
 
 
-def build_today_payload(*, risk_mode: str = "standard", trace_id: str | None = None) -> dict[str, Any]:
-    today = date.today()
+def build_today_payload(
+    *,
+    risk_mode: str = "standard",
+    trace_id: str | None = None,
+    today: date | None = None,
+    clock: Clock = SYSTEM_CLOCK,
+    timezone_name: str = DEFAULT_CIVIL_TIMEZONE,
+) -> dict[str, Any]:
+    today = today or civil_date(clock=clock, timezone_name=timezone_name)
     bs_payload = build_bs_date_payload(today)
     tithi_payload = build_tithi_payload(today)
     meta = _calendar_meta(
@@ -574,8 +582,10 @@ def build_upcoming_festivals_payload(
     *,
     today: Optional[date] = None,
     trace_id: str | None = None,
+    clock: Clock = SYSTEM_CLOCK,
+    timezone_name: str = DEFAULT_CIVIL_TIMEZONE,
 ) -> dict[str, Any]:
-    today = today or date.today()
+    today = today or civil_date(clock=clock, timezone_name=timezone_name)
     end_date = today + timedelta(days=days)
     rule_service = get_rule_service()
     upcoming: list[dict[str, Any]] = []

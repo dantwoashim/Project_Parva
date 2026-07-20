@@ -10,6 +10,8 @@ A tithi boundary occurs when elongation = n × 12° (where n = 0, 1, 2, ... 29)
 from datetime import date, datetime, timedelta, timezone
 from typing import List, Optional, Tuple
 
+from app.core.clock import require_aware_datetime
+
 from ..ephemeris.positions import get_tithi_angle
 from .tithi_core import TITHI_SPAN, calculate_tithi
 
@@ -129,7 +131,10 @@ def get_tithi_window(dt: datetime) -> Tuple[datetime, datetime]:
 
 
 def find_next_tithi(
-    target_tithi: int, target_paksha: str, after: datetime = None, within_days: int = 60
+    target_tithi: int,
+    target_paksha: str,
+    after: date | datetime | None = None,
+    within_days: int = 60,
 ) -> Optional[datetime]:
     """
     Find the next occurrence of a specific tithi.
@@ -156,8 +161,8 @@ def find_next_tithi(
         after = datetime.now(timezone.utc)
     elif isinstance(after, date) and not isinstance(after, datetime):
         after = datetime.combine(after, datetime.min.time()).replace(tzinfo=timezone.utc)
-    elif isinstance(after, datetime) and after.tzinfo is None:
-        after = after.replace(tzinfo=timezone.utc)
+    elif isinstance(after, datetime):
+        require_aware_datetime(after, parameter="after")
 
     # Convert target to absolute tithi (1-30)
     if target_paksha == "krishna":

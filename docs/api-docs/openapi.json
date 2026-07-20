@@ -1175,15 +1175,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "proof",
@@ -1244,15 +1244,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           }
         ],
         "responses": {
@@ -1498,6 +1498,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -1541,6 +1553,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -1581,15 +1605,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "latitude",
@@ -1759,15 +1783,15 @@
                 }
               ],
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "risk_mode",
@@ -2115,6 +2139,18 @@
               "title": "Days"
             },
             "description": "Days to look ahead"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -4917,10 +4953,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2026,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "Start Year"
             }
           },
@@ -4929,12 +4971,30 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2051,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "End Year"
             }
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -12486,15 +12546,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "proof",
@@ -12575,15 +12635,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           }
         ],
         "responses": {
@@ -12869,6 +12929,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -12912,6 +12984,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -12952,15 +13036,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "latitude",
@@ -13130,15 +13214,15 @@
                 }
               ],
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "risk_mode",
@@ -13509,6 +13593,18 @@
               "title": "Days"
             },
             "description": "Days to look ahead"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -16353,10 +16449,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2026,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "Start Year"
             }
           },
@@ -16365,12 +16467,30 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2051,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "End Year"
             }
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {

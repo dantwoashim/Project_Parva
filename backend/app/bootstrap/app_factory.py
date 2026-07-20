@@ -29,6 +29,7 @@ from app.bootstrap.rate_limit import create_rate_limiter_backend
 from app.bootstrap.router_registry import register_routers
 from app.bootstrap.settings import load_settings, validate_settings
 from app.cache.precomputed import get_cache_stats, prewarm_hot_set
+from app.core.clock import SYSTEM_CLOCK
 from app.core.errors import build_error_payload
 from app.engine.ephemeris_config import get_ephemeris_config
 from app.festivals.repository import validate_festival_catalog
@@ -185,6 +186,7 @@ def _validate_startup(settings) -> tuple[dict[str, Any], object]:
 
 def _initialize_app_state(app: FastAPI, settings, startup_checks: dict[str, object]) -> None:
     app.state.started_at = datetime.now(timezone.utc)
+    app.state.clock = SYSTEM_CLOCK
     app.state.enable_experimental_api = settings.enable_experimental_api
     app.state.enable_research_api = settings.enable_research_api
     app.state.environment = settings.environment
