@@ -50,6 +50,20 @@ def parva_http_stub() -> Iterator[dict[str, Any]]:
                         "month_name": "Baishakh",
                     },
                 }
+            elif tool_name == "parva.get_capabilities":
+                result = {
+                    "public_tools": [
+                        "parva.convert_date",
+                        "parva.evaluate_compliance_date",
+                        "parva.get_benchmark_summary",
+                        "parva.get_capabilities",
+                        "parva.get_festival_date",
+                        "parva.get_fiscal_period",
+                        "parva.get_panchanga_summary",
+                        "parva.get_today",
+                        "parva.verify_temporal_claim",
+                    ]
+                }
             elif tool_name == "parva.get_benchmark_summary":
                 result = {
                     "task_count": 64,

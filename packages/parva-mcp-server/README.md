@@ -28,8 +28,8 @@ registry requires a separately verified publication record.
 
 ## Configure
 
-The default API origin is `https://api.prabinghimire1.com.np`. Override it for
-a self-hosted deployment:
+The default API origin is `https://project-parva-public-demo.onrender.com`.
+Override it for a self-hosted deployment:
 
 ```text
 PARVA_PUBLIC_ORIGIN=https://parva.example.com
@@ -53,7 +53,7 @@ Desktop client configuration:
       "command": "python",
       "args": ["-m", "parva_mcp_server.server", "--stdio"],
       "env": {
-        "PARVA_PUBLIC_ORIGIN": "https://api.prabinghimire1.com.np"
+        "PARVA_PUBLIC_ORIGIN": "https://project-parva-public-demo.onrender.com"
       }
     }
   }
@@ -103,7 +103,7 @@ Check local configuration without a network request:
 parva-mcp-server --check
 ```
 
-Check configuration and execute a live conversion:
+Check the required gateway capabilities and execute a live conversion:
 
 ```bash
 parva-mcp-server --check-live

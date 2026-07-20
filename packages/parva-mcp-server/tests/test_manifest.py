@@ -21,7 +21,12 @@ from parva_mcp_server.server import (
 class FakeClient:
     origin = "https://parva.test"
 
-    def __init__(self, response: dict[str, Any] | None = None) -> None:
+    def __init__(
+        self,
+        response: dict[str, Any] | None = None,
+        *,
+        public_tools: list[str] | None = None,
+    ) -> None:
         self.calls: list[dict[str, Any]] = []
         self.response = response or {
             "tool_name": "parva.convert_date",
@@ -29,9 +34,27 @@ class FakeClient:
             "decision": {"status": "approved", "requires_human_review": False},
             "meta": {"claim_boundary": "agent_temporal_reasoning_not_legal_authority"},
         }
+        self.public_tools = (
+            list(public_tools)
+            if public_tools is not None
+            else sorted(
+                {
+                    str(tool["agent_tool"])
+                    for tool in build_manifest()["tools"]
+                }
+                | {"parva.get_capabilities", "parva.get_benchmark_summary"}
+            )
+        )
 
     def request(self, method: str, route: str, payload: dict[str, Any]) -> dict[str, Any]:
         self.calls.append({"method": method, "route": route, "payload": payload})
+        if payload.get("tool_name") == "parva.get_capabilities":
+            return {
+                "tool_name": "parva.get_capabilities",
+                "result": {"public_tools": list(self.public_tools)},
+                "decision": {"status": "approved", "requires_human_review": False},
+                "meta": {"claim_boundary": "agent_temporal_reasoning_not_legal_authority"},
+            }
         return dict(self.response)
 
 
@@ -160,7 +183,19 @@ def test_live_server_check_executes_the_bridge() -> None:
     assert result["ok"] is True
     assert result["live_probe"]["ok"] is True
     assert result["live_probe"]["manifest_only"] is False
-    assert client.calls[0]["payload"]["tool_name"] == "parva.convert_date"
+    assert result["live_probe"]["required_agent_tool_count"] == 9
+    assert client.calls[0]["payload"]["tool_name"] == "parva.get_capabilities"
+    assert client.calls[1]["payload"]["tool_name"] == "parva.convert_date"
+
+
+def test_live_server_check_rejects_a_stale_gateway() -> None:
+    client = FakeClient(public_tools=["parva.convert_date", "parva.get_capabilities"])
+    result = check_server(live=True, client=client)
+
+    assert result["ok"] is False
+    assert result["live_probe"]["error"]["code"] == "MISSING_AGENT_CAPABILITIES"
+    assert "parva.get_festival_date" in result["live_probe"]["missing_agent_tools"]
+    assert len(client.calls) == 1
 
 
 def test_packaged_server_is_the_only_implementation() -> None:

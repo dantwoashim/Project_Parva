@@ -441,6 +441,40 @@ def check_server(*, live: bool = False, client: Any = None) -> dict[str, Any]:
         result["public_origin"] = getattr(configured_client, "origin", "injected-client")
     if live and not issues and configured_client is not None:
         try:
+            capabilities = _request_agent_tool(
+                "parva.get_capabilities",
+                {},
+                client=configured_client,
+            )
+            advertised_tools = _find_first(capabilities, "public_tools")
+            if not isinstance(advertised_tools, list) or not all(
+                isinstance(name, str) for name in advertised_tools
+            ):
+                raise TypeError("Project Parva returned an invalid agent capability list")
+            required_tools = {
+                str(tool["agent_tool"])
+                for tool in manifest["tools"]
+            } | {
+                "parva.get_capabilities",
+                "parva.get_benchmark_summary",
+            }
+            missing_tools = sorted(required_tools - set(advertised_tools))
+            if missing_tools:
+                result["ok"] = False
+                result["live_probe"] = {
+                    "ok": False,
+                    "error": {
+                        "code": "MISSING_AGENT_CAPABILITIES",
+                        "message": (
+                            "The configured Project Parva gateway is missing "
+                            "required MCP capabilities."
+                        ),
+                    },
+                    "missing_agent_tools": missing_tools,
+                    "required_agent_tool_count": len(required_tools),
+                    "advertised_agent_tool_count": len(set(advertised_tools)),
+                }
+                return result
             probe = call_tool(
                 "convert_ad_to_bs",
                 {"date": "2026-04-14"},
@@ -459,6 +493,8 @@ def check_server(*, live: bool = False, client: Any = None) -> dict[str, Any]:
                 "tool_name": probe.get("tool_name"),
                 "review_required": probe["review_required"],
                 "claim_boundary": probe["claim_boundary"],
+                "required_agent_tool_count": len(required_tools),
+                "advertised_agent_tool_count": len(set(advertised_tools)),
             }
     return result
 
@@ -484,7 +520,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--check-live",
         action="store_true",
-        help="Validate configuration and execute one live API probe.",
+        help="Validate gateway capabilities and execute one live API probe.",
     )
     parser.add_argument("--stdio", action="store_true", help="Run the stdio MCP server.")
     parser.add_argument("--version", action="store_true", help="Print the package version.")

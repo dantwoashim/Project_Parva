@@ -3,7 +3,13 @@ from __future__ import annotations
 from typing import Any
 
 from parva_mcp_server.client import ParvaClientError, ParvaPublicClient, validate_public_origin
-from parva_mcp_server.manifest import AGENT_GATEWAY_ROUTE
+from parva_mcp_server.manifest import AGENT_GATEWAY_ROUTE, DEFAULT_PUBLIC_ORIGIN
+
+
+def test_http_client_uses_the_verified_public_origin_by_default(monkeypatch: Any) -> None:
+    monkeypatch.delenv("PARVA_PUBLIC_ORIGIN", raising=False)
+
+    assert ParvaPublicClient().origin == DEFAULT_PUBLIC_ORIGIN
 
 
 def test_http_client_calls_only_the_agent_gateway(parva_http_stub: dict[str, Any]) -> None:

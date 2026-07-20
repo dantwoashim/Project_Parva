@@ -52,8 +52,9 @@ python -m parva_mcp_server.server --check-live
 ```
 
 `--stdio` runs the MCP server through the official Python SDK. `--manifest` and
-`--check` are offline diagnostics. `--check-live` executes one conversion
-through the configured Project Parva agent gateway.
+`--check` are offline diagnostics. `--check-live` verifies every MCP-required
+agent capability and executes one conversion through the configured Project
+Parva agent gateway.
 
 ## Security Model
 
