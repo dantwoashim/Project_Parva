@@ -2,7 +2,7 @@
 status: public-beta
 tier: 1
 lane: core
-last_verified: 2026-05-14
+last_verified: 2026-07-20
 owner: platform-team
 ---
 
@@ -22,3 +22,6 @@ Public preview endpoints:
 - `POST /v3/api/agent/run-tool`
 
 The agent claim boundary is `agent_temporal_reasoning_not_legal_authority`.
+
+`run-tool` is the single HTTP execution boundary used by the MCP server. Invalid
+tool input returns a structured 4xx response with an agent error code.

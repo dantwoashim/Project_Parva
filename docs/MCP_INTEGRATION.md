@@ -1,38 +1,48 @@
 ---
-status: public-preview
-audience: agent-tooling
+status: stable
+tier: 1
+lane: dx
+last_verified: 2026-07-20
+owner: dx-team
 ---
 
 # MCP Integration
 
-Parva MCP is optional and thin. It sits after the public tool-wrapper layer and
-exposes only read-only public-safe capabilities.
+The canonical MCP implementation lives in `packages/parva-mcp-server`. It uses
+the official MCP Python SDK and stdio transport. The repository-root package
+only extends the source path for local execution, and `integrations/mcp/server.py`
+is a compatibility entrypoint. Both resolve to the packaged server.
 
-The package lives in `packages/parva-mcp-server`. Its manifest exposes public
-resources for capabilities, route maturity, source policy, supported ranges,
-known limitations, and benchmark summary. The tool list mirrors the safe public
-tool surface: conversion, today's Nepali date, holiday/working-day support,
-fiscal year, festival date, panchanga summary, and temporal claim checking.
+All nine MCP tools execute through:
 
-The live server command is:
+```text
+POST /v3/api/agent/run-tool
+```
+
+The adapter maps each MCP tool to one allowlisted `parva.*` agent tool. Calendar,
+festival, compliance, fiscal, panchanga, and claim logic stays in Project Parva's
+service layer.
+
+Run locally:
 
 ```bash
+python -m pip install -e "packages/parva-mcp-server[test]"
+python -m parva_mcp_server.server --check
+python -m parva_mcp_server.server --check-live
 python -m parva_mcp_server.server --stdio
 ```
 
-`--manifest` prints the descriptor and exits. `--check` validates the descriptor
-and exits. Only `--stdio` starts the long-running JSON-RPC server process that a
-desktop MCP client can launch.
+`--check` validates schemas, the manifest, the origin, and execution policy
+without making a network request. `--check-live` also performs a conversion
+through the configured API.
 
-Distribution metadata lives in `packages/parva-mcp-server/mcp-server.json` and
-can be checked with:
+Verification:
 
 ```bash
+python -m pytest packages/parva-mcp-server/tests -q
 python scripts/release/check_mcp_registry_metadata.py
+python -m build packages/parva-mcp-server
 ```
 
-The package is ready for submission. It is not accepted, listed, endorsed, or
-certified by an external registry unless a separate registry entry proves that.
-
-MCP must not become core runtime. Public verification and SDK adoption remain
-higher priority than MCP exposure.
+The package is prepared for registry submission. Registry acceptance, listing,
+endorsement, and certification require separate external evidence.

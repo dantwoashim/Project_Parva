@@ -1,28 +1,23 @@
 ---
-status: public-beta
-tier: 2
-lane: dx
-last_verified: 2026-05-14
-owner: dx-team
+status: compatibility
+last_verified: 2026-07-20
 ---
 
-# Parva MCP Integration
+# MCP Compatibility Entrypoint
 
-This directory contains a minimal Model Context Protocol integration scaffold for
-Project Parva's agent-safe temporal tools.
+`server.py` forwards to the canonical package in `packages/parva-mcp-server`.
+It contains no tool registry, transport implementation, or manifest of its own.
 
-## Files
-
-- `parva_mcp_manifest.json`: local tool manifest for MCP host wiring.
-- `server.py`: stdio JSON-RPC scaffold for safe public tools.
-
-The integration is intentionally bounded. It exposes only public, deterministic,
-agent-safe operations and must preserve human-review behavior for payroll,
-banking, legal, fiscal, future, private-source, disputed-source, and
-official-source-sensitive claims.
-
-## Verification
+Existing commands remain valid:
 
 ```bash
-python integrations/mcp/server.py --manifest
+python integrations/mcp/server.py --check
+python integrations/mcp/server.py --check-live
+python integrations/mcp/server.py --stdio
+```
+
+New integrations should launch:
+
+```bash
+python -m parva_mcp_server.server --stdio
 ```

@@ -1,22 +1,66 @@
 # Parva MCP Server
 
-This package is a thin, optional, read-only MCP stdio server for Project Parva
-public temporal capabilities.
+`parva-mcp-server` is the read-only Model Context Protocol server for Project
+Parva. It exposes nine Nepali temporal tools over stdio and executes every tool
+through one public boundary:
 
-It is not the core runtime. It does not call private Future-BS prediction,
-private source audit, admin, billing, trust mutation, shell execution, or
-filesystem write surfaces.
+```text
+MCP client
+  -> parva-mcp-server
+  -> POST /v3/api/agent/run-tool
+  -> Project Parva temporal services
+```
 
-Resources:
+The server uses the official MCP Python SDK. Tool calls return live structured
+results, including the source, confidence, evidence, claim boundary, and human
+review status supplied by Project Parva.
 
-- `parva://capabilities`
-- `parva://route-maturity`
-- `parva://source-policy`
-- `parva://supported-ranges`
-- `parva://known-limitations`
-- `parva://benchmark-summary`
+## Install
 
-Tools:
+Python 3.11 is required. Install from a repository checkout:
+
+```bash
+python -m pip install -e "packages/parva-mcp-server[test]"
+```
+
+The distribution name is `parva-mcp-server`. Availability from a package
+registry requires a separately verified publication record.
+
+## Configure
+
+The default API origin is `https://api.prabinghimire1.com.np`. Override it for
+a self-hosted deployment:
+
+```text
+PARVA_PUBLIC_ORIGIN=https://parva.example.com
+```
+
+Optional settings:
+
+- `PARVA_HTTP_TIMEOUT_SECONDS`: request timeout from 1 to 120 seconds; default 30.
+- `PARVA_MAX_RESPONSE_BYTES`: response limit from 1 KiB to 8 MiB; default 2 MiB.
+- `PARVA_API_TOKEN`: bearer token for a protected self-hosted API.
+
+Plain HTTP origins are accepted only for `localhost`, `127.0.0.1`, and `::1`.
+Redirects are blocked.
+
+Desktop client configuration:
+
+```json
+{
+  "mcpServers": {
+    "project-parva": {
+      "command": "python",
+      "args": ["-m", "parva_mcp_server.server", "--stdio"],
+      "env": {
+        "PARVA_PUBLIC_ORIGIN": "https://api.prabinghimire1.com.np"
+      }
+    }
+  }
+}
+```
+
+## Tools
 
 - `convert_bs_to_ad`
 - `convert_ad_to_bs`
@@ -28,43 +72,76 @@ Tools:
 - `get_panchanga_summary`
 - `check_temporal_claim`
 
-Prompts:
+Each tool has a closed JSON Schema with required fields, types, limits, date
+formats, and parameter descriptions. Invalid arguments are returned as MCP tool
+errors before an HTTP request is sent.
 
-- `explain_nepali_date_safely`
-- `check_claim_with_sources`
-- `plan_schedule_with_review_gates`
+## Resources
 
-Parva MCP is decision support only. It is not official government, legal, tax,
-banking, payroll, future-date, or religious authority.
+- `parva://capabilities`
+- `parva://route-maturity`
+- `parva://source-policy`
+- `parva://supported-ranges`
+- `parva://known-limitations`
+- `parva://benchmark-summary`
+
+Capabilities and benchmark metadata are read from the live agent gateway. The
+benchmark resource therefore follows the generated benchmark artifact instead
+of embedding a score in package source.
 
 ## Commands
 
-`--manifest` prints the safe manifest and exits:
+Run the server:
 
 ```bash
-python -m parva_mcp_server.server --manifest
+parva-mcp-server --stdio
 ```
 
-`--check` validates the manifest and public tool surface and exits:
+Check local configuration without a network request:
 
 ```bash
-python -m parva_mcp_server.server --check
+parva-mcp-server --check
 ```
 
-`--stdio` runs the live newline-delimited JSON-RPC MCP server process used by
-desktop MCP clients and other stdio launchers:
+Check configuration and execute a live conversion:
 
 ```bash
-python -m parva_mcp_server.server --stdio
+parva-mcp-server --check-live
 ```
 
-Example smoke request:
+Print the deterministic descriptor:
 
 ```bash
-echo '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | python -m parva_mcp_server.server --stdio
+parva-mcp-server --manifest
 ```
 
-The stdio server does not execute shell commands, write files, expose private
-routes, or return exact unsupported Future-BS predictions. Without a configured
-API client it returns `manifest_only` tool results containing route, method,
-`claim_boundary`, `review_required`, and `not_authority`.
+## Error Model
+
+Protocol and schema handling is owned by the official MCP SDK. Project Parva
+execution failures use MCP `CallToolResult` with `isError: true` and a structured
+error code. Timeouts, network failures, HTTP errors, oversized responses, and
+invalid JSON are bounded and sanitized. Standard output contains MCP messages
+only.
+
+## Security Boundary
+
+The server cannot execute shell commands, write files, select arbitrary URLs,
+or call arbitrary API routes. Every operation maps to the fixed public agent
+gateway. Private Future-BS research, admin, billing, key, webhook, and trust
+mutation routes stay outside the manifest.
+
+Project Parva is decision support. Government publications and institutional
+policy remain authoritative for official, legal, banking, payroll, tax, and
+religious decisions.
+
+## Verify
+
+```bash
+python -m pytest packages/parva-mcp-server/tests -q
+python scripts/release/check_mcp_registry_metadata.py
+python -m build packages/parva-mcp-server
+```
+
+The test suite launches the server through the official MCP client and checks
+initialization, ping, typed tool discovery, live gateway calls, resources,
+prompts, schema failures, and sanitized API errors.

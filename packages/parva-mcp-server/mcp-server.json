@@ -1,6 +1,7 @@
 {
   "claim_boundary": "decision_support_not_authority",
-  "description": "Read-only MCP adapter for public-safe Project Parva Nepali temporal tools.",
+  "description": "Production read-only MCP server for public-safe Project Parva temporal tools.",
+  "execution_route": "/v3/api/agent/run-tool",
   "forbidden_routes": [
     "/admin/",
     "/billing/",
@@ -18,6 +19,13 @@
   ],
   "license": "AGPL-3.0-or-later",
   "name": "parva-mcp-server",
+  "protocol_implementation": "official-mcp-python-sdk",
+  "protocol_versions": [
+    "2024-11-05",
+    "2025-03-26",
+    "2025-06-18",
+    "2025-11-25"
+  ],
   "prompts": [
     "explain_nepali_date_safely",
     "check_claim_with_sources",
@@ -54,5 +62,5 @@
     "check_temporal_claim"
   ],
   "transport": "stdio",
-  "version": "0.3.0a0"
+  "version": "1.0.0"
 }

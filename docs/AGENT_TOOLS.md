@@ -2,7 +2,7 @@
 status: public-beta
 tier: 1
 lane: core
-last_verified: 2026-05-14
+last_verified: 2026-07-20
 owner: platform-team
 ---
 
@@ -24,6 +24,9 @@ Public preview tools include:
 - `parva.simulate_impact`
 - `parva.check_human_review_required`
 - `parva.get_capabilities`
+- `parva.get_festival_date`
+- `parva.get_panchanga_summary`
+- `parva.get_benchmark_summary`
 
 All tools are allowlisted. The public run-tool endpoint cannot execute arbitrary code or arbitrary routes.
 

@@ -2,7 +2,9 @@
 
 Package name: `parva-mcp-server`
 
-Description: read-only MCP adapter for public-safe Project Parva Nepali
+Version: `1.0.0`
+
+Description: production read-only MCP server for public-safe Project Parva
 temporal tools.
 
 Status: ready for submission. This repository does not claim registry
@@ -32,10 +34,12 @@ acceptance, listing, endorsement, or external certification.
 ## Install And Run
 
 ```bash
+# Run these commands after registry publication is independently verified.
 python -m pip install parva-mcp-server
 parva-mcp-server --stdio
 parva-mcp-server --manifest
 parva-mcp-server --check
+parva-mcp-server --check-live
 ```
 
 Local repository run:
@@ -44,10 +48,12 @@ Local repository run:
 python -m parva_mcp_server.server --stdio
 python -m parva_mcp_server.server --manifest
 python -m parva_mcp_server.server --check
+python -m parva_mcp_server.server --check-live
 ```
 
-`--stdio` runs the live MCP JSON-RPC server. `--manifest` and `--check` are
-diagnostic commands that print and exit.
+`--stdio` runs the MCP server through the official Python SDK. `--manifest` and
+`--check` are offline diagnostics. `--check-live` executes one conversion
+through the configured Project Parva agent gateway.
 
 ## Security Model
 
@@ -56,6 +62,9 @@ diagnostic commands that print and exit.
 - no filesystem writes
 - no private, research, admin, billing, key, webhook, or trust mutation routes
 - no exact unsupported Future-BS predictions
+- one fixed HTTP execution route: `/v3/api/agent/run-tool`
+- bounded timeout and response size
+- redirects blocked
 - no public authority claim
 
 Parva MCP is decision support only. It is not government, legal, tax, banking,
