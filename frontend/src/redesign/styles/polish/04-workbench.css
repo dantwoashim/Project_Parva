@@ -1,0 +1,263 @@
+/* Workbench */
+
+.workspace-masthead {
+  position: relative;
+  min-height: 132px;
+  padding: 12px 4px 18px 20px;
+  border-left: 4px solid var(--forest-600);
+}
+
+.workspace-heading h1 {
+  font-size: clamp(2.25rem, 4.2vw, 3.4rem);
+  font-weight: 780;
+}
+
+.workspace-status > span {
+  animation: status-pulse 2.8s var(--ease-out) infinite;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(44, 168, 121, 0.12);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(44, 168, 121, 0);
+  }
+}
+
+.workspace-now > div:nth-child(1) dd {
+  color: var(--vermillion-700);
+}
+
+.workspace-now > div:nth-child(2) dd {
+  color: var(--blue-700);
+}
+
+.workspace-now > div:nth-child(3) dd {
+  color: var(--forest-700);
+}
+
+.workbench-shell {
+  --tool-accent: var(--vermillion-500);
+  --tool-accent-strong: var(--vermillion-700);
+  --tool-soft: var(--vermillion-50);
+  border-color: color-mix(in srgb, var(--tool-accent) 22%, var(--line));
+  box-shadow: 0 18px 46px rgba(16, 35, 30, 0.09);
+}
+
+.workbench-shell[data-active-tool="panchanga"] {
+  --tool-accent: var(--gold-500);
+  --tool-accent-strong: var(--gold-800);
+  --tool-soft: var(--gold-50);
+}
+
+.workbench-shell[data-active-tool="festivals"] {
+  --tool-accent: var(--rose-500);
+  --tool-accent-strong: var(--rose-800);
+  --tool-soft: var(--rose-50);
+}
+
+.workbench-shell[data-active-tool="fiscal"] {
+  --tool-accent: var(--blue-500);
+  --tool-accent-strong: var(--blue-800);
+  --tool-soft: var(--blue-50);
+}
+
+.workbench-shell[data-active-tool="future"] {
+  --tool-accent: var(--orchid-500);
+  --tool-accent-strong: var(--orchid-800);
+  --tool-soft: var(--orchid-50);
+}
+
+.tool-switcher {
+  background: var(--surface-soft);
+}
+
+.tool-switcher button {
+  --tab-accent: var(--forest-600);
+  --tab-soft: var(--forest-50);
+  min-height: 72px;
+}
+
+.tool-switcher button:nth-child(1) {
+  --tab-accent: var(--vermillion-500);
+  --tab-soft: var(--vermillion-50);
+}
+
+.tool-switcher button:nth-child(2) {
+  --tab-accent: var(--gold-700);
+  --tab-soft: var(--gold-50);
+}
+
+.tool-switcher button:nth-child(3) {
+  --tab-accent: var(--rose-500);
+  --tab-soft: var(--rose-50);
+}
+
+.tool-switcher button:nth-child(4) {
+  --tab-accent: var(--blue-500);
+  --tab-soft: var(--blue-50);
+}
+
+.tool-switcher button:nth-child(5) {
+  --tab-accent: var(--orchid-500);
+  --tab-soft: var(--orchid-50);
+}
+
+.tool-switcher button:hover {
+  background: var(--tab-soft);
+  color: var(--tab-accent);
+}
+
+.tool-switcher button.is-active {
+  background: var(--tab-soft);
+  color: var(--tab-accent);
+  box-shadow: inset 0 -4px 0 var(--tab-accent);
+}
+
+.tool-switcher button.is-active svg {
+  color: var(--tab-accent);
+  transform: scale(1.08);
+}
+
+.tool-canvas {
+  position: relative;
+}
+
+.tool-canvas::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--tool-accent);
+  opacity: 0.72;
+}
+
+.tool-canvas .tool-kicker,
+.tool-canvas .festival-list-card__expand {
+  color: var(--tool-accent-strong);
+}
+
+.tool-canvas .run-button {
+  border-color: var(--tool-accent-strong);
+  background: var(--tool-accent-strong);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--tool-accent) 22%, transparent);
+}
+
+.tool-canvas .run-button:hover {
+  border-color: var(--tool-accent);
+  background: var(--tool-accent);
+}
+
+.tool-canvas[data-active-tool="convert"] .result-stage {
+  border-color: color-mix(in srgb, var(--forest-600) 30%, var(--line));
+  border-left-color: var(--forest-600);
+  background: var(--forest-50);
+}
+
+.panchanga-readout > div:nth-child(1) {
+  background: var(--gold-50);
+}
+
+.panchanga-readout > div:nth-child(2) {
+  background: var(--turquoise-50);
+}
+
+.panchanga-readout > div:nth-child(3) {
+  background: var(--blue-50);
+}
+
+.panchanga-readout > div:nth-child(4) {
+  background: var(--orchid-50);
+}
+
+.panchanga-readout > div:nth-child(1) strong {
+  color: var(--gold-800);
+}
+
+.panchanga-readout > div:nth-child(2) strong {
+  color: var(--turquoise-800);
+}
+
+.panchanga-readout > div:nth-child(3) strong {
+  color: var(--blue-800);
+}
+
+.panchanga-readout > div:nth-child(4) strong {
+  color: var(--orchid-800);
+}
+
+.festival-rail > a {
+  border-radius: var(--radius-md);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.festival-rail > a:hover {
+  background: var(--rose-50);
+  transform: translateX(3px);
+}
+
+.festival-index {
+  color: var(--rose-700);
+}
+
+.month-length-chart > span:nth-child(4n + 1) {
+  background: var(--blue-100);
+  color: var(--blue-800);
+}
+
+.month-length-chart > span:nth-child(4n + 2) {
+  background: var(--forest-100);
+  color: var(--forest-800);
+}
+
+.month-length-chart > span:nth-child(4n + 3) {
+  background: var(--gold-100);
+  color: var(--gold-800);
+}
+
+.month-length-chart > span:nth-child(4n) {
+  background: var(--rose-100);
+  color: var(--rose-800);
+}
+
+.future-status-mark {
+  border-color: var(--orchid-100);
+  background: var(--orchid-50);
+  color: var(--orchid-700);
+}
+
+.request-dock {
+  border-top-color: color-mix(in srgb, var(--tool-accent) 20%, var(--line));
+  background: color-mix(in srgb, var(--tool-soft) 46%, var(--surface-soft));
+}
+
+.request-dock > div svg {
+  color: var(--tool-accent);
+}
+
+.endpoint-atlas {
+  border-top-color: color-mix(in srgb, var(--blue-500) 20%, var(--line));
+}
+
+.atlas-groups button.is-active {
+  border-color: var(--blue-500);
+  background: var(--blue-50);
+  color: var(--blue-800);
+}
+
+.endpoint-list article {
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.endpoint-list article:hover {
+  border-color: color-mix(in srgb, var(--blue-500) 28%, var(--line));
+  background: var(--blue-50);
+  transform: translateX(3px);
+}

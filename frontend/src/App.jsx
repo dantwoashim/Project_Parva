@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from '@parva/router';
 import { ErrorBoundary } from './components/UI/ErrorBoundary';
 import { TemporalProvider } from './context/TemporalContext';
 import { MemberProvider } from './context/MemberContext';

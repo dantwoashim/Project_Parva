@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@parva/router';
 import { sourceDots } from '../redesignStaticData';
 
 export function Confidence({ value, label = 'Source confidence' }) {

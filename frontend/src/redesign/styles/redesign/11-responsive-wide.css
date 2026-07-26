@@ -1,0 +1,73 @@
+/* Responsive */
+
+@media (max-width: 1280px) {
+  .planner-shell {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  .selected-window {
+    grid-column: 1 / -1;
+  }
+
+  .birth-workspace {
+    grid-template-columns: 290px minmax(0, 1fr);
+  }
+
+  .birth-brief {
+    grid-column: 1 / -1;
+  }
+
+  .pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1040px) {
+  .parva-topbar {
+    grid-template-columns: auto minmax(220px, 1fr) auto;
+    padding-inline: 18px;
+  }
+
+  .today-main,
+  .place-workspace,
+  .panchanga-workspace,
+  .detail-workspace,
+  .detail-main {
+    grid-template-columns: 1fr;
+  }
+
+  .side-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .place-sidebar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .map-panel {
+    min-height: 420px;
+  }
+
+  .panchanga-workspace .converter-card,
+  .panchanga-workspace .provenance-card {
+    align-self: stretch;
+  }
+
+  .panchanga-workspace {
+    grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
+  }
+
+  .panchanga-workspace .provenance-card {
+    grid-column: 1 / -1;
+  }
+
+  .detail-hero {
+    grid-template-columns: 1fr 250px;
+  }
+
+  .trust-hero-grid,
+  .trust-evidence-grid,
+  .infrastructure-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

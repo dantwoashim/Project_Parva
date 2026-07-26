@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from '@parva/router';
 import App from '../../App';
 
 const routeLoadOptions = { timeout: 15000 };

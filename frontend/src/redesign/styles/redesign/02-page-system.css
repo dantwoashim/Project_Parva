@@ -1,0 +1,308 @@
+/* Shared page system */
+
+.page-shell,
+.workspace-page,
+.trust-page-shell,
+.benchmark-page {
+  width: min(calc(100% - 48px), 1400px);
+  margin: 0 auto;
+  padding: 28px 0 20px;
+}
+
+.page-shell {
+  display: grid;
+  gap: 20px;
+}
+
+.page-hero {
+  min-height: 112px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 12px 0 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-hero > div:first-child {
+  max-width: 780px;
+}
+
+.page-hero h1 {
+  color: var(--text-primary);
+  font-size: clamp(1.85rem, 3vw, 2.6rem);
+  font-weight: 740;
+  line-height: 1.08;
+}
+
+.page-hero > div:first-child > p:last-child {
+  max-width: 720px;
+  margin-top: 9px;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.eyebrow,
+.tool-kicker {
+  color: var(--forest-700);
+  font-size: 0.68rem;
+  font-weight: 760;
+  text-transform: uppercase;
+}
+
+.hero-action,
+.hero-actions,
+.public-cta-row,
+.integration-actions,
+.best-next-actions,
+.festival-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.hero-actions a,
+.hero-actions button,
+.primary-button,
+.ghost-button,
+.inline-button,
+.subscribe-calendar-button,
+.festival-filter-actions button,
+.best-next-actions button,
+.best-next-actions a {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 680;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.primary-button,
+.festival-filter-actions .primary-button {
+  border-color: var(--vermillion-600);
+  background: var(--vermillion-600);
+  color: #ffffff;
+}
+
+.primary-button:hover,
+.festival-filter-actions .primary-button:hover {
+  border-color: var(--vermillion-700);
+  background: var(--vermillion-700);
+  transform: translateY(-1px);
+}
+
+.ghost-button:hover,
+.hero-actions a:hover,
+.hero-actions button:hover {
+  border-color: var(--line-strong);
+  background: var(--surface-soft);
+}
+
+.primary-button:disabled,
+.ghost-button:disabled {
+  opacity: 0.48;
+  transform: none;
+}
+
+.text-link {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--forest-700);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.text-link:hover {
+  color: var(--vermillion-600);
+}
+
+.panel,
+.trust-metric-card,
+.infrastructure-grid > *,
+.pricing-card,
+.integration-card,
+.festival-list-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+}
+
+.panel {
+  padding: 20px;
+}
+
+.panel h2,
+.trust-metric-card h2,
+.public-brief-page h2 {
+  color: var(--text-primary);
+  font-size: 1.12rem;
+  font-weight: 710;
+  line-height: 1.25;
+}
+
+.panel p {
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+}
+
+.panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.panel-heading.tight {
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.panel-note,
+.festival-muted-note {
+  color: var(--text-muted) !important;
+  font-size: 0.76rem !important;
+}
+
+.verification-strip,
+.planner-validation-strip,
+.date-semantics-strip,
+.birth-trust-strip,
+.festival-status-bar,
+.trust-limits-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.verification-strip > div,
+.planner-validation-strip > div,
+.date-semantics-strip > div,
+.birth-trust-strip > div,
+.trust-limits-strip > div {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+  padding: 15px 17px;
+  border-right: 1px solid var(--line);
+}
+
+.verification-strip > div:last-child,
+.planner-validation-strip > div:last-child,
+.date-semantics-strip > div:last-child,
+.birth-trust-strip > div:last-child,
+.trust-limits-strip > div:last-child {
+  border-right: 0;
+}
+
+.verification-strip span,
+.planner-validation-strip span,
+.date-semantics-strip span,
+.birth-trust-strip span,
+.trust-limits-strip span {
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  font-weight: 680;
+  text-transform: uppercase;
+}
+
+.verification-strip strong,
+.planner-validation-strip strong,
+.date-semantics-strip strong,
+.birth-trust-strip strong,
+.trust-limits-strip strong {
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.verification-strip small,
+.planner-validation-strip small,
+.date-semantics-strip small,
+.birth-trust-strip small,
+.trust-limits-strip small {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+label {
+  color: var(--text-secondary);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text-primary);
+  outline: 0;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--forest-600);
+  box-shadow: 0 0 0 3px rgba(22, 114, 93, 0.12);
+}
+
+.field-control {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.field-control > span,
+.birth-form label,
+.converter-card label,
+.checkout-panel label,
+.api-key-reveal label {
+  font-size: 0.72rem;
+  font-weight: 680;
+}
+
+.close-button,
+.icon-action {
+  width: 40px;
+  height: 40px;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text-muted);
+}
+
+.close-button:hover,
+.icon-action:hover {
+  background: var(--surface-soft);
+  color: var(--text-primary);
+}

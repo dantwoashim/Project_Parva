@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Link, NavLink, useLocation, useParams } from 'react-router-dom';
+import { Link, NavLink, useLocation, useParams } from '@parva/router';
 import { m as Motion } from 'motion/react';
 import {
   ArrowLeftRight,

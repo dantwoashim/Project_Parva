@@ -1,0 +1,663 @@
+/* Festival catalog and detail */
+
+.festivals-page .page-hero {
+  border-bottom-color: color-mix(in srgb, var(--rose-500) 28%, var(--line));
+}
+
+.festival-search-control {
+  position: relative;
+}
+
+.festival-search-control > span,
+.sort-control > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--rose-800);
+  font-size: 0.65rem;
+  font-weight: 720;
+}
+
+.festival-search-control > span svg,
+.sort-control > span svg {
+  width: 14px;
+  height: 14px;
+}
+
+.festival-search-control input {
+  min-width: 250px;
+}
+
+.filter-open-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-color: color-mix(in srgb, var(--rose-500) 30%, var(--line));
+  background: var(--rose-50);
+  color: var(--rose-800);
+}
+
+.filter-open-button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.festival-status-bar {
+  position: sticky;
+  top: 86px;
+  z-index: 12;
+  grid-template-columns: minmax(0, 1fr) auto;
+  background: color-mix(in srgb, var(--surface) 94%, var(--rose-50));
+  box-shadow: 0 8px 24px rgba(131, 35, 66, 0.07);
+}
+
+.festival-status-bar > div {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.festival-status-bar > div strong {
+  color: var(--rose-800);
+  font-size: 1.35rem;
+}
+
+.festival-month-group {
+  gap: 10px;
+}
+
+.festival-month-heading {
+  position: relative;
+  padding: 22px 4px 8px 18px;
+}
+
+.festival-month-heading::before {
+  content: "";
+  position: absolute;
+  inset: 21px auto 7px 3px;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--gold-500);
+}
+
+.festival-month-heading h2 {
+  color: var(--rose-800);
+  font-size: 1.1rem;
+}
+
+.festival-list-card {
+  --festival-accent: var(--rose-500);
+  --festival-accent-strong: var(--rose-800);
+  --festival-soft: var(--rose-50);
+  overflow: clip;
+  border-color: color-mix(in srgb, var(--festival-accent) 22%, var(--line));
+}
+
+.festival-list-card.tone-orange {
+  --festival-accent: var(--vermillion-500);
+  --festival-accent-strong: var(--vermillion-700);
+  --festival-soft: var(--vermillion-50);
+}
+
+.festival-list-card.tone-gold {
+  --festival-accent: var(--gold-500);
+  --festival-accent-strong: var(--gold-800);
+  --festival-soft: var(--gold-50);
+}
+
+.festival-list-card.tone-green {
+  --festival-accent: var(--forest-600);
+  --festival-accent-strong: var(--forest-800);
+  --festival-soft: var(--forest-50);
+}
+
+.festival-list-card.tone-red {
+  --festival-accent: var(--rose-500);
+  --festival-accent-strong: var(--rose-800);
+  --festival-soft: var(--rose-50);
+}
+
+.festival-list-card:hover,
+.festival-list-card.is-expanded {
+  border-color: color-mix(in srgb, var(--festival-accent) 58%, var(--line));
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--festival-accent) 12%, transparent);
+  transform: translateY(-2px);
+}
+
+.festival-list-card__button {
+  min-height: 116px;
+  grid-template-columns: 72px 138px minmax(0, 1fr);
+}
+
+.festival-date-rail {
+  border-right-color: color-mix(in srgb, var(--festival-accent) 22%, var(--line));
+  background: var(--festival-soft);
+}
+
+.festival-date-rail strong {
+  color: var(--festival-accent-strong);
+  font-size: 1.7rem;
+}
+
+.festival-list-card__media {
+  min-height: 116px;
+  border-right-color: color-mix(in srgb, var(--festival-accent) 18%, var(--line));
+  background: var(--festival-soft);
+}
+
+.festival-art {
+  min-height: 116px;
+  color: var(--festival-accent-strong, var(--rose-800));
+}
+
+.festival-art img {
+  position: absolute;
+  inset: 0;
+  transition: transform 520ms var(--ease-emphasized);
+}
+
+.festival-results-shell {
+  min-height: 72vh;
+}
+
+.endpoint-atlas--loading {
+  min-height: 560px;
+}
+
+.atlas-loading-grid {
+  display: grid;
+  gap: 1px;
+  margin-top: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--line);
+}
+
+.atlas-loading-grid span {
+  min-height: 68px;
+  background: var(--surface);
+  animation: atlas-loading-breathe 900ms var(--ease-emphasized) infinite alternate;
+}
+
+.atlas-loading-grid span:nth-child(2n) {
+  animation-delay: 90ms;
+}
+
+@keyframes atlas-loading-breathe {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+.today-page .page-hero > div:first-child > p:last-child {
+  min-height: 3em;
+}
+
+.today-page .verification-strip {
+  min-height: 88px;
+}
+
+.today-page .observance-row,
+.today-page .best-window-row {
+  min-height: 90px;
+}
+
+.today-page .timeline-list {
+  min-height: 232px;
+}
+
+.festival-list-card:hover .festival-art img,
+.festival-detail-hero:hover .festival-art img {
+  transform: scale(1.035);
+}
+
+.festival-art.has-image .festival-art__glyph,
+.festival-art.has-image .festival-art__halo,
+.festival-art.has-image .festival-art__line {
+  display: none;
+}
+
+.festival-list-card__body {
+  padding: 15px 20px;
+}
+
+.festival-list-card__kicker em {
+  border: 1px solid color-mix(in srgb, var(--festival-accent) 18%, var(--line));
+  background: var(--festival-soft);
+  color: var(--festival-accent-strong);
+}
+
+.festival-list-card__main > strong {
+  color: var(--festival-accent-strong);
+  font-size: 1.08rem;
+}
+
+.festival-list-card__expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  color: var(--festival-accent-strong);
+}
+
+.festival-list-card__expand svg {
+  width: 15px;
+  height: 15px;
+}
+
+.festival-list-card__quick-actions,
+.festival-list-card__actions {
+  border-top-color: color-mix(in srgb, var(--festival-accent) 16%, var(--line));
+  background: color-mix(in srgb, var(--festival-soft) 62%, var(--surface));
+}
+
+.festival-list-card__quick-actions :where(button, a):hover,
+.festival-list-card__actions :where(button, a):hover {
+  border-color: var(--festival-accent);
+  background: var(--festival-soft);
+  color: var(--festival-accent-strong);
+  transform: translateY(-1px);
+}
+
+.festival-list-card__quick-actions :where(button, a),
+.festival-list-card__actions :where(button, a) {
+  gap: 6px;
+}
+
+.festival-list-card__quick-actions :where(button, a) svg,
+.festival-list-card__actions :where(button, a) svg {
+  width: 14px;
+  height: 14px;
+}
+
+.festival-load-more {
+  display: grid;
+  place-items: center;
+  padding: 18px 0 4px;
+}
+
+.festival-load-more > button {
+  display: inline-grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-width: min(100%, 290px);
+  min-height: 58px;
+  padding: 8px 14px;
+  border: 1px solid var(--rose-100);
+  border-radius: var(--radius-md);
+  color: var(--rose-800);
+  text-align: left;
+  background: var(--rose-50);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.festival-load-more > button:hover {
+  border-color: var(--rose-500);
+  box-shadow: 0 9px 22px rgba(217, 78, 120, 0.12);
+  transform: translateY(-1px);
+}
+
+.festival-load-more > button > svg {
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  background: var(--rose-500);
+}
+
+.festival-load-more > button span,
+.festival-load-more > button strong,
+.festival-load-more > button small {
+  display: block;
+}
+
+.festival-load-more > button strong {
+  font-size: 0.76rem;
+}
+
+.festival-load-more > button small {
+  margin-top: 2px;
+  color: var(--muted-strong);
+  font-size: 0.63rem;
+}
+
+.festival-expanded-panel {
+  border-top-color: color-mix(in srgb, var(--festival-accent) 24%, var(--line));
+  background: color-mix(in srgb, var(--festival-soft) 48%, var(--surface-soft));
+}
+
+.festival-ritual-steps li {
+  border-left: 3px solid var(--festival-accent);
+}
+
+.festival-ritual-steps span,
+.festival-related-list a {
+  color: var(--festival-accent-strong);
+}
+
+.festival-filter-sheet {
+  border: 1px solid color-mix(in srgb, var(--rose-500) 32%, var(--line));
+}
+
+.chip-grid button,
+.type-filter-list button {
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.chip-grid button:hover,
+.type-filter-list button:hover {
+  border-color: color-mix(in srgb, var(--rose-500) 40%, var(--line));
+  background: var(--rose-50);
+  transform: translateY(-1px);
+}
+
+.chip-grid button.is-selected,
+.type-filter-list button.is-selected {
+  border-color: var(--rose-500);
+  background: var(--rose-50);
+  color: var(--rose-800);
+}
+
+.filter-summary-card {
+  border-color: color-mix(in srgb, var(--gold-500) 35%, var(--line));
+  background: var(--gold-50);
+}
+
+.filter-title svg {
+  width: 16px;
+  height: 16px;
+  color: var(--rose-500);
+}
+
+.filter-summary-card strong {
+  color: var(--gold-800);
+}
+
+.festival-detail-hero {
+  --festival-accent: var(--rose-500);
+  --festival-accent-strong: var(--rose-800);
+  --festival-soft: var(--rose-50);
+  min-height: 300px;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(360px, 1.55fr) minmax(220px, 0.72fr);
+  gap: 0;
+  border-color: color-mix(in srgb, var(--festival-accent) 28%, var(--line));
+  box-shadow: 0 18px 44px color-mix(in srgb, var(--festival-accent) 10%, transparent);
+}
+
+.festival-detail-hero.tone-orange {
+  --festival-accent: var(--vermillion-500);
+  --festival-accent-strong: var(--vermillion-700);
+  --festival-soft: var(--vermillion-50);
+}
+
+.festival-detail-hero.tone-gold {
+  --festival-accent: var(--gold-500);
+  --festival-accent-strong: var(--gold-800);
+  --festival-soft: var(--gold-50);
+}
+
+.festival-detail-hero.tone-green {
+  --festival-accent: var(--forest-600);
+  --festival-accent-strong: var(--forest-800);
+  --festival-soft: var(--forest-50);
+}
+
+.festival-detail-hero.tone-red {
+  --festival-accent: var(--rose-500);
+  --festival-accent-strong: var(--rose-800);
+  --festival-soft: var(--rose-50);
+}
+
+.festival-detail-hero .deity-card,
+.festival-detail-hero .countdown-card {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.festival-detail-hero .deity-card {
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid color-mix(in srgb, var(--festival-accent) 20%, var(--line));
+}
+
+.festival-detail-hero .deity-card .festival-art {
+  min-height: 300px;
+}
+
+.festival-detail-hero .deity-card > strong {
+  position: absolute;
+  inset: auto 14px 14px;
+  z-index: 3;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--festival-accent-strong);
+  font-size: 0.72rem;
+}
+
+.festival-detail-hero .detail-title-block {
+  background: color-mix(in srgb, var(--festival-soft) 58%, var(--surface));
+}
+
+.festival-detail-hero .detail-title-block h1 {
+  color: var(--festival-accent-strong);
+  font-weight: 780;
+}
+
+.festival-detail-hero .countdown-card {
+  display: grid;
+  align-content: center;
+  gap: 10px;
+  padding: 26px;
+  border-left: 1px solid color-mix(in srgb, var(--festival-accent) 20%, var(--line));
+  background: var(--surface);
+}
+
+.festival-detail-hero .countdown-card h2 {
+  color: var(--festival-accent-strong);
+  font-size: 2rem;
+}
+
+.festival-detail-hero .primary-button {
+  border-color: var(--festival-accent-strong);
+  background: var(--festival-accent-strong);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.breadcrumb a {
+  gap: 7px;
+  color: var(--rose-800);
+  font-weight: 680;
+}
+
+.breadcrumb a:hover {
+  color: var(--rose-500);
+}
+
+.breadcrumb svg {
+  width: 16px;
+  height: 16px;
+}
+
+.detail-date-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+  border-color: color-mix(in srgb, var(--festival-accent) 24%, var(--line));
+  background: var(--surface);
+}
+
+.detail-date-strip > span {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 14px;
+  border-right: 1px solid color-mix(in srgb, var(--festival-accent) 16%, var(--line));
+}
+
+.detail-date-strip > span:last-child {
+  border-right: 0;
+}
+
+.detail-date-strip b {
+  overflow-wrap: anywhere;
+  color: var(--festival-accent-strong);
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.detail-date-strip small {
+  color: var(--text-muted);
+  font-size: 0.61rem;
+  text-transform: uppercase;
+}
+
+.detail-workspace {
+  grid-template-columns: minmax(0, 1fr) 320px;
+  align-items: start;
+}
+
+.detail-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 15px;
+  min-width: 0;
+  border-top: 3px solid var(--page-accent);
+}
+
+.detail-main .tab-row button.is-selected {
+  border-color: var(--rose-500);
+  background: var(--rose-50);
+  color: var(--rose-800);
+}
+
+.ritual-list {
+  display: grid;
+  gap: 8px;
+}
+
+.ritual-list article {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--rose-500);
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+}
+
+.ritual-list article.is-current {
+  border-color: color-mix(in srgb, var(--gold-500) 55%, var(--line));
+  border-left-color: var(--gold-500);
+  background: var(--gold-50);
+}
+
+.ritual-list article > span {
+  color: var(--rose-800);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.ritual-list article time {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.detail-rail {
+  position: sticky;
+  top: 92px;
+}
+
+.detail-rail > section:nth-child(1) {
+  border-top: 3px solid var(--gold-500);
+}
+
+.detail-rail > section:nth-child(2) {
+  border-top: 3px solid var(--turquoise-500);
+}
+
+.detail-rail > section:nth-child(3) {
+  border-top: 3px solid var(--rose-500);
+}
+
+.related-festivals-panel > a {
+  min-height: 70px;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  padding: 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.related-festivals-panel > a:hover {
+  border-color: color-mix(in srgb, var(--rose-500) 24%, var(--line));
+  background: var(--rose-50);
+  transform: translateX(3px);
+}
+
+.related-festivals-panel > a .festival-art {
+  width: 58px;
+  height: 58px;
+  min-height: 58px;
+  border-radius: var(--radius-sm);
+  background: var(--rose-50);
+}
+
+.related-festivals-panel > a > span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.related-festivals-panel > a strong,
+.related-festivals-panel > a small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.related-festivals-panel > a strong {
+  color: var(--text-primary);
+  font-size: 0.7rem;
+}
+
+.related-festivals-panel > a small {
+  color: var(--text-muted);
+  font-size: 0.61rem;
+}
+
+.related-festivals-panel > a > svg {
+  width: 15px;
+  height: 15px;
+  color: var(--rose-500);
+}

@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from '@parva/router';
 import App from '../App';
 
 const ROUTE_INTERACTION_TIMEOUT_MS = 30000;

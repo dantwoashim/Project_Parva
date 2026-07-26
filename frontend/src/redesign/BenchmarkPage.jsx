@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@parva/router';
 import benchmarkSummary from '../data/benchmarkSummary.json';
 
 function formatPercent(value) {

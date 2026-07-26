@@ -1,0 +1,396 @@
+/* Best time and Panchanga */
+
+.best-answer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.7fr);
+  gap: 16px;
+}
+
+.best-answer-card,
+.best-constraint-card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.best-answer-card h2 {
+  margin: 6px 0;
+  color: var(--text-primary);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.best-answer-card > p {
+  max-width: 680px;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+}
+
+.best-answer-card > div:not(.best-next-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 18px 0;
+}
+
+.best-answer-card > div > span {
+  display: grid;
+  gap: 2px;
+}
+
+.best-answer-card > div strong {
+  color: var(--text-primary);
+  font-size: 0.83rem;
+}
+
+.best-answer-card > div small {
+  color: var(--text-muted);
+  font-size: 0.62rem;
+}
+
+.best-constraint-card {
+  border-left: 3px solid var(--gold-500);
+}
+
+.planner-shell {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr) 270px;
+  gap: 14px;
+}
+
+.intent-panel,
+.timeline-planner,
+.selected-window {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.intent-panel {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+}
+
+.intent-panel h2 {
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+}
+
+.intent-panel button {
+  min-height: 39px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  text-align: left;
+}
+
+.intent-panel button.is-selected {
+  border-color: var(--forest-600);
+  background: var(--forest-50);
+  color: var(--forest-700);
+  font-weight: 680;
+}
+
+.intent-panel p {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+}
+
+.hour-axis {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  margin: 12px 0 7px;
+  color: var(--text-muted);
+  font-size: 0.54rem;
+}
+
+.hour-axis span {
+  text-align: center;
+}
+
+.timeline-chart {
+  position: relative;
+  display: grid;
+  gap: 5px;
+}
+
+.chart-row {
+  position: relative;
+  min-height: 39px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+  text-align: left;
+}
+
+.chart-row > span {
+  position: absolute;
+  z-index: 2;
+  left: 9px;
+  top: 11px;
+  color: var(--text-secondary);
+  font-size: 0.62rem;
+}
+
+.chart-row > i {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  min-width: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 3px;
+  background: var(--forest-100);
+  color: var(--forest-700);
+  font-size: 0.54rem;
+  font-style: normal;
+}
+
+.chart-row.is-bad > i {
+  background: var(--danger-100);
+  color: var(--danger-700);
+}
+
+.chart-row.is-warm > i {
+  background: var(--gold-100);
+  color: var(--gold-700);
+}
+
+.chart-row.is-selected {
+  border-color: var(--forest-600);
+  box-shadow: 0 0 0 2px rgba(22, 114, 93, 0.12);
+}
+
+.recommended-windows {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.recommended-windows button,
+.no-window-card {
+  min-height: 84px;
+  display: grid;
+  gap: 2px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  text-align: left;
+}
+
+.recommended-windows button:hover {
+  border-color: var(--forest-600);
+}
+
+.recommended-windows small,
+.recommended-windows em,
+.no-window-card span {
+  color: var(--text-muted);
+  font-size: 0.59rem;
+  font-style: normal;
+}
+
+.recommended-windows strong {
+  color: var(--text-primary);
+  font-size: 0.75rem;
+}
+
+.recommended-windows span {
+  color: var(--forest-700);
+  font-size: 0.65rem;
+}
+
+.selected-window {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.selected-window .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.selected-window > p {
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.selected-window > h2 {
+  padding-right: 38px;
+  font-size: 1.2rem;
+}
+
+.selected-window ul {
+  display: grid;
+  gap: 6px;
+  padding-left: 17px;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+}
+
+.confidence-meter {
+  display: grid;
+  gap: 5px;
+}
+
+.confidence-meter > div {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--surface-strong);
+}
+
+.confidence-meter > div span {
+  display: block;
+  height: 100%;
+  background: var(--forest-600);
+}
+
+.confidence-meter small {
+  color: var(--text-muted);
+  font-size: 0.6rem;
+}
+
+.panchanga-workspace {
+  display: grid;
+  grid-template-columns: 315px minmax(0, 1fr) 280px;
+  gap: 15px;
+}
+
+.converter-card,
+.provenance-card {
+  align-self: start;
+}
+
+.converter-card {
+  display: grid;
+  gap: 12px;
+}
+
+.converter-card label {
+  display: grid;
+  gap: 5px;
+}
+
+.swap-button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  margin: -3px auto;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface-soft);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.calendar-grid span,
+.calendar-grid button {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.62rem;
+}
+
+.calendar-grid span {
+  color: var(--text-muted);
+  font-weight: 680;
+}
+
+.calendar-grid button:hover {
+  background: var(--surface-strong);
+}
+
+.calendar-grid button.is-selected {
+  background: var(--forest-700);
+  color: #ffffff;
+}
+
+.panchanga-table {
+  display: grid;
+  align-content: start;
+}
+
+.panchanga-table > article {
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: 34px minmax(90px, 0.7fr) minmax(120px, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.panchanga-table > article > span {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--forest-100);
+  color: var(--forest-700);
+  font-size: 0.68rem;
+}
+
+.panchanga-table > article small {
+  color: var(--text-muted);
+  font-size: 0.65rem;
+}
+
+.panchanga-table > article strong {
+  color: var(--text-primary);
+  font-size: 0.75rem;
+}
+
+.panchanga-table > article em {
+  grid-column: 3;
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-style: normal;
+}
+
+.provenance-card {
+  display: grid;
+  gap: 12px;
+}
+
+.provenance-card > div {
+  display: grid;
+  gap: 2px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.provenance-card span,
+.provenance-card small {
+  color: var(--text-muted);
+  font-size: 0.62rem;
+}
+
+.provenance-card strong {
+  color: var(--text-primary);
+  font-size: 0.72rem;
+}

@@ -12,7 +12,6 @@ from typing import Any
 import anyio
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
-
 from parva_mcp_server.manifest import PROMPTS, RESOURCES, TOOLS
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]

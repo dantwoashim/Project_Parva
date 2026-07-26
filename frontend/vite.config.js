@@ -38,6 +38,11 @@ const apiProxy = {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), omitReferenceImages()],
+  resolve: {
+    alias: {
+      '@parva/router': resolve(import.meta.dirname, 'src/routing/router.jsx'),
+    },
+  },
   build: {
     rollupOptions: {
       output: {

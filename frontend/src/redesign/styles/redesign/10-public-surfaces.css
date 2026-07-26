@@ -1,0 +1,384 @@
+/* Detail, birth, commerce, and trust */
+
+.detail-page {
+  display: grid;
+  gap: 18px;
+}
+
+.breadcrumb a,
+.observance-note-panel > a {
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.detail-hero {
+  min-height: 250px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 24px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.detail-title-block {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: 30px;
+}
+
+.detail-title-block h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.detail-title-block p {
+  color: var(--text-secondary);
+}
+
+.detail-workspace,
+.detail-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 18px;
+}
+
+.detail-rail {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+}
+
+.detail-date-strip,
+.meaning-grid,
+.deity-card,
+.ritual-list,
+.related-festivals-panel {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.birth-workspace {
+  display: grid;
+  grid-template-columns: 300px minmax(420px, 1fr) 280px;
+  gap: 15px;
+}
+
+.birth-form {
+  display: grid;
+  align-content: start;
+  gap: 11px;
+}
+
+.birth-stepper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+}
+
+.birth-stepper span {
+  min-height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-sm);
+  background: var(--surface-strong);
+  color: var(--text-muted);
+  font-size: 0.59rem;
+}
+
+.birth-stepper span.is-complete {
+  background: var(--forest-100);
+  color: var(--forest-700);
+}
+
+.birth-stepper span.is-current {
+  background: var(--vermillion-100);
+  color: var(--vermillion-700);
+}
+
+.advanced-birth-settings {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+
+.advanced-birth-settings summary {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+
+.advanced-birth-settings > div,
+.advanced-birth-settings > label {
+  margin: 0 10px 10px;
+}
+
+.method-strip,
+.missing-field-list {
+  display: grid;
+  gap: 3px;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+  font-size: 0.64rem;
+}
+
+.birth-form-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px;
+}
+
+.kundali-card {
+  min-height: 520px;
+}
+
+.chart-loading {
+  min-height: 430px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.sample-chart-preview,
+.chart-canvas {
+  position: relative;
+  width: min(100%, 390px);
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line-strong);
+  background: var(--surface-soft);
+  transform: rotate(45deg) scale(0.7);
+}
+
+.sample-chart-preview span {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  transform: rotate(-45deg);
+}
+
+.birth-brief {
+  align-self: start;
+}
+
+.birth-analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.graha-table-card,
+.dasha-card,
+.trace-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.graha-table-wrap,
+.route-table-wrap,
+.truth-table-panel {
+  overflow-x: auto;
+}
+
+.graha-table,
+.route-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.graha-table th,
+.graha-table td,
+.route-table th,
+.route-table td {
+  padding: 8px 9px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.66rem;
+  text-align: left;
+}
+
+.graha-table th,
+.route-table th {
+  color: var(--text-muted);
+  font-weight: 680;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pricing-card {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 18px;
+}
+
+.pricing-card.is-selected {
+  border-color: var(--forest-600);
+  box-shadow: inset 0 3px 0 var(--forest-600);
+}
+
+.pricing-card h2 {
+  font-size: 1rem;
+}
+
+.pricing-card > strong {
+  font-size: 1.25rem;
+}
+
+.pricing-card p,
+.pricing-card small {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.commerce-workspace,
+.api-commerce-page,
+.usage-console {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.checkout-panel,
+.checkout-status-panel,
+.api-key-reveal,
+.saved-festival-panel {
+  display: grid;
+  align-content: start;
+  gap: 11px;
+}
+
+.payment-qr-preview {
+  width: min(100%, 260px);
+  margin-inline: auto;
+}
+
+.usage-meter {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--surface-strong);
+}
+
+.usage-meter span {
+  display: block;
+  height: 100%;
+  background: var(--forest-600);
+}
+
+.trust-nav {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.trust-nav a {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.trust-nav a.is-current,
+.trust-nav a.active {
+  border-color: var(--forest-600);
+  background: var(--forest-50);
+  color: var(--forest-700);
+}
+
+.trust-hero-grid,
+.trust-evidence-grid,
+.trust-link-grid,
+.infrastructure-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.trust-metric-card,
+.infrastructure-grid > * {
+  min-height: 160px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 18px;
+}
+
+.trust-metric-card > strong {
+  color: var(--forest-700);
+  font-size: 1.35rem;
+}
+
+.trust-metric-card p,
+.infrastructure-grid p {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.trust-feature-band,
+.policy-contract,
+.about-statement {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+  gap: 28px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--vermillion-600);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.trust-feature-band h2 {
+  font-size: 1.25rem;
+}
+
+.trust-feature-band > p,
+.policy-contract > p,
+.about-statement > p {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+}
+
+.truth-dashboard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.truth-endpoint-list,
+.methodology-steps,
+.anchor-stack {
+  display: grid;
+  gap: 8px;
+}
+
+.methodology-steps > *,
+.truth-endpoint-list > * {
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
