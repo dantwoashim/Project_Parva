@@ -338,7 +338,11 @@ def _cached_upcoming_festivals_payload(
                             )
                         ),
                         selection_policy="public_default",
-                        source_family=((override_info or {}).get("source_family") if dates.method == "override" else (rule_info.source if rule_info else None)),
+                        source_family=(
+                            (override_info or {}).get("source_family")
+                            if dates.method == "override"
+                            else getattr(rule_info, "source", None)
+                        ),
                         fallback_used=route_fallback_used(dates.method),
                         calibration_status=route_calibration_status(dates.method),
                     )

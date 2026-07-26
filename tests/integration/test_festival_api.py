@@ -187,6 +187,19 @@ class TestUpcomingFestivals:
         assert nag_panchami["end_date"] == "2026-08-17"
         assert nag_panchami["days_until_start"] == 33
 
+    def test_upcoming_accepts_documented_maximum_window(self):
+        """Calculated rules remain serializable across the full 365-day window."""
+        response = client.get(
+            "/api/festivals/upcoming",
+            params={"days": 365, "from_date": "2026-07-26"},
+        )
+        assert response.status_code == 200
+
+        data = response.json()
+        assert data["from_date"] == "2026-07-26"
+        assert data["to_date"] == "2027-07-26"
+        assert data["total"] >= 10
+
 
 class TestCalendarAccuracy:
     """Test calendar calculations match official dates."""
