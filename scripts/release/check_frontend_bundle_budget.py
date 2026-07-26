@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -15,8 +16,12 @@ DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "release" / "frontend_bundle_bu
 DEFAULT_BUDGETS = {
     "total_js_bytes": 600_000,
     "max_js_bytes": 300_000,
-    "total_css_bytes": 150_000,
-    "max_css_bytes": 150_000,
+    "total_js_gzip_bytes": 200_000,
+    "max_js_gzip_bytes": 100_000,
+    "total_css_bytes": 180_000,
+    "max_css_bytes": 170_000,
+    "total_css_gzip_bytes": 35_000,
+    "max_css_gzip_bytes": 30_000,
 }
 
 
@@ -34,11 +39,13 @@ def _collect_assets(assets_dir: Path) -> list[dict[str, object]]:
             relative_path = str(path.relative_to(PROJECT_ROOT)).replace("\\", "/")
         except ValueError:
             relative_path = str(path.relative_to(assets_dir.parent)).replace("\\", "/")
+        content = path.read_bytes()
         assets.append(
             {
                 "path": relative_path,
                 "kind": path.suffix.lstrip("."),
-                "bytes": path.stat().st_size,
+                "bytes": len(content),
+                "gzip_bytes": len(gzip.compress(content, compresslevel=9, mtime=0)),
             }
         )
     return assets
@@ -47,11 +54,17 @@ def _collect_assets(assets_dir: Path) -> list[dict[str, object]]:
 def _summarize_assets(assets: list[dict[str, object]]) -> dict[str, int]:
     js_assets = [int(asset["bytes"]) for asset in assets if asset["kind"] == "js"]
     css_assets = [int(asset["bytes"]) for asset in assets if asset["kind"] == "css"]
+    js_gzip_assets = [int(asset["gzip_bytes"]) for asset in assets if asset["kind"] == "js"]
+    css_gzip_assets = [int(asset["gzip_bytes"]) for asset in assets if asset["kind"] == "css"]
     return {
         "total_js_bytes": sum(js_assets),
         "max_js_bytes": max(js_assets, default=0),
+        "total_js_gzip_bytes": sum(js_gzip_assets),
+        "max_js_gzip_bytes": max(js_gzip_assets, default=0),
         "total_css_bytes": sum(css_assets),
         "max_css_bytes": max(css_assets, default=0),
+        "total_css_gzip_bytes": sum(css_gzip_assets),
+        "max_css_gzip_bytes": max(css_gzip_assets, default=0),
     }
 
 
@@ -90,15 +103,39 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--report-path", default=str(DEFAULT_REPORT_PATH))
     parser.add_argument("--total-js-bytes", type=int, default=DEFAULT_BUDGETS["total_js_bytes"])
     parser.add_argument("--max-js-bytes", type=int, default=DEFAULT_BUDGETS["max_js_bytes"])
+    parser.add_argument(
+        "--total-js-gzip-bytes",
+        type=int,
+        default=DEFAULT_BUDGETS["total_js_gzip_bytes"],
+    )
+    parser.add_argument(
+        "--max-js-gzip-bytes",
+        type=int,
+        default=DEFAULT_BUDGETS["max_js_gzip_bytes"],
+    )
     parser.add_argument("--total-css-bytes", type=int, default=DEFAULT_BUDGETS["total_css_bytes"])
     parser.add_argument("--max-css-bytes", type=int, default=DEFAULT_BUDGETS["max_css_bytes"])
+    parser.add_argument(
+        "--total-css-gzip-bytes",
+        type=int,
+        default=DEFAULT_BUDGETS["total_css_gzip_bytes"],
+    )
+    parser.add_argument(
+        "--max-css-gzip-bytes",
+        type=int,
+        default=DEFAULT_BUDGETS["max_css_gzip_bytes"],
+    )
     args = parser.parse_args(argv)
 
     budgets = {
         "total_js_bytes": args.total_js_bytes,
         "max_js_bytes": args.max_js_bytes,
+        "total_js_gzip_bytes": args.total_js_gzip_bytes,
+        "max_js_gzip_bytes": args.max_js_gzip_bytes,
         "total_css_bytes": args.total_css_bytes,
         "max_css_bytes": args.max_css_bytes,
+        "total_css_gzip_bytes": args.total_css_gzip_bytes,
+        "max_css_gzip_bytes": args.max_css_gzip_bytes,
     }
 
     try:
