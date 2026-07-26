@@ -22,6 +22,11 @@ FRONTEND_ROOT = PROJECT_ROOT / "frontend"
 DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "release" / "golden_journeys.json"
 
 
+def _resolve_report_path(value: str) -> Path:
+    path = Path(value)
+    return path if path.is_absolute() else PROJECT_ROOT / path
+
+
 def _find_free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.bind(("127.0.0.1", 0))
@@ -94,6 +99,7 @@ def _start_backend_server(host: str, port: int) -> subprocess.Popen[str]:
     env = os.environ.copy()
     env["PARVA_SERVE_FRONTEND"] = "true"
     env["PARVA_FRONTEND_DIST"] = str(FRONTEND_DIST)
+    env["PARVA_RATE_LIMIT_ENABLED"] = "false"
     command = [sys.executable, "-m", "uvicorn", "app.main:app", "--host", host, "--port", str(port)]
     return subprocess.Popen(
         command,
@@ -154,7 +160,7 @@ def main() -> int:
         help="Optional JSON report path for golden-journey status and artifacts.",
     )
     args = parser.parse_args()
-    report_path = Path(args.report_path) if args.report_path else None
+    report_path = _resolve_report_path(args.report_path) if args.report_path else None
     output_dir = PROJECT_ROOT / "output" / "playwright"
 
     if args.base_url:

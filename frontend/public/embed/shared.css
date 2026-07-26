@@ -159,6 +159,10 @@ body {
   color: #9c2d20;
 }
 
+.widget-footer-link {
+  margin: 16px 0 0;
+}
+
 @media (max-width: 640px) {
   .widget-title {
     font-size: 24px;

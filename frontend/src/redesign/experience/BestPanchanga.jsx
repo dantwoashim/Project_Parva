@@ -29,8 +29,19 @@ import {
 import {
   readableReason,
 } from './festival/FestivalUtils.jsx';
+import {
+  CalendarDays,
+  Copy,
+  MapPin,
+  RotateCcw,
+  Sparkles,
+  Sun,
+  X,
+} from 'lucide-react';
+import { useParvaToast } from '../motion/ParvaToastContext.js';
 
 export function RedesignBestTime() {
+  const { notify } = useParvaToast();
   const { state } = useTemporalContext();
   const [intent, setIntent] = useState('general');
   const [selectedId, setSelectedId] = useState('');
@@ -56,7 +67,7 @@ export function RedesignBestTime() {
   const recommendationLabel = confidenceCaution ? 'Best available, low confidence' : 'Recommended first';
   const selectedGuidance = selected
     ? confidenceCaution
-      ? `${selected.name} is only the best available returned window for ${readableCategory(intent).toLowerCase()} in ${placeLabelFromLocation(state.location)}. Treat it as a cautious planning input, not a strong recommendation.`
+      ? `${selected.name} is the best available returned window for ${readableCategory(intent).toLowerCase()} in ${placeLabelFromLocation(state.location)}. Treat it as a cautious planning input.`
       : `${selected.name} is the strongest returned window for ${readableCategory(intent).toLowerCase()} in ${placeLabelFromLocation(state.location)}.`
     : 'Parva is checking the ranked muhurta response for this place and date.';
   const copyActionLabel = confidenceCaution ? 'Copy cautious result' : 'Copy result';
@@ -100,8 +111,10 @@ export function RedesignBestTime() {
     try {
       await navigator.clipboard?.writeText(summary);
       setSelectedNotice('Copied selected time');
+      notify('Time window copied', { detail: `${selected.name} - ${selected.time}` });
     } catch {
       setSelectedNotice('Selected time ready');
+      notify('Clipboard unavailable', { detail: summary, tone: 'warning' });
     }
   }
 
@@ -111,7 +124,12 @@ export function RedesignBestTime() {
         <PageHero
           title="Best Time"
           body="Pick an intent, see the best available window, avoid the wrong one, and understand the confidence before acting."
-          action={<div className="hero-actions"><Link to="/panchanga">▣ {formatIsoDate(state.date)}</Link><Link to="/my-place">⌖ {placeLabelFromLocation(state.location)}</Link></div>}
+          action={(
+            <div className="hero-actions">
+              <Link to="/panchanga"><CalendarDays aria-hidden="true" /> {formatIsoDate(state.date)}</Link>
+              <Link to="/my-place"><MapPin aria-hidden="true" /> {placeLabelFromLocation(state.location)}</Link>
+            </div>
+          )}
         />
         <section className="best-answer-grid" aria-label="Best Time answer">
           <article className="best-answer-card">
@@ -123,7 +141,10 @@ export function RedesignBestTime() {
               <span><strong>{readableCategory(intent)}</strong><small>intent</small></span>
               <span><strong>{humanMethodLabel(meta?.method, 'Ranked model')}</strong><small>method</small></span>
             </div>
-            <button type="button" className="primary-button" disabled={!selected} onClick={useSelectedWindow}>{copyActionLabel}</button>
+            <button type="button" className="primary-button" disabled={!selected} onClick={useSelectedWindow}>
+              <Copy aria-hidden="true" />
+              {copyActionLabel}
+            </button>
             <div className="best-next-actions" aria-label="Best Time next actions">
               <button type="button" onClick={() => setIntent('worship')}>Try worship</button>
               <Link to="/panchanga">Check date context</Link>
@@ -207,7 +228,9 @@ export function RedesignBestTime() {
             </div>
           </section>
           <aside className="selected-window">
-            <button type="button" className="close-button" aria-label="Clear selected window" onClick={() => setSelectedId('')}>×</button>
+            <button type="button" className="close-button" aria-label="Clear selected window" onClick={() => setSelectedId('')}>
+              <X aria-hidden="true" />
+            </button>
             <p>Selected window</p>
             <h2>{selected?.time || 'Choose a window'}</h2>
             <ScoreRing value={selected?.score || 0} label={selected?.kind || 'API'} />
@@ -220,7 +243,10 @@ export function RedesignBestTime() {
             </ul>
             <Confidence value={selected?.score || 0} />
             {selectedNotice ? <small className="selected-window__notice" role="status">{selectedNotice}</small> : null}
-            <button type="button" className="primary-button" disabled={!selected} onClick={useSelectedWindow}>Copy time details</button>
+            <button type="button" className="primary-button" disabled={!selected} onClick={useSelectedWindow}>
+              <Copy aria-hidden="true" />
+              Copy time details
+            </button>
           </aside>
         </section>
       </main>
@@ -305,7 +331,9 @@ export function RedesignPanchanga() {
           <section className="panel converter-card">
             <h2>Date Converter</h2>
             <label>Gregorian (AD)<input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
-            <button type="button" className="swap-button" onClick={() => setDate(todayIso())} aria-label="Reset converter to today">↺</button>
+            <button type="button" className="swap-button" onClick={() => setDate(todayIso())} aria-label="Reset converter to today">
+              <RotateCcw aria-hidden="true" />
+            </button>
             <label>Bikram Sambat (BS)<input value={bsLabel} readOnly /></label>
             <div className="calendar-grid">
               {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => <span key={day}>{day}</span>)}
@@ -343,8 +371,8 @@ export function RedesignPanchanga() {
             {status.error ? <p className="birth-error" role="alert">{status.error}</p> : null}
             {[
               ...panchangaItems,
-              { icon: '☼', label: 'Sunrise reference', value: formatTimeReference(payload?.panchanga?.tithi?.sunrise_used), meta: humanMethodLabel(payload?.panchanga?.tithi?.reference_time, 'Local sunrise') },
-              { icon: '✣', label: 'Calculation', value: humanMethodLabel(payload?.ephemeris?.mode, 'Astronomical calculation'), meta: humanMethodLabel(payload?.ephemeris?.library, 'Ephemeris source') },
+              { icon: <Sun aria-hidden="true" />, label: 'Sunrise reference', value: formatTimeReference(payload?.panchanga?.tithi?.sunrise_used), meta: humanMethodLabel(payload?.panchanga?.tithi?.reference_time, 'Local sunrise') },
+              { icon: <Sparkles aria-hidden="true" />, label: 'Calculation', value: humanMethodLabel(payload?.ephemeris?.mode, 'Astronomical calculation'), meta: humanMethodLabel(payload?.ephemeris?.library, 'Ephemeris source') },
             ].map((item) => (
               <article key={item.label}>
                 <span>{item.icon}</span>

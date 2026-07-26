@@ -194,7 +194,7 @@ export async function fetchAPI(endpoint, options = {}, parseAs = 'json') {
 }
 
 export async function fetchAPIEnvelope(endpoint, options = {}, parseAs = 'json') {
-  const url = `${API_BASE}${endpoint}`;
+  const url = resolveRequestUrl(endpoint);
   const {
     timeoutMs,
     signal: upstreamSignal,
@@ -284,6 +284,22 @@ export async function fetchAPIEnvelope(endpoint, options = {}, parseAs = 'json')
   } finally {
     requestSignal.cleanup();
   }
+}
+
+function resolveRequestUrl(endpoint) {
+  const value = String(endpoint || '');
+  if (/^https?:\/\//i.test(value)) {
+    return value;
+  }
+  if (/^\/v\d+\/api(?:\/|$)/i.test(value)) {
+    try {
+      const base = new URL(API_BASE, window.location.origin);
+      return new URL(value, `${base.protocol}//${base.host}`).toString();
+    } catch {
+      return value;
+    }
+  }
+  return `${API_BASE}${value}`;
 }
 
 export function getApiBase() {
@@ -414,6 +430,38 @@ export const reliabilityAPI = {
 
 export const policyAPI = {
   get: () => fetchAPI('/policy'),
+};
+
+export const enterpriseAPI = {
+  getFiscalYear: (bsYear) =>
+    fetchAPI(`/enterprise/fiscal-year/${encodeURIComponent(bsYear)}`),
+  getBsMonths: (bsYear, mode = 'canonical') => {
+    const params = new URLSearchParams({ mode });
+    return fetchAPI(`/enterprise/bs-months/${encodeURIComponent(bsYear)}?${params.toString()}`);
+  },
+  countBusinessDays: ({
+    startBs,
+    endBs,
+    weekend = 'saturday',
+    includeStart = true,
+    includeEnd = true,
+    holidayPolicy = 'none',
+  }) => fetchAPI('/enterprise/business-days', {
+    method: 'POST',
+    body: JSON.stringify({
+      start_bs: startBs,
+      end_bs: endBs,
+      weekend,
+      include_start: includeStart,
+      include_end: includeEnd,
+      holiday_policy: holidayPolicy,
+    }),
+  }),
+};
+
+export const futureAPI = {
+  getCapabilities: () => fetchAPI('/v4/api/future-bs/capabilities'),
+  getModelRiskCapabilities: () => fetchAPI('/v5/api/calendar-model-risk/capabilities'),
 };
 
 export const calendarAPI = {

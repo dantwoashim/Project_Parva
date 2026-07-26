@@ -116,6 +116,16 @@ source metadata. Operators who need a strict production container should set at
 least `PARVA_ENV=production`, `PARVA_SOURCE_URL`, `PARVA_RATE_LIMIT_BACKEND=redis`,
 and `PARVA_REDIS_URL` at deployment time.
 
+## Source availability and AGPL deployment
+
+Project Parva is licensed under `AGPL-3.0-or-later`. Set `PARVA_SOURCE_URL` to
+the corresponding source repository or source archive for the exact deployed
+version, including deployment-specific modifications where applicable.
+
+When configured, `GET /source` redirects to `PARVA_SOURCE_URL`, and API
+responses include a `Link` header with `rel="source"`. Production and staging
+startup validation rejects deployments that omit the source URL.
+
 ## Rate limits, metrics, and security headers
 
 The public demo may use the in-process rate limiter because it is a lightweight

@@ -10,6 +10,11 @@ import sys
 import tempfile
 from pathlib import Path
 
+try:
+    from scripts.release.openapi_normalization import normalized_openapi_json
+except ModuleNotFoundError:  # pragma: no cover - direct script execution fallback
+    from openapi_normalization import normalized_openapi_json
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 PROFILE_SPECS = {
     "public_reference": PROJECT_ROOT / "docs" / "api-docs" / "openapi.public-reference.json",
@@ -21,10 +26,6 @@ SAFE_CAPABILITY_PATHS = {
     "/v4/api/future-bs/capabilities",
     "/v5/api/calendar-model-risk/capabilities",
 }
-
-
-def _normalized_json(path: Path) -> str:
-    return json.dumps(json.loads(path.read_text(encoding="utf-8")), sort_keys=True, separators=(",", ":"))
 
 
 def _run(command: list[str], env: dict[str, str] | None = None) -> int:
@@ -64,7 +65,7 @@ def main() -> int:
             if not generated.exists():
                 failures.append(f"Generator did not produce {generated.name} for {profile}.")
                 continue
-            if _normalized_json(generated) != _normalized_json(checked_in):
+            if normalized_openapi_json(generated) != normalized_openapi_json(checked_in):
                 failures.append(
                     f"Profile OpenAPI spec is stale for {profile}. "
                     "Run: python scripts/release/generate_openapi_profiles.py"

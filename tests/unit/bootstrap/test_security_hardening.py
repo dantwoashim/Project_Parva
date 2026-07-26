@@ -16,6 +16,7 @@ def test_security_headers_include_csp(monkeypatch):
     assert response.headers["X-Frame-Options"] == "DENY"
     assert response.headers["Referrer-Policy"] == "no-referrer"
     assert "frame-ancestors 'none'" in response.headers["Content-Security-Policy"]
+    assert "font-src 'self' data:" in response.headers["Content-Security-Policy"]
     assert "https://cdn.jsdelivr.net" not in response.headers["Content-Security-Policy"]
 
 
@@ -31,6 +32,20 @@ def test_api_docs_csp_allows_swagger_assets(monkeypatch):
     assert "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net" in csp
     assert "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net" in csp
     assert "frame-ancestors 'none'" in csp
+
+
+def test_embed_routes_keep_strict_sources_but_allow_framing(monkeypatch):
+    monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+    client = TestClient(create_app())
+
+    response = client.get("/embed/temporal-compass.html")
+
+    assert "X-Frame-Options" not in response.headers
+    csp = response.headers["Content-Security-Policy"]
+    assert "default-src 'self'" in csp
+    assert "font-src 'self' data:" in csp
+    assert "frame-ancestors *" in csp
+    assert "unsafe-inline" not in csp
 
 
 def test_cors_preflight_uses_explicit_methods_and_headers(monkeypatch):

@@ -3,19 +3,19 @@
 
 from __future__ import annotations
 
-import json
 import os
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
+try:
+    from scripts.release.openapi_normalization import normalized_openapi_json
+except ModuleNotFoundError:  # pragma: no cover - direct script execution fallback
+    from openapi_normalization import normalized_openapi_json
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 STATIC_OPENAPI = PROJECT_ROOT / "docs" / "api-docs" / "openapi.json"
-
-
-def _normalized_json(path: Path) -> str:
-    return json.dumps(json.loads(path.read_text(encoding="utf-8")), sort_keys=True, separators=(",", ":"))
 
 
 def main() -> int:
@@ -43,7 +43,7 @@ def main() -> int:
         if result.returncode != 0:
             return result.returncode
 
-        if _normalized_json(generated) != _normalized_json(STATIC_OPENAPI):
+        if normalized_openapi_json(generated) != normalized_openapi_json(STATIC_OPENAPI):
             print(
                 "Static public OpenAPI mirror is stale. "
                 "Run: python scripts/release/generate_public_demo_openapi.py"

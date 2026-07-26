@@ -18,6 +18,25 @@ import {
   AppChrome,
   PageHero,
 } from '../ExperienceCommon.jsx';
+import { AnimatePresence, m as Motion } from 'motion/react';
+import {
+  ArrowDownUp,
+  ArrowUpRight,
+  Bookmark,
+  BookmarkCheck,
+  CalendarPlus,
+  CalendarRange,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  Download,
+  Search,
+  SlidersHorizontal,
+  Tags,
+  X,
+} from 'lucide-react';
+import { useParvaToast } from '../../motion/ParvaToastContext';
 
 import {
   FestivalArtwork,
@@ -40,7 +59,9 @@ import {
 } from './FestivalUtils.jsx';
 
 export function RedesignFestivals() {
+  const { notify } = useParvaToast();
   const [search, setSearch] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState(defaultFestivalFilters);
   const [draftFilters, setDraftFilters] = useState(defaultFestivalFilters);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -52,10 +73,16 @@ export function RedesignFestivals() {
   const [timelineRefreshing, setTimelineRefreshing] = useState(false);
   const [timelineError, setTimelineError] = useState(null);
   const [detailCache, setDetailCache] = useState({});
+  const [visibleLimit, setVisibleLimit] = useState(16);
   const hasLoadedTimelineRef = useRef(false);
 
   const fromDate = useMemo(() => todayIso('Asia/Kathmandu'), []);
   const toDate = useMemo(() => addDaysIso(fromDate, 420), [fromDate]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setSearchQuery(search.trim()), 250);
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
 
   useEffect(() => {
     let cancelled = false;
@@ -73,7 +100,7 @@ export function RedesignFestivals() {
           qualityBand: filters.qualityBand,
           category: filters.category === 'All' ? undefined : filters.category,
           region: filters.region === 'All' ? undefined : filters.region,
-          search: search.trim() || undefined,
+          search: searchQuery || undefined,
           sort: filters.sort,
           lang: 'en',
         });
@@ -98,7 +125,7 @@ export function RedesignFestivals() {
     return () => {
       cancelled = true;
     };
-  }, [filters.category, filters.qualityBand, filters.region, filters.sort, fromDate, search, toDate]);
+  }, [filters.category, filters.qualityBand, filters.region, filters.sort, fromDate, searchQuery, toDate]);
 
   const timelineData = timelineEnvelope?.data || {};
   const allFestivalRows = useMemo(() => normalizeFestivalTimelineRows(timelineData.groups || []), [timelineData.groups]);
@@ -122,7 +149,14 @@ export function RedesignFestivals() {
       : allFestivalRows.filter((item) => monthFilterValue(item) === filters.month);
     return rows;
   }, [allFestivalRows, filters.month]);
-  const groupedVisibleFestivals = useMemo(() => groupFestivalRowsByMonth(visibleFestivals), [visibleFestivals]);
+  const renderedFestivals = useMemo(
+    () => visibleFestivals.slice(0, visibleLimit),
+    [visibleFestivals, visibleLimit],
+  );
+  const groupedVisibleFestivals = useMemo(
+    () => groupFestivalRowsByMonth(renderedFestivals),
+    [renderedFestivals],
+  );
   const activeFilterCount = activeFestivalFilterCount(filters, search);
   const expandedFestival = visibleFestivals.find((item) => festivalOccurrenceKey(item) === expandedKey) || null;
   const expandedDetail = expandedFestival ? detailCache[expandedFestival.id] : null;
@@ -179,16 +213,20 @@ export function RedesignFestivals() {
   const applyFilters = () => {
     setFilters(draftFilters);
     setExpandedKey('');
+    setVisibleLimit(16);
     setFiltersOpen(false);
+    notify('Filters applied', { detail: 'The festival timeline has been refreshed.' });
   };
 
   const resetFilters = () => {
     setDraftFilters(defaultFestivalFilters);
     setFilters(defaultFestivalFilters);
     setExpandedKey('');
+    setVisibleLimit(16);
   };
 
   const toggleSave = (festival) => {
+    const wasSaved = savedIds.has(festival.id);
     setSavedIds((current) => {
       const next = new Set(current);
       if (next.has(festival.id)) {
@@ -198,6 +236,10 @@ export function RedesignFestivals() {
       }
       return next;
     });
+    notify(wasSaved ? 'Festival removed from saved' : 'Festival saved', {
+      detail: festival.displayName,
+      tone: wasSaved ? 'info' : 'success',
+    });
   };
 
   const copyFestivalLink = async (festival) => {
@@ -206,9 +248,11 @@ export function RedesignFestivals() {
       if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
       await navigator.clipboard.writeText(link);
       setCopiedId(festival.id);
+      notify('Festival link copied', { detail: festival.displayName });
       window.setTimeout(() => setCopiedId(''), 1800);
     } catch {
       if (typeof window.prompt === 'function') window.prompt('Copy festival link', link);
+      notify('Clipboard unavailable', { detail: 'Use the copy field shown by your browser.', tone: 'warning' });
     }
   };
 
@@ -221,22 +265,30 @@ export function RedesignFestivals() {
           action={(
             <div className="hero-actions festival-hero-actions">
               <label className="festival-search-control">
-                <span>Search</span>
+                <span><Search aria-hidden="true" /> Search</span>
                 <input
                   value={search}
-                  onChange={(event) => setSearch(event.target.value)}
+                  onChange={(event) => {
+                    setSearch(event.target.value);
+                    setVisibleLimit(16);
+                  }}
                   placeholder="Dashain, Ekadashi, Jatra..."
                 />
               </label>
               <button type="button" className="filter-open-button" onClick={openFilters}>
-                Filters {activeFilterCount ? <b>{activeFilterCount}</b> : null}
+                <SlidersHorizontal aria-hidden="true" /> Filters {activeFilterCount ? <b>{activeFilterCount}</b> : null}
               </button>
-              <a className="primary-button subscribe-calendar-button" href={apiHref('/feeds/all.ics?years=1&download=1')}>Subscribe calendar</a>
+              <a className="primary-button subscribe-calendar-button" href={apiHref('/feeds/all.ics?years=1&download=1')}>
+                <CalendarPlus aria-hidden="true" /> Subscribe calendar
+              </a>
               <label className="sort-control">
-                <span>Sort by</span>
+                <span><ArrowDownUp aria-hidden="true" /> Sort by</span>
                 <select
                   value={filters.sort}
-                  onChange={(event) => setFilters((current) => ({ ...current, sort: event.target.value }))}
+                  onChange={(event) => {
+                    setFilters((current) => ({ ...current, sort: event.target.value }));
+                    setVisibleLimit(16);
+                  }}
                 >
                   {festivalSortOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                 </select>
@@ -301,6 +353,20 @@ export function RedesignFestivals() {
                   })}
                 </section>
               ))}
+              {renderedFestivals.length < visibleFestivals.length ? (
+                <div className="festival-load-more">
+                  <button
+                    type="button"
+                    onClick={() => setVisibleLimit((current) => current + 12)}
+                  >
+                    <ChevronDown aria-hidden="true" />
+                    <span>
+                      <strong>Show more festivals</strong>
+                      <small>{visibleFestivals.length - renderedFestivals.length} remain in this view</small>
+                    </span>
+                  </button>
+                </div>
+              ) : null}
             </div>
           ) : (
             <section className="festival-empty-state panel">
@@ -350,20 +416,45 @@ function FestivalFilterSheet({
   }, [onClose]);
 
   return (
-    <div className="festival-filter-layer" role="dialog" aria-modal="true" aria-label="Festival filters">
-      <button type="button" className="festival-filter-scrim" onClick={onClose} aria-label="Close festival filters" />
-      <aside className="festival-filter-sheet">
+    <Motion.div
+      className="festival-filter-layer"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Festival filters"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.16 }}
+    >
+      <Motion.button
+        type="button"
+        className="festival-filter-scrim"
+        onClick={onClose}
+        aria-label="Close festival filters"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      <Motion.aside
+        className="festival-filter-sheet"
+        initial={{ opacity: 0, y: 16, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 10, scale: 0.985 }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="festival-filter-heading">
           <div>
             <p className="eyebrow">Refine list</p>
             <h2>Festival filters</h2>
           </div>
-          <button type="button" className="close-button" onClick={onClose} aria-label="Close filters">×</button>
+          <button type="button" className="close-button" onClick={onClose} aria-label="Close filters">
+            <X aria-hidden="true" />
+          </button>
         </div>
 
         <section className="filter-block">
           <div className="filter-title">
-            <span>▣</span>
+            <CalendarRange aria-hidden="true" />
             <strong>Month (BS)</strong>
           </div>
           <div className="chip-grid">
@@ -382,7 +473,7 @@ function FestivalFilterSheet({
 
         <section className="filter-block">
           <div className="filter-title">
-            <span>✦</span>
+            <Tags aria-hidden="true" />
             <strong>Category</strong>
           </div>
           <div className="type-filter-list">
@@ -446,10 +537,12 @@ function FestivalFilterSheet({
         <div className="festival-filter-actions">
           <button type="button" onClick={onReset}>Reset</button>
           <button type="button" onClick={onClose}>Cancel</button>
-          <button type="button" className="primary-button" onClick={onApply}>Apply filters</button>
+          <button type="button" className="primary-button" onClick={onApply}>
+            <Check aria-hidden="true" /> Apply filters
+          </button>
         </div>
-      </aside>
-    </div>
+      </Motion.aside>
+    </Motion.div>
   );
 }
 
@@ -499,6 +592,7 @@ function FestivalListCard({ festival, occurrenceKey, expanded, detail, saved, co
             <em>{festival.countdownLabel}</em>
           </span>
           <span className="festival-list-card__expand">
+            {expanded ? <ChevronUp aria-hidden="true" /> : <ChevronDown aria-hidden="true" />}
             {expanded ? 'Hide details' : 'View details'}
           </span>
         </span>
@@ -506,14 +600,25 @@ function FestivalListCard({ festival, occurrenceKey, expanded, detail, saved, co
 
       {!expanded ? (
         <div className="festival-list-card__quick-actions" aria-label={`${festival.displayName} quick actions`}>
-          <button type="button" onClick={onSave}>{saved ? 'Following' : 'Follow'}</button>
-          <a href={buildCalendarFeedUrl(festival.id)}>Calendar</a>
-          <Link to={`/festivals/${festival.id}`}>Open</Link>
+          <button type="button" onClick={onSave}>
+            {saved ? <BookmarkCheck aria-hidden="true" /> : <Bookmark aria-hidden="true" />}
+            {saved ? 'Following' : 'Follow'}
+          </button>
+          <a href={buildCalendarFeedUrl(festival.id)}><CalendarPlus aria-hidden="true" /> Calendar</a>
+          <Link to={`/festivals/${festival.id}`}>Open <ArrowUpRight aria-hidden="true" /></Link>
         </div>
       ) : null}
 
+      <AnimatePresence initial={false}>
       {expanded ? (
-        <section id={panelId} className="festival-expanded-panel">
+        <Motion.section
+          id={panelId}
+          className="festival-expanded-panel"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        >
           {detail?.error ? (
             <div className="festival-detail-loading">
               <p className="eyebrow">Detail unavailable</p>
@@ -599,15 +704,22 @@ function FestivalListCard({ festival, occurrenceKey, expanded, detail, saved, co
               </div>
 
               <footer className="festival-list-card__actions" aria-label={`${festival.displayName} actions`}>
-                <button type="button" onClick={onSave}>{saved ? 'Saved' : 'Save'}</button>
-                <button type="button" onClick={onCopy}>{copied ? 'Copied' : 'Copy link'}</button>
-                <a href={buildCalendarFeedUrl(festival.id)}>Add to calendar</a>
-                <a href={buildFestivalEvidenceUrl(festival)}>Export evidence</a>
+                <button type="button" onClick={onSave}>
+                  {saved ? <BookmarkCheck aria-hidden="true" /> : <Bookmark aria-hidden="true" />}
+                  {saved ? 'Saved' : 'Save'}
+                </button>
+                <button type="button" onClick={onCopy}>
+                  {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+                  {copied ? 'Copied' : 'Copy link'}
+                </button>
+                <a href={buildCalendarFeedUrl(festival.id)}><CalendarPlus aria-hidden="true" /> Add to calendar</a>
+                <a href={buildFestivalEvidenceUrl(festival)}><Download aria-hidden="true" /> Export evidence</a>
               </footer>
             </>
           )}
-        </section>
+        </Motion.section>
       ) : null}
+      </AnimatePresence>
     </article>
   );
 }

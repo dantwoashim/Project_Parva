@@ -20,6 +20,16 @@ import {
   readSavedFestivalIds,
   writeSavedFestivalIds,
 } from './festival/FestivalUtils.jsx';
+import {
+  ArrowUpRight,
+  Bookmark,
+  CalendarHeart,
+  CalendarSync,
+  Check,
+  Gauge,
+  MapPin,
+  Trash2,
+} from 'lucide-react';
 
 function providerLabel(value) {
   if (manualPaymentMethods[value]) return manualPaymentMethods[value].label;
@@ -118,81 +128,107 @@ export function RedesignApiPricing() {
     <AppChrome>
       <main className="page-shell api-commerce-page">
         <PageHero
-          title="Start with a free API. Upgrade by manual payment when you need volume."
-          body="Parva supports free IP quotas, paid API keys, QR/contact payment requests, Payoneer invoices, usage limits, and admin-confirmed activation while merchant checkout accounts are pending."
+          title="API access that grows with your product."
+          body="Explore the public API for free, then choose a paid key when your application needs predictable volume, support, and visible usage limits."
           action={<a className="primary-button" href="#checkout">Get API key</a>}
         />
 
         <section className="pricing-grid" aria-label="API pricing plans">
-          {pricingPlans.map((plan) => (
+          {pricingPlans.map((plan, index) => (
             <article key={plan.slug} className={`pricing-card ${plan.slug === selectedTier ? 'is-selected' : ''}`}>
-              <div>
-                <span>{plan.support}</span>
+              <div className="pricing-card__top">
+                <span className="pricing-card__index">{String(index + 1).padStart(2, '0')}</span>
+                <span className="pricing-card__support">{plan.support}</span>
+              </div>
+              <div className="pricing-card__body">
                 <h2>{plan.name}</h2>
-                <strong>{plan.price}</strong>
+                <strong className="pricing-card__price">{plan.price}</strong>
                 <p>{plan.body}</p>
               </div>
-              <dl>
-                <div><dt>Limit</dt><dd>{plan.limit}</dd></div>
-                <div><dt>Auth</dt><dd>{plan.slug === 'free' ? 'IP-based' : 'API key'}</dd></div>
-              </dl>
+              <ul className="pricing-card__facts">
+                <li><Check aria-hidden="true" /><span>{plan.limit}</span></li>
+                <li><Check aria-hidden="true" /><span>{plan.slug === 'free' ? 'IP-based access' : 'Private API key'}</span></li>
+              </ul>
               {plan.slug === 'free' ? (
-                <a className="ghost-button" href={apiHref('/calendar/today')}>Try free API</a>
+                <a className="ghost-button pricing-card__action" href={apiHref('/calendar/today')}>Try free API <ArrowUpRight aria-hidden="true" /></a>
               ) : (
-                <button type="button" onClick={() => setSelectedTier(plan.slug)}>Select {plan.name}</button>
+                <button
+                  type="button"
+                  className={`pricing-card__action ${plan.slug === selectedTier ? 'primary-button' : 'ghost-button'}`}
+                  onClick={() => setSelectedTier(plan.slug)}
+                >
+                  {plan.slug === selectedTier ? `${plan.name} selected` : `Select ${plan.name}`}
+                </button>
               )}
             </article>
           ))}
         </section>
 
-        <section className="commerce-workspace" id="checkout">
+        <header className="commerce-section-heading" id="checkout">
+          <div>
+            <p className="eyebrow">Activation</p>
+            <h2>Request a paid API key</h2>
+          </div>
+          <p>Choose a plan and payment route. The request stays pending until the payment reference is checked.</p>
+        </header>
+
+        <section className="commerce-workspace">
           <form className="checkout-panel" onSubmit={startCheckout}>
             <div className="panel-heading tight">
-              <p className="eyebrow">Checkout</p>
-              <strong>{selectedPlan.name} via {providerLabel(provider)}</strong>
-            </div>
-            <label>
-              Email
-              <input value={customer.email} onChange={(event) => updateCustomer('email', event.target.value)} type="email" required placeholder="you@company.com" />
-            </label>
-            <label>
-              Name
-              <input value={customer.name} onChange={(event) => updateCustomer('name', event.target.value)} placeholder="Billing contact" />
-            </label>
-            <label>
-              Tier
-              <select value={selectedTier} onChange={(event) => setSelectedTier(event.target.value)}>
-                {paidPlans.map((plan) => <option key={plan.slug} value={plan.slug}>{plan.name} - {plan.price}</option>)}
-              </select>
-            </label>
-            <label>
-              Payment
-              <select value={provider} onChange={(event) => setProvider(event.target.value)}>
-                <option value="manual_bank_qr">Bank QR</option>
-                <option value="manual_esewa_qr">eSewa QR</option>
-                <option value="manual_khalti_qr">Khalti QR</option>
-                <option value="manual_contact">Personal contact</option>
-                <option value="payoneer">Payoneer invoice</option>
-              </select>
-            </label>
-            {selectedQr ? (
-              <div className="payment-qr-preview compact">
-                <img src={selectedQr.image} alt={`${selectedQr.label} payment QR`} loading="lazy" />
-                <div>
-                  <strong>{selectedQr.label}</strong>
-                  <p>{selectedQr.note}</p>
-                </div>
+              <div>
+                <p className="eyebrow">Request details</p>
+                <strong>{selectedPlan.name} via {providerLabel(provider)}</strong>
               </div>
-            ) : null}
+              <span className="commerce-step">01</span>
+            </div>
+            <div className="checkout-fields">
+              <label>
+                Email
+                <input value={customer.email} onChange={(event) => updateCustomer('email', event.target.value)} type="email" required placeholder="you@company.com" />
+              </label>
+              <label>
+                Name
+                <input value={customer.name} onChange={(event) => updateCustomer('name', event.target.value)} placeholder="Billing contact" />
+              </label>
+              <label>
+                Tier
+                <select value={selectedTier} onChange={(event) => setSelectedTier(event.target.value)}>
+                  {paidPlans.map((plan) => <option key={plan.slug} value={plan.slug}>{plan.name} - {plan.price}</option>)}
+                </select>
+              </label>
+              <label>
+                Payment
+                <select value={provider} onChange={(event) => setProvider(event.target.value)}>
+                  <option value="manual_bank_qr">Bank QR</option>
+                  <option value="manual_esewa_qr">eSewa QR</option>
+                  <option value="manual_khalti_qr">Khalti QR</option>
+                  <option value="manual_contact">Personal contact</option>
+                  <option value="payoneer">Payoneer invoice</option>
+                </select>
+              </label>
+            </div>
+            {selectedQr ? <div className="payment-method-note"><Check aria-hidden="true" /><span>{selectedQr.note}</span></div> : null}
             <button className="primary-button" type="submit">Request access</button>
           </form>
 
           <aside className="checkout-status-panel">
             <div className="panel-heading tight">
-              <p className="eyebrow">Activation</p>
-              <strong>Manual confirmation only</strong>
+              <div>
+                <p className="eyebrow">Payment and activation</p>
+                <strong>Confirmation workspace</strong>
+              </div>
+              <span className="commerce-step">02</span>
             </div>
             {status.text ? <p className={`commerce-status ${status.tone}`}>{status.text}</p> : <p>Request access first. You will receive a payable invoice/reference, then Parva activates your subscription after manual confirmation.</p>}
+            {!checkout && selectedQr ? (
+              <div className="payment-qr-preview">
+                <img src={selectedQr.image} alt={`${selectedQr.label} payment QR`} loading="lazy" />
+                <div>
+                  <strong>{selectedQr.label}</strong>
+                  <p>The invoice number appears after the request is created. Include it with the transfer.</p>
+                </div>
+              </div>
+            ) : null}
             {checkout ? (
               <div className="checkout-receipt">
                 <span>{checkout.invoice_number || checkout.invoice_id}</span>
@@ -223,16 +259,19 @@ export function RedesignApiPricing() {
         <section className="usage-console">
           <form onSubmit={loadUsage}>
             <div className="panel-heading tight">
-              <p className="eyebrow">Usage</p>
-              <strong>Quota visibility</strong>
+              <div>
+                <p className="eyebrow">Usage</p>
+                <strong>Check a key quota</strong>
+              </div>
+              <Gauge aria-hidden="true" />
             </div>
             <label>
               API key
               <input value={usageKey} onChange={(event) => setUsageKey(event.target.value)} placeholder="parva_live_..." />
             </label>
-            <button type="submit">Check usage</button>
+            <button className="ghost-button" type="submit">Check usage</button>
           </form>
-          <div className="usage-meter">
+          <div className="usage-summary">
             {usage ? (
               <>
                 <span>{usage.tier} · {usage.period}</span>
@@ -263,27 +302,73 @@ export function RedesignProfileSaved() {
 
   return (
     <AppChrome>
-      <main className="page-shell simple-grid">
-        <PageHero title="Profile & Saved" body="A private workspace for place context, saved observances, and calendar connections." />
-        <article className="panel"><h2>Current place</h2><p>{formatCoordinates(state.location)} · {state.timezone}</p><Link className="text-link" to="/my-place">Load place data</Link></article>
-        <article className="panel saved-festival-panel">
-          <h2>Saved festivals</h2>
+      <main className="page-shell profile-page">
+        <PageHero
+          title="Profile & Saved"
+          body="Your current place, followed festivals, and calendar connections stay together on this device."
+          action={<Link className="primary-button" to="/festivals">Find festivals</Link>}
+        />
+
+        <section className="profile-summary-strip" aria-label="Saved workspace summary">
+          <div><MapPin aria-hidden="true" /><span>Place</span><strong>{state.location?.label || 'Kathmandu, Nepal'}</strong></div>
+          <div><Bookmark aria-hidden="true" /><span>Saved</span><strong>{savedIds.length} festivals</strong></div>
+          <div><CalendarSync aria-hidden="true" /><span>Calendar</span><strong>Ready to connect</strong></div>
+        </section>
+
+        <section className="profile-dashboard">
+          <article className="profile-place-card">
+            <div className="profile-card-icon"><MapPin aria-hidden="true" /></div>
+            <div>
+              <p className="eyebrow">Current place</p>
+              <h2>{state.location?.label || 'Kathmandu, Nepal'}</h2>
+              <p>{formatCoordinates(state.location)} / {state.timezone}</p>
+            </div>
+            <Link className="ghost-button" to="/my-place">Change place <ArrowUpRight aria-hidden="true" /></Link>
+          </article>
+          <article className="profile-calendar-card">
+            <div className="profile-card-icon"><CalendarSync aria-hidden="true" /></div>
+            <div>
+              <p className="eyebrow">Calendar feeds</p>
+              <h2>Keep observances in your calendar</h2>
+              <p>Subscribe once, then let your calendar app refresh the feed.</p>
+            </div>
+            <Link className="ghost-button" to="/integrations">Open integrations <ArrowUpRight aria-hidden="true" /></Link>
+          </article>
+        </section>
+
+        <section className="saved-festival-panel">
+          <header>
+            <div>
+              <p className="eyebrow">Your calendar</p>
+              <h2>Saved festivals</h2>
+            </div>
+            <strong>{savedIds.length}</strong>
+          </header>
           {savedIds.length ? (
             <div className="saved-festival-list" aria-label="Saved festival list">
-              {savedIds.map((festivalId) => (
-                <div key={festivalId}>
-                  <Link className="text-link" to={`/festivals/${festivalId}`}>{readableCategory(festivalId)}</Link>
-                  <a href={buildCalendarFeedUrl(festivalId)}>Calendar</a>
-                  <button type="button" onClick={() => clearSavedFestival(festivalId)}>Remove</button>
+              {savedIds.map((festivalId, index) => (
+                <div key={festivalId} className={`saved-festival-row tone-${(index % 4) + 1}`}>
+                  <span className="saved-festival-row__index">{String(index + 1).padStart(2, '0')}</span>
+                  <div>
+                    <Link to={`/festivals/${festivalId}`}>{readableCategory(festivalId)}</Link>
+                    <small>Saved on this device</small>
+                  </div>
+                  <a className="ghost-button" href={buildCalendarFeedUrl(festivalId)}>Calendar</a>
+                  <button type="button" className="icon-button" aria-label={`Remove ${readableCategory(festivalId)}`} onClick={() => clearSavedFestival(festivalId)}><Trash2 aria-hidden="true" /></button>
                 </div>
               ))}
             </div>
           ) : (
-            <p>Save observances from the festival calendar to build a personal ritual year.</p>
+            <div className="saved-empty-state">
+              <CalendarHeart aria-hidden="true" />
+              <div>
+                <h3>Your saved calendar starts here.</h3>
+                <p>Follow an observance from the festival list and it will appear here with a direct calendar feed.</p>
+              </div>
+              <Link className="primary-button" to="/festivals">Browse festivals</Link>
+            </div>
           )}
-          <Link className="text-link" to="/festivals">Browse festivals</Link>
-        </article>
-        <article className="panel"><h2>Calendar export</h2><p>Subscribe to Parva calendars from the integrations page.</p><Link className="text-link" to="/integrations">Open integrations</Link></article>
+        </section>
       </main>
     </AppChrome>
   );

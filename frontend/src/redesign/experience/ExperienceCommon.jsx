@@ -1,6 +1,35 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, NavLink, useParams } from 'react-router-dom';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { Link, NavLink, useLocation, useParams } from 'react-router-dom';
+import { m as Motion } from 'motion/react';
+import {
+  ArrowLeftRight,
+  Bookmark,
+  CalendarDays,
+  CalendarRange,
+  CircleHelp,
+  Code2,
+  FlaskConical,
+  Gauge,
+  Landmark,
+  Library,
+  MapPin,
+  Menu,
+  Search,
+  ShieldCheck,
+  Sparkles,
+  Sun,
+  UserRound,
+  X,
+} from 'lucide-react';
 import {
   billingAPI,
   calendarAPI,
@@ -30,7 +59,6 @@ import {
   festivalQualityOptions,
   festivalSortOptions,
   festivalVisualMeta,
-  footerGroups,
   grahaShort,
   housePositions,
   manualPaymentMethods,
@@ -66,9 +94,31 @@ import {
   VerificationStrip,
 } from '../components/VerificationComponents';
 import '../ParvaRedesign.css';
+import '../ParvaPolish.css';
+
+const AppChromeNestingContext = createContext(false);
 
 function addDaysToIsoDate(value, offset) {
   return addDaysWithFallback(value, offset, todayIso());
+}
+
+function routeFamily(pathname = '/') {
+  if (pathname.startsWith('/festivals')) return 'festival';
+  if (pathname === '/today' || pathname === '/panchanga' || pathname === '/best-time') return 'day';
+  if (pathname === '/my-place') return 'place';
+  if (pathname === '/birth-reading') return 'birth';
+  if (pathname === '/future-bs') return 'future';
+  if (pathname === '/developers' || pathname === '/integrations' || pathname === '/pricing') return 'developer';
+  if (
+    pathname === '/trust'
+    || pathname === '/truth-lab'
+    || pathname === '/methodology'
+    || pathname === '/policy'
+    || pathname === '/benchmark'
+    || pathname === '/proof'
+  ) return 'trust';
+  if (pathname === '/enterprise') return 'enterprise';
+  return 'workspace';
 }
 
 function panchangaProofUrl(date) {
@@ -133,19 +183,162 @@ function d9Houses(payload) {
   return grouped;
 }
 
-function AppChrome({ children }) {
+const shellIconByPath = {
+  '/': ArrowLeftRight,
+  '/today': Sun,
+  '/my-place': MapPin,
+  '/festivals': CalendarDays,
+  '/benchmark': Gauge,
+  '/best-time': Sparkles,
+  '/birth-reading': UserRound,
+  '/panchanga': CalendarRange,
+  '/developers': Code2,
+  '/enterprise': Landmark,
+  '/future-bs': FlaskConical,
+  '/integrations': Library,
+  '/trust': ShieldCheck,
+  '/saved': Bookmark,
+};
+
+function ShellNavLink({ item, onNavigate }) {
+  const Icon = shellIconByPath[item.to] || CircleHelp;
+  return (
+    <NavLink to={item.to} end={item.to === '/'} aria-label={item.label} onClick={onNavigate}>
+      <Icon aria-hidden="true" />
+      <span>{item.label}</span>
+    </NavLink>
+  );
+}
+
+function NavigationMenu({ primaryItems, platformItems, onClose }) {
+  const dialogRef = useRef(null);
+
+  useEffect(() => {
+    const previousActiveElement = document.activeElement;
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      const focusable = [...(dialogRef.current?.querySelectorAll(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ) || [])];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+    dialogRef.current?.querySelector('button[aria-label="Close navigation"]')?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+      previousActiveElement?.focus?.();
+    };
+  }, [onClose]);
+
+  return (
+    <div className="navigation-layer">
+      <Motion.button
+        type="button"
+        className="navigation-scrim"
+        aria-label="Close navigation"
+        onClick={onClose}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.16 }}
+      />
+      <Motion.section
+        id="parva-navigation-menu"
+        ref={dialogRef}
+        className="navigation-menu"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Project Parva navigation"
+        initial={{ opacity: 0, y: -10, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -7, scale: 0.99 }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <header>
+          <div>
+            <span className="brand-symbol" aria-hidden="true"><span /></span>
+            <strong>Project Parva</strong>
+          </div>
+          <button type="button" className="close-button" onClick={onClose} aria-label="Close navigation">
+            <X aria-hidden="true" />
+          </button>
+        </header>
+        <div className="navigation-menu__groups">
+          <section>
+            <p>Product</p>
+            <nav aria-label="Primary navigation">
+              {primaryItems.map((item) => (
+                <ShellNavLink key={item.to} item={item} onNavigate={onClose} />
+              ))}
+            </nav>
+          </section>
+          <section>
+            <p>Platform</p>
+            <nav aria-label="Platform navigation">
+              {platformItems.map((item) => (
+                <ShellNavLink key={item.to} item={item} onNavigate={onClose} />
+              ))}
+            </nav>
+          </section>
+        </div>
+        <footer>
+          <a href="https://api.prabinghimire1.com.np/docs">API reference</a>
+          <Link to="/methodology" onClick={onClose}>Methodology</Link>
+          <Link to="/policy" onClick={onClose}>Policy</Link>
+        </footer>
+      </Motion.section>
+    </div>
+  );
+}
+
+export function AppChrome({ children }) {
+  const nested = useContext(AppChromeNestingContext);
+  if (nested) return children;
+  return <AppChromeRoot>{children}</AppChromeRoot>;
+}
+
+function AppChromeRoot({ children }) {
+  const location = useLocation();
   const [searchOpen, setSearchOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuTriggerRef = useRef(null);
+  const searchTriggerRef = useRef(null);
   const capabilities = useBackendCapabilities();
   const { state } = useTemporalContext();
   const [summary, setSummary] = useState(null);
-  const visibleNavItems = useMemo(() => capabilities.filterRoutes(navItems), [capabilities]);
-  const visibleFooterGroups = useMemo(
-    () => footerGroups
-      .map((group) => ({
-        ...group,
-        links: capabilities.filterRoutes(group.links),
-      }))
-      .filter((group) => group.links.length > 0),
+  const visibleNavItems = useMemo(
+    () => [
+      { label: 'Workbench', to: '/' },
+      ...capabilities.filterRoutes(navItems),
+    ],
+    [capabilities],
+  );
+  const platformNavItems = useMemo(
+    () => capabilities.filterRoutes([
+      { label: 'Developers', to: '/developers', requiredCapability: 'developerPreview' },
+      { label: 'Enterprise', to: '/enterprise' },
+      { label: 'Future BS', to: '/future-bs', requiredCapability: 'futureBsMethodology' },
+      { label: 'Integrations', to: '/integrations', requiredCapability: 'integrationsPreview' },
+      { label: 'Saved', to: '/saved' },
+      { label: 'Trust center', to: '/trust', requiredCapability: 'trustPreview' },
+    ]),
     [capabilities],
   );
   const placeLabel = summary?.location_context?.place_title
@@ -173,104 +366,111 @@ function AppChrome({ children }) {
     };
   }, [state.date, state.location?.latitude, state.location?.longitude, state.timezone]);
 
+  useEffect(() => {
+    const handleShortcut = (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleShortcut);
+    return () => window.removeEventListener('keydown', handleShortcut);
+  }, []);
+
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    menuTriggerRef.current?.focus();
+  }, []);
+  const closeSearch = useCallback(() => {
+    setSearchOpen(false);
+    searchTriggerRef.current?.focus();
+  }, []);
+
   return (
-    <div className="parva-app">
-      <header className="parva-topbar">
-        <Link className="brand-mark" to="/" aria-label="Parva home">
-          <span className="brand-symbol" aria-hidden="true"><span /></span>
-          <span>Parva</span>
-        </Link>
-        <Link className="mobile-inline-context" to="/my-place" aria-label={`Current context ${bsLabel}, ${placeLabel}`}>
-          <span>{bsLabel}</span>
-          <strong>{placeLabel}</strong>
-        </Link>
-        <button type="button" className="mobile-inline-search" onClick={() => setSearchOpen(true)} aria-label="Search Parva">
-          ⌕
-        </button>
-        <nav className="top-nav" aria-label="Primary navigation">
-          {visibleNavItems.map((item) => (
-            <NavLink key={item.to} to={item.to} aria-label={item.label}>
-              <span className="nav-label-full">{item.label}</span>
-              <span className="nav-label-short" aria-hidden="true">{item.shortLabel || item.label}</span>
-            </NavLink>
-          ))}
-        </nav>
-        <div className="top-actions">
-          <button type="button" className="search-trigger" onClick={() => setSearchOpen(true)}>
-            <span aria-hidden="true">⌕</span>
-            <span>Search Parva</span>
-            <kbd>⌘ K</kbd>
-          </button>
-          <Link className="place-pill" to="/my-place" aria-label={`Current place ${placeLabel}`}>
-            <span aria-hidden="true">⌖</span>
-            <strong>{placeLabel}</strong>
-            <small>{state.timezone}</small>
-          </Link>
-          <Link className="icon-button" to="/trust" aria-label="Open trust center">⌁</Link>
-          <Link className="profile-chip" to="/profile" aria-label="Open profile">
-            <span aria-hidden="true">◎</span>
-            <strong>Profile</strong>
-            <small>Private workspace</small>
-          </Link>
-        </div>
-      </header>
-      <div className="mobile-context-bar" aria-label="Current day and place">
-        <Link className="mobile-date-card" to="/today">
-          <small>Today</small>
-          <strong>{bsLabel}</strong>
-        </Link>
-        <Link className="mobile-place-card" to="/my-place">
-          <span aria-hidden="true">⌖</span>
-          <strong>{placeLabel}</strong>
-        </Link>
-        <button type="button" className="mobile-search-button" onClick={() => setSearchOpen(true)} aria-label="Search Parva">
-          ⌕
-        </button>
-      </div>
-      {children}
-      <footer className="parva-footer">
-        <section className="footer-main" aria-label="Parva footer">
-          <div className="footer-brand">
-            <Link className="brand-mark footer-logo" to="/" aria-label="Parva home">
+    <AppChromeNestingContext.Provider value>
+      <div className="parva-app" data-route-family={routeFamily(location.pathname)}>
+        <div className="parva-main">
+        <header className="parva-topbar">
+          <div className="topbar-brand-cluster">
+            <Link className="topbar-brand" to="/" aria-label="Parva home">
               <span className="brand-symbol" aria-hidden="true"><span /></span>
-              <span>Parva</span>
+              <strong>Parva</strong>
             </Link>
-            <p>
-              Source-aware Nepal time, festival, panchanga, muhurta, and kundali tools.
-              Built for daily clarity, visible provenance, and careful decisions.
-            </p>
-            <div className="footer-status" aria-label="Service status">
-              <span><i aria-hidden="true" /> Verified API</span>
-              <span>AGPL-3.0-or-later</span>
-            </div>
+            <button
+              ref={menuTriggerRef}
+              type="button"
+              className="menu-trigger"
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open navigation"
+              aria-expanded={menuOpen}
+              aria-controls="parva-navigation-menu"
+              aria-haspopup="dialog"
+            >
+              <Menu aria-hidden="true" />
+              <span>Menu</span>
+            </button>
           </div>
-          <div className="footer-link-grid">
-            {visibleFooterGroups.map((group) => (
-              <nav key={group.title} aria-label={`${group.title} links`}>
-                <h2>{group.title}</h2>
-                {group.links.map((link) => (
-                  link.href
-                    ? <a key={link.label} href={link.href}>{link.label}</a>
-                    : <Link key={link.label} to={link.to}>{link.label}</Link>
-                ))}
-              </nav>
-            ))}
+          <div className="topbar-context-group">
+            <Link className="topbar-context" to="/today" aria-label={`Current context ${bsLabel}, ${placeLabel}`}>
+              <CalendarDays aria-hidden="true" />
+              <span>
+                <strong>{bsLabel}</strong>
+                <small>{formatIsoDate(state.date, { month: 'short', day: 'numeric', year: 'numeric' })}</small>
+              </span>
+            </Link>
+            <Link className="topbar-place" to="/my-place" aria-label={`Current place ${placeLabel}`}>
+              <MapPin aria-hidden="true" />
+              <span><strong>{placeLabel}</strong><small>{state.timezone}</small></span>
+            </Link>
           </div>
-        </section>
-        <section className="footer-bottom" aria-label="Legal and service notes">
-          <span>Informational use only; verify ritual decisions with local authorities or a trusted panchang.</span>
-          <span>© 2026 Parva. Source-aware temporal tools for Nepal.</span>
-        </section>
-      </footer>
-      <nav className="bottom-nav" aria-label="Mobile navigation">
-        {visibleNavItems.slice(0, 5).map((item) => (
-          <NavLink key={item.to} to={item.to}>
-            {item.shortLabel || item.label}
-          </NavLink>
-        ))}
-      </nav>
-      {searchOpen ? <SearchDialog onClose={() => setSearchOpen(false)} /> : null}
-    </div>
+          <div className="top-actions">
+            <button
+              ref={searchTriggerRef}
+              type="button"
+              className="search-trigger"
+              onClick={() => setSearchOpen(true)}
+            >
+              <Search aria-hidden="true" />
+              <span>Search</span>
+              <kbd>Ctrl K</kbd>
+            </button>
+            <a
+              className="docs-trigger"
+              href="https://api.prabinghimire1.com.np/docs"
+              aria-label="Open API documentation"
+            >
+              <Code2 aria-hidden="true" />
+              <span>API docs</span>
+            </a>
+            <Link className="icon-button" to="/trust" aria-label="Open trust center">
+              <ShieldCheck aria-hidden="true" />
+            </Link>
+          </div>
+        </header>
+
+        <div className="parva-stage">{children}</div>
+
+        <footer className="parva-footer">
+          <span>Project Parva</span>
+          <nav aria-label="Footer links">
+            <Link to="/methodology">Methodology</Link>
+            <Link to="/policy">Policy</Link>
+            <a href="https://github.com/dantwoashim/Project_Parva">Source</a>
+          </nav>
+          <small>AGPL-3.0-or-later</small>
+        </footer>
+      </div>
+
+        {menuOpen ? (
+          <NavigationMenu
+            primaryItems={visibleNavItems}
+            platformItems={platformNavItems}
+            onClose={closeMenu}
+          />
+        ) : null}
+        {searchOpen ? <SearchDialog onClose={closeSearch} /> : null}
+      </div>
+    </AppChromeNestingContext.Provider>
   );
 }
 
@@ -367,13 +567,37 @@ function SearchDialog({ onClose }) {
   }, [fromDate, query, quickCommands, toDate]);
 
   return (
-    <div className="modal-layer" role="dialog" aria-modal="true" aria-label="Search Parva">
-      <button type="button" className="modal-scrim" onClick={onClose} aria-label="Close search" />
-      <section className="search-dialog">
+    <Motion.div
+      className="modal-layer"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Search Parva"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.16 }}
+    >
+      <Motion.button
+        type="button"
+        className="modal-scrim"
+        onClick={onClose}
+        aria-label="Close search"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+      <Motion.section
+        className="search-dialog"
+        initial={{ opacity: 0, y: -14, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -8, scale: 0.99 }}
+        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="search-input-row">
-          <span aria-hidden="true">⌕</span>
+          <Search aria-hidden="true" />
           <input
             autoFocus
+            aria-label="Search Parva"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search festivals, places, timings..."
@@ -403,8 +627,8 @@ function SearchDialog({ onClose }) {
             </Link>
           ))}
         </div>
-      </section>
-    </div>
+      </Motion.section>
+    </Motion.div>
   );
 }
 
@@ -455,7 +679,6 @@ export {
   festivalQualityOptions,
   festivalSortOptions,
   festivalVisualMeta,
-  footerGroups,
   grahaShort,
   housePositions,
   manualPaymentMethods,
@@ -492,6 +715,5 @@ export {
   currentDasha,
   strongestGraha,
   d9Houses,
-  AppChrome,
   PageHero,
 };

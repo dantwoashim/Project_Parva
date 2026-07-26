@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import sys
@@ -68,8 +69,13 @@ def _write_profile(profile: str) -> tuple[Path, int]:
     return output, len(schema.get("paths", {}))
 
 
-def main() -> int:
-    for profile in PROFILES:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--profile", choices=[*PROFILES, "all"], default="all")
+    args = parser.parse_args(argv)
+
+    profiles = PROFILES if args.profile == "all" else (args.profile,)
+    for profile in profiles:
         output, path_count = _write_profile(profile)
         try:
             rendered = output.relative_to(PROJECT_ROOT)

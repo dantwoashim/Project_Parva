@@ -19,6 +19,12 @@ const consumerForbidden = [
   /\bundefined\b/i,
   /\bNaN\b/,
 ];
+const workbenchForbidden = [
+  /localhost/i,
+  /Invalid Date/i,
+  /\bundefined\b/i,
+  /\bNaN\b/,
+];
 
 const viewportPresets = {
   desktop: {
@@ -41,12 +47,12 @@ const routes = [
     path: '/',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.waitForURL(/\/today$/, { timeout: readyTimeout });
-      await page.locator('main h1').waitFor({ timeout: readyTimeout });
-      await page.locator('main').getByText(/Nepal calendar, panchanga/i).waitFor({ timeout: readyTimeout });
-      await page.locator('main').getByText(/Upcoming Observances|Panchanga for/i).first().waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: 'Project Parva', level: 1 }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('region', { name: 'Temporal API workbench' }).waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: 'API explorer', level: 2 }).waitFor({ timeout: readyTimeout });
+      await page.getByText(/^Complete$/).first().waitFor({ timeout: readyTimeout });
     },
-    forbidden: consumerForbidden,
+    forbidden: workbenchForbidden,
   },
   {
     path: '/about',
@@ -61,9 +67,8 @@ const routes = [
     path: '/today',
     viewports: ['desktop', 'mobile'],
     ready: async (page) => {
-      await page.locator('main h1').waitFor({ timeout: readyTimeout });
-      await page.locator('main').getByText(/Nepal calendar, panchanga/i).waitFor({ timeout: readyTimeout });
-      await page.locator('main').getByText(/Upcoming Observances|Panchanga for/i).first().waitFor({ timeout: readyTimeout });
+      await page.getByRole('heading', { name: /Today in/i, level: 1 }).waitFor({ timeout: readyTimeout });
+      await page.locator('main').getByText(/Upcoming Observances/i).waitFor({ timeout: readyTimeout });
     },
     forbidden: [...consumerForbidden, /Could not build today's view/i],
   },
@@ -176,16 +181,18 @@ const routes = [
     forbidden: [/Internal Server Error/i, /Invalid Date/i, /\bundefined\b/i, /\bNaN\b/],
   },
   {
-    path: '/embed/temporal-compass.html?date=2026-10-21&lat=27.7172&lon=85.3240&tz=Asia%2FKathmandu',
+    path: '/embed/temporal-compass.html?date=2026-10-21&lat=27.7172&lon=85.3240&tz=Asia%2FKathmandu&api_base=%2Fv3%2Fapi',
     viewports: ['desktop'],
     ready: async (page) => {
       await page.getByText('Temporal Compass').waitFor({ timeout: readyTimeout });
-      await page.locator('body').waitFor({ timeout: readyTimeout });
+      await page.locator('#meta:not([hidden])').waitFor({ timeout: readyTimeout });
+      await page.locator('#sunrise-value').getByText(/^\d{1,2}:\d{2}\s(?:AM|PM)$/).waitFor({ timeout: readyTimeout });
+      await page.locator('#sunset-value').getByText(/^\d{1,2}:\d{2}\s(?:AM|PM)$/).waitFor({ timeout: readyTimeout });
     },
-    forbidden: [/Request failed/i, /Internal Server Error/i],
+    forbidden: [/Unable to load widget/i, /Request failed/i, /Internal Server Error/i, /Invalid Date/i, /\bundefined\b/i, /\bNaN\b/],
   },
   {
-    path: '/embed/upcoming-festivals.html?days=30&limit=4',
+    path: '/embed/upcoming-festivals.html?days=30&limit=4&api_base=%2Fv3%2Fapi',
     viewports: ['desktop'],
     ready: async (page) => {
       await page.getByText('Upcoming Festivals').waitFor({ timeout: readyTimeout });

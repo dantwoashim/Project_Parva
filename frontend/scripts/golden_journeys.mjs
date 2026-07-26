@@ -132,6 +132,13 @@ async function runJourney(browser, definition) {
       throw new Error(diagnostics.join(' | '));
     }
 
+    await page.getByText(/^Opening Parva$/i).waitFor({ state: 'hidden', timeout: readyTimeout });
+    await page.evaluate(() => {
+      if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(250);
+
     const screenshotPath = path.join(outputDir, `golden-journey-${slug}.png`);
     await page.screenshot({ path: screenshotPath, fullPage: true });
     return {
@@ -169,14 +176,19 @@ async function runJourney(browser, definition) {
 const journeys = [
   {
     id: 'root-to-today',
-    title: 'Open the root redirect, land on Today, and inspect evidence',
+    title: 'Open Home, navigate to Today, and inspect evidence',
     viewport: 'desktop',
     run: async (page, step) => {
-      await step('Open root redirect', async () => {
+      await step('Open Home', async () => {
         await page.goto(new URL('/', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
+        await page.getByRole('heading', { name: /^Project Parva$/i, level: 1 }).waitFor({ timeout: readyTimeout });
+      });
+
+      await step('Navigate to Today', async () => {
+        await page.getByRole('button', { name: /Open navigation/i }).click();
+        await page.getByLabel(/Primary navigation/i).getByRole('link', { name: /^Today$/i }).click();
         await page.waitForURL(/\/today$/, { timeout: readyTimeout });
-        await page.locator('main h1').waitFor({ timeout: readyTimeout });
-        await page.locator('main').getByText(/Nepal calendar, panchanga/i).waitFor({ timeout: readyTimeout });
+        await page.getByRole('heading', { name: /Today in/i, level: 1 }).waitFor({ timeout: readyTimeout });
       });
 
       await step('Confirm Today content', async () => {
@@ -196,12 +208,12 @@ const journeys = [
       await step('Open My Place', async () => {
         await page.goto(new URL('/my-place', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
         await page.locator('main h1').waitFor({ timeout: readyTimeout });
-        await page.locator('main').getByText(/Choose the place Parva should use/i).waitFor({ timeout: readyTimeout });
+        await page.getByLabel(/Search places/i).waitFor({ timeout: readyTimeout });
       });
 
       await step('Search for a place', async () => {
         await page.getByLabel(/Search places/i).fill('Pokhara');
-        await page.locator('.place-buttons').getByText(/Pokhara|No selectable result|Searching/i).first().waitFor({ timeout: readyTimeout });
+        await page.locator('.place-suggestions').getByText(/Pokhara|No matching place|Searching places/i).first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Inspect place evidence', async () => {
@@ -231,11 +243,11 @@ const journeys = [
       await step('Verify the saved workspace remembers it', async () => {
         await page.goto(new URL('/saved', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
         await page.locator('main h1').waitFor({ timeout: readyTimeout });
-        await page.locator('.saved-festival-list a.text-link').first().waitFor({ timeout: readyTimeout });
+        await page.locator('.saved-festival-row > div a').first().waitFor({ timeout: readyTimeout });
       });
 
       await step('Open the saved observance detail', async () => {
-        await page.locator('.saved-festival-list a.text-link').first().click();
+        await page.locator('.saved-festival-row > div a').first().click();
         await page.waitForURL(/\/festivals\/[^/]+$/, { timeout: readyTimeout });
         await page.locator('main h1').waitFor({ timeout: readyTimeout });
       });
@@ -307,12 +319,11 @@ const journeys = [
     run: async (page, step) => {
       await step('Open home on mobile', async () => {
         await page.goto(new URL('/', baseUrl).toString(), { waitUntil: 'domcontentloaded' });
-        await page.waitForURL(/\/today$/, { timeout: readyTimeout });
-        await page.locator('main h1').waitFor({ timeout: readyTimeout });
-        await page.locator('main').getByText(/Nepal calendar, panchanga/i).waitFor({ timeout: readyTimeout });
+        await page.getByRole('heading', { name: /^Project Parva$/i, level: 1 }).waitFor({ timeout: readyTimeout });
       });
 
       await step('Navigate to Festivals', async () => {
+        await page.getByRole('button', { name: /Open navigation/i }).click();
         await page.getByLabel(/Primary navigation/i).getByRole('link', { name: /Festivals/i }).click();
         await page.waitForURL(/\/festivals$/, { timeout: readyTimeout });
         await page.locator('main h1').waitFor({ timeout: readyTimeout });

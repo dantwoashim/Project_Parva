@@ -1,7 +1,9 @@
 import {
   calendarAPI,
+  enterpriseAPI,
   fetchAPIEnvelope,
   festivalAPI,
+  futureAPI,
   kundaliAPI,
   muhurtaAPI,
   personalAPI,
@@ -791,6 +793,36 @@ describe('API service', () => {
         name: 'Holi',
       },
     ]);
+  });
+
+  it('uses the enterprise routes for fiscal boundaries and BS month lengths', async () => {
+    const fetchMock = vi.fn(async () => jsonResponse({ data: {}, meta: {} }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await enterpriseAPI.getFiscalYear(2083);
+    await enterpriseAPI.getBsMonths(2083);
+
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
+      expect.stringContaining('/enterprise/fiscal-year/2083'),
+      expect.any(Object),
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      expect.stringContaining('/enterprise/bs-months/2083'),
+      expect.any(Object),
+    );
+  });
+
+  it('resolves Future BS capability routes outside the default v3 base', async () => {
+    const fetchMock = vi.fn(async () => jsonResponse({ data: {}, meta: {} }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await futureAPI.getCapabilities();
+    await futureAPI.getModelRiskCapabilities();
+
+    expect(fetchMock.mock.calls[0][0]).toMatch(/\/v4\/api\/future-bs\/capabilities$/);
+    expect(fetchMock.mock.calls[1][0]).toMatch(/\/v5\/api\/calendar-model-risk\/capabilities$/);
   });
 
   it('accepts structured sunrise objects for personal panchanga envelopes', async () => {

@@ -33,6 +33,7 @@ DASHBOARD_METRICS_JSON = (
 )
 CONFORMANCE_REPORT_JSON = PROJECT_ROOT / "reports" / "conformance_report.json"
 SMOKE_REPORT_JSON = REPORTS_RELEASE_DIR / "browser_smoke.json"
+ACCESSIBILITY_REPORT_JSON = REPORTS_RELEASE_DIR / "frontend_accessibility.json"
 GOLDEN_JOURNEYS_REPORT_JSON = REPORTS_RELEASE_DIR / "golden_journeys.json"
 BUNDLE_BUDGET_REPORT_JSON = REPORTS_RELEASE_DIR / "frontend_bundle_budget.json"
 SECURITY_AUDIT_REPORT_JSON = PROJECT_ROOT / "reports" / "security_audit.json"
@@ -154,6 +155,10 @@ def _build_payload(args: argparse.Namespace) -> dict:
     conformance = _read_json(CONFORMANCE_REPORT_JSON, required=True)
     smoke_report_path = Path(args.browser_smoke_report) if args.browser_smoke_report else SMOKE_REPORT_JSON
     smoke_report = _read_json(smoke_report_path)
+    accessibility_report_path = (
+        Path(args.accessibility_report) if args.accessibility_report else ACCESSIBILITY_REPORT_JSON
+    )
+    accessibility_report = _read_json(accessibility_report_path)
     golden_journeys_report_path = (
         Path(args.golden_journeys_report) if args.golden_journeys_report else GOLDEN_JOURNEYS_REPORT_JSON
     )
@@ -172,6 +177,7 @@ def _build_payload(args: argparse.Namespace) -> dict:
 
     prepared_from_clean_checkout = _resolve_clean_checkout(args.prepared_from_clean_checkout)
     browser_smoke_status = _resolve_status(args.browser_smoke_status, smoke_report)
+    accessibility_status = _resolve_status(args.accessibility_status, accessibility_report)
     golden_journeys_status = _resolve_status(args.golden_journeys_status, golden_journeys_report)
     bundle_budget_status = _resolve_status(None, bundle_budget_report)
     security_audit_status = _resolve_status(None, security_audit_report)
@@ -216,6 +222,7 @@ def _build_payload(args: argparse.Namespace) -> dict:
             "frontend_bundle_budget": bundle_budget_status,
             "security_audit": security_audit_status,
             "browser_smoke": browser_smoke_status,
+            "frontend_accessibility": accessibility_status,
             "golden_journeys": golden_journeys_status,
             "launch_signoff": signoff_status,
             "source_archive": "present" if source_archive and source_archive.exists() else "missing",
@@ -223,7 +230,7 @@ def _build_payload(args: argparse.Namespace) -> dict:
         "user_facing_risk_review": {
             "degraded_state_behavior_reviewed": "yes",
             "no_hidden_fallback_date_behavior_confirmed": "yes" if browser_smoke_status == "passed" else "pending",
-            "accessibility_dialog_regression_check": "yes" if browser_smoke_status == "passed" else "pending",
+            "accessibility_dialog_regression_check": "yes" if accessibility_status == "passed" else "pending",
             "launch_critical_journeys_reviewed": "yes" if golden_journeys_status == "passed" else "pending",
             "timezone_rendering_spot_check": "yes",
             "known_limits_accepted_for_this_candidate": f"See {_rel(PUBLIC_BETA_DOSSIER_MD)}.",
@@ -235,6 +242,9 @@ def _build_payload(args: argparse.Namespace) -> dict:
             "authority_dashboard": _rel(AUTHORITY_DASHBOARD_MD),
             "dashboard_metrics": _rel(DASHBOARD_METRICS_MD),
             "browser_smoke_output": _rel(smoke_report_path if smoke_report else None),
+            "frontend_accessibility_output": _rel(
+                accessibility_report_path if accessibility_report else None
+            ),
             "golden_journeys_output": _rel(golden_journeys_report_path if golden_journeys_report else None),
             "bundle_budget_report": _rel(bundle_budget_report_path if bundle_budget_report else None),
             "security_audit_report": _rel(security_audit_report_path if security_audit_report else None),
@@ -257,6 +267,7 @@ def _build_payload(args: argparse.Namespace) -> dict:
                 "verification_rate_pct"
             ),
             "latest_snapshot_valid": dashboard_metrics.get("provenance_verification", {}).get("latest_snapshot_valid"),
+            "accessibility_route_count": len(accessibility_report.get("routes", [])),
             "golden_journey_count": len(golden_journeys_report.get("journeys", [])),
             "bundle_budget_total_js_bytes": bundle_budget_report.get("summary", {}).get("total_js_bytes"),
             "bundle_budget_total_css_bytes": bundle_budget_report.get("summary", {}).get("total_css_bytes"),
@@ -319,6 +330,7 @@ def _render_markdown(payload: dict) -> str:
         f"- frontend bundle budget: {gates['frontend_bundle_budget']}",
         f"- security audit: {gates['security_audit']}",
         f"- browser smoke: {gates['browser_smoke']}",
+        f"- frontend accessibility: {gates['frontend_accessibility']}",
         f"- golden journeys: {gates['golden_journeys']}",
         f"- launch signoff: {gates['launch_signoff']}",
         f"- source archive: {gates['source_archive']}",
@@ -340,6 +352,7 @@ def _render_markdown(payload: dict) -> str:
         f"- Authority dashboard: `{artifacts['authority_dashboard']}`",
         f"- Dashboard metrics: `{artifacts['dashboard_metrics']}`",
         f"- Browser smoke output: `{artifacts['browser_smoke_output']}`",
+        f"- Frontend accessibility output: `{artifacts['frontend_accessibility_output']}`",
         f"- Golden journeys output: `{artifacts['golden_journeys_output']}`",
         f"- Bundle budget report: `{artifacts['bundle_budget_report']}`",
         f"- Security audit report: `{artifacts['security_audit_report']}`",
@@ -376,6 +389,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--browser-smoke-report",
         help="Optional JSON browser smoke report path. Defaults to reports/release/browser_smoke.json.",
+    )
+    parser.add_argument("--accessibility-status", choices=["passed", "failed", "skipped"])
+    parser.add_argument(
+        "--accessibility-report",
+        help="Optional accessibility report path. Defaults to reports/release/frontend_accessibility.json.",
     )
     parser.add_argument("--golden-journeys-status", choices=["passed", "failed", "skipped"])
     parser.add_argument(

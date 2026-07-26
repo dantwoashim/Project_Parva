@@ -1,5 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import {
+  useEffect,
+  useRef,
   useState,
   todayIso,
   apiHref,
@@ -83,23 +85,52 @@ export function FestivalIllustration({ art }) {
   );
 }
 
-export function FestivalArtwork({ festival, compact = false }) {
+export function FestivalArtwork({ festival, compact = false, priority = false }) {
   const visual = resolveFestivalVisual(festival);
   const image = festivalImageSrc(festival);
   const fallbackImage = festivalFallbackImageSrc(festival, image);
+  const artworkRef = useRef(null);
+  const [shouldLoadImage, setShouldLoadImage] = useState(
+    () => priority || typeof IntersectionObserver === 'undefined',
+  );
   const [imageStatus, setImageStatus] = useState({ primary: '', fallback: false, failed: false, loadedSrc: '' });
   const activeStatus = imageStatus.primary === image ? imageStatus : null;
-  const currentImage = activeStatus?.failed ? '' : activeStatus?.fallback ? fallbackImage : image;
+  const currentImage = shouldLoadImage
+    ? activeStatus?.failed
+      ? ''
+      : activeStatus?.fallback
+        ? fallbackImage
+        : image
+    : '';
   const imageLoaded = Boolean(currentImage && activeStatus?.loadedSrc === currentImage);
 
+  useEffect(() => {
+    if (shouldLoadImage || !image || !artworkRef.current) return undefined;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      setShouldLoadImage(true);
+      observer.disconnect();
+    }, { rootMargin: '240px 0px' });
+
+    observer.observe(artworkRef.current);
+    return () => observer.disconnect();
+  }, [image, shouldLoadImage]);
+
   return (
-    <span className={`festival-art festival-art--${visual.art} ${imageLoaded ? 'has-image' : ''} ${compact ? 'is-compact' : ''}`} aria-hidden="true">
+    <span
+      ref={artworkRef}
+      className={`festival-art festival-art--${visual.art} ${imageLoaded ? 'has-image' : ''} ${compact ? 'is-compact' : ''}`}
+      aria-hidden="true"
+    >
       <span className="festival-art__halo" />
       {currentImage ? (
         <img
           src={currentImage}
           alt=""
-          loading={compact ? 'lazy' : 'eager'}
+          decoding="async"
+          fetchPriority={priority ? 'high' : 'auto'}
+          loading={priority ? 'eager' : 'lazy'}
           onLoad={() => setImageStatus({ primary: image, fallback: currentImage === fallbackImage, failed: false, loadedSrc: currentImage })}
           onError={() => {
             if (fallbackImage && currentImage !== fallbackImage) {

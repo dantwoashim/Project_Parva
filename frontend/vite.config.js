@@ -12,6 +12,29 @@ function omitReferenceImages() {
   };
 }
 
+const apiProxy = {
+  '/api': {
+    target: process.env.PARVA_DEV_API_TARGET || 'http://127.0.0.1:8000',
+    changeOrigin: true,
+  },
+  '/v3/api': {
+    target: process.env.PARVA_DEV_API_TARGET || 'http://127.0.0.1:8000',
+    changeOrigin: true,
+  },
+  '/v4/api': {
+    target: process.env.PARVA_DEV_API_TARGET || 'http://127.0.0.1:8000',
+    changeOrigin: true,
+  },
+  '/v5/api': {
+    target: process.env.PARVA_DEV_API_TARGET || 'http://127.0.0.1:8000',
+    changeOrigin: true,
+  },
+  '/health': {
+    target: process.env.PARVA_DEV_API_TARGET || 'http://127.0.0.1:8000',
+    changeOrigin: true,
+  },
+};
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), omitReferenceImages()],
@@ -28,16 +51,10 @@ export default defineConfig({
     },
   },
   server: {
-    proxy: {
-      '/api': {
-        target: process.env.PARVA_DEV_API_TARGET || 'http://127.0.0.1:8000',
-        changeOrigin: true,
-      },
-      '/v3/api': {
-        target: process.env.PARVA_DEV_API_TARGET || 'http://127.0.0.1:8000',
-        changeOrigin: true,
-      },
-    },
+    proxy: apiProxy,
+  },
+  preview: {
+    proxy: apiProxy,
   },
   test: {
     environment: 'jsdom',

@@ -37,33 +37,17 @@ function KundaliChart({ payload, selected, onSelect, mode }) {
           <span>{mode === 'd9' ? 'D9 Navamsha' : 'D1 Rashi'}</span>
           <strong>{mode === 'd9' ? 'Navamsha Chakra' : `${lagna} Janma Kundali`}</strong>
         </div>
-        <small>Interactive chart · click house or graha</small>
+        <small>Interactive chart - select a house or graha</small>
       </div>
       <div className="chart-canvas">
-        <div className="chart-aura" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
         <svg viewBox="0 0 100 100" className="chart-frame" aria-hidden="true">
           <defs>
-            <linearGradient id="kundaliPaper" x1="0" x2="1" y1="0" y2="1">
-              <stop offset="0%" stopColor="#fffaf0" />
-              <stop offset="50%" stopColor="#fffefd" />
-              <stop offset="100%" stopColor="#f4eadc" />
-            </linearGradient>
-            <radialGradient id="kundaliGlow" cx="50%" cy="50%" r="58%">
-              <stop offset="0%" stopColor="#fffaf0" />
-              <stop offset="64%" stopColor="#fff8ed" />
-              <stop offset="100%" stopColor="#ecdcc8" />
-            </radialGradient>
             <filter id="kundaliShadow" x="-20%" y="-20%" width="140%" height="140%">
               <feDropShadow dx="0" dy="4" stdDeviation="3" floodColor="#3b2a1b" floodOpacity="0.12" />
             </filter>
           </defs>
-          <rect x="4.5" y="4.5" width="91" height="91" rx="8" fill="url(#kundaliPaper)" filter="url(#kundaliShadow)" />
-          <rect x="7.5" y="7.5" width="85" height="85" rx="5.5" fill="url(#kundaliGlow)" />
+          <rect x="4.5" y="4.5" width="91" height="91" rx="8" fill="#fffaf0" filter="url(#kundaliShadow)" />
+          <rect x="7.5" y="7.5" width="85" height="85" rx="5.5" fill="#f8f5ff" />
           <path className="chart-grid-major" d="M50 7.5 L92.5 50 L50 92.5 L7.5 50 Z" />
           <path className="chart-grid-major" d="M7.5 7.5 L50 50 L92.5 92.5" />
           <path className="chart-grid-major" d="M92.5 7.5 L50 50 L7.5 92.5" />
@@ -173,7 +157,7 @@ function PlanetTable({ payload, selected, onSelect }) {
               <tr key={id} className={selected?.type === 'graha' && selected.id === id ? 'is-active' : undefined}>
                 <td><button type="button" onClick={() => onSelect({ type: 'graha', id, graha })}>{graha.name_english || titleCase(id)}</button></td>
                 <td>{graha.rashi_english}</td>
-                <td>{Number(graha.degree_in_rashi || 0).toFixed(2)}°</td>
+                <td>{Number(graha.degree_in_rashi || 0).toFixed(2)} deg</td>
                 <td>{payload?.d9?.[id]?.navamsa_rashi_english || 'Not listed'}</td>
                 <td>{titleCase(graha.dignity?.state || 'neutral')}</td>
               </tr>
@@ -198,7 +182,7 @@ function DashaTimeline({ payload }) {
         {periods.slice(0, 7).map((period) => (
           <article key={`${period.lord}-${period.start}`} className={period === active ? 'is-active' : ''}>
             <span>{titleCase(period.lord)}</span>
-            <strong>{formatDateTime(period.start)} → {formatDateTime(period.end)}</strong>
+            <strong>{formatDateTime(period.start)} to {formatDateTime(period.end)}</strong>
             <small>{period.duration_years} years</small>
           </article>
         ))}

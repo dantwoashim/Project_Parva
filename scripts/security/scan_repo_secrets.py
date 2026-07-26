@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+import subprocess
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -16,12 +17,17 @@ EXCLUDED_DIRS = {
     ".venv",
     ".venv311",
     ".verify",
+    ".nox",
+    ".tox",
     "__pycache__",
+    "build",
     "dist",
     "htmlcov",
     "node_modules",
     "output",
     "reports",
+    "tmp",
+    "venv",
 }
 EXCLUDED_PREFIXES = {
     Path("backend/data/snapshots"),
@@ -103,9 +109,26 @@ def _scan_file(path: Path) -> list[str]:
     return failures
 
 
+def _candidate_paths() -> list[Path]:
+    try:
+        completed = subprocess.run(
+            ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"],
+            cwd=PROJECT_ROOT,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError:
+        completed = None
+
+    if completed is not None and completed.returncode == 0:
+        return sorted(PROJECT_ROOT / item for item in completed.stdout.split("\0") if item)
+    return sorted(PROJECT_ROOT.rglob("*"))
+
+
 def main() -> int:
     failures: list[str] = []
-    for path in sorted(PROJECT_ROOT.rglob("*")):
+    for path in _candidate_paths():
         if not path.is_file() or _is_excluded(path) or not _is_text_candidate(path):
             continue
         failures.extend(_scan_file(path))

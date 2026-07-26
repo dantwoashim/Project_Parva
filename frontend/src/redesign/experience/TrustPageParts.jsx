@@ -72,7 +72,7 @@ export function TrustLimitsStrip({ runtime = {}, policy = {} }) {
       <div>
         <span>Known limits</span>
         <strong>{warnings.length ? `${warnings.length} warnings` : 'No runtime warnings'}</strong>
-        <small>{warnings[0] || 'Live feed did not report runtime warnings.'}</small>
+        <small>{warnings[0] ? readableCategory(warnings[0]) : 'The live feed reports a clear runtime state.'}</small>
       </div>
       <div>
         <span>Advisory boundary</span>
@@ -82,7 +82,7 @@ export function TrustLimitsStrip({ runtime = {}, policy = {} }) {
       <div>
         <span>Failure posture</span>
         <strong>Show uncertainty</strong>
-        <small>Missing feeds should hide claims instead of presenting fake certainty.</small>
+        <small>Missing feeds reduce the visible claim set and keep uncertainty explicit.</small>
       </div>
     </section>
   );
@@ -91,7 +91,7 @@ export function TrustLimitsStrip({ runtime = {}, policy = {} }) {
 export function TrustPageFrame({ current, eyebrow, title, body, action, children }) {
   return (
     <AppChrome>
-      <main className="page-shell trust-page-shell">
+      <main className={`page-shell trust-page-shell trust-page-shell--${current}`}>
         <PageHero eyebrow={eyebrow} title={title} body={body} action={action} />
         <TrustNav current={current} />
         {children}

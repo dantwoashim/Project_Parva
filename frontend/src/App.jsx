@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { ErrorBoundary } from './components/UI/ErrorBoundary';
 import { TemporalProvider } from './context/TemporalContext';
@@ -6,34 +6,79 @@ import { MemberProvider } from './context/MemberContext';
 import { useTemporalContext } from './context/useTemporalContext';
 import { resolveDocumentLanguage } from './i18n/locale';
 import { trackEvent } from './services/analytics';
-import {
-  RedesignBestTime,
-  RedesignBenchmark,
-  RedesignBirthReading,
-  RedesignDevelopers,
-  RedesignEnterprise,
-  RedesignFestivalDetail,
-  RedesignFestivals,
-  RedesignFutureBsResearch,
-  RedesignHome,
-  RedesignIntegrations,
-  RedesignMyPlace,
-  RedesignPanchanga,
-  RedesignProfileSaved,
-  RedesignAbout,
-  RedesignApiPricing,
-  RedesignApiPolicy,
-  RedesignMethodology,
-  RedesignToday,
-  RedesignTrust,
-  RedesignTruthLab,
-} from './redesign/ParvaRedesign.jsx';
-import { ProofViewerPage } from './proof/ProofViewerPage';
+import { AppChrome } from './redesign/experience/ExperienceCommon';
+import { ParvaMotionProvider, RouteTransition } from './redesign/motion/ParvaMotion';
 import './styles/tokens.css';
 import './index.css';
-import './styles/layouts.css';
-import './styles/interactions.css';
 import './App.css';
+
+function lazyRoute(importer, exportName) {
+  return lazy(() => importer().then((module) => ({ default: module[exportName] })));
+}
+
+const RedesignHome = lazyRoute(() => import('./redesign/workspace/WorkspaceHome.jsx'), 'RedesignHome');
+const RedesignToday = lazyRoute(() => import('./redesign/experience/TodayMyPlace.jsx'), 'RedesignToday');
+const RedesignMyPlace = lazyRoute(() => import('./redesign/experience/TodayMyPlace.jsx'), 'RedesignMyPlace');
+const RedesignFestivals = lazyRoute(
+  () => import('./redesign/experience/festival/FestivalsPage.jsx'),
+  'RedesignFestivals',
+);
+const RedesignFestivalDetail = lazyRoute(
+  () => import('./redesign/experience/festival/FestivalDetailPage.jsx'),
+  'RedesignFestivalDetail',
+);
+const RedesignBestTime = lazyRoute(
+  () => import('./redesign/experience/BestPanchanga.jsx'),
+  'RedesignBestTime',
+);
+const RedesignPanchanga = lazyRoute(
+  () => import('./redesign/experience/BestPanchanga.jsx'),
+  'RedesignPanchanga',
+);
+const RedesignBirthReading = lazyRoute(
+  () => import('./redesign/experience/BirthReading.jsx'),
+  'RedesignBirthReading',
+);
+const RedesignIntegrations = lazyRoute(
+  () => import('./redesign/experience/TrustPages.jsx'),
+  'RedesignIntegrations',
+);
+const RedesignTrust = lazyRoute(() => import('./redesign/experience/TrustPages.jsx'), 'RedesignTrust');
+const RedesignMethodology = lazyRoute(
+  () => import('./redesign/experience/TrustPages.jsx'),
+  'RedesignMethodology',
+);
+const RedesignTruthLab = lazyRoute(
+  () => import('./redesign/experience/TrustPages.jsx'),
+  'RedesignTruthLab',
+);
+const RedesignAbout = lazyRoute(() => import('./redesign/experience/TrustPages.jsx'), 'RedesignAbout');
+const RedesignApiPolicy = lazyRoute(
+  () => import('./redesign/experience/TrustPages.jsx'),
+  'RedesignApiPolicy',
+);
+const RedesignDevelopers = lazyRoute(
+  () => import('./redesign/experience/platform/PlatformShowcasePages.jsx'),
+  'RedesignDevelopers',
+);
+const RedesignEnterprise = lazyRoute(
+  () => import('./redesign/experience/platform/PlatformShowcasePages.jsx'),
+  'RedesignEnterprise',
+);
+const RedesignFutureBsResearch = lazyRoute(
+  () => import('./redesign/experience/platform/PlatformShowcasePages.jsx'),
+  'RedesignFutureBsResearch',
+);
+const RedesignApiPricing = lazyRoute(
+  () => import('./redesign/experience/PricingProfile.jsx'),
+  'RedesignApiPricing',
+);
+const RedesignProfileSaved = lazyRoute(
+  () => import('./redesign/experience/PricingProfile.jsx'),
+  'RedesignProfileSaved',
+);
+const RedesignBenchmark = lazyRoute(() => import('./redesign/BenchmarkPage.jsx'), 'RedesignBenchmark');
+const ProofViewerPage = lazyRoute(() => import('./proof/ProofViewerPage.jsx'), 'ProofViewerPage');
 
 const routeSeo = {
   '/': {
@@ -126,7 +171,14 @@ function seoForPath(pathname) {
 
 function AppRoutes() {
   return (
-    <Suspense fallback={<div className="app-loading">Loading Parva...</div>}>
+    <Suspense
+      fallback={(
+        <main className="route-loading" aria-live="polite" aria-label="Opening page">
+          <span className="route-loading__mark" aria-hidden="true"><span /></span>
+          <strong>Opening Parva</strong>
+        </main>
+      )}
+    >
       <Routes>
         <Route path="/" element={<RedesignHome />} />
         <Route path="/today" element={<RedesignToday />} />
@@ -188,9 +240,15 @@ function AppFrame() {
   }, [location.pathname, setLastViewed]);
 
   return (
-    <div className="app-shell app-shell--consumer" data-theme={state.theme || 'warm-paper'}>
-      <AppRoutes />
-    </div>
+    <ParvaMotionProvider>
+      <div className="app-shell app-shell--consumer" data-theme={state.theme || 'warm-paper'}>
+        <AppChrome>
+          <RouteTransition routeKey={location.pathname}>
+            <AppRoutes />
+          </RouteTransition>
+        </AppChrome>
+      </div>
+    </ParvaMotionProvider>
   );
 }
 

@@ -30,9 +30,32 @@ import {
   PageHero,
 } from './ExperienceCommon.jsx';
 import {
+  CalendarDays,
+  ChevronRight,
+  Clock3,
+  Compass,
+  LocateFixed,
+  MapPin,
+  Search,
+  ShieldCheck,
+  Sparkles,
+  Sun,
+  X,
+} from 'lucide-react';
+import { useParvaToast } from '../motion/ParvaToastContext';
+import {
   countdownText,
   resolveFestivalVisual,
 } from './festival/FestivalUtils.jsx';
+
+const quickPlaces = [
+  { label: 'Kathmandu, Nepal', latitude: 27.7172, longitude: 85.3240, timezone: 'Asia/Kathmandu', source: 'quick_place' },
+  { label: 'Pokhara, Nepal', latitude: 28.2096, longitude: 83.9856, timezone: 'Asia/Kathmandu', source: 'quick_place' },
+  { label: 'Janakpur, Nepal', latitude: 26.7288, longitude: 85.9250, timezone: 'Asia/Kathmandu', source: 'quick_place' },
+  { label: 'Biratnagar, Nepal', latitude: 26.4525, longitude: 87.2718, timezone: 'Asia/Kathmandu', source: 'quick_place' },
+  { label: 'Nepalgunj, Nepal', latitude: 28.0500, longitude: 81.6167, timezone: 'Asia/Kathmandu', source: 'quick_place' },
+  { label: 'Dhangadhi, Nepal', latitude: 28.7017, longitude: 80.5898, timezone: 'Asia/Kathmandu', source: 'quick_place' },
+];
 
 export function RedesignToday() {
   const { state } = useTemporalContext();
@@ -58,15 +81,11 @@ export function RedesignToday() {
   const dayFacts = buildDayFacts(compass);
   const liveWindows = (muhurta?.blocks || []).slice(0, 8).map(normalizeMuhurtaWindow);
   const bestWindows = liveWindows.filter((window) => window.type === 'good').slice(0, 3);
-  const timelineItems = [
-    compass?.horizon?.sunrise ? { time: formatTimeReference(compass.horizon.sunrise), title: 'Sunrise', type: 'warm', icon: '☼' } : null,
-    ...(liveWindows.slice(0, 3).map((window) => ({ time: window.time, title: window.name, type: window.type, icon: '✣' }))),
-    compass?.horizon?.sunset ? { time: formatTimeReference(compass.horizon.sunset), title: 'Sunset', type: 'warm', icon: '☀' } : null,
+  const displayTimelineItems = [
+    compass?.horizon?.sunrise ? { time: formatTimeReference(compass.horizon.sunrise), title: 'Sunrise', type: 'warm', icon: <Sun /> } : null,
+    ...(liveWindows.slice(0, 3).map((window) => ({ time: window.time, title: window.name, type: window.type, icon: <Sparkles /> }))),
+    compass?.horizon?.sunset ? { time: formatTimeReference(compass.horizon.sunset), title: 'Sunset', type: 'warm', icon: <Clock3 /> } : null,
   ].filter(Boolean);
-  const displayTimelineItems = timelineItems.map((item) => ({
-    ...item,
-    icon: item.title === 'Sunrise' ? 'Sun' : item.title === 'Sunset' ? 'Set' : 'Window',
-  }));
   const placeLabel = compass?.location_context?.place_title || placeLabelFromLocation(state.location);
   const qualityScore = Math.max(0, Math.min(100, Math.round(Number(muhurta?.best_window?.score ?? 0))));
   const sourceLabel = humanMethodLabel(compassMeta?.method || compass?.engine?.method || compass?.engine?.method_profile);
@@ -112,7 +131,7 @@ export function RedesignToday() {
               <div>
                   <p className="eyebrow">Panchanga for {placeLabel}</p>
                 </div>
-                <Link className="text-link compact-link" to="/panchanga">View full panchanga ›</Link>
+                <Link className="text-link compact-link" to="/panchanga">View full panchanga <ChevronRight aria-hidden="true" /></Link>
               </div>
               {loading && !compass ? <p className="festival-muted-note">Loading panchanga for the selected place...</p> : null}
               <div className="panchanga-grid">
@@ -139,7 +158,7 @@ export function RedesignToday() {
                   const visual = resolveFestivalVisual(festival);
                   return (
                   <Link key={festival.id} className={`observance-card tone-${visual.tone}`} to={`/festivals/${festival.id}`}>
-                    <span>{visual.icon}</span>
+                    <span><CalendarDays aria-hidden="true" /></span>
                     <strong>{festival.name || festival.display_name || festival.id}</strong>
                     <small>{festival.start_date ? countdownText(festival.start_date) : readableCategory(festival.quality_band || festival.category)}</small>
                   </Link>
@@ -163,7 +182,7 @@ export function RedesignToday() {
               <div className="best-window-row">
                 {bestWindows.length ? bestWindows.map((window) => (
                   <Link key={window.id} className={`mini-window is-${window.type}`} to="/best-time">
-                    <span>✣</span>
+                    <span><Sparkles aria-hidden="true" /></span>
                     <strong>{window.name}</strong>
                     <small>{window.time}</small>
                   </Link>
@@ -222,10 +241,12 @@ export function RedesignToday() {
 }
 
 export function RedesignMyPlace() {
+  const { notify } = useParvaToast();
   const { state, setLocation, setTimezone } = useTemporalContext();
   const [query, setQuery] = useState('');
   const [placesState, setPlacesState] = useState({ loading: false, error: '', items: [] });
   const [selected, setSelected] = useState(null);
+  const [locating, setLocating] = useState(false);
   const activeLocation = selected || {
     label: placeLabelFromLocation(state.location),
     latitude: state.location?.latitude,
@@ -274,48 +295,50 @@ export function RedesignMyPlace() {
     setSelected(place);
     setLocation({ latitude: place.latitude, longitude: place.longitude, label: place.label });
     setTimezone(place.timezone);
+    notify('Calculation place updated', { detail: place.label });
+  };
+
+  const useCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      setPlacesState((current) => ({ ...current, error: 'This browser does not provide location access.' }));
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || state.timezone;
+        choosePlace({
+          label: 'Current location',
+          latitude: Number(coords.latitude.toFixed(5)),
+          longitude: Number(coords.longitude.toFixed(5)),
+          timezone,
+          source: 'browser_geolocation',
+        });
+        setLocating(false);
+      },
+      () => {
+        setLocating(false);
+        setPlacesState((current) => ({
+          ...current,
+          error: 'Location access was unavailable. Search or choose a place below.',
+        }));
+      },
+      { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 },
+    );
   };
 
   return (
     <AppChrome>
       <main className="page-shell place-page">
         <section className="place-workspace">
-          <aside className="panel place-sidebar">
-            <div className="panel-heading tight">
-              <h2>Place search</h2>
-              <button type="button" className="inline-button" onClick={() => setQuery('')}>Clear</button>
-            </div>
-            <div className="place-buttons" aria-label="Place search results">
-              {placesState.items.length ? placesState.items.map((place) => (
-                <button
-                  key={`${place.label}-${place.latitude}-${place.longitude}`}
-                  type="button"
-                  className={activeLocation?.label === place.label ? 'is-selected' : ''}
-                  onClick={() => choosePlace(place)}
-                >
-                  <span>⌖</span>
-                  {place.label}
-                </button>
-              )) : (
-                <p className="festival-muted-note">
-                  {queryReady ? 'No selectable result yet. Try a district, city, or country name.' : 'Search for a town, city, or village to personalize calculations.'}
-                </p>
-              )}
-            </div>
-            <div className="region-stack">
-              <p className="eyebrow">Provider</p>
-              <span>{placesState.loading ? 'Searching...' : humanMethodLabel(placesState.items[0]?.source || activeLocation.source, 'Local place index')}</span>
-              {placesState.error ? <span>{placesState.error}</span> : null}
-              <small>Remote search can be skipped; the selected place stays in this browser context.</small>
-            </div>
-          </aside>
-          <section className="panel map-panel">
+          <section className="panel place-search-panel">
             <div className="workspace-title">
+              <p className="eyebrow">My place</p>
               <h1>Find your place</h1>
               <p>Choose the calculation place for sunrise, panchanga, festivals, and timing windows.</p>
             </div>
             <label className="search-field">
-              <span aria-hidden="true">⌕</span>
+              <span aria-hidden="true"><Search /></span>
               <input
                 value={query}
                 placeholder="Search Kathmandu, Pokhara, Lalitpur, Biratnagar, or Janakpur"
@@ -328,65 +351,87 @@ export function RedesignMyPlace() {
                 }}
                 aria-label="Search places"
               />
-              <button type="button" onClick={() => setQuery('')} aria-label="Clear place search">×</button>
+              <button type="button" onClick={() => setQuery('')} aria-label="Clear place search" disabled={!query}><X aria-hidden="true" /></button>
             </label>
             <p className="place-search-helper">Search a city, town, or village in Nepal. Results only set the browser calculation context.</p>
-            <div className="place-suggestions">
+            <div className={`place-suggestions${!queryReady ? ' is-discovery' : ''}`}>
               {placesState.loading ? <p className="festival-muted-note">Searching places...</p> : null}
-              {!placesState.loading && !queryReady ? <p className="festival-muted-note">Type at least two characters to search places.</p> : null}
+              {!placesState.loading && !queryReady ? (
+                <section className="place-discovery" aria-label="Quick places">
+                  <header>
+                    <div><span>Quick places</span><small>Choose a familiar calculation context.</small></div>
+                    <button type="button" onClick={useCurrentLocation} disabled={locating}>
+                      <LocateFixed aria-hidden="true" />
+                      {locating ? 'Locating' : 'Use my location'}
+                    </button>
+                  </header>
+                  <div>
+                    {quickPlaces.map((place) => (
+                      <button
+                        key={place.label}
+                        type="button"
+                        className={activePlaceName === place.label ? 'is-selected' : ''}
+                        onClick={() => choosePlace(place)}
+                      >
+                        <MapPin aria-hidden="true" />
+                        <span>{place.label.replace(', Nepal', '')}</span>
+                        <small>{place.latitude.toFixed(2)}, {place.longitude.toFixed(2)}</small>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
               {!placesState.loading && queryReady && !placesState.items.length ? <p className="festival-muted-note">No matching place found. Try Kathmandu, Lalitpur, Pokhara, Nepal, or a nearby district.</p> : null}
               {placesState.items.map((place) => (
-                <button key={`${place.label}-${place.latitude}-${place.longitude}`} type="button" onClick={() => choosePlace(place)}>
-                  <span>⌖</span>
+                <button
+                  key={`${place.label}-${place.latitude}-${place.longitude}`}
+                  type="button"
+                  className={activeLocation?.label === place.label ? 'is-selected' : ''}
+                  onClick={() => choosePlace(place)}
+                >
+                  <MapPin aria-hidden="true" />
                   <strong>{place.label}</strong>
                   <small>{humanMethodLabel(place.source, 'Place match')}</small>
                   <em>{formatCoordinates(place)}</em>
                 </button>
               ))}
             </div>
-            <section className="place-context-card" aria-label={`${activePlaceName} calculation context`}>
-              <div>
-                <p className="eyebrow">Selected place</p>
-                <h2>{activePlaceName}</h2>
-                <p className="place-context-meta">{coordinateStatus} - {activeLocation.timezone || state.timezone}</p>
-                <p>{coordinateStatus} · {activeLocation.timezone || state.timezone}</p>
-              </div>
-              <dl>
-                <div><dt>Used for</dt><dd>Sunrise, tithi, nakshatra, muhurta</dd></div>
-                <div><dt>Precision shown</dt><dd>{coordinateStatus === 'Coordinates pending' ? 'Place name only' : '4 decimal coordinates'}</dd></div>
-                <div><dt>Storage</dt><dd>Browser session context</dd></div>
-              </dl>
-              <div className="place-privacy-row">
-                <span>Private by default</span>
-                <strong>No account or location tracking required.</strong>
-              </div>
-            </section>
-            <div className="place-result-strip">
-              {placesState.items.map((place) => (
-                <button key={`${place.label}-${place.source}`} type="button" onClick={() => choosePlace(place)}>
-                  {place.label}
-                  <small>{formatCoordinates(place)}</small>
-                </button>
-              ))}
+            <div className="place-provider-line">
+              <Compass aria-hidden="true" />
+              <span>
+                <strong>{placesState.loading ? 'Searching place index' : humanMethodLabel(placesState.items[0]?.source || activeLocation.source, 'Local place index')}</strong>
+                <small>{placesState.error || 'Results update the calculation context in this browser.'}</small>
+              </span>
             </div>
-            <div className="notice-row">Place search is used only to set calculation context for this browser session. Coordinates are shown for auditability, not as the primary identity of the place.</div>
           </section>
           <aside className="panel place-detail">
-            <div className="panel-heading">
+            <div className="place-context-heading">
+              <span className="place-pin-mark"><MapPin aria-hidden="true" /></span>
               <div>
                 <p className="eyebrow">Selected place</p>
                 <h2>{activePlaceName}</h2>
-                <p>{activeLocation.timezone || state.timezone}</p>
+                <p>{coordinateStatus} / {activeLocation.timezone || state.timezone}</p>
               </div>
             </div>
-            <dl>
-              <div><dt>Sunrise</dt><dd>{formatTimeReference(placeBundle.payload?.local_sunrise || placeBundle.payload?.sunrise)}</dd></div>
-              <div><dt>Sunset</dt><dd>{formatTimeReference(placeBundle.payload?.local_sunset)}</dd></div>
-              <div><dt>Coordinates</dt><dd>{formatCoordinates(activeLocation)}</dd></div>
-              <div><dt>Context</dt><dd>{humanMethodLabel(placeBundle.contextPayload?.status_line || placeBundle.meta?.method, 'Ready for calculation')}</dd></div>
+            <dl className="place-fact-grid">
+              <div><Sun aria-hidden="true" /><dt>Sunrise</dt><dd>{formatTimeReference(placeBundle.payload?.local_sunrise || placeBundle.payload?.sunrise)}</dd></div>
+              <div><Clock3 aria-hidden="true" /><dt>Sunset</dt><dd>{formatTimeReference(placeBundle.payload?.local_sunset)}</dd></div>
+              <div><Compass aria-hidden="true" /><dt>Coordinates</dt><dd>{formatCoordinates(activeLocation)}</dd></div>
+              <div><ShieldCheck aria-hidden="true" /><dt>Context</dt><dd>{humanMethodLabel(placeBundle.contextPayload?.status_line || placeBundle.meta?.method, 'Ready for calculation')}</dd></div>
             </dl>
             {placeBundle.error ? <p className="birth-error" role="alert">{placeBundle.error}</p> : null}
-            <Confidence value={placeBundle.meta?.confidence?.score || 86} />
+            <div className="place-confidence-row">
+              <Confidence value={placeBundle.meta?.confidence?.score || 86} />
+            </div>
+            <div className="place-context-actions">
+              <Link to="/today">Open today</Link>
+              <Link to="/best-time">Find a time</Link>
+              <Link to="/panchanga">View panchanga</Link>
+            </div>
+            <div className="place-privacy-row">
+              <ShieldCheck aria-hidden="true" />
+              <span><strong>Stored in this browser</strong><small>No account or live location tracking.</small></span>
+            </div>
           </aside>
         </section>
       </main>

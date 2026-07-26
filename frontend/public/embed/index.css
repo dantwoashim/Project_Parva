@@ -1,0 +1,38 @@
+.gallery {
+  display: grid;
+  gap: 18px;
+}
+
+.example-frame {
+  width: 100%;
+  min-height: 320px;
+  border: 0;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: var(--parva-shadow);
+}
+
+pre {
+  margin: 0;
+  overflow: auto;
+  padding: 14px;
+  border-radius: 14px;
+  background: #211a16;
+  color: #fff7ef;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.gallery-note {
+  margin: 0 0 10px;
+  color: var(--parva-muted);
+  line-height: 1.6;
+}
+
+.gallery-links {
+  margin: 0;
+}
+
+.gallery-separator {
+  color: var(--parva-muted);
+}

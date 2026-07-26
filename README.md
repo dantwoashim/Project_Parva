@@ -28,6 +28,9 @@ calendar API or Nepali date converter is actually doing.
 - Proof mode: [docs/PROOF_MODE.md](docs/PROOF_MODE.md)
 - Panchanga engine: [docs/PANCHANGA_ENGINE.md](docs/PANCHANGA_ENGINE.md)
 - Agent tooling guide: [docs/AGENT_TOOLING_GUIDE.md](docs/AGENT_TOOLING_GUIDE.md)
+- Architecture: [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)
+- Migration status: [docs/architecture/MIGRATION_STATUS.md](docs/architecture/MIGRATION_STATUS.md)
+- Artifact policy: [artifacts/POLICY.md](artifacts/POLICY.md)
 - Safe claims: [docs/SAFE_CLAIMS.md](docs/SAFE_CLAIMS.md)
 - Public benchmark: [public-benchmark/README.md](public-benchmark/README.md)
 - Public conformance index: [docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md](docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md)
@@ -129,6 +132,7 @@ py -3.11 tools\conformance_runner\run.py --suite public-nepali-date-issues --wri
 | Agent/MCP | Read-only, public-safe agent tool wrappers and MCP adapter surfaces that preserve boundaries and review gates |
 | Benchmark | Public Nepali Time Reliability Benchmark for deterministic date reasoning, source awareness, and review behavior |
 | Governance | Source/method dockets, public claims checker, route maturity, OpenAPI drift checks, and reproducible public verification |
+| Research boundary | Future-BS research kept separate from public authority claims, with compatibility shims only where older imports need them |
 
 ## Public Conformance Work
 
@@ -373,6 +377,16 @@ Packages:
 
 ## Architecture Overview
 
+Current code is split by responsibility:
+
+- public API/runtime code lives under `backend/app` lanes such as `calendar`, `panchanga`, `sources`, `membranes`, `rules`, `timegraph`, `trust`, and `services`
+- Future-BS research and model-risk work lives under `backend/app/research/future_bs`
+- `backend/app/future_bs` is a compatibility namespace, not the canonical implementation location
+- backend runtime tests live under `tests/backend_runtime`
+- local-kernel tests live under `tests/local_kernel`
+- tracked MoHA public holiday source PDFs live under `data/source_archive/moha` with `data/source_archive/moha/manifest.json`
+- generated or release-sensitive artifacts follow [artifacts/POLICY.md](artifacts/POLICY.md)
+
 ```text
 public route / SDK / MCP tool
   -> canonical query
@@ -387,9 +401,12 @@ public route / SDK / MCP tool
 
 Core architecture files:
 
+- Architecture map: [docs/architecture/ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md)
+- Migration status: [docs/architecture/MIGRATION_STATUS.md](docs/architecture/MIGRATION_STATUS.md)
 - Membranes and replay: [backend/app/membranes](backend/app/membranes)
 - Source coverage: [backend/app/sources/coverage.py](backend/app/sources/coverage.py)
 - Panchanga proof: [backend/app/panchanga](backend/app/panchanga)
+- Future-BS research boundary: [backend/app/research/future_bs](backend/app/research/future_bs)
 - Local kernel: [packages/parva-local-kernel](packages/parva-local-kernel)
 - Public verification: [scripts/release/verify_public.py](scripts/release/verify_public.py)
 - Semantic depth gate: [scripts/release/check_ceiling_depth_semantics.py](scripts/release/check_ceiling_depth_semantics.py)
@@ -448,9 +465,24 @@ Do not claim:
 
 ## Project Status
 
-Local/offline implementation is strong and improving. The civil temporal core has replay-verifiable proof support and local fixtures. Panchanga now has a proof-carrying method-docketed path with fixture replay and a JPL provider interface.
+The public reproducibility gate is the source of truth for release readiness:
+
+```bash
+py -3.11 scripts/release/verify_public.py
+```
+
+The civil temporal core has replay-verifiable proof support and local fixtures. Panchanga has a proof-carrying method-docketed path with fixture replay and a bounded JPL provider interface. Future-BS work is kept in the research lane and remains review-aware rather than official publication.
 
 The external ceiling is not complete. There are no real external witnesses, institutional signatures, official approval, third-party certification, or customer/adoption proof in this repository.
+
+## License and Source Availability
+
+Project Parva is licensed under `AGPL-3.0-or-later`. Network deployments must
+set `PARVA_SOURCE_URL` to the corresponding source repository or source archive
+for the deployed version. The application exposes `/source` as a redirect to
+that configured location and adds a `rel="source"` link to HTTP responses.
+
+Deployment details are documented in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Roadmap
 

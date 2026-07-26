@@ -278,6 +278,26 @@ function buildFetchMock() {
       return jsonResponse(buildCompassEnvelope());
     }
 
+    if (url.includes('/calendar/convert?')) {
+      return jsonResponse({
+        data: {
+          gregorian: '2026-02-25',
+          bikram_sambat: {
+            year: 2082,
+            month: 11,
+            day: 3,
+            month_name: 'Falgun',
+            confidence: 'official',
+            source_range: '2078-2083 BS',
+          },
+          support_tier: 'official',
+          engine_path: 'published_month_table',
+          provenance: { manifest_version: '2026-02-25' },
+        },
+        meta: {},
+      });
+    }
+
     if (url.includes('/muhurta/heatmap')) {
       return jsonResponse(buildHeatmapEnvelope());
     }
@@ -524,13 +544,21 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Nepali calendar infrastructure for software systems/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Open API docs/i })).toHaveAttribute('href', 'https://api.prabinghimire1.com.np/docs');
-    expect(screen.getByRole('link', { name: /Developer quickstart/i })).toHaveAttribute('href', expect.stringContaining('docs/QUICKSTART.md'));
-    expect(screen.getByRole('link', { name: /Benchmark v0/i })).toHaveAttribute('href', expect.stringContaining('public-benchmark'));
-    expect(screen.getByRole('link', { name: /Verification gates/i })).toHaveAttribute('href', expect.stringContaining('public-verification.yml'));
-    expect(screen.getByRole('link', { name: /Known limitations/i })).toHaveAttribute('href', expect.stringContaining('docs/KNOWN_LIMITATIONS.md'));
+    expect(await screen.findByRole('heading', { name: /^Project Parva$/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions)).not.toHaveLength(0);
+    expect(screen.queryByRole('navigation', { name: /Primary/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Open navigation/i })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('navigation', { name: /Workbench tools/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Convert$/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^Panchanga.*Day signals$/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /API explorer/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Inspect response/i })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByLabelText(/API request inspector/i)).not.toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: /Open Swagger/i }, routeLoadOptions)).toHaveAttribute('href', 'https://api.prabinghimire1.com.np/docs');
+    expect(screen.getAllByText('/v3/api/calendar/convert')).not.toHaveLength(0);
+    const apiExplorer = screen.getByRole('region', { name: /API explorer/i });
+    expect(within(apiExplorer).getByRole('button', { name: /AD to BS conversion/i })).toBeInTheDocument();
+    expect(within(apiExplorer).getByRole('link', { name: /Dual-calendar month/i })).toHaveAttribute('href', '/panchanga');
   }, 30000);
 
   it('keeps the same consumer shell on desktop routes', async () => {
@@ -543,6 +571,13 @@ describe('App routing', () => {
 
     expect(await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions)).toBeInTheDocument();
 
+    const menuTrigger = screen.getByRole('button', { name: /Open navigation/i });
+    await userEvent.click(menuTrigger);
+    const navigationDialog = screen.getByRole('dialog', { name: /Project Parva navigation/i });
+    expect(within(navigationDialog).getByRole('button', { name: /Close navigation/i })).toHaveFocus();
+    await userEvent.keyboard('{Escape}');
+    expect(menuTrigger).toHaveFocus();
+    await userEvent.click(menuTrigger);
     const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
     expect(within(primaryNav).getByRole('link', { name: /^Today$/i })).toBeInTheDocument();
     expect(within(primaryNav).getByRole('link', { name: /^My Place$/i })).toBeInTheDocument();
@@ -602,7 +637,7 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /A calmer way to see what the engine knows/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /See what the engine knows/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByText(/Public verification status, not live uptime SLA/i)).toBeInTheDocument();
     expect(screen.getAllByText(pct(benchmarkSummary.parva_score_percent)).length).toBeGreaterThan(0);
     expect(screen.getByText(/not government, calendar, legal, tax, banking, payroll, religious, or future-date authority/i)).toBeInTheDocument();
@@ -611,7 +646,7 @@ describe('App routing', () => {
     expect(screen.queryByText(/uptime SLA/i)).not.toHaveTextContent(/99\.9/i);
   }, 30000);
 
-  it('keeps the same shell on mobile widths and exposes the bottom navigation', async () => {
+  it('keeps the same shell on mobile widths with one on-demand navigation', async () => {
     setViewportWidth(390);
     render(
       <MemoryRouter initialEntries={['/today']}>
@@ -620,6 +655,9 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: /Mobile navigation/i })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /Open navigation/i }));
+    expect(screen.getByRole('dialog', { name: /Project Parva navigation/i })).toBeInTheDocument();
     const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
     expect(within(primaryNav).getByRole('link', { name: /^Today$/i })).toHaveAttribute('href', '/today');
     expect(within(primaryNav).getByRole('link', { name: /^My Place$/i })).toHaveAttribute('href', '/my-place');
@@ -637,6 +675,7 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i }, routeLoadOptions)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /Open navigation/i }));
     const primaryNav = screen.getByRole('navigation', { name: /Primary/i });
     await userEvent.click(within(primaryNav).getByRole('link', { name: /^Festivals$/i }));
     expect(await screen.findByRole('heading', { name: /^Festivals$/i }, routeLoadOptions)).toBeInTheDocument();
@@ -677,6 +716,7 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /^Best Time$/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByRole('navigation', { name: /Primary/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Open navigation/i })).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: /Primary/i })).not.toBeInTheDocument();
   }, 30000);
 });

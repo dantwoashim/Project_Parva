@@ -22,6 +22,7 @@ LOCAL_SIGNING_DIR = PROJECT_ROOT / ".verify" / "release"
 LOCAL_SIGNING_KEY = LOCAL_SIGNING_DIR / "provenance_attestation.key"
 LOCAL_SIGNING_KEY_ID = LOCAL_SIGNING_DIR / "provenance_attestation.key_id"
 BROWSER_SMOKE_REPORT = PROJECT_ROOT / "reports" / "release" / "browser_smoke.json"
+ACCESSIBILITY_REPORT = PROJECT_ROOT / "reports" / "release" / "frontend_accessibility.json"
 GOLDEN_JOURNEYS_REPORT = PROJECT_ROOT / "reports" / "release" / "golden_journeys.json"
 BUNDLE_BUDGET_REPORT = PROJECT_ROOT / "reports" / "release" / "frontend_bundle_budget.json"
 SECURITY_AUDIT_REPORT = PROJECT_ROOT / "reports" / "security_audit.json"
@@ -198,6 +199,13 @@ def main(argv: list[str] | None = None) -> int:
                 None,
             )
         )
+        steps.append(
+            (
+                "Frontend accessibility",
+                [python, "scripts/run_frontend_accessibility.py", "--report-path", str(ACCESSIBILITY_REPORT)],
+                None,
+            )
+        )
 
     signoff_available = LAUNCH_SIGNOFF_DOCUMENT.exists()
     if signoff_available:
@@ -245,6 +253,10 @@ def main(argv: list[str] | None = None) -> int:
         "skipped" if args.skip_browser_smoke else "passed",
         "--browser-smoke-report",
         str(BROWSER_SMOKE_REPORT),
+        "--accessibility-status",
+        "skipped" if args.skip_browser_smoke else "passed",
+        "--accessibility-report",
+        str(ACCESSIBILITY_REPORT),
         "--golden-journeys-status",
         "skipped" if args.skip_browser_smoke else "passed",
         "--golden-journeys-report",

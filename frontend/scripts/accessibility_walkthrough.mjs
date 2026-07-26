@@ -32,11 +32,21 @@ const viewports = {
 };
 
 const routes = [
-  { path: '/', label: 'Root Redirect', viewports: ['desktop', 'mobile'], readyText: /Nepal calendar, panchanga|Panchanga for/i },
-  { path: '/today', label: 'Today', viewports: ['desktop', 'mobile'], readyText: /Nepal calendar, panchanga|Panchanga for/i },
+  { path: '/', label: 'Home', viewports: ['desktop', 'mobile'], readyText: /Project Parva/i },
+  { path: '/today', label: 'Today', viewports: ['desktop', 'mobile'], readyText: /Today in|Upcoming Observances/i },
   { path: '/best-time', label: 'Best Time', viewports: ['desktop', 'mobile'], readyText: /Best Time|Muhurta/i },
-  { path: '/festivals', label: 'Festivals', viewports: ['desktop', 'mobile'], readyText: /Festivals/i },
-  { path: '/festivals/dashain', label: 'Festival Detail', viewports: ['desktop', 'mobile'], readyText: /Dashain/i },
+  {
+    path: '/festivals',
+    label: 'Festivals',
+    viewports: ['desktop', 'mobile'],
+    readySelector: '.festival-list-card',
+  },
+  {
+    path: '/festivals/dashain',
+    label: 'Festival Detail',
+    viewports: ['desktop', 'mobile'],
+    readyText: /Ghata Sthapana|Kalash Sthapana/i,
+  },
   { path: '/my-place', label: 'My Place', viewports: ['desktop', 'mobile'], readyText: /Place|Kathmandu/i },
   { path: '/birth-reading', label: 'Birth Reading', viewports: ['desktop', 'mobile'], readyText: /Birth Reading|Janma Kundali/i },
   { path: '/integrations', label: 'Integrations', viewports: ['desktop', 'mobile'], readyText: /Integrations/i },
@@ -47,6 +57,12 @@ const routes = [
   { path: '/policy', label: 'API Policy', viewports: ['desktop', 'mobile'], readyText: /API Policy|contract/i },
   { path: '/about', label: 'About', viewports: ['desktop', 'mobile'], readyText: /About Parva|source-aware time layer/i },
   { path: '/saved', label: 'Saved', viewports: ['desktop', 'mobile'], readyText: /Profile|Saved/i },
+  { path: '/benchmark', label: 'Benchmark', viewports: ['desktop', 'mobile'], readyText: /Nepali Time Reliability Benchmark/i },
+  { path: '/proof', label: 'Proof Viewer', viewports: ['desktop', 'mobile'], readyText: /Inspect Parva proof packs/i },
+  { path: '/developers', label: 'Developers', viewports: ['desktop', 'mobile'], readyText: /Build with Nepal's calendar/i },
+  { path: '/future-bs', label: 'Future BS', viewports: ['desktop', 'mobile'], readyText: /Future dates need a risk label/i },
+  { path: '/enterprise', label: 'Enterprise', viewports: ['desktop', 'mobile'], readyText: /Catch date errors before/i },
+  { path: '/pricing', label: 'Pricing', viewports: ['desktop', 'mobile'], readyText: /API access that grows/i },
 ];
 
 function relevantResponse(response) {
@@ -188,12 +204,23 @@ async function runRoute(browser, route, viewportName) {
 
   try {
     await page.goto(routeUrl, { waitUntil: 'domcontentloaded' });
-    await page.locator('main').getByText(route.readyText).first().waitFor({ timeout: readyTimeout });
+    if (route.readySelector) {
+      await page.locator(route.readySelector).first().waitFor({ timeout: readyTimeout });
+    } else {
+      await page.locator('main').getByText(route.readyText).first().waitFor({ timeout: readyTimeout });
+    }
 
     const issues = [
       ...(await visibleIssues(page)),
       ...(await keyboardIssues(page)),
     ];
+
+    await page.getByText(/^Opening Parva$/i).waitFor({ state: 'hidden', timeout: readyTimeout });
+    await page.evaluate(() => {
+      if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+      window.scrollTo(0, 0);
+    });
+    await page.waitForTimeout(250);
 
     const screenshotPath = path.join(outputDir, `a11y-${slug}.png`);
     await page.screenshot({ path: screenshotPath, fullPage: true });

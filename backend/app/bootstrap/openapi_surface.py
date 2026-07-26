@@ -236,4 +236,6 @@ def install_openapi_surface(app: FastAPI, *, surface: str) -> None:
         app.openapi_schema = curate_openapi_schema(full_schema)
         return app.openapi_schema
 
-    app.openapi = canonical_openapi
+    # FastAPI supports an instance-level OpenAPI override, while its annotation
+    # declares `openapi` as a method and therefore rejects direct assignment.
+    setattr(app, "openapi", canonical_openapi)

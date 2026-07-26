@@ -13,17 +13,32 @@ import os
 import sys
 from pathlib import Path
 
+try:
+    from scripts.release.openapi_normalization import drop_json_schema_defaults
+except ModuleNotFoundError:  # pragma: no cover - direct script execution fallback
+    from openapi_normalization import drop_json_schema_defaults
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.main import app  # noqa: E402
-
 SNAPSHOTS = {
     "v3": PROJECT_ROOT / "docs" / "contracts" / "v3_openapi_snapshot.json",
     "v4": PROJECT_ROOT / "docs" / "contracts" / "v4_openapi_snapshot.json",
     "v5": PROJECT_ROOT / "docs" / "contracts" / "v5_openapi_snapshot.json",
+}
+
+PUBLIC_CONTRACT_ENV = {
+    "PARVA_ROUTE_PROFILE": "public_reference",
+    "PARVA_ENABLE_EXPERIMENTAL_API": "false",
+    "PARVA_SHOW_PRIVATE_SCHEMA": "false",
+    "PARVA_ENV": "public",
+    "PARVA_SOURCE_URL": "https://github.com/dantwoashim/Project_Parva",
+    "PARVA_PROVENANCE_ATTESTATION_KEY": "test-provenance-key",
+    "PARVA_REQUIRE_PRECOMPUTED": "false",
+    "PARVA_SERVE_FRONTEND": "false",
+    "PARVA_RATE_LIMIT_ENABLED": "false",
 }
 
 
@@ -54,11 +69,22 @@ def _normalize(schema: dict) -> dict:
     if components:
         schema["components"] = components
 
-    return schema
+    return drop_json_schema_defaults(schema)
 
 
 def _schema_for_prefix(prefix: str) -> dict:
-    payload = app.openapi()
+    old_values = {key: os.environ.get(key) for key in PUBLIC_CONTRACT_ENV}
+    os.environ.update(PUBLIC_CONTRACT_ENV)
+    try:
+        from app.bootstrap.app_factory import create_app
+
+        payload = create_app().openapi()
+    finally:
+        for key, old_value in old_values.items():
+            if old_value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = old_value
     schema = dict(payload)
     schema["paths"] = {
         path: spec for path, spec in payload.get("paths", {}).items() if path.startswith(prefix)

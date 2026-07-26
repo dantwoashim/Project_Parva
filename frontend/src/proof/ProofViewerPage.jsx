@@ -1,5 +1,12 @@
 import { useMemo, useState } from 'react';
 import { PanchangaProofDrawer } from './PanchangaProofDrawer';
+import {
+  Braces,
+  FileJson2,
+  ShieldAlert,
+  ShieldCheck,
+  Upload,
+} from 'lucide-react';
 
 const sampleArtifacts = {
   civil: {
@@ -236,17 +243,23 @@ export function ProofViewerPage() {
   return (
     <main className="page-shell proof-viewer-page">
       <section className="proof-viewer-hero">
-        <p className="landing-eyebrow">Proof viewer</p>
-        <h1>Inspect Parva proof packs and Timepacks</h1>
-        <p>
-          Paste a civil, Panchanga, payroll audit, proof pack, or Timepack JSON artifact. This browser view is an
-          inspection surface; use <code>parva verify-proofpack</code> or <code>parva verify-timepack</code> for offline replay.
-        </p>
+        <div className="proof-viewer-hero__copy">
+          <p className="landing-eyebrow">Proof viewer</p>
+          <h1>Inspect Parva proof packs and Timepacks</h1>
+          <p>
+            Paste a civil, Panchanga, payroll audit, proof pack, or Timepack JSON artifact. Use
+            <code>parva verify-proofpack</code> or <code>parva verify-timepack</code> when you need offline replay.
+          </p>
+        </div>
+        <div className="proof-viewer-hero__mark" aria-hidden="true">
+          <FileJson2 />
+          <span>JSON</span>
+        </div>
         <p className="trust-boundary">Public verification status, not live uptime SLA. Not government, legal, tax, payroll, banking, or official Panchanga authority.</p>
       </section>
       <section className="proof-viewer-layout">
         <label className="proof-viewer-input">
-          Artifact JSON
+          <span className="proof-viewer-input__label"><Braces aria-hidden="true" /> Artifact JSON</span>
           <div className="proof-viewer-actions" aria-label="Proof viewer examples">
             <button type="button" onClick={() => loadSample('civil')}>Civil sample</button>
             <button type="button" onClick={() => loadSample('panchanga')}>Panchanga sample</button>
@@ -254,13 +267,21 @@ export function ProofViewerPage() {
             <button type="button" onClick={() => setMode(mode === 'compact' ? 'detailed' : 'compact')}>
               {mode === 'compact' ? 'Detailed' : 'Compact'}
             </button>
-            <input aria-label="Upload proof JSON" type="file" accept="application/json,.json" onChange={onFile} />
+            <span className="proof-viewer-upload"><Upload aria-hidden="true" /> Upload JSON
+              <input aria-label="Upload proof JSON" type="file" accept="application/json,.json" onChange={onFile} />
+            </span>
           </div>
           <textarea value={text} onChange={(event) => setText(event.target.value)} spellCheck="false" />
         </label>
         <article className="proof-viewer-output" aria-label="Proof artifact inspection">
-          <h2>Replay status</h2>
-          <p>{replayStatus}</p>
+          <div className={`proof-replay-banner ${parsed.error || (validation && !validation.ok) ? 'is-warning' : 'is-ready'}`} aria-live="polite">
+            {parsed.error || (validation && !validation.ok) ? <ShieldAlert aria-hidden="true" /> : <ShieldCheck aria-hidden="true" />}
+            <div>
+              <span>Replay status</span>
+              <strong>{replayStatus}</strong>
+              <small>Artifact shape checked in the browser.</small>
+            </div>
+          </div>
           {parsed.error ? <p>{parsed.error}</p> : null}
           {validation && !validation.ok ? <p>{validation.reason}</p> : null}
           {membrane?.boundary?.not_authority || parsed.artifact?.boundary?.not_authority || parsed.artifact?.boundary_summary?.not_authority ? (

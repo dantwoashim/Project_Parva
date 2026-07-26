@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -14,17 +15,38 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
-from app.main import app  # noqa: E402
-
 OUT_PATHS = {
     "v3": PROJECT_ROOT / "docs" / "contracts" / "v3_openapi_snapshot.json",
     "v4": PROJECT_ROOT / "docs" / "contracts" / "v4_openapi_snapshot.json",
     "v5": PROJECT_ROOT / "docs" / "contracts" / "v5_openapi_snapshot.json",
 }
 
+PUBLIC_CONTRACT_ENV = {
+    "PARVA_ROUTE_PROFILE": "public_reference",
+    "PARVA_ENABLE_EXPERIMENTAL_API": "false",
+    "PARVA_SHOW_PRIVATE_SCHEMA": "false",
+    "PARVA_ENV": "public",
+    "PARVA_SOURCE_URL": "https://github.com/dantwoashim/Project_Parva",
+    "PARVA_PROVENANCE_ATTESTATION_KEY": "test-provenance-key",
+    "PARVA_REQUIRE_PRECOMPUTED": "false",
+    "PARVA_SERVE_FRONTEND": "false",
+    "PARVA_RATE_LIMIT_ENABLED": "false",
+}
+
 
 def _schema_for_prefix(prefix: str) -> dict:
-    payload = app.openapi()
+    old_values = {key: os.environ.get(key) for key in PUBLIC_CONTRACT_ENV}
+    os.environ.update(PUBLIC_CONTRACT_ENV)
+    try:
+        from app.bootstrap.app_factory import create_app
+
+        payload = create_app().openapi()
+    finally:
+        for key, old_value in old_values.items():
+            if old_value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = old_value
     schema = dict(payload)
     schema["paths"] = {
         path: spec for path, spec in payload.get("paths", {}).items() if path.startswith(prefix)
@@ -46,6 +68,7 @@ def main() -> int:
         wrapper = {
             "generated_at": generated_at,
             "track": track,
+            "route_profile": "public_reference",
             "schema": schema,
         }
         path.write_text(json.dumps(wrapper, indent=2), encoding="utf-8")

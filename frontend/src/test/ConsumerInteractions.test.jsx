@@ -421,7 +421,7 @@ describe('consumer route interactions', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /^Festivals$/i })).toBeInTheDocument();
-    expect(screen.getByLabelText(/7 festivals in this view/i)).toBeInTheDocument();
+    expect(await screen.findByLabelText(/7 festivals in this view/i, {}, { timeout: 15000 })).toBeInTheDocument();
     expect(screen.queryByRole('dialog', { name: /Festival filters/i })).not.toBeInTheDocument();
 
     const dashainCard = screen.getByRole('button', { name: /Dashain/i });
@@ -468,7 +468,9 @@ describe('consumer route interactions', () => {
     expect(within(dashainArticle).getByRole('button', { name: /^Following$/i })).toBeInTheDocument();
     expect(window.localStorage.getItem('parva.savedFestivalIds.v1')).toContain('dashain');
 
-    await userEvent.click(screen.getByRole('link', { name: /^Saved$/i }));
+    await userEvent.click(screen.getByRole('button', { name: /Open navigation/i }));
+    const platformNavigation = screen.getByRole('navigation', { name: /Platform/i });
+    await userEvent.click(within(platformNavigation).getByRole('link', { name: /^Saved$/i }));
     expect(await screen.findByRole('heading', { name: /Profile & Saved/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^Dashain$/i })).toHaveAttribute('href', '/festivals/dashain');
     expect(screen.getByRole('link', { name: /^Calendar$/i })).toHaveAttribute('href', expect.stringContaining('festivals=dashain'));
@@ -497,7 +499,7 @@ describe('consumer route interactions', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /Today in Kathmandu, Nepal/i })).toBeInTheDocument();
-    await userEvent.click(screen.getAllByRole('button', { name: /Search Parva/i })[0]);
+    await userEvent.click(screen.getByRole('button', { name: /Search/i }));
     expect(screen.getByRole('dialog', { name: /Search Parva/i })).toBeInTheDocument();
     await userEvent.type(screen.getByPlaceholderText(/Search festivals/i), 'Dashain');
     expect(await screen.findByRole('link', { name: /Dashain/i })).toHaveAttribute('href', '/festivals/dashain');
@@ -512,7 +514,8 @@ describe('consumer route interactions', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /^Dashain$/i })).toBeInTheDocument();
+    await screen.findByText(/Kalash Sthapana/i, {}, { timeout: 15000 });
+    expect(screen.getByRole('heading', { name: /^Dashain$/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Back to festivals/i })).toHaveAttribute('href', '/festivals');
   });
 

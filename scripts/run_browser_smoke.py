@@ -93,6 +93,7 @@ def _start_backend_server(host: str, port: int) -> subprocess.Popen[str]:
     env = os.environ.copy()
     env["PARVA_SERVE_FRONTEND"] = "true"
     env["PARVA_FRONTEND_DIST"] = str(FRONTEND_DIST)
+    env["PARVA_RATE_LIMIT_ENABLED"] = "false"
     command = [sys.executable, "-m", "uvicorn", "app.main:app", "--host", host, "--port", str(port)]
     return subprocess.Popen(
         command,

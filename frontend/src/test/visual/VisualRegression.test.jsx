@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../../App';
 
@@ -179,6 +179,26 @@ function buildVisualFetchMock() {
           trace_id: 'tr_visual_compass',
           method: 'ephemeris_udaya',
         },
+      });
+    }
+
+    if (url.includes('/calendar/convert?')) {
+      return response({
+        data: {
+          gregorian: '2026-02-25',
+          bikram_sambat: {
+            year: 2082,
+            month: 11,
+            day: 3,
+            month_name: 'Falgun',
+            confidence: 'official',
+            source_range: '2078-2083 BS',
+          },
+          support_tier: 'official',
+          engine_path: 'published_month_table',
+          provenance: { manifest_version: '2026-02-25' },
+        },
+        meta: {},
       });
     }
 
@@ -480,6 +500,7 @@ describe('visual regression harness', () => {
     vi.stubGlobal('fetch', buildVisualFetchMock());
     vi.stubGlobal('open', vi.fn());
     vi.spyOn(Date, 'now').mockReturnValue(new Date('2026-02-25T06:30:00Z').valueOf());
+    vi.spyOn(performance, 'now').mockReturnValue(1000);
   });
 
   afterEach(() => {
@@ -489,8 +510,11 @@ describe('visual regression harness', () => {
 
   it('consumer home visual baseline', async () => {
     const { container } = await renderRoute('/');
-    await screen.findByRole('heading', { name: /Nepali calendar infrastructure for software systems/i }, routeLoadOptions);
+    await screen.findByRole('heading', { name: /^Project Parva$/i }, routeLoadOptions);
     await screen.findAllByText(/2082 Falgun 3/i, {}, routeLoadOptions);
+    await screen.findAllByText(/^Complete$/i, {}, routeLoadOptions);
+    await screen.findByText(/2078 2083 BS/i, {}, routeLoadOptions);
+    await waitFor(() => expect(screen.getByRole('button', { name: /^Convert$/i })).toBeEnabled());
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
@@ -520,6 +544,7 @@ describe('visual regression harness', () => {
   it('festival detail page visual baseline on mobile', async () => {
     const { container } = await renderRoute('/festivals/dashain', 390, 844);
     await screen.findByRole('heading', { name: /^Dashain$/i }, routeLoadOptions);
+    await screen.findByText(/Kalash Sthapana/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 
@@ -557,6 +582,7 @@ describe('visual regression harness', () => {
   it('festival detail page visual baseline on desktop', async () => {
     const { container } = await renderRoute('/festivals/dashain', 1440, 900);
     await screen.findByRole('heading', { name: /^Dashain$/i }, routeLoadOptions);
+    await screen.findByText(/Kalash Sthapana/i, {}, routeLoadOptions);
     expect(container.querySelector('.app-shell')).toMatchSnapshot();
   }, 15000);
 

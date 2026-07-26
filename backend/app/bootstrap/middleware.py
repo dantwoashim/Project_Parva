@@ -737,7 +737,20 @@ def _engine_track_for_path(path: str) -> str:
     return "v3"
 
 
-_STRICT_CSP = "default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'"
+_STRICT_CSP = (
+    "default-src 'self'; "
+    "font-src 'self' data:; "
+    "object-src 'none'; "
+    "frame-ancestors 'none'; "
+    "base-uri 'self'"
+)
+_EMBED_CSP = (
+    "default-src 'self'; "
+    "font-src 'self' data:; "
+    "object-src 'none'; "
+    "frame-ancestors *; "
+    "base-uri 'self'"
+)
 
 # FastAPI's Swagger/ReDoc HTML still needs inline bootstrapping and jsdelivr assets.
 # Keep this exception path-scoped; all API/runtime routes use _STRICT_CSP.
@@ -757,6 +770,8 @@ _API_DOCS_CSP = (
 def _content_security_policy_for_path(path: str) -> str:
     if path in {"/docs", "/redoc", "/docs/oauth2-redirect"}:
         return _API_DOCS_CSP
+    if path == "/embed" or path.startswith("/embed/"):
+        return _EMBED_CSP
     return _STRICT_CSP
 
 
@@ -783,7 +798,8 @@ def build_engine_headers(
         response.headers["X-Parva-Engine"] = _engine_track_for_path(request.url.path)
 
         response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["X-Frame-Options"] = "DENY"
+        if not (request.url.path == "/embed" or request.url.path.startswith("/embed/")):
+            response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "no-referrer"
         response.headers["Content-Security-Policy"] = _content_security_policy_for_path(
             request.url.path

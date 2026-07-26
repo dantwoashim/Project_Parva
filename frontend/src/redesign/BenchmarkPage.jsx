@@ -21,12 +21,14 @@ export function RedesignBenchmark() {
   return (
     <main className="trust-page-shell benchmark-page" data-testid="benchmark-page">
       <section className="page-hero">
-        <span className="eyebrow">Public benchmark v0</span>
-        <h1>Nepali Time Reliability Benchmark</h1>
-        <p>
-          A public-safe technical benchmark for deterministic Nepali calendar behavior,
-          source awareness, uncertainty handling, review gates, and machine-readable output.
-        </p>
+        <div>
+          <span className="eyebrow">Public benchmark v0</span>
+          <h1>Nepali Time Reliability Benchmark</h1>
+          <p>
+            A technical benchmark for Nepali calendar behavior, source handling,
+            uncertainty, review gates, and machine-readable output.
+          </p>
+        </div>
         <div className="hero-actions">
           <a href="https://github.com/dantwoashim/Project_Parva/tree/main/public-benchmark">Benchmark files</a>
           <Link to="/developers">Developer quickstart</Link>

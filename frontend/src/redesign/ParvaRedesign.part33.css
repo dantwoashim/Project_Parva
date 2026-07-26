@@ -1,9 +1,0 @@
-@media (max-width: 1180px) {
-  .planner-shell,
-  .place-workspace,
-  .panchanga-workspace,
-  .birth-workspace,
-  .detail-workspace {
-    grid-template-columns: 1fr;
-  }
-}

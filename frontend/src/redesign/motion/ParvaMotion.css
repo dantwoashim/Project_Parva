@@ -1,0 +1,87 @@
+.route-presence {
+  min-width: 0;
+}
+
+.parva-toast-viewport {
+  position: fixed;
+  right: clamp(14px, 3vw, 36px);
+  bottom: clamp(14px, 3vw, 32px);
+  z-index: var(--z-toast);
+  width: min(380px, calc(100vw - 28px));
+  display: grid;
+  gap: 9px;
+  pointer-events: none;
+}
+
+.parva-toast {
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 12px;
+  border: 1px solid color-mix(in srgb, var(--toast-color) 28%, var(--line));
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--toast-color) 7%, white);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
+  pointer-events: auto;
+}
+
+.parva-toast.is-success {
+  --toast-color: var(--forest-600);
+}
+
+.parva-toast.is-warning {
+  --toast-color: var(--gold-500);
+}
+
+.parva-toast.is-info {
+  --toast-color: var(--blue-500);
+}
+
+.parva-toast > svg {
+  width: 21px;
+  height: 21px;
+  color: var(--toast-color);
+}
+
+.parva-toast > div {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.parva-toast strong {
+  font-size: 0.78rem;
+  font-weight: 760;
+}
+
+.parva-toast span {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.parva-toast button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-muted);
+}
+
+.parva-toast button:hover {
+  background: color-mix(in srgb, var(--toast-color) 12%, transparent);
+  color: var(--text-primary);
+}
+
+@media (max-width: 600px) {
+  .parva-toast-viewport {
+    right: 12px;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+  }
+}

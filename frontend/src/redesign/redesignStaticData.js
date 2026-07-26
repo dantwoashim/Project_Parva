@@ -8,42 +8,6 @@ export const navItems = [
   { label: 'Panchanga', shortLabel: 'Dates', to: '/panchanga', requiredCapability: 'panchangaPublic' },
 ];
 
-export const footerGroups = [
-  {
-    title: 'Product',
-    links: [
-      { label: 'Home', to: '/' },
-      { label: 'Today', to: '/today', requiredCapability: 'coreCalendar' },
-      { label: 'My Place', to: '/my-place', requiredCapability: 'placeSearch' },
-      { label: 'Festivals', to: '/festivals', requiredCapability: 'festivalTimeline' },
-      { label: 'Best Time', to: '/best-time', requiredCapability: 'muhurtaPublic' },
-      { label: 'Birth Reading', to: '/birth-reading', requiredCapability: 'kundaliPreview' },
-      { label: 'Panchanga', to: '/panchanga', requiredCapability: 'panchangaPublic' },
-    ],
-  },
-  {
-    title: 'Workspace',
-    links: [
-      { label: 'Developers', to: '/developers', requiredCapability: 'developerPreview' },
-      { label: 'Benchmark', to: '/benchmark', requiredCapability: 'developerPreview' },
-      { label: 'Enterprise', to: '/enterprise' },
-      { label: 'Saved', to: '/saved' },
-      { label: 'Profile', to: '/profile' },
-      { label: 'Integrations', to: '/integrations', requiredCapability: 'integrationsPreview' },
-    ],
-  },
-  {
-    title: 'Trust',
-    links: [
-      { label: 'Trust', to: '/trust', requiredCapability: 'trustPreview' },
-      { label: 'Methodology', to: '/methodology', requiredCapability: 'futureBsMethodology' },
-      { label: 'Truth Lab', to: '/truth-lab', requiredCapability: 'reliabilityPreview' },
-      { label: 'About', to: '/about' },
-      { label: 'API Policy', to: '/policy', requiredCapability: 'policyMetadata' },
-    ],
-  },
-];
-
 export const sourceDots = [1, 2, 3, 4, 5, 6];
 
 export const festivalMonths = ['All', 'Baishakh', 'Jyestha', 'Ashar', 'Shrawan', 'Bhadra', 'Ashwin', 'Kartik', 'Mangsir', 'Poush', 'Magh', 'Falgun', 'Chaitra'];

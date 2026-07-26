@@ -8,12 +8,8 @@ describe('apiBase helpers', () => {
   });
 
   it('builds backend hrefs from the central API base', () => {
-    expect(apiUrl('/calendar/today')).toBe(
-      'https://api.prabinghimire1.com.np/v3/api/calendar/today',
-    );
-    expect(apiUrl('feeds/all.ics?years=1')).toBe(
-      'https://api.prabinghimire1.com.np/v3/api/feeds/all.ics?years=1',
-    );
+    expect(apiUrl('/calendar/today')).toBe('/v3/api/calendar/today');
+    expect(apiUrl('feeds/all.ics?years=1')).toBe('/v3/api/feeds/all.ics?years=1');
   });
 
   it('keeps absolute URLs untouched', () => {

@@ -6,6 +6,12 @@ import {
   readableCategory,
   AppChrome,
 } from '../ExperienceCommon.jsx';
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  CalendarPlus,
+  Download,
+} from 'lucide-react';
 
 import {
   FestivalArtwork,
@@ -18,6 +24,12 @@ import {
   buildCalendarFeedUrl,
   buildFestivalEvidenceUrl,
 } from './FestivalUtils.jsx';
+
+function readableEvidenceValue(value, fallback) {
+  const text = String(value || '').trim();
+  if (!text || text.toLowerCase() === 'unknown') return fallback;
+  return text.replaceAll('_', ' ');
+}
 
 export function RedesignFestivalDetail() {
   const { festivalId = 'dashain' } = useParams();
@@ -61,7 +73,11 @@ export function RedesignFestivalDetail() {
   return (
     <AppChrome>
       <main className="page-shell detail-page">
-        <div className="breadcrumb"><Link to="/festivals">Back to festivals</Link><span>/</span><strong>{displayName}</strong></div>
+        <div className="breadcrumb">
+          <Link to="/festivals"><ArrowLeft aria-hidden="true" /> Back to festivals</Link>
+          <span>/</span>
+          <strong>{displayName}</strong>
+        </div>
 
         {loading && !festival ? (
           <section className="panel festival-empty-state">
@@ -80,8 +96,8 @@ export function RedesignFestivalDetail() {
           <>
         <section className={`detail-hero festival-detail-hero tone-${visual.tone}`}>
           <aside className="panel deity-card">
-            <FestivalArtwork festival={detailRow} />
-            <strong>{festival?.mythology?.summary || source.label}</strong>
+            <FestivalArtwork festival={detailRow} priority />
+            <strong>{source.label}</strong>
           </aside>
           <section className="detail-title-block">
             <p className="eyebrow">{readableCategory(detailRow.category)}</p>
@@ -100,7 +116,9 @@ export function RedesignFestivalDetail() {
             <p className="eyebrow">Starts in</p>
             <h2>{countdownText(dates?.start_date)}</h2>
             <p>{formatBsDateRange(detailRow)}</p>
-            <a className="primary-button" href={buildCalendarFeedUrl(festivalId)}>Add to calendar</a>
+            <a className="primary-button" href={buildCalendarFeedUrl(festivalId)}>
+              <CalendarPlus aria-hidden="true" /> Add to calendar
+            </a>
           </aside>
         </section>
         <section className="detail-workspace">
@@ -167,7 +185,7 @@ export function RedesignFestivalDetail() {
               <p className="eyebrow">Observance notes</p>
               <h3>{detailRow.regional_focus.length ? detailRow.regional_focus.join(', ') : 'Nepal-focused'}</h3>
               <p>{detailRow.summary}</p>
-              <Link to="/festivals">Return to inline list</Link>
+              <Link to="/festivals">View all festivals</Link>
             </section>
             <section className="panel provenance-panel">
               <div className="panel-heading tight">
@@ -175,28 +193,44 @@ export function RedesignFestivalDetail() {
                 <strong>{source.label}</strong>
               </div>
             <p>{dates?.calculation_method || 'Resolved through the Parva festival endpoint and source metadata.'}</p>
-            <a className="text-link" href={buildFestivalEvidenceUrl(detailRow)}>Export evidence capsule</a>
+            <a className="text-link" href={buildFestivalEvidenceUrl(detailRow)}>
+              <Download aria-hidden="true" /> Export evidence capsule
+            </a>
             {[
-              { name: 'Timeline profile', note: meta?.method || 'API detail endpoint', confidence: source.score },
-              { name: 'Quality band', note: meta?.quality_band || dates?.confidence || 'source-aware', confidence: source.score },
+              {
+                name: 'Method',
+                note: readableEvidenceValue(
+                  meta?.method || dates?.calculation_method,
+                  'Festival date endpoint',
+                ),
+              },
+              {
+                name: 'Confidence level',
+                note: readableEvidenceValue(
+                  meta?.quality_band || dates?.confidence,
+                  'Source-aware',
+                ),
+              },
               ].map((item) => (
                 <article key={item.name}>
                   <div>
                     <strong>{item.name}</strong>
                     <p>{item.note}</p>
                   </div>
-                  <b>{item.confidence}%</b>
                 </article>
               ))}
               <Link className="primary-button" to="/truth-lab">Open evidence</Link>
             </section>
             <section className="panel related-festivals-panel">
               <p className="eyebrow">Related observances</p>
-              {related.length ? related.map((item) => (
+              {related.length ? related.slice(0, 4).map((item) => (
                 <Link key={item.id} to={`/festivals/${item.id}`}>
                   <FestivalArtwork festival={item} compact />
-                  <span>{item.name}</span>
-                  <small>{readableCategory(item.category)}</small>
+                  <span>
+                    <strong>{item.name}</strong>
+                    <small>{readableCategory(item.category)}</small>
+                  </span>
+                  <ArrowUpRight aria-hidden="true" />
                 </Link>
               )) : <p className="festival-muted-note">No nearby observances were returned for this profile.</p>}
             </section>
