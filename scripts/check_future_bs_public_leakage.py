@@ -159,9 +159,11 @@ def _app_for_profile(profile: str, *, experimental: bool, research: bool):
 
 
 def _route_paths(app: Any) -> set[str]:
+    from app.bootstrap.route_introspection import iter_registered_routes
+
     return {
         str(getattr(route, "path", ""))
-        for route in app.routes
+        for route in iter_registered_routes(app.routes)
         if isinstance(getattr(route, "path", None), str)
     }
 

@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import pytest
 from app.bootstrap.access_control import classify_request, find_unclassified_api_routes
-from fastapi import FastAPI
+from app.bootstrap.route_introspection import iter_registered_routes
+from fastapi import APIRouter, FastAPI
 
 
 def test_classify_request_keeps_calendar_routes_public():
@@ -59,6 +60,44 @@ def test_find_unclassified_api_routes_reports_missing_policies():
     missing = find_unclassified_api_routes(app.routes)
 
     assert "GET /api/demo" in missing
+
+
+def test_route_introspection_expands_included_routers():
+    app = FastAPI()
+    router = APIRouter(prefix="/api")
+
+    @router.get("/nested-demo")
+    async def nested_demo():
+        return {"ok": True}
+
+    app.include_router(router)
+
+    paths = {getattr(route, "path", None) for route in iter_registered_routes(app.routes)}
+    assert "/api/nested-demo" in paths
+    assert "GET /api/nested-demo" in find_unclassified_api_routes(app.routes)
+
+
+def test_research_routes_require_the_explicit_research_flag(monkeypatch: pytest.MonkeyPatch):
+    from app.bootstrap.app_factory import create_app
+
+    monkeypatch.setenv("PARVA_ENV", "test")
+    monkeypatch.setenv("PARVA_ROUTE_PROFILE", "research_private")
+    monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "true")
+    monkeypatch.setenv("PARVA_ENABLE_RESEARCH_API", "false")
+    monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
+
+    guarded_app = create_app()
+    guarded_paths = {
+        getattr(route, "path", None) for route in iter_registered_routes(guarded_app.routes)
+    }
+    assert "/v4/api/future-bs/month-lengths/{bs_year}" not in guarded_paths
+
+    monkeypatch.setenv("PARVA_ENABLE_RESEARCH_API", "true")
+    private_app = create_app()
+    private_paths = {
+        getattr(route, "path", None) for route in iter_registered_routes(private_app.routes)
+    }
+    assert "/v4/api/future-bs/month-lengths/{bs_year}" in private_paths
 
 
 def test_create_app_fails_if_registered_api_routes_are_unclassified(monkeypatch: pytest.MonkeyPatch):

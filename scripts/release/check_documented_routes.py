@@ -13,6 +13,7 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
+from app.bootstrap.route_introspection import iter_registered_routes  # noqa: E402
 from app.main import app  # noqa: E402
 
 API_REFERENCE = PROJECT_ROOT / "docs" / "API_REFERENCE_V3.md"
@@ -47,7 +48,7 @@ def _documented_routes(text: str) -> list[DocumentedRoute]:
 
 def _canonical_routes() -> list[tuple[str, str]]:
     rows: list[tuple[str, str]] = []
-    for route in app.routes:
+    for route in iter_registered_routes(app.routes):
         path = getattr(route, "path", None)
         methods = getattr(route, "methods", None)
         if not isinstance(path, str) or not path.startswith("/v3/api/") or methods is None:

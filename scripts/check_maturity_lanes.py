@@ -185,6 +185,7 @@ def _profile_env(profile: str, *, allow_research: bool) -> dict[str, str]:
         "PARVA_ENV": "test",
         "PARVA_ROUTE_PROFILE": profile,
         "PARVA_ENABLE_EXPERIMENTAL_API": "true" if allow_research else "false",
+        "PARVA_ENABLE_RESEARCH_API": "true" if allow_research else "false",
         "PARVA_SHOW_PRIVATE_SCHEMA": "true" if allow_research else "false",
         "PARVA_ADMIN_TOKEN": "parva-test-admin-token",
         "PARVA_API_KEYS": "local-read:parva-test-read-key:commercial.read|public.read",
@@ -198,10 +199,11 @@ def _profile_env(profile: str, *, allow_research: bool) -> dict[str, str]:
 def _registered_api_routes(profile: str, *, allow_research: bool) -> list[tuple[str, str]]:
     with _patched_env(_profile_env(profile, allow_research=allow_research)):
         from app.bootstrap.app_factory import create_app
+        from app.bootstrap.route_introspection import iter_registered_routes
 
         app = create_app()
     routes: set[tuple[str, str]] = set()
-    for route in app.routes:
+    for route in iter_registered_routes(app.routes):
         path = getattr(route, "path", None)
         methods = getattr(route, "methods", None)
         if not isinstance(path, str) or methods is None:

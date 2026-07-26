@@ -8,6 +8,7 @@ from typing import Iterable
 
 from fastapi import Request
 
+from .route_introspection import iter_registered_routes
 from .router_registry import iter_route_policy_specs
 from .settings import AppSettings
 
@@ -234,7 +235,7 @@ def classify_request(path: str, method: str) -> AccessRequirement:
 
 def find_unclassified_api_routes(routes: Iterable[object]) -> list[str]:
     missing: list[str] = []
-    for route in routes:
+    for route in iter_registered_routes(routes):
         path = getattr(route, "path", None)
         methods = getattr(route, "methods", None)
         if not isinstance(path, str) or not _is_api_path(path):

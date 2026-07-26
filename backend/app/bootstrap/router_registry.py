@@ -298,6 +298,7 @@ def _registrations_for_profile(
         registration
         for registration in ROUTER_REGISTRATIONS
         if registration.policy_name in policy_names
+        and (allow_research_private or not registration.register_when_experimental_enabled)
     ]
     if allow_research_private:
         registrations.extend(

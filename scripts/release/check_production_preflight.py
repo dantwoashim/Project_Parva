@@ -14,6 +14,7 @@ if str(BACKEND_ROOT) not in sys.path:
 
 from app.bootstrap.access_control import find_unclassified_api_routes  # noqa: E402
 from app.bootstrap.app_factory import create_app  # noqa: E402
+from app.bootstrap.route_introspection import iter_registered_routes  # noqa: E402
 
 
 def main() -> int:
@@ -46,7 +47,7 @@ def main() -> int:
         ]
         failures.append(f"Required startup checks are not ready: {', '.join(failed_required)}")
 
-    routes = getattr(app, "routes", [])
+    routes = list(iter_registered_routes(getattr(app, "routes", [])))
     unclassified = find_unclassified_api_routes(routes)
     failures.extend(f"Unclassified API route: {route}" for route in unclassified)
 

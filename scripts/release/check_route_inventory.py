@@ -13,12 +13,13 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.bootstrap.access_control import find_unclassified_api_routes  # noqa: E402
+from app.bootstrap.route_introspection import iter_registered_routes  # noqa: E402
 from app.main import app  # noqa: E402
 
 
 def _api_routes(prefix: str | None = None) -> dict[tuple[str, str], str]:
     routes: dict[tuple[str, str], str] = {}
-    for route in app.routes:
+    for route in iter_registered_routes(app.routes):
         path = getattr(route, "path", None)
         methods = getattr(route, "methods", None)
         name = str(getattr(route, "name", "") or "")
