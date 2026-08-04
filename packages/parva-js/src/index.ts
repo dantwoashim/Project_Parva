@@ -1,3 +1,12 @@
+import {
+  buildFutureBsUrl,
+  buildUrl,
+  extractErrorDetail,
+  optionalParams,
+  parseJsonSafely,
+  trimTrailingSlash,
+} from "./internal.js";
+
 export const DEFAULT_API_BASE = "https://api.prabinghimire1.com.np/v3/api";
 export const DEFAULT_FUTURE_BS_CAPABILITIES_URL =
   "https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities";
@@ -738,19 +747,20 @@ export class ParvaClient {
   }
 
   async getFutureBsMethodology(): Promise<JsonObject> {
-    return this.requestAbsolute("GET", this.futureBsPublicUrl("methodology"));
+    return this.requestAbsolute(
+      "GET",
+      buildFutureBsUrl(this.futureBsCapabilitiesUrl, "methodology"),
+    );
   }
 
   async getFutureBsForecast(bsYear: number): Promise<JsonObject> {
     if (!Number.isInteger(bsYear) || bsYear <= 0) {
       throw new ParvaApiError("bsYear must be a positive integer");
     }
-    return this.requestAbsolute("GET", this.futureBsPublicUrl(`forecast/${bsYear}`));
-  }
-
-  private futureBsPublicUrl(path: string): string {
-    const base = trimTrailingSlash(this.futureBsCapabilitiesUrl).replace(/\/capabilities$/, "");
-    return `${base}/${path.replace(/^\/+/, "")}`;
+    return this.requestAbsolute(
+      "GET",
+      buildFutureBsUrl(this.futureBsCapabilitiesUrl, `forecast/${bsYear}`),
+    );
   }
 
   private async request(
@@ -1237,60 +1247,4 @@ export function getFutureBsMethodology(clientOptions?: ParvaClientOptions) {
 
 export function getFutureBsForecast(bsYear: number, clientOptions?: ParvaClientOptions) {
   return new ParvaClient(clientOptions).getFutureBsForecast(bsYear);
-}
-
-function trimTrailingSlash(value: string): string {
-  return value.replace(/\/+$/, "");
-}
-
-function buildUrl(baseUrl: string, path: string, params?: Record<string, string>): string {
-  const normalizedPath = path.replace(/^\/+/, "");
-  const url = new URL(`${trimTrailingSlash(baseUrl)}/${normalizedPath}`);
-  for (const [key, value] of Object.entries(params ?? {})) {
-    url.searchParams.set(key, value);
-  }
-  return url.toString();
-}
-
-function optionalParams(params: object): Record<string, string> | undefined {
-  const cleaned: Record<string, string> = {};
-  for (const [key, value] of Object.entries(params)) {
-    if (
-      (typeof value === "string" || typeof value === "number" || typeof value === "boolean") &&
-      value !== ""
-    ) {
-      cleaned[key] = String(value);
-    }
-  }
-  return Object.keys(cleaned).length ? cleaned : undefined;
-}
-
-function parseJsonSafely(text: string): unknown {
-  if (!text.trim()) {
-    return {};
-  }
-  try {
-    return JSON.parse(text);
-  } catch {
-    return undefined;
-  }
-}
-
-function extractErrorDetail(payload: unknown): string | undefined {
-  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
-    return undefined;
-  }
-  const body = payload as Record<string, unknown>;
-  const error = body.error;
-  if (error && typeof error === "object" && !Array.isArray(error)) {
-    const message = (error as Record<string, unknown>).message;
-    if (typeof message === "string") {
-      return message;
-    }
-  }
-  const detail = body.detail;
-  if (typeof detail === "string") {
-    return detail;
-  }
-  return undefined;
 }
