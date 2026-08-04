@@ -39,9 +39,9 @@ Public profiles must not expose:
 - private source paths or private artifacts
 - billing, API-key, webhook, or admin mutation routes
 
-Public profiles may expose only the future-BS and calendar-model-risk
-capability summaries. Those responses describe method, risk labels, claim
-boundaries, and warnings, not exact future BS values.
+Public profiles may expose the curated Future-BS capability, methodology, and
+single-year forecast routes, plus calendar-model-risk capability metadata. Raw
+research routes remain excluded.
 
 ## OpenAPI Artifacts
 
@@ -88,8 +88,10 @@ Use these first for public integrations:
 | Festivals | `/v3/api/festivals/*` | public preview with source boundary |
 | Panchanga | `/v3/api/calendar/panchanga` | public preview with computation boundary |
 | Trust metadata | `/v3/api/trust/*` and `/v3/api/policy` | public preview |
-| Future-BS capability | `/v4/api/future-bs/capabilities` | metadata only |
+| Future-BS capability | `/v4/api/future-bs/capabilities` | public research preview |
+| Future-BS methodology | `/v4/api/future-bs/methodology` | public research preview |
+| Future-BS year forecast | `/v4/api/future-bs/forecast/{bs_year}` | curated public snapshot |
 
-Do not build public clients against exact Future-BS routes, private source
-routes, admin routes, billing routes, key routes, webhooks, or trust mutation
-surfaces.
+Public clients may use the three curated Future-BS routes above. Bulk, export,
+backtest, model-run, private source, admin, billing, key, webhook, and trust
+mutation routes remain controlled.

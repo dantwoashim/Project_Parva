@@ -5,6 +5,7 @@ import {
   Braces,
   Building2,
   CalendarCheck2,
+  CalendarRange,
   Check,
   CircleAlert,
   ClipboardCheck,
@@ -42,7 +43,7 @@ const developerRoutes = [
   ['GET', '/v3/api/enterprise/bs-months/{year}', 'Month lengths'],
   ['GET', '/v3/api/festivals/upcoming', 'Upcoming festivals'],
   ['GET', '/v3/api/calendar/panchanga', 'Panchanga'],
-  ['GET', '/v4/api/future-bs/capabilities', 'Future BS contract'],
+  ['GET', '/v4/api/future-bs/forecast/2084', 'Future BS forecast'],
 ];
 
 const futurePipeline = [
@@ -374,6 +375,142 @@ function FutureCapabilityPanel() {
   );
 }
 
+function FutureForecastPanel() {
+  const [year, setYear] = useState('2084');
+  const [payload, setPayload] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(1);
+  const [status, setStatus] = useState({ loading: true, error: '' });
+
+  const loadForecast = useCallback(async (requestedYear) => {
+    const parsedYear = Number(requestedYear);
+    if (!Number.isInteger(parsedYear) || parsedYear < 2084 || parsedYear > 2200) {
+      setStatus({ loading: false, error: 'Choose a BS year from 2084 through 2200.' });
+      return;
+    }
+
+    setStatus({ loading: true, error: '' });
+    try {
+      const result = await futureAPI.getForecast(parsedYear);
+      setPayload(result);
+      setSelectedMonth(1);
+      setYear(String(parsedYear));
+      setStatus({ loading: false, error: '' });
+    } catch (error) {
+      setStatus({
+        loading: false,
+        error: describeSupportError(error, 'The forecast snapshot could not be loaded.'),
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    futureAPI.getForecast(2084)
+      .then((result) => {
+        if (cancelled) return;
+        setPayload(result);
+        setStatus({ loading: false, error: '' });
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        setStatus({
+          loading: false,
+          error: describeSupportError(error, 'The forecast snapshot could not be loaded.'),
+        });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const activeMonth = payload?.months?.find((month) => month.month === selectedMonth) || null;
+  const replay = payload?.validation?.official_window_replay;
+  const confidencePercent = Math.round((payload?.heuristic_confidence_score || 0) * 100);
+
+  const submit = (event) => {
+    event.preventDefault();
+    loadForecast(year);
+  };
+
+  return (
+    <section className="future-forecast" aria-labelledby="future-forecast-title">
+      <header>
+        <div>
+          <p className="eyebrow">Public research snapshot</p>
+          <h2 id="future-forecast-title">Explore the selected solar-civil forecast.</h2>
+        </div>
+        <form onSubmit={submit} className="future-year-control">
+          <label htmlFor="future-bs-year">BS year</label>
+          <input
+            id="future-bs-year"
+            type="number"
+            min="2084"
+            max="2200"
+            value={year}
+            onChange={(event) => setYear(event.target.value)}
+          />
+          <button type="submit" className="primary-button" disabled={status.loading}>
+            {status.loading ? <LoaderCircle className="is-spinning" aria-hidden="true" /> : <Play aria-hidden="true" />}
+            Run
+          </button>
+        </form>
+      </header>
+
+      {status.error ? <p className="tool-error" role="alert">{status.error}</p> : null}
+
+      <div className="future-forecast__summary" aria-live="polite">
+        <div><span>Forecast year</span><strong>{payload?.bs_year || '...'}</strong></div>
+        <div><span>Year length</span><strong>{payload ? `${payload.year_total_days} days` : '...'}</strong></div>
+        <div><span>Heuristic score</span><strong>{payload ? `${confidencePercent}%` : '...'}</strong></div>
+        <div>
+          <span>Calibrated replay</span>
+          <strong>{replay ? `${replay.exact_month_matches}/${replay.month_cases}` : '...'}</strong>
+        </div>
+      </div>
+
+      <div className="future-month-grid" aria-label={`Month-length forecast for ${payload?.bs_year || year} BS`}>
+        {(payload?.months || []).map((month) => (
+          <button
+            key={month.month}
+            type="button"
+            className={month.month === selectedMonth ? 'is-selected' : ''}
+            data-risk={month.risk_label.toLowerCase()}
+            onClick={() => setSelectedMonth(month.month)}
+            aria-pressed={month.month === selectedMonth}
+          >
+            <span>{month.month_name}</span>
+            <strong>{month.predicted_days}</strong>
+            <small>{month.risk_label}</small>
+          </button>
+        ))}
+      </div>
+
+      <div className="future-forecast__detail">
+        <div className="future-forecast__detail-mark"><CalendarRange aria-hidden="true" /></div>
+        <div>
+          <span>Selected month</span>
+          <strong>{activeMonth ? `${activeMonth.month_name}: ${activeMonth.predicted_days} days` : 'Loading month data'}</strong>
+          <p>{activeMonth ? `Model agreement ${activeMonth.model_agreement}; 95% prediction set ${activeMonth.prediction_set_95.join(' or ')} days.` : 'The month-level evidence will appear here.'}</p>
+        </div>
+        <dl>
+          <div><dt>Boundary distance</dt><dd>{activeMonth?.boundary_distance_minutes ?? '...'} min</dd></div>
+          <div><dt>Review state</dt><dd>{activeMonth?.risk_label || '...'}</dd></div>
+        </dl>
+      </div>
+
+      <footer>
+        <div>
+          <strong>Computed research</strong>
+          <span>Calibration fit only; independent broad validation remains pending.</span>
+        </div>
+        <a href={apiHref(`/v4/api/future-bs/forecast/${payload?.bs_year || 2084}`)}>
+          Open forecast JSON <ExternalLink aria-hidden="true" />
+        </a>
+      </footer>
+    </section>
+  );
+}
+
 export function RedesignFutureBsResearch() {
   return (
     <AppChrome>
@@ -412,6 +549,8 @@ export function RedesignFutureBsResearch() {
             <strong>Human review</strong>
           </article>
         </section>
+
+        <FutureForecastPanel />
 
         <section className="future-workspace">
           <div className="future-pipeline">

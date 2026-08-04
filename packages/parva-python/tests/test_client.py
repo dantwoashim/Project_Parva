@@ -80,6 +80,24 @@ def test_future_capabilities_uses_public_v4_endpoint() -> None:
     assert calls[0][1] == DEFAULT_FUTURE_BS_CAPABILITIES_URL
 
 
+def test_future_forecast_and_methodology_use_public_v4_endpoints() -> None:
+    calls = []
+
+    def transport(method, url, params, json_body, timeout):
+        calls.append((method, url, params, json_body, timeout))
+        return {"publication_status": "computed_prediction_not_official"}
+
+    client = ParvaClient(transport=transport)
+    client.get_future_bs_methodology()
+    client.get_future_bs_forecast(2084)
+
+    assert calls[0][1] == "https://api.prabinghimire1.com.np/v4/api/future-bs/methodology"
+    assert calls[1][1] == "https://api.prabinghimire1.com.np/v4/api/future-bs/forecast/2084"
+
+    with pytest.raises(ValueError, match="positive integer"):
+        client.get_future_bs_forecast(0)
+
+
 def test_validate_bs_date_returns_false_for_public_400() -> None:
     calls = []
 

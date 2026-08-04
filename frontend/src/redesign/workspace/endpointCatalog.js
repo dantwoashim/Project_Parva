@@ -204,6 +204,14 @@ export const endpointCatalog = [
   {
     group: 'future',
     method: 'GET',
+    path: '/v4/api/future-bs/forecast/2084',
+    title: 'Future-BS forecast',
+    description: 'Inspect a precomputed year with month-level prediction sets and boundary risk.',
+    tool: 'future',
+  },
+  {
+    group: 'future',
+    method: 'GET',
     path: '/v5/api/calendar-model-risk/capabilities',
     title: 'Calendar model risk',
     description: 'Describe calendar model-risk controls without exposing private research routes.',

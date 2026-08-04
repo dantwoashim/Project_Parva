@@ -16,7 +16,7 @@ It lists current `v3` API routes so documentation drift is visible during tests.
 
 - Public demo routes are controlled by deployment profile and environment variables.
 - Admin, billing, partner, and internal routes may require authentication or private deployment policy.
-- Experimental future-BS prediction and export surfaces remain gated outside the public profile.
+- Curated Future-BS year forecasts are public; bulk prediction, export, backtest, model-run, and import surfaces remain gated.
 
 ## Canonical v3 Routes (217)
 

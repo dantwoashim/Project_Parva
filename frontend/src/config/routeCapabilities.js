@@ -31,8 +31,8 @@ export const ROUTE_CAPABILITIES = Object.freeze({
     lane: 'public_preview',
     maturity: 'research_preview',
     profiles: ['public_demo', 'public_reference', 'developer_preview', 'enterprise_preview', 'full_dev'],
-    exactFutureOutput: false,
-    researchData: 'metadata_only',
+    exactFutureOutput: 'curated_snapshot',
+    researchData: 'public_snapshot',
   },
   festivalTimeline: {
     lane: 'public_preview',
@@ -142,4 +142,3 @@ export function assertNoPublicResearchExposure(profile = resolveFrontendProfile(
   }
   return true;
 }
-

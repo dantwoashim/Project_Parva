@@ -375,6 +375,24 @@ Packages:
 - MCP server: [packages/parva-mcp-server](packages/parva-mcp-server)
 - Agent guide: [docs/AGENT_TOOLING_GUIDE.md](docs/AGENT_TOOLING_GUIDE.md)
 
+## Future BS Research Forecast
+
+Parva publishes a deterministic research snapshot for `2084-2200 BS` through three read-only endpoints:
+
+```text
+GET /v4/api/future-bs/capabilities
+GET /v4/api/future-bs/methodology
+GET /v4/api/future-bs/forecast/{bs_year}
+```
+
+The selected pipeline combines sidereal solar-ingress solving, Nepal civil-time assignment, month-specific cutoff rules, a past-only statistical pattern stack, complete-year sequence constraints, prediction sets, and boundary-risk labels. The forecast response includes all twelve month lengths, model probabilities, agreement, boundary distance, risk flags, method versions, and validation scope.
+
+The official `2078-2083 BS` window is a `72/72` calibrated replay. It is recorded as calibration fit rather than independent accuracy proof. Broad validation remains below the project's 528 verified-month evidence threshold. Every forecast carries `computed_prediction_not_official`, `review_required=true`, and an authoritative-publication override.
+
+- Public API contract: [docs/future_bs/API.md](docs/future_bs/API.md)
+- Selected method: [docs/future_bs/METHODOLOGY.md](docs/future_bs/METHODOLOGY.md)
+- Research boundary: [docs/future_bs/RESEARCH_BOUNDARY.md](docs/future_bs/RESEARCH_BOUNDARY.md)
+
 ## Architecture Overview
 
 Current code is split by responsibility:
@@ -461,7 +479,7 @@ Do not claim:
 - PyPI/npm publication unless the package is actually published
 - MCP registry acceptance unless accepted by a registry
 - customers, adoption, or design partners unless real evidence exists
-- public exact unsupported Future-BS predictions
+- unqualified Future-BS certainty or authority claims
 
 ## Project Status
 
@@ -471,7 +489,7 @@ The public reproducibility gate is the source of truth for release readiness:
 py -3.11 scripts/release/verify_public.py
 ```
 
-The civil temporal core has replay-verifiable proof support and local fixtures. Panchanga has a proof-carrying method-docketed path with fixture replay and a bounded JPL provider interface. Future-BS work is kept in the research lane and remains review-aware rather than official publication.
+The civil temporal core has replay-verifiable proof support and local fixtures. Panchanga has a proof-carrying method-docketed path with fixture replay and a bounded JPL provider interface. Future-BS publishes a curated research snapshot while raw model workflows remain controlled.
 
 The external ceiling is not complete. There are no real external witnesses, institutional signatures, official approval, third-party certification, or customer/adoption proof in this repository.
 

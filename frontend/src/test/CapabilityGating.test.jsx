@@ -42,10 +42,10 @@ describe('route capability gating', () => {
     });
   });
 
-  it('allows future-BS methodology without exact future output in public profiles', () => {
+  it('allows the curated Future-BS snapshot in public profiles', () => {
     expect(capabilityEnabled('futureBsMethodology', 'public_reference')).toBe(true);
-    expect(ROUTE_CAPABILITIES.futureBsMethodology.exactFutureOutput).toBe(false);
-    expect(ROUTE_CAPABILITIES.futureBsMethodology.researchData).toBe('metadata_only');
+    expect(ROUTE_CAPABILITIES.futureBsMethodology.exactFutureOutput).toBe('curated_snapshot');
+    expect(ROUTE_CAPABILITIES.futureBsMethodology.researchData).toBe('public_snapshot');
   });
 
   it('filters route manifests by backend route profile', () => {

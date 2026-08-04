@@ -44,12 +44,12 @@ Public surfaces may include:
 - Parva Protocol preview helpers where enabled
 - public panchanga endpoints where enabled
 - public festival endpoints where enabled
-- future-BS capabilities summary
+- future-BS capability, methodology, and curated single-year forecast routes
 
 Private or experimental surfaces must stay disabled by default on the public deployment:
 
-- direct future BS month-length prediction
-- future range prediction
+- raw future BS model workflows
+- bulk future range prediction
 - CSV/XLSX future exports
 - model runs
 - backtests
@@ -132,8 +132,10 @@ The public v3 contract is centered on a small set of stable calendar and enterpr
 | `/v3/api/protocol/credentials/verify` | POST | Verify a hash-only preview calendar credential |
 | `/v3/api/policy` | GET | Source and claim-boundary policy metadata |
 | `/v4/api/future-bs/capabilities` | GET | Public-safe future-BS research capability summary |
+| `/v4/api/future-bs/methodology` | GET | Selected solar-civil model and validation methodology |
+| `/v4/api/future-bs/forecast/{bs_year}` | GET | Curated month-length forecast for one year from 2084 through 2200 BS |
 
-Core calendar and enterprise responses include source, confidence, provenance, engine, or policy fields where meaningful. Future-BS research metadata remains labeled `computed_prediction_not_official`.
+Core calendar and enterprise responses include source, confidence, provenance, engine, or policy fields where meaningful. Future-BS forecast responses remain labeled `computed_prediction_not_official` and require review.
 
 ## Source-aware metadata
 

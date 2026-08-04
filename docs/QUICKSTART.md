@@ -116,14 +116,17 @@ curl "https://api.prabinghimire1.com.np/v3/api/trust/sources"
 curl "https://api.prabinghimire1.com.np/v3/api/policy"
 ```
 
-Unsupported Future-BS behavior:
+Future-BS research forecast:
 
 ```bash
 curl "https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities"
+curl "https://api.prabinghimire1.com.np/v4/api/future-bs/methodology"
+curl "https://api.prabinghimire1.com.np/v4/api/future-bs/forecast/2084"
 ```
 
-The public v4 capabilities route is metadata only. It must not return exact
-unsupported future month lengths or official future dates.
+The forecast is a versioned research snapshot for `2084-2200 BS`. Keep its
+publication status, review requirement, and authoritative-publication override
+with the result.
 
 ## 4. Python SDK
 
@@ -147,6 +150,8 @@ working_day = client.next_working_day(
 sources = client.list_sources()
 panchanga = client._request("GET", "/calendar/panchanga", params={"date": "2026-04-14"})
 capabilities = client.get_future_bs_capabilities()
+methodology = client.get_future_bs_methodology()
+forecast = client.get_future_bs_forecast(2084)
 
 print(ad_to_bs)
 print(bs_to_ad)
@@ -157,6 +162,7 @@ print(working_day)
 print(sources.get("items") or sources)
 print(panchanga)
 print(capabilities.get("publication_status"))
+print(forecast.get("month_lengths"))
 ```
 
 The Python SDK does not yet provide a named panchanga helper. Use the REST
@@ -186,6 +192,8 @@ const workingDay = await parva.nextWorkingDay({
 });
 const sources = await parva.listSources();
 const capabilities = await parva.getFutureBsCapabilities();
+const methodology = await parva.getFutureBsMethodology();
+const forecast = await parva.getFutureBsForecast(2084);
 ```
 
 The JavaScript SDK does not yet provide named holiday, festival, or panchanga
@@ -200,10 +208,9 @@ contract. If a response says `review_required`, `unsupported`, or
 `computed_prediction_not_official`, do not automate a final legal, tax, payroll,
 banking, or religious decision from it.
 
-Private Future-BS prediction, export, model-run, backtest, comparison, and
-schedule-impact routes are intentionally not quickstart routes. Use only the
-public capabilities endpoint unless you are operating a private research
-deployment with explicit gates and human review.
+Bulk Future-BS prediction, export, model-run, backtest, comparison, and
+schedule-impact routes remain controlled. Public clients use the curated
+capabilities, methodology, and single-year forecast routes.
 
 Rate limit and transient server responses should be retried conservatively only
 for `429`, `500`, `502`, `503`, and `504`. Honor `Retry-After` when present and

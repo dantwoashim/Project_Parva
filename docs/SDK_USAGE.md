@@ -80,6 +80,8 @@ impact = parva.simulate_change_set({"changes": []})
 claim = parva.verify_temporal_claim("2083-01-01 BS maps to 2026-04-14 AD.")
 protocol = parva.get_protocol_version()
 future_bs_capabilities = parva.get_future_bs_capabilities()
+future_bs_methodology = parva.get_future_bs_methodology()
+future_bs_forecast = parva.get_future_bs_forecast(2084)
 ```
 
 ## CLI
@@ -128,7 +130,7 @@ Default public API base:
 https://api.prabinghimire1.com.np/v3/api
 ```
 
-Future-BS capabilities endpoint:
+Future-BS public endpoint root:
 
 ```text
 https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities
@@ -148,7 +150,8 @@ The SDK surface is split by maturity lane:
 | Public preview | Top-level compatibility helpers are allowed, but docs must label them as preview. |
 | Developer preview | RuleLang, TimeGraph, impact, and agent helpers are preview helpers and may move under explicit preview namespaces in a future major SDK version. |
 | Protocol draft | Protocol helpers expose draft metadata only and are not standards certification helpers. |
-| Research private | Exact future-BS predictions, exports, backtests, residuals, model runs, and schedule-impact routes are omitted from public SDKs. |
+| Public research preview | Curated capabilities, methodology, and single-year forecast helpers preserve review and publication boundaries. |
+| Research private | Bulk predictions, exports, backtests, residuals, model runs, and schedule-impact routes are omitted from public SDKs. |
 | Deprecated compatibility | `/api/*` aliases are compatibility-only and should not be used in new SDK examples. |
 
 Public SDK methods in this alpha:
@@ -162,12 +165,14 @@ Public SDK methods in this alpha:
 - `planSchedule` or `plan_schedule`
 - `getProtocolVersion` or `get_protocol_version`
 - `getFutureBsCapabilities` or `get_future_bs_capabilities`
+- `getFutureBsMethodology` or `get_future_bs_methodology`
+- `getFutureBsForecast` or `get_future_bs_forecast`
 
 The SDKs do not call private future-BS month-length prediction, full-range export, model-run, backtest, residual, external comparison, corrected-value, or schedule-impact endpoints.
 
 ## Future-BS Claim Boundary
 
-The future-BS SDK method returns capability metadata only. It must not be treated as official publication authority.
+The Future-BS SDK methods return a curated research snapshot and its selected methodology. They preserve human-review and authority boundaries.
 
 Any future-BS output exposed through public SDKs must preserve:
 

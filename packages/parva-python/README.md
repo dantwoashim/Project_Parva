@@ -2,7 +2,7 @@
 
 Public-safe Python SDK for Project Parva calendar APIs.
 
-This alpha package uses the stable public calendar surface and the public future-BS capabilities summary. It does not call private future-BS prediction, export, model-run, backtest, comparison, corrected-value, or schedule-impact endpoints.
+This alpha package uses the stable public calendar surface plus curated Future-BS capability, methodology, and single-year forecast routes. It does not call bulk export, model-run, backtest, comparison, corrected-value, or schedule-impact endpoints.
 
 ## Install
 
@@ -46,6 +46,8 @@ rule = client.evaluate_rule(
 )
 policy = client.get_policy()
 capabilities = client.get_future_bs_capabilities()
+methodology = client.get_future_bs_methodology()
+forecast = client.get_future_bs_forecast(2084)
 ```
 
 ## Covered Public Surfaces
@@ -64,7 +66,7 @@ capabilities = client.get_future_bs_capabilities()
 - TimeGraph fact, relationship, trace, and conflict helpers
 - RuleLang registry, validation, execution, test, and explanation helpers
 - public policy metadata
-- future-BS capabilities summary
+- Future-BS capabilities, selected methodology, and single-year forecast
 
 ## Maturity Policy
 
@@ -74,7 +76,8 @@ capabilities = client.get_future_bs_capabilities()
 | Public preview | Trust, evidence, TimeGraph, RuleLang, and public capability helpers remain labeled preview. |
 | Developer preview | Impact, agent, and advanced decision-support helpers are preview compatibility helpers. |
 | Protocol draft | Protocol helpers carry draft status and are not standards certification helpers. |
-| Research private | Exact future-BS prediction, export, backtest, residual, model-run, comparison, and schedule-impact routes are not exposed. |
+| Public research preview | Curated Future-BS capability, methodology, and one-year forecast helpers. |
+| Research private | Bulk prediction, export, backtest, residual, model-run, comparison, and schedule-impact routes are not exposed. |
 | Deprecated compatibility | The SDK defaults to `/v3/api`, not legacy `/api/*` aliases. |
 
 ## TimeGraph
@@ -127,7 +130,7 @@ Default public API base:
 https://api.prabinghimire1.com.np/v3/api
 ```
 
-Future-BS capabilities endpoint:
+Future-BS public endpoint root:
 
 ```text
 https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities
@@ -172,7 +175,7 @@ surface.
 
 ## Claim Boundary
 
-Future-BS capabilities describe a research surface. They are not official calendar publication and must preserve:
+Future-BS responses are computed research and must preserve:
 
 ```text
 computed_prediction_not_official

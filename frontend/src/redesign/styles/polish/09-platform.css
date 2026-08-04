@@ -404,6 +404,299 @@
   background: var(--surface);
 }
 
+.future-forecast {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.future-forecast > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px;
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(110deg, var(--forest-50), var(--blue-50) 58%, var(--gold-50));
+}
+
+.future-forecast > header h2 {
+  max-width: 620px;
+  margin-top: 4px;
+  font-size: 1.25rem;
+}
+
+.future-year-control {
+  display: grid;
+  grid-template-columns: 92px 92px;
+  gap: 5px 8px;
+  flex: 0 0 auto;
+}
+
+.future-year-control label {
+  grid-column: 1 / -1;
+  color: var(--muted-strong);
+  font-size: 0.65rem;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.future-year-control input {
+  width: 92px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.future-year-control .primary-button {
+  min-height: 40px;
+  padding: 0 13px;
+}
+
+.future-year-control .primary-button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.future-forecast > .tool-error {
+  margin: 16px 22px 0;
+}
+
+.future-forecast__summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line);
+}
+
+.future-forecast__summary > div {
+  min-width: 0;
+  padding: 15px 18px;
+  border-right: 1px solid var(--line);
+}
+
+.future-forecast__summary > div:last-child {
+  border-right: 0;
+}
+
+.future-forecast__summary span,
+.future-forecast__summary strong {
+  display: block;
+}
+
+.future-forecast__summary span {
+  color: var(--muted);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+}
+
+.future-forecast__summary strong {
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.future-month-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(64px, 1fr));
+  gap: 7px;
+  padding: 18px 22px;
+  overflow-x: auto;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.future-month-grid button {
+  position: relative;
+  display: grid;
+  min-width: 64px;
+  min-height: 104px;
+  align-content: space-between;
+  padding: 11px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  background: var(--surface-soft);
+  text-align: left;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.future-month-grid button:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue-500);
+  box-shadow: var(--shadow-xs);
+}
+
+.future-month-grid button.is-selected {
+  border-color: var(--blue-700);
+  background: var(--blue-50);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--blue-500) 18%, transparent);
+}
+
+.future-month-grid button[data-risk='green'] {
+  border-top: 3px solid var(--forest-500);
+}
+
+.future-month-grid button[data-risk='yellow'] {
+  border-top: 3px solid var(--gold-500);
+}
+
+.future-month-grid button[data-risk='red'] {
+  border-top: 3px solid var(--vermillion-500);
+}
+
+.future-month-grid span {
+  color: var(--muted-strong);
+  font-size: 0.61rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.future-month-grid strong {
+  font-family: var(--font-mono);
+  font-size: 1.55rem;
+  line-height: 1;
+}
+
+.future-month-grid small {
+  color: var(--muted);
+  font-size: 0.52rem;
+  font-weight: 800;
+}
+
+.future-forecast__detail {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) minmax(280px, 0.65fr);
+  align-items: center;
+  gap: 14px;
+  margin: 0 22px 18px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+}
+
+.future-forecast__detail-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: var(--radius-md);
+  color: var(--blue-700);
+  background: var(--blue-50);
+}
+
+.future-forecast__detail-mark svg {
+  width: 22px;
+  height: 22px;
+}
+
+.future-forecast__detail span,
+.future-forecast__detail strong {
+  display: block;
+}
+
+.future-forecast__detail span {
+  color: var(--muted);
+  font-size: 0.61rem;
+  text-transform: uppercase;
+}
+
+.future-forecast__detail strong {
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.future-forecast__detail p {
+  margin-top: 4px;
+  color: var(--muted-strong);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.future-forecast__detail dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+
+.future-forecast__detail dl > div {
+  padding: 10px;
+  border-right: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.future-forecast__detail dl > div:last-child {
+  border-right: 0;
+}
+
+.future-forecast__detail dt {
+  color: var(--muted);
+  font-size: 0.57rem;
+  text-transform: uppercase;
+}
+
+.future-forecast__detail dd {
+  margin: 4px 0 0;
+  color: var(--ink);
+  font-size: 0.68rem;
+  font-weight: 750;
+}
+
+.future-forecast > footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 22px;
+  border-top: 1px solid var(--line);
+  background: var(--gold-50);
+}
+
+.future-forecast > footer strong,
+.future-forecast > footer span {
+  display: block;
+}
+
+.future-forecast > footer strong {
+  color: var(--gold-800);
+  font-size: 0.7rem;
+}
+
+.future-forecast > footer span {
+  margin-top: 2px;
+  color: var(--muted-strong);
+  font-size: 0.65rem;
+}
+
+.future-forecast > footer a {
+  display: inline-flex;
+  min-height: 40px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  color: var(--blue-700);
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+
+.future-forecast > footer a svg {
+  width: 14px;
+  height: 14px;
+}
+
 .future-state-strip > svg {
   width: 18px;
   color: var(--muted);

@@ -19,13 +19,13 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 - Kundali and graph surfaces: kundali, lagna, kundali graph endpoints.
 - Reliability and trust: provenance, public artifacts, reliability status, metrics, boundary suite, differential manifest, spec conformance.
 - Billing and access: plans, checkout, API keys, usage, admin billing surfaces.
-- Future BS: public capability and claim-boundary metadata, with direct prediction, export, backtest, residual, external comparison, schedule-impact, and model-run surfaces kept behind the private deployment profile.
+- Future BS: public capability, selected methodology, and curated single-year forecasts for `2084-2200 BS`; bulk export, backtest, residual, external comparison, schedule-impact, and model-run surfaces remain controlled.
 - Calendar Model-Risk: public capability metadata, with prediction sets, committee posterior, perturbation robustness, external audit, schedule-impact, stress-test, claim-readiness, and red-team report surfaces kept behind the private deployment profile.
 
 ## Backend Services
 
 - `calendar_conversion_service`, `calendar_surface_service`, `enterprise_calendar_service`.
-- `future_bs_service` for private future month-length research payloads, comparison, residuals, and schedule-impact analysis.
+- `future_bs_public_service` for deterministic public snapshots and `future_bs_service` for controlled comparison, residual, and schedule-impact analysis.
 - Panchanga, muhurta, personal, trust, place search, timeline, feed, and kundali services.
 - Billing, reliability, provenance, cache, source review, and storage modules.
 
@@ -38,7 +38,7 @@ This inventory preserves the existing Parva platform boundary before additive Fu
 
 ## Future BS and Model-Risk Assets
 
-- Public source-policy files and official holdout sample under `data/future_bs/public`.
+- Public selected-model metadata and the versioned `2084-2200 BS` forecast snapshot under `data/future_bs/public`.
 - Larger private corpus, model runs, prediction artifacts, calibration metadata, and residual reports are ignored deployment artifacts, not public source fixtures.
 - Strict claim posture: future outputs are `computed_prediction_not_official`.
 

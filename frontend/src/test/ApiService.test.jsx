@@ -819,10 +819,14 @@ describe('API service', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     await futureAPI.getCapabilities();
+    await futureAPI.getMethodology();
+    await futureAPI.getForecast(2084);
     await futureAPI.getModelRiskCapabilities();
 
     expect(fetchMock.mock.calls[0][0]).toMatch(/\/v4\/api\/future-bs\/capabilities$/);
-    expect(fetchMock.mock.calls[1][0]).toMatch(/\/v5\/api\/calendar-model-risk\/capabilities$/);
+    expect(fetchMock.mock.calls[1][0]).toMatch(/\/v4\/api\/future-bs\/methodology$/);
+    expect(fetchMock.mock.calls[2][0]).toMatch(/\/v4\/api\/future-bs\/forecast\/2084$/);
+    expect(fetchMock.mock.calls[3][0]).toMatch(/\/v5\/api\/calendar-model-risk\/capabilities$/);
   });
 
   it('accepts structured sunrise objects for personal panchanga envelopes', async () => {

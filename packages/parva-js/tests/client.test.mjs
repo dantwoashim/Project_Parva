@@ -68,6 +68,23 @@ test("uses the public v4 capabilities endpoint for future-BS capabilities", asyn
   assert.equal(calls[0], DEFAULT_FUTURE_BS_CAPABILITIES_URL);
 });
 
+test("uses the public v4 endpoints for future-BS methodology and forecasts", async () => {
+  const calls = [];
+  const client = new ParvaClient({
+    fetchImpl: async (url) => {
+      calls.push(url);
+      return jsonResponse({ publication_status: "computed_prediction_not_official" });
+    },
+  });
+
+  await client.getFutureBsMethodology();
+  await client.getFutureBsForecast(2084);
+
+  assert.equal(calls[0], "https://api.prabinghimire1.com.np/v4/api/future-bs/methodology");
+  assert.equal(calls[1], "https://api.prabinghimire1.com.np/v4/api/future-bs/forecast/2084");
+  await assert.rejects(() => client.getFutureBsForecast(0), /positive integer/);
+});
+
 test("validateBsDate converts public 400 responses into a validation result", async () => {
   let calls = 0;
   const client = new ParvaClient({

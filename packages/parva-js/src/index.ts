@@ -737,6 +737,22 @@ export class ParvaClient {
     return this.requestAbsolute("GET", this.futureBsCapabilitiesUrl);
   }
 
+  async getFutureBsMethodology(): Promise<JsonObject> {
+    return this.requestAbsolute("GET", this.futureBsPublicUrl("methodology"));
+  }
+
+  async getFutureBsForecast(bsYear: number): Promise<JsonObject> {
+    if (!Number.isInteger(bsYear) || bsYear <= 0) {
+      throw new ParvaApiError("bsYear must be a positive integer");
+    }
+    return this.requestAbsolute("GET", this.futureBsPublicUrl(`forecast/${bsYear}`));
+  }
+
+  private futureBsPublicUrl(path: string): string {
+    const base = trimTrailingSlash(this.futureBsCapabilitiesUrl).replace(/\/capabilities$/, "");
+    return `${base}/${path.replace(/^\/+/, "")}`;
+  }
+
   private async request(
     method: "GET" | "POST",
     path: string,
@@ -1213,6 +1229,14 @@ export function getOfflineBundleManifest(clientOptions?: ParvaClientOptions) {
 
 export function getFutureBsCapabilities(clientOptions?: ParvaClientOptions) {
   return new ParvaClient(clientOptions).getFutureBsCapabilities();
+}
+
+export function getFutureBsMethodology(clientOptions?: ParvaClientOptions) {
+  return new ParvaClient(clientOptions).getFutureBsMethodology();
+}
+
+export function getFutureBsForecast(bsYear: number, clientOptions?: ParvaClientOptions) {
+  return new ParvaClient(clientOptions).getFutureBsForecast(bsYear);
 }
 
 function trimTrailingSlash(value: string): string {

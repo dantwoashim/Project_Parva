@@ -143,7 +143,7 @@ const routeSeo = {
   },
   '/future-bs': {
     title: 'Future BS Risk Research - Project Parva',
-    description: 'Public-safe methodology for controlled future-BS month-length risk research with computed_prediction_not_official claim boundaries.',
+    description: 'Explore Parva\'s curated Future-BS month forecast, selected solar-civil methodology, prediction sets, and review risk.',
   },
   '/pricing': {
     title: 'API Pricing - Parva',

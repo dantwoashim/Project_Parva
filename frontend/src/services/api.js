@@ -461,6 +461,8 @@ export const enterpriseAPI = {
 
 export const futureAPI = {
   getCapabilities: () => fetchAPI('/v4/api/future-bs/capabilities'),
+  getMethodology: () => fetchAPI('/v4/api/future-bs/methodology'),
+  getForecast: (bsYear) => fetchAPI(`/v4/api/future-bs/forecast/${encodeURIComponent(bsYear)}`),
   getModelRiskCapabilities: () => fetchAPI('/v5/api/calendar-model-risk/capabilities'),
 };
 
