@@ -41,11 +41,14 @@ compatibility/reference evidence and must remain review-required in vendor
 reports.
 
 Sample input and output live under `samples/vendor-date-risk-audit`.
+The sample package includes exact findings, business consequences, required fixes,
+acceptance criteria, and runnable regression checks.
 
 Run the local sample:
 
 ```bash
 python scripts/vendor_audit/run_vendor_date_risk_audit.py --input samples/vendor-date-risk-audit/input_sample.csv --json-out samples/vendor-date-risk-audit/output_report_sample.json --md-out samples/vendor-date-risk-audit/output_report_sample.md
+python -m pytest samples/vendor-date-risk-audit/regression_test_sample.py -q
 ```
 
 The command generates machine-readable JSON and a Markdown report with invalid
@@ -64,6 +67,10 @@ Suggested commercial packaging:
 
 The audit is source-aware technical review, not legal, tax, banking, payroll,
 or government approval.
+
+The initial prospect set and its extraction limits are documented in
+`docs/outreach/IRD_VENDOR_PROSPECTS_2026.md`, with the 50-row working data in
+`docs/outreach/ird_vendor_prospects_2026.csv`.
 
 Status: audit checklist for external products that handle Nepali dates.
 

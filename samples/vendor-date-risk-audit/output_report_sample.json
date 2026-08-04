@@ -1,12 +1,107 @@
 {
-  "fiscal_cutoff_errors": [],
+  "findings": [
+    {
+      "bs_date": "2082-13-01",
+      "category": "invalid_dates",
+      "consequence": "The affected payroll or invoice workflow can fail or store an impossible civil date.",
+      "expected": "Reject the value before persistence, conversion, or workflow execution.",
+      "finding_id": "PARVA-AUD-001",
+      "observed": "Invalid BS date: 2082-13-01. Year must be 2000-2099, month 1-12, and day must be valid for that month.",
+      "regression_test": "with pytest.raises(ValueError):\n    bs_to_gregorian(2082, 13, 1)",
+      "remediation": "Validate BS year, month, and day against the canonical month-length row at the input boundary.",
+      "row_number": 4,
+      "severity": "critical",
+      "title": "Invalid BS date reaches a business workflow",
+      "workflow_type": "payroll_cutoff"
+    },
+    {
+      "bs_date": "2082-04-02",
+      "category": "working_day_mismatches",
+      "consequence": "Invoices, attendance, due dates, and sorted reports can move by one day.",
+      "expected": "2082-04-02 converts to 2025-07-18.",
+      "finding_id": "PARVA-AUD-002",
+      "observed": "Vendor AD value is 2025-07-19.",
+      "regression_test": "assert bs_to_gregorian(2082, 4, 2).isoformat() == \"2025-07-18\"",
+      "remediation": "Correct the stored AD value and enforce conversion plus round-trip checks before persistence.",
+      "row_number": 6,
+      "severity": "high",
+      "title": "Stored AD and BS dates identify different civil days",
+      "workflow_type": "attendance"
+    },
+    {
+      "bs_date": "2082-04-01",
+      "category": "fiscal_cutoff_errors",
+      "consequence": "Transactions can be assigned to the wrong reporting year at the Shrawan boundary.",
+      "expected": "Use the configured Nepal fiscal-year convention for the audited workflow.",
+      "finding_id": "PARVA-AUD-003",
+      "observed": "Fiscal assumption is gregorian_calendar_year.",
+      "regression_test": "assert fiscal_period_for_bs_date(2082, 4, 1).fiscal_year_label == \"2082/83\"",
+      "remediation": "Resolve fiscal periods through the shared fiscal engine instead of calendar-year logic.",
+      "row_number": 7,
+      "severity": "high",
+      "title": "Workflow uses the wrong fiscal-year convention",
+      "workflow_type": "fiscal_period_start"
+    },
+    {
+      "bs_date": "2090-01-01",
+      "category": "unsupported_future_assumptions",
+      "consequence": "A repayment or contractual date can appear final before an authoritative calendar is published.",
+      "expected": "Require an authoritative source or keep the result explicitly review-required.",
+      "finding_id": "PARVA-AUD-004",
+      "observed": "Source status is static_table_unverified for 2090-01-01.",
+      "regression_test": "assert get_bs_year_provenance(2090).confidence != \"official\"",
+      "remediation": "Persist source status and block operational finalization until the authoritative release is available.",
+      "row_number": 5,
+      "severity": "high",
+      "title": "Future date is treated beyond the official source range",
+      "workflow_type": "loan_repayment"
+    },
+    {
+      "bs_date": "2090-01-01",
+      "category": "source_conflicts",
+      "consequence": "The workflow can skip or include the wrong working day without an auditable reason.",
+      "expected": "Attach a named source release and institution policy to the decision.",
+      "finding_id": "PARVA-AUD-005",
+      "observed": "Holiday assumption is unknown_future_holiday_policy.",
+      "regression_test": "assert audit_report[\"source_conflicts\"]",
+      "remediation": "Require source ID, release ID, and institution profile before holiday adjustment.",
+      "row_number": 5,
+      "severity": "medium",
+      "title": "Holiday policy lacks a supported source",
+      "workflow_type": "loan_repayment"
+    },
+    {
+      "bs_date": "2090-01-01",
+      "category": "review_required_cases",
+      "consequence": "Automatic execution would bypass the stated control for a sensitive workflow.",
+      "expected": "Hold final execution until a reviewer accepts the source and policy context.",
+      "finding_id": "PARVA-AUD-006",
+      "observed": "loan_repayment uses source status static_table_unverified.",
+      "regression_test": "assert audit_report[\"review_required_cases\"]",
+      "remediation": "Enforce a review-required state and record reviewer identity, decision, and timestamp.",
+      "row_number": 5,
+      "severity": "advisory",
+      "title": "Sensitive workflow requires human approval",
+      "workflow_type": "loan_repayment"
+    }
+  ],
+  "fiscal_cutoff_errors": [
+    {
+      "bs_date": "2082-04-01",
+      "expected_behavior": "use_nepal_fiscal_year",
+      "fiscal_assumption": "gregorian_calendar_year",
+      "reason": "fiscal assumption is not the Nepal fiscal-year convention",
+      "row_number": 7,
+      "workflow_type": "fiscal_period_start"
+    }
+  ],
   "holiday_mismatches": [],
   "invalid_dates": [
     {
       "bs_date": "2082-13-01",
       "expected_behavior": "reject_invalid_date",
       "reason": "Invalid BS date: 2082-13-01. Year must be 2000-2099, month 1-12, and day must be valid for that month.",
-      "row_number": 3,
+      "row_number": 4,
       "workflow_type": "payroll_cutoff"
     }
   ],
@@ -17,12 +112,38 @@
     "Attach source evidence for holiday and institution-specific assumptions.",
     "Require human review for sensitive payroll, repayment, banking, legal, or tax workflows."
   ],
+  "regression_tests": [
+    {
+      "finding_id": "PARVA-AUD-001",
+      "test": "with pytest.raises(ValueError):\n    bs_to_gregorian(2082, 13, 1)"
+    },
+    {
+      "finding_id": "PARVA-AUD-002",
+      "test": "assert bs_to_gregorian(2082, 4, 2).isoformat() == \"2025-07-18\""
+    },
+    {
+      "finding_id": "PARVA-AUD-003",
+      "test": "assert fiscal_period_for_bs_date(2082, 4, 1).fiscal_year_label == \"2082/83\""
+    },
+    {
+      "finding_id": "PARVA-AUD-004",
+      "test": "assert get_bs_year_provenance(2090).confidence != \"official\""
+    },
+    {
+      "finding_id": "PARVA-AUD-005",
+      "test": "assert audit_report[\"source_conflicts\"]"
+    },
+    {
+      "finding_id": "PARVA-AUD-006",
+      "test": "assert audit_report[\"review_required_cases\"]"
+    }
+  ],
   "review_required_cases": [
     {
       "bs_date": "2090-01-01",
       "expected_behavior": "review_required",
       "reason": "workflow requires human review before operational use",
-      "row_number": 4,
+      "row_number": 5,
       "source_status": "static_table_unverified",
       "workflow_type": "loan_repayment"
     }
@@ -31,36 +152,45 @@
     {
       "bs_date": "2090-01-01",
       "expected_behavior": "review_required",
+      "holiday_assumption": "unknown_future_holiday_policy",
       "reason": "holiday assumption is unknown or unsupported by provided evidence",
-      "row_number": 4,
+      "row_number": 5,
       "workflow_type": "loan_repayment"
     }
   ],
   "summary": {
+    "affected_rows": 4,
     "claim_boundary": "technical_conformance_report_not_certification",
-    "conformance_score": 37.5,
+    "conformance_score": 58.33,
     "issue_count": 5,
     "not_authority": true,
-    "rows": 4
+    "review_control_count": 1,
+    "rows": 6,
+    "severity_counts": {
+      "advisory": 1,
+      "critical": 1,
+      "high": 3,
+      "medium": 1
+    }
   },
   "unsupported_future_assumptions": [
     {
       "bs_date": "2090-01-01",
       "expected_behavior": "review_required",
       "reason": "date is outside structured official public range used by this audit",
-      "row_number": 4,
+      "row_number": 5,
       "source_status": "static_table_unverified",
       "workflow_type": "loan_repayment"
     }
   ],
   "working_day_mismatches": [
     {
-      "actual_ad_date": "2025-07-18",
+      "actual_ad_date": "2025-07-19",
       "bs_date": "2082-04-02",
-      "expected_ad_date": "2025-07-17",
+      "expected_ad_date": "2025-07-18",
       "expected_behavior": "is_working_day",
       "reason": "actual_ad_date does not match Parva BS/AD conversion",
-      "row_number": 5,
+      "row_number": 6,
       "workflow_type": "attendance"
     }
   ]

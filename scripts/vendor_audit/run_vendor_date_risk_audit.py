@@ -21,6 +21,14 @@ from app.calendar.provenance import get_bs_year_provenance  # noqa: E402
 
 REQUIRED_COLUMNS = {"bs_date", "workflow_type", "expected_behavior"}
 REVIEW_SENSITIVE_WORKFLOWS = {"payroll", "loan", "bank", "tax", "legal", "repayment"}
+ISSUE_CATEGORIES = (
+    "invalid_dates",
+    "holiday_mismatches",
+    "working_day_mismatches",
+    "fiscal_cutoff_errors",
+    "unsupported_future_assumptions",
+    "source_conflicts",
+)
 
 
 @dataclass(frozen=True)
@@ -73,6 +81,111 @@ def _row_issue(row: AuditRow, reason: str, **extra: Any) -> dict[str, Any]:
     }
 
 
+def _regression_call(bs_date: str) -> str:
+    year, month, day = _parse_bs_date(bs_date)
+    return f"bs_to_gregorian({year}, {month}, {day})"
+
+
+def _finding_details(category: str, item: dict[str, Any]) -> dict[str, str]:
+    if category == "invalid_dates":
+        return {
+            "severity": "critical",
+            "title": "Invalid BS date reaches a business workflow",
+            "observed": item["reason"],
+            "expected": "Reject the value before persistence, conversion, or workflow execution.",
+            "consequence": "The affected payroll or invoice workflow can fail or store an impossible civil date.",
+            "remediation": "Validate BS year, month, and day against the canonical month-length row at the input boundary.",
+            "regression_test": f"with pytest.raises(ValueError):\n    {_regression_call(item['bs_date'])}",
+        }
+    if category == "working_day_mismatches":
+        return {
+            "severity": "high",
+            "title": "Stored AD and BS dates identify different civil days",
+            "observed": f"Vendor AD value is {item['actual_ad_date']}.",
+            "expected": f"{item['bs_date']} converts to {item['expected_ad_date']}.",
+            "consequence": "Invoices, attendance, due dates, and sorted reports can move by one day.",
+            "remediation": "Correct the stored AD value and enforce conversion plus round-trip checks before persistence.",
+            "regression_test": (
+                f"assert {_regression_call(item['bs_date'])}.isoformat() "
+                f"== \"{item['expected_ad_date']}\""
+            ),
+        }
+    if category == "fiscal_cutoff_errors":
+        return {
+            "severity": "high",
+            "title": "Workflow uses the wrong fiscal-year convention",
+            "observed": f"Fiscal assumption is {item['fiscal_assumption']}.",
+            "expected": "Use the configured Nepal fiscal-year convention for the audited workflow.",
+            "consequence": "Transactions can be assigned to the wrong reporting year at the Shrawan boundary.",
+            "remediation": "Resolve fiscal periods through the shared fiscal engine instead of calendar-year logic.",
+            "regression_test": (
+                "assert fiscal_period_for_bs_date(2082, 4, 1).fiscal_year_label "
+                "== \"2082/83\""
+            ),
+        }
+    if category == "unsupported_future_assumptions":
+        return {
+            "severity": "high",
+            "title": "Future date is treated beyond the official source range",
+            "observed": f"Source status is {item['source_status']} for {item['bs_date']}.",
+            "expected": "Require an authoritative source or keep the result explicitly review-required.",
+            "consequence": "A repayment or contractual date can appear final before an authoritative calendar is published.",
+            "remediation": "Persist source status and block operational finalization until the authoritative release is available.",
+            "regression_test": (
+                f"assert get_bs_year_provenance({item['bs_date'].split('-', 1)[0]}).confidence "
+                "!= \"official\""
+            ),
+        }
+    if category == "source_conflicts":
+        return {
+            "severity": "medium",
+            "title": "Holiday policy lacks a supported source",
+            "observed": f"Holiday assumption is {item['holiday_assumption']}.",
+            "expected": "Attach a named source release and institution policy to the decision.",
+            "consequence": "The workflow can skip or include the wrong working day without an auditable reason.",
+            "remediation": "Require source ID, release ID, and institution profile before holiday adjustment.",
+            "regression_test": "assert audit_report[\"source_conflicts\"]",
+        }
+    if category == "review_required_cases":
+        return {
+            "severity": "advisory",
+            "title": "Sensitive workflow requires human approval",
+            "observed": f"{item['workflow_type']} uses source status {item['source_status']}.",
+            "expected": "Hold final execution until a reviewer accepts the source and policy context.",
+            "consequence": "Automatic execution would bypass the stated control for a sensitive workflow.",
+            "remediation": "Enforce a review-required state and record reviewer identity, decision, and timestamp.",
+            "regression_test": "assert audit_report[\"review_required_cases\"]",
+        }
+    return {
+        "severity": "medium",
+        "title": category.replace("_", " ").title(),
+        "observed": item["reason"],
+        "expected": "Match the configured source and policy.",
+        "consequence": "The workflow can produce a date decision that differs from its declared policy.",
+        "remediation": "Reconcile the row against the configured source and add a regression case.",
+        "regression_test": "assert audited_result == expected_result",
+    }
+
+
+def _build_findings(report: dict[str, Any]) -> list[dict[str, Any]]:
+    findings: list[dict[str, Any]] = []
+    categories = (*ISSUE_CATEGORIES, "review_required_cases")
+    for category in categories:
+        for item in report[category]:
+            details = _finding_details(category, item)
+            findings.append(
+                {
+                    "finding_id": f"PARVA-AUD-{len(findings) + 1:03d}",
+                    "category": category,
+                    **details,
+                    "row_number": item["row_number"],
+                    "bs_date": item["bs_date"],
+                    "workflow_type": item["workflow_type"],
+                }
+            )
+    return findings
+
+
 def audit_rows(rows: list[AuditRow]) -> dict[str, Any]:
     report: dict[str, Any] = {
         "summary": {
@@ -87,6 +200,8 @@ def audit_rows(rows: list[AuditRow]) -> dict[str, Any]:
         "unsupported_future_assumptions": [],
         "source_conflicts": [],
         "review_required_cases": [],
+        "findings": [],
+        "regression_tests": [],
         "recommendations": [],
     }
 
@@ -132,30 +247,43 @@ def audit_rows(rows: list[AuditRow]) -> dict[str, Any]:
 
         if row.holiday_assumption and "unknown" in row.holiday_assumption.lower():
             report["source_conflicts"].append(
-                _row_issue(row, "holiday assumption is unknown or unsupported by provided evidence")
+                _row_issue(
+                    row,
+                    "holiday assumption is unknown or unsupported by provided evidence",
+                    holiday_assumption=row.holiday_assumption,
+                )
             )
 
         if row.fiscal_assumption and row.fiscal_assumption != "nepal_fiscal_year":
             report["fiscal_cutoff_errors"].append(
-                _row_issue(row, "fiscal assumption is not the Nepal fiscal-year convention")
+                _row_issue(
+                    row,
+                    "fiscal assumption is not the Nepal fiscal-year convention",
+                    fiscal_assumption=row.fiscal_assumption,
+                )
             )
 
-    issue_count = sum(
-        len(report[key])
-        for key in (
-            "invalid_dates",
-            "holiday_mismatches",
-            "working_day_mismatches",
-            "fiscal_cutoff_errors",
-            "unsupported_future_assumptions",
-            "source_conflicts",
-            "review_required_cases",
-        )
-    )
+    issue_count = sum(len(report[key]) for key in ISSUE_CATEGORIES)
     max_penalty = max(len(rows), 1) * 2
     score = max(0.0, 100.0 - (issue_count / max_penalty) * 100.0)
     report["summary"]["conformance_score"] = round(score, 2)
     report["summary"]["issue_count"] = issue_count
+    report["summary"]["review_control_count"] = len(report["review_required_cases"])
+    report["summary"]["affected_rows"] = len(
+        {item["row_number"] for key in ISSUE_CATEGORIES for item in report[key]}
+    )
+    report["findings"] = _build_findings(report)
+    report["regression_tests"] = [
+        {
+            "finding_id": finding["finding_id"],
+            "test": finding["regression_test"],
+        }
+        for finding in report["findings"]
+    ]
+    report["summary"]["severity_counts"] = {
+        severity: sum(1 for finding in report["findings"] if finding["severity"] == severity)
+        for severity in ("critical", "high", "medium", "advisory")
+    }
     report["recommendations"] = _recommendations(report)
     return report
 
@@ -179,38 +307,78 @@ def _recommendations(report: dict[str, Any]) -> list[str]:
 
 def write_markdown(report: dict[str, Any], path: Path) -> None:
     lines = [
-        "# Vendor Date Risk Audit Report",
+        "# Parva Vendor Date Risk Audit - Demonstration Report",
         "",
-        "This is a technical conformance report, not certification and not official authority.",
+        "This sanitized demonstration shows the audit deliverable for a software vendor. It is a technical conformance report, not certification or official authority.",
         "",
-        "## Summary",
+        "## Executive Summary",
         "",
         f"- Rows: {report['summary']['rows']}",
+        f"- Rows with failures: {report['summary']['affected_rows']}",
         f"- Conformance score: {report['summary']['conformance_score']}",
-        f"- Issue count: {report['summary']['issue_count']}",
-        "- Claim boundary: technical_conformance_report_not_certification",
+        f"- Technical failures: {report['summary']['issue_count']}",
+        f"- Review controls: {report['summary']['review_control_count']}",
+        f"- Critical findings: {report['summary']['severity_counts']['critical']}",
+        f"- High findings: {report['summary']['severity_counts']['high']}",
         "",
+        "The screening score subtracts one half-row penalty for each technical failure and floors at zero. Review controls are reported separately and do not reduce the score.",
+        "",
+        "The sample contains an impossible BS month, a one-day dual-date mismatch, an unsupported future-date assumption, a source gap, and a fiscal-policy mismatch. Correct boundary rows are included to show that the audit distinguishes passing cases from failures.",
+        "",
+        "## Finding Index",
+        "",
+        "| ID | Severity | Category | BS date | Workflow |",
+        "| --- | --- | --- | --- | --- |",
     ]
-    for key, title in (
-        ("invalid_dates", "Invalid Dates"),
-        ("holiday_mismatches", "Holiday Mismatches"),
-        ("working_day_mismatches", "Working-Day Mismatches"),
-        ("fiscal_cutoff_errors", "Fiscal Cutoff Errors"),
-        ("unsupported_future_assumptions", "Unsupported Future Assumptions"),
-        ("source_conflicts", "Source Conflicts"),
-        ("review_required_cases", "Review-Required Cases"),
-    ):
-        lines.extend([f"## {title}", ""])
-        items = report[key]
-        if not items:
-            lines.extend(["None.", ""])
-            continue
-        for item in items:
-            lines.append(f"- Row {item['row_number']} `{item['bs_date']}`: {item['reason']}")
-        lines.append("")
-    lines.extend(["## Recommendations", ""])
+    for finding in report["findings"]:
+        lines.append(
+            f"| {finding['finding_id']} | {finding['severity'].upper()} | "
+            f"{finding['category'].replace('_', ' ')} | `{finding['bs_date']}` | "
+            f"{finding['workflow_type']} |"
+        )
+    lines.extend(
+        [
+            "",
+            "## Detailed Findings",
+            "",
+            "Runnable equivalents are provided in `regression_test_sample.py`.",
+            "",
+        ]
+    )
+    for finding in report["findings"]:
+        lines.extend(
+            [
+                f"### {finding['finding_id']}: {finding['title']}",
+                "",
+                f"- Severity: {finding['severity'].upper()}",
+                f"- Input: row {finding['row_number']}, `{finding['bs_date']}`, `{finding['workflow_type']}`",
+                f"- Observed: {finding['observed']}",
+                f"- Expected: {finding['expected']}",
+                f"- Consequence: {finding['consequence']}",
+                f"- Required fix: {finding['remediation']}",
+                "- Regression check:",
+                "",
+                "```python",
+                finding["regression_test"],
+                "```",
+                "",
+            ]
+        )
+    lines.extend(["## Remediation Order", ""])
     lines.extend(f"- {item}" for item in report["recommendations"])
-    lines.append("")
+    lines.extend(
+        [
+            "",
+            "## Acceptance Criteria",
+            "",
+            "- Every critical and high regression check passes in CI.",
+            "- Stored AD and BS values round-trip to the same civil day.",
+            "- Invalid dates are rejected before persistence.",
+            "- Future and source-limited decisions remain review-required.",
+            "- Fiscal periods resolve through the configured Nepal fiscal policy.",
+            "",
+        ]
+    )
     path.write_text("\n".join(lines), encoding="utf-8")
 
 

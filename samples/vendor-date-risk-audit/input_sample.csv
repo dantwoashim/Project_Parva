@@ -1,5 +1,7 @@
 bs_date,workflow_type,expected_behavior,actual_ad_date,holiday_assumption,fiscal_assumption
-2082-01-01,invoice_due_date,next_working_day,2025-04-14,known_public_holidays,nepal_fiscal_year
+2082-03-32,invoice_date,exact_conversion,2025-07-16,known_public_holidays,nepal_fiscal_year
+2082-04-01,invoice_date,exact_conversion,2025-07-17,known_public_holidays,nepal_fiscal_year
 2082-13-01,payroll_cutoff,reject_invalid_date,,known_public_holidays,nepal_fiscal_year
 2090-01-01,loan_repayment,review_required,,unknown_future_holiday_policy,nepal_fiscal_year
-2082-04-02,attendance,is_working_day,2025-07-18,no_holiday_exclusion,nepal_fiscal_year
+2082-04-02,attendance,is_working_day,2025-07-19,no_holiday_exclusion,nepal_fiscal_year
+2082-04-01,fiscal_period_start,use_nepal_fiscal_year,2025-07-17,known_public_holidays,gregorian_calendar_year

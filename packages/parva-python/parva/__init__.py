@@ -1,6 +1,5 @@
 from .client import (
     DEFAULT_API_BASE,
-    DEFAULT_FUTURE_BS_CAPABILITIES_URL,
     ParvaAPIError,
     ParvaClient,
     ParvaNetworkError,
@@ -32,9 +31,6 @@ from .client import (
     get_facts_for_release,
     get_facts_for_source,
     get_fiscal_year,
-    get_future_bs_capabilities,
-    get_future_bs_forecast,
-    get_future_bs_methodology,
     get_impact_capabilities,
     get_impact_event_schema,
     get_impact_run,
@@ -82,6 +78,12 @@ from .client import (
     validate_rule,
     verify_calendar_credential,
     verify_temporal_claim,
+)
+from .future_bs import (
+    DEFAULT_FUTURE_BS_CAPABILITIES_URL,
+    get_future_bs_capabilities,
+    get_future_bs_forecast,
+    get_future_bs_methodology,
 )
 
 __all__ = [

@@ -13,6 +13,8 @@ from app.services.future_bs_public_service import (
     future_bs_methodology_payload,
 )
 
+from ._async_utils import run_cpu_bound
+
 public_router = APIRouter(prefix="/v4/api/future-bs", tags=["future-bs"])
 
 
@@ -60,18 +62,25 @@ def _bad_request(exc: ValueError) -> HTTPException:
 
 @public_router.get("/capabilities")
 async def future_bs_capabilities(request: Request):
-    return future_bs_capabilities_payload(trace_id=getattr(request.state, "request_id", None))
+    return await run_cpu_bound(
+        future_bs_capabilities_payload,
+        trace_id=getattr(request.state, "request_id", None),
+    )
 
 
 @public_router.get("/methodology")
 async def future_bs_methodology(request: Request):
-    return future_bs_methodology_payload(trace_id=getattr(request.state, "request_id", None))
+    return await run_cpu_bound(
+        future_bs_methodology_payload,
+        trace_id=getattr(request.state, "request_id", None),
+    )
 
 
 @public_router.get("/forecast/{bs_year}", response_model=FutureBSForecastResponse)
 async def future_bs_forecast(bs_year: int, request: Request):
     try:
-        return future_bs_forecast_payload(
+        return await run_cpu_bound(
+            future_bs_forecast_payload,
             bs_year,
             trace_id=getattr(request.state, "request_id", None),
         )

@@ -153,7 +153,7 @@ def test_canonical_app_exposes_the_intended_documented_contract(monkeypatch) -> 
     schema = app.openapi()
 
     assert _operation_keys(schema) == set(CANONICAL_PUBLIC_OPERATIONS)
-    assert len(_operation_keys(schema)) == 25
+    assert len(_operation_keys(schema)) == 27
     assert [tag["name"] for tag in schema["tags"]] == [tag["name"] for tag in CANONICAL_TAGS]
     assert not any(path.startswith("/api/") for path in schema["paths"])
     assert "/v3/api/provenance/root" not in schema["paths"]

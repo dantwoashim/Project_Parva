@@ -10,10 +10,9 @@ import urllib.request
 from dataclasses import dataclass
 from typing import Any, Callable
 
+from .future_bs import DEFAULT_FUTURE_BS_CAPABILITIES_URL, build_future_bs_url
+
 DEFAULT_API_BASE = "https://api.prabinghimire1.com.np/v3/api"
-DEFAULT_FUTURE_BS_CAPABILITIES_URL = (
-    "https://api.prabinghimire1.com.np/v4/api/future-bs/capabilities"
-)
 
 JsonObject = dict[str, Any]
 Transport = Callable[[str, str, dict[str, str] | None, JsonObject | None, float], JsonObject]
@@ -842,18 +841,16 @@ class ParvaClient:
         return self._request_absolute("GET", self.future_bs_capabilities_url)
 
     def get_future_bs_methodology(self) -> JsonObject:
-        return self._request_absolute("GET", self._future_bs_public_url("methodology"))
+        return self._request_absolute(
+            "GET", build_future_bs_url(self.future_bs_capabilities_url, "methodology")
+        )
 
     def get_future_bs_forecast(self, bs_year: int) -> JsonObject:
         if isinstance(bs_year, bool) or not isinstance(bs_year, int) or bs_year <= 0:
             raise ValueError("bs_year must be a positive integer")
-        return self._request_absolute("GET", self._future_bs_public_url(f"forecast/{bs_year}"))
-
-    def _future_bs_public_url(self, path: str) -> str:
-        base = self.future_bs_capabilities_url.rstrip("/")
-        if base.endswith("/capabilities"):
-            base = base[: -len("/capabilities")]
-        return f"{base}/{path.lstrip('/')}"
+        return self._request_absolute(
+            "GET", build_future_bs_url(self.future_bs_capabilities_url, f"forecast/{bs_year}")
+        )
 
     def _request(
         self,
@@ -1635,22 +1632,6 @@ def get_calendar_credential_schema(*, client: ParvaClient | None = None) -> Json
 
 def get_offline_bundle_manifest(*, client: ParvaClient | None = None) -> JsonObject:
     return (client or ParvaClient()).get_offline_bundle_manifest()
-
-
-def get_future_bs_capabilities(*, client: ParvaClient | None = None) -> JsonObject:
-    return (client or ParvaClient()).get_future_bs_capabilities()
-
-
-def get_future_bs_methodology(*, client: ParvaClient | None = None) -> JsonObject:
-    return (client or ParvaClient()).get_future_bs_methodology()
-
-
-def get_future_bs_forecast(
-    bs_year: int,
-    *,
-    client: ParvaClient | None = None,
-) -> JsonObject:
-    return (client or ParvaClient()).get_future_bs_forecast(bs_year)
 
 
 def _build_url(base_url: str, path: str, params: dict[str, str] | None = None) -> str:
