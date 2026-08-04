@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-26T15:56:30.944889+00:00",
+  "generated_at": "2026-08-04T05:55:05.593009+00:00",
   "track": "v3",
   "route_profile": "public_reference",
   "schema": {
@@ -9314,6 +9314,242 @@
           ],
           "title": "FestivalSummary",
           "description": "Condensed festival info for list views."
+        },
+        "FutureBSForecastResponse": {
+          "properties": {
+            "bs_year": {
+              "type": "integer",
+              "title": "Bs Year"
+            },
+            "month_lengths": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array",
+              "maxItems": 12,
+              "minItems": 12,
+              "title": "Month Lengths"
+            },
+            "months": {
+              "items": {
+                "$ref": "#/components/schemas/FutureBSMonthForecast"
+              },
+              "type": "array",
+              "maxItems": 12,
+              "minItems": 12,
+              "title": "Months"
+            },
+            "year_total_days": {
+              "type": "integer",
+              "maximum": 366.0,
+              "minimum": 365.0,
+              "title": "Year Total Days"
+            },
+            "heuristic_confidence_score": {
+              "type": "number",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "title": "Heuristic Confidence Score"
+            },
+            "confidence_label": {
+              "type": "string",
+              "title": "Confidence Label"
+            },
+            "risk_flags": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Risk Flags"
+            },
+            "constraints": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Constraints"
+            },
+            "surface": {
+              "type": "string",
+              "const": "future_bs_public_forecast",
+              "title": "Surface"
+            },
+            "status": {
+              "type": "string",
+              "const": "research_preview",
+              "title": "Status"
+            },
+            "maturity": {
+              "type": "string",
+              "const": "research_preview",
+              "title": "Maturity"
+            },
+            "publication_status": {
+              "type": "string",
+              "const": "computed_prediction_not_official",
+              "title": "Publication Status"
+            },
+            "review_required": {
+              "type": "boolean",
+              "const": true,
+              "title": "Review Required"
+            },
+            "authoritative_publication_overrides": {
+              "type": "boolean",
+              "const": true,
+              "title": "Authoritative Publication Overrides"
+            },
+            "snapshot_id": {
+              "type": "string",
+              "title": "Snapshot Id"
+            },
+            "method": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Method"
+            },
+            "risk_summary": {
+              "additionalProperties": {
+                "type": "integer"
+              },
+              "type": "object",
+              "title": "Risk Summary"
+            },
+            "validation": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Validation"
+            },
+            "limits": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Limits"
+            },
+            "meta": {
+              "additionalProperties": true,
+              "type": "object",
+              "title": "Meta"
+            }
+          },
+          "type": "object",
+          "required": [
+            "bs_year",
+            "month_lengths",
+            "months",
+            "year_total_days",
+            "heuristic_confidence_score",
+            "confidence_label",
+            "risk_flags",
+            "constraints",
+            "surface",
+            "status",
+            "maturity",
+            "publication_status",
+            "review_required",
+            "authoritative_publication_overrides",
+            "snapshot_id",
+            "method",
+            "risk_summary",
+            "validation",
+            "limits",
+            "meta"
+          ],
+          "title": "FutureBSForecastResponse"
+        },
+        "FutureBSMonthForecast": {
+          "properties": {
+            "month": {
+              "type": "integer",
+              "maximum": 12.0,
+              "minimum": 1.0,
+              "title": "Month"
+            },
+            "month_name": {
+              "type": "string",
+              "title": "Month Name"
+            },
+            "predicted_days": {
+              "type": "integer",
+              "maximum": 32.0,
+              "minimum": 29.0,
+              "title": "Predicted Days"
+            },
+            "prediction_set_80": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array",
+              "title": "Prediction Set 80"
+            },
+            "prediction_set_95": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array",
+              "title": "Prediction Set 95"
+            },
+            "model_probability": {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object",
+              "title": "Model Probability"
+            },
+            "heuristic_confidence_score": {
+              "type": "number",
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "title": "Heuristic Confidence Score"
+            },
+            "confidence_label": {
+              "type": "string",
+              "title": "Confidence Label"
+            },
+            "model_agreement": {
+              "type": "string",
+              "title": "Model Agreement"
+            },
+            "boundary_distance_minutes": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Boundary Distance Minutes"
+            },
+            "risk_label": {
+              "type": "string",
+              "enum": [
+                "GREEN",
+                "YELLOW",
+                "RED"
+              ],
+              "title": "Risk Label"
+            },
+            "risk_flags": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "title": "Risk Flags"
+            }
+          },
+          "type": "object",
+          "required": [
+            "month",
+            "month_name",
+            "predicted_days",
+            "prediction_set_80",
+            "prediction_set_95",
+            "model_probability",
+            "heuristic_confidence_score",
+            "confidence_label",
+            "model_agreement",
+            "risk_label",
+            "risk_flags"
+          ],
+          "title": "FutureBSMonthForecast"
         },
         "HTTPValidationError": {
           "properties": {

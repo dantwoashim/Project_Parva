@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from '@parva/router';
+import '../../styles/polish/10-platform-future.css';
+import '../../styles/polish/11-platform-enterprise.css';
 import {
   ArrowRight,
   Braces,
