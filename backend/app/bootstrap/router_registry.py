@@ -57,6 +57,7 @@ class RouterRegistration:
     access_policy: str
     policy_name: str
     policy_path: str | None = None
+    additional_policy_paths: tuple[str, ...] = ()
     include_v3: bool = True
     include_base: bool = True
     include_experimental_versions: bool = True
@@ -77,6 +78,10 @@ ROUTER_REGISTRATIONS = [
         "public",
         "future_bs",
         policy_path="/v4/api/future-bs/capabilities",
+        additional_policy_paths=(
+            "/v4/api/future-bs/methodology",
+            "/v4/api/future-bs/forecast/",
+        ),
         include_v3=False,
         include_experimental_versions=False,
     ),
@@ -205,6 +210,10 @@ PUBLIC_DEMO_ROUTE_REGISTRATIONS = [
         "public",
         "future_bs_public_demo",
         policy_path="/v4/api/future-bs/capabilities",
+        additional_policy_paths=(
+            "/v4/api/future-bs/methodology",
+            "/v4/api/future-bs/forecast/",
+        ),
         include_v3=False,
         include_experimental_versions=False,
     ),
@@ -238,24 +247,25 @@ def iter_route_policy_specs() -> list[dict[str, str]]:
     for registration in ROUTER_REGISTRATIONS:
         if not registration.include_in_policy_specs:
             continue
-        prefix = registration.policy_path or registration.router.prefix
-        if not prefix:
-            continue
-        specs.append(
-            {
-                "path": prefix,
-                "policy_name": registration.access_policy,
-                "registration_name": registration.policy_name,
-            }
-        )
-        if registration.include_v3:
+        primary = registration.policy_path or registration.router.prefix
+        prefixes = tuple(prefix for prefix in (primary, *registration.additional_policy_paths) if prefix)
+        for index, prefix in enumerate(prefixes):
+            suffix = "" if index == 0 else f"_{index + 1}"
             specs.append(
                 {
-                    "path": f"/v3{prefix}",
+                    "path": prefix,
                     "policy_name": registration.access_policy,
-                    "registration_name": f"{registration.policy_name}_v3",
+                    "registration_name": f"{registration.policy_name}{suffix}",
                 }
             )
+            if registration.include_v3:
+                specs.append(
+                    {
+                        "path": f"/v3{prefix}",
+                        "policy_name": registration.access_policy,
+                        "registration_name": f"{registration.policy_name}{suffix}_v3",
+                    }
+                )
     return specs
 
 

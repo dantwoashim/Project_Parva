@@ -29,6 +29,8 @@ PRIVATE_ROUTE_PREFIXES = (
 )
 SAFE_PUBLIC_RESEARCH_CAPABILITIES = {
     "/v4/api/future-bs/capabilities",
+    "/v4/api/future-bs/methodology",
+    "/v4/api/future-bs/forecast/{bs_year}",
     "/v5/api/calendar-model-risk/capabilities",
 }
 MUTATING_METHODS = {"DELETE", "PATCH", "POST", "PUT"}

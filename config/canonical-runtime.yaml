@@ -462,6 +462,37 @@
       "verification_command": "npm --prefix frontend test -- --run && python -m pytest tests/contract/test_frontend_routes_vs_backend_profile.py -q"
     },
     {
+      "id": "future_bs_public_forecast",
+      "name": "Public Future BS research forecast",
+      "lane": "public_preview",
+      "maturity": "research_preview",
+      "owner_team": "Research",
+      "canonical_modules": [
+        "app.api.future_bs_routes",
+        "app.services.future_bs_public_service"
+      ],
+      "canonical_paths": [
+        "backend/app/api/future_bs_routes.py",
+        "backend/app/services/future_bs_public_service.py",
+        "data/future_bs/public/forecast_snapshot_v6_2084_2200.json",
+        "data/future_bs/public/selected_model_v6.json"
+      ],
+      "public_routes": [
+        "/v4/api/future-bs/capabilities",
+        "/v4/api/future-bs/methodology",
+        "/v4/api/future-bs/forecast/{bs_year}"
+      ],
+      "tests": [
+        {"path": "tests/public_safety/test_public_release_safety.py", "status": "exists"},
+        {"path": "tests/future_bs/test_public_forecast.py", "status": "exists"}
+      ],
+      "compatibility_modules": [],
+      "deprecated_modules": [],
+      "deprecated_paths": [],
+      "research_private_dependencies": [],
+      "verification_command": "python -m pytest tests/future_bs/test_public_forecast.py tests/public_safety/test_public_release_safety.py -q"
+    },
+    {
       "id": "sdk_clients",
       "name": "Public SDK clients",
       "lane": "public_client",
@@ -582,7 +613,8 @@
       "app.api.festival_routes",
       "app.api.engine_routes",
       "app.api.reliability_routes",
-      "app.api.public_artifacts_routes"
+      "app.api.public_artifacts_routes",
+      "app.api.future_bs_routes"
     ],
     "runtime_scan_globs": [
       "backend/app/**/*.py",
@@ -600,6 +632,7 @@
       "app.future_bs",
       "app.research.future_bs",
       "app.services.future_bs_service",
+      "app.api.future_bs_private_routes",
       "app.future_bs.backtest",
       "app.research.future_bs.backtest",
       "app.future_bs.exports",

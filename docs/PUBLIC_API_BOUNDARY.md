@@ -29,15 +29,17 @@ The public deployment is intentionally narrower than a private deployment. Sensi
 | `/v3/api/agent/*` | Agent-safe deterministic temporal tools in full or private profiles, excluded from the lightweight public demo |
 | `/v3/api/protocol/*` | Protocol draft metadata and alpha conformance in full or private profiles, excluded from the lightweight public demo |
 | `/v3/api/festivals/*` | Festival and observance APIs |
-| `/v4/api/future-bs/capabilities` | Public summary of the future-BS research layer |
+| `/v4/api/future-bs/capabilities` | Public forecast range, method version, and research boundary |
+| `/v4/api/future-bs/methodology` | Selected solar-civil pipeline, cutoff rules, constraints, and validation posture |
+| `/v4/api/future-bs/forecast/{bs_year}` | Curated single-year month forecast with prediction sets and risk labels |
 | `/v5/api/calendar-model-risk/capabilities` | Public summary of model-risk methodology when the full public profile is enabled |
 
 ## Private By Default
 
 These surfaces are not part of the public deployment by default:
 
-- direct future BS month-length prediction
-- full future range prediction
+- raw future BS prediction workflows
+- full future range prediction and bulk retrieval
 - CSV or XLSX future exports
 - model runs
 - backtests

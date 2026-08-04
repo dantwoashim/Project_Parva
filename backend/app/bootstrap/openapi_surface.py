@@ -88,6 +88,12 @@ CANONICAL_PUBLIC_OPERATIONS: Final[dict[tuple[str, str], CanonicalOperation]] = 
     ("get", "/v4/api/future-bs/capabilities"): CanonicalOperation(
         "Future BS Research", "View future Bikram Sambat research capabilities"
     ),
+    ("get", "/v4/api/future-bs/methodology"): CanonicalOperation(
+        "Future BS Research", "View the selected Future BS research methodology"
+    ),
+    ("get", "/v4/api/future-bs/forecast/{bs_year}"): CanonicalOperation(
+        "Future BS Research", "View a review-required Future BS year forecast"
+    ),
     ("get", "/v5/api/calendar-model-risk/capabilities"): CanonicalOperation(
         "Future BS Research", "View calendar model-risk capabilities"
     ),

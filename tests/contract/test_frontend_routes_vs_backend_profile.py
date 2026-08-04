@@ -16,6 +16,8 @@ PUBLIC_FRONTEND_ENDPOINTS = [
     "/v3/api/agent/capabilities",
     "/v3/api/protocol/version",
     "/v4/api/future-bs/capabilities",
+    "/v4/api/future-bs/methodology",
+    "/v4/api/future-bs/forecast/2084",
 ]
 
 

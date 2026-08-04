@@ -14,6 +14,8 @@
   },
   "public_capability_paths": [
     "/v4/api/future-bs/capabilities",
+    "/v4/api/future-bs/methodology",
+    "/v4/api/future-bs/forecast/{bs_year}",
     "/v5/api/calendar-model-risk/capabilities"
   ],
   "private_route_prefixes": [
@@ -22,6 +24,8 @@
   ],
   "private_route_allowlist": [
     "/v4/api/future-bs/capabilities",
+    "/v4/api/future-bs/methodology",
+    "/v4/api/future-bs/forecast/{bs_year}",
     "/v5/api/calendar-model-risk/capabilities"
   ],
   "forbidden_public_claim_phrases": [

@@ -1,73 +1,69 @@
 ---
-status: research
-tier: 3
-lane: research
-last_verified: 2026-05-14
+status: public-preview
+tier: 2
+lane: public-preview
+last_verified: 2026-08-04
 owner: research-team
 ---
 
 # Future BS Methodology
 
-Parva Future BS is a computational validation engine for BS month-length risk. It does not publish official future date authority. Public material describes methodology, source policy, and claim boundaries. Direct future values and operational audit outputs are private deployment surfaces.
+The Future BS engine forecasts month boundaries first and derives month lengths from consecutive boundaries. The selected public model is `solar_civil_ensemble_v4`, implemented through method version `parva_solar_civil_accuracy_v6` and calibration version `de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4`.
 
-## Architecture
+## Calculation Pipeline
+
+1. Source-labeled historical BS month boundaries form the training and replay corpus.
+2. The astronomy layer solves sidereal solar ingress moments for successive solar signs.
+3. Each ingress instant is converted to Nepal civil time.
+4. A month-specific civil cutoff assigns the ingress to a candidate civil date.
+5. A past-only statistical pattern stack scores alternative month lengths around sensitive boundaries.
+6. A sequence decoder selects a complete twelve-month year that satisfies calendar constraints.
+7. The engine emits prediction sets, model probabilities, agreement, boundary distance, and review risk.
+
+Month length is calculated as:
 
 ```text
-source-labeled corpus
-  -> solar-ingress computation
-  -> civil month-start rules
-  -> calibrated ensemble
-  -> probabilities and risk flags
-  -> private comparison and schedule-risk review
+length(month m) = start(month m + 1) - start(month m)
 ```
 
-## Corpus
+This structure keeps the astronomical event, civil assignment rule, and final calendar value separate and reviewable.
 
-The public repository includes a source-policy schema and a narrow official
-holdout slice under `data/future_bs/public/`. Private deployments may load a
-larger ignored corpus from `data/future_bs/private/`.
+## Civil Assignment
 
-Each year carries:
+Ingress time alone does not define the BS civil month start. The engine applies a learned cutoff for each month, expressed as minutes after midnight in Nepal time. The public methodology artifact records all twelve selected cutoffs, their calibration sample counts, and replay errors.
 
-- `source_type`
-- `source_reference`
-- `verification_status`
+The selected family uses month-specific cutoff grid search with boundary abstention. Events close to a cutoff receive stronger review flags because a small rule or source difference can move the civil assignment by one day.
 
-Corpus processing deliberately separates structured official rows from archived,
-third-party, and review-needed rows. Do not flatten these into one "official"
-label.
+## Sequence Constraints
 
-## Prediction Flow
+The decoder evaluates the complete year rather than finalizing each month independently. A valid result must contain:
 
-For each future BS year:
+- exactly twelve months
+- month lengths from 29 through 32 days
+- a year total of 365 or 366 days
 
-1. Estimate the relevant Gregorian year window.
-2. Compute solar ingress events for sidereal sign boundaries.
-3. Convert ingress moments to Nepal civil time.
-4. Apply multiple civil date assignment rules.
-5. Derive month lengths from consecutive month-start dates.
-6. Combine computational outputs with a weak legacy-cycle fallback.
-7. Assign probabilities, confidence, and risk flags.
-8. Keep direct prediction artifacts private unless an authorized deployment explicitly exposes them.
+These constraints reject locally plausible combinations that form an invalid year.
 
-## Current Ephemeris Position
+## Uncertainty Output
 
-Production builds can use NASA NAIF `de440.bsp` when the operator provides a
-preverified file through `PARVA_JPL_DE440_KERNEL` or opts in to the Docker
-build argument `PARVA_DOWNLOAD_JPL_KERNEL=1`. The download path verifies the
-published checksum before storing the file, and the default public Docker build
-does not depend on live NASA availability. When the file is present, the
-future-BS solar-ingress path uses the JPL-backed adapter. Swiss Ephemeris and
-the built-in Moshier path remain fallback/cross-check layers. The public
-repository keeps only a small solar-ingress sample for parser and schema tests;
-full private caches are ignored deployment artifacts.
+Each month includes:
 
-## Backtesting
+- a selected length
+- 80% and 95% model prediction sets
+- probabilities for 29, 30, 31, and 32 days
+- model agreement
+- heuristic confidence
+- distance from the civil assignment boundary
+- GREEN, YELLOW, or RED risk labels
 
-Supported modes:
+The public API sets `review_required=true` for every forecast. A GREEN label describes lower model risk within this system. The publication status remains `computed_prediction_not_official` across every label.
 
-- Holdout: train on one historical range and test a later range.
-- Full replay: replay known years.
-- Rolling validation: train up to year N and predict N+1.
+## Validation Boundary
 
-Backtesting is a model-quality signal, not official certification.
+The selected model reproduces `72/72` official month cases from `2078-2083 BS`. The same window contributed to calibration, so the result measures calibrated replay fit. It provides an implementation check and supports method selection. It provides no independent future-accuracy guarantee.
+
+The project requires at least 528 verified month cases before considering a broad independent accuracy claim. Current public metadata reports that threshold as unmet.
+
+## Ephemeris Position
+
+The ingress layer supports a checksum-verified JPL DE440 kernel when an operator supplies it. Swiss Ephemeris and the built-in Moshier path provide cross-check and fallback calculations. The public forecast is precomputed, versioned, and served without performing an expensive ephemeris solve during each request.

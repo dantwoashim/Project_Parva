@@ -658,6 +658,38 @@
       "docs": ["docs/FUTURE_BS_RESEARCH_BOUNDARY.md", "docs/future_bs/API.md"]
     },
     {
+      "path": "/v4/api/future-bs/methodology",
+      "lane": "public_preview",
+      "maturity": "research_preview",
+      "allowed_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "research_private", "internal_lab", "full_dev"],
+      "auth": "none",
+      "private_data": false,
+      "research_data": "curated_public_methodology",
+      "exact_future_output": false,
+      "official_authority_risk": true,
+      "cpu_heavy": false,
+      "mutating_side_effects": false,
+      "response_metadata": ["source_tier", "release_id", "trace_id", "warnings", "claim_boundary", "maturity", "review_required"],
+      "docs": ["docs/future_bs/API.md", "docs/future_bs/METHODOLOGY.md"],
+      "public_profile_allowed": true
+    },
+    {
+      "path": "/v4/api/future-bs/forecast/{bs_year}",
+      "lane": "public_preview",
+      "maturity": "research_preview",
+      "allowed_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "research_private", "internal_lab", "full_dev"],
+      "auth": "none",
+      "private_data": false,
+      "research_data": "curated_public_snapshot",
+      "exact_future_output": true,
+      "official_authority_risk": true,
+      "cpu_heavy": false,
+      "mutating_side_effects": false,
+      "response_metadata": ["source_tier", "confidence", "release_id", "trace_id", "warnings", "claim_boundary", "maturity", "review_required", "publication_status", "risk_label"],
+      "docs": ["docs/FUTURE_BS_RESEARCH_BOUNDARY.md", "docs/future_bs/API.md", "docs/future_bs/WRONG_GREEN_POLICY.md"],
+      "public_profile_allowed": true
+    },
+    {
       "path": "/v4/api/future-bs/*",
       "lane": "research_private",
       "maturity": "research_preview",

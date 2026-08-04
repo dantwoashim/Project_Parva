@@ -82,6 +82,12 @@ FUTURE_BS_RESEARCH = SourceClaim(
     tier="research_private",
     authority="research_preview",
 )
+PUBLIC_FUTURE_BS_FORECAST = SourceClaim(
+    id="parva_public_future_bs_forecast",
+    label="Parva public Future BS research forecast",
+    tier="calculated",
+    authority="computed_research_preview",
+)
 
 
 def _bs_confidence(provenance: BSYearProvenance) -> str:

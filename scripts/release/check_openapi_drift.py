@@ -22,8 +22,10 @@ PROFILE_SPECS = {
     "enterprise_preview": PROJECT_ROOT / "docs" / "api-docs" / "openapi.enterprise-preview.json",
 }
 PRIVATE_PREFIXES = ("/v4/api/future-bs/", "/v5/api/calendar-model-risk/")
-SAFE_CAPABILITY_PATHS = {
+SAFE_PUBLIC_RESEARCH_PATHS = {
     "/v4/api/future-bs/capabilities",
+    "/v4/api/future-bs/methodology",
+    "/v4/api/future-bs/forecast/{bs_year}",
     "/v5/api/calendar-model-risk/capabilities",
 }
 
@@ -37,7 +39,10 @@ def _check_private_paths(path: Path, *, label: str) -> list[str]:
     failures: list[str] = []
     spec = json.loads(path.read_text(encoding="utf-8"))
     for api_path in spec.get("paths", {}):
-        if any(api_path.startswith(prefix) for prefix in PRIVATE_PREFIXES) and api_path not in SAFE_CAPABILITY_PATHS:
+        if (
+            any(api_path.startswith(prefix) for prefix in PRIVATE_PREFIXES)
+            and api_path not in SAFE_PUBLIC_RESEARCH_PATHS
+        ):
             failures.append(f"{label} exposes private/research path: {api_path}")
     return failures
 

@@ -1,86 +1,40 @@
 ---
-status: public-beta
-tier: 1
-lane: core
-last_verified: 2026-05-14
+status: public-preview
+tier: 2
+lane: public-preview
+last_verified: 2026-08-04
 owner: platform-team
 ---
 
 # Future BS Research Boundary
 
-Status: research-private boundary.
+Project Parva exposes a curated Future BS research forecast and retains the broader research workspace behind controlled deployment gates.
 
-Future-BS work is a research and model-risk subsystem. Public Parva surfaces may
-describe its methodology, source policy, uncertainty, risk labels, and claim
-boundary. Public Parva surfaces must not expose exact future month lengths,
-future date mappings outside verified public data, private calibration
-artifacts, model-run internals, residual tables, or generated future vectors.
+## Publicly Available
 
-All future-BS outputs remain labeled:
+- capability discovery at `/v4/api/future-bs/capabilities`
+- selected methodology at `/v4/api/future-bs/methodology`
+- one-year forecasts at `/v4/api/future-bs/forecast/{bs_year}`
+- tracked forecast coverage for `2084-2200 BS`
+- twelve month lengths, prediction sets, probabilities, model agreement, civil-boundary distance, constraints, and risk labels
+- method and calibration versions, source metadata, warnings, and validation scope
+
+All forecast responses preserve:
 
 ```text
 publication_status = computed_prediction_not_official
+review_required = true
+authoritative_publication_overrides = true
 ```
 
-## Publicly Allowed
+## Controlled Research
 
-- capability summaries
-- methodology and source-tier summaries
-- risk-label vocabulary
-- aggregate validation posture
-- warnings and claim-boundary text
-- route and SDK policy documentation
+Bulk ranges, exports, imports, comparisons, backtests, residuals, model-run inventories, detailed raw traces, financial simulations, and private evidence require `research_private`, `internal_lab`, or `full_dev`, plus experimental/research flags and operator authentication.
 
-## Private By Default
+Public OpenAPI contains the curated routes. Private OpenAPI requires `PARVA_SHOW_PRIVATE_SCHEMA=true`.
 
-- direct prediction endpoints
-- range prediction endpoints
-- exports
-- backtests
-- residual analysis
-- exact explain and boundary outputs
-- model-run inventories
-- sheet comparison workflows
-- schedule, loan, or contract impact simulation using future vectors
-- private source files and unpublished artifacts
+## Evidence Rule
 
-## Deployment Rule
+The `72/72` result covers a calibrated replay of official month cases from `2078-2083 BS`. Public wording must identify it as calibration fit. The current corpus remains below the 528 verified-month threshold for a broad independent accuracy claim.
 
-Public deployments should keep:
-
-```text
-PARVA_ENABLE_EXPERIMENTAL_API=false
-PARVA_SHOW_PRIVATE_SCHEMA=false
-PARVA_ALLOW_PUBLIC_UNVERIFIED_FUTURE_CONVERSION=false
-```
-
-Research routes require an explicit private profile such as `research_private`,
-`internal_lab`, or `full_dev`, plus the experimental API flag, the research API
-flag, and authentication:
-
-```text
-PARVA_ENABLE_EXPERIMENTAL_API=true
-PARVA_ENABLE_RESEARCH_API=true
-PARVA_ADMIN_TOKEN=<operator token> or scoped PARVA_API_KEYS
-```
-
-Private OpenAPI schema exposure still requires:
-
-```text
-PARVA_SHOW_PRIVATE_SCHEMA=true
-```
-
-The detailed research governance policy set lives under `docs/future_bs/`:
-
-- `RESEARCH_BOUNDARY.md`
-- `PUBLIC_CLAIMS_POLICY.md`
-- `PRIVATE_DATA_POLICY.md`
-- `ACCURACY_REPRODUCIBILITY.md`
-- `WRONG_GREEN_POLICY.md`
-- `MODEL_REGISTRY.md`
-
-## Claim Rule
-
-Future-BS public language may say Parva computes and studies calendar-risk
-signals. It may not say Parva publishes official future BS dates or guarantees
-future month lengths.
+Detailed policy lives in [future_bs/RESEARCH_BOUNDARY.md](future_bs/RESEARCH_BOUNDARY.md).

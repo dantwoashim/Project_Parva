@@ -576,13 +576,19 @@ def build_rate_limit_guard(*, settings: AppSettings, backend: RateLimiterBackend
 STABLE_PUBLIC_EXPERIMENTAL_PATHS = frozenset(
     {
         "/v4/api/future-bs/capabilities",
+        "/v4/api/future-bs/methodology",
         "/v5/api/calendar-model-risk/capabilities",
     }
+)
+STABLE_PUBLIC_EXPERIMENTAL_PREFIXES = (
+    "/v4/api/future-bs/forecast/",
 )
 
 
 def _is_stable_public_experimental_path(path: str) -> bool:
-    return path in STABLE_PUBLIC_EXPERIMENTAL_PATHS
+    return path in STABLE_PUBLIC_EXPERIMENTAL_PATHS or path.startswith(
+        STABLE_PUBLIC_EXPERIMENTAL_PREFIXES
+    )
 
 
 def build_experimental_version_gate(*, enable_experimental_api: bool):

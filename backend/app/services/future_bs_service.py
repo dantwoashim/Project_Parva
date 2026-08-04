@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 from app.calendar.constants import BS_MONTH_NAMES
-from app.core.source_metadata import build_research_claim_meta
 from app.research.future_bs.backtest import backtest_model as computational_backtest_model
 from app.research.future_bs.backtest import full_replay_backtest, rolling_validation
 from app.research.future_bs.boundary_risk import boundary_risk_payload
@@ -70,47 +69,6 @@ def backtest_model(
         test_end,
         source_policy=source_policy,
     )
-
-
-def future_bs_capabilities_payload(*, trace_id: str | None = None) -> dict[str, Any]:
-    meta = build_research_claim_meta(trace_id=trace_id)
-    meta["maturity"] = "research_preview"
-    return {
-        "surface": "future_bs_risk_research",
-        "status": "research_preview",
-        "maturity": "research_preview",
-        "publication_status": "computed_prediction_not_official",
-        "review_required": True,
-        "claim_boundary": meta["claim_boundary"],
-        "confidence": meta["confidence"],
-        "release_id": meta["release_id"],
-        "warnings": meta["warnings"],
-        "meta": meta,
-        "public_surface": [
-            "methodology_summary",
-            "source_policy_summary",
-            "claim_boundary",
-            "aggregate_validation_posture",
-            "risk_label_taxonomy",
-        ],
-        "private_deployment_surfaces": [
-            "external_sheet_comparison",
-            "aggregate audit report",
-            "future month-length risk review",
-            "schedule impact screening",
-            "controlled reconciliation workflow",
-        ],
-        "not_claimed": [
-            "official_future_publication",
-            "legal_or_tax_final_authority",
-            "guaranteed_future_calendar_accuracy",
-        ],
-        "not_authority": (
-            "Future-BS research capability metadata is not an official future "
-            "date source and is not legal, tax, banking, payroll, government, "
-            "or religious authority."
-        ),
-    }
 
 
 def full_backtest(start: int, end: int, *, source_policy: str = "all_reference") -> dict[str, Any]:
@@ -239,7 +197,6 @@ __all__ = [
     "compare_external_sheet",
     "explain_month",
     "full_backtest",
-    "future_bs_capabilities_payload",
     "import_excel_and_compare",
     "model_run",
     "model_runs",

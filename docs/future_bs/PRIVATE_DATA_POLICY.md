@@ -8,13 +8,13 @@ owner: research-team
 
 # Future BS Private Data Policy
 
-Future-BS private data includes any material that can reveal exact unpublished
-future outputs or private research evidence.
+Future-BS private data covers raw research evidence, operational workflows, and
+bulk artifacts outside the curated public snapshot.
 
 ## Private By Default
 
-- exact month-length predictions for unpublished years
-- year-range future vectors
+- alternate or raw month-length model outputs outside the selected public snapshot
+- bulk year-range retrieval and generated export files
 - CSV or XLSX exports
 - backtest rows, residuals, and model-run internals
 - wide-corpus fixtures
@@ -27,12 +27,14 @@ future outputs or private research evidence.
 ## Handling Rules
 
 - Keep private data out of public routes, public OpenAPI artifacts, public SDK
-  defaults, public examples, and frontend public pages.
+  defaults, public examples, and frontend public pages. The curated snapshot and
+  selected methodology are explicit public-policy exceptions.
 - Store generated research artifacts under clearly named research or data paths.
 - Do not promote weak or third-party rows into official claim metrics without a
   source-policy review.
-- Use aggregate summaries in public docs; keep exact vectors behind private
-  profile, research API flag, and authentication.
+- Publish exact values only through the versioned single-year forecast contract;
+  keep bulk vectors and raw alternatives behind private profile, research API
+  flag, and authentication.
 - If a private artifact is missing, private routes should return a clear error
   naming the generation command instead of fabricating output.
 

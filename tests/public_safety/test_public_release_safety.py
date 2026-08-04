@@ -47,6 +47,12 @@ PRIVATE_FUTURE_PATHS = {
     "/v5/api/calendar-model-risk/claim-readiness",
 }
 
+PUBLIC_FUTURE_PATHS = {
+    "/v4/api/future-bs/capabilities",
+    "/v4/api/future-bs/methodology",
+    "/v4/api/future-bs/forecast/{bs_year}",
+}
+
 
 def _public_client(monkeypatch) -> TestClient:
     monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "false")
@@ -60,28 +66,47 @@ def test_public_openapi_does_not_list_private_future_routes(monkeypatch):
     client = _public_client(monkeypatch)
     paths = set(client.get("/openapi.json").json()["paths"])
 
-    assert "/v4/api/future-bs/capabilities" in paths
+    assert PUBLIC_FUTURE_PATHS.issubset(paths)
     assert "/v5/api/calendar-model-risk/capabilities" in paths
     assert PRIVATE_FUTURE_PATHS.isdisjoint(paths)
 
 
-def test_public_capabilities_are_metadata_only(monkeypatch):
+def test_public_capabilities_preserve_the_research_boundary(monkeypatch):
     client = _public_client(monkeypatch)
 
-    for path in [
-        "/v4/api/future-bs/capabilities",
-        "/v5/api/calendar-model-risk/capabilities",
-    ]:
-        body = client.get(path).json()
-        assert body["publication_status"] == "computed_prediction_not_official"
-        assert body["surface"] == "future_bs_risk_research"
-        assert "public_surface" in body
-        assert "not_claimed" in body
-        assert "months" not in body
-        assert "years" not in body
-        assert "predicted_days" not in body
-        assert "model_runs" not in body
-        assert "export.csv" not in str(body)
+    future = client.get("/v4/api/future-bs/capabilities").json()
+    assert future["publication_status"] == "computed_prediction_not_official"
+    assert future["surface"] == "future_bs_public_research"
+    assert future["review_required"] is True
+    assert "single_year_month_length_forecast" in future["public_surface"]
+    assert "not_claimed" in future
+    assert "months" not in future
+    assert "years" not in future
+    assert "model_runs" not in future
+    assert "export.csv" not in str(future)
+
+    model_risk = client.get("/v5/api/calendar-model-risk/capabilities").json()
+    assert model_risk["publication_status"] == "computed_prediction_not_official"
+    assert model_risk["surface"] == "future_bs_risk_research"
+
+
+def test_public_forecast_is_curated_labeled_and_review_required(monkeypatch):
+    client = _public_client(monkeypatch)
+    response = client.get("/v4/api/future-bs/forecast/2084")
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["bs_year"] == 2084
+    assert len(body["month_lengths"]) == 12
+    assert len(body["months"]) == 12
+    assert body["year_total_days"] in {365, 366}
+    assert body["publication_status"] == "computed_prediction_not_official"
+    assert body["review_required"] is True
+    assert body["authoritative_publication_overrides"] is True
+    assert all(month["risk_label"] in {"GREEN", "YELLOW", "RED"} for month in body["months"])
+    assert "computational_model_outputs" not in body
+    assert "legacy_model_output" not in body
+    assert "private" not in str(body["meta"]["source"]).lower()
 
 
 def test_public_demo_blocks_exact_unverified_future_conversion(monkeypatch):

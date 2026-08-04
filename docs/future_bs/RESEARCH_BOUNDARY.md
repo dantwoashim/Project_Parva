@@ -1,44 +1,41 @@
 ---
-status: research
-tier: 3
-lane: research
-last_verified: 2026-05-14
+status: public-preview
+tier: 2
+lane: public-preview
+last_verified: 2026-08-04
 owner: research-team
 ---
 
 # Future BS Research Boundary
 
-Status: public/private governance boundary.
+The public profile serves a curated, precomputed Future BS forecast. The controlled profile contains the full research workspace.
 
-The Future-BS subsystem is a research and model-risk layer. It may be used to
-study unpublished BS month-length behavior, source disagreement, risk labels,
-and schedule impact. It is not an official calendar publication service.
+## Public Profile
 
-All unpublished outputs must carry:
+Public profiles may expose:
 
-```text
-publication_status = computed_prediction_not_official
-```
+- `/v4/api/future-bs/capabilities`
+- `/v4/api/future-bs/methodology`
+- `/v4/api/future-bs/forecast/{bs_year}`
+- the committed forecast and methodology artifacts used by those routes
+- selected month lengths, prediction sets, model probabilities, boundary distance, risk labels, and validation scope
 
-## Public Surface
+Every forecast uses `computed_prediction_not_official`, requires human review, and records that authoritative publication overrides the computed result.
 
-Public profiles may expose only metadata:
+## Controlled Profile
 
-- capability summaries
-- source-policy summaries
-- methodology summaries
-- claim-boundary text
-- risk-label vocabulary
-- aggregate validation posture
+The controlled profile retains:
 
-Public profiles must not expose exact future month lengths, generated future
-vectors, model-run internals, residual rows, wide-corpus fixtures, private
-source files, backtest tables, external sheet comparisons, schedule-impact
-simulation, or calendar model-risk prediction payloads.
+- bulk prediction and export
+- source-sheet import and comparison
+- backtests and residual rows
+- model-run inventories
+- raw explain and boundary payloads
+- calendar model-risk internals
+- loan, contract, and schedule-impact simulation
+- private source archives and calibration data
 
-## Private Research Surface
-
-Exact Future-BS and calendar model-risk routes require all of these controls:
+Controlled routes require:
 
 ```text
 PARVA_ROUTE_PROFILE=research_private | internal_lab | full_dev
@@ -47,22 +44,8 @@ PARVA_ENABLE_RESEARCH_API=true
 PARVA_ADMIN_TOKEN=<operator token> or scoped PARVA_API_KEYS
 ```
 
-Private schema publication additionally requires:
+Private OpenAPI additionally requires `PARVA_SHOW_PRIVATE_SCHEMA=true`.
 
-```text
-PARVA_SHOW_PRIVATE_SCHEMA=true
-```
+## Release Rule
 
-The `full` development profile is not a research-private route profile. Use
-`full_dev`, `research_private`, or `internal_lab` for exact Future-BS research
-routes.
-
-## Boundary Failure
-
-If public output contains an exact future vector, private artifact path, official
-future-calendar claim, or unqualified high-confidence future claim, treat it as a
-release blocker and run:
-
-```bash
-python scripts/check_future_bs_public_leakage.py
-```
+A public forecast release must preserve its source tier, snapshot and model versions, validation interpretation, risk labels, review requirement, and publication status. Leakage of private paths, source contents, raw model runs, or unqualified authority claims blocks release.

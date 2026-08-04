@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Project Parva API",
-    "description": "Nepal Festival Discovery System",
+    "description": "Nepali calendar and temporal services for BS/AD conversion, Panchanga, festivals, fiscal rules, calendar integrations, and future-BS research.",
     "version": "3.0.0"
   },
   "paths": {
@@ -1175,15 +1175,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "proof",
@@ -1244,15 +1244,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           }
         ],
         "responses": {
@@ -1498,6 +1498,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -1541,6 +1553,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -1581,15 +1605,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "latitude",
@@ -1759,15 +1783,15 @@
                 }
               ],
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "risk_mode",
@@ -1859,12 +1883,16 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "builtin_swiss_moshier",
+                "pinned_panchanga_fixture"
+              ],
               "type": "string",
-              "description": "builtin_swiss_moshier|jpl_de440",
+              "description": "Calculation provider used for proof output",
               "default": "builtin_swiss_moshier",
               "title": "Ephemeris Provider"
             },
-            "description": "builtin_swiss_moshier|jpl_de440"
+            "description": "Calculation provider used for proof output"
           },
           {
             "name": "ephemeris_fixture_id",
@@ -1889,12 +1917,17 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "lahiri",
+                "raman",
+                "kp"
+              ],
               "type": "string",
-              "description": "Sidereal ayanamsa mode",
+              "description": "Effective sidereal ayanamsa profile",
               "default": "lahiri",
               "title": "Ayanamsa"
             },
-            "description": "Sidereal ayanamsa mode"
+            "description": "Effective sidereal ayanamsa profile"
           }
         ],
         "responses": {
@@ -2106,6 +2139,18 @@
               "title": "Days"
             },
             "description": "Days to look ahead"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -2861,6 +2906,67 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v4/api/future-bs/methodology": {
+      "get": {
+        "tags": [
+          "future-bs"
+        ],
+        "summary": "Future Bs Methodology",
+        "operationId": "future_bs_methodology_v4_api_future_bs_methodology_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v4/api/future-bs/forecast/{bs_year}": {
+      "get": {
+        "tags": [
+          "future-bs"
+        ],
+        "summary": "Future Bs Forecast",
+        "operationId": "future_bs_forecast_v4_api_future_bs_forecast__bs_year__get",
+        "parameters": [
+          {
+            "name": "bs_year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Bs Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FutureBSForecastResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -4908,10 +5014,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2026,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "Start Year"
             }
           },
@@ -4920,12 +5032,30 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2051,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "End Year"
             }
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -7720,6 +7850,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Create Provenance Snapshot Api Provenance Snapshot Create Post"
                 }
@@ -8022,6 +8153,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Batch Verify Api Provenance Batch Verify Get"
                 }
               }
@@ -8069,6 +8201,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Transparency Log Api Provenance Transparency Log Get"
                 }
               }
@@ -8101,6 +8234,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Audit Transparency Log Api Provenance Transparency Audit Get"
                 }
@@ -8124,6 +8258,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Transparency Replay Api Provenance Transparency Replay Get"
                 }
@@ -8179,6 +8314,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Append Transparency Event Api Provenance Transparency Append Post"
                 }
               }
@@ -8230,6 +8366,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Prepare Anchor Api Provenance Transparency Anchor Prepare Get"
                 }
               }
@@ -8287,6 +8424,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Save Anchor Record Api Provenance Transparency Anchor Record Post"
                 }
               }
@@ -8334,6 +8472,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Anchor Records Api Provenance Transparency Anchors Get"
                 }
               }
@@ -8366,6 +8505,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Public Beta Dashboard Api Provenance Dashboard Get"
                 }
@@ -8582,6 +8722,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Artifacts Manifest Api Public Artifacts Manifest Get"
                 }
@@ -8928,6 +9069,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response List Timegraph Facts Api Timegraph Facts Get"
                 }
               }
@@ -8969,6 +9111,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Query Timegraph Facts Api Timegraph Query Post"
                 }
@@ -9050,6 +9193,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Facts For Date Api Timegraph Date  Calendar   Date Value  Get"
                 }
               }
@@ -9121,6 +9265,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Facts For Source Api Timegraph Sources  Source Id  Facts Get"
                 }
               }
@@ -9176,6 +9321,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Facts For Release Api Timegraph Releases  Release Id  Facts Get"
                 }
               }
@@ -9247,6 +9393,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Facts For Profile Api Timegraph Profiles  Profile Id  Facts Get"
                 }
               }
@@ -9318,6 +9465,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Relationships Api Timegraph Entities  Entity Id  Relationships Get"
                 }
               }
@@ -9389,6 +9537,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Trace Timegraph Fact Api Timegraph Facts  Fact Id  Trace Get"
                 }
               }
@@ -9448,6 +9597,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Fact Api Timegraph Facts  Fact Id  Get"
                 }
               }
@@ -9510,6 +9660,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response List Timegraph Conflicts Api Timegraph Conflicts Get"
                 }
               }
@@ -9541,6 +9692,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Trust Capabilities Api Trust Capabilities Get"
                 }
@@ -9598,6 +9750,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response List Sources Api Trust Sources Get"
                 }
               }
@@ -9673,6 +9826,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Source Api Trust Sources  Source Id  Get"
                 }
               }
@@ -9704,6 +9858,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Releases Api Trust Releases Get"
                 }
@@ -9738,6 +9893,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Release Api Trust Releases  Release Id  Get"
                 }
               }
@@ -9790,6 +9946,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Diff Releases Api Trust Releases  From Release  Diff  To Release  Get"
                 }
               }
@@ -9856,6 +10013,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Trust Log Api Trust Log Get"
                 }
               }
@@ -9932,6 +10090,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Date Conversion Evidence Api Trust Evidence Date Conversion Post"
                 }
               }
@@ -10008,6 +10167,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Compliance Decision Evidence Api Trust Evidence Compliance Decision Post"
                 }
               }
@@ -10084,6 +10244,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Rule Execution Evidence Api Trust Evidence Rule Execution Post"
                 }
               }
@@ -10115,6 +10276,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Rulelang Capabilities Api Rules Capabilities Get"
                 }
@@ -10137,6 +10299,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Rules Api Rules Get"
                 }
@@ -10171,6 +10334,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Rule Api Rules  Rule Id  Get"
                 }
               }
@@ -10212,6 +10376,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Validate Rule Api Rules Validate Post"
                 }
@@ -10266,6 +10431,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Evaluate Rule Api Rules  Rule Id  Evaluate Post"
                 }
               }
@@ -10309,6 +10475,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Test Rule Api Rules  Rule Id  Test Post"
                 }
               }
@@ -10350,6 +10517,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Evaluate Custom Rule Api Rules Evaluate Post"
                 }
@@ -10392,6 +10560,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Explain Rule Api Rules Explain Post"
                 }
@@ -10424,6 +10593,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Impact Capabilities Api Impact Capabilities Get"
                 }
@@ -10456,6 +10626,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Diff Releases Api Impact Diff Releases Post"
                 }
@@ -10498,6 +10669,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Simulate Change Set Api Impact Simulate Change Set Post"
                 }
@@ -10540,6 +10712,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Simulate Release Diff Api Impact Simulate Release Diff Post"
                 }
@@ -10584,6 +10757,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Impact Run Api Impact Runs  Impact Run Id  Get"
                 }
               }
@@ -10615,6 +10789,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Impact Reason Codes Api Impact Reason Codes Get"
                 }
@@ -10637,6 +10812,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Impact Recommended Actions Api Impact Recommended Actions Get"
                 }
@@ -10659,6 +10835,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Impact Event Schema Api Impact Event Schema Get"
                 }
@@ -10681,6 +10858,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Agent Capabilities Api Agent Capabilities Get"
                 }
@@ -10703,6 +10881,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Agent Tools Api Agent Tools Get"
                 }
@@ -10725,6 +10904,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Agent Manifest Api Agent Manifest Get"
                 }
@@ -10757,6 +10937,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Resolve Intent Api Agent Resolve Intent Post"
                 }
@@ -10799,6 +10980,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Verify Claim Api Agent Verify Claim Post"
                 }
@@ -10841,6 +11023,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Plan Schedule Api Agent Plan Schedule Post"
                 }
@@ -10883,6 +11066,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Explain Api Agent Explain Post"
                 }
@@ -10925,6 +11109,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Check Human Review Api Agent Check Human Review Post"
                 }
@@ -10967,6 +11152,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Draft Rule Api Agent Draft Rule Post"
                 }
@@ -11009,6 +11195,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Run Tool Api Agent Run Tool Post"
                 }
@@ -11041,6 +11228,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Protocol Version Api Protocol Version Get"
                 }
@@ -11063,6 +11251,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Protocol Capabilities Api Protocol Capabilities Get"
                 }
@@ -11085,6 +11274,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Protocol Specs Api Protocol Specs Get"
                 }
@@ -11107,6 +11297,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Protocol Schemas Api Protocol Schemas Get"
                 }
@@ -11129,6 +11320,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Compatibility Levels Api Protocol Compatibility Levels Get"
                 }
@@ -11161,6 +11353,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Run Conformance Api Protocol Conformance Run Post"
                 }
@@ -11203,6 +11396,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Issue Credential Api Protocol Credentials Issue Post"
                 }
@@ -11245,6 +11439,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Verify Credential Api Protocol Credentials Verify Post"
                 }
@@ -11277,6 +11472,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Credential Schema Api Protocol Credentials Schema Get"
                 }
@@ -11299,6 +11495,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Offline Bundle Manifest Api Protocol Offline Bundle Manifest Get"
                 }
@@ -12477,15 +12674,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "proof",
@@ -12566,15 +12763,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           }
         ],
         "responses": {
@@ -12860,6 +13057,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -12903,6 +13112,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -12943,15 +13164,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "latitude",
@@ -13121,15 +13342,15 @@
                 }
               ],
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "risk_mode",
@@ -13219,12 +13440,16 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "builtin_swiss_moshier",
+                "pinned_panchanga_fixture"
+              ],
               "type": "string",
-              "description": "builtin_swiss_moshier|jpl_de440",
+              "description": "Calculation provider used for proof output",
               "default": "builtin_swiss_moshier",
               "title": "Ephemeris Provider"
             },
-            "description": "builtin_swiss_moshier|jpl_de440"
+            "description": "Calculation provider used for proof output"
           },
           {
             "name": "ephemeris_fixture_id",
@@ -13249,12 +13474,17 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "lahiri",
+                "raman",
+                "kp"
+              ],
               "type": "string",
-              "description": "Sidereal ayanamsa mode",
+              "description": "Effective sidereal ayanamsa profile",
               "default": "lahiri",
               "title": "Ayanamsa"
             },
-            "description": "Sidereal ayanamsa mode"
+            "description": "Effective sidereal ayanamsa profile"
           }
         ],
         "responses": {
@@ -13491,6 +13721,18 @@
               "title": "Days"
             },
             "description": "Days to look ahead"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -16335,10 +16577,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2026,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "Start Year"
             }
           },
@@ -16347,12 +16595,30 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2051,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "End Year"
             }
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -19147,6 +19413,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Create Provenance Snapshot V3 Api Provenance Snapshot Create Post"
                 }
@@ -19449,6 +19716,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Batch Verify V3 Api Provenance Batch Verify Get"
                 }
               }
@@ -19496,6 +19764,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Transparency Log V3 Api Provenance Transparency Log Get"
                 }
               }
@@ -19528,6 +19797,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Audit Transparency Log V3 Api Provenance Transparency Audit Get"
                 }
@@ -19551,6 +19821,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Transparency Replay V3 Api Provenance Transparency Replay Get"
                 }
@@ -19606,6 +19877,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Append Transparency Event V3 Api Provenance Transparency Append Post"
                 }
               }
@@ -19657,6 +19929,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Prepare Anchor V3 Api Provenance Transparency Anchor Prepare Get"
                 }
               }
@@ -19714,6 +19987,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Save Anchor Record V3 Api Provenance Transparency Anchor Record Post"
                 }
               }
@@ -19761,6 +20035,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Anchor Records V3 Api Provenance Transparency Anchors Get"
                 }
               }
@@ -19793,6 +20068,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Public Beta Dashboard V3 Api Provenance Dashboard Get"
                 }
@@ -20009,6 +20285,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Artifacts Manifest V3 Api Public Artifacts Manifest Get"
                 }
@@ -20355,6 +20632,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response List Timegraph Facts V3 Api Timegraph Facts Get"
                 }
               }
@@ -20396,6 +20674,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Query Timegraph Facts V3 Api Timegraph Query Post"
                 }
@@ -20477,6 +20756,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Facts For Date V3 Api Timegraph Date  Calendar   Date Value  Get"
                 }
               }
@@ -20548,6 +20828,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Facts For Source V3 Api Timegraph Sources  Source Id  Facts Get"
                 }
               }
@@ -20603,6 +20884,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Facts For Release V3 Api Timegraph Releases  Release Id  Facts Get"
                 }
               }
@@ -20674,6 +20956,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Facts For Profile V3 Api Timegraph Profiles  Profile Id  Facts Get"
                 }
               }
@@ -20745,6 +21028,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Relationships V3 Api Timegraph Entities  Entity Id  Relationships Get"
                 }
               }
@@ -20816,6 +21100,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Trace Timegraph Fact V3 Api Timegraph Facts  Fact Id  Trace Get"
                 }
               }
@@ -20875,6 +21160,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Timegraph Fact V3 Api Timegraph Facts  Fact Id  Get"
                 }
               }
@@ -20937,6 +21223,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response List Timegraph Conflicts V3 Api Timegraph Conflicts Get"
                 }
               }
@@ -20968,6 +21255,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Trust Capabilities V3 Api Trust Capabilities Get"
                 }
@@ -21025,6 +21313,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response List Sources V3 Api Trust Sources Get"
                 }
               }
@@ -21100,6 +21389,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Source V3 Api Trust Sources  Source Id  Get"
                 }
               }
@@ -21131,6 +21421,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Releases V3 Api Trust Releases Get"
                 }
@@ -21165,6 +21456,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Release V3 Api Trust Releases  Release Id  Get"
                 }
               }
@@ -21217,6 +21509,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Diff Releases V3 Api Trust Releases  From Release  Diff  To Release  Get"
                 }
               }
@@ -21283,6 +21576,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Trust Log V3 Api Trust Log Get"
                 }
               }
@@ -21359,6 +21653,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Date Conversion Evidence V3 Api Trust Evidence Date Conversion Post"
                 }
               }
@@ -21435,6 +21730,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Compliance Decision Evidence V3 Api Trust Evidence Compliance Decision Post"
                 }
               }
@@ -21511,6 +21807,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Create Rule Execution Evidence V3 Api Trust Evidence Rule Execution Post"
                 }
               }
@@ -21542,6 +21839,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Rulelang Capabilities V3 Api Rules Capabilities Get"
                 }
@@ -21564,6 +21862,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Rules V3 Api Rules Get"
                 }
@@ -21598,6 +21897,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Rule V3 Api Rules  Rule Id  Get"
                 }
               }
@@ -21639,6 +21939,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Validate Rule V3 Api Rules Validate Post"
                 }
@@ -21693,6 +21994,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Evaluate Rule V3 Api Rules  Rule Id  Evaluate Post"
                 }
               }
@@ -21736,6 +22038,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Test Rule V3 Api Rules  Rule Id  Test Post"
                 }
               }
@@ -21777,6 +22080,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Evaluate Custom Rule V3 Api Rules Evaluate Post"
                 }
@@ -21819,6 +22123,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Explain Rule V3 Api Rules Explain Post"
                 }
@@ -21851,6 +22156,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Impact Capabilities V3 Api Impact Capabilities Get"
                 }
@@ -21883,6 +22189,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Diff Releases V3 Api Impact Diff Releases Post"
                 }
@@ -21925,6 +22232,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Simulate Change Set V3 Api Impact Simulate Change Set Post"
                 }
@@ -21967,6 +22275,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Simulate Release Diff V3 Api Impact Simulate Release Diff Post"
                 }
@@ -22011,6 +22320,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
+                  "additionalProperties": true,
                   "title": "Response Get Impact Run V3 Api Impact Runs  Impact Run Id  Get"
                 }
               }
@@ -22042,6 +22352,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Impact Reason Codes V3 Api Impact Reason Codes Get"
                 }
@@ -22064,6 +22375,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Impact Recommended Actions V3 Api Impact Recommended Actions Get"
                 }
@@ -22086,6 +22398,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Impact Event Schema V3 Api Impact Event Schema Get"
                 }
@@ -22108,6 +22421,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Agent Capabilities V3 Api Agent Capabilities Get"
                 }
@@ -22130,6 +22444,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Agent Tools V3 Api Agent Tools Get"
                 }
@@ -22152,6 +22467,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Agent Manifest V3 Api Agent Manifest Get"
                 }
@@ -22184,6 +22500,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Resolve Intent V3 Api Agent Resolve Intent Post"
                 }
@@ -22226,6 +22543,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Verify Claim V3 Api Agent Verify Claim Post"
                 }
@@ -22268,6 +22586,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Plan Schedule V3 Api Agent Plan Schedule Post"
                 }
@@ -22310,6 +22629,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Explain V3 Api Agent Explain Post"
                 }
@@ -22352,6 +22672,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Check Human Review V3 Api Agent Check Human Review Post"
                 }
@@ -22394,6 +22715,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Draft Rule V3 Api Agent Draft Rule Post"
                 }
@@ -22436,6 +22758,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Run Tool V3 Api Agent Run Tool Post"
                 }
@@ -22468,6 +22791,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Protocol Version V3 Api Protocol Version Get"
                 }
@@ -22490,6 +22814,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Protocol Capabilities V3 Api Protocol Capabilities Get"
                 }
@@ -22512,6 +22837,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Protocol Specs V3 Api Protocol Specs Get"
                 }
@@ -22534,6 +22860,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Protocol Schemas V3 Api Protocol Schemas Get"
                 }
@@ -22556,6 +22883,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response List Compatibility Levels V3 Api Protocol Compatibility Levels Get"
                 }
@@ -22588,6 +22916,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Run Conformance V3 Api Protocol Conformance Run Post"
                 }
@@ -22630,6 +22959,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Issue Credential V3 Api Protocol Credentials Issue Post"
                 }
@@ -22672,6 +23002,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Verify Credential V3 Api Protocol Credentials Verify Post"
                 }
@@ -22704,6 +23035,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Credential Schema V3 Api Protocol Credentials Schema Get"
                 }
@@ -22726,41 +23058,10 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "additionalProperties": true,
                   "type": "object",
                   "title": "Response Get Offline Bundle Manifest V3 Api Protocol Offline Bundle Manifest Get"
                 }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v3/openapi.json": {
-      "get": {
-        "summary": "V3 Openapi",
-        "operationId": "v3_openapi_v3_openapi_json_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v3/docs": {
-      "get": {
-        "summary": "V3 Docs",
-        "operationId": "v3_docs_v3_docs_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
               }
             }
           }
@@ -23121,6 +23422,7 @@
           "uncertainty": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -23257,25 +23559,30 @@
             "title": "Trace Type"
           },
           "subject": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Subject"
           },
           "inputs": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Inputs"
           },
           "outputs": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Outputs"
           },
           "steps": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
             "title": "Steps"
           },
           "provenance": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Provenance"
           }
@@ -23357,6 +23664,7 @@
       "ChangeSetRequest": {
         "properties": {
           "change_set": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Change Set"
           },
@@ -23378,6 +23686,7 @@
             "title": "Claim"
           },
           "context": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Context"
           },
@@ -23555,6 +23864,7 @@
           "provenance": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -23566,6 +23876,7 @@
           "policy": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -23577,6 +23888,7 @@
           "meta": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -23588,6 +23900,7 @@
           "proof": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -23675,6 +23988,7 @@
       "CredentialVerifyRequest": {
         "properties": {
           "credential": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Credential"
           }
@@ -23688,11 +24002,13 @@
       "CustomRuleEvaluateRequest": {
         "properties": {
           "rule": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Rule",
             "description": "Structured RuleLang rule definition"
           },
           "input": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Input",
             "description": "Rule input payload"
@@ -23872,6 +24188,7 @@
       "ExplainRequest": {
         "properties": {
           "payload": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Payload"
           }
@@ -24006,6 +24323,7 @@
           "ritual_sequence": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -25145,18 +25463,22 @@
             "title": "Year"
           },
           "request": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Request"
           },
           "selection": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Selection"
           },
           "source_lineage": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Source Lineage"
           },
           "risk": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Risk"
           },
@@ -25380,6 +25702,242 @@
         "title": "FestivalSummary",
         "description": "Condensed festival info for list views."
       },
+      "FutureBSForecastResponse": {
+        "properties": {
+          "bs_year": {
+            "type": "integer",
+            "title": "Bs Year"
+          },
+          "month_lengths": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "minItems": 12,
+            "title": "Month Lengths"
+          },
+          "months": {
+            "items": {
+              "$ref": "#/components/schemas/FutureBSMonthForecast"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "minItems": 12,
+            "title": "Months"
+          },
+          "year_total_days": {
+            "type": "integer",
+            "maximum": 366.0,
+            "minimum": 365.0,
+            "title": "Year Total Days"
+          },
+          "heuristic_confidence_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Heuristic Confidence Score"
+          },
+          "confidence_label": {
+            "type": "string",
+            "title": "Confidence Label"
+          },
+          "risk_flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Risk Flags"
+          },
+          "constraints": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Constraints"
+          },
+          "surface": {
+            "type": "string",
+            "const": "future_bs_public_forecast",
+            "title": "Surface"
+          },
+          "status": {
+            "type": "string",
+            "const": "research_preview",
+            "title": "Status"
+          },
+          "maturity": {
+            "type": "string",
+            "const": "research_preview",
+            "title": "Maturity"
+          },
+          "publication_status": {
+            "type": "string",
+            "const": "computed_prediction_not_official",
+            "title": "Publication Status"
+          },
+          "review_required": {
+            "type": "boolean",
+            "const": true,
+            "title": "Review Required"
+          },
+          "authoritative_publication_overrides": {
+            "type": "boolean",
+            "const": true,
+            "title": "Authoritative Publication Overrides"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "title": "Snapshot Id"
+          },
+          "method": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Method"
+          },
+          "risk_summary": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Risk Summary"
+          },
+          "validation": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validation"
+          },
+          "limits": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Limits"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bs_year",
+          "month_lengths",
+          "months",
+          "year_total_days",
+          "heuristic_confidence_score",
+          "confidence_label",
+          "risk_flags",
+          "constraints",
+          "surface",
+          "status",
+          "maturity",
+          "publication_status",
+          "review_required",
+          "authoritative_publication_overrides",
+          "snapshot_id",
+          "method",
+          "risk_summary",
+          "validation",
+          "limits",
+          "meta"
+        ],
+        "title": "FutureBSForecastResponse"
+      },
+      "FutureBSMonthForecast": {
+        "properties": {
+          "month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Month"
+          },
+          "month_name": {
+            "type": "string",
+            "title": "Month Name"
+          },
+          "predicted_days": {
+            "type": "integer",
+            "maximum": 32.0,
+            "minimum": 29.0,
+            "title": "Predicted Days"
+          },
+          "prediction_set_80": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Prediction Set 80"
+          },
+          "prediction_set_95": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Prediction Set 95"
+          },
+          "model_probability": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Model Probability"
+          },
+          "heuristic_confidence_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Heuristic Confidence Score"
+          },
+          "confidence_label": {
+            "type": "string",
+            "title": "Confidence Label"
+          },
+          "model_agreement": {
+            "type": "string",
+            "title": "Model Agreement"
+          },
+          "boundary_distance_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Boundary Distance Minutes"
+          },
+          "risk_label": {
+            "type": "string",
+            "enum": [
+              "GREEN",
+              "YELLOW",
+              "RED"
+            ],
+            "title": "Risk Label"
+          },
+          "risk_flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Risk Flags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "month_name",
+          "predicted_days",
+          "prediction_set_80",
+          "prediction_set_95",
+          "model_probability",
+          "heuristic_confidence_score",
+          "confidence_label",
+          "model_agreement",
+          "risk_label",
+          "risk_flags"
+        ],
+        "title": "FutureBSMonthForecast"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -25396,6 +25954,7 @@
       "HumanReviewRequest": {
         "properties": {
           "payload": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Payload"
           }
@@ -25410,6 +25969,7 @@
             "title": "Text"
           },
           "context": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Context"
           }
@@ -26167,23 +26727,28 @@
             "title": "Profile"
           },
           "location": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Location"
           },
           "bikram_sambat": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Bikram Sambat"
           },
           "tithi": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Tithi"
           },
           "panchanga": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Panchanga"
           },
           "observances": {
             "items": {
+              "additionalProperties": true,
               "type": "object"
             },
             "type": "array",
@@ -26356,6 +26921,7 @@
       "RuleEvaluateRequest": {
         "properties": {
           "input": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Input",
             "description": "Rule input payload"
@@ -26392,6 +26958,7 @@
             ]
           },
           "input": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Input"
           },
@@ -26430,6 +26997,7 @@
           "rule": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -26440,6 +27008,7 @@
             "description": "Optional custom public-safe rule"
           },
           "input": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Input",
             "description": "Rule input payload"
@@ -26462,6 +27031,7 @@
       "RuleValidateRequest": {
         "properties": {
           "rule": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Rule",
             "description": "Structured RuleLang rule definition"
@@ -26480,6 +27050,7 @@
             "title": "Tool Name"
           },
           "input": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Input"
           }
@@ -27108,6 +27679,7 @@
           "uncertainty": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -27145,6 +27717,7 @@
             "title": "Checks"
           },
           "detail": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Detail"
           }

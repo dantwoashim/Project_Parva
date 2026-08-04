@@ -36,8 +36,8 @@ wrong_green_count = 0
 - Treat official publication and reviewed authoritative evidence as stronger than computed output.
 - Do not allow third-party shadow data to support official-grade claims.
 - Do not use broad all-reference or weak-source stress tests to tune official GREEN thresholds.
-- A GREEN label cannot appear on a public exact future prediction route because exact future
-  prediction routes are research-private.
+- A public GREEN label indicates lower model risk only. Every public forecast
+  still carries `review_required=true` and the computed-research publication status.
 
 ## What GREEN Means
 

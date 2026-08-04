@@ -67,7 +67,7 @@ def test_unstructured_static_lookup_rows_are_not_marked_official() -> None:
     assert "static_lookup_without_structured_official_provenance" in meta["warnings"]
 
 
-def test_future_bs_capabilities_are_labeled_research_preview() -> None:
+def test_future_bs_public_forecast_source_is_labeled_computed_research() -> None:
     response = client.get("/v4/api/future-bs/capabilities")
 
     assert response.status_code == 200
@@ -76,9 +76,10 @@ def test_future_bs_capabilities_are_labeled_research_preview() -> None:
     assert body["publication_status"] == "computed_prediction_not_official"
     assert body["maturity"] == "research_preview"
     assert body["claim_boundary"] == meta["claim_boundary"]
-    assert meta["confidence"] == "research_preview"
+    assert meta["confidence"] == "computed_research"
     assert meta["maturity"] == "research_preview"
-    assert meta["source"]["tier"] == "research_private"
+    assert meta["source"]["tier"] == "calculated"
+    assert meta["source"]["authority"] == "computed_research_preview"
     assert meta["claim_boundary"] == "research_preview_not_safe_for_legal_or_payroll_use"
     assert "computed_prediction_not_official" in meta["warnings"]
 

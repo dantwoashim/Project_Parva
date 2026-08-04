@@ -1,44 +1,61 @@
 ---
-status: research
-tier: 3
-lane: research
-last_verified: 2026-05-14
+status: public-preview
+tier: 2
+lane: public-preview
+last_verified: 2026-08-04
 owner: research-team
 ---
 
-# Future BS Public API Boundary
+# Future BS Public API
 
-The public Future BS surface is intentionally narrow.
+Project Parva publishes a curated, read-only Future BS research snapshot. Every response carries `computed_prediction_not_official`, requires human review, and yields to a later authoritative calendar publication.
 
-## Public Endpoint
+## Public Endpoints
 
 ```http
 GET /v4/api/future-bs/capabilities
+GET /v4/api/future-bs/methodology
+GET /v4/api/future-bs/forecast/{bs_year}
 ```
 
-This endpoint describes the research layer, source-policy posture, claim boundaries, and supported capability categories.
+The tracked snapshot currently covers `2084-2200 BS`.
 
-## Private Endpoints
-
-Direct future month-length values, range prediction, CSV/XLSX export, backtests, residuals, explanation payloads, boundary-risk payloads, model-run metadata, import tools, external-sheet comparison, and schedule-impact simulation are private deployment surfaces.
-
-They are not part of the public API profile and should not appear in public OpenAPI output.
-
-Private endpoints require:
-
-```text
-PARVA_ROUTE_PROFILE=research_private | internal_lab | full_dev
-PARVA_ENABLE_EXPERIMENTAL_API=true
-PARVA_ENABLE_RESEARCH_API=true
-PARVA_ADMIN_TOKEN=<operator token> or scoped PARVA_API_KEYS
+```bash
+curl "https://api.prabinghimire1.com.np/v4/api/future-bs/forecast/2084"
 ```
 
-## Claim Boundary
+The year response includes:
 
-Future outputs from the research layer remain:
+- twelve predicted month lengths and the year total
+- 80% and 95% model prediction sets for each month
+- model probabilities and agreement counts
+- Nepal civil-boundary distance in minutes
+- GREEN, YELLOW, or RED review labels and risk flags
+- selected model and calibration versions
+- validation scope, source metadata, warnings, and claim boundary
 
-```text
-computed_prediction_not_official
-```
+The methodology endpoint publishes the selected pipeline, civil cutoff rules, sequence constraints, risk policy, and validation interpretation.
 
-They are for validation, audit, comparison, and risk detection. Official publication, legal interpretation, tax treatment, banking-contract finalization, and production financial decisions require the relevant authority or institution's own approval.
+## Validation Meaning
+
+The selected method matches all `72/72` month cases in the official `2078-2083 BS` calibration window. This result is a calibrated replay. Independent broad accuracy remains below the project's evidence threshold of 528 verified month cases. The API exposes both facts in the `validation` object.
+
+## Controlled Research Routes
+
+The following workflows remain available only in controlled research profiles:
+
+- bulk and range forecasts
+- CSV and XLSX exports
+- source-sheet imports and comparisons
+- backtests, residuals, and model-run registries
+- raw explanation and boundary-risk payloads
+- financial and schedule-impact simulations
+- private source material and calibration artifacts
+
+These routes require a research profile, experimental and research flags, and operator authentication. Public OpenAPI contains only the three curated routes above.
+
+## Source Artifacts
+
+- Forecast snapshot: `data/future_bs/public/forecast_snapshot_v6_2084_2200.json`
+- Selected methodology: `data/future_bs/public/selected_model_v6.json`
+- Snapshot promotion builder: `scripts/future_bs/build_public_forecast_snapshot.py` (requires the controlled source run artifacts)

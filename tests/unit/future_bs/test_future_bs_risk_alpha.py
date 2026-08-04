@@ -32,7 +32,7 @@ def test_month_assumption_assessment_hides_corrected_values():
     assert "predicted_days" not in assessment
 
 
-def test_public_capabilities_has_no_raw_future_values(monkeypatch):
+def test_public_capabilities_describes_curated_forecast_without_embedding_values(monkeypatch):
     monkeypatch.setenv("PARVA_ENABLE_EXPERIMENTAL_API", "false")
     monkeypatch.setenv("PARVA_SHOW_PRIVATE_SCHEMA", "false")
     monkeypatch.setenv("PARVA_RATE_LIMIT_ENABLED", "false")
@@ -44,7 +44,8 @@ def test_public_capabilities_has_no_raw_future_values(monkeypatch):
     serialized = json.dumps(body)
 
     assert body["publication_status"] == "computed_prediction_not_official"
-    assert body["surface"] == "future_bs_risk_research"
+    assert body["surface"] == "future_bs_public_research"
+    assert body["forecast_range"] == {"start_bs_year": 2084, "end_bs_year": 2200}
     for forbidden in [
         "predicted_days",
         "month_lengths",
@@ -52,9 +53,6 @@ def test_public_capabilities_has_no_raw_future_values(monkeypatch):
         "model-runs",
         "export.csv",
         "export.xlsx",
-        "2084",
-        "2099",
-        "2200",
     ]:
         assert forbidden not in serialized
 

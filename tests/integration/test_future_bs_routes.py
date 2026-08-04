@@ -13,7 +13,7 @@ def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
 
     assert response.status_code == 200
     body = response.json()
-    assert body["surface"] == "future_bs_risk_research"
+    assert body["surface"] == "future_bs_public_research"
     assert body["status"] == "research_preview"
     assert body["maturity"] == "research_preview"
     assert body["publication_status"] == "computed_prediction_not_official"
@@ -21,7 +21,8 @@ def test_future_bs_capabilities_is_public_v4_without_experimental_flag():
     assert body["claim_boundary"] == "research_preview_not_safe_for_legal_or_payroll_use"
     assert "computed_prediction_not_official" in body["warnings"]
     assert "official_future_publication" in body["not_claimed"]
-    assert "methodology_summary" in body["public_surface"]
+    assert "selected_methodology" in body["public_surface"]
+    assert "single_year_month_length_forecast" in body["public_surface"]
     assert "model_registry" not in body
     assert "precomputed_store" not in body
     assert "solar_ingress_cache" not in body
@@ -97,6 +98,8 @@ def test_future_bs_private_routes_are_hidden_from_schema_when_mounted(monkeypatc
     assert private_client.get("/v4/api/future-bs/month-lengths/2085").status_code == 401
     paths = set(private_client.get("/openapi.json").json()["paths"])
     assert "/v4/api/future-bs/capabilities" in paths
+    assert "/v4/api/future-bs/methodology" in paths
+    assert "/v4/api/future-bs/forecast/{bs_year}" in paths
     assert "/v4/api/future-bs/month-lengths/{bs_year}" not in paths
 
 
@@ -112,6 +115,8 @@ def test_future_bs_private_routes_require_research_api_flag(monkeypatch):
     guarded_client = TestClient(create_app())
 
     assert guarded_client.get("/v4/api/future-bs/capabilities").status_code == 200
+    assert guarded_client.get("/v4/api/future-bs/methodology").status_code == 200
+    assert guarded_client.get("/v4/api/future-bs/forecast/2084").status_code == 200
     response = guarded_client.get("/v4/api/future-bs/month-lengths/2085")
     assert response.status_code in {401, 404}
     paths = set(guarded_client.get("/openapi.json").json()["paths"])
@@ -136,6 +141,8 @@ def test_public_demo_profile_only_exposes_demo_api_paths(monkeypatch):
     assert "/v3/api/calendar/convert" in paths
     assert "/v3/api/calendar/bs-to-gregorian" in paths
     assert "/v4/api/future-bs/capabilities" in paths
+    assert "/v4/api/future-bs/methodology" in paths
+    assert "/v4/api/future-bs/forecast/{bs_year}" in paths
     assert "/v4/api/future-bs/month-lengths/{bs_year}" not in paths
     assert "/v5/api/calendar-model-risk/capabilities" not in paths
     assert "/v3/api/enterprise/capabilities" not in paths
@@ -145,6 +152,10 @@ def test_public_demo_profile_only_exposes_demo_api_paths(monkeypatch):
 
     assert public_demo_client.get("/v3/api/calendar/today").status_code == 200
     assert public_demo_client.get("/v4/api/future-bs/capabilities").status_code == 200
+    assert public_demo_client.get("/v4/api/future-bs/methodology").status_code == 200
+    forecast = public_demo_client.get("/v4/api/future-bs/forecast/2084")
+    assert forecast.status_code == 200
+    assert forecast.json()["publication_status"] == "computed_prediction_not_official"
     assert public_demo_client.get("/v3/api/enterprise/capabilities").status_code == 404
     assert public_demo_client.get("/v3/api/agent/capabilities").status_code == 404
     assert public_demo_client.get("/v3/api/protocol/version").status_code == 404

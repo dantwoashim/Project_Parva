@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Project Parva API",
-    "description": "Nepal Festival Discovery System",
+    "description": "Nepali calendar and temporal services for BS/AD conversion, Panchanga, festivals, fiscal rules, calendar integrations, and future-BS research.",
     "version": "3.0.0"
   },
   "paths": {
@@ -1175,15 +1175,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "proof",
@@ -1244,15 +1244,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           }
         ],
         "responses": {
@@ -1498,6 +1498,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -1541,6 +1553,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -1581,15 +1605,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "latitude",
@@ -1759,15 +1783,15 @@
                 }
               ],
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "risk_mode",
@@ -1859,12 +1883,16 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "builtin_swiss_moshier",
+                "pinned_panchanga_fixture"
+              ],
               "type": "string",
-              "description": "builtin_swiss_moshier|jpl_de440",
+              "description": "Calculation provider used for proof output",
               "default": "builtin_swiss_moshier",
               "title": "Ephemeris Provider"
             },
-            "description": "builtin_swiss_moshier|jpl_de440"
+            "description": "Calculation provider used for proof output"
           },
           {
             "name": "ephemeris_fixture_id",
@@ -1889,12 +1917,17 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "lahiri",
+                "raman",
+                "kp"
+              ],
               "type": "string",
-              "description": "Sidereal ayanamsa mode",
+              "description": "Effective sidereal ayanamsa profile",
               "default": "lahiri",
               "title": "Ayanamsa"
             },
-            "description": "Sidereal ayanamsa mode"
+            "description": "Effective sidereal ayanamsa profile"
           }
         ],
         "responses": {
@@ -2106,6 +2139,18 @@
               "title": "Days"
             },
             "description": "Days to look ahead"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -2861,6 +2906,67 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v4/api/future-bs/methodology": {
+      "get": {
+        "tags": [
+          "future-bs"
+        ],
+        "summary": "Future Bs Methodology",
+        "operationId": "future_bs_methodology_v4_api_future_bs_methodology_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v4/api/future-bs/forecast/{bs_year}": {
+      "get": {
+        "tags": [
+          "future-bs"
+        ],
+        "summary": "Future Bs Forecast",
+        "operationId": "future_bs_forecast_v4_api_future_bs_forecast__bs_year__get",
+        "parameters": [
+          {
+            "name": "bs_year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Bs Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FutureBSForecastResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }
@@ -5351,10 +5457,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2026,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "Start Year"
             }
           },
@@ -5363,12 +5475,30 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2051,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "End Year"
             }
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -12987,15 +13117,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "proof",
@@ -13076,15 +13206,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           }
         ],
         "responses": {
@@ -13370,6 +13500,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -13413,6 +13555,18 @@
               "title": "Risk Mode"
             },
             "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -13453,15 +13607,15 @@
             "schema": {
               "type": "string",
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "latitude",
@@ -13631,15 +13785,15 @@
                 }
               ],
               "description": "Gregorian date in YYYY-MM-DD format",
-              "examples": {
-                "default": {
-                  "summary": "Sample date",
-                  "value": "2026-02-15"
-                }
-              },
               "title": "Date"
             },
-            "description": "Gregorian date in YYYY-MM-DD format"
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
           },
           {
             "name": "risk_mode",
@@ -13729,12 +13883,16 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "builtin_swiss_moshier",
+                "pinned_panchanga_fixture"
+              ],
               "type": "string",
-              "description": "builtin_swiss_moshier|jpl_de440",
+              "description": "Calculation provider used for proof output",
               "default": "builtin_swiss_moshier",
               "title": "Ephemeris Provider"
             },
-            "description": "builtin_swiss_moshier|jpl_de440"
+            "description": "Calculation provider used for proof output"
           },
           {
             "name": "ephemeris_fixture_id",
@@ -13759,12 +13917,17 @@
             "in": "query",
             "required": false,
             "schema": {
+              "enum": [
+                "lahiri",
+                "raman",
+                "kp"
+              ],
               "type": "string",
-              "description": "Sidereal ayanamsa mode",
+              "description": "Effective sidereal ayanamsa profile",
               "default": "lahiri",
               "title": "Ayanamsa"
             },
-            "description": "Sidereal ayanamsa mode"
+            "description": "Effective sidereal ayanamsa profile"
           }
         ],
         "responses": {
@@ -14001,6 +14164,18 @@
               "title": "Days"
             },
             "description": "Days to look ahead"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -17288,10 +17463,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2026,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "Start Year"
             }
           },
@@ -17300,12 +17481,30 @@
             "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 2300,
-              "minimum": 1900,
-              "default": 2051,
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
               "title": "End Year"
             }
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
           }
         ],
         "responses": {
@@ -23755,38 +23954,6 @@
         }
       }
     },
-    "/v3/openapi.json": {
-      "get": {
-        "summary": "V3 Openapi",
-        "operationId": "v3_openapi_v3_openapi_json_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v3/docs": {
-      "get": {
-        "summary": "V3 Docs",
-        "operationId": "v3_docs_v3_docs_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
     "/": {
       "get": {
         "summary": "Root",
@@ -26560,6 +26727,242 @@
         ],
         "title": "FestivalSummary",
         "description": "Condensed festival info for list views."
+      },
+      "FutureBSForecastResponse": {
+        "properties": {
+          "bs_year": {
+            "type": "integer",
+            "title": "Bs Year"
+          },
+          "month_lengths": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "minItems": 12,
+            "title": "Month Lengths"
+          },
+          "months": {
+            "items": {
+              "$ref": "#/components/schemas/FutureBSMonthForecast"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "minItems": 12,
+            "title": "Months"
+          },
+          "year_total_days": {
+            "type": "integer",
+            "maximum": 366.0,
+            "minimum": 365.0,
+            "title": "Year Total Days"
+          },
+          "heuristic_confidence_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Heuristic Confidence Score"
+          },
+          "confidence_label": {
+            "type": "string",
+            "title": "Confidence Label"
+          },
+          "risk_flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Risk Flags"
+          },
+          "constraints": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Constraints"
+          },
+          "surface": {
+            "type": "string",
+            "const": "future_bs_public_forecast",
+            "title": "Surface"
+          },
+          "status": {
+            "type": "string",
+            "const": "research_preview",
+            "title": "Status"
+          },
+          "maturity": {
+            "type": "string",
+            "const": "research_preview",
+            "title": "Maturity"
+          },
+          "publication_status": {
+            "type": "string",
+            "const": "computed_prediction_not_official",
+            "title": "Publication Status"
+          },
+          "review_required": {
+            "type": "boolean",
+            "const": true,
+            "title": "Review Required"
+          },
+          "authoritative_publication_overrides": {
+            "type": "boolean",
+            "const": true,
+            "title": "Authoritative Publication Overrides"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "title": "Snapshot Id"
+          },
+          "method": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Method"
+          },
+          "risk_summary": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Risk Summary"
+          },
+          "validation": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validation"
+          },
+          "limits": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Limits"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bs_year",
+          "month_lengths",
+          "months",
+          "year_total_days",
+          "heuristic_confidence_score",
+          "confidence_label",
+          "risk_flags",
+          "constraints",
+          "surface",
+          "status",
+          "maturity",
+          "publication_status",
+          "review_required",
+          "authoritative_publication_overrides",
+          "snapshot_id",
+          "method",
+          "risk_summary",
+          "validation",
+          "limits",
+          "meta"
+        ],
+        "title": "FutureBSForecastResponse"
+      },
+      "FutureBSMonthForecast": {
+        "properties": {
+          "month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Month"
+          },
+          "month_name": {
+            "type": "string",
+            "title": "Month Name"
+          },
+          "predicted_days": {
+            "type": "integer",
+            "maximum": 32.0,
+            "minimum": 29.0,
+            "title": "Predicted Days"
+          },
+          "prediction_set_80": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Prediction Set 80"
+          },
+          "prediction_set_95": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Prediction Set 95"
+          },
+          "model_probability": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Model Probability"
+          },
+          "heuristic_confidence_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Heuristic Confidence Score"
+          },
+          "confidence_label": {
+            "type": "string",
+            "title": "Confidence Label"
+          },
+          "model_agreement": {
+            "type": "string",
+            "title": "Model Agreement"
+          },
+          "boundary_distance_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Boundary Distance Minutes"
+          },
+          "risk_label": {
+            "type": "string",
+            "enum": [
+              "GREEN",
+              "YELLOW",
+              "RED"
+            ],
+            "title": "Risk Label"
+          },
+          "risk_flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Risk Flags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "month_name",
+          "predicted_days",
+          "prediction_set_80",
+          "prediction_set_95",
+          "model_probability",
+          "heuristic_confidence_score",
+          "confidence_label",
+          "model_agreement",
+          "risk_label",
+          "risk_flags"
+        ],
+        "title": "FutureBSMonthForecast"
       },
       "HTTPValidationError": {
         "properties": {

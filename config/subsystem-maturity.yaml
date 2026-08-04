@@ -104,7 +104,7 @@
       "lane": "public_preview",
       "maturity": "public_preview",
       "public_exposure": true,
-      "canonical_runtime": "source_confidence_taxonomy",
+      "canonical_runtime": "curated_snapshot_service",
       "route_profiles": ["public_reference", "developer_preview", "enterprise_preview", "full_dev"],
       "ci_gates": ["trust_verify", "docs_links"],
       "docs": ["docs/TRUST_INFRASTRUCTURE.md", "docs/PUBLIC_API_BOUNDARY.md"],
@@ -266,15 +266,15 @@
       "forbidden_claims": ["production signature authority", "third-party certificate"]
     },
     "future_bs": {
-      "lane": "research_private",
+      "lane": "public_preview",
       "maturity": "research_preview",
-      "public_exposure": "metadata_only",
+      "public_exposure": "curated_forecast_and_methodology",
       "canonical_runtime": "source_confidence_taxonomy",
-      "route_profiles": ["research_private", "internal_lab", "full_dev"],
-      "public_metadata_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "full_dev"],
+      "route_profiles": ["public_demo", "public_reference", "developer_preview", "enterprise_preview", "research_private", "internal_lab", "full_dev"],
+      "private_workflow_profiles": ["research_private", "internal_lab", "full_dev"],
       "ci_gates": ["future_bs_public_leakage", "maturity_lanes", "research_private_tests"],
       "docs": ["docs/FUTURE_BS_RESEARCH_BOUNDARY.md", "docs/future_bs/FUTURE_BS_RESEARCH.md", "docs/future_bs/CLAIM_BOUNDARY.md"],
-      "allowed_claims": ["risk analysis", "computed prediction not official", "metadata-only public capability summary"],
+      "allowed_claims": ["curated single-year research forecast", "risk analysis", "computed prediction not official", "public methodology and capability summary"],
       "forbidden_claims": ["official future date", "guaranteed month length", "financial or legal authority"]
     },
     "kundali": {

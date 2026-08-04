@@ -14,7 +14,7 @@ from .feed_routes import router as feed_router
 from .festival_routes import router as festival_router
 from .festival_timeline_routes import router as festival_timeline_router
 from .forecast_routes import router as forecast_router
-from .future_bs_routes import private_router as future_bs_private_router
+from .future_bs_private_routes import private_router as future_bs_private_router
 from .future_bs_routes import public_router as future_bs_router
 from .glossary_routes import router as glossary_router
 from .impact_routes import router as impact_router
