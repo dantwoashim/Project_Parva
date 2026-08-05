@@ -195,6 +195,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 44px;
   color: var(--text-primary);
   font-weight: 690;
 }
@@ -608,7 +609,7 @@
   .comparison-mobile-cards article:nth-child(2n) { border-left-color: var(--forest-600); }
   .comparison-mobile-cards article:nth-child(3n) { border-left-color: var(--vermillion-500); }
   .comparison-mobile-cards header { display: flex; justify-content: space-between; gap: 10px; }
-  .comparison-mobile-cards header a { display: inline-flex; align-items: center; gap: 5px; color: var(--text-primary); font-weight: 720; }
+  .comparison-mobile-cards header a { min-height: 44px; display: inline-flex; align-items: center; gap: 5px; color: var(--text-primary); font-weight: 720; }
   .comparison-mobile-cards header svg { width: 13px; height: 13px; }
   .comparison-mobile-cards header small { color: var(--text-muted); text-align: right; }
   .comparison-mobile-cards > article > strong { font-size: 1.35rem; }

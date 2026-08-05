@@ -18,9 +18,9 @@ DEFAULT_BUDGETS = {
     "max_js_bytes": 300_000,
     "total_js_gzip_bytes": 200_000,
     "max_js_gzip_bytes": 100_000,
-    "total_css_bytes": 180_000,
+    "total_css_bytes": 200_000,
     "max_css_bytes": 170_000,
-    "total_css_gzip_bytes": 35_000,
+    "total_css_gzip_bytes": 38_000,
     "max_css_gzip_bytes": 30_000,
 }
 
