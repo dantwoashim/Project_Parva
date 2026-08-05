@@ -20,6 +20,17 @@ It records source and method provenance, separates exact evidence from
 review-needed evidence, and gives developers a way to test what their Nepali
 calendar API or Nepali date converter is actually doing.
 
+Three public claims define the project:
+
+- A documented market review dated `2026-08-05` found no second Nepal-focused
+  API combining BS conversion, location-aware astronomical Panchanga, Nepal
+  business rules, future-BS research, replay artifacts, and public conformance.
+- The future-BS engine reaches `72/72` exact month predictions in chronological
+  rolling validation over the official `2078-2083 BS` window, with each target
+  year trained only on earlier years.
+- The public benchmark and conformance suites ship with fixtures, runners,
+  named-tool results, and per-case output.
+
 ## Start Here
 
 - Quickstart: [docs/QUICKSTART.md](docs/QUICKSTART.md)
@@ -33,6 +44,8 @@ calendar API or Nepali date converter is actually doing.
 - Artifact policy: [artifacts/POLICY.md](artifacts/POLICY.md)
 - Safe claims: [docs/SAFE_CLAIMS.md](docs/SAFE_CLAIMS.md)
 - Public benchmark: [public-benchmark/README.md](public-benchmark/README.md)
+- Real-tool comparison: [public-benchmark/results/competitor-comparison.md](public-benchmark/results/competitor-comparison.md)
+- Licensing: [docs/COMMERCIAL_LICENSING.md](docs/COMMERCIAL_LICENSING.md)
 - Public conformance index: [docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md](docs/benchmarks/NEPALI_DATE_CONFORMANCE_INDEX.md)
 - Public failure classes: [docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md](docs/benchmarks/PUBLIC_NEPALI_DATE_FAILURE_CLASSES.md)
 - Nepal compliance profile: [docs/conformance/nepal-compliance-profile.md](docs/conformance/nepal-compliance-profile.md)
@@ -504,6 +517,10 @@ Project Parva is licensed under `AGPL-3.0-or-later`. Network deployments must
 set `PARVA_SOURCE_URL` to the corresponding source repository or source archive
 for the deployed version. The application exposes `/source` as a redirect to
 that configured location and adds a `rel="source"` link to HTTP responses.
+
+Commercial embedding licenses are also available for proprietary products at
+NPR 100,000-300,000 per vendor per year, based on named product scope. See
+[docs/COMMERCIAL_LICENSING.md](docs/COMMERCIAL_LICENSING.md).
 
 Deployment details are documented in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 

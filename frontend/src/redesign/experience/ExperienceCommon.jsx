@@ -24,6 +24,7 @@ import {
   MapPin,
   Menu,
   Search,
+  Scale,
   ShieldCheck,
   Sparkles,
   Sun,
@@ -108,7 +109,7 @@ function routeFamily(pathname = '/') {
   if (pathname === '/my-place') return 'place';
   if (pathname === '/birth-reading') return 'birth';
   if (pathname === '/future-bs') return 'future';
-  if (pathname === '/developers' || pathname === '/integrations' || pathname === '/pricing') return 'developer';
+  if (pathname === '/developers' || pathname === '/integrations' || pathname === '/pricing' || pathname === '/licensing') return 'developer';
   if (
     pathname === '/trust'
     || pathname === '/truth-lab'
@@ -196,6 +197,7 @@ const shellIconByPath = {
   '/enterprise': Landmark,
   '/future-bs': FlaskConical,
   '/integrations': Library,
+  '/licensing': Scale,
   '/trust': ShieldCheck,
   '/saved': Bookmark,
 };
@@ -336,6 +338,7 @@ function AppChromeRoot({ children }) {
       { label: 'Enterprise', to: '/enterprise' },
       { label: 'Future BS', to: '/future-bs', requiredCapability: 'futureBsMethodology' },
       { label: 'Integrations', to: '/integrations', requiredCapability: 'integrationsPreview' },
+      { label: 'Licensing', to: '/licensing' },
       { label: 'Saved', to: '/saved' },
       { label: 'Trust center', to: '/trust', requiredCapability: 'trustPreview' },
     ]),
@@ -455,6 +458,7 @@ function AppChromeRoot({ children }) {
           <nav aria-label="Footer links">
             <Link to="/methodology">Methodology</Link>
             <Link to="/policy">Policy</Link>
+            <Link to="/licensing">Licensing</Link>
             <a href="https://github.com/dantwoashim/Project_Parva">Source</a>
           </nav>
           <small>AGPL-3.0-or-later</small>

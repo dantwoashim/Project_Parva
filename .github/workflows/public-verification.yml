@@ -175,10 +175,16 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: public-benchmark/competitors/package-lock.json
       - name: Install benchmark dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -c requirements/constraints.txt -e .[test]
+          npm --prefix public-benchmark/competitors ci --ignore-scripts
       - name: Run public benchmark
         env:
           PYTHONPATH: backend:.
@@ -186,6 +192,7 @@ jobs:
           python public-benchmark/runners/run_against_static_baseline.py
           python public-benchmark/runners/run_against_parva.py
           python public-benchmark/runners/compare_results.py
+          python public-benchmark/runners/run_competitor_comparison.py
           python scripts/benchmark/generate_benchmark_badge.py
 
   release-gate:

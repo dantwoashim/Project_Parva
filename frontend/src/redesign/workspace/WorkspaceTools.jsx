@@ -3,6 +3,7 @@ import {
   Activity,
   ArrowLeftRight,
   ArrowRight,
+  BadgeCheck,
   Braces,
   Building2,
   CalendarDays,
@@ -15,8 +16,10 @@ import {
   ExternalLink,
   FileJson2,
   FlaskConical,
+  GitCompareArrows,
   Landmark,
   LoaderCircle,
+  Orbit,
   Play,
   Search,
   ShieldCheck,
@@ -27,6 +30,7 @@ import { Link } from '@parva/router';
 import { DEFAULT_PUBLIC_DOCS_URL } from '../../config/publicEndpoints';
 import { formatBsDate, formatIsoDate, readableCategory } from '../formatters';
 import { endpointCatalog, endpointGroups } from './endpointCatalog';
+import '../styles/polish/15-positioning-licensing.css';
 
 const toolDefinitions = [
   { id: 'convert', label: 'Convert', description: 'AD and BS', icon: ArrowLeftRight },
@@ -153,19 +157,50 @@ function WorkbenchHeader({ conversion, date, location }) {
 
   return (
     <section className="workspace-masthead">
-      <div className="workspace-heading">
-        <div className="workspace-status">
-          <span aria-hidden="true" />
-          Nepal calendar workspace
+      <div className="workspace-masthead__top">
+        <div className="workspace-heading">
+          <div className="workspace-status">
+            <span aria-hidden="true" />
+            Nepal-focused astronomical calendar API
+          </div>
+          <h1>Project Parva</h1>
+          <p>One API for Bikram Sambat, place-aware Panchanga, Nepal business rules, and verifiable calendar research.</p>
         </div>
-        <h1>Project Parva</h1>
-        <p>Convert dates, inspect Panchanga, track festivals, and apply Nepali fiscal rules.</p>
+        <dl className="workspace-now" aria-label={`${formatAdDate(date)}, ${bsLabel}`}>
+          <div><dt>BS</dt><dd>{bsLabel}</dd></div>
+          <div><dt>AD</dt><dd>{formatAdDate(date)}</dd></div>
+          <div><dt>Place</dt><dd>{location}</dd></div>
+        </dl>
       </div>
-      <dl className="workspace-now" aria-label={`${formatAdDate(date)}, ${bsLabel}`}>
-        <div><dt>BS</dt><dd>{bsLabel}</dd></div>
-        <div><dt>AD</dt><dd>{formatAdDate(date)}</dd></div>
-        <div><dt>Place</dt><dd>{location}</dd></div>
-      </dl>
+      <div className="positioning-claims" aria-label="Project Parva evidence claims">
+        <Link to="/benchmark#market-review" className="positioning-claim positioning-claim--astronomy">
+          <span className="positioning-claim__icon"><Orbit aria-hidden="true" /></span>
+          <span>
+            <small>Only full-stack match found</small>
+            <strong>Astronomical, location-aware, Nepal-focused</strong>
+            <p>No second API matched the complete capability set in the documented market review.</p>
+          </span>
+          <ArrowRight aria-hidden="true" />
+        </Link>
+        <Link to="/benchmark#forecast-replay" className="positioning-claim positioning-claim--replay">
+          <span className="positioning-claim__icon"><BadgeCheck aria-hidden="true" /></span>
+          <span>
+            <small>Past-only replay</small>
+            <strong>72/72 official month predictions</strong>
+            <p>BS 2078-2083, with every target year trained only on earlier years.</p>
+          </span>
+          <ArrowRight aria-hidden="true" />
+        </Link>
+        <Link to="/benchmark" className="positioning-claim positioning-claim--benchmark">
+          <span className="positioning-claim__icon"><GitCompareArrows aria-hidden="true" /></span>
+          <span>
+            <small>Open engineering evidence</small>
+            <strong>Public benchmark and conformance suite</strong>
+            <p>Named tools, fixed fixtures, runnable checks, and per-case results.</p>
+          </span>
+          <ArrowRight aria-hidden="true" />
+        </Link>
+      </div>
     </section>
   );
 }

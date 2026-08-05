@@ -12,6 +12,13 @@ These claims are safe when the corresponding verification commands pass:
 - Parva can help software agents avoid guessing Nepali dates.
 - Parva can support payroll/date-risk prechecks and technical conformance
   review.
+- A documented market review dated 2026-08-05 found no second product matching
+  Parva's complete Nepal-focused capability definition. The review is evidence
+  for a dated search conclusion, not an absolute claim about every private or
+  future product.
+- The selected future-BS engine matches 72/72 official month cases from
+  2078-2083 BS under chronological rolling validation with past-only training.
+  This claim must retain the window and evaluation method.
 
 ## Forbidden Claims
 

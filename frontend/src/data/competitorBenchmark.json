@@ -1,0 +1,292 @@
+{
+  "forecast_replay": {
+    "accuracy_percent": 100.0,
+    "end_bs_year": 2083,
+    "evaluation_kind": "chronological_rolling_past_only",
+    "exact_matches": 72,
+    "implementation": "Project Parva future-BS engine",
+    "leakage_safe": true,
+    "mismatches": [],
+    "model_id": "parva_authority_aware_solar_civil_v7",
+    "month_cases": 72,
+    "start_bs_year": 2078,
+    "training_source_policy": "source_stratified",
+    "year_runs": [
+      {
+        "exact_matches": 12,
+        "month_cases": 12,
+        "test_year": 2078,
+        "train_end": 2077
+      },
+      {
+        "exact_matches": 12,
+        "month_cases": 12,
+        "test_year": 2079,
+        "train_end": 2078
+      },
+      {
+        "exact_matches": 12,
+        "month_cases": 12,
+        "test_year": 2080,
+        "train_end": 2079
+      },
+      {
+        "exact_matches": 12,
+        "month_cases": 12,
+        "test_year": 2081,
+        "train_end": 2080
+      },
+      {
+        "exact_matches": 12,
+        "month_cases": 12,
+        "test_year": 2082,
+        "train_end": 2081
+      },
+      {
+        "exact_matches": 12,
+        "month_cases": 12,
+        "test_year": 2083,
+        "train_end": 2082
+      }
+    ]
+  },
+  "historical_conformance": [
+    {
+      "accuracy_percent": 100.0,
+      "exact_matches": 72,
+      "execution_errors": [],
+      "implementation": "Project Parva",
+      "method": "public_days_in_bs_month_api",
+      "mismatches": [],
+      "month_cases": 72,
+      "source": "https://github.com/dantwoashim/Project_Parva",
+      "version": "repository-main"
+    },
+    {
+      "accuracy_percent": 100.0,
+      "exact_matches": 72,
+      "execution_errors": [],
+      "implementation": "nepali-date-converter",
+      "method": "difference_between_public_bs_to_ad_month_start_conversions",
+      "mismatches": [],
+      "month_cases": 72,
+      "source": "https://www.npmjs.com/package/nepali-date-converter",
+      "version": "3.4.0"
+    },
+    {
+      "accuracy_percent": 77.78,
+      "exact_matches": 56,
+      "execution_errors": [],
+      "implementation": "@sonill/nepali-dates",
+      "method": "difference_between_public_bs_to_ad_month_start_conversions",
+      "mismatches": [
+        {
+          "actual_days": 31,
+          "bs_month": 2,
+          "bs_year": 2081,
+          "expected_days": 32
+        },
+        {
+          "actual_days": 32,
+          "bs_month": 3,
+          "bs_year": 2081,
+          "expected_days": 31
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 11,
+          "bs_year": 2081,
+          "expected_days": 29
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 12,
+          "bs_year": 2081,
+          "expected_days": 31
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 1,
+          "bs_year": 2082,
+          "expected_days": 31
+        },
+        {
+          "actual_days": 32,
+          "bs_month": 2,
+          "bs_year": 2082,
+          "expected_days": 31
+        },
+        {
+          "actual_days": 31,
+          "bs_month": 3,
+          "bs_year": 2082,
+          "expected_days": 32
+        },
+        {
+          "actual_days": 32,
+          "bs_month": 4,
+          "bs_year": 2082,
+          "expected_days": 31
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 6,
+          "bs_year": 2082,
+          "expected_days": 31
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 8,
+          "bs_year": 2082,
+          "expected_days": 29
+        },
+        {
+          "actual_days": 29,
+          "bs_month": 9,
+          "bs_year": 2082,
+          "expected_days": 30
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 10,
+          "bs_year": 2082,
+          "expected_days": 29
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 6,
+          "bs_year": 2083,
+          "expected_days": 31
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 8,
+          "bs_year": 2083,
+          "expected_days": 29
+        },
+        {
+          "actual_days": 29,
+          "bs_month": 9,
+          "bs_year": 2083,
+          "expected_days": 30
+        },
+        {
+          "actual_days": 30,
+          "bs_month": 10,
+          "bs_year": 2083,
+          "expected_days": 29
+        }
+      ],
+      "month_cases": 72,
+      "source": "https://www.npmjs.com/package/@sonill/nepali-dates",
+      "version": "1.0.7"
+    },
+    {
+      "accuracy_percent": 100.0,
+      "exact_matches": 72,
+      "execution_errors": [],
+      "implementation": "nepali-date-library",
+      "method": "difference_between_public_bs_to_ad_month_start_conversions",
+      "mismatches": [],
+      "month_cases": 72,
+      "source": "https://www.npmjs.com/package/nepali-date-library",
+      "version": "1.1.15"
+    },
+    {
+      "accuracy_percent": 100.0,
+      "exact_matches": 72,
+      "execution_errors": [],
+      "implementation": "@remotemerge/nepali-date-converter",
+      "method": "difference_between_public_bs_to_ad_month_start_conversions",
+      "mismatches": [],
+      "month_cases": 72,
+      "source": "https://www.npmjs.com/package/@remotemerge/nepali-date-converter",
+      "version": "1.2.1"
+    }
+  ],
+  "market_review": {
+    "absolute_only_claim_allowed": false,
+    "as_of": "2026-08-05",
+    "claim_form": "No equivalent found in our documented market review as of 2026-08-05.",
+    "conclusion": "No second product matching the full definition was found in the documented review scope.",
+    "match_definition": "A publicly documented Nepal-focused developer API combining BS conversion, location-aware astronomical Panchanga, Nepal fiscal and working-day rules, future-BS research, replay artifacts, and a public conformance suite.",
+    "products": [
+      {
+        "bs_conversion": "documented",
+        "future_bs_research": "documented",
+        "location_aware_astronomical_panchanga": "documented",
+        "name": "Project Parva",
+        "nepal_business_rules": "documented",
+        "nepal_focused": "documented",
+        "public_conformance_suite": "documented",
+        "public_replay_artifacts": "documented",
+        "source": "https://github.com/dantwoashim/Project_Parva"
+      },
+      {
+        "bs_conversion": "not_found_in_review",
+        "future_bs_research": "not_found_in_review",
+        "location_aware_astronomical_panchanga": "documented",
+        "name": "Prokerala Astrology API",
+        "nepal_business_rules": "not_found_in_review",
+        "nepal_focused": "not_found_in_review",
+        "public_conformance_suite": "not_found_in_review",
+        "public_replay_artifacts": "not_found_in_review",
+        "source": "https://api.prokerala.com/"
+      },
+      {
+        "bs_conversion": "not_found_in_review",
+        "future_bs_research": "not_found_in_review",
+        "location_aware_astronomical_panchanga": "documented",
+        "name": "TathaAstu API",
+        "nepal_business_rules": "not_found_in_review",
+        "nepal_focused": "not_found_in_review",
+        "public_conformance_suite": "not_found_in_review",
+        "public_replay_artifacts": "not_found_in_review",
+        "source": "https://docs.tathaastuapi.com/"
+      },
+      {
+        "bs_conversion": "not_found_in_review",
+        "future_bs_research": "not_found_in_review",
+        "location_aware_astronomical_panchanga": "documented",
+        "name": "VedIntel AstroAPI",
+        "nepal_business_rules": "not_found_in_review",
+        "nepal_focused": "not_found_in_review",
+        "public_conformance_suite": "not_found_in_review",
+        "public_replay_artifacts": "not_found_in_review",
+        "source": "https://vedintelastroapi.com/docs"
+      },
+      {
+        "bs_conversion": "documented",
+        "future_bs_research": "not_found_in_review",
+        "location_aware_astronomical_panchanga": "not_found_in_review",
+        "name": "Nepali date conversion packages",
+        "nepal_business_rules": "not_found_in_review",
+        "nepal_focused": "documented",
+        "public_conformance_suite": "not_found_in_review",
+        "public_replay_artifacts": "not_found_in_review",
+        "source": "https://www.npmjs.com/search?q=nepali%20date%20converter"
+      }
+    ]
+  },
+  "reproducibility": {
+    "ground_truth": "data/future_bs/public/official_holdout_2078_2083.csv",
+    "ground_truth_sha256": "sha256:65f8b690704450f88a8b5fe05491ee48a64c19c8252f29d8de6c03cf8c9d65e1",
+    "node_runner_sha256": "sha256:20f63d3d8a6e05ad55c3d581e4dc8e2c554ffdd5279b7a72fd8f75ca73c92fe0",
+    "package_lock_sha256": "sha256:775fcaed755cc6c70508113326022f9b810a0983460fa60da1d419b4d3e61b01",
+    "python_runner_sha256": "sha256:5a7fcfa2e0a021f978980fe2dd66bc5f48e3bd009ea598bab46617fc13a7842d"
+  },
+  "schema_version": "1.0",
+  "scope": {
+    "admission_rule": "version-pinned public developer interface replayable in CI",
+    "bs_year_range": "2078-2083",
+    "excluded_consumer_calendars": [
+      "Hamro Patro",
+      "Nepali Patro"
+    ],
+    "exclusion_reason": "no qualifying public interface identified in this review; consumer web pages are not scraped",
+    "forecast_track": "Parva chronological past-only replay; lookup-only packages are not scored",
+    "historical_track": "current published conversion output against the common fixture",
+    "month_cases": 72
+  },
+  "snapshot_date": "2026-08-05"
+}

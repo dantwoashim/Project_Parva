@@ -30,6 +30,20 @@ Current tracked comparison:
 - Tasks: 64
 - Review gates: 10/10
 
+Named-tool BS conformance and future-BS replay:
+
+- Project Parva: 72/72 historical months
+- `nepali-date-converter@3.4.0`: 72/72 historical months
+- `@sonill/nepali-dates@1.0.7`: 56/72 historical months
+- `nepali-date-library@1.1.15`: 72/72 historical months
+- `@remotemerge/nepali-date-converter@1.2.1`: 72/72 historical months
+- Project Parva chronological forecast replay: 72/72 with past-only training
+
+The historical run measures current lookup/conversion output. The forecast run
+is a separate evaluation because the four npm packages publish lookup tables
+rather than forecast methods. Full results and mismatches are in
+[results/competitor-comparison.md](results/competitor-comparison.md).
+
 Run the static baseline:
 
 ```bash
@@ -46,6 +60,15 @@ Run against a deployed Parva base URL:
 
 ```bash
 python public-benchmark/runners/run_against_parva.py --base-url https://api.prabinghimire1.com.np
+```
+
+Run the named-tool comparison:
+
+```bash
+cd public-benchmark/competitors
+npm ci --ignore-scripts
+cd ../..
+py -3.11 public-benchmark/runners/run_competitor_comparison.py
 ```
 
 The Parva runner maps every task in `benchmark.json` to a concrete public

@@ -1,0 +1,14 @@
+{
+  "name": "project-parva-public-competitor-benchmark",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "extract": "node run-conversion-conformance.mjs"
+  },
+  "dependencies": {
+    "@remotemerge/nepali-date-converter": "1.2.1",
+    "@sonill/nepali-dates": "1.0.7",
+    "nepali-date-converter": "3.4.0",
+    "nepali-date-library": "1.1.15"
+  }
+}

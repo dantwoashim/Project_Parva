@@ -551,6 +551,9 @@ describe('App routing', () => {
     expect(screen.getByRole('navigation', { name: /Workbench tools/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /^Convert$/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /^Panchanga.*Day signals$/i })).toBeInTheDocument();
+    expect(screen.getByText(/Only full-stack match found/i)).toBeInTheDocument();
+    expect(screen.getByText(/72\/72 official month predictions/i)).toBeInTheDocument();
+    expect(screen.getByText(/Public benchmark and conformance suite/i)).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /API explorer/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Inspect response/i })).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByLabelText(/API request inspector/i)).not.toBeInTheDocument();
@@ -614,7 +617,7 @@ describe('App routing', () => {
     expect(await screen.findByRole('heading', { name: /Find your place/i }, routeLoadOptions)).toBeInTheDocument();
   }, 30000);
 
-  it('renders the public benchmark page with scores and authority boundary', async () => {
+  it('renders the public benchmark page with named tools and forecast replay', async () => {
     setViewportWidth(1280);
     render(
       <MemoryRouter initialEntries={['/benchmark']}>
@@ -622,11 +625,11 @@ describe('App routing', () => {
       </MemoryRouter>,
     );
 
-    expect(await screen.findByRole('heading', { name: /Nepali Time Reliability Benchmark/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: /Benchmark the claims/i }, routeLoadOptions)).toBeInTheDocument();
     expect(screen.getByText(pct(benchmarkSummary.parva_score_percent))).toBeInTheDocument();
-    expect(screen.getByText(pct(benchmarkSummary.static_score_percent))).toBeInTheDocument();
-    expect(screen.getByText(/technical reliability benchmark, not official government\/calendar authority/i)).toBeInTheDocument();
-    expect(screen.getByText(/review-required behavior preservation/i)).toBeInTheDocument();
+    expect(screen.getByRole('cell', { name: /@sonill\/nepali-dates/i })).toBeInTheDocument();
+    expect(screen.getByText(/Two different questions/i)).toBeInTheDocument();
+    expect(screen.getByText(/No second product matching the full definition/i)).toBeInTheDocument();
   }, 30000);
 
   it('renders the public trust surface with verification and authority boundaries', async () => {
@@ -638,12 +641,27 @@ describe('App routing', () => {
     );
 
     expect(await screen.findByRole('heading', { name: /See what the engine knows/i }, routeLoadOptions)).toBeInTheDocument();
-    expect(screen.getByText(/Public verification status, not live uptime SLA/i)).toBeInTheDocument();
+    expect(screen.getByText(/^Public verification status$/i)).toBeInTheDocument();
     expect(screen.getAllByText(pct(benchmarkSummary.parva_score_percent)).length).toBeGreaterThan(0);
-    expect(screen.getByText(/not government, calendar, legal, tax, banking, payroll, religious, or future-date authority/i)).toBeInTheDocument();
+    expect(screen.getByText(/not a government, legal, tax, banking, payroll, religious, calendar-publication, or future-date authority/i)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Verification reports/i })).toHaveAttribute('href', expect.stringContaining('external_reviewer_packet'));
     expect(screen.getByRole('link', { name: /API Docs/i })).toHaveAttribute('href', 'https://api.prabinghimire1.com.np/docs');
-    expect(screen.queryByText(/uptime SLA/i)).not.toHaveTextContent(/99\.9/i);
+    expect(screen.queryByText(/99\.9.*uptime|uptime.*99\.9/i)).not.toBeInTheDocument();
+  }, 30000);
+
+  it('renders separate AGPL and commercial embedding paths', async () => {
+    setViewportWidth(1280);
+    render(
+      <MemoryRouter initialEntries={['/licensing']}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: /Build openly or embed privately/i }, routeLoadOptions)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /AGPL-3\.0-or-later/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Commercial embedding/i })).toBeInTheDocument();
+    expect(screen.getByText(/NPR 100-300K/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /View hosted API pricing/i })).toHaveAttribute('href', '/pricing');
   }, 30000);
 
   it('keeps the same shell on mobile widths with one on-demand navigation', async () => {

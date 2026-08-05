@@ -34,6 +34,7 @@ jobs:
           cache-dependency-path: |
             packages/parva-js/package-lock.json
             packages/parva-local-kernel/package-lock.json
+            public-benchmark/competitors/package-lock.json
 
       - name: Install backend dependencies
         run: |
@@ -42,6 +43,7 @@ jobs:
           python -m pip install -e packages/parva-python
           npm --prefix packages/parva-js ci
           npm --prefix packages/parva-local-kernel ci
+          npm --prefix public-benchmark/competitors ci --ignore-scripts
 
       - name: Run backend quality gates
         env:
@@ -85,6 +87,7 @@ jobs:
           python public-benchmark/runners/run_against_static_baseline.py
           python public-benchmark/runners/run_against_parva.py
           python public-benchmark/runners/compare_results.py
+          python public-benchmark/runners/run_competitor_comparison.py
 
       - name: Run backend tests
         run: python -m pytest -q -m "not private_source and not wide_corpus and not research_artifact" --maxfail=20

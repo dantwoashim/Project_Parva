@@ -78,12 +78,16 @@ const RedesignProfileSaved = lazyRoute(
   'RedesignProfileSaved',
 );
 const RedesignBenchmark = lazyRoute(() => import('./redesign/BenchmarkPage.jsx'), 'RedesignBenchmark');
+const RedesignLicensing = lazyRoute(
+  () => import('./redesign/experience/platform/LicensingPage.jsx'),
+  'RedesignLicensing',
+);
 const ProofViewerPage = lazyRoute(() => import('./proof/ProofViewerPage.jsx'), 'ProofViewerPage');
 
 const routeSeo = {
   '/': {
-    title: 'Project Parva - Nepali temporal infrastructure',
-    description: 'Project Parva provides BS/AD conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation for Nepali software systems.',
+    title: 'Project Parva - Astronomical Nepali Calendar API',
+    description: 'Location-aware Nepali calendar API with a 72/72 past-only future-BS replay, public benchmarks, and open conformance fixtures.',
   },
   '/today': {
     title: 'Today - Parva',
@@ -149,6 +153,10 @@ const routeSeo = {
     title: 'API Pricing - Parva',
     description: 'Create Parva API keys, start Khalti or eSewa checkout, request Payoneer invoices, and inspect quota usage.',
   },
+  '/licensing': {
+    title: 'Open Source and Commercial Licensing - Project Parva',
+    description: 'Use Project Parva under AGPL-3.0-or-later or license proprietary embedding from NPR 100K to 300K per vendor per year.',
+  },
 };
 
 function setMetaDescription(description) {
@@ -164,8 +172,8 @@ function setMetaDescription(description) {
 function seoForPath(pathname) {
   const festivalDetail = pathname.startsWith('/festivals/') ? routeSeo['/festivals'] : null;
   return routeSeo[pathname] || festivalDetail || {
-    title: 'Project Parva - Nepali temporal infrastructure',
-    description: 'Project Parva provides BS/AD conversion, fiscal-year logic, panchanga computation, festivals, and source-aware calendar validation for Nepali software systems.',
+    title: 'Project Parva - Astronomical Nepali Calendar API',
+    description: 'Location-aware Nepali calendar API with public benchmarks, replay artifacts, and open conformance fixtures.',
   };
 }
 
@@ -204,6 +212,7 @@ function AppRoutes() {
         <Route path="/policy/" element={<RedesignApiPolicy />} />
         <Route path="/pricing" element={<RedesignApiPricing />} />
         <Route path="/pricing/*" element={<RedesignApiPricing />} />
+        <Route path="/licensing" element={<RedesignLicensing />} />
         <Route path="/panchanga" element={<RedesignPanchanga />} />
         <Route path="/muhurta" element={<Navigate to="/best-time" replace />} />
         <Route path="/personal" element={<Navigate to="/my-place" replace />} />

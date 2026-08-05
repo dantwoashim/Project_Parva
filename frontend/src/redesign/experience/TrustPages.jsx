@@ -255,14 +255,12 @@ export function RedesignTrust() {
       <TrustLimitsStrip runtime={runtime} policy={policy} />
       <section className="trust-feature-band" aria-label="Public verification status">
         <div>
-          <p className="eyebrow">Public verification status, not live uptime SLA</p>
+          <p className="eyebrow">Public verification status</p>
           <h2>{formatPercent(benchmarkSummary.parva_score_percent)} benchmark score across {benchmarkSummary.task_count} public-safe tasks.</h2>
         </div>
         <p>
           Public review should start with the benchmark, public verification workflow,
-          API docs, and known limitations. Parva is source-aware decision support and
-          not government, calendar, legal, tax, banking, payroll, religious, or
-          future-date authority.
+          API docs, known limitations, and the authority boundary recorded on this page.
         </p>
       </section>
       <section className="trust-hero-grid">
@@ -309,11 +307,11 @@ export function RedesignTrust() {
       </section>
       <section className="trust-feature-band">
         <div>
-          <p className="eyebrow">What this means</p>
-          <h2>Confidence belongs beside its limits.</h2>
+          <p className="eyebrow">Authority and use boundary</p>
+          <h2>Parva verifies software behavior. Domain authorities settle official outcomes.</h2>
         </div>
         <p>
-          Ritual dates and time windows can vary by authority, location, and boundary conditions. The app keeps those constraints visible instead of burying them behind decorative confidence language.
+          Parva is not a government, legal, tax, banking, payroll, religious, calendar-publication, or future-date authority. Government publications, recognized Panchanga authorities, institutional policies, and signed contracts control their respective decisions. Future BS outputs remain computed forecasts until an authoritative calendar is published.
         </p>
       </section>
       <section className="trust-link-grid">
@@ -324,6 +322,7 @@ export function RedesignTrust() {
           ['API Docs', 'Public OpenAPI docs for stable route inspection.', DEFAULT_PUBLIC_DOCS_URL],
           ['Verification reports', 'Reviewer packet and public verification evidence in the source repo.', 'https://github.com/dantwoashim/Project_Parva/tree/main/reports/external_reviewer_packet'],
           ['Known limitations', 'Supported ranges, authority boundaries, and unavailable external dependencies.', 'https://github.com/dantwoashim/Project_Parva/blob/main/docs/KNOWN_LIMITATIONS.md'],
+          ['Licensing', 'AGPL use and annual proprietary embedding terms.', '/licensing'],
           ['About', 'What Parva is, what it is not, and how to use it responsibly.', '/about'],
         ].map(([title, body, to]) => (
           String(to).startsWith('http') ? (
