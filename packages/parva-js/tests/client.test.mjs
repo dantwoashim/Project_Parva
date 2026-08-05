@@ -30,6 +30,7 @@ test("uses the public v3 base for conversion calls", async () => {
   assert.equal(calls[0].url, `${DEFAULT_API_BASE}/calendar/bs-to-gregorian`);
   assert.equal(calls[0].init.method, "POST");
   assert.ok(calls[0].init.signal instanceof AbortSignal);
+  assert.equal(client.timeoutMs, 75_000);
 });
 
 test("passes base URL overrides and timeout signals to fetch", async () => {

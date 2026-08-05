@@ -3,14 +3,15 @@ requires = ["setuptools>=82.0.1", "wheel>=0.45.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "project-parva-python-sdk"
+name = "parva-python"
 version = "0.3.0a0"
-description = "Public-safe Python SDK alpha for Project Parva calendar APIs."
+description = "Python SDK for Project Parva's public Nepali calendar APIs."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "AGPL-3.0-or-later"
 authors = [{ name = "Project Parva" }]
 dependencies = []
+keywords = ["nepal", "bikram-sambat", "calendar", "panchanga", "fiscal-year"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -23,6 +24,7 @@ classifiers = [
 Homepage = "https://github.com/dantwoashim/Project_Parva"
 Repository = "https://github.com/dantwoashim/Project_Parva"
 Documentation = "https://github.com/dantwoashim/Project_Parva/blob/main/docs/QUICKSTART.md"
+Issues = "https://github.com/dantwoashim/Project_Parva/issues"
 
 [project.scripts]
 parva = "parva.cli:main"

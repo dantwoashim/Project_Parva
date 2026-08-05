@@ -7,7 +7,7 @@ import json
 from typing import Any
 
 AGENT_GATEWAY_ROUTE = "/v3/api/agent/run-tool"
-DEFAULT_PUBLIC_ORIGIN = "https://project-parva-public-demo.onrender.com"
+DEFAULT_PUBLIC_ORIGIN = "https://api.prabinghimire1.com.np"
 
 RESOURCES = (
     "parva://capabilities",

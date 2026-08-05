@@ -2,6 +2,13 @@
   "name": "@project-parva/local-kernel",
   "version": "0.3.0-alpha.0",
   "description": "Local/offline verifier kernel for Project Parva proof artifacts.",
+  "keywords": [
+    "nepal",
+    "bikram-sambat",
+    "calendar",
+    "verification",
+    "offline"
+  ],
   "license": "AGPL-3.0-or-later",
   "repository": {
     "type": "git",
@@ -9,16 +16,29 @@
     "directory": "packages/parva-local-kernel"
   },
   "homepage": "https://github.com/dantwoashim/Project_Parva",
+  "bugs": "https://github.com/dantwoashim/Project_Parva/issues",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
   "files": [
     "dist",
     "README.md"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && node --test tests/local-kernel.test.mjs"
+    "test": "npm run build && node --test tests/local-kernel.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "alpha"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

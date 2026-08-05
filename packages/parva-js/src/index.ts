@@ -234,7 +234,7 @@ export class ParvaClient {
     this.baseUrl = trimTrailingSlash(options.baseUrl ?? DEFAULT_API_BASE);
     this.futureBsCapabilitiesUrl =
       options.futureBsCapabilitiesUrl ?? DEFAULT_FUTURE_BS_CAPABILITIES_URL;
-    this.timeoutMs = options.timeoutMs ?? 10_000;
+    this.timeoutMs = options.timeoutMs ?? 75_000;
     this.maxRetries = Math.max(0, options.maxRetries ?? 2);
     this.retryBaseDelayMs = Math.max(0, options.retryBaseDelayMs ?? 250);
     this.fetchImpl = options.fetchImpl ?? globalThis.fetch;

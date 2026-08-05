@@ -1,5 +1,7 @@
 # Parva MCP Server
 
+<!-- mcp-name: io.github.dantwoashim/project-parva -->
+
 `parva-mcp-server` is the read-only Model Context Protocol server for Project
 Parva. It exposes nine Nepali temporal tools over stdio and executes every tool
 through one public boundary:
@@ -17,18 +19,23 @@ review status supplied by Project Parva.
 
 ## Install
 
-Python 3.11 is required. Install from a repository checkout:
+Python 3.11 is required. Install from PyPI:
+
+```bash
+python -m pip install parva-mcp-server
+```
+
+Install from a repository checkout for local development:
 
 ```bash
 python -m pip install -e "packages/parva-mcp-server[test]"
 ```
 
-The distribution name is `parva-mcp-server`. Availability from a package
-registry requires a separately verified publication record.
+The distribution name is `parva-mcp-server`.
 
 ## Configure
 
-The default API origin is `https://project-parva-public-demo.onrender.com`.
+The default API origin is `https://api.prabinghimire1.com.np`.
 Override it for a self-hosted deployment:
 
 ```text
@@ -37,7 +44,7 @@ PARVA_PUBLIC_ORIGIN=https://parva.example.com
 
 Optional settings:
 
-- `PARVA_HTTP_TIMEOUT_SECONDS`: request timeout from 1 to 120 seconds; default 30.
+- `PARVA_HTTP_TIMEOUT_SECONDS`: request timeout from 1 to 120 seconds; default 75.
 - `PARVA_MAX_RESPONSE_BYTES`: response limit from 1 KiB to 8 MiB; default 2 MiB.
 - `PARVA_API_TOKEN`: bearer token for a protected self-hosted API.
 
@@ -53,7 +60,7 @@ Desktop client configuration:
       "command": "python",
       "args": ["-m", "parva_mcp_server.server", "--stdio"],
       "env": {
-        "PARVA_PUBLIC_ORIGIN": "https://project-parva-public-demo.onrender.com"
+        "PARVA_PUBLIC_ORIGIN": "https://api.prabinghimire1.com.np"
       }
     }
   }

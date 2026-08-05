@@ -6,7 +6,13 @@ This alpha package uses the stable public calendar surface plus curated Future-B
 
 ## Install
 
-From this repository:
+From PyPI:
+
+```bash
+python -m pip install parva-python
+```
+
+From this repository for local development:
 
 ```bash
 python -m pip install -e packages/parva-python

@@ -23,7 +23,7 @@ def test_bs_to_ad_uses_public_v3_base() -> None:
     assert calls[0][0] == "POST"
     assert calls[0][1] == f"{DEFAULT_API_BASE}/calendar/bs-to-gregorian"
     assert calls[0][3] == {"year": 2083, "month": 1, "day": 1}
-    assert calls[0][4] == 10.0
+    assert calls[0][4] == 75.0
 
 
 def test_base_url_override_and_timeout_are_passed_to_transport() -> None:

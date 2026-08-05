@@ -7,7 +7,7 @@ This alpha package targets stable public calendar APIs plus curated Future-BS ca
 ## Install
 
 ```bash
-npm install @project-parva/parva-js
+npm install @project-parva/parva-js@alpha
 ```
 
 For local repository development:

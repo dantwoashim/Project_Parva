@@ -1,0 +1,63 @@
+name: Publish MCP server
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_registry:
+        description: Publish metadata to the official MCP Registry after the image is public
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+jobs:
+  publish-container:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish MCP image
+        uses: docker/build-push-action@v6
+        with:
+          context: packages/parva-mcp-server
+          file: packages/parva-mcp-server/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/dantwoashim/parva-mcp-server:1.0.0
+            ghcr.io/dantwoashim/parva-mcp-server:latest
+
+  publish-registry:
+    if: ${{ inputs.publish_registry }}
+    needs: publish-container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install MCP publisher
+        working-directory: packages/parva-mcp-server
+        run: |
+          curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+
+      - name: Authenticate with GitHub OIDC
+        working-directory: packages/parva-mcp-server
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish to the official MCP Registry
+        working-directory: packages/parva-mcp-server
+        run: ./mcp-publisher publish

@@ -15,6 +15,12 @@ banking, or religious authority. It verifies bounded proof artifacts and
 preserves review-required and not-authority boundaries.
 
 ```bash
+npm install @project-parva/local-kernel@alpha
+```
+
+For local repository development:
+
+```bash
 npm install
 npm test
 npm pack --dry-run

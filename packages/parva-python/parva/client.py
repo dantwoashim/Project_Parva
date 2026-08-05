@@ -53,7 +53,7 @@ class ParvaClient:
         base_url: str = DEFAULT_API_BASE,
         *,
         future_bs_capabilities_url: str = DEFAULT_FUTURE_BS_CAPABILITIES_URL,
-        timeout: float = 10.0,
+        timeout: float = 75.0,
         transport: Transport | None = None,
         max_retries: int = 2,
         retry_base_delay: float = 0.25,
