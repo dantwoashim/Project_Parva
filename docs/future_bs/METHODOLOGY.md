@@ -2,7 +2,7 @@
 status: public-preview
 tier: 2
 lane: public-preview
-last_verified: 2026-08-04
+last_verified: 2026-08-05
 owner: research-team
 ---
 
@@ -63,6 +63,8 @@ The support values are not calibrated probabilities. Public snapshots keep every
 The selected model matches `72/72` official month cases from `2078-2083 BS` under chronological rolling validation. Each target year uses data ending at `target year - 1`. The model contains no target-year lookup or year-specific correction. The result is evidence for this small window and provides no broad future-accuracy guarantee.
 
 The public forecast is trained through BS 2083. Rows for BS 2084 onward remain excluded from training even when weak lookup tables contain them.
+
+The v7 snapshot is locked by per-year SHA-256 commitments and a Merkle root. The [v7 forecast freeze](V7_FORECAST_FREEZE.md) defines the immutable baseline and the prospective scoring procedure. Historical source recovery follows the separate [official calendar acquisition protocol](OFFICIAL_CALENDAR_ACQUISITION_PROTOCOL.md).
 
 The project requires at least 528 verified month cases before considering a broad independent accuracy claim. Current public metadata reports that threshold as unmet.
 

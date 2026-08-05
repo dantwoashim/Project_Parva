@@ -26,6 +26,8 @@ REQUIRED_DOCS = [
     "docs/future_bs/ACCURACY_REPRODUCIBILITY.md",
     "docs/future_bs/WRONG_GREEN_POLICY.md",
     "docs/future_bs/MODEL_REGISTRY.md",
+    "docs/future_bs/V7_FORECAST_FREEZE.md",
+    "docs/future_bs/OFFICIAL_CALENDAR_ACQUISITION_PROTOCOL.md",
 ]
 SDK_CODE_GLOBS = [
     "packages/parva-js/src/**/*.ts",

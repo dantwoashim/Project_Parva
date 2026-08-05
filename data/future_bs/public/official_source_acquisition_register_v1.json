@@ -1,0 +1,128 @@
+{
+  "schema": "parva-future-bs-official-source-acquisition-register-v1",
+  "updated_at": "2026-08-05",
+  "publication_status": "source_acquisition_metadata",
+  "target_historical_range": "2000-2083 BS",
+  "prospective_primary_year": 2084,
+  "latest_bounded_discovery": {
+    "run_id": "high_trust_acquisition_v1_2026-08-05",
+    "source_families_attempted": 8,
+    "source_attempts": 26,
+    "successful_cached_sources": 25,
+    "failed_or_blocked_sources": 1,
+    "machine_clear_rows_promoted": 0,
+    "result": "cached_sources_require_manual_extraction_and_review"
+  },
+  "current_coverage": {
+    "public_holdout_rows_labeled_official_verified": [2078, 2079, 2080, 2081, 2082, 2083],
+    "rows_with_direct_full_calendar_provenance_in_the_public_registry": [2082],
+    "direct_full_calendar_artifact_identified_and_hashed": [2080, 2082, 2083],
+    "two_reviewer_full_year_extractions_complete": [],
+    "direct_full_calendar_provenance_recovery_required": [2078, 2079, 2081],
+    "historical_untouched_prediction_years": [],
+    "prospective_truth_years_scored": []
+  },
+  "source_candidates": [
+    {
+      "id": "npns_panchanga_2082",
+      "institution": "Nepal Panchanga Nirnayak Samiti",
+      "bs_year": 2082,
+      "role": "complete_annual_panchanga_candidate",
+      "url": "https://npns.gov.np/pages/the-year-of-2082-bs-3/",
+      "artifact_url": "https://giwmscdnone.gov.np/media/pages/files/npnbs_2082_ussfian.pdf",
+      "retrieved_bytes": 23981517,
+      "retrieved_sha256": "sha256:e0b9aad80b85a8863daba0b5cc20150dca483df90365fc6d93cdafcdd3dd2848",
+      "status": "hashed_pending_two_reviewer_extraction"
+    },
+    {
+      "id": "npns_panchanga_2083",
+      "institution": "Nepal Panchanga Nirnayak Samiti",
+      "bs_year": 2083,
+      "role": "complete_annual_panchanga_candidate",
+      "url": "https://npns.gov.np/pages/panchanga-of-the-year-2083-5",
+      "artifact_url": "https://giwmscdnone.gov.np/media/pages/files/FORMAT-2083-A_7f75xmb.pdf",
+      "retrieved_bytes": 24678584,
+      "retrieved_sha256": "sha256:e7615a149018edd41e6239f7d0ed0c513f94e0566277dca7af41347c62713bde",
+      "status": "hashed_pending_two_reviewer_extraction"
+    },
+    {
+      "id": "doib_table_calendar_2082",
+      "institution": "Government of Nepal Department of Information and Broadcasting",
+      "bs_year": 2082,
+      "role": "complete_annual_calendar",
+      "url": "https://doib.gov.np/content/13180/table-calendar-2082/",
+      "artifact_url": "https://giwmscdnone.gov.np/media/pdf_upload/Table%20calendar%202082_Final_kngovbv.pdf",
+      "retrieved_bytes": 4167303,
+      "retrieved_sha256": "sha256:fea37120328253fb1bc8e91c1183df1ca506ccaba476caa0260115cce9bcc9e7",
+      "status": "existing_verified_row_reviewer_identity_upgrade_required"
+    },
+    {
+      "id": "gandaki_ocmcm_calendar_2080",
+      "institution": "Gandaki Province Office of the Chief Minister and Council of Ministers",
+      "bs_year": 2080,
+      "role": "complete_annual_calendar_candidate",
+      "url": "https://ocmcm.gandaki.gov.np/images/news/16819797497663_calendar%202080%20BS_compressed.pdf",
+      "retrieved_bytes": 2073158,
+      "retrieved_sha256": "sha256:1a226911086a897792cd089eacc4fc5a7dc59079f36232f0b5f4882c7c9348af",
+      "status": "hashed_pending_two_reviewer_extraction"
+    },
+    {
+      "id": "moha_holidays_2078",
+      "institution": "Government of Nepal Ministry of Home Affairs",
+      "bs_year": 2078,
+      "role": "official_dated_witness",
+      "url": "https://daokailali.moha.gov.np/en/post/public-holidays-given-in-the-year-2078-bs",
+      "retrieved_artifact_bytes": 616761,
+      "retrieved_artifact_sha256": "sha256:cd65e178d91dd07763841ed4e82c38b7b22f03d66dd08bcfb751089234a8cc11",
+      "status": "identified_not_a_complete_calendar_row"
+    },
+    {
+      "id": "moha_holidays_2079",
+      "institution": "Government of Nepal Ministry of Home Affairs",
+      "bs_year": 2079,
+      "role": "official_dated_witness",
+      "url": "https://www.moha.gov.np/post/this-information-has-been-published-as-the-government-of-nepal-has-decided-to",
+      "status": "identified_not_a_complete_calendar_row"
+    },
+    {
+      "id": "moha_holidays_2080",
+      "institution": "Government of Nepal Ministry of Home Affairs",
+      "bs_year": 2080,
+      "role": "official_dated_witness",
+      "url": "https://www.moha.gov.np/post/public-holidays-for-2080-2",
+      "status": "identified_not_a_complete_calendar_row"
+    },
+    {
+      "id": "moha_holidays_2081",
+      "institution": "Government of Nepal Ministry of Home Affairs",
+      "bs_year": 2081,
+      "role": "official_dated_witness",
+      "url": "https://www.moha.gov.np/post/government-and-public-holidays-in-2081-2",
+      "status": "identified_not_a_complete_calendar_row"
+    },
+    {
+      "id": "moha_holidays_2082",
+      "institution": "Government of Nepal Ministry of Home Affairs",
+      "bs_year": 2082,
+      "role": "official_dated_witness",
+      "url": "https://www.moha.gov.np/en/post/government-and-public-holidays-in-2082-2",
+      "status": "identified_not_a_complete_calendar_row"
+    },
+    {
+      "id": "moha_holidays_2083",
+      "institution": "Government of Nepal Ministry of Home Affairs",
+      "bs_year": 2083,
+      "role": "official_dated_witness",
+      "url": "https://www.moha.gov.np/post/government-and-public-holidays-in-2083",
+      "status": "identified_not_a_complete_calendar_row"
+    }
+  ],
+  "acquisition_bands": [
+    {"bs_years": "2078-2083", "priority": 1, "purpose": "repair direct provenance for the official validation window"},
+    {"bs_years": "2068-2077", "priority": 2, "purpose": "first older official and printed archive band"},
+    {"bs_years": "2058-2067", "priority": 3, "purpose": "second older official and printed archive band"},
+    {"bs_years": "2048-2057", "priority": 4, "purpose": "third older official and printed archive band"},
+    {"bs_years": "2000-2047", "priority": 5, "purpose": "long-range provenance recovery"}
+  ],
+  "claim_boundary": "Historical recovery strengthens provenance and retrospective analysis. Only truth published after a recorded forecast freeze can produce prospective evidence."
+}

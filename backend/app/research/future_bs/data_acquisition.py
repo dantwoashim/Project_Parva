@@ -18,6 +18,7 @@ from app.research.future_bs.data_acquisition_sources import (
     WITNESS_DIR,
     WITNESS_FIELDS,
     collect_source_witnesses,
+    ensure_dirs,
     extract_open_source_converter_tables,
     extract_rat32_pages,
     make_witness,
@@ -28,6 +29,7 @@ from app.research.future_bs.data_acquisition_sources import (
     source_policy,
     utc_now,
     write_csv,
+    write_jsonl,
 )
 
 
@@ -551,6 +553,7 @@ __all__ = [
     "coverage_metrics",
     "extract_open_source_converter_tables",
     "extract_rat32_pages",
+    "ensure_dirs",
     "generate_human_review_queue",
     "make_witness",
     "month_start_dates_from_lengths",
@@ -560,4 +563,5 @@ __all__ = [
     "reconstruct_month_starts",
     "run_reconstruction_pipeline",
     "source_policy",
+    "write_jsonl",
 ]

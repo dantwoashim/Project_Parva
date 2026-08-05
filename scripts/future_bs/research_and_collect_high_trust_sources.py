@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -16,7 +17,14 @@ from app.research.future_bs.high_trust_acquisition import research_and_collect_h
 
 
 def main() -> int:
-    payload = research_and_collect_high_trust_sources()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--max-urls-per-family", type=int, default=20)
+    parser.add_argument("--timeout-seconds", type=int, default=20)
+    args = parser.parse_args()
+    payload = research_and_collect_high_trust_sources(
+        max_urls_per_family=args.max_urls_per_family,
+        timeout_seconds=args.timeout_seconds,
+    )
     print(json.dumps(payload, indent=2, ensure_ascii=False))
     return 0
 

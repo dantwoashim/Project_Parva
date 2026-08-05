@@ -389,8 +389,12 @@ The selected pipeline combines sidereal solar-ingress solving, Nepal civil-time 
 
 The official `2078-2083 BS` window reaches `72/72` exact month matches under chronological rolling validation, with each target year trained only on earlier years. It remains a small development-window result rather than broad independent accuracy proof. Broad validation remains below the project's 528 verified-month evidence threshold. Every forecast carries `computed_prediction_not_official`, `review_required=true`, and an authoritative-publication override.
 
+The v7 forecast is now locked by a public source commit, snapshot digest, 117 per-year commitments, and a Merkle root. Later official calendars are scored only from hashed source artifacts reviewed by two people; historical source recovery remains a separate provenance lane.
+
 - Public API contract: [docs/future_bs/API.md](docs/future_bs/API.md)
 - Selected method: [docs/future_bs/METHODOLOGY.md](docs/future_bs/METHODOLOGY.md)
+- Frozen v7 forecast: [docs/future_bs/V7_FORECAST_FREEZE.md](docs/future_bs/V7_FORECAST_FREEZE.md)
+- Official-source acquisition: [docs/future_bs/OFFICIAL_CALENDAR_ACQUISITION_PROTOCOL.md](docs/future_bs/OFFICIAL_CALENDAR_ACQUISITION_PROTOCOL.md)
 - BS 2082 boundary diagnosis: [docs/future_bs/2082_BOUNDARY_DIAGNOSIS.md](docs/future_bs/2082_BOUNDARY_DIAGNOSIS.md)
 - Research boundary: [docs/future_bs/RESEARCH_BOUNDARY.md](docs/future_bs/RESEARCH_BOUNDARY.md)
 

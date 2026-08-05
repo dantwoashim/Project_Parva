@@ -1,0 +1,64 @@
+{
+  "schema": "parva-future-bs-source-discovery-run-v1",
+  "run_id": "high_trust_acquisition_v1_2026-08-05",
+  "completed_at": "2026-08-05T10:50:52Z",
+  "publication_status": "source_acquisition_metadata",
+  "limits": {
+    "max_urls_per_family": 4,
+    "request_timeout_seconds": 5
+  },
+  "result": {
+    "source_families_attempted": 8,
+    "source_attempts": 26,
+    "successful_cached_sources": 25,
+    "failed_or_blocked_sources": 1,
+    "new_high_trust_rows": 0,
+    "new_tier_1_rows": 0,
+    "new_tier_2_rows": 0,
+    "new_tier_3_rows": 0
+  },
+  "families": [
+    {"family": "npns", "attempts": 4, "status": "cached_for_manual_review"},
+    {"family": "government_calendars", "attempts": 4, "status": "cached_for_manual_review"},
+    {"family": "rajpatra", "attempts": 1, "status": "request_timed_out"},
+    {"family": "moha", "attempts": 4, "status": "cached_for_manual_review"},
+    {"family": "gorkhapatra", "attempts": 4, "status": "cached_for_manual_review"},
+    {"family": "archive_org_panchanga", "attempts": 1, "status": "query_returned_zero_matching_items"},
+    {"family": "public_notices", "attempts": 4, "status": "cached_for_manual_review"},
+    {"family": "independent_newspapers", "attempts": 4, "status": "cached_for_manual_review"}
+  ],
+  "quarantined_artifacts": [
+    {
+      "source_id": "npns_panchanga_2082",
+      "retrieval_mode": "direct_link_recovered_from_cached_official_page",
+      "bytes": 23981517,
+      "sha256": "sha256:e0b9aad80b85a8863daba0b5cc20150dca483df90365fc6d93cdafcdd3dd2848"
+    },
+    {
+      "source_id": "npns_panchanga_2083",
+      "retrieval_mode": "direct_link_recovered_from_cached_official_page",
+      "bytes": 24678584,
+      "sha256": "sha256:e7615a149018edd41e6239f7d0ed0c513f94e0566277dca7af41347c62713bde"
+    },
+    {
+      "source_id": "doib_table_calendar_2082",
+      "retrieval_mode": "direct_official_artifact_url",
+      "bytes": 4167303,
+      "sha256": "sha256:fea37120328253fb1bc8e91c1183df1ca506ccaba476caa0260115cce9bcc9e7"
+    },
+    {
+      "source_id": "gandaki_ocmcm_calendar_2080",
+      "retrieval_mode": "bounded_discovery_cache",
+      "bytes": 2073158,
+      "sha256": "sha256:1a226911086a897792cd089eacc4fc5a7dc59079f36232f0b5f4882c7c9348af"
+    },
+    {
+      "source_id": "moha_holidays_2078",
+      "retrieval_mode": "bounded_discovery_cache",
+      "bytes": 616761,
+      "sha256": "sha256:cd65e178d91dd07763841ed4e82c38b7b22f03d66dd08bcfb751089234a8cc11"
+    }
+  ],
+  "promotion_result": "No row was promoted. Cached source pages and files require direct extraction and two-reviewer verification.",
+  "blocker": "Public digital discovery has not produced decades of complete official annual calendars. Older coverage requires archive and publisher acquisition."
+}

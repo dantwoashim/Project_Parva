@@ -43,6 +43,8 @@ HIGH_TRUST_FIELDS = [
 ]
 
 FAMILY_OUTPUTS = {
+    "npns": "npns_calendar_witnesses.csv",
+    "government_calendars": "government_calendar_witnesses.csv",
     "rajpatra": "rajpatra_witnesses.csv",
     "moha": "moha_holiday_witnesses.csv",
     "gorkhapatra": "gorkhapatra_masthead_witnesses.csv",
@@ -52,6 +54,33 @@ FAMILY_OUTPUTS = {
 }
 
 SOURCE_FAMILIES: list[dict[str, Any]] = [
+    {
+        "family": "npns",
+        "name": "Nepal Panchanga Nirnayak Samiti annual material",
+        "tier": "official_verified",
+        "cache_dir": "npns",
+        "urls": [
+            "https://npns.gov.np/",
+            "https://npns.gov.np/pages/the-year-of-2082-bs-3/",
+            "https://npns.gov.np/pages/panchanga-of-the-year-2083-5",
+            "https://npns.gov.np/content/13/press-release-20251216/",
+        ],
+        "report": "npns_acquisition_report.md",
+        "keywords": ["panchanga", "patro", "calendar", "annual"],
+    },
+    {
+        "family": "government_calendars",
+        "name": "Government annual calendars",
+        "tier": "official_verified",
+        "cache_dir": "government_calendars",
+        "urls": [
+            "https://doib.gov.np/content/13180/table-calendar-2082/",
+            "https://ocmcm.gandaki.gov.np/list/news/calender-2080-bs",
+            "https://ocmcm.gandaki.gov.np/images/news/16819797497663_calendar%202080%20BS_compressed.pdf",
+        ],
+        "report": "government_calendar_acquisition_report.md",
+        "keywords": ["table calendar", "annual calendar", "calendar"],
+    },
     {
         "family": "rajpatra",
         "name": "Nepal Rajpatra / Department of Printing",
@@ -69,10 +98,12 @@ SOURCE_FAMILIES: list[dict[str, Any]] = [
         "tier": "official_verified",
         "cache_dir": "moha",
         "urls": [
-            "https://www.moha.gov.np/en/page/holidays",
-            "https://www.moha.gov.np/post/government-and-public-holidays-in-2080",
+            "https://mrao.moha.gov.np/page/holidays",
+            "https://daokailali.moha.gov.np/en/post/public-holidays-given-in-the-year-2078-bs",
+            "https://www.moha.gov.np/post/this-information-has-been-published-as-the-government-of-nepal-has-decided-to",
+            "https://www.moha.gov.np/post/public-holidays-for-2080-2",
             "https://www.moha.gov.np/post/government-and-public-holidays-in-2081-2",
-            "https://www.moha.gov.np/post/government-and-public-holidays-in-2082-2",
+            "https://www.moha.gov.np/en/post/government-and-public-holidays-in-2082-2",
             "https://www.moha.gov.np/post/government-and-public-holidays-in-2083",
         ],
         "report": "moha_acquisition_report.md",
@@ -199,8 +230,17 @@ def _read_text(path: Path) -> str:
 
 def _discover_links(base_url: str, text: str) -> list[str]:
     links = set()
-    for match in re.finditer(r"""href=["']([^"']+)["']""", text, flags=re.I):
-        href = html.unescape(match.group(1))
+    patterns = (
+        r"""href=["']([^"']+)["']""",
+        r"""<object[^>]+data=["']([^"']+)["']""",
+        r"""\b(?:pdf|file)\s*=\s*["']([^"']+\.pdf(?:\?[^"']*)?)["']""",
+    )
+    for match in (
+        match
+        for pattern in patterns
+        for match in re.finditer(pattern, text, flags=re.I)
+    ):
+        href = html.unescape(match.group(1)).strip()
         if not href:
             continue
         absolute = urllib.parse.urljoin(base_url, href)
@@ -215,6 +255,8 @@ def _discover_links(base_url: str, text: str) -> list[str]:
             )
         )
         lower = absolute.lower()
+        if "pdfobject.com/pdf/sample.pdf" in lower:
+            continue
         if lower.endswith((".css", ".js", ".svg", ".ico", ".png", ".webp", ".woff", ".woff2")):
             continue
         if any(token in lower for token in (".pdf", "holiday", "bida", "vida", "notice", "suchana", "%e0%a4%b8%e0%a5%82%e0%a4%9a%e0%a4%a8%e0%a4%be")):
@@ -306,7 +348,13 @@ def _existing_witness_keys() -> set[tuple[int, int, int, str]]:
     return keys
 
 
-def _collect_family(family: dict[str, Any], existing_keys: set[tuple[int, int, int, str]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[str]]:
+def _collect_family(
+    family: dict[str, Any],
+    existing_keys: set[tuple[int, int, int, str]],
+    *,
+    max_urls: int = 20,
+    timeout_seconds: int = 20,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]], list[str]]:
     rows: list[dict[str, Any]] = []
     attempts: list[dict[str, Any]] = []
     failures: list[dict[str, Any]] = []
@@ -315,11 +363,11 @@ def _collect_family(family: dict[str, Any], existing_keys: set[tuple[int, int, i
     queue = list(family["urls"])
     seen = set(queue)
     index = 0
-    while queue and index < 20:
+    while queue and index < max_urls:
         url = queue.pop(0)
         index += 1
         cache_path = cache_dir / _safe_name(url, index)
-        result = _download(url, cache_path)
+        result = _download(url, cache_path, timeout=timeout_seconds)
         if result["ok"]:
             cached_files.append(result["path"])
             text = _read_text(cache_path)
@@ -530,14 +578,25 @@ def _write_manual_targets(attempts: list[dict[str, Any]]) -> None:
     )
 
 
-def research_and_collect_high_trust_sources() -> dict[str, Any]:
+def research_and_collect_high_trust_sources(
+    *,
+    max_urls_per_family: int = 20,
+    timeout_seconds: int = 20,
+) -> dict[str, Any]:
+    if max_urls_per_family < 1 or timeout_seconds < 1:
+        raise ValueError("Acquisition limits must be positive integers.")
     _ensure_dirs()
     existing_keys = _existing_witness_keys()
     all_rows: list[dict[str, Any]] = []
     all_attempts: list[dict[str, Any]] = []
     all_failures: list[dict[str, Any]] = []
     for family in SOURCE_FAMILIES:
-        rows, attempts, failures, cached = _collect_family(family, existing_keys)
+        rows, attempts, failures, cached = _collect_family(
+            family,
+            existing_keys,
+            max_urls=max_urls_per_family,
+            timeout_seconds=timeout_seconds,
+        )
         all_rows.extend(rows)
         all_attempts.extend(attempts)
         all_failures.extend(failures)
