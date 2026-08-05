@@ -78,7 +78,9 @@ def acceptance_gate(
         "official_strict_2078_2083_remains_72_of_72": (
             official_metric["exact_matches"] == 72 and official_metric["total_months_tested"] == 72
         ),
-        "no_target_year_lookup_corpus_leakage": True,
+        "no_target_year_lookup_corpus_leakage": bool(
+            official_metric.get("leakage_audit", {}).get("passed", False)
+        ),
         "no_future_shadow_reference_target_leakage": not candidate.uses_future_shadow_targets,
         "no_tier_5_6_official_contamination": not candidate.uses_tier_5_6_for_official,
         "no_year_specific_hardcoded_patch": not candidate.year_specific_patch,

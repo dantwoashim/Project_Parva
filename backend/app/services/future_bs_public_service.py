@@ -16,8 +16,8 @@ from app.core.source_metadata import (
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 PUBLIC_DATA_DIR = PROJECT_ROOT / "data" / "future_bs" / "public"
-FORECAST_SNAPSHOT_PATH = PUBLIC_DATA_DIR / "forecast_snapshot_v6_2084_2200.json"
-METHODOLOGY_PATH = PUBLIC_DATA_DIR / "selected_model_v6.json"
+FORECAST_SNAPSHOT_PATH = PUBLIC_DATA_DIR / "forecast_snapshot_v7_2084_2200.json"
+METHODOLOGY_PATH = PUBLIC_DATA_DIR / "selected_model_v7.json"
 PUBLICATION_STATUS = "computed_prediction_not_official"
 
 

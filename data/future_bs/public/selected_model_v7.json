@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.1",
+  "model_id": "parva_authority_aware_solar_civil_v7",
+  "method_version": "parva_authority_aware_solar_civil_v7",
+  "calibration_version": "de440_source_stratified_authority_civil_2000_2083_v5",
+  "maturity": "research_preview",
+  "publication_status": "computed_prediction_not_official",
+  "forecast_range": {
+    "start_bs_year": 2084,
+    "end_bs_year": 2200
+  },
+  "pipeline": [
+    "source_labeled_bs_month_boundaries",
+    "sidereal_solar_ingress_solving",
+    "separate_reference_and_authority_training_towers",
+    "minimum_authority_support_gate",
+    "source_stratified_month_start_reconciliation",
+    "year_sequence_decoding",
+    "prediction_sets_and_boundary_risk"
+  ],
+  "selected_model": {
+    "family": "authority_aware_solar_civil_ensemble",
+    "subfamily": "source_stratified_month_start_reconciliation",
+    "reference_source_policy": "all_reference",
+    "authority_source_policy": "official_only",
+    "minimum_authority_years": 4,
+    "tower_weighting": "equal_total_weight_with_authority_tie_break",
+    "physical_astronomy": "JPL/Swiss sidereal ingress evidence",
+    "probability_semantics": "normalized_model_support_not_calibrated_probability"
+  },
+  "training": {
+    "start_bs_year": 2000,
+    "cutoff_bs_year": 2083,
+    "past_only": true,
+    "target_and_future_rows_excluded": true
+  },
+  "authority_context": {
+    "role": "Published civil decisions calibrate the authority tower; Parva does not replace NPNS.",
+    "npns_2082_panchanga": "https://npns.gov.np/pages/the-year-of-2082-bs-3/",
+    "npns_method_notice": "https://npns.gov.np/content/13/press-release-20251216/",
+    "method_boundary": "Recent NPNS material identifies traditional Saurukta Panchanga practice. The model therefore keeps modern physical ingress and published civil decisions separate."
+  },
+  "sequence_constraints": {
+    "month_count": 12,
+    "allowed_month_lengths": [
+      29,
+      30,
+      31,
+      32
+    ],
+    "allowed_year_totals": [
+      365,
+      366
+    ]
+  },
+  "risk_policy": {
+    "labels": [
+      "GREEN",
+      "YELLOW",
+      "RED"
+    ],
+    "prediction_sets": [
+      "prediction_set_80",
+      "prediction_set_95"
+    ],
+    "prediction_set_semantics": "model_support_sets_without_calibrated_coverage",
+    "boundary_distance_unit": "minutes",
+    "review_required_for_every_public_forecast": true
+  },
+  "validation": {
+    "official_rolling_time_travel": {
+      "bs_year_range": "2078-2083",
+      "exact_month_matches": 72,
+      "month_cases": 72,
+      "accuracy": 100.0,
+      "evaluation_kind": "rolling_past_only_official_evaluation",
+      "training_source_policy": "source_stratified",
+      "evaluation_source_policy": "official_only",
+      "leakage_safe": true
+    },
+    "independent_broad_accuracy_claim_ready": false,
+    "required_verified_month_cases_for_broad_claim": 528,
+    "claim_boundary": "The 72-case official window is a chronological rolling evaluation, but it remains too small for a broad future-accuracy guarantee."
+  }
+}

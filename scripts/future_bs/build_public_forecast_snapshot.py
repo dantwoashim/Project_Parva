@@ -10,11 +10,10 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RESEARCH_ROOT = PROJECT_ROOT / "data" / "future_bs"
 PREDICTION_SOURCE = RESEARCH_ROOT / "predictions" / "parva_future_bs_accuracy_best_2084_2200.json"
-MODEL_SOURCE = RESEARCH_ROOT / "calibration" / "final_selected_model.json"
-METRICS_SOURCE = RESEARCH_ROOT / "accuracy_lab" / "current_state_metrics.json"
+METRICS_SOURCE = RESEARCH_ROOT / "accuracy_lab" / "unified_rolling_validation.json"
 PUBLIC_DIR = RESEARCH_ROOT / "public"
-FORECAST_OUTPUT = PUBLIC_DIR / "forecast_snapshot_v6_2084_2200.json"
-MODEL_OUTPUT = PUBLIC_DIR / "selected_model_v6.json"
+FORECAST_OUTPUT = PUBLIC_DIR / "forecast_snapshot_v7_2084_2200.json"
+MODEL_OUTPUT = PUBLIC_DIR / "selected_model_v7.json"
 PUBLICATION_STATUS = "computed_prediction_not_official"
 
 
@@ -25,20 +24,24 @@ def _read(path: Path) -> dict[str, Any]:
 
 
 def _validation_payload(metrics: dict[str, Any]) -> dict[str, Any]:
-    replay = metrics["official_strict_2078_2083_solar_civil"]
+    if not metrics.get("leakage_safe"):
+        raise SystemExit("Selected validation artifact is not leakage-safe.")
     return {
-        "official_window_replay": {
+        "official_rolling_time_travel": {
             "bs_year_range": "2078-2083",
-            "exact_month_matches": int(replay["exact_matches"]),
-            "month_cases": int(replay["total_months_tested"]),
-            "agreement": float(replay["agreement"]),
-            "evaluation_kind": "calibrated_official_window_replay",
+            "exact_month_matches": int(metrics["exact_matches"]),
+            "month_cases": int(metrics["months_tested"]),
+            "accuracy": float(metrics["accuracy"]),
+            "evaluation_kind": "rolling_past_only_official_evaluation",
+            "training_source_policy": str(metrics["training_source_policy"]),
+            "evaluation_source_policy": str(metrics["evaluation_source_policy"]),
+            "leakage_safe": True,
         },
         "independent_broad_accuracy_claim_ready": False,
         "required_verified_month_cases_for_broad_claim": 528,
         "claim_boundary": (
-            "The 72-case official window is a calibrated replay, not a sufficiently large "
-            "independent future-accuracy guarantee."
+            "The 72-case official window is a chronological rolling evaluation, but it remains "
+            "too small for a broad future-accuracy guarantee."
         ),
     }
 
@@ -58,7 +61,7 @@ def _compact_month(detail: dict[str, Any]) -> dict[str, Any]:
             int(value) for value in detail.get("prediction_set_80") or [predicted_days]
         ],
         "prediction_set_95": prediction_set_95,
-        "model_probability": {
+        "model_support": {
             str(key): round(float(value), 6)
             for key, value in (detail.get("probability") or {}).items()
         },
@@ -106,7 +109,6 @@ def _compact_year(bs_year: int, payload: dict[str, Any]) -> dict[str, Any]:
 
 def main() -> int:
     predictions = _read(PREDICTION_SOURCE)
-    model = _read(MODEL_SOURCE)
     metrics = _read(METRICS_SOURCE)
     if predictions.get("publication_status") != PUBLICATION_STATUS:
         raise SystemExit("Selected prediction source has an unsafe publication status.")
@@ -117,9 +119,9 @@ def main() -> int:
         raise SystemExit("Selected prediction source must cover every BS year from 2084 through 2200.")
 
     validation = _validation_payload(metrics)
-    model_id = str(model["model"])
+    model_id = str(predictions["selected_model"])
     methodology = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "model_id": model_id,
         "method_version": str(predictions["method_version"]),
         "calibration_version": str(source_years["2084"]["calibration_version"]),
@@ -129,19 +131,36 @@ def main() -> int:
         "pipeline": [
             "source_labeled_bs_month_boundaries",
             "sidereal_solar_ingress_solving",
-            "nepal_civil_time_assignment",
-            "month_specific_civil_cutoff_rules",
-            "past_only_statistical_pattern_stack",
+            "separate_reference_and_authority_training_towers",
+            "minimum_authority_support_gate",
+            "source_stratified_month_start_reconciliation",
             "year_sequence_decoding",
             "prediction_sets_and_boundary_risk",
         ],
         "selected_model": {
-            "family": "computational_solar_ingress",
-            "subfamily": "selected_solar_civil_rule_sequence_decoded",
-            "civil_rule_family": model["civil_rule_family"],
-            "source_policy": model["source_policy"],
-            "ayanamsha": model["ayanamsha"],
-            "month_cutoffs": model["civil_rule_results"]["month_cutoffs"],
+            "family": "authority_aware_solar_civil_ensemble",
+            "subfamily": "source_stratified_month_start_reconciliation",
+            "reference_source_policy": "all_reference",
+            "authority_source_policy": "official_only",
+            "minimum_authority_years": 4,
+            "tower_weighting": "equal_total_weight_with_authority_tie_break",
+            "physical_astronomy": "JPL/Swiss sidereal ingress evidence",
+            "probability_semantics": "normalized_model_support_not_calibrated_probability",
+        },
+        "training": {
+            "start_bs_year": 2000,
+            "cutoff_bs_year": int(predictions["training_cutoff_bs_year"]),
+            "past_only": True,
+            "target_and_future_rows_excluded": True,
+        },
+        "authority_context": {
+            "role": "Published civil decisions calibrate the authority tower; Parva does not replace NPNS.",
+            "npns_2082_panchanga": "https://npns.gov.np/pages/the-year-of-2082-bs-3/",
+            "npns_method_notice": "https://npns.gov.np/content/13/press-release-20251216/",
+            "method_boundary": (
+                "Recent NPNS material identifies traditional Saurukta Panchanga practice. "
+                "The model therefore keeps modern physical ingress and published civil decisions separate."
+            ),
         },
         "sequence_constraints": {
             "month_count": 12,
@@ -150,7 +169,8 @@ def main() -> int:
         },
         "risk_policy": {
             "labels": ["GREEN", "YELLOW", "RED"],
-            "prediction_sets": ["80_percent_model_set", "95_percent_model_set"],
+            "prediction_sets": ["prediction_set_80", "prediction_set_95"],
+            "prediction_set_semantics": "model_support_sets_without_calibrated_coverage",
             "boundary_distance_unit": "minutes",
             "review_required_for_every_public_forecast": True,
         },
@@ -158,8 +178,8 @@ def main() -> int:
     }
 
     snapshot = {
-        "schema_version": "1.0",
-        "snapshot_id": "parva_future_bs_public_v6_2084_2200",
+        "schema_version": "1.1",
+        "snapshot_id": "parva_future_bs_public_v7_2084_2200",
         "source_run_id": str(predictions["run_id"]),
         "model_id": model_id,
         "method_version": str(predictions["method_version"]),

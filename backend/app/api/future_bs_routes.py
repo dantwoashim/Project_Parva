@@ -24,7 +24,7 @@ class FutureBSMonthForecast(BaseModel):
     predicted_days: int = Field(..., ge=29, le=32)
     prediction_set_80: list[int]
     prediction_set_95: list[int]
-    model_probability: dict[str, float]
+    model_support: dict[str, float]
     heuristic_confidence_score: float = Field(..., ge=0, le=1)
     confidence_label: str
     model_agreement: str

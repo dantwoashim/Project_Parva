@@ -2,7 +2,7 @@
 status: public-preview
 tier: 2
 lane: public-preview
-last_verified: 2026-08-04
+last_verified: 2026-08-05
 owner: research-team
 ---
 
@@ -28,7 +28,7 @@ The year response includes:
 
 - twelve predicted month lengths and the year total
 - 80% and 95% model prediction sets for each month
-- model probabilities and agreement counts
+- normalized model support and agreement counts
 - Nepal civil-boundary distance in minutes
 - GREEN, YELLOW, or RED review labels and risk flags
 - selected model and calibration versions
@@ -38,7 +38,7 @@ The methodology endpoint publishes the selected pipeline, civil cutoff rules, se
 
 ## Validation Meaning
 
-The selected method matches all `72/72` month cases in the official `2078-2083 BS` calibration window. This result is a calibrated replay. Independent broad accuracy remains below the project's evidence threshold of 528 verified month cases. The API exposes both facts in the `validation` object.
+The selected method matches all `72/72` month cases in chronological rolling validation over the official `2078-2083 BS` window. Every target year uses training data ending at the previous year. This small development window remains below the project's evidence threshold of 528 verified month cases, so it does not establish broad independent accuracy. The API exposes these boundaries in the `validation` object.
 
 ## Controlled Research Routes
 
@@ -56,6 +56,6 @@ These routes require a research profile, experimental and research flags, and op
 
 ## Source Artifacts
 
-- Forecast snapshot: `data/future_bs/public/forecast_snapshot_v6_2084_2200.json`
-- Selected methodology: `data/future_bs/public/selected_model_v6.json`
+- Forecast snapshot: `data/future_bs/public/forecast_snapshot_v7_2084_2200.json`
+- Selected methodology: `data/future_bs/public/selected_model_v7.json`
 - Snapshot promotion builder: `scripts/future_bs/build_public_forecast_snapshot.py` (requires the controlled source run artifacts)

@@ -15,7 +15,7 @@ from .models import CALIBRATION_VERSION, METHOD_VERSION
 
 PROJECT_ROOT = project_root()
 RUNS_DIR = PROJECT_ROOT / "data" / "future_bs" / "model_runs"
-DEFAULT_RUN_ID = "parva_solar_civil_accuracy_v6_2026_05_07_001"
+DEFAULT_RUN_ID = "parva_authority_aware_solar_civil_v7_cutoff_2083"
 
 
 def _stable_hash(payload: dict[str, Any]) -> str:
@@ -28,7 +28,7 @@ def build_run_metadata(
     run_id: str = DEFAULT_RUN_ID,
     start_bs: int = 2084,
     end_bs: int = 2200,
-    created_at: str = "2026-05-07T00:00:00Z",
+    created_at: str = "2026-08-05T00:00:00Z",
 ) -> dict[str, Any]:
     try:
         from .solar_ingress_engine import active_ephemeris_label
@@ -47,8 +47,11 @@ def build_run_metadata(
         "corpus_version": CORPUS_VERSION,
         "ephemeris_version": ephemeris_version,
         "ayanamsha_version": "lahiri_with_registered_sensitivity_candidates_v1",
-        "civil_rule_version": "civil_decision_knn_plus_pattern_stack_abstention_v4",
-        "rule_version": "civil_decision_knn_plus_pattern_stack_abstention_v4",
+        "civil_rule_version": "source_stratified_month_start_reconciliation_v1",
+        "rule_version": "authority_aware_solar_civil_v7",
+        "training_cutoff_bs_year": 2083,
+        "training_source_policy": "source_stratified",
+        "leakage_safe": True,
         "prediction_range": f"{start_bs}-{end_bs} BS",
         "created_at": created_at,
         "publication_status": "computed_prediction_not_official",

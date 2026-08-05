@@ -427,7 +427,7 @@ function FutureForecastPanel() {
   }, []);
 
   const activeMonth = payload?.months?.find((month) => month.month === selectedMonth) || null;
-  const replay = payload?.validation?.official_window_replay;
+  const rollingValidation = payload?.validation?.official_rolling_time_travel;
   const confidencePercent = Math.round((payload?.heuristic_confidence_score || 0) * 100);
 
   const submit = (event) => {
@@ -440,7 +440,7 @@ function FutureForecastPanel() {
       <header>
         <div>
           <p className="eyebrow">Public research snapshot</p>
-          <h2 id="future-forecast-title">Explore the selected solar-civil forecast.</h2>
+          <h2 id="future-forecast-title">Explore the source-aware solar-civil forecast.</h2>
         </div>
         <form onSubmit={submit} className="future-year-control">
           <label htmlFor="future-bs-year">BS year</label>
@@ -466,8 +466,8 @@ function FutureForecastPanel() {
         <div><span>Year length</span><strong>{payload ? `${payload.year_total_days} days` : '...'}</strong></div>
         <div><span>Heuristic score</span><strong>{payload ? `${confidencePercent}%` : '...'}</strong></div>
         <div>
-          <span>Calibrated replay</span>
-          <strong>{replay ? `${replay.exact_month_matches}/${replay.month_cases}` : '...'}</strong>
+          <span>Rolling validation</span>
+          <strong>{rollingValidation ? `${rollingValidation.exact_month_matches}/${rollingValidation.month_cases}` : '...'}</strong>
         </div>
       </div>
 

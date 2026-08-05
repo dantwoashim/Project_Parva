@@ -2,7 +2,7 @@
 status: research
 tier: 3
 lane: research
-last_verified: 2026-05-14
+last_verified: 2026-08-05
 owner: research-team
 ---
 
@@ -17,19 +17,21 @@ not an official publication system.
 
 | Field | Value |
 | --- | --- |
-| Method version | `parva_solar_civil_accuracy_v6` |
-| Calibration version | `de440_swiss_crosscheck_civil_decision_knn_pattern_stack_2000_2083_v4` |
-| Default run id | `parva_solar_civil_accuracy_v6_2026_05_07_001` |
+| Method version | `parva_authority_aware_solar_civil_v7` |
+| Calibration version | `de440_source_stratified_authority_civil_2000_2083_v5` |
+| Default run id | `parva_authority_aware_solar_civil_v7_cutoff_2083` |
 | Prediction range | `2084-2200 BS` |
 | Publication status | `computed_prediction_not_official` |
-| Public snapshot | `forecast_snapshot_v6_2084_2200.json` |
+| Public snapshot | `forecast_snapshot_v7_2084_2200.json` |
 
 ## Registered Model Families
 
 | Family | Role | Public exposure |
 | --- | --- | --- |
-| Solar-ingress civil decision model | Primary computational tower | Selected methodology and curated snapshot |
-| Past-only statistical pattern stack | Secondary bounded signal | Selected methodology and curated snapshot |
+| Broad solar-civil reference tower | Long-history computational prior | Selected methodology and curated snapshot |
+| Official civil-decision tower | Source-strict authority evidence after the minimum support gate | Selected methodology and curated snapshot |
+| Month-start reconciler | Canonical source-aware boundary decision | Selected methodology and curated snapshot |
+| Statistical pattern stack | Rejected top-level candidate retained for diagnostics | Private diagnostic only |
 | Legacy-cycle baseline | Diagnostic disagreement signal | Private diagnostic only |
 | JPL DE440 adapter | Optional high-precision ephemeris adapter | Availability metadata only |
 | Swiss Ephemeris adapter | Local astronomical adapter | Availability metadata only |

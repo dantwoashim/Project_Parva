@@ -385,12 +385,13 @@ GET /v4/api/future-bs/methodology
 GET /v4/api/future-bs/forecast/{bs_year}
 ```
 
-The selected pipeline combines sidereal solar-ingress solving, Nepal civil-time assignment, month-specific cutoff rules, a past-only statistical pattern stack, complete-year sequence constraints, prediction sets, and boundary-risk labels. The forecast response includes all twelve month lengths, model probabilities, agreement, boundary distance, risk flags, method versions, and validation scope.
+The selected pipeline combines sidereal solar-ingress solving, Nepal civil-time assignment, separate broad-reference and official-authority towers, past-only civil-rule learning, source-aware month-start reconciliation, complete-year constraints, prediction sets, and boundary-risk labels. The forecast response includes all twelve month lengths, normalized model support, agreement, boundary distance, risk flags, method versions, and validation scope.
 
-The official `2078-2083 BS` window is a `72/72` calibrated replay. It is recorded as calibration fit rather than independent accuracy proof. Broad validation remains below the project's 528 verified-month evidence threshold. Every forecast carries `computed_prediction_not_official`, `review_required=true`, and an authoritative-publication override.
+The official `2078-2083 BS` window reaches `72/72` exact month matches under chronological rolling validation, with each target year trained only on earlier years. It remains a small development-window result rather than broad independent accuracy proof. Broad validation remains below the project's 528 verified-month evidence threshold. Every forecast carries `computed_prediction_not_official`, `review_required=true`, and an authoritative-publication override.
 
 - Public API contract: [docs/future_bs/API.md](docs/future_bs/API.md)
 - Selected method: [docs/future_bs/METHODOLOGY.md](docs/future_bs/METHODOLOGY.md)
+- BS 2082 boundary diagnosis: [docs/future_bs/2082_BOUNDARY_DIAGNOSIS.md](docs/future_bs/2082_BOUNDARY_DIAGNOSIS.md)
 - Research boundary: [docs/future_bs/RESEARCH_BOUNDARY.md](docs/future_bs/RESEARCH_BOUNDARY.md)
 
 ## Architecture Overview

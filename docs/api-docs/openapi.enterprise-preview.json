@@ -26899,12 +26899,12 @@
             "type": "array",
             "title": "Prediction Set 95"
           },
-          "model_probability": {
+          "model_support": {
             "additionalProperties": {
               "type": "number"
             },
             "type": "object",
-            "title": "Model Probability"
+            "title": "Model Support"
           },
           "heuristic_confidence_score": {
             "type": "number",
@@ -26955,7 +26955,7 @@
           "predicted_days",
           "prediction_set_80",
           "prediction_set_95",
-          "model_probability",
+          "model_support",
           "heuristic_confidence_score",
           "confidence_label",
           "model_agreement",

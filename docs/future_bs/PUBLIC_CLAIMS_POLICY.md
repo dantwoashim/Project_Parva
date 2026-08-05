@@ -2,7 +2,7 @@
 status: research
 tier: 3
 lane: research
-last_verified: 2026-05-14
+last_verified: 2026-08-05
 owner: research-team
 ---
 
@@ -19,7 +19,7 @@ authority.
 - Parva separates official, printed, publisher, software-table, third-party,
   needs-review, and experimental evidence.
 - Parva reports risk posture, source policy, warnings, and claim boundaries.
-- Parva reports `72/72` only as calibrated replay over the official `2078-2083 BS` window.
+- Parva reports `72/72` only as chronological rolling validation over the official `2078-2083 BS` development window, with past-only training for each target year.
 - Parva can support private research review when explicitly deployed under a
   private route profile.
 
@@ -50,4 +50,4 @@ The public forecast must also carry `review_required=true` and
 `authoritative_publication_overrides=true`.
 
 Heuristic estimates must be named as `heuristic_accuracy_estimate` or
-`heuristic_not_empirically_calibrated`. Do not present them as measured accuracy.
+`heuristic_not_empirically_calibrated`. Normalized model support must not be described as calibrated probability or measured future accuracy.

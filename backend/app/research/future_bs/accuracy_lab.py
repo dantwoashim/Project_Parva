@@ -9,7 +9,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from app.calendar.constants import BS_MAX_YEAR, BS_MIN_YEAR, BS_MONTH_NAMES
+from app.calendar.constants import BS_MAX_YEAR, BS_MONTH_NAMES
 from app.research.future_bs.paths import project_root
 
 from .accuracy_objective import objective_from_backtest
@@ -17,7 +17,7 @@ from .backtest import rolling_validation
 from .boundary_risk import boundary_risk_payload
 from .claim_readiness import claim_readiness_report
 from .confidence import confidence_label
-from .corpus import corpus_rows, corpus_summary, get_corpus_row, is_known_year
+from .corpus import corpus_rows, corpus_summary
 from .legacy_cycle_predictor import predict_from_training
 from .models import CALIBRATION_VERSION, METHOD_VERSION, MONTH_DAY_VALUES
 from .prediction_sets import prediction_set_payload
@@ -31,8 +31,8 @@ from .solar_ingress_predictor import (
     calibrated_recent_cutoffs,
     calibrated_reference_cutoffs,
     calibrated_rule_weights,
-    predict_solar_ingress_year,
 )
+from .unified_predictor import UNIFIED_MODEL_ID, predict_unified_future_bs_year
 from .year_total_gate import year_total_gate
 
 PROJECT_ROOT = project_root()
@@ -40,6 +40,9 @@ LAB_DIR = PROJECT_ROOT / "data" / "future_bs" / "accuracy_lab"
 PREDICTIONS_DIR = PROJECT_ROOT / "data" / "future_bs" / "predictions"
 BEST_PREDICTION_PATH = PREDICTIONS_DIR / "parva_future_bs_accuracy_best_2084_2200.json"
 BEST_CLAIMABLE_PATH = PREDICTIONS_DIR / "parva_future_bs_accuracy_best_claimable_subset.json"
+PUBLIC_TRAIN_END = 2083
+PUBLIC_TRAIN_START = 2000
+PUBLIC_RUN_ID = "parva_future_bs_unified_v7_cutoff_2083"
 
 
 def _write_json(path: Path, payload: dict[str, Any] | list[Any]) -> None:
@@ -51,18 +54,35 @@ def _write_json(path: Path, payload: dict[str, Any] | list[Any]) -> None:
 
 def _candidate_history() -> list[dict[str, Any]]:
     history = []
-    for model in ("parva_solar_civil_v1", "solar_statistical_stack_holdout"):
-        result = rolling_validation(2000, 2078, 2083, source_policy="official_only", model=model)
+    for model in (
+        UNIFIED_MODEL_ID,
+        "parva_solar_civil_v1",
+        "solar_statistical_stack_holdout",
+    ):
+        training_source_policy = "source_stratified" if model == UNIFIED_MODEL_ID else "all_reference"
+        result = rolling_validation(
+            2000,
+            2078,
+            2083,
+            source_policy="official_only",
+            training_source_policy=training_source_policy,
+            model=model,
+        )
         objective = objective_from_backtest(result)
         mismatches = [m for run in result.get("runs", []) for m in run.get("mismatch_details", [])]
+        leakage_verified = bool(result.get("leakage_safe")) and all(
+            int(run["train_end"]) < int(run["test_start"])
+            for run in result.get("runs", [])
+        )
         history.append(
             {
                 "candidate_id": model,
                 "split_mode": "rolling_time_travel",
-                "source_policy": "official_only",
+                "evaluation_source_policy": "official_only",
+                "training_source_policy": training_source_policy,
                 "train_years": [2000, 2077],
                 "test_years": list(range(2078, 2084)),
-                "no_leakage_verified": True,
+                "no_leakage_verified": leakage_verified,
                 "metrics": {
                     "months_tested": result["months_tested"],
                     "overall_top1_accuracy": result["accuracy"],
@@ -109,26 +129,32 @@ def _slim_model_outputs(solar: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _future_year_payload(bs_year: int) -> dict[str, Any]:
-    solar = predict_solar_ingress_year(bs_year, train_start=BS_MIN_YEAR, train_end=BS_MAX_YEAR)
-    baseline_months, baseline_models = predict_from_training(bs_year, BS_MIN_YEAR, BS_MAX_YEAR)
-    supporting_corpus = None
-    if is_known_year(bs_year):
-        row = get_corpus_row(bs_year)
-        supporting_corpus = {
-            "type": row.source_type,
-            "status": row.verification_status,
-            "source_status": row.verification_status,
-            "source_reference": row.source_reference,
-            "source_quality": row.source_quality,
-        }
+    solar = predict_unified_future_bs_year(
+        bs_year,
+        train_start=PUBLIC_TRAIN_START,
+        train_end=PUBLIC_TRAIN_END,
+    )
+    baseline_months, baseline_models = predict_from_training(
+        bs_year,
+        PUBLIC_TRAIN_START,
+        PUBLIC_TRAIN_END,
+    )
     raw_details: list[dict[str, Any]] = []
     for index, days in enumerate(solar["months"], start=1):
         boundary_flags, boundary_distance = _detail_boundary_flags(solar, index - 1)
-        confidence = 0.995
-        if boundary_flags:
-            confidence = 0.82
-        risk_flags = sorted(set([*boundary_flags, *(["outside_static_lookup"] if bs_year > BS_MAX_YEAR else [])]))
         probability = solar["probabilities"][index - 1]
+        confidence = max(probability.values()) if probability else 0.0
+        if boundary_flags:
+            confidence = min(confidence, 0.82)
+        risk_flags = sorted(
+            set(
+                [
+                    *boundary_flags,
+                    "model_support_not_calibrated_probability",
+                    *(["outside_static_lookup"] if bs_year > BS_MAX_YEAR else []),
+                ]
+            )
+        )
         detail = {
             "month": index,
             "month_name": BS_MONTH_NAMES[index - 1],
@@ -144,7 +170,7 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
             "computational_probability": probability,
             "computational_model_agreement": solar["model_agreement"][index - 1],
             "boundary_distance_minutes": boundary_distance,
-            "final_source": "selected_solar_civil_rule",
+            "final_source": UNIFIED_MODEL_ID,
         }
         sets = prediction_set_payload(detail)
         detail["prediction_set_80"] = sets["prediction_set_80"]
@@ -155,6 +181,11 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
             flip_rate=0.0 if not boundary_flags else 0.08,
             year_total_valid=True,
         )
+        if detail["risk_label"] == "GREEN":
+            detail["risk_label"] = "YELLOW"
+            detail["risk_flags"] = sorted(
+                set([*detail["risk_flags"], "independent_probability_calibration_unavailable"])
+            )
         raw_details.append(detail)
 
     decoded = decode_year_sequence(bs_year, raw_details)
@@ -184,18 +215,18 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
         "year_total_gate": gate,
         "sequence_decoder": decoded,
         "method_version": METHOD_VERSION,
-        "accuracy_lab_model_version": "parva_future_bs_accuracy_best_v1",
+        "accuracy_lab_model_version": "parva_future_bs_accuracy_best_v2",
         "calibration_version": CALIBRATION_VERSION,
-        "run_id": "accuracy_lab_best_2026_05_08",
-        "model_family": "computational_solar_ingress",
-        "model_subfamily": "selected_solar_civil_rule_sequence_decoded",
+        "run_id": PUBLIC_RUN_ID,
+        "model_family": solar["model_family"],
+        "model_subfamily": solar["model_subfamily"],
         "source": {
             "type": "computed_prediction",
-            "status": "computed_solar_ingress",
+            "status": "computed_source_stratified_solar_civil",
             "source_status": "computed_prediction",
-            "source_reference": "accuracy_lab_selected_solar_civil_rule",
+            "source_reference": UNIFIED_MODEL_ID,
             "source_quality": 0.0,
-            "supporting_corpus_source": supporting_corpus,
+            "training_cutoff_bs_year": PUBLIC_TRAIN_END,
         },
         "computational_model_outputs": _slim_model_outputs(solar),
         "legacy_model_output": {
@@ -207,6 +238,9 @@ def _future_year_payload(bs_year: int) -> dict[str, Any]:
             "note": "Diagnostic baseline retained for disagreement/risk analysis only.",
         },
         "model_agreement": "selected_best_accuracy_lab_candidate",
+        "leakage_guard": solar["leakage_guard"],
+        "authority_tower": solar["authority_tower"],
+        "probability_semantics": solar["probability_semantics"],
         "limits": {
             "prediction_range": "2084-2200 BS",
             "ephemeris_status": active_ephemeris_label(),
@@ -226,11 +260,14 @@ def generate_best_future_predictions(start: int = 2084, end: int = 2200) -> dict
         if payload["year_total"] not in {365, 366}
     ]
     payload = {
-        "run_id": "accuracy_lab_best_2026_05_08",
+        "run_id": PUBLIC_RUN_ID,
         "method_version": METHOD_VERSION,
-        "accuracy_lab_model_version": "parva_future_bs_accuracy_best_v1",
+        "accuracy_lab_model_version": "parva_future_bs_accuracy_best_v2",
         "calibration_version": CALIBRATION_VERSION,
-        "selected_model": "parva_solar_civil_v1",
+        "selected_model": UNIFIED_MODEL_ID,
+        "training_cutoff_bs_year": PUBLIC_TRAIN_END,
+        "training_source_policy": "source_stratified",
+        "leakage_safe": True,
         "publication_status": "computed_prediction_not_official",
         "range": f"{start}-{end} BS",
         "invalid_future_year_totals": invalid,
@@ -357,7 +394,14 @@ def run_accuracy_loop(*, final: bool = False) -> dict[str, Any]:
     future_payload = generate_best_future_predictions()
     invalid_count = len(future_payload["invalid_future_year_totals"])
     best_objective = objective_from_backtest(
-        rolling_validation(2000, 2078, 2083, source_policy="official_only", model=best["candidate_id"]),
+        rolling_validation(
+            2000,
+            2078,
+            2083,
+            source_policy="official_only",
+            training_source_policy=best["training_source_policy"],
+            model=best["candidate_id"],
+        ),
         invalid_future_years=invalid_count,
         future_years=len(future_payload["years"]),
     )
@@ -380,21 +424,33 @@ def run_accuracy_loop(*, final: bool = False) -> dict[str, Any]:
     _write_json(LAB_DIR / "model_search_history.json", history)
     _write_json(LAB_DIR / "best_metrics.json", best_objective)
     _write_json(LAB_DIR / "best_model.json", best)
+    selected_rolling = rolling_validation(
+        2000,
+        2078,
+        2083,
+        source_policy="official_only",
+        training_source_policy=best["training_source_policy"],
+        model=best["candidate_id"],
+    )
+    _write_json(LAB_DIR / "unified_rolling_validation.json", selected_rolling)
     _write_json(LAB_DIR / "best_model_config.json", {
         "selected_model": best["candidate_id"],
         "selected_civil_rule_config": {
-            "selected_rule": CIVIL_DECISION_KNN_RULE,
+            "selected_rule": "source_stratified_month_start_reconciliation",
             "rule_weights": calibrated_rule_weights(),
             "recent_cutoffs": calibrated_recent_cutoffs(),
             "reference_cutoffs": calibrated_reference_cutoffs(),
         },
         "selected_ayanamsha_config": {"baseline": "lahiri", "offset_arcseconds": 0, "heldout_improvement": 0.0},
         "selected_precedent_config": {"status": "risk_calibration_support", "k": 5, "distance_metric": "hybrid"},
-        "selected_ensemble_weights": {"solar_civil": 1.0, "statistical_stack": 0.0},
+        "selected_ensemble_weights": {"reference_tower": 1.0, "authority_tower": 1.0},
         "selected_sequence_decoder_settings": {"allowed_year_totals": [365, 366], "min_supported_probability": 0.02},
         "selected_risk_thresholds": DEFAULT_RISK_THRESHOLDS,
         "calibration_method": "source_strict_rolling_time_travel_threshold_selection",
-        "training_source_policy": "official_only",
+        "training_source_policy": "source_stratified",
+        "evaluation_source_policy": "official_only",
+        "training_cutoff_bs_year": PUBLIC_TRAIN_END,
+        "leakage_safe": selected_rolling["leakage_safe"],
         "validation_metrics": best_objective,
         "limitations": [
             "official corpus has 72 month cases, below the 528 case claim threshold",
@@ -411,28 +467,27 @@ def run_accuracy_loop(*, final: bool = False) -> dict[str, Any]:
     ])
     _write_json(LAB_DIR / "probability_calibration_report.json", {
         "publication_status": "computed_prediction_not_official",
-        "method": "source_strict_rolling_reliability_table",
-        "brier_score": 0.0 if best_objective["mismatch_count"] == 0 else None,
-        "expected_calibration_error": 0.0 if best_objective["mismatch_count"] == 0 else None,
-        "bins": [
-            {"bin": "50-60%", "count": 0, "empirical_accuracy": None, "calibration_error": None},
-            {"bin": "60-70%", "count": 0, "empirical_accuracy": None, "calibration_error": None},
-            {"bin": "70-80%", "count": 0, "empirical_accuracy": None, "calibration_error": None},
-            {"bin": "80-90%", "count": 6, "empirical_accuracy": 100.0, "calibration_error": 0.1},
-            {"bin": "90-100%", "count": 66, "empirical_accuracy": 100.0, "calibration_error": 0.0},
-        ],
+        "method": "model_support_only",
+        "probability_semantics": "normalized_model_support_not_calibrated_probability",
+        "brier_score": None,
+        "expected_calibration_error": None,
+        "bins": [],
         "claim_ready": False,
-        "claim_blocker": "official_verified_cases_below_required_threshold",
+        "claim_blockers": [
+            "official_verified_cases_below_required_threshold",
+            "independent_probability_calibration_not_available",
+        ],
     })
     _write_json(LAB_DIR / "civil_rule_search_results.json", [
-        {"rule": CIVIL_DECISION_KNN_RULE, "objective": best_objective, "selected": True},
+        {"rule": "source_stratified_month_start_reconciliation", "objective": best_objective, "selected": True},
+        {"rule": CIVIL_DECISION_KNN_RULE, "selected": False, "role": "reference_tower"},
         {"rule": CALIBRATED_RECENT_RULE, "selected": False},
         {"rule": CALIBRATED_REFERENCE_RULE, "selected": False},
     ])
     _write_json(LAB_DIR / "best_civil_rule_table.json", {
-        "selected_rule": CIVIL_DECISION_KNN_RULE,
+        "selected_rule": "source_stratified_month_start_reconciliation",
         "cutoffs": calibrated_recent_cutoffs(),
-        "selection_basis": "highest rolling official objective with zero wrong GREEN",
+        "selection_basis": "highest leakage-safe rolling official objective with zero wrong GREEN",
     })
     _write_json(LAB_DIR / "precedent_tower_search_results.json", [
         {"k": k, "distance_metric": "hybrid", "kept_for_top1": False, "kept_for_risk_support": k == 5}

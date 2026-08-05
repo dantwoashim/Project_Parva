@@ -326,14 +326,14 @@ def _assign_civil_decision_knn(
     rows = [
         row
         for row in samples.get(event.bs_month, [])
-        if row["bs_year"] != target_bs_year
+        if row["bs_year"] < target_bs_year
         and row["bs_year"] >= target_bs_year - KNN_WINDOW_YEARS
     ]
     if len(rows) < KNN_NEIGHBORS:
         rows = [
             row
             for row in samples.get(event.bs_month, [])
-            if row["bs_year"] != target_bs_year
+            if row["bs_year"] < target_bs_year
         ]
     minute = event.datetime_nepal.hour * 60 + event.datetime_nepal.minute
     if not rows:

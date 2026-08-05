@@ -10,7 +10,7 @@ from app.services.future_bs_public_service import (
 )
 
 ROOT = Path(__file__).resolve().parents[2]
-SNAPSHOT = ROOT / "data" / "future_bs" / "public" / "forecast_snapshot_v6_2084_2200.json"
+SNAPSHOT = ROOT / "data" / "future_bs" / "public" / "forecast_snapshot_v7_2084_2200.json"
 
 
 def test_public_snapshot_covers_the_declared_range_with_valid_years() -> None:
@@ -33,17 +33,21 @@ def test_public_forecast_exposes_selected_output_without_raw_research_payloads()
     assert forecast["meta"]["source"]["tier"] == "calculated"
     assert forecast["meta"]["trace_id"] == "test-trace"
     assert forecast["risk_summary"] == {"GREEN": 0, "YELLOW": 12, "RED": 0}
+    assert all("model_support" in month for month in forecast["months"])
+    assert all("model_probability" not in month for month in forecast["months"])
     assert "computational_model_outputs" not in forecast
     assert "legacy_model_output" not in forecast
 
 
-def test_public_methodology_labels_the_72_case_result_as_replay() -> None:
+def test_public_methodology_labels_the_72_case_result_as_rolling_validation() -> None:
     methodology = future_bs_methodology_payload()
     validation = methodology["validation"]
 
-    assert validation["official_window_replay"]["exact_month_matches"] == 72
-    assert validation["official_window_replay"]["month_cases"] == 72
-    assert validation["official_window_replay"]["evaluation_kind"] == "calibrated_official_window_replay"
+    rolling = validation["official_rolling_time_travel"]
+    assert rolling["exact_month_matches"] == 72
+    assert rolling["month_cases"] == 72
+    assert rolling["evaluation_kind"] == "rolling_past_only_official_evaluation"
+    assert rolling["leakage_safe"] is True
     assert validation["independent_broad_accuracy_claim_ready"] is False
 
 

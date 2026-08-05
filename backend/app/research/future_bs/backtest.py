@@ -15,6 +15,7 @@ from .legacy_cycle_predictor import predict_from_training
 from .models import CALIBRATION_VERSION, METHOD_VERSION
 from .solar_ingress_predictor import predict_solar_ingress_year
 from .statistical_pattern_predictor import predict_stacked_year
+from .unified_predictor import UNIFIED_MODEL_ID, predict_unified_future_bs_year
 
 
 def _match_count(predicted: list[int], actual: list[int]) -> int:
@@ -196,6 +197,7 @@ def backtest_model(
     test_end: int,
     *,
     source_policy: str = "all_reference",
+    training_source_policy: str = "all_reference",
     model: str = "parva_solar_civil_v1",
 ) -> dict[str, Any]:
     _validate_backtest_range(train_start, train_end, test_start, test_end)
@@ -211,24 +213,42 @@ def backtest_model(
     mismatch_by_ingress_hour: Counter[int] = Counter()
     mismatch_by_boundary_distance: Counter[str] = Counter()
     test_rows = _rows_for_range(test_start, test_end, source_policy)
-    use_stacked_model = "stack" in model or model.endswith("_v6")
+    use_unified_model = model == UNIFIED_MODEL_ID
+    use_stacked_model = not use_unified_model and "stack" in model
+    effective_training_source_policy = (
+        "source_stratified" if use_unified_model else training_source_policy
+    )
 
     for row in test_rows:
         year = row.bs_year
+        unified = (
+            predict_unified_future_bs_year(
+                year,
+                train_start=train_start,
+                train_end=train_end,
+            )
+            if use_unified_model
+            else None
+        )
         stacked = (
             predict_stacked_year(
                 year,
                 train_start=train_start,
                 train_end=train_end,
-                source_policy=source_policy,
+                source_policy=training_source_policy,
             )
             if use_stacked_model
             else None
         )
-        solar = stacked["solar"] if stacked else predict_solar_ingress_year(
-            year,
-            train_start=train_start,
-            train_end=train_end,
+        solar = unified or (
+            stacked["solar"]
+            if stacked
+            else predict_solar_ingress_year(
+                year,
+                train_start=train_start,
+                train_end=train_end,
+                source_policy=training_source_policy,
+            )
         )
         legacy_months, legacy_models = predict_from_training(year, train_start, train_end)
         predicted_months = stacked["months"] if stacked else solar["months"]
@@ -332,9 +352,22 @@ def backtest_model(
     accuracy_metrics = summarize_accuracy(accuracy_cases, official_month_cases=official_month_cases)
     return {
         "train_range": f"{train_start}-{train_end} BS",
+        "train_start": train_start,
+        "train_end": train_end,
         "test_range": f"{test_start}-{test_end} BS",
-        "mode": "solar_statistical_stack_holdout" if use_stacked_model else "computational_solar_ingress_holdout",
+        "test_start": test_start,
+        "test_end": test_end,
+        "mode": (
+            "authority_aware_unified_rolling_holdout"
+            if use_unified_model
+            else "solar_statistical_stack_holdout"
+            if use_stacked_model
+            else "computational_solar_ingress_holdout"
+        ),
         "source_policy": source_policy,
+        "evaluation_source_policy": source_policy,
+        "training_source_policy": effective_training_source_policy,
+        "leakage_safe": train_end < test_start,
         "model": model,
         "months_tested": months_tested,
         "exact_matches": exact_matches,
@@ -367,6 +400,7 @@ def full_replay_backtest(
     end: int = BS_MAX_YEAR,
     *,
     source_policy: str = "all_reference",
+    training_source_policy: str = "all_reference",
 ) -> dict[str, Any]:
     if start > end:
         raise ValueError("Backtest range must be ascending.")
@@ -380,7 +414,12 @@ def full_replay_backtest(
     rows = _rows_for_range(start, end, source_policy)
     for row in rows:
         year = row.bs_year
-        solar = predict_solar_ingress_year(year, train_start=start, train_end=end)
+        solar = predict_solar_ingress_year(
+            year,
+            train_start=start,
+            train_end=end,
+            source_policy=training_source_policy,
+        )
         actual = row.months
         year_matches = 0
         for index, (predicted_days, actual_days) in enumerate(zip(solar["months"], actual), start=1):
@@ -405,8 +444,12 @@ def full_replay_backtest(
         exact_year_matches += int(year_matches == 12)
     return {
         "model_version": METHOD_VERSION,
-        "mode": "full_replay",
+        "mode": "calibrated_full_replay",
         "source_policy": source_policy,
+        "evaluation_source_policy": source_policy,
+        "training_source_policy": training_source_policy,
+        "leakage_safe": False,
+        "evaluation_kind": "in_sample_calibrated_replay_not_forecast_validation",
         "range": f"{start}-{end} BS",
         "months_tested": months_tested,
         "exact_matches": exact_matches,
@@ -427,6 +470,7 @@ def rolling_validation(
     predict_end: int,
     *,
     source_policy: str = "all_reference",
+    training_source_policy: str = "all_reference",
     model: str = "parva_solar_civil_v1",
 ) -> dict[str, Any]:
     if initial_train_start >= predict_start:
@@ -443,6 +487,7 @@ def rolling_validation(
             year,
             year,
             source_policy=source_policy,
+            training_source_policy=training_source_policy,
             model=model,
         )
         runs.append(run)
@@ -455,6 +500,11 @@ def rolling_validation(
         "model_version": METHOD_VERSION,
         "mode": "rolling_validation",
         "source_policy": source_policy,
+        "evaluation_source_policy": source_policy,
+        "training_source_policy": (
+            runs[0]["training_source_policy"] if runs else training_source_policy
+        ),
+        "leakage_safe": all(bool(run.get("leakage_safe")) for run in runs),
         "model": model,
         "initial_train_start": initial_train_start,
         "predict_range": f"{predict_start}-{predict_end} BS",

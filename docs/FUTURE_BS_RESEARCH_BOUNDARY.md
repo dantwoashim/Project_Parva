@@ -2,7 +2,7 @@
 status: public-preview
 tier: 2
 lane: public-preview
-last_verified: 2026-08-04
+last_verified: 2026-08-05
 owner: platform-team
 ---
 
@@ -16,7 +16,7 @@ Project Parva exposes a curated Future BS research forecast and retains the broa
 - selected methodology at `/v4/api/future-bs/methodology`
 - one-year forecasts at `/v4/api/future-bs/forecast/{bs_year}`
 - tracked forecast coverage for `2084-2200 BS`
-- twelve month lengths, prediction sets, probabilities, model agreement, civil-boundary distance, constraints, and risk labels
+- twelve month lengths, prediction sets, normalized model support, model agreement, civil-boundary distance, constraints, and risk labels
 - method and calibration versions, source metadata, warnings, and validation scope
 
 All forecast responses preserve:
@@ -35,6 +35,6 @@ Public OpenAPI contains the curated routes. Private OpenAPI requires `PARVA_SHOW
 
 ## Evidence Rule
 
-The `72/72` result covers a calibrated replay of official month cases from `2078-2083 BS`. Public wording must identify it as calibration fit. The current corpus remains below the 528 verified-month threshold for a broad independent accuracy claim.
+The `72/72` result covers chronological rolling validation over official month cases from `2078-2083 BS`. Every target year uses training data ending at the previous BS year. The window also informed model development, and its 72 month cases remain below the 528 verified-month threshold for a broad independent accuracy claim.
 
 Detailed policy lives in [future_bs/RESEARCH_BOUNDARY.md](future_bs/RESEARCH_BOUNDARY.md).

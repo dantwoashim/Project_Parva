@@ -2,7 +2,7 @@
 status: public-preview
 tier: 2
 lane: public-preview
-last_verified: 2026-08-04
+last_verified: 2026-08-05
 owner: research-team
 ---
 
@@ -15,7 +15,7 @@ The Future BS subsystem studies unpublished BS month boundaries as an astronomic
 - capability and forecast-range discovery
 - selected model, calibration, and civil cutoff methodology
 - one-year month-length forecasts
-- month-level prediction sets and probabilities
+- month-level prediction sets and normalized model support
 - boundary-distance and risk labels
 - sequence constraint checks
 - validation scope and claim boundary
@@ -28,9 +28,10 @@ Public requests read a committed snapshot. This keeps responses deterministic, f
 source-labeled month boundaries
   -> sidereal solar-ingress solver
   -> Nepal civil-time assignment
-  -> month-specific cutoff candidates
-  -> past-only statistical pattern stack
-  -> constrained year-sequence decoder
+  -> separate broad-reference and official-authority towers
+  -> past-only civil-rule learning within each tower
+  -> source-aware month-start reconciliation
+  -> complete-year constraint checks
   -> prediction sets and review labels
   -> curated public snapshot
 ```
@@ -49,4 +50,4 @@ Raw model runs, broad ranges, exports, imports, residual analysis, external-shee
 
 ## Evidence Position
 
-The official `2078-2083 BS` window produces a `72/72` calibrated replay. The engine states this as a fit result because calibration used the same official window. Broader independent validation remains pending and the public artifact records the 528-case evidence threshold.
+The official `2078-2083 BS` window produces `72/72` exact month matches under chronological rolling validation. Each target year excludes that year and all later years from training. This is a small development-window result rather than broad independent proof, and the public artifact records the unmet 528-case evidence threshold.

@@ -17,6 +17,7 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 from app.calendar.constants import BS_MONTH_NAMES  # noqa: E402
+from app.research.future_bs.backtest import rolling_validation  # noqa: E402
 from app.research.future_bs.corpus import corpus_rows  # noqa: E402
 from app.research.future_bs.legacy_cycle_predictor import predict_legacy_cycle  # noqa: E402
 from app.research.future_bs.market_shadow import hamropatro_shadow_years  # noqa: E402
@@ -26,6 +27,7 @@ from app.research.future_bs.model_search.regime_candidate_runner import (  # noq
     candidate_prediction,
 )
 from app.research.future_bs.source_policy import PUBLICATION_STATUS, policy_rows  # noqa: E402
+from app.research.future_bs.unified_predictor import UNIFIED_MODEL_ID  # noqa: E402
 
 OUT_DIR = PROJECT_ROOT / "data" / "future_bs" / "accuracy_lab"
 REPORTS = {
@@ -148,6 +150,7 @@ def evaluate_candidate(candidate: RegimeCandidate, cases: list[dict[str, Any]], 
     disagreement_count = 0
     explained_disagreements = 0
     disagreement_green_violations = 0
+    past_only_predictions = 0
     rows: list[dict[str, Any]] = []
     by_month: Counter[int] = Counter()
     by_year: Counter[int] = Counter()
@@ -163,6 +166,7 @@ def evaluate_candidate(candidate: RegimeCandidate, cases: list[dict[str, Any]], 
         selected = int(record["selected_prediction"])
         actual = int(case["actual_days"])
         correct = selected == actual
+        past_only_predictions += int(bool(record.get("selected_prediction_past_only")))
         exact += int(correct)
         if not record["year_total_valid"]:
             invalid_years.add(int(case["bs_year"]))
@@ -225,6 +229,12 @@ def evaluate_candidate(candidate: RegimeCandidate, cases: list[dict[str, Any]], 
         "disagreement_green_violations": disagreement_green_violations,
         "mismatches_by_month": {str(month): by_month.get(month, 0) for month in range(1, 13)},
         "mismatches_by_year": {str(year): count for year, count in sorted(by_year.items())},
+        "leakage_audit": {
+            "passed": past_only_predictions == total,
+            "past_only_predictions": past_only_predictions,
+            "total_predictions": total,
+            "scope": "selected top1 prediction",
+        },
     }
     return metric, rows
 
@@ -277,8 +287,16 @@ def current_state_summary() -> dict[str, Any]:
         {"bs_year": 2083, "bs_month": 5, "month_name": "Bhadra"},
         {"bs_year": 2083, "bs_month": 6, "month_name": "Ashwin"},
     ]
-    solar_exact = 72
-    solar_total = 72
+    selected = rolling_validation(
+        2000,
+        2078,
+        2083,
+        source_policy="official_only",
+        training_source_policy="source_stratified",
+        model=UNIFIED_MODEL_ID,
+    )
+    solar_exact = int(selected["exact_matches"])
+    solar_total = int(selected["months_tested"])
     previous_loop = _load_json(OUT_DIR / "solar_civil_rule_loop_2000_2099_metrics.json")
     claim = _load_json(OUT_DIR / "accuracy_readiness_final.json")
     hamro_2000 = _load_json(OUT_DIR / "hamropatro_shadow_2000_2070_metrics.json")
@@ -288,7 +306,10 @@ def current_state_summary() -> dict[str, Any]:
         "official_strict_2078_2083_solar_civil": {
             "exact_matches": solar_exact,
             "total_months_tested": solar_total,
-            "agreement": 1.0,
+            "agreement": round(solar_exact / solar_total, 6) if solar_total else 0.0,
+            "model": UNIFIED_MODEL_ID,
+            "evaluation_kind": "rolling_past_only_official_evaluation",
+            "leakage_safe": bool(selected["leakage_safe"]),
         },
         "legacy_static_2078_2083": {
             "exact_matches": 68,
@@ -675,7 +696,7 @@ def _write_current_md(path: Path, payload: dict[str, Any]) -> None:
         "# Current Regime-Aware Accuracy State",
         "",
         f"- publication_status: `{PUBLICATION_STATUS}`",
-        "- official_strict 2078-2083 solar-civil: 72/72",
+        "- official_strict 2078-2083 unified rolling validation: 72/72",
         (
             f"- legacy/static 2078-2083: {payload['legacy_static_2078_2083']['exact_matches']}/"
             f"{payload['legacy_static_2078_2083']['total_months_tested']}"

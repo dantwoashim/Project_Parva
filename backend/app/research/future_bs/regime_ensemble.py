@@ -11,9 +11,11 @@ from .market_shadow import hamropatro_shadow_month, legacy_static_month
 from .regime.regime_detector import detect_regime
 from .solar_ingress_predictor import predict_solar_ingress_year
 from .source_policy import policy_rows
+from .unified_predictor import UNIFIED_MODEL_ID, predict_unified_future_bs_year
 
 PUBLICATION_STATUS = "computed_prediction_not_official"
 DEFAULT_TRAIN_START = 2000
+PUBLIC_TRAIN_END = 2083
 DEFAULT_MODERN_SOURCE_POLICY = "medium_high_training"
 
 
@@ -23,16 +25,22 @@ def _solar_year(
     train_start: int = DEFAULT_TRAIN_START,
     source_policy: str = DEFAULT_MODERN_SOURCE_POLICY,
 ) -> tuple[int, ...]:
-    train_end = max(train_start, int(bs_year) - 1)
-    effective_source_policy = source_policy
-    if source_policy in {"official_strict", "medium_high_training", "all_witness_experimental"} and not policy_rows(source_policy):
-        effective_source_policy = "all_reference"
-    payload = predict_solar_ingress_year(
-        int(bs_year),
-        train_start=train_start,
-        train_end=train_end,
-        source_policy=effective_source_policy,
-    )
+    train_end = min(int(bs_year) - 1, PUBLIC_TRAIN_END)
+    if train_end >= train_start:
+        payload = predict_unified_future_bs_year(
+            int(bs_year),
+            train_start=train_start,
+            train_end=train_end,
+        )
+    else:
+        # BS 2000 has no earlier row in this research corpus. It remains a
+        # non-causal bootstrap diagnostic and is excluded by the leakage audit.
+        payload = predict_solar_ingress_year(
+            int(bs_year),
+            train_start=train_start,
+            train_end=train_start,
+            source_policy="all_reference",
+        )
     return tuple(int(value) for value in payload["months"])
 
 
@@ -89,6 +97,9 @@ def regime_aware_prediction(
     bs_month = int(bs_month)
     solar_months = list(_solar_year(bs_year, train_start, modern_source_policy))
     solar_days = solar_months[bs_month - 1]
+    chronological_train_end = min(bs_year - 1, PUBLIC_TRAIN_END)
+    past_only = chronological_train_end >= train_start
+    effective_train_end = chronological_train_end if past_only else train_start
     legacy_days = legacy_static_month(bs_year, bs_month)
     hamro_days = hamropatro_shadow_month(bs_year, bs_month)
     witness = source_witness_tower(bs_year, bs_month)
@@ -110,8 +121,10 @@ def regime_aware_prediction(
     towers = {
         "modern_official_solar_civil_tower": {
             "prediction": solar_days,
-            "source_policy": modern_source_policy,
-            "official_claim_usable": modern_source_policy in {"official_strict", "medium_high_training"},
+            "source_policy": "source_stratified",
+            "requested_diagnostic_source_policy": modern_source_policy,
+            "model_id": UNIFIED_MODEL_ID,
+            "official_claim_usable": False,
         },
         "legacy_market_continuity_tower": {
             "prediction": legacy_days,
@@ -134,7 +147,11 @@ def regime_aware_prediction(
         "legacy_static_prediction": legacy_days,
         "hamropatro_shadow_prediction": hamro_days,
         "selected_tower": "modern_official_solar_civil_tower",
-        "source_policy": modern_source_policy,
+        "prediction_training_end_bs_year": effective_train_end,
+        "selected_prediction_past_only": past_only,
+        "source_policy": "source_stratified",
+        "requested_diagnostic_source_policy": modern_source_policy,
+        "model_id": UNIFIED_MODEL_ID,
         "regime_assignment": regime["regime_assignment"],
         "agreement_status": "agree" if disagreement_type == "all_towers_agree" else "disagree",
         "disagreement_type": disagreement_type,

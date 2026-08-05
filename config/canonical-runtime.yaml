@@ -474,8 +474,8 @@
       "canonical_paths": [
         "backend/app/api/future_bs_routes.py",
         "backend/app/services/future_bs_public_service.py",
-        "data/future_bs/public/forecast_snapshot_v6_2084_2200.json",
-        "data/future_bs/public/selected_model_v6.json"
+        "data/future_bs/public/forecast_snapshot_v7_2084_2200.json",
+        "data/future_bs/public/selected_model_v7.json"
       ],
       "public_routes": [
         "/v4/api/future-bs/capabilities",
