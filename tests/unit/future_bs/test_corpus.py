@@ -7,7 +7,9 @@ from app.research.future_bs.source_registry import load_source_registry, source_
 def test_corpus_loads_source_labeled_rows():
     corpus = load_corpus()
 
+    assert 2000 in corpus
     assert 2083 in corpus
+    assert len(corpus) >= 100
     assert corpus[2083].source_type == "official_verified"
     if 2085 in corpus:
         assert corpus[2085].verification_status == "needs_review"

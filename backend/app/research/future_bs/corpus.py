@@ -117,6 +117,7 @@ def _fallback_row(bs_year: int) -> CorpusRow:
 
 @lru_cache(maxsize=1)
 def load_corpus() -> dict[int, CorpusRow]:
+    rows = {year: _fallback_row(year) for year in sorted(BS_MONTH_LENGTHS)}
     if PRIVATE_CORPUS_PATH.exists():
         path = PRIVATE_CORPUS_PATH
     elif LEGACY_PRIVATE_CORPUS_PATH.exists():
@@ -124,9 +125,8 @@ def load_corpus() -> dict[int, CorpusRow]:
     else:
         path = PUBLIC_CORPUS_PATH
     if not path.exists():
-        return {year: _fallback_row(year) for year in sorted(BS_MONTH_LENGTHS)}
+        return rows
 
-    rows: dict[int, CorpusRow] = {}
     with path.open(newline="", encoding="utf-8") as fh:
         reader = csv.DictReader(fh)
         for raw in reader:
