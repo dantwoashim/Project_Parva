@@ -1,5 +1,5 @@
 {
-  "name": "@project-parva/parva",
+  "name": "@project-parva/parva-js",
   "version": "0.3.0-alpha.0",
   "description": "Public-safe JavaScript and TypeScript SDK for Project Parva calendar APIs.",
   "keywords": [
