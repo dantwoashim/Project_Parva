@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 493579,
+      "bytes": 493567,
       "path": "docs/api-docs/openapi.public-reference.json",
-      "sha256": "sha256:3bc63a059055cd2ac750da41f8be7c71409b6b0134890b46db33a88d327d976f"
+      "sha256": "sha256:71502025408176e4e86a554cf989286a7af752af42abea02990f788580c110a6"
     },
     {
       "bytes": 6951,
@@ -223,7 +223,7 @@
   ],
   "claim_boundary": "release_artifact_manifest_not_external_validation",
   "generated_at": "reproducible",
-  "git_commit_at_generation": "78da8cd644c5c6234bda0c3e3f0f0db9f71f75e0",
+  "git_commit_at_generation": "e210f9019ced1dd963c4756b9fcc0f301b1e3633",
   "not_authority": true,
   "schema": "parva-release-artifact-manifest-v1",
   "verification_summary": {
