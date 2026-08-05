@@ -852,6 +852,12 @@ exports[`visual regression harness > best-time page visual baseline on desktop 1
             Policy
           </a>
           <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
+          </a>
+          <a
             href="https://github.com/dantwoashim/Project_Parva"
           >
             Source
@@ -1718,6 +1724,12 @@ exports[`visual regression harness > best-time page visual baseline on mobile 1`
             Policy
           </a>
           <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
+          </a>
+          <a
             href="https://github.com/dantwoashim/Project_Parva"
           >
             Source
@@ -2026,52 +2038,275 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
               class="workspace-masthead"
             >
               <div
-                class="workspace-heading"
+                class="workspace-masthead__top"
               >
                 <div
-                  class="workspace-status"
+                  class="workspace-heading"
+                >
+                  <div
+                    class="workspace-status"
+                  >
+                    <span
+                      aria-hidden="true"
+                    />
+                    Nepal-focused astronomical calendar API
+                  </div>
+                  <h1>
+                    Project Parva
+                  </h1>
+                  <p>
+                    One API for Bikram Sambat, place-aware Panchanga, Nepal business rules, and verifiable calendar research.
+                  </p>
+                </div>
+                <dl
+                  aria-label="February 25, 2026, 2082 Falgun 3"
+                  class="workspace-now"
+                >
+                  <div>
+                    <dt>
+                      BS
+                    </dt>
+                    <dd>
+                      2082 Falgun 3
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>
+                      AD
+                    </dt>
+                    <dd>
+                      February 25, 2026
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>
+                      Place
+                    </dt>
+                    <dd>
+                      Kathmandu, Nepal
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+              <div
+                aria-label="Project Parva evidence claims"
+                class="positioning-claims"
+              >
+                <a
+                  class="positioning-claim positioning-claim--astronomy"
+                  data-discover="true"
+                  href="/benchmark#market-review"
                 >
                   <span
+                    class="positioning-claim__icon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-orbit"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="3"
+                      />
+                      <circle
+                        cx="19"
+                        cy="5"
+                        r="2"
+                      />
+                      <circle
+                        cx="5"
+                        cy="19"
+                        r="2"
+                      />
+                      <path
+                        d="M10.4 21.9a10 10 0 0 0 9.941-15.416"
+                      />
+                      <path
+                        d="M13.5 2.1a10 10 0 0 0-9.841 15.416"
+                      />
+                    </svg>
+                  </span>
+                  <span>
+                    <small>
+                      Only full-stack match found
+                    </small>
+                    <strong>
+                      Astronomical, location-aware, Nepal-focused
+                    </strong>
+                    <p>
+                      No second API matched the complete capability set in the documented market review.
+                    </p>
+                  </span>
+                  <svg
                     aria-hidden="true"
-                  />
-                  Nepal calendar workspace
-                </div>
-                <h1>
-                  Project Parva
-                </h1>
-                <p>
-                  Convert dates, inspect Panchanga, track festivals, and apply Nepali fiscal rules.
-                </p>
+                    class="lucide lucide-arrow-right"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="m12 5 7 7-7 7"
+                    />
+                  </svg>
+                </a>
+                <a
+                  class="positioning-claim positioning-claim--replay"
+                  data-discover="true"
+                  href="/benchmark#forecast-replay"
+                >
+                  <span
+                    class="positioning-claim__icon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-badge-check"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+                      />
+                      <path
+                        d="m9 12 2 2 4-4"
+                      />
+                    </svg>
+                  </span>
+                  <span>
+                    <small>
+                      Past-only replay
+                    </small>
+                    <strong>
+                      72/72 official month predictions
+                    </strong>
+                    <p>
+                      BS 2078-2083, with every target year trained only on earlier years.
+                    </p>
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    class="lucide lucide-arrow-right"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="m12 5 7 7-7 7"
+                    />
+                  </svg>
+                </a>
+                <a
+                  class="positioning-claim positioning-claim--benchmark"
+                  data-discover="true"
+                  href="/benchmark"
+                >
+                  <span
+                    class="positioning-claim__icon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lucide lucide-git-compare-arrows"
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="5"
+                        cy="6"
+                        r="3"
+                      />
+                      <path
+                        d="M12 6h5a2 2 0 0 1 2 2v7"
+                      />
+                      <path
+                        d="m15 9-3-3 3-3"
+                      />
+                      <circle
+                        cx="19"
+                        cy="18"
+                        r="3"
+                      />
+                      <path
+                        d="M12 18H7a2 2 0 0 1-2-2V9"
+                      />
+                      <path
+                        d="m9 15 3 3-3 3"
+                      />
+                    </svg>
+                  </span>
+                  <span>
+                    <small>
+                      Open engineering evidence
+                    </small>
+                    <strong>
+                      Public benchmark and conformance suite
+                    </strong>
+                    <p>
+                      Named tools, fixed fixtures, runnable checks, and per-case results.
+                    </p>
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    class="lucide lucide-arrow-right"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="m12 5 7 7-7 7"
+                    />
+                  </svg>
+                </a>
               </div>
-              <dl
-                aria-label="February 25, 2026, 2082 Falgun 3"
-                class="workspace-now"
-              >
-                <div>
-                  <dt>
-                    BS
-                  </dt>
-                  <dd>
-                    2082 Falgun 3
-                  </dd>
-                </div>
-                <div>
-                  <dt>
-                    AD
-                  </dt>
-                  <dd>
-                    February 25, 2026
-                  </dd>
-                </div>
-                <div>
-                  <dt>
-                    Place
-                  </dt>
-                  <dd>
-                    Kathmandu, Nepal
-                  </dd>
-                </div>
-              </dl>
             </section>
             <section
               aria-label="Temporal API workbench"
@@ -2996,6 +3231,12 @@ exports[`visual regression harness > consumer home visual baseline 1`] = `
             Policy
           </a>
           <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
+          </a>
+          <a
             href="https://github.com/dantwoashim/Project_Parva"
           >
             Source
@@ -3895,6 +4136,12 @@ exports[`visual regression harness > festival detail page visual baseline on des
             Policy
           </a>
           <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
+          </a>
+          <a
             href="https://github.com/dantwoashim/Project_Parva"
           >
             Source
@@ -4792,6 +5039,12 @@ exports[`visual regression harness > festival detail page visual baseline on mob
             href="/policy"
           >
             Policy
+          </a>
+          <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
           </a>
           <a
             href="https://github.com/dantwoashim/Project_Parva"
@@ -5840,6 +6093,12 @@ exports[`visual regression harness > festivals page visual baseline on desktop 1
             Policy
           </a>
           <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
+          </a>
+          <a
             href="https://github.com/dantwoashim/Project_Parva"
           >
             Source
@@ -6886,6 +7145,12 @@ exports[`visual regression harness > festivals page visual baseline on mobile 1`
             Policy
           </a>
           <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
+          </a>
+          <a
             href="https://github.com/dantwoashim/Project_Parva"
           >
             Source
@@ -7526,6 +7791,12 @@ exports[`visual regression harness > kundali page visual baseline 1`] = `
             href="/policy"
           >
             Policy
+          </a>
+          <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
           </a>
           <a
             href="https://github.com/dantwoashim/Project_Parva"
@@ -8529,6 +8800,12 @@ exports[`visual regression harness > my-place page visual baseline on desktop 1`
             Policy
           </a>
           <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
+          </a>
+          <a
             href="https://github.com/dantwoashim/Project_Parva"
           >
             Source
@@ -9528,6 +9805,12 @@ exports[`visual regression harness > my-place page visual baseline on mobile 1`]
             href="/policy"
           >
             Policy
+          </a>
+          <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
           </a>
           <a
             href="https://github.com/dantwoashim/Project_Parva"
@@ -10729,6 +11012,12 @@ exports[`visual regression harness > today page visual baseline on desktop 1`] =
             Policy
           </a>
           <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
+          </a>
+          <a
             href="https://github.com/dantwoashim/Project_Parva"
           >
             Source
@@ -11926,6 +12215,12 @@ exports[`visual regression harness > today page visual baseline on mobile 1`] = 
             href="/policy"
           >
             Policy
+          </a>
+          <a
+            data-discover="true"
+            href="/licensing"
+          >
+            Licensing
           </a>
           <a
             href="https://github.com/dantwoashim/Project_Parva"
