@@ -1,0 +1,4504 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Project Parva",
+    "description": "Nepali calendar and temporal services for BS/AD conversion, Panchanga, festivals, fiscal rules, calendar integrations, and future-BS research.",
+    "version": "3.0.0"
+  },
+  "paths": {
+    "/health/ready": {
+      "get": {
+        "summary": "Check API readiness",
+        "operationId": "Check API readiness",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "tags": [
+          "Platform"
+        ]
+      }
+    },
+    "/v3/api/policy": {
+      "get": {
+        "tags": [
+          "Platform"
+        ],
+        "summary": "View the public API policy",
+        "operationId": "View the public API policy",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/calendar/today": {
+      "get": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Get today's Nepali calendar date",
+        "description": "Get calendar information for today.\nUses udaya tithi (official sunrise-based) for accuracy.",
+        "operationId": "Get today's Nepali calendar date",
+        "parameters": [
+          {
+            "name": "risk_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "standard|strict",
+              "default": "standard",
+              "title": "Risk Mode"
+            },
+            "description": "standard|strict"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/calendar/convert": {
+      "get": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Convert a Gregorian date to Bikram Sambat",
+        "description": "Convert a Gregorian date to Bikram Sambat, Nepal Sambat, and get tithi.\n\nReturns complete calendar information for the given date.",
+        "operationId": "Convert a Gregorian date to Bikram Sambat",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Gregorian date in YYYY-MM-DD format",
+              "title": "Date"
+            },
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/calendar/bs-to-gregorian": {
+      "post": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Convert a Bikram Sambat date to Gregorian",
+        "description": "Convert a Bikram Sambat date to Gregorian.",
+        "operationId": "Convert a Bikram Sambat date to Gregorian",
+        "parameters": [
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to 'membrane' for a replay-verifiable proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to 'membrane' for a replay-verifiable proof capsule."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BSConversionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/calendar/validate-bs-date": {
+      "get": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Validate a Bikram Sambat date",
+        "description": "Validate a BS date with optional replay-verifiable proof.",
+        "operationId": "Validate a Bikram Sambat date",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 2200,
+              "minimum": 1900,
+              "title": "Year"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 12,
+              "minimum": 1,
+              "title": "Month"
+            }
+          },
+          {
+            "name": "day",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 32,
+              "minimum": 1,
+              "title": "Day"
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/calendar/dual-month": {
+      "get": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Get a dual-calendar month view",
+        "description": "Return a dual-calendar month map (Gregorian + Bikram Sambat) for UI calendar views.\n\nSupports a dynamic ±200 year browsing window around the current Gregorian year.",
+        "operationId": "Get a dual-calendar month view",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 2600,
+              "minimum": 1600,
+              "description": "Gregorian year",
+              "title": "Year"
+            },
+            "description": "Gregorian year"
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 12,
+              "minimum": 1,
+              "description": "Gregorian month 1-12",
+              "title": "Month"
+            },
+            "description": "Gregorian month 1-12"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/calendar/panchanga": {
+      "get": {
+        "tags": [
+          "Calendar"
+        ],
+        "summary": "Calculate Panchanga for a date and place",
+        "description": "Get complete panchanga (5-element Hindu calendar) for a date.\n\nUses Swiss Ephemeris for accurate astronomical calculations.\nIncludes: Tithi, Nakshatra, Yoga, Karana, Vaara (weekday).",
+        "operationId": "Calculate Panchanga for a date and place",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Gregorian date in YYYY-MM-DD format",
+              "title": "Date"
+            },
+            "description": "Gregorian date in YYYY-MM-DD format",
+            "examples": {
+              "default": {
+                "summary": "Sample date",
+                "value": "2026-02-15"
+              }
+            }
+          },
+          {
+            "name": "risk_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "standard|strict",
+              "default": "standard",
+              "title": "Risk Mode"
+            },
+            "description": "standard|strict"
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "none|compact|audit|replay|membrane",
+              "title": "Proof"
+            },
+            "description": "none|compact|audit|replay|membrane"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Latitude for proof identity",
+              "title": "Lat"
+            },
+            "description": "Latitude for proof identity"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Longitude for proof identity",
+              "title": "Lon"
+            },
+            "description": "Longitude for proof identity"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
+          },
+          {
+            "name": "ephemeris_provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "builtin_swiss_moshier",
+                "pinned_panchanga_fixture"
+              ],
+              "type": "string",
+              "description": "Calculation provider used for proof output",
+              "default": "builtin_swiss_moshier",
+              "title": "Ephemeris Provider"
+            },
+            "description": "Calculation provider used for proof output"
+          },
+          {
+            "name": "ephemeris_fixture_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Pinned fixture id for deterministic replay",
+              "title": "Ephemeris Fixture Id"
+            },
+            "description": "Pinned fixture id for deterministic replay"
+          },
+          {
+            "name": "ayanamsa",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "lahiri",
+                "raman",
+                "kp"
+              ],
+              "type": "string",
+              "description": "Effective sidereal ayanamsa profile",
+              "default": "lahiri",
+              "title": "Ayanamsa"
+            },
+            "description": "Effective sidereal ayanamsa profile"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/festivals": {
+      "get": {
+        "tags": [
+          "Festivals"
+        ],
+        "summary": "List supported festivals",
+        "description": "List all festivals with optional filtering.\n\nCategories: national, newari, buddhist, regional",
+        "operationId": "List supported festivals",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by category",
+              "title": "Category"
+            },
+            "description": "Filter by category"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Search by name or description",
+              "title": "Search"
+            },
+            "description": "Search by name or description"
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by region focus",
+              "title": "Region"
+            },
+            "description": "Filter by region focus"
+          },
+          {
+            "name": "tradition",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by tradition/category",
+              "title": "Tradition"
+            },
+            "description": "Filter by tradition/category"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by rule source (e.g., festival_rules_v3)",
+              "title": "Source"
+            },
+            "description": "Filter by rule source (e.g., festival_rules_v3)"
+          },
+          {
+            "name": "quality_band",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "computed|provisional|inventory|all",
+              "default": "all",
+              "title": "Quality Band"
+            },
+            "description": "computed|provisional|inventory|all"
+          },
+          {
+            "name": "algorithmic_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only include algorithmic rules",
+              "default": true,
+              "title": "Algorithmic Only"
+            },
+            "description": "Only include algorithmic rules"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1,
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FestivalListResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/festivals/upcoming": {
+      "get": {
+        "tags": [
+          "Festivals"
+        ],
+        "summary": "Find upcoming festivals",
+        "description": "Get festivals occurring in the next N days.\n\nReturns festivals sorted by start date.",
+        "operationId": "Find upcoming festivals",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "description": "Number of days to look ahead",
+              "default": 30,
+              "title": "Days"
+            },
+            "description": "Number of days to look ahead"
+          },
+          {
+            "name": "from_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date (defaults to today)",
+              "title": "From Date"
+            },
+            "description": "Start date (defaults to today)"
+          },
+          {
+            "name": "quality_band",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "computed|provisional|inventory|all",
+              "default": "computed",
+              "title": "Quality Band"
+            },
+            "description": "computed|provisional|inventory|all"
+          },
+          {
+            "name": "profile",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Variant profile id",
+              "title": "Profile"
+            },
+            "description": "Variant profile id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpcomingFestivalsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/festivals/timeline": {
+      "get": {
+        "tags": [
+          "Festivals"
+        ],
+        "summary": "Build a festival timeline",
+        "operationId": "Build a festival timeline",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Start date YYYY-MM-DD",
+              "title": "From"
+            },
+            "description": "Start date YYYY-MM-DD"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "End date YYYY-MM-DD",
+              "title": "To"
+            },
+            "description": "End date YYYY-MM-DD"
+          },
+          {
+            "name": "quality_band",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "computed|provisional|inventory|all",
+              "default": "computed",
+              "title": "Quality Band"
+            },
+            "description": "computed|provisional|inventory|all"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Search by festival name/description",
+              "title": "Search"
+            },
+            "description": "Search by festival name/description"
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "en|ne",
+              "default": "en",
+              "title": "Lang"
+            },
+            "description": "en|ne"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "chronological|recommended|popular|upcoming",
+              "default": "chronological",
+              "title": "Sort"
+            },
+            "description": "chronological|recommended|popular|upcoming"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/festivals/on-date/{target_date}": {
+      "get": {
+        "tags": [
+          "Festivals"
+        ],
+        "summary": "Find festivals observed on a date",
+        "description": "Get all festivals occurring on a specific date.\n\nIncludes multi-day festivals that overlap with this date.",
+        "operationId": "Find festivals observed on a date",
+        "parameters": [
+          {
+            "name": "target_date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "title": "Target Date"
+            }
+          },
+          {
+            "name": "profile",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Variant profile id",
+              "title": "Profile"
+            },
+            "description": "Variant profile id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FestivalSummary"
+                  },
+                  "title": "Response Festivals On Date V3 Api Festivals On Date  Target Date  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/festivals/{festival_id}": {
+      "get": {
+        "tags": [
+          "Festivals"
+        ],
+        "summary": "Get festival details",
+        "description": "Get detailed information about a specific festival.\n\nIncludes full content (mythology, rituals) and calculated dates.",
+        "operationId": "Get festival details",
+        "parameters": [
+          {
+            "name": "festival_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Festival Id"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Year for date calculation",
+              "title": "Year"
+            },
+            "description": "Year for date calculation"
+          },
+          {
+            "name": "profile",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Variant profile id",
+              "title": "Profile"
+            },
+            "description": "Variant profile id"
+          },
+          {
+            "name": "authority_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "public_default|authority_compare|all_candidates",
+              "default": "public_default",
+              "title": "Authority Mode"
+            },
+            "description": "public_default|authority_compare|all_candidates"
+          },
+          {
+            "name": "risk_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "standard|strict",
+              "default": "standard",
+              "title": "Risk Mode"
+            },
+            "description": "standard|strict"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FestivalDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/temporal/compass": {
+      "post": {
+        "tags": [
+          "Planning"
+        ],
+        "summary": "Evaluate a date through the temporal compass",
+        "operationId": "Evaluate a date through the temporal compass",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemporalCompassRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/muhurta/heatmap": {
+      "post": {
+        "tags": [
+          "Planning"
+        ],
+        "summary": "Generate a Muhurta heatmap",
+        "operationId": "Generate a Muhurta heatmap",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MuhurtaHeatmapRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/muhurta/calendar": {
+      "get": {
+        "tags": [
+          "Planning"
+        ],
+        "summary": "Generate a Muhurta calendar",
+        "operationId": "Generate a Muhurta calendar",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "Start date YYYY-MM-DD",
+              "title": "From"
+            },
+            "description": "Start date YYYY-MM-DD"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "description": "End date YYYY-MM-DD",
+              "title": "To"
+            },
+            "description": "End date YYYY-MM-DD"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Latitude",
+              "title": "Lat"
+            },
+            "description": "Latitude"
+          },
+          {
+            "name": "lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Longitude",
+              "title": "Lon"
+            },
+            "description": "Longitude"
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "IANA timezone",
+              "default": "Asia/Kathmandu",
+              "title": "Tz"
+            },
+            "description": "IANA timezone"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general",
+              "default": "general",
+              "title": "Type"
+            },
+            "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general"
+          },
+          {
+            "name": "assumption_set",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "np-mainstream-v2",
+              "title": "Assumption Set"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/enterprise/fiscal-year/{bs_year}": {
+      "get": {
+        "tags": [
+          "Business Rules"
+        ],
+        "summary": "Get Bikram Sambat fiscal-year boundaries",
+        "operationId": "Get Bikram Sambat fiscal-year boundaries",
+        "parameters": [
+          {
+            "name": "bs_year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Bs Year"
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/enterprise/bs-months/{bs_year}": {
+      "get": {
+        "tags": [
+          "Business Rules"
+        ],
+        "summary": "Get published Bikram Sambat month lengths",
+        "operationId": "Get published Bikram Sambat month lengths",
+        "parameters": [
+          {
+            "name": "bs_year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Bs Year"
+            }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "canonical",
+                "solar_civil",
+                "static_lookup",
+                "compare"
+              ],
+              "type": "string",
+              "default": "canonical",
+              "title": "Mode"
+            }
+          },
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/enterprise/business-days": {
+      "post": {
+        "tags": [
+          "Business Rules"
+        ],
+        "summary": "Count business days between two dates",
+        "operationId": "Count business days between two dates",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BusinessDaysRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/compliance/evaluate-date": {
+      "post": {
+        "tags": [
+          "Business Rules"
+        ],
+        "summary": "Evaluate a date against a compliance profile",
+        "operationId": "Evaluate a date against a compliance profile",
+        "parameters": [
+          {
+            "name": "proof",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set to membrane/compact/audit/replay for a proof capsule.",
+              "title": "Proof"
+            },
+            "description": "Set to membrane/compact/audit/replay for a proof capsule."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ComplianceDateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/compliance/add-working-days": {
+      "post": {
+        "tags": [
+          "Business Rules"
+        ],
+        "summary": "Add working days to a date",
+        "operationId": "Add working days to a date",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddWorkingDaysRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/feeds/all.ics": {
+      "get": {
+        "tags": [
+          "Integrations"
+        ],
+        "summary": "Download the complete festival calendar feed",
+        "operationId": "Download the complete festival calendar feed",
+        "parameters": [
+          {
+            "name": "years",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 1,
+              "default": 2,
+              "title": "Years"
+            }
+          },
+          {
+            "name": "start_year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2300,
+                  "minimum": 1900
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Start Year"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "title": "Lang"
+            }
+          },
+          {
+            "name": "download",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Download"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v3/api/feeds/next": {
+      "get": {
+        "tags": [
+          "Integrations"
+        ],
+        "summary": "Get the next calendar event",
+        "description": "Small JSON preview helper for feed consumers.",
+        "operationId": "Get the next calendar event",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 365,
+              "minimum": 1,
+              "default": 30,
+              "title": "Days"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "en",
+              "title": "Lang"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v4/api/future-bs/capabilities": {
+      "get": {
+        "tags": [
+          "Future BS Research"
+        ],
+        "summary": "View future Bikram Sambat research capabilities",
+        "operationId": "View future Bikram Sambat research capabilities",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v4/api/future-bs/methodology": {
+      "get": {
+        "tags": [
+          "Future BS Research"
+        ],
+        "summary": "View the selected Future BS research methodology",
+        "operationId": "View the selected Future BS research methodology",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v4/api/future-bs/forecast/{bs_year}": {
+      "get": {
+        "tags": [
+          "Future BS Research"
+        ],
+        "summary": "View a review-required Future BS year forecast",
+        "operationId": "View a review-required Future BS year forecast",
+        "parameters": [
+          {
+            "name": "bs_year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Bs Year"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FutureBSForecastResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v5/api/calendar-model-risk/capabilities": {
+      "get": {
+        "tags": [
+          "Future BS Research"
+        ],
+        "summary": "View calendar model-risk capabilities",
+        "operationId": "View calendar model-risk capabilities",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddWorkingDaysRequest": {
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "title": "Profile Id",
+            "default": "nepal_private_company_default",
+            "examples": [
+              "nepal_private_company_default"
+            ]
+          },
+          "bs_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bs Date",
+            "examples": [
+              "2082-04-02"
+            ]
+          },
+          "ad_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ad Date",
+            "examples": [
+              "2025-07-18"
+            ]
+          },
+          "working_days": {
+            "type": "integer",
+            "maximum": 366.0,
+            "minimum": -366.0,
+            "title": "Working Days",
+            "examples": [
+              5
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "working_days"
+        ],
+        "title": "AddWorkingDaysRequest"
+      },
+      "BSConversionRequest": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "month": {
+            "type": "integer",
+            "title": "Month"
+          },
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "month",
+          "day"
+        ],
+        "title": "BSConversionRequest",
+        "description": "Request for BS to Gregorian conversion."
+      },
+      "BusinessDaysRequest": {
+        "properties": {
+          "start_bs": {
+            "type": "string",
+            "title": "Start Bs",
+            "examples": [
+              "2082-04-01"
+            ]
+          },
+          "end_bs": {
+            "type": "string",
+            "title": "End Bs",
+            "examples": [
+              "2082-04-31"
+            ]
+          },
+          "weekend": {
+            "type": "string",
+            "title": "Weekend",
+            "default": "saturday"
+          },
+          "include_start": {
+            "type": "boolean",
+            "title": "Include Start",
+            "default": true
+          },
+          "include_end": {
+            "type": "boolean",
+            "title": "Include End",
+            "default": true
+          },
+          "holiday_policy": {
+            "type": "string",
+            "title": "Holiday Policy",
+            "default": "none"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start_bs",
+          "end_bs"
+        ],
+        "title": "BusinessDaysRequest"
+      },
+      "ComplianceDateRequest": {
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "title": "Profile Id",
+            "default": "nepal_private_company_default",
+            "examples": [
+              "nepal_private_company_default"
+            ]
+          },
+          "bs_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bs Date",
+            "examples": [
+              "2082-04-02"
+            ]
+          },
+          "ad_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ad Date",
+            "examples": [
+              "2025-07-18"
+            ]
+          },
+          "decision_intent": {
+            "type": "string",
+            "title": "Decision Intent",
+            "default": "general",
+            "examples": [
+              "general"
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ComplianceDateRequest"
+      },
+      "ConversionResult": {
+        "properties": {
+          "gregorian": {
+            "type": "string",
+            "title": "Gregorian"
+          },
+          "bikram_sambat": {
+            "$ref": "#/components/schemas/BSDate"
+          },
+          "nepal_sambat": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NSDate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tithi": {
+            "$ref": "#/components/schemas/TithiInfo"
+          },
+          "support_tier": {
+            "type": "string",
+            "title": "Support Tier"
+          },
+          "engine_path": {
+            "type": "string",
+            "title": "Engine Path"
+          },
+          "fallback_used": {
+            "type": "boolean",
+            "title": "Fallback Used",
+            "default": false
+          },
+          "calibration_status": {
+            "type": "string",
+            "title": "Calibration Status"
+          },
+          "engine_version": {
+            "type": "string",
+            "title": "Engine Version",
+            "default": "v3"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provenance"
+          },
+          "policy": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Policy"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          },
+          "proof": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Proof"
+          }
+        },
+        "type": "object",
+        "required": [
+          "gregorian",
+          "bikram_sambat",
+          "nepal_sambat",
+          "tithi",
+          "support_tier",
+          "engine_path",
+          "calibration_status"
+        ],
+        "title": "ConversionResult",
+        "description": "Full calendar conversion result."
+      },
+      "BSDate": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "month": {
+            "type": "integer",
+            "title": "Month"
+          },
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          },
+          "month_name": {
+            "type": "string",
+            "title": "Month Name"
+          },
+          "confidence": {
+            "type": "string",
+            "title": "Confidence"
+          },
+          "source_range": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Range"
+          },
+          "estimated_error_days": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Error Days"
+          },
+          "uncertainty": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uncertainty"
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "month",
+          "day",
+          "month_name",
+          "confidence"
+        ],
+        "title": "BSDate",
+        "description": "Bikram Sambat date."
+      },
+      "FestivalDetailResponse": {
+        "properties": {
+          "festival": {
+            "$ref": "#/components/schemas/Festival"
+          },
+          "dates": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FestivalDates"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "date_availability": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FestivalDateAvailability"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "nearby_festivals": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FestivalSummary"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nearby Festivals"
+          },
+          "completeness": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FestivalDetailCompleteness"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProvenanceMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "festival"
+        ],
+        "title": "FestivalDetailResponse",
+        "description": "API response for single festival detail."
+      },
+      "Festival": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "name_nepali": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name Nepali"
+          },
+          "name_local": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name Local"
+          },
+          "calendar_type": {
+            "type": "string",
+            "title": "Calendar Type",
+            "default": "lunar"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "significance_level": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Significance Level",
+            "default": 2
+          },
+          "tagline": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Tagline"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "typical_month_bs": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Typical Month Bs"
+          },
+          "typical_month_gregorian": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Typical Month Gregorian"
+          },
+          "duration_days": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Duration Days",
+            "default": 1
+          },
+          "mythology": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MythologyContent"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "daily_rituals": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/DayRituals"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Daily Rituals"
+          },
+          "simple_rituals": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/RitualStep"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simple Rituals"
+          },
+          "ritual_sequence": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ritual Sequence"
+          },
+          "deities": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/DeityLink"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deities"
+          },
+          "connected_deities": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Connected Deities"
+          },
+          "locations": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/LocationLink"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locations"
+          },
+          "related_festivals": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Related Festivals"
+          },
+          "who_celebrates": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Who Celebrates"
+          },
+          "is_national_holiday": {
+            "type": "boolean",
+            "title": "Is National Holiday",
+            "default": false
+          },
+          "regional_focus": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Regional Focus"
+          },
+          "primary_color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Color"
+          },
+          "icon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Icon"
+          },
+          "images": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Images"
+          },
+          "content_status": {
+            "type": "string",
+            "title": "Content Status",
+            "default": "minimal"
+          },
+          "sources": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sources"
+          },
+          "last_updated": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Updated"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "category",
+          "tagline",
+          "description"
+        ],
+        "title": "Festival",
+        "description": "Complete festival data model.",
+        "example": {
+          "calendar_type": "lunar",
+          "category": "national",
+          "content_status": "complete",
+          "description": "Dashain is the longest and most significant festival in Nepal...",
+          "duration_days": 15,
+          "id": "dashain",
+          "is_national_holiday": true,
+          "name": "Dashain",
+          "name_nepali": "दशैं",
+          "significance_level": 5,
+          "tagline": "Nepal's greatest festival celebrating victory of good over evil",
+          "typical_month_bs": 6,
+          "typical_month_gregorian": "September-October"
+        }
+      },
+      "DayRituals": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Day"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "name_nepali": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name Nepali"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "rituals": {
+            "items": {
+              "$ref": "#/components/schemas/RitualStep"
+            },
+            "type": "array",
+            "title": "Rituals"
+          },
+          "is_main_day": {
+            "type": "boolean",
+            "title": "Is Main Day",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "day",
+          "name",
+          "description"
+        ],
+        "title": "DayRituals",
+        "description": "Rituals for a specific day of a multi-day festival."
+      },
+      "DeityLink": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "name_nepali": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name Nepali"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "DeityLink",
+        "description": "Reference to a deity associated with a festival."
+      },
+      "FestivalDateAvailability": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "pattern": "^(available|missing_rule|unresolved|calculation_error)$",
+            "title": "Status"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          },
+          "requested_year": {
+            "type": "integer",
+            "title": "Requested Year"
+          },
+          "resolved_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolved Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "note",
+          "requested_year"
+        ],
+        "title": "FestivalDateAvailability",
+        "description": "Truthful date-resolution status for a requested festival/year."
+      },
+      "FestivalDates": {
+        "properties": {
+          "gregorian_year": {
+            "type": "integer",
+            "title": "Gregorian Year"
+          },
+          "bs_year": {
+            "type": "integer",
+            "title": "Bs Year"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Start Date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "End Date"
+          },
+          "duration_days": {
+            "type": "integer",
+            "title": "Duration Days"
+          },
+          "bs_start": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BSDateLite"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bs_end": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BSDateLite"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "days_until": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Until"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProvenanceMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "authority_conflict": {
+            "type": "boolean",
+            "title": "Authority Conflict",
+            "default": false
+          },
+          "authority_candidate_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authority Candidate Count"
+          },
+          "authority_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authority Note"
+          },
+          "authority_alternates": {
+            "items": {
+              "$ref": "#/components/schemas/AuthorityCandidate"
+            },
+            "type": "array",
+            "title": "Authority Alternates"
+          },
+          "alternate_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/AuthorityCandidate"
+            },
+            "type": "array",
+            "title": "Alternate Candidates"
+          },
+          "authority_suggested_profile_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authority Suggested Profile Id"
+          },
+          "authority_suggested_start_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authority Suggested Start Date"
+          },
+          "authority_suggested_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Authority Suggested Reason"
+          },
+          "support_tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Support Tier"
+          },
+          "selection_policy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selection Policy"
+          },
+          "source_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Family"
+          },
+          "engine_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engine Path"
+          },
+          "fallback_used": {
+            "type": "boolean",
+            "title": "Fallback Used",
+            "default": false
+          },
+          "calibration_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibration Status"
+          },
+          "boundary_radar": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Boundary Radar"
+          },
+          "stability_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stability Score"
+          },
+          "risk_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Risk Mode"
+          },
+          "abstained": {
+            "type": "boolean",
+            "title": "Abstained",
+            "default": false
+          },
+          "recommended_action": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Action"
+          },
+          "profile_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Id"
+          },
+          "profile_tradition": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Tradition"
+          },
+          "profile_region": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Region"
+          },
+          "profile_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "gregorian_year",
+          "bs_year",
+          "start_date",
+          "end_date",
+          "duration_days"
+        ],
+        "title": "FestivalDates",
+        "description": "Calculated dates for a festival in a specific year."
+      },
+      "AuthorityCandidate": {
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date",
+            "title": "Start"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "source_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Family"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start"
+        ],
+        "title": "AuthorityCandidate",
+        "description": "One authority-backed candidate date for a festival-year pair."
+      },
+      "BSDateLite": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "month": {
+            "type": "integer",
+            "title": "Month"
+          },
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          },
+          "month_name": {
+            "type": "string",
+            "title": "Month Name"
+          },
+          "formatted": {
+            "type": "string",
+            "title": "Formatted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "month",
+          "day",
+          "month_name",
+          "formatted"
+        ],
+        "title": "BSDateLite",
+        "description": "Bikram Sambat date shape for mixed-calendar UI surfaces."
+      },
+      "FestivalDetailCompleteness": {
+        "properties": {
+          "overall": {
+            "type": "string",
+            "pattern": "^(complete|partial|minimal)$",
+            "title": "Overall"
+          },
+          "narrative": {
+            "$ref": "#/components/schemas/FestivalDetailCompletenessSection"
+          },
+          "ritual_sequence": {
+            "$ref": "#/components/schemas/FestivalDetailCompletenessSection"
+          },
+          "dates": {
+            "$ref": "#/components/schemas/FestivalDetailCompletenessSection"
+          },
+          "related_observances": {
+            "$ref": "#/components/schemas/FestivalDetailCompletenessSection"
+          }
+        },
+        "type": "object",
+        "required": [
+          "overall",
+          "narrative",
+          "ritual_sequence",
+          "dates",
+          "related_observances"
+        ],
+        "title": "FestivalDetailCompleteness",
+        "description": "Truthful completeness signals for the festival detail experience."
+      },
+      "FestivalDetailCompletenessSection": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "pattern": "^(available|partial|missing)$",
+            "title": "Status"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "note"
+        ],
+        "title": "FestivalDetailCompletenessSection",
+        "description": "Availability state for one festival-detail section."
+      },
+      "FestivalListResponse": {
+        "properties": {
+          "festivals": {
+            "items": {
+              "$ref": "#/components/schemas/FestivalSummary"
+            },
+            "type": "array",
+            "title": "Festivals"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "page": {
+            "type": "integer",
+            "title": "Page",
+            "default": 1
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "Page Size",
+            "default": 50
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProvenanceMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "festivals",
+          "total"
+        ],
+        "title": "FestivalListResponse",
+        "description": "API response for festival list."
+      },
+      "FestivalSummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "name_nepali": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name Nepali"
+          },
+          "tagline": {
+            "type": "string",
+            "title": "Tagline"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "duration_days": {
+            "type": "integer",
+            "title": "Duration Days"
+          },
+          "significance_level": {
+            "type": "integer",
+            "title": "Significance Level"
+          },
+          "is_national_holiday": {
+            "type": "boolean",
+            "title": "Is National Holiday"
+          },
+          "primary_color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Color"
+          },
+          "rule_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Status"
+          },
+          "rule_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Family"
+          },
+          "validation_band": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validation Band"
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          },
+          "next_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Start"
+          },
+          "next_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next End"
+          },
+          "days_until": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Until"
+          },
+          "date_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Status"
+          },
+          "date_status_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Status Note"
+          },
+          "profile_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Id"
+          },
+          "profile_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "tagline",
+          "category",
+          "duration_days",
+          "significance_level",
+          "is_national_holiday"
+        ],
+        "title": "FestivalSummary",
+        "description": "Condensed festival info for list views."
+      },
+      "FutureBSForecastResponse": {
+        "properties": {
+          "bs_year": {
+            "type": "integer",
+            "title": "Bs Year"
+          },
+          "month_lengths": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "minItems": 12,
+            "title": "Month Lengths"
+          },
+          "months": {
+            "items": {
+              "$ref": "#/components/schemas/FutureBSMonthForecast"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "minItems": 12,
+            "title": "Months"
+          },
+          "year_total_days": {
+            "type": "integer",
+            "maximum": 366.0,
+            "minimum": 365.0,
+            "title": "Year Total Days"
+          },
+          "heuristic_confidence_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Heuristic Confidence Score"
+          },
+          "confidence_label": {
+            "type": "string",
+            "title": "Confidence Label"
+          },
+          "risk_flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Risk Flags"
+          },
+          "constraints": {
+            "type": "object",
+            "title": "Constraints"
+          },
+          "surface": {
+            "type": "string",
+            "const": "future_bs_public_forecast",
+            "title": "Surface"
+          },
+          "status": {
+            "type": "string",
+            "const": "research_preview",
+            "title": "Status"
+          },
+          "maturity": {
+            "type": "string",
+            "const": "research_preview",
+            "title": "Maturity"
+          },
+          "publication_status": {
+            "type": "string",
+            "const": "computed_prediction_not_official",
+            "title": "Publication Status"
+          },
+          "review_required": {
+            "type": "boolean",
+            "const": true,
+            "title": "Review Required"
+          },
+          "authoritative_publication_overrides": {
+            "type": "boolean",
+            "const": true,
+            "title": "Authoritative Publication Overrides"
+          },
+          "snapshot_id": {
+            "type": "string",
+            "title": "Snapshot Id"
+          },
+          "method": {
+            "type": "object",
+            "title": "Method"
+          },
+          "risk_summary": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Risk Summary"
+          },
+          "validation": {
+            "type": "object",
+            "title": "Validation"
+          },
+          "limits": {
+            "type": "object",
+            "title": "Limits"
+          },
+          "meta": {
+            "type": "object",
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "bs_year",
+          "month_lengths",
+          "months",
+          "year_total_days",
+          "heuristic_confidence_score",
+          "confidence_label",
+          "risk_flags",
+          "constraints",
+          "surface",
+          "status",
+          "maturity",
+          "publication_status",
+          "review_required",
+          "authoritative_publication_overrides",
+          "snapshot_id",
+          "method",
+          "risk_summary",
+          "validation",
+          "limits",
+          "meta"
+        ],
+        "title": "FutureBSForecastResponse"
+      },
+      "FutureBSMonthForecast": {
+        "properties": {
+          "month": {
+            "type": "integer",
+            "maximum": 12.0,
+            "minimum": 1.0,
+            "title": "Month"
+          },
+          "month_name": {
+            "type": "string",
+            "title": "Month Name"
+          },
+          "predicted_days": {
+            "type": "integer",
+            "maximum": 32.0,
+            "minimum": 29.0,
+            "title": "Predicted Days"
+          },
+          "prediction_set_80": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Prediction Set 80"
+          },
+          "prediction_set_95": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Prediction Set 95"
+          },
+          "model_support": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Model Support"
+          },
+          "heuristic_confidence_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Heuristic Confidence Score"
+          },
+          "confidence_label": {
+            "type": "string",
+            "title": "Confidence Label"
+          },
+          "model_agreement": {
+            "type": "string",
+            "title": "Model Agreement"
+          },
+          "boundary_distance_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Boundary Distance Minutes"
+          },
+          "risk_label": {
+            "type": "string",
+            "enum": [
+              "GREEN",
+              "YELLOW",
+              "RED"
+            ],
+            "title": "Risk Label"
+          },
+          "risk_flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Risk Flags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "month_name",
+          "predicted_days",
+          "prediction_set_80",
+          "prediction_set_95",
+          "model_support",
+          "heuristic_confidence_score",
+          "confidence_label",
+          "model_agreement",
+          "risk_label",
+          "risk_flags"
+        ],
+        "title": "FutureBSMonthForecast"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LocationLink": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "coordinates": {
+            "anyOf": [
+              {
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinates"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "LocationLink",
+        "description": "Reference to a temple or location."
+      },
+      "MuhurtaHeatmapRequest": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date",
+            "description": "Gregorian date in YYYY-MM-DD format"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat",
+            "description": "Latitude"
+          },
+          "lon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lon",
+            "description": "Longitude"
+          },
+          "tz": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tz",
+            "description": "IANA timezone",
+            "default": "Asia/Kathmandu"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "creative_focus|vivah|griha_pravesh|travel|upanayana|general",
+            "default": "general"
+          },
+          "assumption_set": {
+            "type": "string",
+            "title": "Assumption Set",
+            "default": "np-mainstream-v2"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "title": "MuhurtaHeatmapRequest"
+      },
+      "MythologyContent": {
+        "properties": {
+          "summary": {
+            "type": "string",
+            "minLength": 50,
+            "title": "Summary"
+          },
+          "origin_story": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Story"
+          },
+          "legends": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Legends"
+          },
+          "scriptural_references": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scriptural References"
+          },
+          "historical_context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Historical Context"
+          },
+          "regional_variations": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Regional Variations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "summary"
+        ],
+        "title": "MythologyContent",
+        "description": "Mythological/origin story content for a festival."
+      },
+      "NSDate": {
+        "properties": {
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "formatted": {
+            "type": "string",
+            "title": "Formatted"
+          }
+        },
+        "type": "object",
+        "required": [
+          "year",
+          "formatted"
+        ],
+        "title": "NSDate",
+        "description": "Nepal Sambat date."
+      },
+      "ProvenanceMeta": {
+        "properties": {
+          "dataset_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset Hash"
+          },
+          "rules_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rules Hash"
+          },
+          "snapshot_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snapshot Id"
+          },
+          "verify_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verify Url"
+          }
+        },
+        "type": "object",
+        "title": "ProvenanceMeta",
+        "description": "Provenance metadata for response verification."
+      },
+      "RitualStep": {
+        "properties": {
+          "order": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Order"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "name_nepali": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name Nepali"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "time_of_day": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Of Day"
+          },
+          "duration": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "items_needed": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Items Needed"
+          },
+          "significance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Significance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "order",
+          "name",
+          "description"
+        ],
+        "title": "RitualStep",
+        "description": "A step in a ritual sequence."
+      },
+      "TemporalCompassRequest": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date",
+            "description": "Gregorian date in YYYY-MM-DD format"
+          },
+          "lat": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lat",
+            "description": "Latitude"
+          },
+          "lon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lon",
+            "description": "Longitude"
+          },
+          "tz": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tz",
+            "description": "IANA timezone",
+            "default": "Asia/Kathmandu"
+          },
+          "quality_band": {
+            "type": "string",
+            "title": "Quality Band",
+            "description": "computed|provisional|inventory|all",
+            "default": "computed"
+          },
+          "risk_mode": {
+            "type": "string",
+            "title": "Risk Mode",
+            "description": "standard|strict",
+            "default": "standard"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "title": "TemporalCompassRequest"
+      },
+      "TithiInfo": {
+        "properties": {
+          "tithi": {
+            "type": "integer",
+            "title": "Tithi"
+          },
+          "paksha": {
+            "type": "string",
+            "title": "Paksha"
+          },
+          "tithi_name": {
+            "type": "string",
+            "title": "Tithi Name"
+          },
+          "moon_phase": {
+            "type": "string",
+            "title": "Moon Phase"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method",
+            "default": "udaya"
+          },
+          "confidence": {
+            "type": "string",
+            "title": "Confidence",
+            "default": "exact"
+          },
+          "reference_time": {
+            "type": "string",
+            "title": "Reference Time",
+            "default": "sunrise"
+          },
+          "sunrise_used": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sunrise Used"
+          },
+          "uncertainty": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uncertainty"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tithi",
+          "paksha",
+          "tithi_name",
+          "moon_phase"
+        ],
+        "title": "TithiInfo",
+        "description": "Tithi information."
+      },
+      "UpcomingFestivalsResponse": {
+        "properties": {
+          "festivals": {
+            "items": {
+              "$ref": "#/components/schemas/UpcomingFestival"
+            },
+            "type": "array",
+            "title": "Festivals"
+          },
+          "from_date": {
+            "type": "string",
+            "format": "date",
+            "title": "From Date"
+          },
+          "to_date": {
+            "type": "string",
+            "format": "date",
+            "title": "To Date"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProvenanceMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "festivals",
+          "from_date",
+          "to_date",
+          "total"
+        ],
+        "title": "UpcomingFestivalsResponse",
+        "description": "API response for upcoming festivals."
+      },
+      "UpcomingFestival": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "name_nepali": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name Nepali"
+          },
+          "tagline": {
+            "type": "string",
+            "title": "Tagline"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Start Date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date",
+            "title": "End Date"
+          },
+          "days_until": {
+            "type": "integer",
+            "title": "Days Until"
+          },
+          "temporal_status": {
+            "type": "string",
+            "pattern": "^(upcoming|ongoing)$",
+            "title": "Temporal Status",
+            "default": "upcoming"
+          },
+          "days_until_start": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Until Start"
+          },
+          "days_since_start": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Since Start"
+          },
+          "days_until_end": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Days Until End"
+          },
+          "duration_days": {
+            "type": "integer",
+            "title": "Duration Days"
+          },
+          "primary_color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Color"
+          },
+          "rule_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Status"
+          },
+          "rule_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rule Family"
+          },
+          "validation_band": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validation Band"
+          },
+          "source_evidence_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Source Evidence Ids"
+          },
+          "date_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Status"
+          },
+          "date_status_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date Status Note"
+          },
+          "support_tier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Support Tier"
+          },
+          "selection_policy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selection Policy"
+          },
+          "source_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Family"
+          },
+          "fallback_used": {
+            "type": "boolean",
+            "title": "Fallback Used",
+            "default": false
+          },
+          "calibration_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibration Status"
+          },
+          "profile_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Id"
+          },
+          "profile_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profile Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "tagline",
+          "category",
+          "start_date",
+          "end_date",
+          "days_until",
+          "duration_days"
+        ],
+        "title": "UpcomingFestival",
+        "description": "Festival in upcoming festivals list."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Calendar",
+      "description": "BS/AD conversion, validation, month views, and Panchanga."
+    },
+    {
+      "name": "Festivals",
+      "description": "Festival discovery, schedules, and date-based lookup."
+    },
+    {
+      "name": "Planning",
+      "description": "Temporal planning and Muhurta evaluation."
+    },
+    {
+      "name": "Business Rules",
+      "description": "Fiscal periods, month lengths, and working-day rules."
+    },
+    {
+      "name": "Integrations",
+      "description": "Calendar feeds for external applications."
+    },
+    {
+      "name": "Future BS Research",
+      "description": "Capability discovery for explicitly labelled future-calendar research."
+    },
+    {
+      "name": "Platform",
+      "description": "Service health and public access policy."
+    }
+  ],
+  "x-parva-openapi-surface": "canonical",
+  "servers": [
+    {
+      "url": "https://api.prabinghimire1.com.np",
+      "description": "Project Parva public API"
+    }
+  ]
+}

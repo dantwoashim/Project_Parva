@@ -1,7 +1,8 @@
 # RapidAPI Listing
 
-Use the curated public contract at `docs/api-docs/openapi.json`. It contains the
-canonical public routes and points to `https://api.prabinghimire1.com.np`.
+Use the RapidAPI import contract at `docs/marketplace/rapidapi-openapi.json`.
+It is generated from `docs/api-docs/openapi.json`, gives every endpoint a clean
+display name, and points to `https://api.prabinghimire1.com.np`.
 
 ## Project Details
 
@@ -55,7 +56,7 @@ Nepal, Nepali calendar, Bikram Sambat, BS AD conversion, Panchanga, festivals, f
 
 1. Open `https://rapidapi.com/studio` and select the personal account.
 2. Create an API project named `Project Parva` and import
-   `docs/api-docs/openapi.json`.
+   `docs/marketplace/rapidapi-openapi.json`.
 3. Apply the listing fields above under **Hub Listing > General**.
 4. Confirm the imported base URL and test `GET /health/ready` through RapidAPI.
 5. Keep provider authentication disabled. The origin already exposes the curated
