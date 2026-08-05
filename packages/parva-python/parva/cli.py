@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import argparse
+import csv
+import importlib.util
 import json
 import os
+from pathlib import Path
 from typing import Any
 
 from .client import DEFAULT_API_BASE, ParvaClient
@@ -54,6 +57,110 @@ def _capabilities(args: argparse.Namespace) -> int:
     return _print(client.get_trust_capabilities())
 
 
+def _repository_offline_tools_available() -> bool:
+    try:
+        return (
+            importlib.util.find_spec("app.membranes.proofpack") is not None
+            and importlib.util.find_spec("app.workflows.date_risk_audit") is not None
+        )
+    except ModuleNotFoundError:
+        return False
+
+
+def _read_artifact(path: str) -> dict[str, Any]:
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def _verify_proofpack(args: argparse.Namespace) -> int:
+    from app.membranes.proofpack import verify_proof_pack
+
+    ok, reason = verify_proof_pack(_read_artifact(args.path))
+    print(json.dumps({"verified": ok, "reason": reason}, indent=2, sort_keys=True))
+    return 0 if ok else 1
+
+
+def _verify_timepack(args: argparse.Namespace) -> int:
+    from app.membranes.timepack import verify_timepack
+
+    ok, reason = verify_timepack(_read_artifact(args.path))
+    print(json.dumps({"verified": ok, "reason": reason}, indent=2, sort_keys=True))
+    return 0 if ok else 1
+
+
+def _markdown_audit_report(report: dict[str, Any]) -> str:
+    lines = [
+        "# Parva payroll date-risk audit",
+        "",
+        "This report is decision support only. It is not legal, tax, payroll, banking, government, or official calendar authority.",
+        "",
+        f"- Rows: {report['summary']['rows']}",
+        f"- Review required: {report['summary']['review_required']}",
+        f"- Pass: {report['summary']['pass']}",
+        f"- Conformance score: {report['summary']['conformance_score']}",
+        "",
+        "## Findings",
+    ]
+    for item in report["findings"]:
+        issues = ", ".join(item["issues"]) if item["issues"] else "none"
+        heading = item.get("bs_date") or f"row {item.get('row_number', '?')}"
+        lines.extend(
+            [
+                "",
+                f"### {heading}",
+                f"- Status: {item['status']}",
+                f"- AD date: {item.get('ad_date') or 'unresolved'}",
+                f"- Issues: {issues}",
+                f"- Risk score: {item['risk_score']}",
+            ]
+        )
+    lines.extend(
+        [
+            "",
+            "## Forbidden claims",
+            "",
+            "- No government authority.",
+            "- No legal, tax, payroll, or banking authority.",
+            "- No official future-date authority.",
+            "- No official Panchanga or ritual authority.",
+        ]
+    )
+    return "\n".join(lines) + "\n"
+
+
+def _audit_payroll(args: argparse.Namespace) -> int:
+    from app.workflows.date_risk_audit import audit_date_rows, build_date_risk_timepack
+
+    input_path = Path(args.input)
+    rows = list(csv.DictReader(input_path.read_text(encoding="utf-8").splitlines()))
+    findings = audit_date_rows(rows, include_proofs=True)
+    review_required = sum(1 for item in findings if item["status"] == "review_required")
+    passed = len(findings) - review_required
+    report = {
+        "kind": "parva_payroll_date_risk_audit",
+        "version": "v1",
+        "input": {"path": str(input_path), "rows": len(rows)},
+        "summary": {
+            "rows": len(findings),
+            "pass": passed,
+            "review_required": review_required,
+            "conformance_score": round((passed / len(findings)) * 100, 2) if findings else 0.0,
+        },
+        "claim_boundary": "payroll_date_risk_not_authority",
+        "not_authority": True,
+        "findings": findings,
+    }
+    if args.output:
+        Path(args.output).write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if args.markdown:
+        Path(args.markdown).write_text(_markdown_audit_report(report), encoding="utf-8")
+    if args.timepack:
+        Path(args.timepack).write_text(
+            json.dumps(build_date_risk_timepack(rows), indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    return _print(report)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="parva", description="Project Parva public API CLI")
     parser.add_argument(
@@ -78,6 +185,24 @@ def build_parser() -> argparse.ArgumentParser:
     capabilities = subparsers.add_parser("capabilities", help="Fetch public capability metadata.")
     capabilities.add_argument("surface", choices=["future-bs", "enterprise", "trust"])
     capabilities.set_defaults(func=_capabilities)
+
+    if _repository_offline_tools_available():
+        proofpack = subparsers.add_parser("verify-proofpack", help="Verify a standalone Parva proof pack.")
+        proofpack.add_argument("path")
+        proofpack.set_defaults(func=_verify_proofpack)
+
+        timepack = subparsers.add_parser("verify-timepack", help="Verify a standalone Parva Timepack.")
+        timepack.add_argument("path")
+        timepack.set_defaults(func=_verify_timepack)
+
+        audit = subparsers.add_parser("audit", help="Run offline decision-support audits.")
+        audit_subparsers = audit.add_subparsers(dest="audit_command", required=True)
+        payroll = audit_subparsers.add_parser("payroll", help="Run a payroll/date-risk CSV audit.")
+        payroll.add_argument("--input", required=True, help="CSV input with bs_date/workflow_type columns.")
+        payroll.add_argument("--output", help="Write machine-readable JSON report.")
+        payroll.add_argument("--markdown", help="Write human-readable Markdown report.")
+        payroll.add_argument("--timepack", help="Write replayable Timepack artifact.")
+        payroll.set_defaults(func=_audit_payroll)
 
     return parser
 

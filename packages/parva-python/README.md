@@ -154,6 +154,15 @@ client = ParvaClient(
 The default base is the public demo service, not a required production host.
 Private deployments should pass their own `base_url`.
 
+## Command Line
+
+The installed SDK provides the public API commands `today`, `convert`,
+`validate-bs`, and `capabilities`.
+
+A full repository checkout also enables `verify-proofpack`, `verify-timepack`,
+and `audit payroll`. Those offline commands use the repository backend and
+committed evidence data, so they stay hidden in a standalone PyPI installation.
+
 ## Retry Behavior
 
 The SDK retries `429`, `500`, `502`, `503`, and `504` responses with conservative
