@@ -23,6 +23,9 @@ not an official publication system.
 | Prediction range | `2084-2200 BS` |
 | Publication status | `computed_prediction_not_official` |
 | Public snapshot | `forecast_snapshot_v7_2084_2200.json` |
+| Freeze id | `parva_future_bs_v7_2026-08-05` |
+| Model source commit | `0591ca687b3c91918d1c7557d5033f49d41ba248` |
+| Year commitment root | `5f27afa2349e0e2ce20e97d31a0b5715eeec64c2e8d43d2a70e914fd2e377206` |
 
 ## Registered Model Families
 
@@ -47,3 +50,6 @@ not an official publication system.
   [RESEARCH_BOUNDARY.md](RESEARCH_BOUNDARY.md).
 - Any new public accuracy claim must cite the source policy and evidence window
   used to reproduce it.
+- The v7 forecast and evaluation rules are immutable under the
+  [v7 forecast freeze](V7_FORECAST_FREEZE.md). Any changed prediction requires a
+  new model and freeze identifier.

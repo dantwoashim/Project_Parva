@@ -1,0 +1,46 @@
+{
+  "accepted_truth": {
+    "minimum_independent_reviewers": 2,
+    "publication_must_postdate_freeze": true,
+    "required_fields": [
+      "bs_year",
+      "month_lengths",
+      "source_type",
+      "source_url",
+      "source_sha256",
+      "source_artifact_path",
+      "published_at",
+      "retrieved_at",
+      "reviewed_by"
+    ],
+    "required_source_type": "official_verified",
+    "schema_path": "data/future_bs/public/frozen/v7/prospective_truth.schema.json"
+  },
+  "claim_boundary": "Prospective scoring begins only after a later authoritative publication is independently acquired and reviewed.",
+  "development_boundary": {
+    "broad_reference_years": "2000-2083 BS",
+    "historical_untouched_test_available": false,
+    "official_month_cases": 72,
+    "official_rolling_window": "2078-2083 BS",
+    "reason": "Historical month values through BS 2083 influenced the broad reference tower or model design and cannot be relabeled as untouched evidence."
+  },
+  "freeze_id": "parva_future_bs_v7_2026-08-05",
+  "locked_metrics": [
+    "exact_month_matches",
+    "month_accuracy",
+    "exact_year_match",
+    "absolute_day_error",
+    "wrong_high_support_count"
+  ],
+  "model_id": "parva_authority_aware_solar_civil_v7",
+  "prospective_holdout": {
+    "additional_locked_years": "2085-2200 BS",
+    "forecast_locked_before_truth_import": true,
+    "primary_bs_year": 2084,
+    "retraining_before_primary_score": false,
+    "truth_status": "awaiting_later_authoritative_publication"
+  },
+  "recorded_at": "2026-08-05T10:04:41Z",
+  "schema": "parva-future-bs-prospective-evaluation-v1",
+  "scoring_command": "python scripts/future_bs/score_frozen_forecast.py --truth <reviewed-official-truth.json>"
+}

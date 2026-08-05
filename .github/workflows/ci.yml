@@ -68,6 +68,7 @@ jobs:
           python scripts/check_docs_links.py
           python scripts/check_path_leaks.py
           python scripts/check_future_bs_public_leakage.py
+          python scripts/future_bs/freeze_public_v7.py --check
           python scripts/release/check_public_claims.py
           python scripts/validate_external_temporal_rules.py
           python scripts/sheets/validate_sheet_examples.py

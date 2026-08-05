@@ -124,6 +124,7 @@ def main() -> int:
         ("canonical runtime registry", [*python, "scripts/check_canonical_runtime.py"]),
         ("backend import cycles", [*python, "scripts/release/check_import_cycles.py", "backend/app"]),
         ("maturity lanes", [*python, "scripts/check_maturity_lanes.py"]),
+        ("Future BS v7 freeze", [*python, "scripts/future_bs/freeze_public_v7.py", "--check"]),
         ("Render public blueprint", [*python, "scripts/release/check_render_blueprint.py"]),
         ("Cloud Run blueprint", [*python, "scripts/release/check_cloudrun_blueprint.py"]),
         ("temporal trust verification", [*python, "scripts/parva_trust_verify.py"]),

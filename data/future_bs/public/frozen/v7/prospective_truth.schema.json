@@ -1,0 +1,74 @@
+{
+  "$id": "https://raw.githubusercontent.com/dantwoashim/Project_Parva/main/data/future_bs/public/frozen/v7/prospective_truth.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "bs_year": {
+      "maximum": 2200,
+      "minimum": 2084,
+      "type": "integer"
+    },
+    "month_lengths": {
+      "items": {
+        "enum": [
+          29,
+          30,
+          31,
+          32
+        ],
+        "type": "integer"
+      },
+      "maxItems": 12,
+      "minItems": 12,
+      "type": "array"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "published_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "retrieved_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "reviewed_by": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 2,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "source_artifact_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_sha256": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_type": {
+      "const": "official_verified"
+    },
+    "source_url": {
+      "format": "uri",
+      "type": "string"
+    }
+  },
+  "required": [
+    "bs_year",
+    "month_lengths",
+    "source_type",
+    "source_url",
+    "source_sha256",
+    "source_artifact_path",
+    "published_at",
+    "retrieved_at",
+    "reviewed_by"
+  ],
+  "title": "Project Parva prospective Future BS truth",
+  "type": "object"
+}

@@ -1,0 +1,111 @@
+{
+  "calibration_version": "de440_source_stratified_authority_civil_2000_2083_v5",
+  "claim_boundary": "The freeze proves what v7 predicted and which inputs produced it. It does not prove that unpublished future dates are correct.",
+  "commitments": {
+    "path": "data/future_bs/public/frozen/v7/year_commitments.json",
+    "sha256": "sha256:7f09156c65717d28a950b44bad17d917ce8f017fa61eeda1019bd1ccd8eb572a",
+    "year_merkle_root": "sha256:5f27afa2349e0e2ce20e97d31a0b5715eeec64c2e8d43d2a70e914fd2e377206"
+  },
+  "evaluation_protocol": {
+    "path": "data/future_bs/public/frozen/v7/prospective_evaluation_protocol.json",
+    "sha256": "sha256:81d06099aa6674f4e964be81356242e392d17b88939defe992ba2147e7b1a33c"
+  },
+  "external_ephemeris_identity": {
+    "binary_committed": false,
+    "expected_sha256": "sha256:a4ce9bf9b3282becc9f4b2ac3cebe03a2ae7599981aabd7265fd8482fff7c4b5",
+    "kernel": "JPL DE440"
+  },
+  "forecast_range": "2084-2200 BS",
+  "freeze_id": "parva_future_bs_v7_2026-08-05",
+  "immutability_policy": "Any model or forecast change requires a new version and freeze id.",
+  "ledger_event": {
+    "path": "data/future_bs/public/forecast_commitment_ledger.jsonl",
+    "sha256": "sha256:0c689ace4ab5e4366b7d956ad15f2bee1bc13572cde332dd4b45b329e68c44f5"
+  },
+  "manifest_sha256": "sha256:21fdc1b0bcc3f54e0e47e3a71785a03049fcc4d464a3788704f7ffb5f750cc47",
+  "method_version": "parva_authority_aware_solar_civil_v7",
+  "model_id": "parva_authority_aware_solar_civil_v7",
+  "prospective_truth_schema": {
+    "path": "data/future_bs/public/frozen/v7/prospective_truth.schema.json",
+    "sha256": "sha256:fe1462363a148295396022e2f9d5e426b468a7abbd2f5b2515d8948820976061"
+  },
+  "publication_status": "computed_prediction_not_official",
+  "recorded_at": "2026-08-05T10:04:41Z",
+  "schema": "parva-future-bs-model-freeze-v1",
+  "snapshot_id": "parva_future_bs_public_v7_2084_2200",
+  "source_artifacts": [
+    {
+      "bytes": 9813,
+      "path": "backend/app/research/future_bs/unified_predictor.py",
+      "sha256": "sha256:db9a40ecf2dca8b1e9aae850f83e75506e05a43e0d71ab21535a23d29dc4015f"
+    },
+    {
+      "bytes": 27652,
+      "path": "backend/app/research/future_bs/solar_ingress_predictor.py",
+      "sha256": "sha256:5cc6ae04f40f248a0d1c20ab00cd3c48b365307c34a6fc5436fb197e81a86ab9"
+    },
+    {
+      "bytes": 25515,
+      "path": "backend/app/research/future_bs/accuracy_lab.py",
+      "sha256": "sha256:74ae4b61c19fa48bd1bf6511a734079a89dbd64b6d46a5c88c2730a0ca9b7f90"
+    },
+    {
+      "bytes": 21476,
+      "path": "backend/app/research/future_bs/backtest.py",
+      "sha256": "sha256:9b316231b0025641a3de4bc2f502dc4198ddf01424d2d0d2415f13caf7f65b96"
+    },
+    {
+      "bytes": 8477,
+      "path": "backend/app/research/future_bs/corpus.py",
+      "sha256": "sha256:507d967610e23220d8204f2190f9bc5a28115176f7b744c7b5f4d3be881d983c"
+    },
+    {
+      "bytes": 2706,
+      "path": "backend/app/research/future_bs/models.py",
+      "sha256": "sha256:27532735b97b551796e27d1d6650165f53c7460fd9f309619a6dfcf38851e173"
+    },
+    {
+      "bytes": 9584,
+      "path": "scripts/future_bs/build_public_forecast_snapshot.py",
+      "sha256": "sha256:d788364c65adf04d016101944e162e7d712bc28992b02bf89a448856c717622a"
+    },
+    {
+      "bytes": 1949,
+      "path": "config/ephemeris-kernels.yaml",
+      "sha256": "sha256:4306043acfeb466c87f60d3111ca3bc866c35a62f89446e90b636e03f2e14474"
+    },
+    {
+      "bytes": 1973,
+      "path": "data/future_bs/public/official_holdout_2078_2083.csv",
+      "sha256": "sha256:b8c165912f9532e8c2081383c53e00b7b33990725d76b1c67c776f370bc24239"
+    },
+    {
+      "bytes": 728487,
+      "path": "data/future_bs/public/forecast_snapshot_v7_2084_2200.json",
+      "sha256": "sha256:b02797b5074322e0856187daf3eb784142e8778adc031bcfc7b46ce0006112d9"
+    },
+    {
+      "bytes": 3024,
+      "path": "data/future_bs/public/selected_model_v7.json",
+      "sha256": "sha256:3cfb04729f6f364eb52e4441e7bb075678bb2994c46dce6af716c359d2ed029c"
+    }
+  ],
+  "source_commit": "0591ca687b3c91918d1c7557d5033f49d41ba248",
+  "training_cutoff_bs_year": 2083,
+  "training_source_policy": "source_stratified",
+  "validation_at_freeze": {
+    "claim_boundary": "The 72-case official window is a chronological rolling evaluation, but it remains too small for a broad future-accuracy guarantee.",
+    "independent_broad_accuracy_claim_ready": false,
+    "official_rolling_time_travel": {
+      "accuracy": 100.0,
+      "bs_year_range": "2078-2083",
+      "evaluation_kind": "rolling_past_only_official_evaluation",
+      "evaluation_source_policy": "official_only",
+      "exact_month_matches": 72,
+      "leakage_safe": true,
+      "month_cases": 72,
+      "training_source_policy": "source_stratified"
+    },
+    "required_verified_month_cases_for_broad_claim": 528
+  }
+}
