@@ -62,7 +62,6 @@ a fresh clone can find the right reference without guessing.
 - [Enterprise Deployment](ENTERPRISE_DEPLOYMENT.md)
 - [Licensing](LICENSING.md)
 - [Commercial License](COMMERCIAL_LICENSE.md)
-- [Pricing Strategy](PRICING_STRATEGY.md)
 - [Temporal SBOM Service](TEMPORAL_SBOM_SERVICE.md)
 - [Source Policy](future_bs/SOURCE_POLICY.md)
 - [Claim Boundary](future_bs/CLAIM_BOUNDARY.md)

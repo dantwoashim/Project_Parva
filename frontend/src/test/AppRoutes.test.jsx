@@ -644,7 +644,7 @@ describe('App routing', () => {
     expect(screen.getByText(/^Public verification status$/i)).toBeInTheDocument();
     expect(screen.getAllByText(pct(benchmarkSummary.parva_score_percent)).length).toBeGreaterThan(0);
     expect(screen.getByText(/not a government, legal, tax, banking, payroll, religious, calendar-publication, or future-date authority/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Verification reports/i })).toHaveAttribute('href', expect.stringContaining('external_reviewer_packet'));
+    expect(screen.getByRole('link', { name: /Public benchmark/i })).toHaveAttribute('href', expect.stringContaining('public-benchmark'));
     expect(screen.getByRole('link', { name: /API Docs/i })).toHaveAttribute('href', 'https://api.prabinghimire1.com.np/docs');
     expect(screen.queryByText(/99\.9.*uptime|uptime.*99\.9/i)).not.toBeInTheDocument();
   }, 30000);

@@ -320,7 +320,7 @@ export function RedesignTrust() {
           ['Truth Lab', 'Live reliability status, benchmark manifests, source review queues, and boundary suites.', '/truth-lab'],
           ['API Policy', 'The exact advisory policy returned by the backend for consumers and integrators.', '/policy'],
           ['API Docs', 'Public OpenAPI docs for stable route inspection.', DEFAULT_PUBLIC_DOCS_URL],
-          ['Verification reports', 'Reviewer packet and public verification evidence in the source repo.', 'https://github.com/dantwoashim/Project_Parva/tree/main/reports/external_reviewer_packet'],
+          ['Public benchmark', 'Reproducible tasks, runners, results, and comparison data.', 'https://github.com/dantwoashim/Project_Parva/tree/main/public-benchmark'],
           ['Known limitations', 'Supported ranges, authority boundaries, and unavailable external dependencies.', 'https://github.com/dantwoashim/Project_Parva/blob/main/docs/KNOWN_LIMITATIONS.md'],
           ['Licensing', 'AGPL use and annual proprietary embedding terms.', '/licensing'],
           ['About', 'What Parva is, what it is not, and how to use it responsibly.', '/about'],

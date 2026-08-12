@@ -68,10 +68,6 @@ Suggested commercial packaging:
 The audit is source-aware technical review, not legal, tax, banking, payroll,
 or government approval.
 
-The initial prospect set and its extraction limits are documented in
-`docs/outreach/IRD_VENDOR_PROSPECTS_2026.md`, with the 50-row working data in
-`docs/outreach/ird_vendor_prospects_2026.csv`.
-
 Status: audit checklist for external products that handle Nepali dates.
 
 This checklist helps compare vendor behavior against Parva Protocol draft

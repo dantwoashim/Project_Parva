@@ -15,7 +15,7 @@ from scripts.release.check_archive_hygiene import (
 
 def test_required_archive_paths_are_declared():
     assert "README.md" in REQUIRED_ARCHIVE_PATHS
-    assert "reports/external_reviewer_packet/README.md" in REQUIRED_ARCHIVE_PATHS
+    assert "reports/red_check_closure/README.md" in REQUIRED_ARCHIVE_PATHS
     assert "public-benchmark/results/benchmark.svg" in REQUIRED_ARCHIVE_PATHS
 
 

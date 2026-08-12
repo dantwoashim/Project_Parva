@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Ruthless local depth audit for the final ceiling architecture."""
+"""Run local semantic checks for the proof architecture."""
 
 from __future__ import annotations
 
-import json
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -22,8 +21,6 @@ from app.membranes.capsule import build_convert_bs_to_ad_capsule  # noqa: E402
 from app.membranes.verifier import verify_membrane  # noqa: E402
 from app.sources.hashing import canonical_json_hash  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
-
-REPORT_DIR = PROJECT_ROOT / "reports" / "ceiling_depth"
 
 
 @dataclass(frozen=True)
@@ -196,44 +193,8 @@ def collect() -> dict[str, Any]:
     }
 
 
-def write_reports(payload: dict[str, Any]) -> None:
-    REPORT_DIR.mkdir(parents=True, exist_ok=True)
-    (REPORT_DIR / "architecture_gap_matrix.json").write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    lines = ["# Ceiling Architecture Depth Audit", ""]
-    lines.append(f"- Status: {payload['status']}")
-    lines.append(f"- Scope: {payload['scope']}")
-    lines.append("")
-    lines.append("## Hard Checks")
-    for check in payload["hard_checks"]:
-        lines.append(f"- {check['name']}: {check['status']} - {check['detail']}")
-    lines.append("")
-    lines.append("## External Blockers")
-    for blocker in payload["external_blockers"]:
-        lines.append(f"- {blocker['blocker']}: {blocker['reason']}")
-    lines.append("")
-    lines.append("## Not Claimable")
-    for claim in payload["not_claimable"]:
-        lines.append(f"- {claim}")
-    (REPORT_DIR / "architecture_gap_matrix.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
-    (REPORT_DIR / "remaining_blockers.md").write_text(
-        "\n".join(
-            [
-                "# Remaining Ceiling Blockers",
-                "",
-                *[f"- {item['blocker']}: {item['reason']}" for item in payload["external_blockers"]],
-                "",
-            ]
-        ),
-        encoding="utf-8",
-    )
-
-
 def main() -> int:
     payload = collect()
-    write_reports(payload)
     for check in payload["hard_checks"]:
         print(f"{check['status'].upper()}: {check['name']} - {check['detail']}")
     if payload["status"] != "pass":

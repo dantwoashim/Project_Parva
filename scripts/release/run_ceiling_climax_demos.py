@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run executable climax demos for Phase 01-15 and write evidence artifacts."""
+"""Run executable proof-system integration demos."""
 
 from __future__ import annotations
 
@@ -43,9 +43,6 @@ from app.trust.taint import AuthorityTaint, TaintFlag  # noqa: E402
 from app.tvl.parser import parse_temporal_query  # noqa: E402
 from app.witnesses.graph import WitnessGraph, WitnessNode  # noqa: E402
 
-OUTPUT_DIR = PROJECT_ROOT / "reports" / "ceiling_execution"
-OUTPUT_JSON = OUTPUT_DIR / "climax_demos.json"
-OUTPUT_MD = OUTPUT_DIR / "climax_demos.md"
 DETERMINISTIC_CREATED_AT = "2026-01-01T00:00:00+00:00"
 
 
@@ -208,16 +205,8 @@ def _normalize_demo_payload(value: object) -> object:
 
 
 def main() -> int:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     payload = _normalize_demo_payload(run_demos())
-    OUTPUT_JSON.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    lines = ["# Ceiling Climax Demo Evidence", ""]
-    for phase, result in payload.items():
-        lines.append(f"## {phase}")
-        lines.append(f"- Evidence keys: {', '.join(sorted(result) if isinstance(result, dict) else ['value'])}")
-        lines.append("")
-    OUTPUT_MD.write_text("\n".join(lines), encoding="utf-8")
-    print(f"Wrote {OUTPUT_JSON} and {OUTPUT_MD}")
+    print(f"Executed {len(payload)} proof-system integration demos.")
     return 0
 
 

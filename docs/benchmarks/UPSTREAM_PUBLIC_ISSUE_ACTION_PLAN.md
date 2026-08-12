@@ -100,10 +100,6 @@ help maintainers without adding pressure or dependency.
     review-needed future-date boundaries. No dependency, integration,
     maintainer approval, or authority claim was made.
 
-Drafts for other targets remain in `docs/outreach/upstream-comment-drafts.md`
-and should be posted only after a maintainer-safe review of the final public
-links.
-
 ## Day 4 Follow-Up Targets
 
 - Keep Yarsa #252 as the next careful reproduction target.

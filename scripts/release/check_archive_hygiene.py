@@ -30,8 +30,7 @@ REQUIRED_ARCHIVE_PATHS = (
     "public-benchmark/README.md",
     "public-benchmark/results/comparison.json",
     "public-benchmark/results/benchmark.svg",
-    "reports/external_reviewer_packet/README.md",
-    "reports/release_readiness/README.md",
+    "reports/red_check_closure/README.md",
 )
 
 

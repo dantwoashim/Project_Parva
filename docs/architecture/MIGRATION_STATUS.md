@@ -24,8 +24,6 @@ changes do not repeat unsafe mechanical moves.
 - `constraints`, `forge`, `bitplanes`, and related proof-demo modules were not
   moved because workflow and verification scripts still depend on their
   historical `app.*` paths.
-- `reports/phase_*` files were not moved because current phase requirement,
-  repo hygiene, and clean-clone scripts still assert those exact paths.
 - SDK, MCP, CLI, and benchmark paths were not physically moved in this pass
   where existing package metadata, docs, or registry submission paths depend on
   their current locations.
