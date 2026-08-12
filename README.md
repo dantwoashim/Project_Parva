@@ -4,6 +4,12 @@
 [![Public verification](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml)
 ![Benchmark](public-benchmark/results/benchmark.svg)
 
+[Website](https://prabinghimire1.com.np) |
+[API documentation](https://api.prabinghimire1.com.np/docs) |
+[Quickstart](docs/QUICKSTART.md) |
+[Public benchmark](public-benchmark/README.md) |
+[Licensing](docs/COMMERCIAL_LICENSING.md)
+
 Project Parva is an open-source Nepali date/time API and conformance project.
 
 It covers BS to AD, AD to BS, Nepali date validation, holidays, working days,
