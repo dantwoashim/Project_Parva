@@ -10,6 +10,37 @@
 [Public benchmark](public-benchmark/README.md) |
 [Licensing](docs/COMMERCIAL_LICENSING.md)
 
+## Try it in 10 seconds
+
+The API is live. No key, no signup:
+
+```sh
+curl "https://api.prabinghimire1.com.np/v3/api/calendar/convert?date=2026-09-21"
+```
+
+```json
+{
+  "gregorian": "2026-09-21",
+  "bikram_sambat": { "year": 2083, "month": 6, "day": 5, "month_name": "Ashwin",
+                     "confidence": "official", "source_range": "2078-2083 BS" },
+  "nepal_sambat":  { "year": 1146, "formatted": "NS 1146" },
+  "tithi":         { "tithi_name": "Dashami", "paksha": "shukla", "method": "ephemeris_udaya" },
+  "engine_path": "computed", "provenance": { ... }, "policy": { ... }
+}
+```
+
+Invalid BS dates are rejected with the reason and the real month length, so a
+datepicker cannot silently accept `2081-12-32`:
+
+```sh
+curl "https://api.prabinghimire1.com.np/v3/api/calendar/validate-bs-date?year=2081&month=12&day=32"
+# {"valid": false, "bs_date": "2081-12-32", "reason": "day must be between 1 and 31", "max_day": 31, ...}
+```
+
+Add `&proof=compact` to any calendar route for a replayable proof capsule.
+Interactive docs: <https://api.prabinghimire1.com.np/docs>. First request may
+take a few seconds while the evaluation instance wakes up.
+
 Project Parva is an open-source Nepali date/time API and conformance project.
 
 It covers BS to AD, AD to BS, Nepali date validation, holidays, working days,
