@@ -1,0 +1,216 @@
+{
+  "version": "2083.2",
+  "reviewed_on": "2026-11-14",
+  "holiday_years": [
+    2078,
+    2079,
+    2080,
+    2081,
+    2082,
+    2083
+  ],
+  "conversion_years": [
+    2000,
+    2095
+  ],
+  "provisional_from": 2084,
+  "scopes": [
+    "civil-service",
+    "community:dura",
+    "community:gaura",
+    "community:jitiya-women",
+    "community:kirat",
+    "community:newar",
+    "community:sikh",
+    "employees:disabilities",
+    "kathmandu-valley",
+    "national",
+    "region:hills",
+    "region:sudurpaschim",
+    "region:terai",
+    "schools",
+    "women"
+  ],
+  "scope_notes": {
+    "region:hills": "56 districts outside the Terai list in the BS 2083 notice.",
+    "region:terai": "Jhapa, Morang, Sunsari, Saptari, Siraha, Udayapur, Sarlahi, Mahottari, Dhanusha, Rautahat, Bara, Parsa, Nawalparasi (Bardaghat Susta East), Nawalparasi (Bardaghat Susta West), Rupandehi, Kapilvastu, Dang, Banke, Bardiya, Kailali, Kanchanpur and Chitwan. Verify the source list before applying policy."
+  },
+  "coverage": "partial",
+  "review_method": "Comparison with rendered pages of the archived annual notices. Page numbers are physical PDF pages, starting at 1.",
+  "limits": [
+    "No year is marked complete. Undated holidays and later amendments need separate review.",
+    "BS 2083 rows and the BS 2082 Dashain/Tihar spans were source-reviewed. Other historical rows retain their earlier review state.",
+    "Agreement with historical festival dates is retrospective evidence, not an independent forecast guarantee."
+  ],
+  "corrections": [
+    {
+      "bs_year": 2082,
+      "id": "dashain-holidays",
+      "source_page": 2,
+      "changes": {
+        "days": 6
+      }
+    },
+    {
+      "bs_year": 2082,
+      "id": "tihar-holidays",
+      "source_page": 2,
+      "changes": {
+        "days": 5
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "gai-jatra",
+      "source_page": 4,
+      "changes": {
+        "scopes": [
+          "community:newar",
+          "kathmandu-valley"
+        ],
+        "note": "Community scope on page 4; valley scope also on page 5."
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "gaura-parva",
+      "source_page": 4,
+      "changes": {
+        "scope": "community:gaura"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "civil-service-day",
+      "source_page": 6,
+      "changes": {
+        "closure": false,
+        "note": "Section 8: observed while offices remain open."
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "genz-martyrs-day",
+      "source_page": 6,
+      "changes": {
+        "closure": false,
+        "note": "Annual notice section 8: offices remain open. Later notices are outside this baseline."
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "jitiya",
+      "source_page": 4,
+      "changes": {
+        "scope": "community:jitiya-women"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "dashain-holidays",
+      "source_page": 2,
+      "changes": {
+        "days": 7,
+        "note": "Inclusive span: Ashwin 31 through Kartik 6."
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "tihar-holidays",
+      "source_page": 2,
+      "changes": {
+        "days": 5,
+        "note": "Inclusive span: Kartik 22 through Kartik 26; continuation on PDF page 3."
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "yomari-punhi",
+      "source_page": 3,
+      "changes": {
+        "scope": "national",
+        "name": "Dhanya Purnima / Yomari Punhi / Udhauli"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "saraswati-puja",
+      "source_page": 4,
+      "changes": {
+        "scope": "schools"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "labour-day",
+      "source_page": 5,
+      "changes": {
+        "added": true,
+        "bs": "2083-01-18"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "republic-day",
+      "source_page": 5,
+      "changes": {
+        "added": true,
+        "bs": "2083-02-15"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "disability-day",
+      "source_page": 5,
+      "changes": {
+        "added": true,
+        "bs": "2083-08-17"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "prithvi-jayanti",
+      "source_page": 6,
+      "changes": {
+        "added": true,
+        "bs": "2083-09-27"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "maghe-sankranti",
+      "source_page": 3,
+      "changes": {
+        "added": true,
+        "bs": "2083-10-01"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "international-womens-day",
+      "source_page": 5,
+      "changes": {
+        "added": true,
+        "bs": "2083-11-24"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "holi-hills",
+      "source_page": 3,
+      "changes": {
+        "added": true,
+        "bs": "2083-12-07"
+      }
+    },
+    {
+      "bs_year": 2083,
+      "id": "holi-terai",
+      "source_page": 3,
+      "changes": {
+        "added": true,
+        "bs": "2083-12-08"
+      }
+    }
+  ]
+}

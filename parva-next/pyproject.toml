@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "parva-calendar"
+version = "1.0.0rc2"
+description = "The Nepali calendar as data: BS/AD conversion, gazetted holidays, festival dates, panchanga."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [{ name = "Prabin Ghimire" }]
+keywords = ["nepal", "bikram sambat", "nepali calendar", "panchanga", "tithi", "holidays"]
+dependencies = []                                   # parva.bs and parva.holidays need nothing
+
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.optional-dependencies]
+astro = ["pyswisseph>=2.10,<3", "tzdata; sys_platform == 'win32'"]   # parva.astro / lunar / festivals
+api = ["parva-calendar[astro]", "fastapi>=0.135,<1", "uvicorn>=0.23,<1"]
+mcp = ["parva-calendar[api]", "mcp>=1.2,<2"]
+dev = ["parva-calendar[mcp]", "pytest>=8", "httpx>=0.27", "ruff>=0.15", "mypy>=1.11", "build>=1.2"]
+
+[project.scripts]
+parva = "parva.cli:main"
+parva-mcp = "parva.mcp:main"
+
+[project.urls]
+Homepage = "https://github.com/dantwoashim/Project_Parva"
+Repository = "https://github.com/dantwoashim/Project_Parva"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["parva*"]
+
+[tool.setuptools.package-data]
+parva = ["data/*.json", "data/holidays/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["E731"]   # lambdas for tiny local angle functions read better than defs
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+files = ["src/parva"]

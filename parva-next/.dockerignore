@@ -1,0 +1,14 @@
+web/node_modules
+web/dist
+__pycache__
+*.pyc
+.pytest_cache
+.mypy_cache
+.ruff_cache
+tests
+tools
+.git
+.venv
+build
+dist
+*.egg-info

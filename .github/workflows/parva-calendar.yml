@@ -1,0 +1,46 @@
+name: Focused calendar
+
+on:
+  push:
+    paths: ['parva-next/**', 'data/source_archive/moha/**', '.github/workflows/parva-calendar.yml']
+  pull_request:
+    paths: ['parva-next/**', 'data/source_archive/moha/**', '.github/workflows/parva-calendar.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: parva-next
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e '.[dev]'
+      - run: python -m ruff check src tests tools
+      - run: python -m ruff format --check src tests tools
+      - run: python -m mypy
+      - run: python -m pytest
+      - run: python tools/verify_data.py
+      - run: python -m build
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: parva-next/web
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: parva-next/web/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm audit --audit-level=high

@@ -1,0 +1,63 @@
+{
+  "table-2000-2095": {
+    "title": "Community BS month-length table, BS 2000-2095",
+    "note": "Identical to nepali-datetime 1.0.8.5 for every shipped year except 2087 (see below); identical to nepali-date-converter 3.4.0 and nepali-date-library 1.1.15 on 2078-2083 (legacy public-benchmark/results/competitor-comparison.md). Anchored 2082-01-01 BS = 2025-04-14 AD. Legacy rows 2096-2099 are not shipped: 2096 sums to 364 days; 2097/2099 disagree between sources."
+  },
+  "table-provisional": {
+    "title": "Same table, years 2084-2095",
+    "note": "Community table for BS 2084–2095, not independently established as official. Future month lengths may change. BS 2087 uses the 366-day nepali-datetime row."
+  },
+  "moha-gazette-weekdays": {
+    "title": "Weekday checksum of MoHA gazette lines against the table",
+    "note": "Matching printed weekdays is a consistency check, not proof of complete or correctly scoped holiday coverage."
+  },
+  "doib-2082": {
+    "title": "Department of Information and Broadcasting table calendar, BS 2082",
+    "url": "https://giwmscdnone.gov.np/media/pdf_upload/Table%20calendar%202082_Final_kngovbv.pdf"
+  },
+  "computed": {
+    "title": "Swiss Ephemeris (Moshier), Lahiri ayanamsa, upper-limb sunrise, amanta months named by sankranti, purnimanta festival rules, udaya/aparahna/pradosh/nishita anchoring (parva/lunar.py)"
+  },
+  "moha-2078": {
+    "title": "Ministry of Home Affairs, Government of Nepal - public holiday notice, BS 2078",
+    "sha256": "0393824162538665dece243a7bb3e7a0cb82835d792b4f2ca6142b005782cca5",
+    "size_bytes": 1940716,
+    "note": "Baseline annual notice. See each row’s review state and physical PDF page; later amendments are not included.",
+    "archive_path": "data/source_archive/moha/2078_public_holidays.pdf"
+  },
+  "moha-2079": {
+    "title": "Ministry of Home Affairs, Government of Nepal - public holiday notice, BS 2079",
+    "sha256": "0b0f68aaa3a9bef6676d4aa0d32845d1af31fc992c15d492321a26b85c45362e",
+    "size_bytes": 4991570,
+    "note": "Baseline annual notice. See each row’s review state and physical PDF page; later amendments are not included.",
+    "archive_path": "data/source_archive/moha/2079_public_holidays.pdf"
+  },
+  "moha-2080": {
+    "title": "Ministry of Home Affairs, Government of Nepal - public holiday notice, BS 2080",
+    "sha256": "aa496f5b368bac1052dd89ec845d3b479fde1838dc6ad5f900d6184864233e02",
+    "size_bytes": 7043590,
+    "note": "Baseline annual notice. See each row’s review state and physical PDF page; later amendments are not included.",
+    "archive_path": "data/source_archive/moha/2080_public_holidays.pdf"
+  },
+  "moha-2081": {
+    "title": "Ministry of Home Affairs, Government of Nepal - public holiday notice, BS 2081",
+    "sha256": "8b6a61842c934415ed3aac56b000fdbb1d298dce01fbc8100441da1e09dc93ef",
+    "size_bytes": 8994732,
+    "note": "Baseline annual notice. See each row’s review state and physical PDF page; later amendments are not included.",
+    "archive_path": "data/source_archive/moha/2081_public_holidays.pdf"
+  },
+  "moha-2082": {
+    "title": "Ministry of Home Affairs, Government of Nepal - public holiday notice, BS 2082",
+    "sha256": "ff66950dd42b5e79ef5977b9d55a7973445f7c6bd1aada7450416b23424d5674",
+    "size_bytes": 7813768,
+    "note": "Baseline annual notice. See each row’s review state and physical PDF page; later amendments are not included.",
+    "archive_path": "data/source_archive/moha/2082_public_holidays.pdf"
+  },
+  "moha-2083": {
+    "title": "Ministry of Home Affairs, Government of Nepal - public holiday notice, BS 2083",
+    "sha256": "ffbabf83cad254b485504627f9e47fce6c1a7a28e2693a399ae88bf9c0279a29",
+    "size_bytes": 8618093,
+    "note": "Baseline annual notice. See each row’s review state and physical PDF page; later amendments are not included.",
+    "archive_path": "data/source_archive/moha/2083_public_holidays.pdf"
+  }
+}

@@ -1,5 +1,7 @@
 # Project Parva
 
+**Focused calendar package:** [parva-next](parva-next/README.md) provides conversion, source-backed holiday records, and date-file review in a small standalone runtime. Holiday coverage is explicitly partial; unknown working-day answers remain unknown. The existing platform and research below are preserved for compatibility and reproducibility. See [migration notes](parva-next/docs/MIGRATION.md) before changing an integration.
+
 [![CI](https://github.com/dantwoashim/Project_Parva/actions/workflows/ci.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/ci.yml)
 [![Public verification](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml/badge.svg)](https://github.com/dantwoashim/Project_Parva/actions/workflows/public-verification.yml)
 ![Benchmark](public-benchmark/results/benchmark.svg)
