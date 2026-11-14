@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import subprocess
@@ -78,6 +79,45 @@ FUTURE_VECTOR_RE = re.compile(
     r"\b20(?:8[4-9]|9\d)\b[\s\S]{0,180}\[(?:\s*(?:29|30|31|32)\s*,){11}\s*(?:29|30|31|32)\s*\]",
     re.MULTILINE,
 )
+PUBLIC_FORECAST_MANUSCRIPT = Path(
+    "docs/future_bs/PROSPECTIVE_FORECASTING_OF_NEPALI_BS_MONTH_BOUNDARIES.md"
+)
+
+
+def _without_published_forecast_excerpt(text: str) -> str:
+    """Exclude only the manuscript's exact, labeled v7 commitment from vector scanning."""
+    frozen = PROJECT_ROOT / "data/future_bs/public/frozen/v7"
+    manifest = json.loads((frozen / "freeze_manifest.json").read_text(encoding="utf-8"))
+    entries = json.loads((frozen / "year_commitments.json").read_text(encoding="utf-8"))["entries"]
+    entry = next(row for row in entries if row["bs_year"] == 2084)
+    snapshot = next(
+        row
+        for row in manifest["source_artifacts"]
+        if row["path"].endswith("/forecast_snapshot_v7_2084_2200.json")
+    )
+    expected = {
+        "freeze_id": manifest["freeze_id"],
+        "declared_recorded_at": manifest["recorded_at"],
+        "model_id": entry["model_id"],
+        "training_cutoff_bs_year": manifest["training_cutoff_bs_year"],
+        "bs_year": entry["bs_year"],
+        "month_lengths": entry["month_lengths"],
+        "year_total_days": entry["year_total_days"],
+        "publication_status": "computed_prediction_not_official",
+        "forecast_leaf_sha256": entry["leaf_sha256"],
+        "snapshot_portable_sha256": snapshot["sha256"],
+        "year_merkle_root": manifest["commitments"]["year_merkle_root"],
+    }
+
+    def verified_excerpt(match: re.Match[str]) -> str:
+        try:
+            return "" if json.loads(match[1]) == expected else match[0]
+        except json.JSONDecodeError:
+            return match[0]
+
+    return re.sub(
+        r"^~~~json\s*\n(.*?)\n~~~\s*$", verified_excerpt, text, flags=re.MULTILINE | re.DOTALL
+    )
 
 
 def _reset_env() -> None:
@@ -166,7 +206,12 @@ def _check_public_text() -> list[str]:
         for token in PRIVATE_ROUTE_TOKENS:
             if token in text:
                 failures.append(f"{relative}: private route token exposed: {token}")
-        if FUTURE_VECTOR_RE.search(text):
+        vector_text = (
+            _without_published_forecast_excerpt(text)
+            if relative == PUBLIC_FORECAST_MANUSCRIPT
+            else text
+        )
+        if FUTURE_VECTOR_RE.search(vector_text):
             failures.append(f"{relative}: possible full future month-length vector")
     return failures
 

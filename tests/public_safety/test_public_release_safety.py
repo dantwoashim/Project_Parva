@@ -2,8 +2,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
 from app.bootstrap.app_factory import create_app
 from fastapi.testclient import TestClient
+
+from scripts.release import check_public_safety_gate as safety
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -190,3 +193,55 @@ def test_public_examples_do_not_contain_future_vectors_or_private_routes():
         text = path.read_text(encoding="utf-8")
         for token in sensitive_tokens:
             assert token not in text, str(path.relative_to(ROOT))
+
+
+@pytest.mark.parametrize(
+    ("old", "new", "blocked"),
+    [
+        ("", "", False),
+        ('"bs_year": 2084', '"bs_year": 2085', True),
+        ('"month_lengths": [31, 32', '"month_lengths": [30, 32', True),
+        (
+            '"publication_status": "computed_prediction_not_official"',
+            '"publication_status": "official"',
+            True,
+        ),
+        ('"forecast_leaf_sha256": "sha256:', '"forecast_leaf_sha256": "changed:', True),
+    ],
+)
+def test_manuscript_excerpt_must_match_frozen_public_commitment(old, new, blocked):
+    text = (ROOT / safety.PUBLIC_FORECAST_MANUSCRIPT).read_text(encoding="utf-8")
+    if old:
+        assert old in text
+        text = text.replace(old, new)
+    scanned = safety._without_published_forecast_excerpt(text)
+    assert bool(safety.FUTURE_VECTOR_RE.search(scanned)) is blocked
+
+
+def test_publication_exception_does_not_skip_other_content(monkeypatch, tmp_path):
+    text = (ROOT / safety.PUBLIC_FORECAST_MANUSCRIPT).read_text(encoding="utf-8")
+    paper = tmp_path / "paper.md"
+    paper.write_text(text, encoding="utf-8")
+    monkeypatch.setattr(safety, "PROJECT_ROOT", tmp_path)
+    monkeypatch.setattr(safety, "_iter_scan_files", lambda: [paper])
+    assert any("future month-length vector" in failure for failure in safety._check_public_text())
+
+    # Even in the approved path, private routes and additional vectors remain blocked.
+    monkeypatch.setattr(safety, "PROJECT_ROOT", ROOT)
+    monkeypatch.setattr(
+        safety, "_iter_scan_files", lambda: [ROOT / safety.PUBLIC_FORECAST_MANUSCRIPT]
+    )
+    read_text = Path.read_text
+    extra = "\n2085 [31,32,31,32,31,30,30,30,29,29,30,30]\n" + safety.PRIVATE_ROUTE_TOKENS[0]
+    monkeypatch.setattr(
+        Path,
+        "read_text",
+        lambda path, *args, **kwargs: (
+            text + extra
+            if path == ROOT / safety.PUBLIC_FORECAST_MANUSCRIPT
+            else read_text(path, *args, **kwargs)
+        ),
+    )
+    failures = safety._check_public_text()
+    assert any("future month-length vector" in failure for failure in failures)
+    assert any("private route token" in failure for failure in failures)
