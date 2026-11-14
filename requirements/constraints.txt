@@ -1,4 +1,4 @@
-aiohttp==3.14.3
+aiohttp==3.14.4
 coverage==7.15.0
 fastapi==0.139.0
 httpx==0.28.1
